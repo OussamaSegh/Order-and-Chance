@@ -77,3 +77,23 @@ Separate the long beauty paragraph into the earned solvability destination and
 explicit external mixing/classification outlooks. No future theorem is a premise.
 Preserve all complete advanced solutions and grades. The new source must still
 receive actual final page/digital review; this written pass does not approve pixels.
+
+## C5 global story/voice pass, V3-023
+
+Incoming question: Lagrange permits divisors; which prime-power subgroups must
+exist? The source proves their existence/counts, uses them for concrete finite
+classification, and then introduces abelian-quotient chains. It earns minimum
+and unique simple order60 without outsourcing to the deep external theorems.
+Outgoing question: how do coefficients and polynomial equations acquire the
+structures whose solvability will matter? C6 adds multiplication to the additive
+group and earns ring/ideal quotients before field extensions.
+
+Full written cadence/adversarial-reader pass, not a human or spoken session.
+Replace vague definition preview and duplicated proof recaps with precise finite
+chain, two distinct actions, free action definition and overlap warning/example.
+The quartic bridge now uses the proved subgroup-solvability fact; the cyclic-log
+bridge actually proves its finite reduction. Complete solutions retain targets,
+with a discovery grade adjusted for the now-earlier worked proofs. Perfectness
+and simplicity are separated by an earned product and trivial boundary. External
+history/research is sourced with exact access limits, not used as a premise.
+Final actual pagination/rendering and complete later-use closure remain pending.

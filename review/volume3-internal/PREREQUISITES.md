@@ -436,3 +436,17 @@ All58 whole-volume statuses remain pending. Actual V11 appendix law/theorem/
 corollary located and relevant text read solely to check an outlook promise;
 that result does not supply an essential premise in V3. Backward label counts do
 not substitute for the full unreferenced written/proof pass.
+
+## V3-023: C5 complete conceptual continuation
+
+34 actual label occurrences individually classified, including figure/caption,
+hints and complete solutions; one actual earlier V2cyclic-unit invocation traced
+to its full proof133–160, reread and unchanged hash. Complete C1/C2/C3/C4 proof
+sites specified in GLOBAL-CH05, with no inference from exercise prompts. Sylow
+finite conventions includea0/m1/G1. Solvability closures and derived criterion
+allow arbitrary ambient groups with finite chains. Free action, normalizer,
+cyclic logarithm and perfect-group definitions/proofs/examples now have dedicated
+first-use chains. Sylow/solvability priority chains closed throughC5 only; all62
+whole-volume statuses pending. New prime-power projection is proved from actual
+power-order and CRT results locally, not supplied by the future outlook. Full
+proof and solution source items are anchors where the definition lives there.

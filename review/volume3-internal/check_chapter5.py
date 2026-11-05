@@ -42,6 +42,21 @@ def check_sylow_and_derived():
     assert [len(a4),len(v4),len(derived(v4))] == [12,4,1]
     a,b = (1,2,0,3),(1,3,2,0)
     assert compose(compose(compose(a,b),inverse(a)),inverse(b)) == (1,0,3,2)
+    assert compose(a,b) == (2,3,0,1)
+    assert compose(b,a) == (3,2,1,0)
+    # Distinct non-prime-order subgroups can share nonidentity elements.
+    first = {(k%4,0) for k in range(4)}
+    second = {(k%4,k%2) for k in range(4)}
+    assert len(first) == len(second) == 4
+    assert first & second == {(0,0),(2,0)}
+    dihedral = set(itertools.product(range(4),range(2)))
+    multiply = lambda a,b: ((a[0]+(-1)**a[1]*b[0])%4,(a[1]+b[1])%2)
+    inv = lambda a: ((-(-1)**a[1]*a[0])%4,a[1])
+    normalizer = lambda h: {g for g in dihedral
+        if {multiply(multiply(g,x),inv(g)) for x in h} == h}
+    m = normalizer({(0,0),(0,1)})
+    assert m == {(0,0),(2,0),(0,1),(2,1)}
+    assert normalizer(m) == dihedral and m != dihedral
     for p in (2,3,5,7):
         for a in range(4):
             for m in range(1,10):
@@ -150,9 +165,37 @@ def check_small_order_arguments():
         assert len([g for g in group if compose(g,a)==compose(a,g)])==4
 
 
+def check_cyclic_log_projection():
+    # Additive cyclic models: projection to each prime-power subgroup earns
+    # precisely the residue of the exponent, then CRT recovers that exponent.
+    # This supports the general order/CRT proof; it is not that proof.
+    for n in range(1,101):
+        remainder = n; prime = 2; powers = []
+        while prime <= remainder:
+            power = 1
+            while remainder % prime == 0:
+                power *= prime; remainder //= prime
+            if power > 1:
+                powers.append(power)
+            prime += 1
+        assert math.prod(powers) == n
+        for x in range(n):
+            residues = []
+            for power in powers:
+                base = n//power
+                image = (base*x) % n
+                solutions = [y for y in range(power) if base*y % n == image]
+                assert solutions == [x % power]
+                residues.append(solutions[0])
+            recovered = sum(r*(n//q)*pow(n//q,-1,q)
+                            for r,q in zip(residues,powers)) % n
+            assert recovered == x
+
+
 if __name__=='__main__':
     check_sylow_and_derived()
     check_gl2()
     check_order12_and_plate()
     check_small_order_arguments()
+    check_cyclic_log_projection()
     print('PASS: S4 Sylows/derived; binomial boundaries; GL2 p2,3,5,7; order12 models/plate/count; all27 new table orders/six exceptions and exact A5 Sylows/centralizers')

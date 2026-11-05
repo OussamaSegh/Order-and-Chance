@@ -1,5 +1,70 @@
 # Progress
 
+## V3-023: complete Chapter 5 global pass
+
+Solo internal AI review, not human refereeing or formal verification. Entire
+current C5 read, including eight named full proofs, eight full triples, every
+actual15-row figure entry, nine bibliography items, and the complete unnamed
+least/unique simple-order60 proof.48 keyed C5 decisions give **581 accepted =
+155named+163triples+263global**, with567 global items still pending atC6. Global
+counts:31front/end+49C1+44C2+43C3+48C4+48C5.103/385 label uses and34/81 literal
+earlier mentions accepted.49 first-use chains reviewed,13 pending; **all62
+whole-volume concept statuses remain pending**. Inventory1629items/581prose/
+115bibliography, other155named/163triples/22examples/22figures/9tabular unchanged.
+
+Define free action before use and distinguish G on subset collection from
+stabilizerH on elements; demonstrate overlapping prime-power subgroups instead
+of repeating the Sylow proofs. Earn An noncommutativity explicitly. Add local
+finite cyclic log projection/CRT proof includingN1, while keeping efficient
+component work/security as outlook. State finiteG in normalizer prompt and prove
+its closing non-Sylow counterexample inD4. Earn perfect/nonsimple A5xA5 and the
+trivial perfect/solvable boundary. Preserve all original targets/full answers.
+Grade ex:nosimple2->1 because earlier main proof now solves56/36;200 is direct.
+SylowI adapted attribution heading reopened its entire proof; three changed
+triples fully reconstructed A/B, including a second explicit reopening after
+adding the D4 witness. Freshness guard rejected an incomplete appended record
+after correctly clearing prior evidence; full current core fields explicitly
+rematerialized from manual reconstruction. Seven other named proofs/five triples
+unchanged by content identity, never by old whole-file approval.
+
+All34 C5 label uses and its actual V2primitive-root invocation individually
+classified. Two priority first chains(Sylow/solvability) reviewed; four new
+normalizer/free-action/discrete-log/perfect concepts have exact anchors, including
+full proof/solution locations. Later uses remain pending. Table proof checks
+all27 printed orders plus6exceptions without deep Burnside/FeitThompson premises;
+order60 proof rechecks both Sylow2cases/incidences/centralizer bounds. Exact S4/
+GL2/order12/prime-power projection probes pass; they support general proofs.
+
+Gow actual entire55-63 original pages opened/read in facing-page scans; Sylow1872
+original scan unavailable, quotations/context read in Gow. Original Wielandt1959
+PDF403, adapted attribution corroborated by actual Clark printed43 proof plus
+Gow/publisher metadata. Original Feit introduction and bibliography, primary2012
+Coq announcement/current projectREADME, actual Pohlig/Hellman intro/III/IV,
+actual Burrell chapter/theorem/table and current GAP source read. Order16 catalogue
+actually contains14 codes.1024 theorem/current maintained source both report
+49,487,367,289; correction1867=2800-933. External thesisTable3-3 printed row totals
+sumN-1 and columnsN+1; record the inconsistency, never claim reproducing the large
+enumeration. Original article/full-proof access limits in RESEARCH/GLOBAL-CH05.
+One Gow bibliography added, MacTutor exact page title matched. No research proof
+or Coq build independently certified by this review.
+
+505 full unit tests pass, zero skips,53.850s, /tmp/volume3-v023-full-tests.log,
+after current manuscript/register/checker changes and before final descriptive
+progress writes. Current required source checker379labels/385refs/163triples,
+inventory/register/concept freshness/diffcheck pass. New exact cyclic projection
+N1..100, concrete An products, overlap and D4 normalizer probes included. The prior
+C4 final PLAN append introduced a trailing blank line; it was caught but the shell
+continued. Correct it in this coherent batch and use fail-fast final gates. No
+false final-green/merge claim. Completion gate intentionally still fails atC6.
+
+Main fetched unchanged at actualPR103merge7f87c2ab00fdb0c7791dc833423b98bef0870f01;
+no unrelated changes found. Previous cbe CI1704/run41967618331 has list/debs and
+all15book jobs successful, site still inprogress at last observation: notterminal
+all-workflow success. New head needs ownCI. No main/unrelated cancellations;
+main-only library cache policy unchanged. Actual d501 immutable artifacts/visual
+evidence remain scoped beforeC4/C5. No new final-page/digital approval. NextC6–12/
+A–D global, then sourcefreeze/every-page/narrow-wide/CIartifact/allfinalgates.
+
 ## V3-022: complete Chapter 4 global pass; two page corrections reopened
 
 This remains a solo internal AI review, not human refereeing or formal verification.

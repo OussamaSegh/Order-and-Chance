@@ -128,6 +128,9 @@ class Volume3InternalReview(unittest.TestCase):
     def test_actual_s5_plate_and_small_puzzle_group_boundaries(self):
         check_chapter4.check_actual_plate_and_small_degrees()
 
+    def test_cyclic_log_projection_including_trivial_group(self):
+        check_chapter5.check_cyclic_log_projection()
+
     def test_conjugacy_probability_constant_has_bounded_tail(self):
         check_chapter4.check_probability_constant()
 

@@ -374,3 +374,92 @@ independent human historical refereeing or certification of external research.
   source reads specified in GLOBAL-CH01/02 and their access limits; own local
   proofs were reconstructed independently. Do not imply unavailable textbook
   chapters or the exhaustive cube diameter computation were newly reviewed.
+
+## V3-023: C5 primary/source-history reconciliation
+
+Access5November2026UTC, internal AI review only. No external large enumeration,
+research proof, Coq compilation or human refereeing is claimed.
+
+- Original Sylow1872 scan locator
+  https://www.digizeitschriften.de/download/pdf/235181684_0005/log50.pdf exposed
+  metadata in web tool; direct download404. **Do not claim that original scan was
+  read.** Instead actually opened/read all printed55–63 in RodGow, Sylow's proof
+  of Sylow's theorem, IMSBulletin33(1994), in
+  https://www.maths.tcd.ie/pub/ims/bull33/bull33_55-63.pdf . Five facing-page PDF
+  spreads include unrelated54. Actual original French title/statements quoted
+  55/57–59, contextual reconstruction, historical comparison60–62, bibliography63.
+  Its organization distinguishes original theorems from modern I/II/III numbering.
+  Actual MacTutor live heading is LudwigSylow, so match that page title:
+  https://mathshistory.st-andrews.ac.uk/Biographies/Sylow/ . NorwegianLudvig is also
+  conventional, not a different person or a mathematical finding.
+- Wielandt original DOI10.1007/BF01240818 inaccessible; Springer/old Dropbox403.
+  Actual publisher-deposited metadata confirms ArchMath10(1959)401–402; title's
+  bad encoding in metadata checked against actual Gow63 printed reference.
+  Read actual AllanClark, Elements of Abstract Algebra, printed43/PDF58, subset/
+  stabilizer counting proof and explicit attribution, from
+  https://poincare.matf.bg.ac.rs/~zarkom/Book_Math_Clark_Elements_of_abstract_algebra%202.pdf .
+  Not the entire textbook or original1959 paper. Manuscript heading now says
+  afterWielandt; full own SylowI proof reopened/reconstructed despite header-only
+  change. No original-paper access claim or missing local mathematical premise.
+- Feit/Thompson actual original introductory theorem and methods description:
+  https://msp.org/pjm/1963/13-3/pjm-v13-n3-p01-s.pdf , printed775. Actual final
+  bibliography https://msp.org/pjm/1963/13-3/pjm-v13-n3-p07-s.pdf ends1029, giving
+  1029-775+1=255 pages. Not the entire255-page proof. Actual dated primary account
+  https://www.microsoft.com/en-us/research/blog/theorem-proof-gains-acclaim/
+  (11Oct2012) reports20Sept2012completion, explains Coq/MathComp and effort beyond
+  the headline; actual projectREADME read through GitHub connector:
+  https://github.com/math-comp/odd-order/blob/master/README.md .2013ITP paper's
+  publication date is distinct. No Coq build or external formal proof rerun here.
+- Burnside first-paper publisher metadata DOI10.1112/plms/s2-1.1.388 is1904,
+  PLMSsecondseries1,388–392. Its second paper DOI10.1112/plms/s2-2.1.432 is1905,
+  secondseries2,432–437, according to actual publisher-deposited Crossref metadata.
+  Do not inherit the1904 date attached to the second paper in Feit's bibliography.
+  Original full Burnside papers not accessible/read here. The manuscript's1904
+  theorem attribution remains; precise domains stated and character theory basics
+  clearly distinguished from proving the theorem. Actual C11remark explicitly
+  says Burnside is an outlook beyond its proofs. Neither external theorem is a
+  premise for the complete finite<60/unique60 argument.
+- Besche/Eick/O'Brien actual publisher-deposited metadata
+  https://api.crossref.org/works/10.1142/S0218196702001115 confirms IJAC12(2002),
+  623–644; online archive2011 is not original publication. Original complete paper
+  not newly read. Actual primary Burrell correction discussion and current
+  maintainer overview provide the reported supersession context, not a reproduced
+  enumeration. The earlier Conway/Dietrich/O'Brien explanatory text is a separate
+  source, not the original BEO article.
+- Reopened actual Burrell author thesis chapter3 printed18–20:
+  https://ufdcimages.uflib.ufl.edu/UF/E0/05/97/47/00001/Burrell_D.pdf . Read algorithm
+  description, full reported correction/theorem, explicit-versus-partial archiving;
+  actual page20 image opened, not just parsed/OCR text. Author theorem states
+  N=49,487,367,289; superseded49,487,365,422 differs1867=2800-933. **Additional
+  source limit:** printed Table3-3 row totals sumN-1 and column totals sumN+1,
+  although its grandtotal/theorem stateN. The manuscript does not reproduce that
+  table. Current maintained GAP source below independently agrees on the reported
+  N; this is corroboration of the quoted value, not rerunning the enumeration or
+  certifying the internal research computation. Actual publisher-deposited
+  https://api.crossref.org/works/10.1080/00927872.2021.2006680 confirms8Dec2021online,
+  2022print,50(6)2408–2410. Publisherfulltext403; thesis actual text read instead.
+- Actual maintained SmallGrp manual and author package revisited:
+  https://gap-packages.github.io/smallgrp/doc/chap1.html states current explicit
+  ordinary library excludes1024 and version1.5 corrects its count;
+  https://davidburrell.github.io/GRPS1024/doc/chap1_mj.html explicitly separates
+  accessible ranks/classes from partial data. Through GitHub connector read
+  https://github.com/gap-packages/smallgrp/blob/master/gap/small.gi , the actual
+  SMALL_GROUPS_NUMBER function returns49487367289 for1024. Read
+  https://github.com/gap-packages/smallgrp/blob/master/small2/col1.z : actual
+  SMALL_GROUP_LIB[16] has14 codes, including lastcode0; it is an encoded group,
+  not a missing entry. Count/lookup functions in actual small2/smlgp2.g use list
+  length for this block. Exported source text hashed locally, not a claim of raw
+  HTTP byte identity. GAP itself is not installed; apt metadata unavailable in
+  this environment. Existing exact Python group models/classification arguments
+  verify the manuscript's<=15 table; the14/1024 research catalogue counts are
+  corroborated as reported, not independently classified by software here.
+- Actual original author-hosted Pohlig/Hellman paper:
+  https://ee.stanford.edu/~hellman/publications/28.pdf . Read actual title/authors/
+  Jan1978header106 and introduction, sectionsIII/IV107–109 beyond abstract,
+  including digit recovery, prime-power projection and CRT. The first PDF page
+  also contains the preceding article's tail: do not misattribute its references.
+  Original acknowledges independently discovered variants and cautions that large
+  prime factors alone do not prove security. Do not adopt its dated1978 assertions
+  about known Fermat primes or algorithms/security. Own book now earns the finite
+  cyclic projection/CRT statement locally, allN1..100 exact probes support it.
+  Efficient component work remains explicit outlook; no cryptosystem audit.
