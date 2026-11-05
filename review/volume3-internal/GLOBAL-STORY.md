@@ -6,7 +6,8 @@ map records the actual earned route. The final keyed global written cadence and
 adversarial first-reader pass has decisions through all twelve main chapters,
 front/end matter and all four Appendices A-D at V3-038:855 global records.
 All global explicit-domain/claim fields are complete at V3-037;all120 whole-volume
-conceptual later-use closures remain pending. D asks for orthogonal sign rows, earns positive-order
+conceptual later-use closures are now complete at V3-041,with explicit A/B,
+boundaries and a guarded actual source/figure/earlier-proof snapshot. D asks for orthogonal sign rows, earns positive-order
 necessity/Sylvester/both Paley branches, and offers two complete concrete exercises.
 Its research outlook is explicitly dated/attributed, not an essential premise.
 Every optional route remains in scope; final production review is still pending.
