@@ -5,17 +5,17 @@ and production review, not independent human refereeing or formal verification.
 The user authorizes the complete review and an exact-head merge only after all
 available acceptance gates pass. No Amazon upload or account action is authorized.
 
-## Current acceptance checkpoint — V3-054
+## Current acceptance checkpoint — V3-055
 
 | Work | Current evidence |
 | --- | --- |
 | Internal source review | Complete at frozen producing commit `15d32333`: 158 named results, 163 full triples, 857 global records, 120 concepts, 393 label uses and 88 earlier contexts. Internal AI review only. |
 | Matched build | Actual complete `15d32333` all-format build: 518 reading / 517 print; ISBN9798167514683, matched wrap and listing. Output checks and final EPUBCheck5.3 pass. |
-| Actual PDF visuals | 820/1035 inspected:818 accepted,2 with open ellipsis-spacing finding,215 unopened.184 actual current openings and636 exact prior-pixel retentions.204 print facings inspected/203 accepted. All12main chapters complete through solutions/bibliography; AppendixAopening inspected. All9tabulars opened in both editions/color/gray. |
+| Actual PDF visuals | 876/1035 inspected:874 accepted,2 with open ellipsis-spacing finding,159 unopened.240 actual current openings and636 exact prior-pixel retentions.218 print facings inspected/217 accepted. All12main chapters and all AppendixA complete through solutions/bibliography. All9tabulars opened in both editions/color/gray. |
 | Digital measurements | Actual unmodified52 EPUB and48 reader narrow/wide instances pass; exact current relevant bytes retain prior evidence. |
 | Reader behavior / destinations | 652 disclosure/backlink/close checks and48 page/control checks pass. All4674 reader and21835 EPUB local destinations pass;163 exact triples each. |
 | Digital visuals | All88 actual figure views complete:22 figures × reader/EPUB ×390/1280. Further paragraph/formula baseline/shape and theme appearance work remains. |
-| CI comparison | Historical e531 overall terminal success and actual artifact comparison. Current002dcc77 run1739 is in progress; V3 build step active at actual job query. Final head terminal CI and relevant artifact comparison remain required. |
+| CI comparison | Historical e531 overall terminal success and actual artifact comparison. Currentb2369e71 run1741 is in progress; all15book build steps active at actual job query. Final head terminal CI and relevant artifact comparison remain required. |
 | Merge / publication | Draft. Open ellipsis-spacing finding requires correction/rebuild/affected reopening. Remaining visual and final-head gates open. Native Kindle, KDP account/Previewer, ISBN ownership and physical proof remain publication follow-ups. |
 
 Detailed evidence: [progress](PROGRESS.md), [restart](CHECKPOINT.md),
