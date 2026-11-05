@@ -30,6 +30,9 @@ import registers as volume3_registers
 
 
 class Volume3InternalReview(unittest.TestCase):
+    def test_cyclic_vector_zero_and_small_fields_and_matrix_power(self):
+        check_chapter7.check_cyclic_vectors_and_power_example()
+
     def test_non_euclidean_pid_nonzero_rounding_and_small_quotients(self):
         check_chapter6.check_non_euclidean_pid_rounding()
 

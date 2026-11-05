@@ -116,8 +116,74 @@ def check_migration_and_zero_scope():
     assert 'n=0' in theorem and r'n\ge1' in theorem
 
 
+def check_cyclic_vectors_and_power_example():
+    """Exact zero/small-field probes; these support the general module proof."""
+    checked=0
+    for p in (2,3):
+        for n in range(3):
+            for flat in itertools.product(range(p),repeat=n*n):
+                a=[list(flat[i*n:(i+1)*n]) for i in range(n)]
+                identity=[[int(i==j) for j in range(n)] for i in range(n)]
+                powers=[identity]
+                for _ in range(n):powers.append(matmul(powers[-1],a,p))
+                def kills(coefficients):
+                    return all(sum(c*powers[k][i][j] for k,c in
+                                   enumerate(coefficients))%p==0
+                               for i in range(n) for j in range(n))
+                minimal=None
+                for degree in range(n+1):
+                    for coefficients in itertools.product(range(p),repeat=degree):
+                        candidate=(*coefficients,1)
+                        if kills(candidate):minimal=candidate;break
+                    if minimal is not None:break
+                characteristic=((1,) if n==0 else ((-a[0][0])%p,1)
+                                if n==1 else
+                                (determinant(a)%p,(-a[0][0]-a[1][1])%p,1))
+                cyclic=False
+                for v in itertools.product(range(p),repeat=n):
+                    vectors=[];w=list(v)
+                    for _ in range(n):
+                        vectors.append(w)
+                        w=[sum(a[i][j]*w[j] for j in range(n))%p for i in range(n)]
+                    columns=[[vectors[j][i] for j in range(n)] for i in range(n)]
+                    if rank(columns,p)==n:cyclic=True;break
+                assert (minimal==characteristic)==cyclic
+                roots=[x for x in range(p) if sum(c*pow(x,k,p)
+                       for k,c in enumerate(minimal))%p==0]
+                split=[1]
+                for root in roots:
+                    out=[0]*(len(split)+1)
+                    for k,c in enumerate(split):
+                        out[k]=(out[k]-root*c)%p;out[k+1]=(out[k+1]+c)%p
+                    split=out
+                eigenvectors=[]
+                for eigenvalue in roots:
+                    for v in itertools.product(range(p),repeat=n):
+                        if all(sum(a[i][j]*v[j] for j in range(n))%p==eigenvalue*v[i]%p
+                               for i in range(n)):eigenvectors.append(v)
+                eigenbasis_rank=rank([[v[i] for v in eigenvectors] for i in range(n)],p)
+                assert (tuple(split)==minimal)==(eigenbasis_rank==n)
+                if n==0:
+                    assert minimal==characteristic==(1,) and cyclic
+                    # The old unqualified hint's r=1 conclusion fails here:
+                    # the invariant-factor list is empty, although mu=chi.
+                checked+=1
+    assert checked==104
+    a=[[1,1],[0,1]];power=[[1,0],[0,1]]
+    for t in range(21):
+        assert power==[[1,t],[0,1]]
+        power=matmul(power,a)
+    # Hatcher2.4 gives relations -a+b+c and a-b+c in basis(a-b,c).
+    # The independent algebraic Smith invariants are1,2, agreeing with the
+    # one-cell relation(2) in his2.42. Geometric identifications are external.
+    relations=[[-1,1],[1,1]]
+    assert math.gcd(*(x for row in relations for x in row))==1
+    assert abs(determinant(relations))==2
+
+
 if __name__=='__main__':
     check_actual_smith_and_table()
     check_jordan_and_units()
     check_migration_and_zero_scope()
+    check_cyclic_vectors_and_power_example()
     print('PASS: every actual Smith arrow/minor; all360 table rows; Jordan kernels n0..7,char2/3/5; units/exponent; complete curricular migration')

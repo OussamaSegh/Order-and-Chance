@@ -1,98 +1,99 @@
-# Restart checkpoint — V3-024
+# Restart checkpoint — V3-025
 
 Solo internal AI review, not human refereeing or formal verification. Draft PR:
 https://github.com/OussamaSegh/Order-and-Chance/pull/104 . Branch:
 `editorial/volume3-complete-internal-review-20261104`. This batch follows
-`4d00881026c7ccdbe8b092ffa4897237c613353a`; read actual producing HEAD after
-commit. Actual PR103 merge/latest fetched main:
+`3e7e14cd1f1ff7e11c1f772454c2fd77398bae33`; read actual HEAD after commit.
+Actual PR103 merge/latest fetched main:
 `7f87c2ab00fdb0c7791dc833423b98bef0870f01`. Preserve unrelated changes.
-Activate `/workspace/volume3-tools/activate.sh`; use fail-fast shell gates.
+Activate `/workspace/volume3-tools/activate.sh`, fail-fast shell gates.
 
-User grants full curricular freedom and authorizes merge only when every available
-internal/final gate genuinely passes. Work alone, no other-reviewer request or
-subagents. No Amazon/account action. Instructions/actual workflow/V2assignedfinal/
-prerequisite/story/artifact/handoff read. Main library caches save only onmain;
-PR success creates no PR-cache guarantee. Never cancel main/unrelated runs.
-Continue through compactions; do not end at a checkpoint.
+User grants full curricular freedom and authorizes merge only after all available
+internal/final gates genuinely pass. Work alone, no subagents/another-reviewer
+request. No Amazon/account action. All applicable instructions, full actual CI and
+V2assignedfinal/prerequisite/story/artifact/handoff read. Main library caches save
+only onmain; PRsuccess creates no PRcache guarantee. Never cancel main/unrelated
+runs. Continue through compactions; do not end at a checkpoint.
 
-## Current coverage and changes
+## Current scope
 
-All156 named results and163 complete exercise triples have fresh current A/B
-records; named155->156 because C6 now earns the same formerly quoted non-Euclidean
-PID in a complete new proposition.645 accepted=156named+163triples+326global;
-510 global items remain pending atC7. Global326=31front/end+49C1+44C2+43C3+
-48C4+48C5+63C6. Inventory1637items/586prose/116bibliography/22examples/22figures/
-9tabular,22sourcefiles/12main/fourappendices.120/386 label uses,40/81 literal
-earlier mentions accepted;57 first-use chains reviewed/11 pending, all68 whole-
-volume concepts pending. Inventory and finite probes never approve mathematics.
+All156 named/163 complete exercise triples have fresh current A/B records; extra
+named is C6's fully earned formerly quoted non-EuclideanPID, not a weaker result.
+695accepted=156named+163triples+376global,464global items pendingatC8. Global376=
+31front/end+49C1+44C2+43C3+48C4+48C5+63C6+50C7. Inventory1641items/589prose/
+117bibliography/22examples/22figures/9tabular,22sources/12main/fourappendices.
+137/387labeluses and44/83literalearliermentionsaccepted.64 firstchainsreviewed/
+9pending;all73wholevolumeconceptstatuspending. Counts/scriptsneverapprove.
 
-C6 full current source read, eleven complete named proofs/eight complete triples,
-actual21point figure/seven bibliography items. New S=Z[(1+sqrt(-19))/2] proof:
-positive integer complex norm, units±1; explicit four-class quotient allnonzero
-invertible; round coordinates, single or doubled small remainder, essential
-zero-doubled-remainder repair using inverse class. Minimal norm in every nonzero
-ideal proves PID. Any Euclideanδ would have minimal nonunit giving quotient2/3;
-quadratic has no root there, contradiction. Second adversarial reconstruction
-and distinct norm/divisibility obstruction, actual Dummit denominator proof later
-read. No future fractionfield/finitefield/Minkowski premise. Full new A/B in
-GLOBAL-CH06/proofs; all original named targets/eight full triples retained.
-Gauss nonzero domain explicit and whole proof freshly rechecked; nine other
-C6 named/eight triples retained only by exact statement/related source identity.
-Three displaced proof ordinals individually matched by full proof hashes,
-V3-024-proof-identity-migration records actual old/new identities.
+Entire current C7read,10fullnamedproofs/eightfulltriples/actualSmithplate/both
+tables/sevenbibs. All10named statement/relatedproofpairs and3unchangedtriples
+individuallyassertedexacthashidentity;5changedfulltriples freshA/B. Cyclicvector
+hint hadremainingn0error (mu=chi1butr0);explicitzerorouteaddedtoprompt/hint,
+fullsolutionalreadycorrect. DiagonalizationnowprovesallCRTprojectionproperties
+andhandlesn0beforeinvokingnonemptyCRT. Nilpotentideausesannihilationratherthan
+assumingpolynomialsplitfromeigenvalues. Unitspromptj>=0/latticepromptn>=1explicit.
+Alloriginaltargets/fullsolutions/gradesretained;originalC7exposurechronology,
+no newblindsolveclaim. Exact104smallfieldmatricesandfullpriorC7checksPASS.
 
-Other C6 repairs: unit-factor opening/commutative scope/positive modulus;
-arbitrary generated ideals including empty; monic coefficient-ring kernel proof;
-associates proof includingzero; old I²=(2) identity now fully proved locally;
-PIDgcd zero pair; boundedCRT reconstruction replaces blanket algorithm implication.
-17 label uses/six earlier mentions fully classified from actual earlierproofs.
-Ring/ideal first chains plus6new concepts anchored, wholelaterusespending.
-Historical CH06 pointer7->3 was wrong basename/printed-number confusion; actual
-V1polynomials is printedChapter6, current sourcealreadyright, annotatedhonestly.
+C7local scalar/zero-ring laws, generalcommringdet/adjugate, torsion/exponent,
+companiongeneratorimplication earned. Smith stillarbitraryPIDwithfactorcount/ACC,
+notEuclideannorm/elementaryGLgeneration. NewJ2powerexampleanswersactualV1n-factor
+recurrence; falseV1DEpointerremoved. IntegralRP2torsionoutlook sourcedtoactual
+Hatcher2.4/2.42; EdelsbrunneractualIV.2principallyF2anddoesnotcertintegraltorsion.
+17labeluses/4earliermentionsallclassified. Module/Smithfirstchains+5newchains
+anchored;wholelaterusespending. Prefaceearliermentionoccurrencesstillpending.
 
-Actual Conrad printed11-13/Dummit copyright2004 and276-277/281-282 read after
-own new reconstruction. Correct Artin pointer11-13/13.3 fromactualTOC/printed387;
-Dummit non-Euclidean proof8.1/PID8.2. ActualpublisherEdwardsmetadata/overview and
-ModernComputerAlgebra authorpage/TOC, priorCorryopening evidence scoped. Motzkin
-original AMS403/Euclidservice notice; no original1949 proof-read claim. Downloaded
-complete PDFs do not mean entire books read; exact hash/read scopes committed.
+ActualSmithopening/Arts12/14/15webtextread,directPDF403/notwhole34pages.
+ActualFrobGDZmanifest1879+images146/147/208opened/read;writingApril1878different
+fromjournal1879. Bibclaimboundedtoforms/invariants. ActualCayley17/23/24sections
+21-23smallcases/generalstatement/noformalgenproofread, absentquotationpointer
+removed. ActualKannanintro499-500beyondabstract/Thm3opening/endnote506read,
+noexponentiallowerboundclaim. ActualEdelsbrunnermetadata/relevantIV.2, actual
+Hatcherexamples/author2002statement, DummitCh12TOCchecked. Preciseaccesslimits
+inRESEARCH/GLOBAL-CH07;notcertifyingwholeexternalsources.
 
-506fulltests pass0skips54.777s /tmp/volume3-v024-full-tests.log aftermath source/
-checker/register, beforefinalDummitbibliolocator/descriptive writes. Current
-source/freshness/focusedchecks rerun after finalcorrection. Source380labels/
-386refs/163triples; legacyeditorial156/independent_verified0 unchanged. Completion
-still intentionally fails atC7. No broad rerun needed until a new meaningful
-change/final gate. Previous exact4d CI1705/run41970683913 list/debs/14books successful
-includingV3;V8building lastseen, notterminal all-success. Newhead needs ownCI.
+507fulltestsPASS0skips54.923s /tmp/volume3-v025-full-tests.log aftermathsource/
+checker/register,beforefinaldescriptiverecords. Requiredsource/freshness/focused/
+diffgatesrerunafterdocs. CompletiongateintentionallyopenatC8. Previousexact3e
+CI1706/run41973440036lastdetail list/debs+4bookjobs success,restinclV3inprogress;
+notterminalwholeworkflowgreen. NewheadneedsownCI. No main/unrelatedcancellation.
 
-## Output scope and next work
+## Actual producing snapshot/evidence
 
-Latest completed immutable `/workspace/volume3-build-d501ee90`, exactd501, predates
-C4/C5/C6.508reading/507print,KDP508,spine1.1923,matchedwrap15.4423x10.25in;
-85public+5reporthashes, actualEPUBCheck5.3zero andoutputcheckerPASS. Onlyreading13/
-48andprint12/47colour+gray2x actually reopened atthatrevision; localEPUB1800px
-kernelplateopened, priorfrontJPEGtransferredbybyteidentity. No otherwholebook
-visualapproval. Rootdist mixed. New immutable producing-commit build planned.
+`/workspace/volume3-build-3e7e14cd` exact3e7e14cd, BEFOREC7changes, completedall
+formats.510reading/509print,KDP510,spine1.1970in,matchedwrap15.4470x10.25.
+preliminary-3e7e14cd-artifacts.json85public+5reporthashes. All60renderer/font/common
+filesactuallymatchedbeforelocalformulacachereuse, noGitHubcacheinference. Actual
+EPUBCheck5.3zero /tmp/volume3-v024-epubcheck.log; EPUBmtime05:31:02/buildcomplete
+05:31:08 precedevalidatorlogcreation05:31:18, so completedpublicationchecked.
+ActualoutputcheckerPASS /tmp/volume3-v024-output-check.log(7renders26XHTML).
 
-Commit/push coherentC6batch, update PRwithactualhead, startimmutableallformatbuild.
-C7 global has read ONLY lines1-110 of ch07-modules.tex; noC7sourceedit/approval.
-Continue remainder(allproofs/unnamed arguments/examples/fulltriples/figures/bib),
-thenC8-12/allfourappendices global. All named/exercises already had priorfullA/B,
-but global unreferenced/dependency/history/voice pass still required. Preserve
-honest exposure chronology, no new blind-solve claims. Close preface actual
-literal earlier mentions currentlystillpending too; front/end global alone did
-not close their occurrence rows. Finish whole-volume conceptual later-use closure.
+ACTUALLYOPENED reading166/167/168 andmatchingprint165/166/167 at2x colourANDgray:
+newPIDcompleteproof/box/displays/continuationlegible/unclipped.6actualPDFpages,
+no wholebook/facingspread/narrow-wideapproval. VisualJSONhashesthoseexactrenders.
+OnlypriorwholeeBookfrontobservationtransfersbyactualwholefilebyteidentity.
+Earlierd501/e00etcobservationsremainhistoricallyscoped. Rootdistmixed. New C7
+pagesnotbuilt/reopened. Allfinalsourcefreeze/everypage/digitalreviewremainopen.
 
-After sourcefreeze inspect EVERYactualreading/printpage, allfigures/tables/
-displays/openings/finalmatter, grayscale/facing; reopen corrections/allchanged
-pagination. Renderactualnarrow/widereader/EPUBassets, formula baseline/shape/
-aspect/loading/clipping/overflow, all local links/fragments/triple destinations,
-disclosures/navigation/theme/menu. ActualEPUBCheck. DownloadcompareactualCI
-artifacts. Relevantbyte/pixelidentityonlyforevidencetransfer. Keepprintinterior/
-page-derivedwrapsamebuild; noV3ISBN/barcodeassignmentinvented/borrowed.
+## Continue
 
-Before ready/merge exactreviewedcleanHEAD/currentmainbase/no unresolved findings/
-allrequiredtests andterminalsuccessfulheadCI. Headmatchedmergecommit thenverify
-GitHubmerge/resultingmain. NativeKindle/KDPaccountPreviewer/ISBNownership/physical
-proof unavailable publicationfollowups, no falsepasses/noanotherreviewer request.
-Repositorymerge distinctfrompublisherapproval. Continue tofullauthorizedfinish.
+Commit/pushC7batch/updatePRactualhead, optionallybuildnewimmutablewhileC8reading.
+C8global has ACTUALLYREADONLY lines1-115 of1594line ch08-extensions.tex; noC8edits/
+approvals. Continue116onward/allproofs/solutions/figure/bib. Allnamed/exercises
+previously hadfreshcoreA/B; stillcompleteglobalunreferenced/dependency/history/
+voicepassC8-12andallfourappendices, thenwholeconceptlater-useclosure. Preserve
+honestexposurehistory;neverinheritoldrewriteapproval. C8openinghistory2kyears
+andconstructibilityscope/prereqsneedrealreview, notalreadyapproved.
+
+After finalsourcefreeze inspectEVERYreading/printpage, allfigures/tables/displays/
+openings/appendices/finalmatter, grayscale/facing; reopenallcorrections/changed
+pagination. Renderactualnarrow/widereader/EPUBassets, baseline/shape/aspect/clip/
+overflow/loading,alllinks/fragments/tripledestinations/disclosures/nav/theme/menu.
+ActualEPUBCheck;downloadcompareactualCIartifacts. Relevantbyte/pixelidentityonly
+forevidencetransfer. Matchedsamebuildprint/wrap, noV3ISBN/barcodeassignmentinvented.
+
+Before ready/merge exactreviewedcleanHEAD/currentmainbase/no unresolvedfindings/
+allrequiredtests/terminalsuccessfulheadCI. Headmatchedmergecommit thenverify
+GitHub/resultingmain. NativeKindle/KDPaccountPreviewer/ISBNownership/physicalproof
+unavailablepublicationfollowups,notfalsepasses/notanotherreviewerrequest.
+Repositorymerge distinctfrompublisherapproval;no Amazon/accountaction.

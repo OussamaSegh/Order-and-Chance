@@ -513,3 +513,68 @@ do not silently import those inconsistent metadata. No original1949 paper-read
 claim or new attribution of our rounding proof. Existing actual Corry article
 opening/institution metadata evidence remains scoped as stated above, not a new
 whole-article certification. All essential mathematics is proved locally.
+
+## H-C07-GLOBAL — original normal forms and precise applications, V3-025
+
+Smith original web PDF
+https://upload.wikimedia.org/wikipedia/commons/5/56/On_Systems_of_Linear_Indeterminate_Equations_and_Congruences_%28IA_jstor-108738%29.pdf :
+actual opening293 and Arts12/14/15 relevant text read, minor-gcd invariance and
+pre/post unit changes/diagonal ratios/rectangular extension. Direct local download
+403; actual web text accessible. Not whole34page proof read. OriginalSept1861
+rewrite footnote distinguishes from Jan31reading; citationpublication1861.
+Actual Frobenius147 footnote corroborates Smith title/vol151/p293.
+
+Frobenius original GDZ manifest
+https://manifests.sub.uni-goettingen.de/iiif/presentation/PPN243919689_0086/manifest
+explicitly givesJahr1879. Actual page images146/147/208 opened/read, from IIIF
+image IDs00000150/151/212 respectively. Firsttwo discuss equivalence of forms,
+determinantal divisors/rational operations and integer coefficients;147footnote
+says Smith works seen after completion.208ends ZurichApril1878, writingdate,
+not1879journalpublication. Onlythose3pages read, not63. Bibliography scope
+bounded to forms/invariants, not claiming a read proof of finite-group
+classification in this original. Mathematical generalPID and finite-field
+classification proofs reconstructed in manuscript independently.
+
+Cayley original primary web PDF
+https://cjhb.site/Files.php/books/%28Uncategorized%29/2022-23/A%20Memoir%20on%20the%20Theory%20of%20Matrices%2C%20Arthur%20Cayley.pdf :
+actual title17 and Sections21-23printed23-24 read. Received10Dec1857/read14Jan1858,
+published1858vol148pp17-37. Computes2x2, reports3x3 verification, statesgeneral
+identity and expressly declines generalformalproof. No currentquotationexists;
+remove stale bibliography clause, preserve precise historical small-case scope.
+Local direct request404 while actualwebPDFtextaccessible; no entire21pageclaim.
+
+Kannan/Bachem actual university-hosted original web text
+https://people.tamu.edu/~rojas/kannanbachemhermitesmith79.pdf :title499/abstract/
+fullintro499-500 including counterexample beyondabstract, Thm3 algorithmopening
+and endnote506 read. DOI10.1137/0208040 publisher403/directdownload404, webactual
+textaccessible. It gives polynomial bounds on both operation count and bitlength,
+and explicitly says no exponentiallowerbounds havebeenproved onexistingalgorithms.
+Do not turn coefficient-growth concern into an exponential lower-bound claim.
+Not wholealgorithmproof certified. Matrix[[5,26],[2,11]]det3; naivemoddet
+representatives[[2,2],[2,2]]changeentrygcd1to2, a useful precision warning.
+
+Actual AMS2010publishernotice
+https://www.ams.org/notices/201001/rtx100100071-amsp.pdf gives Edelsbrunner/Harer,
+241pages,ISBN9780821849255. Actual university-hosted book
+https://enastava.matf.bg.ac.rs/~avucic/Racunarska%20topologija/Herbert%20Edelsbrunner%2C%20John%20L.%20Harer%20-%20Computational%20Topology_%20An%20Introduction-American%20Mathematical%20Society%20%282009%29.pdf :
+actual frontmatter/TOCIV.2MatrixReduction85 and relevant87-89Smithmod2/rank/
+bibliographic note read. Preface2009/filename are not2010publicationdate. The
+text principally usesF2; its rank/Betti examples do not establish integral torsion.
+Bibliography now states that scope.
+
+Actual Hatcher author page https://pi.math.cornell.edu/~hatcher/AT/ATpage.html
+confirms CUP2002 and maintained electronic revisions. Downloaded actualChapter2
+https://pi.math.cornell.edu/~hatcher/AT/ATch2.pdf :printed106-107Example2.4
+relations(-a+b+c),(a-b+c) inbasis(a-b,c),index2; Example2.42cellularcalculation
+withdegree1+(-1)^k/boundaries0or2/fullRPnformula read. New outlook quotes integral
+H1(RP2)=Z/2 with geometric construction expresslyoutside route. Independent
+algebra checks relationmatrix[[-1,1],[1,1]]Smith1,2 and cellularsingle relation2.
+No homologytheory proof newly certified. Sourcepreface itself emphasizes that
+topological machinery is substantial; do not pretend our one quotient proves it.
+
+Dummit/Foote actual copyright2004 andChapter12contents12.1BasicTheory458,
+12.2RationalCanonical472,12.3Jordan491 checked; not wholeChapter12read. Actual
+V1recurrence317-321 gives nfactoranddefersJordantoV3; no differential-equation
+chapter there. Actual V2characterrestriction54-65 and actual V4Markovopening/
+transitionmatrix35-59, V6Dirichletopening read to bound application locators;
+future results not premises of C7 mathematics.

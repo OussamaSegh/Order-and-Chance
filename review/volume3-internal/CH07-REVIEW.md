@@ -1,5 +1,13 @@
 # V3-008 — module structure, Smith termination and canonical forms
 
+> V3-025 supersession: the historical C10 Kronecker pending status below
+> belongs to V3-008; its fresh C10 core review has since been completed in
+> CH10-REVIEW/proofs and exercise registers. C7 global metadata/outlook/voice work
+> is now recorded in GLOBAL-CH07. The zero-dimensional cyclic-vector hint needed
+> an additional repair although its full solution already handled that case.
+> Five changed full triples have new current A/B records; ten named pairs and
+> three other triples retain evidence only by exact source hashes.
+
 Entire Chapter7 read, all prompts/hints/solutions and both actual tables/Smith
 figure. Exposure limits and fresh solution reconstructions are recorded in
 CH07-RECONSTRUCTION.md; no documented blinded-solution claim. Internal AI A/B

@@ -471,3 +471,24 @@ four-element quotient's inverses are explicitly computed before the half-lattice
 case invokes them. Its arbitrary-ideal minimality and arbitrary-Euclidean-function
 obstruction are proved separately. The later abstract fractionfield, finite-field
 existence/classification and number-field ideal theorems supply no premise.
+
+## V3-025: full C7 prerequisite continuation
+
+All17 local label occurrences and4 literal V1/V2 mentions manually classified.
+Actual V1det177-204/cofactor220-230/complexFTA156-174/recurrence317-321 and
+V2Bezout95-100/CRT153-161/characterrestriction54-65 full relevant proofs reread;
+C6 arbitraryPID/Frac/Gauss/CRT/newcounterexample provide current local tools.
+C7 supplies commutative-ring determinant/adjugate transfer explicitly. General
+Smith uses proper-divisor factor-count descent, not Euclidean size; no elementary
+GL-generation premise. Arbitrary relation submodule finite basis earned by
+subfree induction before finite presentation; intrinsic torsion layers earn
+uniqueness over infinite residue fields too. Presentation precedes CH and does
+not assume it. Minimal polynomial/companion/zero dimension before use, Jordan
+splitting explicit and complex case supplied by actual earlierFTA proof.
+
+Module/Smith priority first chains and5 new torsion-filtration/annihilator-
+companion/canonical-form/exponent/topology-outlook chains have precise hashes.
+The topology chain reviews its explicit external-outlook role and conditional
+algebra; it does not certify a locally proved geometric model or supply a premise.
+All73 whole-volume concept statuses remain pending later-use closure. Preface
+literal earlier mentions also remain pending despite earlier front/end prose pass.

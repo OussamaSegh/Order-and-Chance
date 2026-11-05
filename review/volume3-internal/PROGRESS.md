@@ -1,5 +1,99 @@
 # Progress
 
+## V3-025: entire modules chapter global pass
+
+Solo internal AI review, not human refereeing or formal verification. Entire
+current C7 read: ten full named proofs, all eight complete triples, every actual
+Smith matrix/arrow, both numerical tables and seven bibliography entries. All
+unnamed arguments reconstructed. Five changed complete triples freshly rechecked
+A/B; ten named statement/proof pairs and three other triples retain evidence only
+by individually checked actual hashes. No new blinded first-solve claim; original
+C7 exposure chronology remains CH07-RECONSTRUCTION.
+
+50 manually keyed C7 global rows give **695 accepted =156named+163triples+
+376global**.464 global rows remain pending atC8. Global376=31front/end+49C1+
+44C2+43C3+48C4+48C5+63C6+50C7. Inventory1641items/589prose/117bibliography,
+22examples/22figures/9tabular/22sourcefiles unchanged.137/387 actual label uses
+and44/83 literal earlier mentions reviewed.64 first-use chains reviewed/9 priority
+chains pending; five new chains make73 whole-volume concepts, **all still pending**
+until later occurrences are manually closed. Counts and scripts never approve.
+
+Found a genuine remaining cyclic-vector hint error: it accessed a last invariant
+factor without excluding n0, where mu=chi1 but the factor list is empty. Preserve
+the full original equivalence and earn n0 conventions explicitly in prompt/hint;
+full solution already had zero case. Expanded diagonalization solution proves
+range, action on eigenspaces, spanning and directness of CRT projections; handle
+n0 before using CRT stated for at least one factor. Nilpotent discovery now uses
+annihilation directly, avoiding an unearned splitting inference from eigenvalue
+wording. State j>=0 in unit-power prompt and n>=1 in finite-index lattice prompt.
+All original mathematical targets, complete solutions and star grades retained.
+
+Other teaching repairs earn scalar zero/negative laws and zero-ring module case,
+transfer actual V1 determinant/cofactor arguments to commutative rings before
+unit-determinant criterion, distinguish simultaneous invertible Bezout changes
+from a claim of elementary generation for arbitrary PIDs, define torsion before
+first use and exponent before unit solution, and explain why generator1 determines
+a companion annihilator. Replace repeated360 count with proved exponent contrast.
+Smith termination still uses finite irreducible-factor count or equivalent
+principal-ideal ACC, never a norm. Actual table2/12/144 minors, six360types and
+all n4 kernel rows recomputed. Exact104 small-field matrices compare cyclic
+vectors/minimal-characteristic equality and full eigenspace rank/split-squarefree
+minimal polynomial, including zero size. General proofs remain separate.
+
+Written voice/first-reader pass replaces application catalogue with locally proved
+J2 powers explaining V1's missing nfactor, correct V2 character restriction and
+clear future uses. The old V1 differential-equation pointer is unsupported by
+actual V1 contents/text; replace it without claiming a lost theorem. Preserve
+projective-plane outlook precisely as integral torsion, sourced to actual Hatcher
+2.4/2.42. Edelsbrunner IV.2 uses principally modulo2 coefficients, so its Betti
+calculation is not presented as integral torsion evidence. No topology result is
+a premise for the module route. All17 labels/four earlier mentions classified;
+Module/Smith priority chains and five additional chains anchored, whole later uses
+still open. Actual prior V1/V2 full proof sites reread and hashed, not title-based.
+
+Historical source work: actual Smith primary web opening/Arts12/14/15 read;
+direct PDF403, not whole34pages. Actual Frobenius GDZ manifestyear1879 and
+printed146/147/208 images opened/read; lastpage datedApril1878 is writing date,
+not journal publication date. Bibliography bounded to actual integer forms and
+determinantal invariants; no unsupported claim this paper itself classifies all
+finiteabelian groups. Actual Cayley17/23/24 Sections21-23 read: small cases,
+statement of general identity, express refusal of a general formal proof. Remove
+stale where-quotation-appears clause because current book has no such quotation.
+Actual Kannan/Bachem original introduction beyond abstract/Thm3 opening/endnote
+read: polynomial bit bounds, no asserted exponential lower bound. Relevant actual
+Edelsbrunner text and AMS2010 metadata, Hatcher actual integral calculations and
+author2002 publication statement, Dummit actualChapter12 contents checked. Exact
+access/read limits in GLOBAL-CH07/RESEARCH; not entire external proof certification.
+
+507 full unit tests pass, zero skips,54.923s, /tmp/volume3-v025-full-tests.log,
+after current manuscript/checker/register changes, before final descriptive
+progress writes. Required source/freshness/focused/diff gates pass after those
+writes. Final completion gate remains intentionally open atC8. New specific
+regression checks104 matrices, zero-dimensional countercase, matrix powers and
+independent algebra of Hatcher's two presentations; no source-string test is
+misrepresented as a general mathematical proof.
+
+Completed immutable producing snapshot **3e7e14cd1f1ff7e11c1f772454c2fd77398bae33**,
+BEFORE current C7 source.510reading/509print,KDP510,spine1.1970in,matched wrap
+15.4470x10.25in.85 public/5report hashes committed in preliminary-3e7e14cd-artifacts.
+All60 renderer/font/common files actually matched before local formula-cache reuse;
+no GitHub cache inference. Actual EPUBCheck5.3zero messages and actual output
+checkerPASS(7renders,26EPUBXHTML). Final EPUB/build timestamps precede validator
+logcreation, confirming it checked completed publication. Actually opened reading
+166/167/168 and matching print165/166/167 at2x in colour AND grayscale: entire
+newPID proof/norm/rounding/half-point/descent/obstruction and section continuation
+are legible, unclipped, with intact statement box and displays. Six actual pages
+only, no whole-book/facing-spread/digital approval. Prior eBook front observation
+transfers only by actual whole-file byte identity. Rootdist remains mixed; final
+all-page/narrow-wide/CIartifact work open.
+
+Previous exact3e CI1706/run41973440036 lastdetail: list/debs and fourbook jobs
+successful, remainingbooks includingV3 inprogress. Not terminal successful whole
+workflow. New head needs its ownCI. Main-only cache policy unchanged; no main or
+unrelated cancellation. Next C8-12/A-D global, close all later concept occurrences,
+then frozen-source final artifacts/every-page/digital/CI/head-matched merge gates.
+C8 global has read only lines1-115 of its1594line source, no C8 edits/approvals.
+
 ## V3-024: Chapter 6 global pass and a fully proved non-Euclidean PID
 
 Solo internal AI review. Entire current C6 read, including its eleven full named

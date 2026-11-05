@@ -118,3 +118,24 @@ relations over a PID: C7 modules/Smith inherit principality, not an imaginary
 Euclidean algorithm. Whole written cadence/adversarial first-reader method,
 not a human or spoken read-aloud session. Actual final pagination and digital
 inspection remain separate pending work.
+
+## C7 story and full written reader pass, V3-025
+
+Incoming question: why do partitions classify abelian groups, and how can a
+matrix satisfy its own characteristic polynomial? Integers and polynomials act
+on the same kind of additive object. A concrete Gaussian-index calculation leads
+to matrix relations and Smith reduction, then intrinsic module classification.
+The two questions become applications overZ andK[X]. The general PID distinction
+proved inC6 now has an actual backward pointer, and constructive computation is
+restricted to rings where division/gcd steps are available.
+
+Replace repeated360 count with an earned exponent distinction; define new scalar,
+torsion, annihilator and companion language where first needed. Complete reader
+solutions now explain projection operators instead of declaring their properties;
+hints include the zero-dimensional route. All challenges/depth/grades retained.
+A concrete J2 power computation answers V1's deferred nfactor question. The
+Dirichlet example connects to actual V2, while topology is precisely sourced
+outlook with integral/mod2 distinction. Remove a pointer to an absent quotation.
+This is a whole written cadence/adversarial first-reader pass, not a human or
+spoken read-aloud session. The outgoing field-extension question asks what a
+polynomial quotient's vector-space coordinates tell us about adjoining numbers.
