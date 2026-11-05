@@ -1,3 +1,30 @@
+# KDP interior bleed correction — 5 November 2026
+
+KDP rejected Volume 1's trim-size interior for insufficient bleed at PDF page 13.
+The four charcoal part dividers reached the cut without any extra printable area.
+The author requested a shared fix for all fifteen volumes and workflow regression
+tests. This supersedes the historical no-interior-bleed setting below.
+
+Typesetting and reading PDFs remain 7 × 10 inches. `tools/kdp_bleed.py` expands
+each print page to **7.125 × 10.25 inches**, with 0.125-inch top/bottom/outside
+bleed and mirrored trim positions. Opaque full-page backgrounds extend as vectors;
+the text keeps its original trim-relative position and size. Unextendable
+edge-reaching artwork blocks export. Visual parity compares the finished trim
+to the original; the added divider ink is checked independently.
+The print canvas expands after the existing trim-size Ghostscript conversion,
+preserving 600 ppi raster samples and dimensions; expanding before conversion
+changed reader downsampling on Volume 12 PDF page 60. The regression checks
+the flattened image's original 4200 × 6000 samples and mirrored placement.
+
+KDP listings specify **Bleed (PDF only)** and print metadata records the actual
+canvas. The print report is schema 2; library/cache schema 9 forces every book to
+rebuild. CI exercises the rejected page-13 case, facing pages, wrong dimensions,
+white padding and the real Ghostscript export, then checks each built volume.
+Verification and artifact evidence are recorded in
+`docs/reviews/kdp-interior-bleed-2026-11-05.md`.
+
+---
+
 # Volume 2 Chapter 4 proof and teaching checkpoint — 4 November 2026
 
 PR #103, DEP-029, retains design 5e while making the perfect-number,
@@ -1011,3 +1038,13 @@ DEP-079 actual phone/desktop screenshots show narrow reader SVG plates keep prin
 ## EPUB display equation aspect —4November2026,DEP-082
 
 Actual Volume2 wide-screen EPUB inspection found57 stretched display occurrences: width100percent expanded PNGs while max-height capped their height. All display images now use their measured em width, max-width100percent and height:auto; they shrink proportionally and do not expand to fill a wider screen. Media guard rejects percentage widths/fixed heights. Inline baseline settings, fonts, formula PNGs,1800px plate treatment and PDF/print/reader design remain unchanged.35 focused EPUB tests pass after three before-failing regressions. Actual regenerated EPUB and native Kindle validation still required.
+
+## Volume 3 assigned internal review — 4 November 2026
+
+PR #104 starts at PR #103's actual merged main `7f87c2ab`. The current Chapter1/2
+mathematical corrections retain approved design5e, trim, fonts and cover art.
+The fresh source inventory, internal AI proof/exercise reconstructions and precise
+remaining gates are in `review/volume3-internal/`. No formal or human refereeing
+is claimed. The initial463 local tests pass without skips; focused finite checks
+support the written arguments. Current-source immutable formats and all-page/
+digital/CI evidence remain required. Earlier Volume2 statuses do not transfer.

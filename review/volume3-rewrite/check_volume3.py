@@ -660,7 +660,7 @@ def check_quaternion_character_table() -> None:
 
 
 def check_theorem_rewrite_ledger() -> tuple[int, int]:
-    """Check the 155 theorem/lemma/corollary inventory against included source."""
+    """Check the exact current named-result inventory against included source."""
     path = ROOT / "review/volume3-rewrite/THEOREM_REWRITES.json"
     ledger = json.loads(path.read_text(encoding="utf-8"))
     main = (BOOK / "main.tex").read_text(encoding="utf-8")
@@ -686,7 +686,10 @@ def check_theorem_rewrite_ledger() -> tuple[int, int]:
             actual.add((name, ident, kind))
         assert src.count(r"\begin{proof}") == src.count(r"\end{proof}"), name
     assert seen == actual, f"Proof ledger mismatch: missing {actual-seen}, obsolete {seen-actual}"
-    assert len(actual) == ledger["total_statements"] == 155
+    # Three new local proofs earn previously quoted tools/claims: the
+    # non-Euclidean PID, the nonconstructible quartic and the planar maximum.
+    assert len(actual) == ledger["total_statements"] == 158
+    assert ("combinatorial", "combinatorial:prop:planarmax", "proposition") in actual
     assert recorded == ledger["rewrites_recorded"]
     verified = ledger["independent_verified"]
     assert isinstance(verified, int) and 0 <= verified <= recorded
@@ -910,7 +913,7 @@ def main() -> None:
     check_even_involutions_s6()
     check_nilpotent_kernel_growth()
     print(f"Volume 3 checks PASS: {labels} labels, {refs} references, {figures} figure inputs; {rewritten_count} rewritten solutions, {pending_count} still needing rewrite")
-    print(f"Theorem proof inventory: {theorem_rewrites} editorial rewrites recorded, {theorem_pending} pending editorial rewrite; independent sign-off is tracked separately")
+    print(f"Theorem proof inventory: {theorem_rewrites} editorial rewrites recorded, {theorem_pending} pending editorial rewrite; fresh internal mathematical review is tracked separately")
     print("PASS: necklaces; cube rotations; quintic; Reed-Solomon; walk; Sylow; A_n commutators; A5 classes; S4 characters; F4; fifteen-puzzle parity and loops; quaternion norms")
 
 

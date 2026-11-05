@@ -44,7 +44,42 @@ def inspect_pdf(path: Path) -> tuple[int, str]:
         r"\b(?:theorem|lemma|figure|chapter|proposition|exercise|appendix)\s+\?\?",
         text, re.IGNORECASE)
     assert not unresolved, f"Unresolved cross-reference {unresolved.group()}: {path}"
+    check_reed_solomon_heading(text)
+    check_think_heading_keeps(text)
+    check_sylvester_prompt_spacing(text)
     return pages, text
+
+
+def check_sylvester_prompt_spacing(text: str) -> None:
+    # Text-mode \dots consumed the following space in the actual PDFs,
+    # producing “1807, …Show”. Check the rendered sentence boundary.
+    # In -layout extraction the following sum upper limit is interleaved
+    # between Show and that; it is not part of this punctuation regression.
+    normalized = " ".join(text.split())
+    assert re.search(r"1807,\s*(?:…|\.\s*\.\s*\.)\s*\.\s+Show\b", normalized), (
+        "Sylvester sequence must end with an ellipsis, full stop and spaced Show")
+
+
+def check_think_heading_keeps(text: str) -> None:
+    # A generated heading alone at the foot of a page passed older structural
+    # checks. Inspect actual extracted PDF pages, independently of source layout.
+    for page_number, page in enumerate(text.split("\f"), 1):
+        for match in re.finditer(r"PAUSE\s+AND\s+THINK", page):
+            following = page[match.end():].strip()
+            # A bottom folio is not question content.
+            following = re.sub(r"\s*\d+\s*$", "", following).strip()
+            assert re.search(r"[A-Za-z]", following), (
+                f"Orphaned Pause and Think heading on PDF page {page_number}")
+
+
+def check_reed_solomon_heading(text: str) -> None:
+    # The display/running-head faces do not apply TeX's -- ligature. This
+    # regression checks extracted actual PDF glyphs, not the source spelling.
+    normalized = " ".join(text.split())
+    assert "Correcting errors: Reed–Solomon codes" in normalized, (
+        "Reed–Solomon PDF section title missing or has literal double hyphen")
+    assert "Reed--Solomon" not in text and "REED--SOLOMON" not in text, (
+        "Literal double hyphen in a Reed–Solomon PDF heading")
 
 
 def inspect_epub(path: Path) -> dict[str, int]:
@@ -104,8 +139,8 @@ def main() -> None:
         "print_pdf_pages": print_pages, "epub": info,
         "representative_render_samples": renders,
         "limitations": ("Structural checks and seven sample renders only; "
-                        "a complete human visual review and mathematical "
-                        "proof-by-proof sign-off remain outstanding."),
+                        "complete page/digital inspection and mathematical "
+                        "proof-by-proof review require separate recorded evidence."),
     }
     REPORT.parent.mkdir(parents=True, exist_ok=True)
     REPORT.write_text(json.dumps(report, indent=2, ensure_ascii=False)+"\n",

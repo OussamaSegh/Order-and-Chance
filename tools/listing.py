@@ -20,6 +20,7 @@ import sys
 from pathlib import Path
 from series_metadata import subtitle
 from print_layout import LAYOUT
+from ean13 import check_digit
 
 
 def latex_to_text(tex: str) -> str:
@@ -54,7 +55,15 @@ def sections(md: str) -> dict:
 
 def main(volume_dir: str, out: str) -> None:
     volume = Path(volume_dir)
-    title_line = re.search(r"^% epub-title: (.*)$", (volume / "main.tex").read_text(encoding="utf-8"), re.M).group(1)
+    main_source = (volume / "main.tex").read_text(encoding="utf-8")
+    title_line = re.search(r"^% epub-title: (.*)$", main_source, re.M).group(1)
+    assigned = re.search(r"^\\renewcommand\{\\bookisbnprint\}\{([^{}]*)\}",
+                         main_source, re.M)
+    isbn = assigned.group(1).replace('-', '').replace(' ', '') if assigned else ''
+    if isbn and (len(isbn) != 13 or not isbn.isdigit()
+                 or not isbn.startswith(('978', '979'))
+                 or check_digit(isbn[:12]) != int(isbn[-1])):
+        sys.exit(f"{volume / 'main.tex'}: invalid paperback ISBN-13: {isbn}")
     series, _, book = title_line.partition(". ")
     number, _, title = book.partition(": ")
     number = number.replace("Volume ", "")
@@ -87,8 +96,9 @@ def main(volume_dir: str, out: str) -> None:
              f"| Subtitle | {subtitle(number)} |",
              f"| Series | {series} (volume: {number}) |",
              "| Edition number | 1 |",
+             *([f"| Paperback ISBN | {isbn} |"] if isbn else []),
              f"| Paperback trim | {LAYOUT['trim_width_in']} x {LAYOUT['trim_height_in']} in |",
-             "| Paperback interior | Premium color ink, white paper, no bleed |",
+             "| Paperback interior | Premium color ink, white paper, Bleed (PDF only) |",
              "| Author | SEGHAIER Oussama |",
              "| Publishing rights | I own the copyright and I hold the necessary publishing rights |",
              "| Primary audience | Adults; no sexually explicit content |",

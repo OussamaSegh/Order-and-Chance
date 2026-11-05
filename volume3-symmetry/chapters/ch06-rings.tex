@@ -1,11 +1,11 @@
 \chapter{Rings and Ideals}
 
 \begin{center}\itshape
-In $\Z[\sqrt{-5}]$, $6=2\cdot3=(1+\sqrt{-5})(1-\sqrt{-5})$, and none of these four numbers can be split further.\\
+In $\Z[\sqrt{-5}]$, $6=2\cdot3=(1+\sqrt{-5})(1-\sqrt{-5})$, and none of these four factors can be split into two non-units.\\
 Unique factorisation, which we took for granted in $\Z$, simply fails here. What property of $\Z$ was doing the work?
 \end{center}
 
-In the integers, $6=2\cdot3$ is a prime factorisation, and every other factorisation agrees with it up to signs and order. But in the larger ring
+In the integers, $6=2\cdot3$ is a prime factorisation, and every other prime factorisation agrees with it up to signs and order. But in the larger ring
 \[
 \Z[\sqrt{-5}]=\{a+b\sqrt{-5}:a,b\in\Z\}
 \]
@@ -13,7 +13,7 @@ we also have
 \[
 6=(1+\sqrt{-5})(1-\sqrt{-5}).
 \]
-These two expressions are not the same factorisation in disguise. The usual uniqueness of prime factors has failed.
+These two expressions are not the same factorisation in disguise. We will prove that their four factors are irreducible, yet the two lists do not agree up to units and order.
 
 That failure is a reason to study \emph{rings}. A ring has addition, subtraction and multiplication, but division may be impossible. Polynomials form rings. So do residue classes modulo $n$, the Gaussian integers, and many sets of algebraic numbers. Their common rules give us tools that work in all these examples.
 
@@ -31,10 +31,17 @@ A (commutative) \emph{ring} is a set $R$ with two operations $+$ and $\times$ su
 $R$ is an \emph{integral domain} (or \emph{domain}) if $1\ne0$ and $ab=0$ implies $a=0$ or $b=0$. It is a \emph{field} if $1\ne0$ and $R^*=R\setminus\{0\}$.
 \end{definition}
 
-All rings in this chapter are commutative. Non-commutative rings are important too ($n\times n$ matrices, and the quaternions of Chapter~12), but factorisation is a commutative story.
+We allow the \emph{zero ring}, whose single element satisfies $0=1$.
+It is neither a domain nor a field. If $0=1$ in any ring, then
+$a=a1=a0=0$ for every $a$, so there is only one element. Here
+$a0=0$ follows from $a(0+0)=a0+a0$ by additive cancellation;
+the same laws give $a(-b)=-(ab)$. Products and inverses of units
+are units, by $(ab)^{-1}=b^{-1}a^{-1}$, so $R^*$ is indeed a group.
+
+All rings in this chapter are commutative. Matrices and the quaternions of Chapter~12 also have associative multiplication, but it is generally non-commutative. Our ideal and factorisation theorems here use commutativity; their hypotheses do not extend automatically to those examples.
 
 \begin{example}\label{ex:rings}
-$\Z$, $\Q$, $\R$, $\C$; $\Z/n\Z$, a field iff $n$ is prime (Volume~2); $K[X]$ for a field $K$, and $R[X]$ for any ring $R$; $\Z[i]$, $\Z[\sqrt{-5}]=\{a+b\sqrt{-5}:a,b\in\Z\}$; the product $R\times S$ with componentwise operations, never a domain (as $(1,0)(0,1)=0$); the continuous functions $\R\to\R$. A field is a domain: if $ab=0$ and $a\ne0$, then $b=a^{-1}ab=0$. A domain may be far from a field: $\Z$, $K[X]$.
+$\Z$, $\Q$, $\R$, $\C$; $\Z/n\Z$ for $n\ge1$, a field iff $n$ is prime (Volume~2); $K[X]$ for a field $K$, and $R[X]$ for any ring $R$; $\Z[i]$, $\Z[\sqrt{-5}]=\{a+b\sqrt{-5}:a,b\in\Z\}$; the product $R\times S$ with componentwise operations, which is not a domain when both factors are nonzero rings, since $(1,0)$ and $(0,1)$ are then nonzero with product zero. If one factor is the zero ring, the product is isomorphic to the other factor. Another example is the set of all functions $\R\to\R$, with pointwise addition and multiplication: every ring law holds at each input separately. A field is a domain: if $ab=0$ and $a\ne0$, then $b=a^{-1}ab=0$. A domain may be far from a field: $\Z$, $K[X]$.
 \end{example}
 
 \begin{proposition}\label{prop:finitedomain}
@@ -75,6 +82,22 @@ $\mathbb Z/6\mathbb Z$ has zero divisors
 
 In a domain one may cancel: $ab=ac$ with $a\ne0$ gives $b=c$. If $R$ is a domain, so is $R[X]$: the leading coefficient of $fg$ is the product of the leading coefficients, so $\deg(fg)=\deg f+\deg g$ for $f,g\ne0$. In particular $R[X]^*=R^*$.
 
+Over any field $K$, polynomial division works just as it does over
+$\Q$. To divide $P$ by $0\ne Q$, start with quotient $0$ and
+remainder $P$. If the current nonzero remainder has leading term
+$aX^r$ and $Q$ has leading term $bX^s$ with $r\ge s$, subtract
+$(a/b)X^{r-s}Q$ from the remainder and add $(a/b)X^{r-s}$ to
+the quotient. The division by $b$ is valid in $K$, and the leading
+term cancels, so the remainder's degree strictly decreases. Nonnegative
+integer degrees cannot decrease indefinitely. We obtain
+$P=QU+R$, where $R=0$ or $\deg R<\deg Q$; this also covers
+$P=0$ and constant nonzero $Q$. The answer is unique: two such
+expressions give $Q(U-U')=R'-R$. If $U-U'\ne0$, the left
+side has degree at least $\deg Q$, whereas the right side is zero
+or has smaller degree, a contradiction. Thus $U=U'$ and $R=R'$.
+The field hypothesis matters: in $\Z[X]$, the leading term of $X$
+cannot be cancelled by an integer multiple of $2X$.
+
 A ring homomorphism may send several elements to the same output. As with groups, the kernel measures what the map forgets. But multiplication puts a new demand on the kernel: it must absorb products by arbitrary ring elements.
 
 \section{Ideals and quotient rings}
@@ -83,10 +106,18 @@ A ring homomorphism may send several elements to the same output. As with groups
 An \emph{ideal} of $R$ is an additive subgroup $I$ such that $ra\in I$ for all $r\in R$, $a\in I$. The ideal \emph{generated} by $a_1,\dots,a_n$ is $(a_1,\dots,a_n)=\{r_1a_1+\dots+r_na_n:r_i\in R\}$; an ideal $(a)=aR$ is \emph{principal}.
 \end{definition}
 
+More generally, $(S)$ for any subset $S\subseteq R$ consists of all
+\emph{finite} sums $r_1s_1+\cdots+r_ks_k$, with $s_j\in S$ and
+$r_j\in R$. The empty sum is $0$, so $(\varnothing)=(0)$.
+Adding two such sums, taking negatives and multiplying by an element of
+$R$ leave this set unchanged. It is therefore an ideal; it contains $S$
+and lies in every ideal containing $S$. A finite list of generators is
+a special case, not an assumption that every ideal has such a list.
+
 The kernel of a ring homomorphism $f$ is an ideal: if $f(a)=0$ then $f(ra)=f(r)f(a)=0$. An ideal containing a unit $u$ contains $u^{-1}u=1$ and then everything: $I=R$. So a field $K$ has only the ideals $\{0\}$ and $K$, and conversely a ring $R$ with $1\ne0$ whose only ideals are $\{0\}$ and $R$ is a field, since for $a\ne0$ the ideal $(a)$ must be $R$, so $ab=1$ for some $b$.
 
 \begin{proposition}[quotient rings]\label{prop:quotring}
-Let $I\ne R$ be an ideal.
+Let $I$ be any ideal of $R$, including $I=R$.
 \begin{enumerate}[label=(\alph*)]
 \item The quotient group $R/I$ is a ring with $(a+I)(b+I)=ab+I$, and $\pi:a\mapsto a+I$ is a ring homomorphism with kernel $I$.
 \item (First isomorphism theorem) If $f:R\to S$ is a ring homomorphism, $R/\ker f\cong f(R)$.
@@ -139,7 +170,9 @@ products and the identity because $f$
 does. It is surjective by definition
 of $f(R)$, and injective because
 $\bar f(a+J)=0$ implies $a\in J$.
-Thus $\bar f$ is a ring isomorphism.
+Thus $\bar f$ is a ring isomorphism. If $\ker f=R$, then $f(R)$
+and $R/\ker f$ are both the zero ring; this is why part (a) includes
+the unit ideal.
 
 \emph{(c) Ideals above and below.}
 Let $J$ be an ideal of $R$ containing $I$.
@@ -166,11 +199,11 @@ constructions are inverse bijections.
 \begin{enumerate}[label=(\arabic*)]
 \item The ideals of $\Z$ are the $n\Z$ (they are subgroups), and $\Z/n\Z$ is the ring of Volume~2.
 \item Evaluation at $a$, $K[X]\to K$, $P\mapsto P(a)$, is onto with kernel $(X-a)$ (a polynomial vanishes at $a$ iff $X-a$ divides it): $K[X]/(X-a)\cong K$.
-\item Evaluation at $i$, $\R[X]\to\C$, is onto ($a+bX\mapsto a+bi$) with kernel $(X^2+1)$: a real polynomial vanishing at $i$ vanishes at $-i$, so it is divisible by $(X-i)(X+i)$. Hence $\R[X]/(X^2+1)\cong\C$. In the same way $\Z[X]/(X^2+1)\cong\Z[i]$ and $\Z[X]/(X^2+5)\cong\Z[\sqrt{-5}]$ (division by a monic polynomial stays in $\Z[X]$).
+\item Evaluation at $i$, $\R[X]\to\C$, is onto ($a+bX\mapsto a+bi$). Divide a real polynomial by $X^2+1$; its remainder is $a+bX$. If the polynomial vanishes at $i$, then $a+bi=0$ forces $a=b=0$. Thus its kernel is exactly $(X^2+1)$ and $\R[X]/(X^2+1)\cong\C$. The same division works over $\Z$ because the divisor is monic: no coefficient division is needed. Remainders $a+bX$ vanish at $i$ or $\sqrt{-5}$ only when $a=b=0$, giving $\Z[X]/(X^2+1)\cong\Z[i]$ and $\Z[X]/(X^2+5)\cong\Z[\sqrt{-5}]$.
 \end{enumerate}
 \end{example}
 
-So $\C$ can be \emph{defined} as $\R[X]/(X^2+1)$: adjoin a symbol $X$ and decree $X^2+1=0$. This is how all field extensions will be built in Chapter~8.
+So $\C$ can be \emph{defined} as $\R[X]/(X^2+1)$: adjoin a symbol $X$ and decree $X^2+1=0$. Chapter~8 will use this construction to adjoin roots of irreducible polynomials.
 
 The quotient by an ideal is always a ring. Sometimes it has no zero divisors; sometimes every non-zero element has an inverse. Those two outcomes tell us exactly which ideals deserve the names prime and maximal.
 
@@ -257,11 +290,12 @@ Is $(X)$ a maximal ideal of $\Z[X]$? Is $(2,X)$ principal? Compute $\Z[X]/(X)$ a
 $\Z[X]/(X)\cong\Z$ (evaluate at $0$) is a domain but not a field: $(X)$ is prime, not maximal. $\Z[X]/(2,X)\cong\Z/2\Z$ (evaluate at $0$, then reduce mod $2$): $(2,X)$ is maximal. And $(2,X)$ is not principal (Exercise~\ref{ex:zxnotpid}).
 
 \begin{theorem}[Chinese remainder theorem for rings]\label{thm:crtring}
+Write $I+J=\{i+j:i\in I,j\in J\}$, an ideal by addition and absorption.
 Let $I,J$ be ideals with $I+J=R$ (they are \emph{coprime}). Then $I\cap J=IJ$, where $IJ$ is the ideal generated by the products $ab$, $a\in I$, $b\in J$, and
 \[
 \begin{gathered}R/(I\cap J)\cong R/I\times R/J,\qq x+I\cap J\mapsto(x+I,\,x+J).\end{gathered}
 \]
-If $I_1,\dots,I_n$ are pairwise coprime, $R/(I_1\cap\dots\cap I_n)\cong\prod_kR/I_k$.
+If $n\ge1$ and $I_1,\dots,I_n$ are pairwise coprime, $R/(I_1\cap\dots\cap I_n)\cong\prod_kR/I_k$.
 \end{theorem}
 \begin{proof}
 The condition $I+J=R$ means that we can write
@@ -297,7 +331,8 @@ has $x+I=u+I$ and $x+J=v+J$. Thus $\varphi$ is onto. The first isomorphism theor
 \]
 
 \emph{Finally, more than two ideals.}
-Suppose $I_1,\ldots,I_n$ are pairwise coprime. By induction it is enough to show that $I_1$ is coprime to the intersection $K=I_2\cap\cdots\cap I_n$. For each $j\ge2$ choose
+For $n=1$, the asserted map is the identity. For $n\ge2$, suppose
+$I_1,\ldots,I_n$ are pairwise coprime. By induction it is enough to show that $I_1$ is coprime to the intersection $K=I_2\cap\cdots\cap I_n$. For each $j\ge2$ choose
 \[
 1=a_j+b_j,\qquad a_j\in I_1,\quad b_j\in I_j.
 \]
@@ -314,13 +349,19 @@ The two-ideal result applies to $I_1$ and $K$, and induction applies to $I_2,\ld
 The proof also shows why pairwise coprimality is the right assumption: it is exactly what lets us choose each residue independently.
 \end{proof}
 
-For $R=\Z$ this is the theorem of Volume~2. For $R=K[X]$ and $I_k=(X-x_k)$ with distinct $x_k$, it says that a polynomial is determined modulo $\prod(X-x_k)$ by its values at the $x_k$, and that any values can be prescribed: this is Lagrange interpolation (Volume~1, Chapter~7), and the element $b$ of the proof is a Lagrange basis polynomial.
+For $R=\Z$ this is the theorem of Volume~2. For $R=K[X]$ and $I_k=(X-x_k)$ with distinct $x_k$, it says that a polynomial is determined modulo $\prod(X-x_k)$ by its values at the $x_k$, and that any values can be prescribed: this is Lagrange interpolation (Volume~1, Chapter~6), and the element $b$ of the proof is a Lagrange basis polynomial.
 
-A quotient field is the strongest possible setting for division. Inside a domain, however, we may not be able to divide, and factorisation can behave very differently. We need to separate the properties that integers happen to enjoy from those that hold in every domain.
+When a quotient ring is a field, every nonzero class can be divided by. Inside a domain, however, we may not be able to divide, and factorisation can behave very differently. We need to separate the properties that integers happen to enjoy from those that hold in every domain.
 
 \section{Factorisation in domains}
 
 From now on $R$ is an integral domain. We write $a\mid b$ if $b=ac$ for some $c\in R$; this means $(b)\subseteq(a)$. Elements $a,b$ are \emph{associates} if $a=ub$ with $u\in R^*$, equivalently $(a)=(b)$.
+
+Indeed, multiplying by a unit does not change a principal ideal.
+Conversely, if $(a)=(b)$ and $a\ne0$, write $a=bc$, $b=ad$.
+Then $a=adc$ and cancellation gives $dc=1$, so $c$ is a unit.
+If $a=0$, equality of the ideals also forces $b=0$, and the unit $1$
+relates them.
 
 \begin{definition}
 A non-zero non-unit $p$ is \emph{irreducible} if $p=ab$ implies that $a$ or $b$ is a unit. It is \emph{prime} if $p\mid ab$ implies $p\mid a$ or $p\mid b$, i.e.\ if $(p)$ is a prime ideal. $R$ is a \emph{unique factorisation domain} (UFD) if every non-zero non-unit is a product of irreducibles, uniquely up to order and associates.
@@ -413,9 +454,19 @@ that $R$ is not a UFD.
 \begin{figure}[ht]
 \centering
 \fig{ch06-lattice}
-\caption{$\Z[\sqrt{-5}]$ as the lattice of points $a+b\sqrt5\,i$. The norm is the squared distance to $0$. The circles of norm $2$ and $3$ (dashed) contain no lattice point, so nothing can divide $2$, $3$ or $1\pm\sqrt{-5}$ properly, and $6$ factors in two different ways. In Volume~13, Chapter~2, the ideal $(2,1+\sqrt{-5})$ restores uniqueness: $(2)=(2,1+\sqrt{-5})^2$.}
+\caption{$\Z[\sqrt{-5}]$ as the lattice of points $a+b\sqrt5\,i$. The norm is the squared distance to $0$. The dashed circles have norms $2$ and $3$; their absence of lattice points illustrates the norm equations proved in the text. The points of norms $4$, $9$ and $6$ give the two irreducible factorizations of $6$.}
 \label{fig:lattice}
 \end{figure}
+
+The ideal $I=(2,1+\sqrt{-5})$ records a relation that elements alone
+miss. Put $w=\sqrt{-5}$. By multiplying generators,
+\[
+I^2=(4,2+2w,-4+2w)\subseteq(2).
+\]
+Conversely, $(2+2w)-(-4+2w)-4=2$ belongs to $I^2$, so
+$I^2=(2)$. Exercise~\ref{ex:zsqrtm5} will show that $I$ itself has
+no single generator. An ideal can therefore act like a factor of $(2)$
+without being generated by a factor of the element $2$.
 
 \begin{lemma}\label{lem:primeufd}
 In a domain, if $a=p_1\cdots p_r=q_1\cdots q_s$ with the $p_i$ prime and the $q_j$ irreducible, then $r=s$ and, after reordering, $q_i$ is an associate of $p_i$. Hence a domain in which every non-zero non-unit is a product of irreducibles is a UFD iff every irreducible is prime.
@@ -468,8 +519,9 @@ let the irreducible $p$ divide $ab$.
 If $a=0$ or $b=0$, the conclusion
 is immediate. Otherwise factor $a$,
 $b$ and $ab$ into irreducibles, omitting
-unit factors. The product $ab$ contains
-$p$ as a factor by the assumption $p\mid ab$.
+unit factors. Write $ab=pc$. Since $a,b$ are nonzero in a domain, $c$ is nonzero too.
+Factor $c$ into irreducibles, taking an empty product if it is a unit.
+Thus one irreducible factorisation of $ab$ contains $p$.
 Uniqueness means that an associate of
 $p$ occurs among the factors of $a$
 or of $b$. Thus $p\mid a$ or $p\mid b$.
@@ -477,7 +529,7 @@ Every irreducible is prime.
 \end{proof}
 
 \begin{definition}
-$R$ is a \emph{principal ideal domain} (PID) if every ideal is principal. $R$ is \emph{Euclidean} if there is a map $N:R\setminus\{0\}\to\N$ such that for all $a$ and all $b\ne0$ there are $q,r$ with $a=bq+r$ and $r=0$ or $N(r)<N(b)$.
+The domain $R$ is a \emph{principal ideal domain} (PID) if every ideal is principal. $R$ is \emph{Euclidean} if there is a map $N:R\setminus\{0\}\to\N$ such that for all $a$ and all $b\ne0$ there are $q,r$ with $a=bq+r$ and $r=0$ or $N(r)<N(b)$.
 \end{definition}
 
 $\Z$ ($N=|\cdot|$), $K[X]$ ($N=\deg$), $\Z[i]$ and $\Z[\omega]$ ($N=|\cdot|^2$, Volume~2, Chapter~10) are Euclidean.
@@ -558,18 +610,142 @@ Lemma~\ref{lem:primeufd} supplies
 uniqueness. Hence $R$ is a UFD.
 \end{proof}
 
-In a PID, $\gcd$s exist and Bézout holds: $(a,b)=(d)$ means that $d$ divides $a$ and $b$ and $d=ua+vb$. The converse implications fail: $\Z[\frac{1+\sqrt{-19}}2]$ is a PID that is not Euclidean, and $\Z[X]$ is a UFD (Theorem~\ref{thm:gaussufd}) that is not a PID (Exercise~\ref{ex:zxnotpid}).
+In a PID, $\gcd$s exist and Bézout holds: $(a,b)=(d)$ means that $d$ divides $a$ and $b$ and $d=ua+vb$. Every common divisor of $a,b$ therefore divides $d$. This includes $a=b=0$, with $d=0$.
+
+Does having one generator for every ideal give a division algorithm?
+The next example separates the two properties. Its proof uses the same
+least-norm idea as the Euclidean argument, but permits a multiple of the
+numerator before taking a remainder.
+
+\begin{proposition}\label{prop:pid-not-euclidean}
+The ring $S=\Z[\alpha]$, where
+$\alpha=(1+\sqrt{-19})/2$, is a PID but is not Euclidean for any function.
+\end{proposition}
+\begin{proof}
+Since $\alpha^2=\alpha-5$, the elements of $S$ are uniquely
+$a+b\alpha$, with $a,b\in\Z$, and these expressions are closed under
+addition, subtraction and multiplication. As a subring of $\C$, $S$ is
+a domain. Its norm is
+\[
+N(a+b\alpha)=|a+b\alpha|^2
+=a^2+ab+5b^2
+=\left(a+\frac b2\right)^2+\frac{19b^2}{4}.
+\]
+It is a positive integer on nonzero elements, and $N(xy)=N(x)N(y)$.
+If $x$ is a unit, then $N(x)=1$. The displayed formula forces
+$b=0$, $a=\pm1$, so the units are exactly $\pm1$.
+
+We first compute a small quotient that will repair a rounding exception.
+Modulo $2S$, each element has one of the four distinct representatives
+$0,1,\alpha,1+\alpha$. The relation becomes
+$\alpha^2=\alpha+1$, and
+$\alpha(1+\alpha)=1$. Thus all three nonzero classes are invertible.
+
+\emph{A small nonzero remainder after multiplication.}
+We claim that for every $z\in\C\setminus S$ there are $c,d\in S$ with
+\[
+0<|cz-d|^2<1.
+\]
+Subtract an integer multiple of $\alpha$ to bring the imaginary
+coordinate between $-\sqrt{19}/4$ and $\sqrt{19}/4$, then subtract
+an integer to bring the real coordinate between $-1/2$ and $1/2$.
+In this way $z-q=u+i\sqrt{19}\,v/2$ for some $q\in S$, where
+$|u|,|v|\le1/2$. If $|v|\le1/3$, then
+\[
+0<|z-q|^2\le\frac14+\frac{19}{36}=\frac79<1,
+\]
+so $c=1,d=q$ work. The strict lower bound follows from $z\notin S$.
+
+If $|v|>1/3$, double $z-q$. When $v>0$, subtract $\alpha$;
+when $v<0$, add $\alpha$. The new imaginary coefficient is respectively
+$2v-1$ or $2v+1$, of absolute value less than $1/3$.
+Subtract an integer to make the real part have absolute value at most
+$1/2$. This gives $d\in S$ with $|2z-d|^2\le7/9$.
+If this difference is nonzero, take $c=2$.
+
+There remains the case $2z=A\in S$. Here $A\notin2S$, since
+$z\notin S$. The nonzero class of $A$ has an inverse in the
+four-element quotient just computed. Choose $c,d\in S$ with
+$cA=1+2d$. Then $cz-d=1/2$, whose squared absolute value is $1/4$.
+This proves the claim in every case, including the half-lattice points.
+
+\emph{Every ideal is principal.}
+For a nonzero ideal $I$, choose $0\ne b\in I$ of least norm.
+For $a\in I$, suppose $z=a/b\notin S$, where this division takes
+place in $\C$. The claim gives $c,d\in S$ such that
+$r=ca-db\in I$ and
+\[
+0<N(r)=N(b)|cz-d|^2<N(b),
+\]
+contradicting minimality. Therefore $a/b\in S$ for every $a\in I$,
+so $I=(b)$. The zero ideal is $(0)$. Hence $S$ is a PID.
+
+\emph{No Euclidean function can exist.}
+Suppose $\delta:S\setminus\{0\}\to\N$ were a Euclidean function.
+There are nonzero non-units, for example $2$. Choose one, $b$, whose
+$\delta$-value is least among them. Division of any $x\in S$ by $b$
+leaves remainder $0$ or a nonzero remainder with smaller $\delta$-value.
+In the latter case minimality forces the remainder to be a unit,
+hence $1$ or $-1$. Thus $S/(b)$ has at most three elements.
+Since $b$ is not a unit, this quotient is nonzero, so it has two or
+three elements.
+
+A unital ring of prime cardinality $p$ is $\Z/p\Z$: its nonzero
+element $1$ generates the additive group by Lagrange's theorem, and
+distributivity then fixes multiplication. The image of $\alpha$
+would therefore solve $X^2-X+5=0$ modulo $2$ or modulo $3$.
+But its values modulo $2$ are $1,1$, and its values modulo $3$ are
+$2,2,1$. Neither polynomial has a root. This contradiction rules out
+every Euclidean function, not merely the norm used above.
+\end{proof}
+
+So PID need not imply Euclidean. The other converse also fails:
+$\Z[X]$ is a UFD (proved next in Theorem~\ref{thm:gaussufd}) but is
+not a PID (Exercise~\ref{ex:zxnotpid}).
 
 The integers have unique factorisation even though division is not always possible. We now ask whether that property survives when we adjoin a variable. The key is to distinguish the factors that come from coefficients from those carried by the polynomial itself.
 
 \section{Polynomials over a UFD}
 
-For a domain $R$, the \emph{field of fractions} $K=\operatorname{Frac}R$ is built exactly as $\Q$ is built from $\Z$: fractions $a/b$ with $b\ne0$, where $a/b=c/d$ iff $ad=bc$, with the usual operations; the verifications use only that $R$ is a domain, and $R\subseteq K$ via $a\mapsto a/1$. For example $\operatorname{Frac}\Z[i]=\Q(i)$ and $\operatorname{Frac}K[X]=K(X)$, the rational functions.
+For a domain $R$, division can be supplied by a construction rather
+than assumed. Take pairs $(a,b)$ with $b\ne0$, and declare
+$(a,b)\sim(c,d)$ when $ad=bc$. Reflexivity and symmetry follow
+from equality. For transitivity, $ad=bc$ and $cf=de$ imply
+$adf=bde$; cancel the nonzero $d$ to obtain $af=be$.
+Write $a/b$ for the equivalence class, and define
+\[
+\frac ab+\frac cd=\frac{ad+bc}{bd},\qquad
+\frac ab\frac cd=\frac{ac}{bd}.
+\]
+The denominators are nonzero because $R$ is a domain.
+If $ab'=a'b$ and $cd'=c'd$, then
+$(ad+bc)b'd'=(a'd'+b'c')bd$ and
+$acb'd'=a'c'bd$, by expanding and using those two equalities.
+Thus both operations are independent of representatives.
+
+Addition of three fractions has numerator $adf+bcf+bde$ over
+$ bdf$; multiplication has numerator $ace$ over $bdf$.
+These expressions prove associativity, and the same expansions give
+distributivity and commutativity. The zero and identity are $0/1$ and
+$1/1$, with additive inverse $-a/b$. The class $a/b$ is zero exactly
+when $a=0$; otherwise $b/a$ is its multiplicative inverse.
+Hence these classes form a field, the \emph{field of fractions}
+$K=\operatorname{Frac}R$. The map $a\mapsto a/1$ is an injective
+ring homomorphism, so we regard $R$ as a subring of $K$.
+For example $\operatorname{Frac}\mathbb Z=\mathbb Q$;
+$\operatorname{Frac}\mathbb Z[i]=\mathbb Q(i)=\{a+bi:a,b\in\mathbb Q\}$,
+since a Gaussian denominator can be multiplied by its conjugate.
+For a field $K$, the fractions of $K[X]$ form $K(X)$, the rational functions.
+
+In a UFD, a gcd of finitely many nonzero elements is obtained by taking
+the minimum exponent of each irreducible in their factorizations; zero
+entries may be omitted. This also proves that multiplying every entry
+by $a\ne0$ multiplies the gcd by $a$, up to a unit.
 
 Let $R$ be a UFD. The \emph{content} $c(f)$ of a non-zero $f\in R[X]$ is a gcd of its coefficients (defined up to a unit), and $f$ is \emph{primitive} if $c(f)$ is a unit. Every non-zero $f\in K[X]$ can be written $f=\lambda f_0$ with $\lambda\in K^*$ and $f_0\in R[X]$ primitive: multiply by a common denominator, then divide by the content. This writing is unique up to a unit of $R$: if $\lambda f_0=\mu g_0$, write $\mu/\lambda=a/b$ in lowest terms (possible in a UFD); then $bf_0=ag_0$, comparing contents $b\sim a$ up to units, so $a/b\in R^*$.
 
 \begin{lemma}[Gauss]\label{lem:gauss}
-Let $R$ be a UFD. A product of primitive polynomials is primitive; hence $c(fg)=c(f)c(g)$ up to units.
+Let $R$ be a UFD and let $f,g\in R[X]$ be nonzero. If $f,g$ are primitive, so is $fg$; in general $c(fg)=c(f)c(g)$ up to units.
 \end{lemma}
 \begin{proof}
 First suppose that $f,g\in R[X]$ are primitive. We want to show that $fg$ is primitive as well.
@@ -636,8 +812,8 @@ reducibility in $K[X]$.
 
 \emph{Divisibility descends to $R[X]$.}
 Suppose $g=fQ$ for some $Q\in K[X]$,
-where $g\in R[X]$.
-Write $Q=\lambda Q_0$ with
+where $g\in R[X]$. If $g=0$, use $Q=0$ in $R[X]$ and we are done.
+Otherwise $Q\ne0$. Write $Q=\lambda Q_0$ with
 $Q_0\in R[X]$ primitive and
 $\lambda\in K^*$. Since $fQ_0$
 is primitive, the content of
@@ -738,16 +914,34 @@ K[X_1,\ldots,X_n]
 proves the assertion for all $n$.
 \end{proof}
 
-Volume~1, Chapter~7, proved Gauss' lemma and Eisenstein's criterion for $\Z[X]$; they now hold over any UFD, with the same proofs. Another tool is reduction: if $f\in\Z[X]$ is monic and its reduction mod $p$ is irreducible over $\Z/p\Z$, then $f$ is irreducible over $\Q$ (a factorisation into monic polynomials of lower degree would reduce to one mod $p$). The converse fails badly, see Exercise~\ref{ex:x4p1}.
+Volume~1, Chapter~6, proved Gauss' lemma and Eisenstein's criterion for $\Z[X]$; the same arguments now work over any UFD. For Eisenstein, take a prime
+element $p$ not dividing the leading coefficient, dividing all lower
+coefficients, with $p^2$ not dividing the constant coefficient. In a
+positive-degree factorisation, $p$ divides exactly one constant factor.
+Choose in that factor the least index whose coefficient is not divisible
+by $p$. It is below the total degree; its product with the other constant
+factor makes that coefficient of the product nonzero modulo $p$, while
+all other terms there vanish. This contradicts the coefficient hypothesis.
+Gauss's lemma transfers the exclusion to the fraction field. Another tool is reduction: if $f\in\Z[X]$ is monic and its reduction mod $p$ is irreducible over $\Z/p\Z$, then $f$ is irreducible over $\Q$ (a factorisation into monic polynomials of lower degree would reduce to one mod $p$). The converse fails badly, see Exercise~\ref{ex:x4p1}.
 
 \begin{beauty}
-Kummer's discovery that factorisation fails in rings like $\Z[\zeta_{23}]$ broke Lamé's 1847 ``proof'' of Fermat's Last Theorem, and the repair, ideals, is the subject of Volume~13, Chapters~1 and~2: in the ring of integers of a number field every non-zero ideal factors uniquely into prime ideals, even when numbers do not. In computer algebra, the UFD property of $\Z[X]$ and $\Z[X,Y]$ is what makes polynomial gcd and factorisation algorithms possible, and the Chinese remainder theorem for rings is the basis of \emph{multi-modular} algorithms.
+Nonunique factorisation obstructed nineteenth-century attempts on Fermat's Last Theorem. Kummer developed ideal numbers, and Dedekind later made ideals into sets with arithmetic of their own. Volume~13, Chapters~1 and~2, will prove the resulting theorem: in the ring of integers of a number field every nonzero ideal factors uniquely into prime ideals, even when numbers do not. That later theorem is an outlook here, not a premise for our ring arguments.
+
+The Chinese remainder theorem also gives a concrete computational tool.
+Suppose an integer coefficient $a$ is known to satisfy $|a|\le B$.
+Its residues modulo pairwise coprime integers determine it uniquely as
+soon as their product $M$ exceeds $2B$: two candidates would differ by
+a multiple of $M$ of absolute value at most $2B$, hence by zero.
+\emph{Multi-modular} polynomial algorithms use this principle to
+reconstruct integer coefficients after calculations modulo several
+primes. Bounds and checks are part of those algorithms; the CRT supplies
+the uniqueness step just proved.
 \end{beauty}
 
 \section{Exercises}
 
 \begin{exercise}[$\star$]\label{ex:idealsZn}
-Describe the ideals of $\Z/n\Z$, and say which are prime and which are maximal. Find the units and the zero divisors of $\Z/12\Z$.
+Let $n\ge1$ be an integer. Describe the ideals of $\Z/n\Z$, and say which are prime and which are maximal. Find the units and the zero divisors of $\Z/12\Z$.
 \end{exercise}
 
 \begin{exercise}[$\star$]\label{ex:quot}
@@ -1070,7 +1264,10 @@ The first condition on values means
 \[
 P\equiv1\pmod X.
 \]
-Writing the Taylor expansion at $1$ modulo $(X-1)^2$,
+Division by $(X-1)^2$ gives a remainder $a+b(X-1)$. Evaluating at $1$
+identifies $a=P(1)$; differentiating and evaluating there identifies
+$b=P'(1)$, since the derivative of a multiple of $(X-1)^2$ vanishes
+at $1$. Thus, using only polynomial division and differentiation,
 \[
 P(X)\equiv P(1)+P'(1)(X-1)
 =2(X-1)\pmod{(X-1)^2}.
@@ -1164,10 +1361,11 @@ This shows why a reduction-based irreducibility test only works in one direction
 \section*{Sources and further reading}
 
 \begin{itemize}
-\item M.~Artin, \emph{Algebra}, 2nd ed., Pearson, 2011, Chapters~11 and~12. Rings, ideals and factorisation, with $\Z[\sqrt{-5}]$ as the running example.
-\item D.~S.~Dummit and R.~M.~Foote, \emph{Abstract Algebra}, 3rd ed., Wiley, 2004, Chapters~7--9. Including a proof that $\Z[\frac{1+\sqrt{-19}}2]$ is a PID but not Euclidean (Section~8.2).
-\item T.~Motzkin, \emph{The Euclidean algorithm}, Bull.\ Amer.\ Math.\ Soc.\ 55 (1949), 1142--1146. The criterion used to show that a ring is not Euclidean for any function.
+\item M.~Artin, \emph{Algebra}, 2nd ed., Pearson, 2011, Chapters~11--13. Rings and factorisation in Chapters~11--12; ideals in $\Z[\sqrt{-5}]$ in Section~13.3.
+\item D.~S.~Dummit and R.~M.~Foote, \emph{Abstract Algebra}, 3rd ed., Wiley, 2004, Chapters~7--9. The ring $\Z[\frac{1+\sqrt{-19}}2]$ is shown not Euclidean in Section~8.1 and a PID in Section~8.2.
+\item T.~Motzkin, \emph{The Euclidean algorithm}, Bull.\ Amer.\ Math.\ Soc.\ 55 (1949), 1142--1146. Euclidean functions and the obstruction from quotients represented by zero and units.
+\item K.~Conrad, \emph{Remarks about Euclidean domains}, author notes, Theorems~5.18 and~5.22, \url{https://kconrad.math.uconn.edu/blurbs/ringtheory/euclideanrk.pdf}, accessed November~2026. The minimal-remainder obstruction and the non-Euclidean PID example; the rounding proof above supplies the local PID argument.
 \item H.~M.~Edwards, \emph{Fermat's Last Theorem: A Genetic Introduction to Algebraic Number Theory}, Springer, 1977. The story of Lamé, Kummer and ideal numbers.
 \item J.~von~zur~Gathen and J.~Gerhard, \emph{Modern Computer Algebra}, 3rd ed., Cambridge University Press, 2013. Multi-modular algorithms and polynomial factorisation.
-\item L.~Corry, \emph{Steht es alles wirklich schon bei Dedekind? Ideals and factorization between Dedekind and Noether}, in \emph{Ideals and Their Reception}, 2000. The source of Noether's saying.
+\item L.~Corry, \emph{Steht es alles wirklich schon bei Dedekind? Ideals and factorization between Dedekind and Noether}, in K.~Scheel, T.~Sonar and P.~Ullrich (eds.), \emph{In Memoriam Richard Dedekind (1831--1916)}, WTM-Verlag, 2017, 134--159. Historical development of ideal factorisation from Dedekind to Noether.
 \end{itemize}

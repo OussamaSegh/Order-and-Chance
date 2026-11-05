@@ -1,24 +1,30 @@
 \chapter{A Glimpse Beyond: Quaternions and Rotations}
 
 \begin{center}\itshape
-Hold a plate flat on your palm and turn it one full turn, keeping it horizontal: your arm is twisted.\\
-Keep turning in the same direction: after a second full turn, your arm is straight again.\\
-Why two turns, and not one?
+A full turn brings an object back to its original orientation.\\
+Can that motion be continuously changed into no motion at all?\\
+The answer changes when we make two full turns.
 \end{center}
 
-Take two quarter-turns of an object in space, one about the horizontal axis and one about the vertical axis. Reverse their order. The final orientation may change. Three-dimensional rotation is not commutative, and any algebra meant to describe it must remember that.
+Turn an object by a positive quarter-turn about the $z$-axis, then one about
+the $x$-axis. Its vector $(1,0,0)$ moves first to $(0,1,0)$, then to $(0,0,1)$.
+Reverse the order: that same vector ends at $(0,1,0)$. The two rotations do
+not commute. We want coordinates that preserve this order of composition.
 
-Complex multiplication describes rotations in a plane. To describe rotations in space, we need four real coordinates rather than two. The \emph{quaternions} are numbers of the form
+Complex multiplication describes rotations in a plane. Quaternions give a
+four-coordinate rule for composing rotations in space. They have the form
 \[
 q=a+bi+cj+dk,\qquad i^2=j^2=k^2=ijk=-1,
 \]
-with multiplication that satisfies $ij=k$ but $ji=-k$. Their lack of commutativity is not a defect. It is what makes the algebra fit the geometry.
+with multiplication that satisfies $ij=k$ but $ji=-k$. We will derive those
+rules from matrices and check how their products act on spatial vectors.
 
 A vector in $\R^3$ can be written as the imaginary quaternion $v=xi+yj+zk$. If $q$ is a unit quaternion, the map $v\mapsto qvq^{-1}$ is a rotation. The same rotation comes from $-q$. This is the double cover of the rotation group by the unit quaternions.
 
 The groups we studied earlier return in a visible form. The rotations of the tetrahedron form $A_4$; those of the cube form $\mathfrak S_4$; and those of the icosahedron form $A_5$. In fact every finite subgroup of the three-dimensional rotation group belongs to one of five families.
 
-Before closing, we will also multiply quaternion norms and recover the four-square identity. It is a good final example of how a useful algebraic rule can make a numerical identity seem inevitable.
+Multiplying quaternion norms will also recover the four-square identity.
+Then the arithmetic question is whether every prime can occur as a norm.
 
 \section{Quaternions}
 
@@ -33,8 +39,30 @@ It is a real vector space of dimension $4$, with basis $1=I$ and
 \[
 i=\begin{pmatrix}i&0\\0&-i\end{pmatrix},\quad j=\begin{pmatrix}0&1\\-1&0\end{pmatrix},\quad k=\begin{pmatrix}0&i\\i&0\end{pmatrix};
 \]
-so $q=a+bi+cj+dk$ corresponds to $z=a+bi$, $w=c+di$ (here $i$ on the right is the complex number). Its elements are \emph{quaternions}. The \emph{conjugate} of $q$ is $\bar q=a-bi-cj-dk$, its \emph{norm} is $N(q)=a^2+b^2+c^2+d^2$, its \emph{real part} is $a$, and $q$ is \emph{pure} if $a=0$; the pure quaternions form a copy of $\R^3$.
+so $q=a+bi+cj+dk$ corresponds to $z=a+bi$, $w=c+di$ (here $i$ on the right is the complex number). Its elements are \emph{quaternions}. The \emph{conjugate} of $q$ is $\bar q=a-bi-cj-dk$, its \emph{norm} is $N(q)=a^2+b^2+c^2+d^2$, its length is $|q|=\sqrt{N(q)}$, its \emph{real part} is $a$, and $q$ is \emph{pure} if $a=0$; the pure quaternions form a copy of $\R^3$.
 \end{definition}
+
+\paragraph{The vector operations we need.}
+For $u,v\in\R^3$ put $u\cdot v=\sum_i u_iv_i$ and define the
+\emph{cross product}
+\[
+u\times v=(u_2v_3-u_3v_2,\ u_3v_1-u_1v_3,\ u_1v_2-u_2v_1).
+\]
+It is bilinear and antisymmetric, perpendicular to $u$ and $v$, and
+$(u\times v)\cdot w=\det[u\ v\ w]$ by expanding the determinant.
+Expanding the three squared coordinates also gives
+$|u\times v|^2=|u|^2|v|^2-(u\cdot v)^2$.
+We will need the triple-product identity
+\[
+(x\times y)\times z=y(x\cdot z)-x(y\cdot z).
+\]
+For its first coordinate, expansion gives
+$y_1(x_2z_2+x_3z_3)-x_1(y_2z_2+y_3z_3)$; the missing
+$x_1y_1z_1$ terms cancel. The other coordinates follow cyclically.
+In particular $(u\times w)\times u=w$ when $|u|=1$ and $u\perp w$.
+An orthogonal map $A$ of determinant $1$ preserves cross products:
+the dot products of $(Au)\times(Av)$ and $A(u\times v)$ with every $Aw$
+agree by the determinant identity, hence the two vectors agree.
 
 \begin{proposition}\label{prop:quat}
 \begin{enumerate}[label=(\alph*)]
@@ -43,7 +71,7 @@ so $q=a+bi+cj+dk$ corresponds to $z=a+bi$, $w=c+di$ (here $i$ on the right is th
 \begin{gathered}i^2=j^2=k^2=-1,\qq ij=-ji=k,\quad jk=-kj=i,\qq ki=-ik=j.\end{gathered}
 \]
 \item $\bar q$ is the conjugate transpose of the matrix $q$, so $\overline{pq}=\bar q\,\bar p$; and $q\bar q=\bar qq=N(q)=\det q$. Hence $N(pq)=N(p)N(q)$.
-\item Every $q\ne0$ has an inverse $q^{-1}=\bar q/N(q)$: $\mathbb H$ is a \emph{division ring} (a non-commutative field).
+\item Every $q\ne0$ has an inverse $q^{-1}=\bar q/N(q)$: $\mathbb H$ is a \emph{division ring}.
 \item For pure quaternions $u,v$, identified with vectors of $\R^3$, $uv=-u\cdot v+u\times v$. In particular $u^2=-|u|^2$, and $u,v$ anticommute iff they are orthogonal.
 \end{enumerate}
 \end{proposition}
@@ -155,11 +183,25 @@ if and only if $u\cdot v=0$,
 which is orthogonality.
 \end{proof}
 
-Taking norms in $(a+bi+cj+dk)(a'+b'i+c'j+d'k)$ gives Euler's four-square identity (Exercise~\ref{ex:euler4}), used in Volume~2 to reduce the four-square theorem to primes. Frobenius proved in 1878 that $\R$, $\C$ and $\mathbb H$ are the only finite-dimensional associative division algebras over $\R$; dropping associativity adds Cayley's octonions, of dimension $8$, and nothing else.
+Taking norms in $(a+bi+cj+dk)(a'+b'i+c'j+d'k)$ gives Euler's four-square identity (Exercise~\ref{ex:euler4}), used in Volume~2 to reduce the four-square theorem to primes.
+
+For the following outlook, a \emph{real algebra} means a real vector space
+with an identity and a multiplication linear in each argument (bilinear).
+It is a \emph{division algebra}
+if it is nonzero and multiplication on either side by each nonzero element
+is bijective. Quaternion multiplication is bilinear by the matrix model;
+multiplication on the same side by $q^{-1}$ reverses multiplication by
+$q\ne0$. Thus $\mathbb H$ is a division algebra.
+
+A classification result beyond our proofs is Frobenius's theorem: $\R$, $\C$ and $\mathbb H$ are the only finite-dimensional associative division algebras over $\R$. Dropping associativity alone does not give a comparable list. For nonzero finite-dimensional real algebras with an identity and a squared Euclidean length satisfying $N(xy)=N(x)N(y)$, Hurwitz's theorem gives $\R$, $\C$, $\mathbb H$ and the eight-dimensional octonions. Neither classification is a premise below.
 
 A non-zero quaternion has an inverse, and its norm behaves multiplicatively. For a quaternion of norm one, conjugation preserves the lengths of imaginary quaternions. We can now ask which rotation of space this conjugation describes.
 
 \section{Unit quaternions and rotations}
+
+Write $SO(3)=\{A\in\operatorname{Mat}_3(\R):A^{\mathsf T}A=I,\ \det A=1\}$.
+These are the real linear maps preserving lengths and orientation. The name
+\emph{special orthogonal group} records the determinant-one condition.
 
 The unit quaternions form a group $S^3=\{q:N(q)=1\}$ under multiplication (by Proposition~\ref{prop:quat}(b)), geometrically the unit sphere of $\R^4$. As matrices they are exactly $SU(2)$, the unitary $2\times2$ matrices of determinant $1$: such a matrix $\begin{psmallmatrix}\alpha&\beta\\\gamma&\delta\end{psmallmatrix}$ has inverse $\begin{psmallmatrix}\delta&-\beta\\-\gamma&\alpha\end{psmallmatrix}$ (determinant $1$) equal to its conjugate transpose, so $\delta=\bar\alpha$ and $\gamma=-\bar\beta$.
 
@@ -242,7 +284,11 @@ R_p(R_q(v))=p(qv\bar q)\bar p=(pq)v\overline{pq}=R_{pq}(v),
 \]
 so $q\mapsto R_q$ is a group homomorphism.
 
-\emph{Find the rotation explicitly.} Write
+\emph{Find the rotation explicitly.} Every unit quaternion has the following
+form. If $q=a+x$ with $x\ne0$ pure, choose $\alpha\in[0,\pi]$ with
+$\cos\alpha=a$. Then $\sin\alpha=|x|$, so put $u=x/|x|$ and $\theta=2\alpha$.
+For $q=1$ or $-1$, choose any unit pure $u$ and take $\theta=0$ or $2\pi$.
+Thus write
 \[
 q=c+su,\qquad c=\cos(\theta/2),\quad s=\sin(\theta/2),
 \]
@@ -272,7 +318,7 @@ Only $x=0$ has zero cross product with \emph{every} $w$. Thus $q=a$ is real, and
 \end{proof}
 
 \paragraph{Why this works.}
-A unit quaternion $q$ preserves the quaternion norm under conjugation, because $N(qvq^{-1})=N(v)$. It also preserves the imaginary quaternions and therefore gives an orthogonal map of $\R^3$. The map depends continuously on $q$ and sends $1$ to the identity, so its determinant is $+1$, not $-1$: it is a rotation. A quaternion of the form $\cos(\theta/2)+u\sin(\theta/2)$ produces rotation through angle $\theta$ around the unit vector $u$. Both $q$ and $-q$ produce the same map; there are no other duplicates. The \emph{half-angle} is what makes the double cover work.
+A unit quaternion $q$ preserves the quaternion norm under conjugation, because $N(qvq^{-1})=N(v)$. It also preserves the imaginary quaternions and therefore gives an orthogonal map of $\R^3$. The axis--plane calculation proves directly that its determinant is $+1$. A quaternion of the form $\cos(\theta/2)+u\sin(\theta/2)$ produces rotation through angle $\theta$ around the unit vector $u$. Both $q$ and $-q$ produce the same map; there are no other duplicates. The \emph{half-angle} gives two representatives of each rotation. We next check the local continuity needed for the stronger name \emph{double cover}.
 
 \begin{figure}[ht]
 \centering
@@ -281,11 +327,161 @@ A unit quaternion $q$ preserves the quaternion norm under conjugation, because $
 \label{fig:rotation}
 \end{figure}
 
-Composing rotations is multiplying quaternions (Exercise~\ref{ex:compose}): four numbers instead of nine, no drift away from orthogonality that cannot be cured by dividing by the norm, and smooth interpolation between orientations. This is why flight software, robots and video games store orientations as unit quaternions.
+Composing rotations is multiplying quaternions (Exercise~\ref{ex:compose}):
+four coordinates encode the orientation. A nonzero numerical approximation
+$r$ can be made unit again by replacing it with $r/|r|$, where
+$|r|=\sqrt{N(r)}$.
+There is also a direct smooth interpolation. For unit representatives
+$q_0,q_1$, replace $q_1$ by $-q_1$ if necessary so that their ordinary
+four-coordinate dot product is nonnegative. Put
+\[
+r(t)=(1-t)q_0+tq_1,\qquad q(t)=r(t)/|r(t)|,\quad0\le t\le1.
+\]
+Then $|r(t)|^2\ge(1-t)^2+t^2\ge1/2$, so division never fails and the
+formulas give a smooth path of unit quaternions between the two orientations.
+Shoemake's source below develops quaternion interpolation for animation.
 
-\begin{remark}[the plate trick]
-Turning the plate by an angle $2\pi t$, $0\le t\le1$, about the vertical axis $k$ is the path $q(t)=\cos\pi t+\sin\pi t\,k$ in $S^3$, which goes from $1$ to $-1$: it does not close up, although the rotations $R_{q(t)}$ do. Two turns give $\cos2\pi t+\sin2\pi t\,k$, a closed loop on the $3$-sphere, which can be shrunk to a point on the sphere; its shrinking, projected to $SO(3)$, is the motion that untwists your arm. In topological language $S^3$ is simply connected and $SO(3)$ is not: its fundamental group is $\Z/2\Z$. In physics, electrons are described by vectors on which $S^3=SU(2)$, not $SO(3)$, acts, and a rotation by $2\pi$ multiplies them by $-1$: they have spin $\frac12$.
-\end{remark}
+\subsection*{Two representatives, and two kinds of loop}
+
+The map just proved has two points in every fibre. A \emph{double cover}
+asserts more: near any rotation, its two representatives can be chosen
+continuously and separately. Here that can be checked with coordinates.
+For $q=a+bi+cj+dk$, expansion of $qv\bar q$ gives
+\[
+\operatorname{tr}R_q=4a^2-1,
+\quad
+((R_q)_{32}-(R_q)_{23},(R_q)_{13}-(R_q)_{31},
+ (R_q)_{21}-(R_q)_{12})=4a(b,c,d).
+\]
+For $A\in SO(3)$ with $\operatorname{tr}A>-1$, its unique representative
+with positive real part is therefore
+\[
+a=\frac{\sqrt{1+\operatorname{tr}A}}2,
+\qquad
+(b,c,d)=\frac{(A_{32}-A_{23},A_{13}-A_{31},A_{21}-A_{12})}{4a}.
+\]
+Existence follows from surjectivity, and these formulas recover that lift.
+All denominators are positive and the formulas are continuous in the entries
+of $A$. The other representative is its negative. Thus the region
+$U=\{A:\operatorname{tr}A>-1\}$ has two disjoint continuous sheets, with
+continuous inverse maps. Around another rotation $A_0=R_{q_0}$, translate:
+write $A=A_0B$ with $B\in U$, and use $q_0q_B$ and $-q_0q_B$.
+This proves the double-cover assertion.
+
+What does a full turn do to a path of representatives?
+A \emph{path} is a continuous map from $[0,1]$; a \emph{loop based at}
+$1$ or $I$ has that same value at both endpoints.
+A \emph{deformation} of a based loop is a continuous family of such loops,
+keeping both endpoints fixed throughout. A deformation ending at the constant
+loop is a \emph{shrinking}.
+Continuity here means ordinary continuity of the real matrix or quaternion
+coordinates, so Volume~1's sequence tools apply.
+
+\paragraph{Lifting paths and families.}
+Every path $A(t)$ of rotations has a unique continuous lift $q(t)$ once
+one representative of $A(0)$ is prescribed. Indeed, uniform continuity lets
+us divide the parameter interval into finitely many pieces on which
+$A(t_j)^{-1}A(t)\in U$. Use one of the explicit sheets on each piece,
+choosing its sign to match the preceding endpoint.
+Two lifts differ pointwise by a sign; that sign is continuous and hence
+constant on an interval, by the intermediate-value theorem.
+
+For completeness, the same argument works for a continuous family $A(s,t)$
+on the parameter square. Uniform continuity on that square follows by
+Volume~1's Heine argument: if it failed, choose pairs of inputs approaching
+one another whose images stay separated. Successive applications of
+Bolzano--Weierstrass to their two coordinates give a common limiting input,
+contradicting continuity. Choose a sufficiently fine rectangular grid so
+the image of each closed cell lies in a single translated region $A_0U$.
+Such a grid exists because sufficiently close orthogonal matrices $A,B$
+have $A^{-1}B\in U$; explicitly,
+$\|A-B\|_F^2=6-2\operatorname{tr}(A^{\mathsf T}B)$, where
+$\|C\|_F^2=\sum_{i,j}C_{ij}^2$.
+The sheet on each cell is fixed by one corner value. Proceed across rows
+of cells. On an already lifted lower or left edge the chosen sheet agrees
+everywhere, since it agrees at the shared corner and lifts are unique.
+The formulas thus join to a continuous lift of the square.
+If every $A(s,0)=A(s,1)=I$ and the starting lift is $1$, its final lift
+$q(s,1)\in\{1,-1\}$ is continuous in $s$, so is constant.
+The endpoint sign cannot change during a shrinking.
+
+\paragraph{Every loop on the quaternion sphere shrinks.}
+Here is a finite construction of the required fact about $S^3$.
+Given a loop $q(t)$, choose a partition fine enough that its values on
+each subinterval differ by less than $1/4$.
+Replace that portion by the normalized straight chord between its endpoint
+vectors in $\R^4$. A chord is never zero, since its endpoints are not
+antipodal. Every chord vector is within $1/4$ of the corresponding $q(t)$,
+so its normalization is within $1/2$.
+Normalized straight interpolation from the old loop to this new one is
+therefore also never zero and gives a deformation from one loop to the other,
+with endpoints fixed.
+
+The new loop lies in finitely many two-dimensional linear subspaces of
+$\R^4$, one for each chord. Choose a unit vector $p$ outside their union.
+A finite union of proper linear subspaces cannot fill a real vector space:
+inductively choose $v$ outside the previous ones; if $v$ lies in the new
+subspace choose $w$ outside it. The line $v+tw$ is contained in none of
+these subspaces, and meets each in at most one point. A real $t$ avoiding
+those finitely many points completes the induction.
+
+The polygonal loop thus avoids $p$. After an orthonormal change of coordinates
+put $p=(0,0,0,1)$. The sphere with this point removed has the explicit
+coordinate correspondence
+\[
+(v,r)\longmapsto\frac{v}{1-r}\in\R^3,
+\qquad
+y\longmapsto
+\left(\frac{2y}{1+|y|^2},\frac{|y|^2-1}{1+|y|^2}\right)\in S^3.
+\]
+Direct substitution proves the maps inverse, and their denominators do not
+vanish on their domains. They are continuous.
+In $\R^3$ contract the loop by straight interpolation to its basepoint,
+then use the inverse formula to return to the sphere.
+Together with the first interpolation this shrinks the original loop.
+This property is called \emph{simple connectedness}; we have proved it
+for $S^3$ using finite-dimensional geometry and the earlier sequence tools. The sphere is also path connected: normalized chords join non-antipodal points; for antipodal points, join through any perpendicular unit vector in two such pieces.
+
+\paragraph{One turn and two turns.}
+A full turn about $k$ has representative path
+$q(t)=\cos\pi t+k\sin\pi t$, from $1$ to $-1$.
+Its projected rotation loop cannot shrink, because a shrinking would have
+to preserve that endpoint sign, whereas the constant loop has sign $+1$.
+Two turns have lift $\cos2\pi t+k\sin2\pi t$, a closed loop, which shrinks
+on $S^3$ by the preceding construction. Projecting that shrinking to
+$SO(3)$ explains the two-turn distinction in the plate trick.
+For this particular loop there is also an explicit contraction: put
+\[
+H(s,t)=\cos\frac{\pi s}{2}
+       (\cos2\pi t+k\sin2\pi t)+i\sin\frac{\pi s}{2}.
+\]
+It has unit norm; $H(s,0)=H(s,1)$. The based loops
+$H(s,0)^{-1}H(s,t)$ start with the two-turn lift and end at the constant $1$.
+
+More generally, consider based loops up to deformation. This is an equivalence
+relation: use a constant family, reverse the family parameter, or join two
+families to obtain reflexivity, symmetry and transitivity.
+Consecutive traversal means following the first loop on $[0,1/2]$ at twice
+its speed, then the second on $[1/2,1]$. Deforming either loop deforms this
+joined loop, so the operation is well defined on classes.
+For three loops, the two bracketings have dividing times $(1/4,1/2)$ and
+$(1/2,3/4)$. Move both times linearly between these pairs and traverse each
+loop at constant speed on its assigned interval; this proves associativity.
+An interval spent at the basepoint can shrink continuously to length zero,
+which proves the identity law. Reversing a path gives its inverse. To check the
+last assertion explicitly, a loop followed by its reverse contracts through
+$q(2(1-s)\min(t,1-t))$, $0\le s,t\le1$.
+The endpoint sign then classifies rotation loops up to deformation:
+sign $+1$ means a closed lifted loop, which shrinks on $S^3$ and hence
+after projection. Traversing two loops consecutively multiplies their
+signs, since a lift starting at $-1$ is the negative of the one starting
+at $1$. The full-turn loop supplies sign $-1$, so both signs occur. The sign
+map is a surjective homomorphism with trivial kernel. Thus this group of based loop classes,
+called the \emph{fundamental group}, is
+$\pi_1(SO(3))\cong\{1,-1\}\cong\Z/2\Z$.
+In the two-dimensional complex representation $S^3=SU(2)$ itself, $-1$
+acts as $-I$: a full turn negates a vector and two turns restore it.
+This is the representation called spin $\tfrac12$ in physics.
 
 \begin{think}
 How many rotations map a regular icosahedron to itself? (Count where a given vertex can go, and how many rotations fix it.) Which group of Chapter~4 has that order and should be its rotation group?
@@ -295,7 +491,110 @@ Unit quaternions describe every rotation continuously. We now restrict attention
 
 \section{Finite groups of rotations}
 
-For each regular polyhedron (Figure~\ref{fig:solids}), the rotations preserving it form a finite subgroup of $SO(3)$. A rotation is determined by the image of a vertex and of an adjacent vertex (a rotation fixing a vertex $x$ and an adjacent vertex $y$ fixes the two independent vectors $x,y$, hence their cross product, hence everything). For the icosahedron, a vertex can go to any of the $12$ vertices, and then its $5$ neighbours can be rotated in $5$ ways: $60$ rotations. In the same way the tetrahedron has $4\cdot3=12$ rotations, the cube and the octahedron $24$, the dodecahedron and the icosahedron $60$. The orbit--stabiliser theorem is behind each count.
+For each regular polyhedron (Figure~\ref{fig:solids}), the rotations preserving it form a finite subgroup of $SO(3)$. A rotation is determined by the image of a vertex and of an adjacent vertex: fixing their two independent vectors fixes their cross product as well. Thus the icosahedron has at most $12\cdot5=60$ rotations and the tetrahedron at most $4\cdot3=12$. We will exhibit rotations attaining these bounds, then classify finite rotation groups by their axes.
+
+\paragraph{The counts are attained.}
+A vertex-and-neighbour count is an upper bound until the required rotations
+have been exhibited. For the tetrahedron use the four vectors
+$(1,1,1),(1,-1,-1),(-1,1,-1),(-1,-1,1)$.
+The four diagonal sign changes with determinant $1$, followed by the three
+cyclic permutations of the coordinates, give $12$ distinct rotations
+preserving these vertices. The bound $4\cdot3$ is therefore attained.
+Chapter~1 already exhibited all $24$ cube rotations.
+
+For the icosahedron put $\varphi=(1+\sqrt5)/2$ and use
+\[
+\mathcal V=\{(0,\pm1,\pm\varphi),
+             (\pm1,\pm\varphi,0),(\pm\varphi,0,\pm1)\}.
+\]
+These are its $12$ vertices. One can check the solid directly: distance-$2$
+pairs give five neighbours at every vertex. A plane is \emph{supporting} when
+all vertices lie on one closed side of it. The supporting planes through
+three vertices have normals
+$(\pm1,\pm1,\pm1)$ and the cyclic permutations of
+$(\pm(\varphi-1),0,\pm\varphi)$, with plane equation
+$n\cdot x=\varphi^2$. The $8+12=20$ planes each meet exactly three vertices,
+forming equilateral triangles of side $2$. We will check below that no other
+faces occur. Here the \emph{convex hull} means all sums $\sum_jt_jv_j$ with
+$t_j\ge0$, $\sum_jt_j=1$ and $v_j\in\mathcal V$. A \emph{face} here means a
+two-dimensional intersection of this hull with a supporting plane. Such an
+intersection is the convex hull of the vertices on the plane: equality in the
+supporting inequality forces every positive-weight vertex onto it. Thus a face
+has at least three noncollinear vertices.
+
+Even sign changes and cyclic coordinate permutations preserve $\mathcal V$
+and act transitively on it: four sign choices followed by three positions
+of the zero coordinate give every vertex. There is also the rotation
+\[
+B=\frac12
+\begin{pmatrix}
+\varphi-1&-\varphi&1\\
+\varphi&1&\varphi-1\\
+-1&\varphi-1&\varphi
+\end{pmatrix}.
+\]
+Using $\varphi^2=\varphi+1$, check $B^{\mathsf T}B=I$, $\det B=1$,
+$B\mathcal V=\mathcal V$ and $B(0,1,\varphi)=(0,1,\varphi)$.
+Its trace is $\varphi$, so its axis--plane angle is $2\pi/5$:
+$1+2\cos(2\pi/5)=\varphi$. It has order $5$.
+The rotation group is finite, since its action on these vertices is faithful.
+Transitivity and this order-five stabiliser give at least $12\cdot5=60$
+rotations. The vertex-and-neighbour upper bound is $60$, so equality holds.
+
+To complete the face check, fix $v=(0,1,\varphi)$. Its five distance-$2$
+neighbours, in cyclic order, are
+\[
+A=(0,-1,\varphi),\quad B_0=(\varphi,0,1),\quad C=(1,\varphi,0),
+\quad D=(-1,\varphi,0),\quad E=(-\varphi,0,1).
+\]
+They all have dot product $\varphi$ with $v$. Using $\varphi^2=\varphi+1$,
+successive pairs have squared distance $4$ and the other five pairs have
+squared distance $4\varphi^2$.
+The order-five rotation just constructed fixes $v$ and cycles these five
+neighbours: it cannot fix any of them, since none lies on its axis.
+The other vertices are $-v,-A,-B_0,-C,-D,-E$.
+The origin is interior to the hull, meaning that a small ball around it lies
+in the hull. Choose three independent pairs of opposite vertices. In that
+basis, coordinates whose absolute values sum to less than $1$ already give
+convex combinations: use their absolute values as weights on the signed basis
+vectors, and distribute the remaining weight equally over one opposite pair.
+Such points form a neighbourhood of $0$.
+The midpoint of $v,-A$ is interior too, because
+\[
+\frac{v-A}{2}=(0,1,0)
+=\frac1\varphi\frac{C+D}{2}
+ +\left(1-\frac1\varphi\right)0.
+\]
+A convex combination with positive weight on an interior point is interior:
+scale a small ball around that point by its weight. Applying powers of the
+order-five rotation proves the same fact for the midpoints of $v$ with the
+other four negative neighbours. The midpoint of $v,-v$ is $0$.
+None of these six vertices can therefore share a supporting face with $v$.
+
+A face containing $v$ must consequently use its five neighbours. Of their
+ten pairs, the five consecutive pairs give the displayed supporting triangles.
+The remaining five pairs cannot give supporting planes. For example, the plane
+through $v,A,C$ is $\varphi x+z=\varphi$; $B_0$ and $E$ lie strictly on
+opposite sides, with values $\varphi+2$ and $-\varphi$. The order-five rotation
+transports this check to the other four nonconsecutive pairs. Every face has
+at least three noncollinear vertices, so the five triangles exhaust the faces
+through $v$. Vertex transitivity now gives $12\cdot5/3=20$ faces altogether.
+This proves the claimed convex icosahedron, as well as its rotation count.
+
+The dual counts can be checked without assuming them. The cube's face centres
+are the six coordinate-axis points: each has four nearest neighbours, so their
+rotation group has at most $6\cdot4=24$ elements. The cube's $24$ rotations
+preserve these centres, so the bound is attained. For the icosahedron the face
+centres are $\varphi^2/3$ times the $20$ normals displayed above. Each normal
+has squared length $3$. At $(1,1,1)$ the three largest dot products with other normals are
+$2\varphi-1=\sqrt5$, attained by the cyclic permutations of
+$(\varphi-1,0,\varphi)$. All other dot products are smaller. The rotations
+already constructed act transitively on faces: move one vertex to another,
+then use its order-five stabiliser to move the incident face. Thus every
+centre has exactly three nearest neighbours. The dual's rotation count is at
+most $20\cdot3=60$, and all $60$ icosahedral rotations preserve its centres.
+This earns the octahedral and dodecahedral counts and proves that each dual
+pair has exactly the same rotation group.
 
 \begin{figure}[ht]
 \centering
@@ -303,6 +602,10 @@ For each regular polyhedron (Figure~\ref{fig:solids}), the rotations preserving 
 \caption{The five Platonic solids and their rotation groups. Dual solids (cube and octahedron, dodecahedron and icosahedron: put a vertex at the centre of each face) have the same rotation group, and the tetrahedron is self-dual.}
 \label{fig:solids}
 \end{figure}
+
+In the classification, $D_2$ means the Klein four group, realised by the
+identity and the three coordinate half-turns. For $n\ge3$, $D_n$ is the
+dihedral group defined earlier.
 
 \begin{theorem}\label{thm:finiteso3}
 A finite subgroup $G$ of $SO(3)$ is cyclic, or dihedral of order $2n\ge4$, or isomorphic to $A_4$, $\mathfrak S_4$ or $A_5$ (of orders $12$, $24$, $60$).
@@ -605,26 +908,106 @@ Every non-identity rotation fixes exactly two points of the unit sphere, the pol
 \]
 where $n_i$ is the order of a pole stabiliser. That short equation permits only two or three pole orbits. With three, the stabiliser orders must be $(2,2,n)$, $(2,3,3)$, $(2,3,4)$, or $(2,3,5)$. The rest of the proof recognises the corresponding group by how it permutes its axes. The numerical restriction comes from counting; identifying the abstract group needs the extra action arguments.
 
-All these cases occur: rotations about one axis by multiples of $2\pi/n$, the symmetries of a regular $n$-gon in a plane (turning it over is a half-turn in space), and the rotation groups of the tetrahedron, the cube and the icosahedron, of orders $12$, $24$, $60$, which by the theorem are $A_4$, $\mathfrak S_4$ and $A_5$. One can show that two finite subgroups of $SO(3)$ that are isomorphic are conjugate; so up to a change of axes these are \emph{all} the finite rotation groups, and every finite symmetry of a molecule or a crystal, up to reflections, is in this list. In particular the rotation group of the icosahedron is $A_5$, and its natural $3$-dimensional representation is the character $\psi_3$ of Chapter~11.
+All these cases occur: rotations about one axis by multiples of $2\pi/n$, the planar dihedral rotations and half-turns, and the tetrahedral, cube and icosahedral groups constructed above.
 
-The preimages of these groups in $S^3$ are the \emph{binary} polyhedral groups, of orders $24$, $48$ and $120$ (Exercises~\ref{ex:2T} and~\ref{ex:2I}). The binary icosahedral group $2I$, of order $120$, is especially rich: the quotient $S^3/2I$ is the Poincaré homology sphere, a $3$-manifold with the same homology as $S^3$ but a different fundamental group, and the $120$ elements of $2I$ are the vertices of the regular $4$-dimensional polytope called the $600$-cell. These connections, found one by one over a century, are still being explored.
+\paragraph{Why changing axes gives the whole list.}
+We have identified the abstract groups. We can also earn the geometric
+uniqueness assertion: two isomorphic finite rotation subgroups are conjugate
+by an element of $SO(3)$.
+For a cyclic group, align its axis; its angles are exactly the multiples
+of $2\pi/n$. For $D_n$ with $n\ge3$, align the order-$n$ axis and one of
+the perpendicular half-turn axes. Its two generators then give the same
+subgroup. For $D_2$, two distinct commuting half-turns have perpendicular
+axes: their pure unit lifts $u,v$ satisfy $uv=\pm vu$; the plus sign would
+make the axes parallel, and the minus sign makes them perpendicular by
+Proposition~\ref{prop:quat}(d). Align those axes instead.
+
+For $A_4$, $\mathfrak S_4$ and $A_5$, use the character tables earned in
+Chapter~11. Their faithful complex representations of dimension $3$ with
+determinant $1$ are respectively the tetrahedral row, the cube row
+$\chi_3'$, and the two degree-three rows of $A_5$.
+Indeed, in $A_4$ a sum of linear characters kills $V_4$; in $\mathfrak S_4$
+a degree-two constituent and linear constituents also kill $V_4$, and the
+other degree-three row has determinant the sign character. In $A_5$ there
+are no nontrivial linear or degree-two constituents. Thus a faithful
+three-dimensional representation in these cases is one of the stated rows.
+Conjugation of $A_5$ by an odd permutation interchanges its two five-cycle
+classes, hence its two degree-three rows. Precomposing by that automorphism
+does not change the image subgroup. After this possible relabelling, two
+spatial representations therefore have the same character and are isomorphic.
+
+Let $C$ be a complex intertwining isomorphism. Since the original matrices
+are real, its real and imaginary parts intertwine too. Choose a nonzero one,
+$D$. The rows just listed are irreducible, so Schur's lemma makes $D$
+invertible. Orthogonality of both representations gives
+$\rho(g)^{\mathsf T}D^{\mathsf T}D\rho(g)=D^{\mathsf T}D$,
+so $D^{\mathsf T}D$ commutes with the first one; Schur makes it $cI$, where $c>0$ by positivity.
+Then $Q=D/\sqrt c$ is an orthogonal intertwiner. If its determinant is $-1$,
+replace it by $-Q$, which still intertwines and has determinant $1$ in
+dimension three. Conjugating by this $Q$ identifies the two subgroups.
+Together with the explicit examples above, this proves the claimed
+classification up to a change of spatial axes.
+
+The preimages of the tetrahedral, cube and icosahedral groups in $S^3$
+are the \emph{binary polyhedral groups}, of orders $24$, $48$ and $120$:
+each rotation has two lifts. Exercises~\ref{ex:2T} and~\ref{ex:2I} examine
+the first and last of these groups. The signs retain real algebraic information.
+For instance a spatial half-turn has a pure unit lift $u$, so $u^2=-1$;
+its lift has order four even though the rotation has order two.
 
 The norm of a quaternion is a sum of four squares. Because norms multiply, multiplying two quaternions turns the product of two such sums into another sum of four squares. The resulting identity is a piece of number theory hidden in the algebra of rotations.
 
 \section{Quaternions and four squares}
 
-Volume~2 proved that every positive integer is a sum of four squares, by Lagrange's descent. Quaternions explain the theorem as unique factorisation explains the two-square theorem in $\Z[i]$. The \emph{Hurwitz quaternions} $\mathcal H$ are the quaternions $a+bi+cj+dk$ whose four coordinates $a,b,c,d$ are either all in $\Z$ or all in $\Z+\frac12$.
+Volume~2 proved that every positive integer is a sum of four squares, by
+Lagrange's descent. Here we will build a quaternion of norm $p$ for each prime
+$p$; multiplicativity will then handle every positive integer. The
+\emph{Hurwitz quaternions} $\mathcal H$ have coordinates $a,b,c,d$ either all
+in $\Z$ or all in $\Z+\frac12$.
 They form a ring in which division with remainder works on one side, and the proof that a prime is a norm follows the proof for $\Z[i]$; Exercise~\ref{ex:hurwitz} carries it out in full.
+For a possibly noncommutative ring $A$, a \emph{left ideal} is an additive
+subgroup $I$ such that $ax\in I$ for every $a\in A$ and $x\in I$.
+The left ideal generated by $b$ is $Ab=\{ab:a\in A\}$.
 
 \begin{remark}[a first look at categories]
-Many constructions of this volume share a pattern: they take objects (groups, rings, fields, representations) to other objects, and maps between objects to maps between the new objects, respecting composition. $G\mapsto G/G'$, $R\mapsto R[X]$, a finite abelian group $A\mapsto\widehat A$, $q\mapsto R_q$: the language of \emph{categories} (objects and morphisms) and \emph{functors} (maps between categories) was invented in 1945 by Eilenberg and Mac Lane to make such patterns precise. The duality $A\mapsto\widehat A$ reverses arrows (a homomorphism $A\to B$ gives $\widehat B\to\widehat A$), and the Galois correspondence of Chapter~10 is an order-reversing dictionary of the same kind. Volume~10 uses this language systematically.
+A homomorphism $f:G\to H$ sends $[x,y]$ to $[f(x),f(y)]$, hence sends
+$G'$ into $H'$ and induces $G/G'\to H/H'$. The identity induces the
+identity, and a composite induces the composite. This is an example of a
+\emph{functor}. A \emph{category} specifies objects, maps between them,
+identity maps and associative composition; groups with homomorphisms are
+one example. A functor assigns new objects and maps while preserving those
+two composition rules. Thus abelianization $G\mapsto G/G'$ is a functor.
+Likewise a homomorphism between commutative rings $R,S$ acts on polynomial coefficients, giving $R[X]\to S[X]$, and coefficientwise calculation checks the same rules.
+For finite abelian groups the dual reverses maps: $f:A\to B$ induces
+$\widehat B\to\widehat A$, $\chi\mapsto\chi\circ f$.
+For $h:B\to C$, associativity gives $(h\circ f)^*=f^*\circ h^*$; this reversed order is why it is called a \emph{contravariant functor}. These examples introduce the language;
+no category-theoretic theorem is used in our proofs.
 \end{remark}
 
 \begin{beauty}
-Three facts from different chapters meet in the icosahedron: its rotation group is $A_5$, the smallest non-abelian simple group (Chapter~4), which is why the quintic has no formula (Chapter~10); its character table contains the golden ratio (Chapter~11); and its double cover in the quaternions is the binary icosahedral group, whose $120$ elements are the vertices of a regular polytope in four dimensions, the $600$-cell. Klein's \emph{Lectures on the Icosahedron} (1884) used these symmetries to solve the quintic, not by radicals, but with one extra function, exactly as the cubic is solved with trigonometry. Symmetry, algebra and arithmetic are one subject.
+Take a fifth-turn rotation of the icosahedron. Its spatial trace is
+$1+2\cos(2\pi/5)=\varphi$, the golden ratio in the character table.
+One unit-quaternion lift has real part $\cos(\pi/5)=\varphi/2$, so its
+complex $2\times2$ matrix also has trace $\varphi$.
+The other lift has trace $-\varphi$, while giving exactly the same spatial
+rotation. The formula $4(\varphi/2)^2-1=\varphi$ checks both descriptions.
+
+The finite group behind these motions is $A_5$. Chapter~4 proves its simplicity, and Section~\ref{tool:smallest-simple} proves its minimal order.
+The final workshop returns to the same group with random turns: the numbers
+in its character table will measure how quickly the initial orientation
+is forgotten. The appendices then use linear algebra and symmetry to count
+and to control the signs of eigenvalues.
 \end{beauty}
 
 \section{Exercises}
+
+The first seven problems develop quaternion geometry and arithmetic. The
+remaining workshop returns to counting, polynomial products and finite groups
+from earlier chapters. Problems involving limits include the estimates they
+need; their three-star grades include that work. For the logarithmic calculations,
+Exercise~\ref{ex:circulant} has proved the elementary derivatives and the
+exponential--logarithm inverse relation. The integral construction below supplies
+the additional tool needed for polynomial averages.
 
 \begin{exercise}[$\star$]\label{ex:compose}
 Use quaternions to find the axis and angle of the rotation obtained by turning by $90^\circ$ about the $z$-axis, then by $90^\circ$ about the $x$-axis.
@@ -659,18 +1042,46 @@ Let $2I\subset S^3$ be the preimage of a rotation group $G\cong A_5$. Show that 
 \end{enumerate}
 \end{exercise}
 
-\begin{exercise}[$\star\star$]\label{pb:sylvester}
+\begin{exercise}[$\star\star\star$]\label{pb:sylvester}
 \begin{enumerate}[label=(\alph*)]
 \item (Fibonacci, 1202.) Let $0<\frac ab<1$ be rational. Subtract the largest unit fraction $\frac1n\le\frac ab$, and repeat
 with the remainder. Show that the process stops, and writes $\frac ab$ as a sum of distinct unit fractions. Apply it to
 $\frac4{13}$.
-\item (Sylvester, 1880.) Let $s_0=2$ and $s_{k+1}=s_k^2-s_k+1$, so $2$, $3$, $7$, $43$, $1807$, \dots Show that
+\item (Sylvester, 1880.) Let $s_0=2$ and $s_{k+1}=s_k^2-s_k+1$, so $2,3,7,43,1807,\ldots$. Show that
 $\sum_{k=0}^N\frac1{s_k}=1-\frac1{s_{N+1}-1}$, and that the $s_k$ are pairwise coprime.
 \item Show that there is a constant $E>1$ such that $s_k=\bigl\lfloor E^{2^{k+1}}+\frac12\bigr\rfloor$ for every $k\ge0$.
 \end{enumerate}
 \end{exercise}
 
-\begin{exercise}[$\star\star$]\label{pb:jensen}
+\paragraph{An integral from finite sums.}\label{tool:workshop-integral}
+The next problem turns an exact product into an average. Take $A<B$; an integral with equal limits is $0$, and reversing the limits negates it. A real function $f$ on $[A,B]$ is \emph{Lipschitz} if
+$|f(x)-f(y)|\le M|x-y|$ for some constant $M$.
+For a partition $A=t_0<\cdots<t_r=B$ and chosen points
+$\xi_j\in[t_{j-1},t_j]$, form
+\[
+S=\sum_{j=1}^r f(\xi_j)(t_j-t_{j-1}).
+\]
+The \emph{mesh} is the largest interval length. Refining a partition changes
+this sum by at most $M(B-A)$ times its old mesh: within an old interval,
+each new tag differs from the old tag by at most that interval's length.
+Compare two sums through a common refinement. Their difference is at most
+$M(B-A)$ times the sum of their meshes. Thus equally spaced sums are Cauchy,
+and Volume~1's completeness criterion gives a limit. The same bound shows
+that every choice of partitions and tags with mesh tending to zero has this
+limit. It is the \emph{Riemann integral}, written $\int_A^B f(t)\dd t$.
+
+Linearity, inequalities and addition over adjacent intervals follow from
+the corresponding finite sums. Translation and linear changes of variable
+follow by translating or scaling partitions and their lengths.
+For a periodic Lipschitz function, integrals over intervals of one period
+therefore agree: split at a period boundary and translate the extra piece.
+A bounded derivative gives the Lipschitz condition by the mean-value theorem.
+If $F'=f$, that theorem on each small interval also makes
+$F(t_j)-F(t_{j-1})=f(\eta_j)(t_j-t_{j-1})$ for some tag $\eta_j$.
+Summing and taking the limit proves $\int_A^B f=F(B)-F(A)$ in this setting.
+These finite estimates earn all the proper integrals used below.
+
+\begin{exercise}[$\star\star\star$]\label{pb:jensen}
 \begin{enumerate}[label=(\alph*)]
 \item Show that for real $x$ and $\theta$ and $n\ge1$,
 \[
@@ -683,6 +1094,7 @@ $2\pi\log|x|$ if $|x|>1$.
 \frac1{2\pi}\int_0^{2\pi}\log\bigl|P(e^{i\theta})\bigr|\dd\theta=\log|a|+\sum_{k=1}^d\log\max(1,|z_k|).
 \]
 What does Problem~\ref{pb:kronecker} say about the polynomials of $\Z[X]$ for which this is $0$?
+\item Extend the formula to roots on the unit circle, interpreting the integral as an improper limit at the finitely many zero angles. Characterize the integer polynomials with zero mean in this extended case.
 \end{enumerate}
 \end{exercise}
 
@@ -706,8 +1118,7 @@ other.
 \end{exercise}
 
 \begin{exercise}[$\star\star\star$]\label{pb:ksubsets}
-Let $\pi_k(\sigma)$ be the number of $k$-element subsets of $\{1,\dots,n\}$ fixed by $\sigma\in\mathfrak S_n$, and let
-$0\le k,l\le\frac n2$.
+Let $n\ge0$ be an integer and let $\pi_k(\sigma)$ count the $k$-element subsets of $\{1,\dots,n\}$ fixed by $\sigma\in\mathfrak S_n$. Let $k,l$ be integers with $0\le k,l\le\frac n2$.
 \begin{enumerate}[label=(\alph*)]
 \item Show that $\langle\pi_k,\pi_l\rangle=\min(k,l)+1$.
 \item Deduce that $\chi_0=1$ and $\chi_k=\pi_k-\pi_{k-1}$ ($1\le k\le\frac n2$) are distinct irreducible characters of
@@ -718,9 +1129,9 @@ non-decreasing function of $k$ for $0\le k\le\frac n2$.
 \end{exercise}
 
 \begin{exercise}[$\star\star$]\label{pb:egz}
-\emph{Erdős--Ginzburg--Ziv (1961).} We show that among any $2n-1$ integers there are $n$ whose sum is divisible by $n$.
+\emph{Erdős--Ginzburg--Ziv (1961).} For every integer $n\ge1$, we show that among any $2n-1$ integers there are $n$ whose sum is divisible by $n$.
 \begin{enumerate}[label=(\alph*)]
-\item Prove Chevalley--Warning for systems: if $f_1,\dots,f_r\in\mathbb F_p[x_1,\dots,x_m]$ and $\sum_j\deg f_j<m$, then the number
+\item Prove Chevalley--Warning for systems: let $m\ge1$, and let $f_1,\dots,f_r\in\mathbb F_p[x_1,\dots,x_m]$ have degree bounds $d_j\ge0$ with $\sum_jd_j<m$ (the zero polynomial is allowed with bound $0$). Then the number
 of common zeros of the $f_j$ in $\mathbb F_p^m$ is divisible by $p$.
 \item Prove the theorem for $n=p$ prime, with $f_1=\sum_ia_ix_i^{p-1}$ and $f_2=\sum_ix_i^{p-1}$.
 \item Show that if the theorem holds for $m$ and for $n$, it holds for $mn$. Conclude.
@@ -728,34 +1139,34 @@ of common zeros of the $f_j$ in $\mathbb F_p^m$ is divisible by $p$.
 \end{enumerate}
 \end{exercise}
 
-\begin{exercise}[$\star\star$]\label{pb:abelian}
-\emph{How many abelian groups? (Erdős and Szekeres, 1934).} Let $A(n)$ be the number of abelian groups of order $n$, up to
-isomorphism.
+For $s>1$, write $\zeta(s)=\sum_{n\ge1}n^{-s}$; the next solution proves the convergence and product identities it uses.
+
+\begin{exercise}[$\star\star\star$]\label{pb:abelian}
+\emph{How many abelian groups? (Erdős and Szekeres, 1934).} For a positive integer $n$, let $A(n)$ be the number of abelian groups of order $n$, up to isomorphism.
 \begin{enumerate}[label=(\alph*)]
-\item Show that $A(n)=\prod_ip(e_i)$ if $n=\prod_ip_i^{e_i}$, and that $\sum_nA(n)n^{-s}=\prod_{k\ge1}\zeta(ks)$ for $s>1$.
-\item Show that $\sum_{n\le x}A(n)=cx+O(\sqrt x)$ with $c=\prod_{k\ge2}\zeta(k)=2.2948\ldots$: on average, there are about $2.29$
+\item Show that $A(n)=\prod_ip(e_i)$ if $n=\prod_ip_i^{e_i}$, and that $\sum_{n\ge1}A(n)n^{-s}=\prod_{k\ge1}\zeta(ks)$ for $s>1$.
+\item For real $x\ge1$, show that $\sum_{n\le x}A(n)=cx+O(\sqrt x)$ with $c=\prod_{k\ge2}\zeta(k)=2.2948\ldots$: on average, there are about $2.29$
 abelian groups of each order.
 \end{enumerate}
 \end{exercise}
 
 \begin{exercise}[$\star\star\star$]\label{pb:dodecaturns}
-\emph{Random turns of an icosahedron.} The rotation group of the regular icosahedron is isomorphic to $A_5$ (Theorem~12.5), and the
+\emph{Random turns of an icosahedron.} The rotation group of the regular icosahedron is isomorphic to $A_5$ (Theorem~\ref{thm:finiteso3}), and the
 $20$ rotations by a third of a turn about the axes through the centres of opposite faces form the conjugacy class of the
 $3$-cycles. An icosahedron is turned, again and again, by a uniformly chosen one of these $20$ rotations.
 \begin{enumerate}[label=(\alph*)]
-\item Let $\mu$ be a probability on a finite group $G$ that is constant on conjugacy classes, and $\mu^{*t}$ the law of the walk at time
-$t$, started at $e$. Show that, for every $g\in G$,
+\item Let $\mu$ be a probability on a finite group $G$ that is constant on conjugacy classes, and $\mu^{*t}$ the law of the walk at integer time
+$t\ge0$, started at $e$. Show that, for every $g\in G$,
 \[
 \mu^{*t}(g)=\frac1{|G|}\sum_\chi\chi(1)\overline{\chi(g)}\,\Bigl(\frac{\hat\mu(\chi)}{\chi(1)}\Bigr)^t,\qquad\hat\mu(\chi)=\sum_{h\in G}\mu(h)\chi(h),
 \]
-the sum being over the irreducible characters of $G$. (Show first that, for a class function $f$ and an irreducible representation $\rho$ of
+the sum being over the irreducible characters of $G$. At $t=0$ interpret every scalar's zeroth power as $1$, including $0^0$, because it comes from the zeroth matrix power. (Show first that, for a class function $f$ and an irreducible representation $\rho$ of
 dimension $d$, the matrix $\sum_hf(h)\rho(h)$ is the scalar $\frac1d\sum_hf(h)\chi_\rho(h)$.)
-\item Using the character table of $A_5$ (Exercise~11.7), show that the icosahedron is back in its initial position after $t$
-turns with probability
+\item Using the character table of $A_5$ (Exercise~\ref{ex:a5}), find the return probability for every $t\ge0$. Show that for $t\ge1$ it simplifies to
 \[
 \frac1{60}\Bigl(1+16\cdot4^{-t}+25\cdot\Bigl(-\frac15\Bigr)^t\Bigr).
 \]
-\item Find the probability that after $t$ turns the icosahedron has turned by a fifth of a turn (in either direction) about some
+\item Find the probability that after $t\ge0$ turns the icosahedron has turned by a fifth of a turn (in either direction) about some
 axis through opposite vertices, and show that the law of the position converges to the uniform law at the rate $4^{-t}$.
 \end{enumerate}
 \end{exercise}
@@ -785,12 +1196,11 @@ The kernel $\{\pm1\}$ lies in $2I$. Solve $q^2=1$ with $q=a+x$.
 \end{hint}
 
 \begin{hint}{pb:sylvester}
-(b) $s_{k+1}-1=s_k(s_k-1)$. (c) Put $u_k=s_k-\frac12$; then $u_{k+1}=u_k^2+\frac14$. Study $2^{-k}\log u_k$.
+(b) $s_{k+1}-1=s_k(s_k-1)$. (c) Put $u_k=s_k-\frac12$; then $u_{k+1}=u_k^2+\frac14$. Compare $2^{-k}\log u_k$ with $2^{-k}\log s_k$.
 \end{hint}
 
 \begin{hint}{pb:jensen}
-(a) $x^2-2x\cos\varphi+1=(x-e^{i\varphi})(x-e^{-i\varphi})$. (b) Riemann sums at the points $\frac{2\pi k}n$. (c) Apply (b)
-to each factor.
+(a) Factor using $e^{i\varphi}$ and $e^{-i\varphi}$. (b) Use the equally spaced sums from the integral construction. (c) Apply (b) to each root factor. (d) Compare $\log\sin t$ with $\log t$ near $0$, and relate $\int_0^{\pi/2}\log\sin t$ to itself using $\sin2t=2\sin t\cos t$.
 \end{hint}
 
 \begin{hint}{pb:mersennediv}
@@ -802,8 +1212,7 @@ The $24$ rotations of the cube act on numberings. Which rotation fixes a numberi
 \end{hint}
 
 \begin{hint}{pb:ksubsets}
-(a) The orbits of $\mathfrak S_n$ on pairs $(A,B)$ of subsets are determined by $|A\cap B|$. (b) A virtual character of norm
-$1$ and positive degree is irreducible. (c) The number of orbits of $G$ is $\langle\pi_k,1\rangle_G$.
+(a) The orbits of $\mathfrak S_n$ on pairs $(A,B)$ are determined by $|A\cap B|$. (b) Expand the difference in irreducible characters with integer coefficients; norm $1$ and positive degree determine its sign. (c) The orbit count is $\langle\pi_k,1\rangle_G$.
 \end{hint}
 
 \begin{hint}{pb:egz}
@@ -811,7 +1220,7 @@ $1$ and positive degree is irreducible. (c) The number of orbits of $G$ is $\lan
 \end{hint}
 
 \begin{hint}{pb:abelian}
-(a) Corollary~7.7. (b) $A=\mathbf1*g$ with $g\ge0$ supported on powerful numbers.
+(a) Use the finite abelian classification in Chapter~7 and expand finite products before taking limits. (b) Write $A(n)=\sum_{d\mid n}g(d)$ with $g\ge0$, then split off the perfect-square contribution. Bound tails in the intervals $(2^jx,2^{j+1}x]$; no partial-summation theorem is needed.
 \end{hint}
 
 \begin{hint}{pb:dodecaturns}
@@ -857,7 +1266,7 @@ We can check the result without quaternion multiplication. Under the first quart
 \[
 e_x\mapsto e_z,\quad e_z\mapsto-e_y,\quad -e_y\mapsto e_x.
 \]
-It cycles these three vectors. Their sum $e_x-e_y+e_z$ is fixed, so it gives the axis. A three-cycle of those perpendicular directions is a rotation by $120^\circ$, agreeing with the quaternion calculation.
+It cycles these three vectors. Their sum $e_x-e_y+e_z$ is fixed, so it gives the axis. A three-cycle of those perpendicular directions is a rotation by $120^\circ$, agreeing with the quaternion calculation. Reversing the quarter-turns instead gives $q_zq_x=(1+i+j+k)/2$, which is neither $q$ nor $-q$. Since those are the only representatives of the same rotation, the two orders give different spatial motions.
 \end{solution}
 
 \begin{solution}{ex:euler4}
@@ -955,7 +1364,7 @@ Conversely, suppose unit quaternions $q=a+v$ and $q'=a+v'$ have the same real pa
 \[
 |v|^2=1-a^2=|v'|^2.
 \]
-If $v=0$, then $v'=0$ and $q=q'$, so they are conjugate. Otherwise $v/|v|$ and $v'/|v'|$ are unit vectors. There is a rotation $T\in SO(3)$ sending one to the other. By Theorem~\ref{thm:su2so3}, $T=R_p$ for some $p\in S^3$, so
+If $v=0$, then $v'=0$ and $q=q'$, so they are conjugate. Otherwise $v/|v|$ and $v'/|v'|$ are unit vectors. Extend each to a positively oriented orthonormal frame, choosing a perpendicular unit vector and then their cross product. The linear map carrying the first frame to the second preserves lengths and has determinant $1$, so it is a rotation $T\in SO(3)$ sending one unit vector to the other. By Theorem~\ref{thm:su2so3}, $T=R_p$ for some $p\in S^3$, so
 \[
 pvp^{-1}=v',
 \qquad
@@ -999,7 +1408,7 @@ In particular $h$ normalises $Q_8$, and the subgroup
 \[
 T=\langle Q_8,h\rangle
 \]
-is a union of right cosets of $Q_8$. Because $h^3=-1\in Q_8$, every word can be reduced to one of the forms $q$, $hq$, or $h^2q$, with $q\in Q_8$.
+is a union of left cosets of $Q_8$. Because $h^3=-1\in Q_8$, every word can be reduced to one of the forms $q$, $hq$, or $h^2q$, with $q\in Q_8$.
 
 These three cosets are distinct. The elements of $Q_8$ have integer coordinates, while $h$ and $h^2$ have half-integer coordinates, so neither belongs to $Q_8$. Moreover $hQ_8=h^2Q_8$ would imply $h\in Q_8$, by multiplying by $h^{-1}$. Thus
 \[
@@ -1069,7 +1478,7 @@ The group $\mathfrak S_5$ has many involutions, including its ten transpositions
 2I\not\cong A_5\times\Z/2\Z.
 \]
 
-This is an instructive warning: two finite groups can have the same order and even map onto the same quotient, but differ in their internal multiplication. In fact the binary icosahedral group $2I$ is isomorphic to $SL_2(\mathbb F_5)$, not to either of these other groups.
+Counting involutions distinguishes these groups of order $120$.
 \end{solution}
 
 \begin{solution}{ex:hurwitz}
@@ -1094,7 +1503,7 @@ and the analogous identities with $i,j,k$ cyclically permuted. Every displayed q
 (a+b\omega)(c+d\omega)
 =ac+a(d\omega)+(b\omega)c+bd\,\omega^2
 \]
-with $a,b,c,d\in\Z$-linear combinations as appropriate. Thus $\mathcal H$ is closed under addition, additive inverses, and multiplication, and contains $1$.
+with $a,c\in L$ and $b,d\in\Z$. Expanding $a,c$ in $1,i,j,k$ uses exactly the products just checked. Thus $\mathcal H$ is closed under addition, additive inverses, and multiplication, and contains $1$.
 
 Quaternion conjugation preserves $L$ and sends $\omega$ to
 \[
@@ -1141,7 +1550,7 @@ Hence
 \]
 The order $qb$ matters because quaternion multiplication is not commutative.
 
-Let $I\ne\{0\}$ be a left ideal of $\mathcal H$. Since norms of non-zero elements are positive integers, choose $b\in I$ of smallest positive norm. For any $a\in I$, divide as above: $a=qb+r$ with $N(r)<N(b)$. Left ideal closure gives $r=a-qb\in I$, so minimality forces $r=0$. Thus $a\in\mathcal Hb$ for every $a\in I$, and the reverse inclusion follows because $b\in I$. Therefore every left ideal is principal:
+The zero left ideal is $\mathcal H0$. Let $I\ne\{0\}$ be a left ideal of $\mathcal H$. Since norms of non-zero elements are positive integers, choose $b\in I$ of smallest positive norm. For any $a\in I$, divide as above: $a=qb+r$ with $N(r)<N(b)$. Left ideal closure gives $r=a-qb\in I$, so minimality forces $r=0$. Thus $a\in\mathcal Hb$ for every $a\in I$, and the reverse inclusion follows because $b\in I$. Therefore every left ideal is principal:
 \[
 \boxed{I=\mathcal Hb}.
 \]
@@ -1283,65 +1692,41 @@ Then the recurrence becomes
 \[
 u_{k+1}=u_k^2+\frac14,\qquad u_0=\frac32.
 \]
-In particular $u_k$ is positive and grows strictly to infinity. Put
+Since $u_k\ge3/2$, the recurrence gives $u_{k+1}\ge(3/2)u_k$; thus it grows strictly to infinity. Compare two logarithmic sequences:
 \[
-c_k=2^{-k}\log u_k.
+\ell_k=2^{-k}\log u_k,\qquad b_k=2^{-k}\log s_k.
 \]
-Taking logarithms of the recurrence yields
+Since $u_{k+1}>u_k^2$, the sequence $\ell_k$ is strictly increasing.
+Since $s_{k+1}=s_k^2-s_k+1<s_k^2$, the sequence $b_k$ is strictly decreasing.
+Also $u_k<s_k$, so $\ell_k<b_k$. Their gap satisfies
 \[
-\begin{aligned}
-c_{k+1}
-&=2^{-k-1}\log\left(u_k^2\left(1+\frac1{4u_k^2}\right)\right)\\
-&=c_k+2^{-k-1}\log\left(1+\frac1{4u_k^2}\right).
-\end{aligned}
+0<b_k-\ell_k
+=2^{-k}\log\left(1+\frac1{2u_k}\right)
+\le\frac{2^{-k}}{2u_k}\le\frac{2^{-k}}3\longrightarrow0.
 \]
-Thus $c_{k+1}>c_k$. Using $\log(1+x)\le x$ for $x\ge0$ and $u_k\ge3/2$ gives
-\[
-0<c_{k+1}-c_k\le\frac{2^{-k-1}}{4u_k^2}
-\le\frac{2^{-k-1}}9.
-\]
-The right-hand side is summable, so the increasing sequence $c_k$ has a finite limit $c>0$. Define
-\[
-E=e^{c/2}>1.
-\]
-Then $E^{2^{k+1}}=e^{2^kc}$.
+Here $\log(1+y)\le y$ for $y\ge0$ follows by differentiating
+$y-\log(1+y)$ and checking its value at $0$.
+Volume~1's adjacent-sequence criterion gives a common limit $c>0$.
+Strict monotonicity gives $\ell_k<c<b_k$ for every finite $k$:
+for example $c\ge\ell_{k+1}>\ell_k$, and similarly on the other side.
 
-We need to show that this number is within one half of $s_k$. The telescoping tail identity is
+Define $E=e^{c/2}>1$. Multiply the bounds by $2^k$ and exponentiate:
 \[
-2^kc-\log u_k
-=\sum_{j=k}^{\infty}2^{k-j-1}
-\log\left(1+\frac1{4u_j^2}\right).
+s_k-\frac12=u_k<E^{2^{k+1}}<s_k.
 \]
-The tail is strictly positive, so $u_k<e^{2^kc}$. Since $u_j\ge u_k$, its upper bound is
+Adding $1/2$ therefore places the expression strictly between $s_k$ and
+$s_k+1/2$, proving
 \[
-2^kc-\log u_k
-\le\frac1{4u_k^2}\sum_{j=k}^\infty2^{k-j-1}
-=\frac1{4u_k^2}.
+\boxed{s_k=\left\lfloor E^{2^{k+1}}+\frac12\right\rfloor}.
 \]
-Exponentiating,
-\[
-u_k<E^{2^{k+1}}\le u_ke^{1/(4u_k^2)}.
-\]
-For $u_k\ge3/2$, use $e^t-1\le te^t$ and $t=1/(4u_k^2)\le1/9$:
-\[
-u_k(e^t-1)\le\frac{e^{1/9}}{4u_k}
-\le\frac{e^{1/9}}6<\frac12.
-\]
-Therefore
-\[
-s_k-\frac12=u_k<E^{2^{k+1}}<u_k+\frac12=s_k.
-\]
-Adding $1/2$ places the power strictly between $s_k$ and $s_k+1/2$, so
-\[
-\boxed{s_k=\left\lfloor E^{2^{k+1}}+\frac12\right\rfloor}
-\]
-for every $k\ge0$. The constant is approximately $E=1.2640847353\ldots$; the argument proves existence without relying on the numerical approximation.
+The value is $E=1.2640847353\ldots$; existence and every rounding claim
+follow from the two bounding sequences, independently of this approximation.
 
-\tools Volume~1 (monotone sequences and series); Volume~2 (Egyptian fractions and coprimality).
+\tools Integer division and coprimality; Volume~1's adjacent-sequence criterion; the exponential and logarithm earned in Exercise~\ref{ex:circulant}.
 \end{solution}
 
 \begin{solution}{pb:jensen}
-\idea Put the quadratic factors into the form $|x-e^{i\varphi}|^2$. Their arguments run through the $n$-th roots of one complex number, so their product collapses to a single quadratic expression in $x^n$. Taking logarithms gives Riemann sums, and summing over polynomial roots produces Jensen's formula.
+\idea Put the quadratic factors into the form $|x-e^{i\varphi}|^2$. Their arguments run through the $n$-th roots of one complex number, so their product collapses to a single quadratic expression in $x^n$. Taking logarithms gives Riemann sums, and summing over polynomial roots produces Jensen's formula. Comparing $\log\sin t$ with $\log t$ controls the remaining unit-circle singularities.
 
 \writeup (a) For real $x$ and $\varphi$,
 \[
@@ -1369,7 +1754,7 @@ The identity is purely algebraic and remains true when one of its factors is zer
 \[
 f(\theta)=\log(1-2x\cos\theta+x^2)
 \]
-is a continuous $2\pi$-periodic real function: its logarithm's argument is $|x-e^{i\theta}|^2>0$. The equally spaced Riemann sums converge to its integral. Taking the logarithm in part (a) with $\theta=0$ gives
+is a $2\pi$-periodic real function. Its logarithm's argument is at least $(|x|-1)^2>0$, and $|f'(\theta)|\le2|x|/(|x|-1)^2$. Thus it is Lipschitz by the mean-value theorem, and the finite-sum construction above proves convergence of the equally spaced Riemann sums to its integral. Taking the logarithm in part (a) with $\theta=0$ gives
 \[
 \sum_{k=0}^{n-1}f(2\pi k/n)
 =\log\bigl((x^n-1)^2\bigr)
@@ -1429,15 +1814,58 @@ M(P)=|a|\prod_k\max(1,|z_k|),
 \]
 is the \emph{Mahler measure} of $P$.
 
-What if $P\in\Z[X]\setminus\{0\}$ and the integral is $0$? Then $M(P)=1$. Because $|a|$ is a positive integer and each factor $\max(1,|z_k|)$ is at least $1$, we must have $|a|=1$ and $|z_k|\le1$ for every root. Kronecker's theorem (Problem~\ref{pb:kronecker}) says that a monic integer polynomial with all roots in the closed unit disc has only roots of unity and zero as roots; equivalently, up to sign, it is a product of a power of $X$ and cyclotomic polynomials.
+What if $P\in\Z[X]\setminus\{0\}$ and the integral is $0$? Then $M(P)=1$. Because $|a|$ is a positive integer and each factor $\max(1,|z_k|)$ is at least $1$, we must have $|a|=1$ and $|z_k|\le1$ for every root. Remove all zero roots and multiply by the leading sign to obtain a monic integer polynomial with nonzero constant term. Problem~\ref{pb:kronecker} applies to this remaining polynomial, so every nonzero root is a root of unity. Under the present no-unit-circle-root assumption, no such nonzero root can occur.
 
-**There is a useful hypothesis check here.** Part (c) excluded roots on the unit circle. Under \emph{that} restriction, cyclotomic factors cannot occur. Thus the only integer polynomials in part (c) for which the integral vanishes are
+Thus the integer polynomials satisfying part (c)'s hypotheses and having zero mean are exactly
 \[
 \boxed{P(X)=\pm X^m\quad(m\ge0)}.
 \]
-If roots on the unit circle are allowed, the logarithmic singularities are integrable, Jensen's formula still holds, and products of cyclotomic polynomials with monomials give all the additional zero-measure examples.
+\emph{(d) The excluded unit-circle roots.}
+To include a unit-circle root, it remains to control a logarithmic singularity. Near $0$, the mean-value theorem gives
+$t/2\le\sin t\le t$ for $0<t\le\pi/3$.
+Thus $\log\sin t$ differs from $\log t$ by a bounded amount there.
+The integral of $\log t$ over $[\varepsilon,a]$ is
+$[t\log t-t]_{\varepsilon}^a$, by the finite-sum tool above.
+Its omitted absolute tail is $\varepsilon-\varepsilon\log\varepsilon$,
+which tends to zero as $\varepsilon\downarrow0$: for $0<\varepsilon\le1$, use $\log u\le u-1$ with
+$u=1/\sqrt\varepsilon$ to obtain
+$0\le-\varepsilon\log\varepsilon\le2\sqrt\varepsilon$.
+The same comparison controls the tails of $\log\sin t$ at $0,\pi$ and
+of $\log\cos t$ at $\pi/2$. Consequently their \emph{improper integrals},
+defined by limits after deleting small endpoint intervals, exist.
 
-\tools Volume~1 (roots of unity and Riemann sums); Problem~\ref{pb:kronecker}.
+Put $I=\int_0^{\pi/2}\log\sin t\dd t$.
+Replacing $t$ by $\pi/2-t$ gives the same integral for $\log\cos t$.
+Add, use $\sin t\cos t=\tfrac12\sin2t$, and then set $u=2t$:
+\[
+2I=-\frac\pi2\log2+\frac12\int_0^\pi\log\sin u\dd u
+   =-\frac\pi2\log2+I.
+\]
+Hence $I=-\frac\pi2\log2$ and
+\[
+\int_0^{2\pi}\log|e^{it}-1|\dd t
+=2\pi\log2+2\int_0^\pi\log\sin u\dd u=0.
+\]
+Every unit-circle root is a translate of this case. The same vanishing
+tail bounds at the finitely many translated zeros justify shifts and finite
+addition of these improper integrals. Part (c)'s formula therefore holds
+for every nonzero complex polynomial, with these limits at any zero angles.
+
+For integer $P$, zero mean again forces leading coefficient $\pm1$ and
+every root in the closed unit disc. Remove its zero roots and apply
+Problem~\ref{pb:kronecker} to the remaining monic polynomial with nonzero
+constant term. Every remaining root is a root of unity. The proved
+irreducibility of cyclotomic polynomials then lets us factor out the
+corresponding $\Phi_m$ and repeat, lowering the degree at each step.
+Conversely each such factor has zero mean by the formula. Thus all the
+integer zero-mean polynomials are exactly
+\[
+\boxed{\pm X^r\prod_m\Phi_m(X)^{e_m},\qquad r,e_m\ge0,}
+\]
+where $r,e_m$ are nonnegative integers and only finitely many $e_m$ are nonzero. Under part (c)'s original
+no-unit-circle-root restriction this reduces to $\pm X^r$.
+
+\tools Roots of unity; Volume~1's mean-value theorem and Cauchy completeness; the logarithm earned in Exercise~\ref{ex:circulant}; the finite-sum integral construction above; Problem~\ref{pb:kronecker} and cyclotomic irreducibility.
 \end{solution}
 
 \begin{solution}{pb:mersennediv}
@@ -1508,13 +1936,13 @@ standard dice up to rotation.
 \[
 f\circ s=f\circ r.
 \]
-Because the six labels are distinct, $f$ is injective on the faces, so cancellation gives $s=r$ as face permutations. But a genuine cube reflection is orientation-reversing, whereas every cube rotation has determinant $+1$. This is impossible.
+Because the six labels are distinct, $f$ is injective on the faces, so cancellation gives $s=r$ as face permutations. Equal face actions give equal matrices: the six face normals include a basis of $\R^3$. But a genuine cube reflection is orientation-reversing, whereas every cube rotation has determinant $+1$. This is impossible.
 
 Thus no die is equivalent to its mirror image. Reflection pairs the $30$ rotational classes with no fixed class, yielding
 \[
 \boxed{15\text{ mirror pairs}}.
 \]
-The two standard dice in part (b) are one such mirror pair.
+The two standard dice in part (b) are one such mirror pair. The mirror operation on rotational classes is well-defined: conjugating a cube rotation by a fixed cube reflection still preserves the cube and has determinant $1$.
 \end{solution}
 
 \begin{solution}{pb:ksubsets}
@@ -1551,7 +1979,7 @@ Because $k,l\le n/2$, their sum is at most $n$, so the lower bound is $0$. The n
 =\begin{cases}1,&k=l,\\0,&k\ne l,\end{cases}
 \end{aligned}
 \]
-with the boundary cases involving $k=0$ or $l=0$ checked directly by the same formula. Thus these virtual characters form an orthonormal set.
+with the boundary cases involving $k=0$ or $l=0$ checked directly by the same formula. An integer linear combination of characters is called a \emph{virtual character}; thus these differences form an orthonormal set.
 
 Expand one $\chi_k$ in the irreducible-character basis: $\chi_k=\sum_\psi m_\psi\psi$ with \emph{integer} coefficients $m_\psi$, because it is a difference of genuine characters. Its norm is
 \[
@@ -1561,7 +1989,7 @@ Hence exactly one coefficient is $\pm1$ and the others are zero. Its value at th
 \[
 \chi_k(e)=\binom nk-\binom n{k-1}>0
 \]
-for $k\le n/2$, so the sign is positive. Therefore each $\chi_k$ is a genuine irreducible character, and the orthogonality above makes them distinct. Their degrees are the displayed binomial differences.
+for $k\le n/2$, taking $\binom n{-1}=0$ at $k=0$. Hence the sign is positive. Therefore each $\chi_k$ is a genuine irreducible character, and the orthogonality above makes them distinct. Their degrees are the displayed binomial differences.
 
 (c) Let $G\le\mathfrak S_n$ be any subgroup. Burnside's lemma says the number of orbits on $k$-subsets is
 \[
@@ -1572,7 +2000,7 @@ The identity $\pi_k=\chi_0+\cdots+\chi_k$ gives
 \[
 o_k=\sum_{j=0}^k\langle\chi_j|_G,1_G\rangle_G.
 \]
-Each $\chi_j|_G$ is the character of a representation of $G$. The inner product with the trivial character is the dimension of the $G$-invariant subspace, a non-negative integer. Therefore
+Restricting the same representing matrices to the subgroup $G$ still respects multiplication, so each $\chi_j|_G$ is the character of a representation of $G$. The inner product with the trivial character is the dimension of the $G$-invariant subspace, a non-negative integer. Therefore
 \[
 o_k-o_{k-1}=\langle\chi_k|_G,1_G\rangle_G\ge0
 \]
@@ -1582,7 +2010,7 @@ for $1\le k\le n/2$. The number of orbits is non-decreasing, proving Livingstone
 \begin{solution}{pb:egz}
 \idea Over $\mathbb F_p$, the expression $x^{p-1}$ is $0$ at $x=0$ and $1$ everywhere else. Two low-degree equations can therefore select a non-empty set of indices whose size and element sum are both divisible by $p$. Chevalley--Warning produces that selection. A grouping argument then passes from primes to all moduli.
 
-\writeup (a) Let $f_1,\ldots,f_r$ be polynomials in $m$ variables over $\mathbb F_p$, with $\sum_j\deg f_j<m$. Fermat's theorem gives
+\writeup (a) Take $m\ge1$ and the degree bounds $d_j$ from the prompt, with $\sum_jd_j<m$. Zero polynomials cause no difficulty: their factors below are $1$, with degree bound $0$. Fermat's theorem gives
 \[
 1-y^{p-1}=\begin{cases}1,&y=0,\\0,&y\ne0,\end{cases}
 \quad\text{in }\mathbb F_p.
@@ -1594,9 +2022,9 @@ N\equiv\sum_{x\in\mathbb F_p^m}
 \]
 The polynomial inside the sum has total degree at most
 \[
-(p-1)\sum_j\deg f_j<(p-1)m.
+(p-1)\sum_jd_j<(p-1)m.
 \]
-Every monomial in its expansion therefore has at least one variable exponent less than $p-1$. When summed over all $m$ variables, its contribution factors into a product of one-variable power sums, and the sum for that exponent is $0$ in $\mathbb F_p$, including exponent $0$ (where it is $p=0$). Every monomial sum vanishes, so $N\equiv0\pmod p$. This proves the systems version of Chevalley--Warning.
+Every monomial in its expansion therefore has at least one variable exponent less than $p-1$. When summed over all $m$ variables, its contribution factors into a product of one-variable power sums, and the sum for that exponent is $0$ in $\mathbb F_p$, including exponent $0$ (where it is $p=0$). Every monomial sum vanishes, so $N\equiv0\pmod p$. This proves the systems version, also for an empty system: the empty product is $1$ and its zero count is $p^m$, divisible by $p$ since $m\ge1$.
 
 (b) Now take $2p-1$ integers $a_1,\ldots,a_{2p-1}$ and reduce them modulo $p$. In $m=2p-1$ variables consider
 \[
@@ -1604,7 +2032,7 @@ f_1=\sum_{i=1}^{2p-1}a_ix_i^{p-1},
 \qquad
 f_2=\sum_{i=1}^{2p-1}x_i^{p-1}.
 \]
-Their total degree is $2(p-1)=2p-2<m$. The zero vector is one common solution. By part (a), the number of common solutions is divisible by $p$, so it cannot equal $1$; at least one common solution $x$ is non-zero.
+Their degree bounds sum to $2(p-1)=2p-2<m$, even if the first form is zero. The zero vector is one common solution. By part (a), the number of common solutions is divisible by $p$, so it cannot equal $1$; at least one common solution $x$ is non-zero.
 
 Let $I=\{i:x_i\ne0\}$. Then
 \[
@@ -1625,7 +2053,7 @@ divisible by $mn$. Therefore the theorem holds for $mn$.
 
 It holds for $n=1$ trivially and for all primes by part (b). Factor any positive integer into primes and apply this multiplication step inductively. Thus the theorem holds for every $n\ge1$.
 
-(d) Sharpness is witnessed by $n-1$ zeros and $n-1$ ones. Among any $n$ selected entries there must be at least one of each, so the sum is an integer between $1$ and $n-1$, not divisible by $n$. Therefore the threshold $2n-1$ cannot be lowered.
+(d) For $n=1$, an empty list cannot supply one selected integer, so one entry is necessary. For $n\ge2$, sharpness is witnessed by $n-1$ zeros and $n-1$ ones. Among any $n$ selected entries there must be at least one of each, so the sum is an integer between $1$ and $n-1$, not divisible by $n$. Therefore the threshold $2n-1$ cannot be lowered.
 \end{solution}
 
 \begin{solution}{pb:abelian}
@@ -1643,23 +2071,54 @@ where $\lambda_1+\cdots+\lambda_t=e$ is a partition of $e$. The classification t
 \[
 \boxed{A(n)=\prod_{i=1}^rp(e_i)}.
 \]
+The empty product gives $A(1)=1$.
 
-The familiar partition generating function is
+\emph{Convergence before rearranging.}
+For $u>1$, group the positive integers from $2$ onward into the blocks
+$2^j\le n<2^{j+1}$, $j\ge1$. Then
 \[
-\sum_{e\ge0}p(e)x^e
-=\prod_{k\ge1}\frac1{1-x^k}.
+\zeta(u)-1\le\sum_{j\ge1}2^{j(1-u)}<\infty,
+\qquad \zeta(u)-1\le4\,2^{-u}\quad(u\ge2).
 \]
-For real $s>1$ we may put $x=p^{-s}$ and form the absolutely convergent Euler product:
+Only the geometric-series formula is used here.
+If $a_j\ge0$ and $\sum a_j<\infty$, the products $\prod(1+a_j)$ also
+converge to a finite number: choose a tail with sum $b<1$; expanding any
+finite tail product bounds it by $1+b+b^2+\cdots=1/(1-b)$.
+The increasing partial products are therefore bounded.
+The displayed zeta bound now proves convergence of $\prod_{k\ge1}\zeta(ks)$
+for every $s>1$, and also of $\prod_{k\ge3}\zeta(k/2)$.
+
+All sums and products here have nonnegative terms. Their rearrangement can
+be justified directly: define the sum of a nonnegative family as the
+supremum of its finite subsums. Every finite collection of indices fits
+inside a sufficiently large finite rectangular truncation, and conversely,
+so changing their order leaves the supremum unchanged. The bounds just
+proved make the sums in use finite.
+For a finite set of primes, expand geometric factors
+$\prod_p(1-p^{-u})^{-1}$. Unique prime factorisation counts precisely the
+integers using those primes. Increasing the prime set therefore gives
+$\zeta(u)=\prod_p(1-p^{-u})^{-1}$ for $u>1$.
+
+Similarly, expanding the finite partition product through $k=K$ counts
+partitions with all parts at most $K$. Each coefficient of $x^e$ is fixed
+once $K\ge e$. The product is finite for $0\le x<1$, by the preceding
+product bound applied to $a_k=x^k/(1-x^k)$, whose sum is bounded by a
+geometric series. Taking the nonnegative limits gives
+\[
+\sum_{e\ge0}p(e)x^e=\prod_{k\ge1}(1-x^k)^{-1},\qquad p(0)=1.
+\]
+For real $s>1$, set $x=p^{-s}$ and expand first over finitely many primes
+and parts. The finite-coefficient count and the nonnegative limits give
 \[
 \begin{aligned}
 \sum_{n\ge1}\frac{A(n)}{n^s}
-&=\prod_{p\text{ prime}}
-\left(\sum_{e\ge0}p(e)p^{-es}\right)\\
-&=\prod_p\prod_{k\ge1}(1-p^{-ks})^{-1}\\
-&=\boxed{\prod_{k\ge1}\zeta(ks)}.
+&=\prod_{p\text{ prime}}\left(\sum_{e\ge0}p(e)p^{-es}\right)\\
+&=\prod_p\prod_{k\ge1}(1-p^{-ks})^{-1}
+=\boxed{\prod_{k\ge1}\zeta(ks)}.
 \end{aligned}
 \]
-Absolute convergence allows us to rearrange these non-negative factors.
+The last product's proved finite bound justifies the earlier expansions.
+
 
 (b) Separate the $k=1$ term:
 \[
@@ -1668,7 +2127,7 @@ Absolute convergence allows us to rearrange these non-negative factors.
 G(s)=\prod_{k\ge2}\zeta(ks)
 =\sum_{m\ge1}g(m)m^{-s}.
 \]
-All coefficients $g(m)$ are non-negative, and multiplication by $\zeta(s)$ means Dirichlet convolution with the constant-one function. Comparing coefficients gives
+The coefficients $g(m)$ count the finite factorizations $m=\prod_{k\ge2}r_k^k$ with $r_k\ge1$. Only $k\le\log_2m$ can have $r_k>1$, so the count is finite before any limit. Multiplying by the $k=1$ factor and counting the same finite factorizations gives
 \[
 A(n)=\sum_{m\mid n}g(m).
 \]
@@ -1677,7 +2136,7 @@ Therefore for $x\ge1$,
 \sum_{n\le x}A(n)
 =\sum_{m\le x}g(m)\left\lfloor\frac xm\right\rfloor.
 \]
-Write $\lfloor x/m\rfloor=x/m+O(1)$ to obtain
+The error in replacing $\lfloor x/m\rfloor$ by $x/m$ has absolute value at most $1$. Since $g(m)\ge0$, this gives
 \[
 \sum_{n\le x}A(n)
 =x\sum_{m\le x}\frac{g(m)}m
@@ -1689,9 +2148,9 @@ We now bound the second term and the missing tail of the first. Factor
 G(s)=\zeta(2s)K(s),\qquad
 K(s)=\prod_{k\ge3}\zeta(ks)=\sum_{j\ge1}h(j)j^{-s}.
 \]
-The coefficients $h(j)$ are non-negative, and $K(1/2)<\infty$ because $ks>1$ for every $k\ge3$ at $s=1/2$, and the product converges.
+The nonnegative $h(j)$ likewise count the finite factorizations using only powers $k\ge3$. The bound proved in part (a) gives $K(1/2)<\infty$, including its first factor $\zeta(3/2)$ and the geometrically decaying remaining factors.
 
-Since the coefficients of $\zeta(2s)$ are the indicator of perfect squares, Dirichlet convolution gives
+Grouping each finite factorization by its perfect-square factor gives
 \[
 g(m)=\sum_{r^2j=m}h(j).
 \]
@@ -1706,32 +2165,35 @@ Consequently
 \]
 This proves that the rounding error is $O(\sqrt x)$.
 
-Let $G_0(y)=\sum_{m\le y}g(m)$. By partial summation and $G_0(y)\le K(1/2)\sqrt y$,
+Let $G_0(y)=\sum_{m\le y}g(m)\le K(1/2)\sqrt y$.
+Bound the tail in the disjoint intervals $(2^jx,2^{j+1}x]$:
 \[
+\begin{aligned}
 \sum_{m>x}\frac{g(m)}m
-\le \int_x^\infty\frac{G_0(y)}{y^2}\,\dd y
-\le K(1/2)\int_x^\infty y^{-3/2}\,\dd y
-=O(x^{-1/2}).
+&\le\sum_{j\ge0}\frac{G_0(2^{j+1}x)}{2^jx}\\
+&\le\frac{\sqrt2\,K(1/2)}{\sqrt x}
+       \sum_{j\ge0}2^{-j/2}=O(x^{-1/2}).
+\end{aligned}
 \]
-The first inequality can be seen by writing each $g(m)/m$ as the integral of $g(m)y^{-2}$ over $y\ge m$, and accounting for the endpoint; it is also an immediate consequence of the partial-summation formula.
-
+This is a comparison of nonnegative finite sums followed by a geometric
+limit. The geometric comparison supplies the entire tail estimate.
 Thus
 \[
 \sum_{m\le x}\frac{g(m)}m
 =\sum_{m\ge1}\frac{g(m)}m+O(x^{-1/2})
-=G(1)+O(x^{-1/2}).
+=\prod_{k\ge2}\zeta(k)+O(x^{-1/2}).
 \]
 Substitution yields
 \[
 \boxed{\sum_{n\le x}A(n)=cx+O(\sqrt x)},
 \qquad
-c=G(1)=\boxed{\prod_{k\ge2}\zeta(k)}
+c=\sum_{m\ge1}\frac{g(m)}m=\boxed{\prod_{k\ge2}\zeta(k)}
 =2.2948\ldots.
 \]
 
 Dividing by $x$ gives an average of approximately $2.29$ isomorphism classes of abelian groups per positive integer order. The error term controls the average; it does not imply that each individual $A(n)$ is close to $c$.
 
-\tools The classification of finite abelian groups; Euler products and partial summation from Volumes~2 and~6.
+\tools Corollary~\ref{cor:abelian}; unique prime factorisation, finite geometric products and Volume~1's monotone/geometric limits. All convergence and tail bounds are proved above.
 \end{solution}
 
 \begin{solution}{pb:dodecaturns}
@@ -1773,7 +2235,7 @@ Taking traces again gives
 =d\left(\frac{\widehat\mu(\chi_\rho)}d\right)^t.
 \]
 
-Irreducible characters form an orthonormal basis of the class functions. Fourier inversion for a class function $F$ is
+The complex conjugates of the irreducible characters also form an orthonormal basis, by conjugating the original basis expansion. Its coefficient for a class function $F$ along $\overline\chi$ is $\widehat F(\chi)/|G|$, so
 \[
 F(g)=\frac1{|G|}\sum_{\chi\text{ irreducible}}
 \widehat F(\chi)\overline{\chi(g)}.
@@ -1794,7 +2256,14 @@ Since $\mu$ is uniform on that class, its Fourier scalar in the representation o
 \[
 1,\quad0,\quad0,\quad\frac14,\quad-\frac15.
 \]
-At $g=e$, each character takes its degree as value. For $t\ge1$, the two zero-scalar terms disappear, and the inversion formula becomes
+At $g=e$, each character takes its degree as value. Retaining all five
+terms gives, for every $t\ge0$,
+\[
+\boxed{\Pr(X_t=e)=\frac{1+18\cdot0^t+16\cdot4^{-t}
++25(-1/5)^t}{60}}.
+\]
+At $t=0$, the convention from (a) makes the numerator $60$.
+For $t\ge1$, the two zero-scalar terms disappear and this simplifies to
 \[
 \boxed{\Pr(X_t=e)
 =\frac1{60}\left(1+16\cdot4^{-t}
@@ -1806,17 +2275,18 @@ For $t=1$ this is $0$, as expected because one turn cannot be the identity. For 
 \]
 Indeed the second turn must be the inverse of the first; among the $20$ equally likely turns there is exactly one such inverse.
 
-(c) Fix a rotation $g$ through $72^\circ$ or $-72^\circ$ about a vertex axis. These rotations form a conjugacy class of $12$ elements. The degree-$4$ character has value $-1$ on this class, and the degree-$5$ character has value $0$; the two degree-$3$ characters again contribute nothing for $t\ge1$. Hence
+(c) Fix a rotation $g$ through $72^\circ$ or $-72^\circ$ about a vertex axis. These rotations form a conjugacy class of $12$ elements. The degree-$4$ character has value $-1$ on this class, and the degree-$5$ character has value $0$; the two degree-$3$ values sum to $\varphi+(1-\varphi)=1$. Their joint contribution is therefore $3\cdot0^t$, giving for every $t\ge0$
 \[
-\Pr(X_t=g)=\frac1{60}\left(1-4\cdot4^{-t}\right).
+\Pr(X_t=g)=\frac1{60}\left(1+3\cdot0^t-4\cdot4^{-t}\right).
 \]
 There are $12$ such rotations: six axes and two fifth-turn directions along each axis. Summing their equal probabilities gives
 \[
 \boxed{\Pr(\text{a fifth-turn rotation at time }t)
-=\frac15\left(1-4^{1-t}\right)}
-\qquad(t\ge1).
+=\frac15\left(1+3\cdot0^t-4\cdot4^{-t}\right)}
+\qquad(t\ge0).
 \]
-At $t=1$ the value is $0$; at $t=2$ it is $3/20$.
+For $t\ge1$ this is $\frac15(1-4^{1-t})$.
+At $t=1$ the value is $0$; at $t=2$ it is $3/20$. At $t=0$, before any turn, the return probability is $1$ and the fifth-turn probability is $0$; the shorter formulas in (b) and (c) apply only for $t\ge1$.
 
 For convergence, the Fourier formula gives for any $g\in A_5$ and $t\ge1$
 \[
@@ -1842,11 +2312,11 @@ So the uniform law is approached at the genuine rate $4^{-t}$, not merely at som
 \section*{Sources and further reading}
 
 \begin{itemize}
-\item W.~R.~Hamilton, \emph{On quaternions, or on a new system of imaginaries in algebra}, Philosophical Magazine 25 (1844), 10--13, and the following instalments. The discovery, a few months after the walk.
-\item F.~Klein, \emph{Vorlesungen über das Ikosaeder und die Auflösung der Gleichungen vom fünften Grade}, Teubner, 1884 (English: \emph{Lectures on the Icosahedron}, Dover). Finite rotation groups, and the quintic solved with the icosahedron.
+\item W.~R.~Hamilton, \emph{On quaternions, or on a new system of imaginaries in algebra}, Philosophical Magazine 25 (1844), 10--13, and the following instalments. Hamilton's multiplication rules; this chapter realizes them through matrices.
+\item F.~Klein, \emph{Vorlesungen über das Ikosaeder und die Auflösung der Gleichungen vom fünften Grade}, Teubner, 1884 (English translation by G.~G.~Morrice: \emph{Lectures on the Icosahedron and the Solution of Equations of the Fifth Degree}, Dover, 1956). Further reading on polyhedral symmetry and the quintic.
 \item A.~Hurwitz, \emph{Über die Zahlentheorie der Quaternionen}, Nachr.\ Ges.\ Wiss.\ Göttingen (1896), 313--340. The ring $\mathcal H$ and the four-square theorem.
 \item J.~Stillwell, \emph{Naive Lie Theory}, Springer, 2008. Quaternions, $SU(2)$, $SO(3)$, and the first steps of Lie theory.
 \item J.~H.~Conway and D.~A.~Smith, \emph{On Quaternions and Octonions}, A K Peters, 2003. The finite groups of quaternions, Hurwitz arithmetic, and the octonions.
-\item M.~A.~Armstrong, \emph{Groups and Symmetry}, Springer, 1988, Chapter~19. The classification of finite rotation groups by counting poles.
-\item K.~Shoemake, \emph{Animating rotation with quaternion curves}, SIGGRAPH Computer Graphics 19 (1985), 245--254. Quaternion interpolation (slerp) in computer graphics.
+\item M.~A.~Armstrong, \emph{Groups and Symmetry}, Springer, 1988, Chapter~19, pp.~104--112, ``Finite Rotation Groups.''
+\item K.~Shoemake, \emph{Animating rotation with quaternion curves}, ACM SIGGRAPH Computer Graphics 19(3) (1985), 245--254, Section~3.3. Spherical interpolation for animation.
 \end{itemize}
