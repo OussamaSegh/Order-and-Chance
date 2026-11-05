@@ -89,6 +89,9 @@ class Volume3InternalReview(unittest.TestCase):
     def test_combinatorial_planar_maximum(self):
         check_appendix_c.check_planar_maximum()
 
+    def test_combinatorial_research_guide_locators(self):
+        check_appendix_c.check_research_guide()
+
     def test_symmetry_appendix_fourier_cubic_and_actual_figures(self):
         check_appendix_b.check_circulants_and_cubic()
         check_appendix_b.check_paley_and_actual_figures()

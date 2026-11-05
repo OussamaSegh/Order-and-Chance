@@ -4,11 +4,12 @@ Internal AI review, not a human or spoken read-aloud session. Main route and all
 four appendix sources have been read completely during their A/B reviews. This
 map records the actual earned route. The final keyed global written cadence and
 adversarial first-reader pass has closure through all twelve main chapters,
-front/end matter and Appendices A/B at V3-033:772 global records.81 C/D rows and
-all116 whole-volume conceptual later-use chains remain pending. B asks which
-basis is known before the entries: cyclic shifts lead to characters, cube
-distances to code bounds, and the regular representation to full determinant
-factors. The next appendix asks how linear algebra counts without a group action.
+front/end matter and Appendices A/B/C at V3-035:837 global records.16 D rows and
+all116 whole-volume conceptual later-use chains remain pending. C moves from
+clubs/incidence vectors to separating polynomials, finite grids and the concrete
+SET question; the complete slice proof counts low-degree monomials. Its ending
+asks how to construct orthogonal sign rows, the actual question of the following
+Hadamard appendix. Every optional route remains in scope.
 A map alone does not approve prose or dependencies; see the keyed global reports.
 
 | Source | Incoming question | Earned answer | Reason for the next source |

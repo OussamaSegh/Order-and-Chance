@@ -386,6 +386,16 @@ def check_planar_maximum(source=None):
         assert separation not in (one, t)
 
 
+def check_research_guide(source=None):
+    """Guard the verified published-paper locators, not the research proof."""
+    source = SOURCE.read_text() if source is None else source
+    guide = source.split(r'\emph{Research papers to read after this chapter.}', 1)[1]
+    assert 'its Lemma~1' not in guide
+    assert 'Its Proposition~2 bounds the rank of a matrix' in guide
+    assert 'Theorem~4 obtains the corresponding finite-field bound' in guide
+    assert 'Compare that matrix argument with the symmetric three-variable proof' in guide
+
+
 def check_earlier_printed_order(perron_source=None):
     def chapter_map(volume):
         source = (ROOT/volume/'main.tex').read_text()
@@ -424,5 +434,6 @@ if __name__ == '__main__':
     check_actual_figures()
     check_local_contract()
     check_planar_maximum()
+    check_research_guide()
     check_earlier_printed_order()
     print('Combinatorial appendix: exact incidence/polynomial/field/count/figure probes pass; no approval generated.')

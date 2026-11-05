@@ -1,11 +1,12 @@
 # Conceptual prerequisite and story ledger
 
-Current V3-033: all twelve main chapters and four appendices have fresh core
-A/B evidence. Separate global closure through main/front/end/A/B totals772 manual
-rows;81 C/D rows,35/392 label uses and1/88 literal earlier context remain pending.
-114 first chains reviewed,two pending; all116 whole-volume later-use chains still
-pending.277 older accepted global rows need explicit domain/claim columns. The
-historical table below does not override current keyed source/evidence records.
+Current V3-035: all twelve main chapters and four appendices have fresh core
+A/B evidence. Separate global closure through main/front/end/A/B/C totals837
+manual rows;16 D global rows and9/393 label occurrences remain pending.
+All88 literal earlier contexts and all116 first-use chains reviewed; all116
+whole-volume later-use chains still pending.277 older accepted global rows need
+explicit domain/claim fields. The historical table below does not override
+current keyed source/evidence records.
 
 | Concept | Definition/example before invocation | Actual proof location read | First valid use / correction |
 | --- | --- | --- | --- |

@@ -1175,3 +1175,163 @@ Several guessed/dead publisher URLs and three rate-limited Crossref requests
 failed; those failures are not evidence and no access control was bypassed.
 Current source bibliography has only supported, bounded annotations. Research
 outlooks supply no premise to any main/appendix proof or exercise.
+
+## H-APPC — complete Appendix C attribution/bibliography pass (V3-035)
+
+Access 5 November2026. Solo internal AI source review, not human refereeing or
+formal verification. Seven actual bibliography groups now contain25 works.
+External metadata/content approval is bounded below; every local mathematical
+argument has its separate full reconstruction/adversarial record. No title,
+search snippet, abstract or loading success supplies a missing premise.
+
+1. **Stories.** Actual Wiley frontmatter
+   https://onlinelibrary.wiley.com/doi/10.1002/9781118164518.fmatter distinguishes
+   Artin1957 copyright,1988 reprint and2011 online publication. Actual Axler
+   author presentation https://www.axler.net/SingularJMM.pdf slide3 was opened
+   as an image: it reproduces the identical matrices quotation, author,1957
+   and book cover. Original Artin page was not inspected; the old ChapterI
+   precision is removed, without declaring the quote false.50% is rhetorical,
+   not an empirical measurement. Actual GoogleBooks Michigan-digitization body
+   https://books.google.com/books/about/R_A_Fisher_the_Life_of_a_Scientist.html?id=JOfuAAAAMAAJ
+   gives JoanFisherBox,title,Wiley1978; no full biography read. The workplace-
+   specific content pointer is narrowed to a generic biography reference.
+   Actual PlayMonster publisher body https://playmonster.com/set-marsha-falco/
+   supports Falco1974/Cambridge/animal-genetics/filecards. The source now keeps
+   only those bounded details, not the unsupported epileptic-dogs anecdote.
+   Commercial release1990 there differs from1991 in Princeton's account;
+   neither is inserted as settled history.
+   Actual Princeton Fall2016 catalog entry, PDF30/printed31,
+   https://assets.press.princeton.edu/catalogs/F16Trade.pdf names all four
+   McMahon/Gordon authors and December2016 announcement. Actual publisher-
+   deposited JSTOR book body https://www.jstor.org/stable/j.ctvc77gk2 gives
+   copyright2017/title/authors and chapter excerpts on coordinates/affine
+   geometry. Use2017 as the bibliography's copyright-year convention; distinguish
+   the2016 release/catalog announcement. No full book read. Removed unsupported
+   assertion that it covers the Ellenberg–Gijswijt bound; the accessible text
+   did not establish that specific content. Original Artin quotation is retained
+   on actual secondary corroboration, not misdescribed as a primary-page read.
+
+2. **Linear algebra method.** Actual Matousek public author preliminary PDF,
+   https://kam.mff.cuni.cz/~matousek/la-ams.html (actual download/file hash in
+   V3-035-research-files.json), introductionix identifies Babai/Frankl preliminary
+   version2,UniversityChicago1992. Its actual Oddtown text7–8 and Fisher discussion/
+   references printed10 were read; author page confirms AMS2010/2012 printing
+   errata. Babai author hosts returned503/502; no full original book read.
+   Unsupported2020 second-edition detail removed without claiming that no such
+   edition exists. Publisher-deposited Crossref10.4153/CMB-1969-059-3 gives
+   BerlekampCMB12(4)(1969),471–474;2018 online upload is not original publication.
+   Actual Sudakov/Vieira, SIAM32(2018),280–295, introduction280,
+   https://kam.mff.cuni.cz/~spring/2020/clanky/store/OddEvenTowns.pdf explicitly
+   attributes Oddtown to Berlekamp and Eventown independently to Berlekamp and
+   Graver. That is scholarly corroboration of attribution, not a read of their
+   complete original proofs. Actual Graver publisher metadata10.1016/0024-3795(75)90003-8
+   identifies *Boolean designs and self-dual matroids*,LAA10(2),April1975,111–128;
+   full publisher article returned403. No broad new research result in the2018
+   paper is certified. The book proves both required incidence results locally.
+
+3. **Designs.** Actual publisher-deposited Crossref bodies10.1111/j.1469-1809.1940.tb02237.x
+   and10.1214/aoms/1177729958 confirm FisherAnnEugenics10(1940),52–75 and
+   BoseAnnMathStat20(1949),619–620 exact titles/bylines. Later online dates2012
+   and modern metadata are not the original years. Actual Matousek printed10
+   identifies nonuniform Fisher as K.N.Majumdar,*On some theorems in combinatorics
+   relating to incomplete block designs*,AnnMathStat24(1953),377–389, and later
+   rediscovery by Isbell1959. This corroborates the local statement's narrowed
+   attribution; the full1953 original was not read. Actual original deBruijn/Erdos
+   first page https://users.renyi.hu/~p_erdos/1948-01.pdf was opened as an image:
+   actual pair-unique-block theorem/equality statement and November27,1948
+   communication. The actual institute index body
+   https://www.renyi.hu/en/node/4094 gives the dual Proc51,1277–1279 /
+   IndagMath10,421–423 pagination. Three-page file downloaded; first page read,
+   not the whole external classification proof. A Crossref query hit a1993
+   deBruijn-torus paper; it was explicitly rejected rather than copied.
+
+4. **Few distances and the Kelly refinement of evidence.** Actual publisher-
+   deposited Crossref10.1112/blms/9.3.261 gives Larman/Rogers/Seidel,BLMS9(3),
+   November1977,261–267; online2016 is later. Actual CWI record
+   https://ir.cwi.nl/pub/12716 gives Blokhuis1984. Its actual original PDF,
+   https://ir.cwi.nl/pub/12716/12716D.pdf title page shows CWITract7/author/title.
+   Actual printed26/PDF34 opened: Theorem4.1.1 gives binom(d+s,s), by adding
+   independent functions. This corroborates our locally complete affine
+   refinement. Actual printed49/PDF57 opened: Kelly's planar **isosceles-set**
+   maximum is6, uniquely the centred regular pentagon. Bibliography[K] read:
+   L.M.Kelly,1947,*Isosceles n-points*,Monthly54,227–229. The centred pentagon
+   has the centre-to-vertex distance plus distinct side/diagonal distances,
+   hence three distances. The classification therefore **does imply** the
+   two-distance maximum5. Earlier exact-role uncertainty is resolved to this
+   extent; do not describe the old Kelly attribution as false or unrelated.
+   Original JSTOR2304710 text remained inaccessible. Restore a qualified
+   related-classification reference via Blokhuis, with correct page range,
+   while retaining the independently earned complete local5 proof. No full
+   CWI82-page research-proof audit claimed; actual read scopes are above.
+
+5. **Intersections and further research.** Actual exact publisher-deposited
+   Crossref records10.1007/BF02579457 (Frankl/Wilson,Combinatorica1(1981),357–368),
+   10.1090/S0273-0979-1993-00398-7 (Kahn/Kalai,BAMS29(1993),60–62),
+   10.4007/annals.2019.189.3.1 (Chattopadhyay/Zuckerman,Annals189(2019),653–705)
+   confirm every title/byline/volume/page/year. No complete research proof,
+   current best extractor bound or priority claim certified from that metadata.
+   The removed two-pages aside contradicted inclusive60–62=three pages.
+   All local explicit Ramsey assertions have complete independent proofs.
+
+6. **Polynomial method and zero sums.** Exact publisher-deposited
+   Crossref10.1017/S0963548398003411 confirms AlonCPC8(1999),7–29.
+   Actual EGZ original reprint first page opened:
+   https://users.renyi.hu/~p_erdos/1961-25.pdf , August1961,10F1,all three
+   authors and2n-1/n zero-sum theorem. Download contains two scanned reprint
+   pages; full original proof not audited; bibliography's41–43 pagination
+   corroborated by scholarly archive metadata, not inferred from reprint length.
+   Actual Dvir author preprint https://www.cs.princeton.edu/~zdvir/papers/Dvir09.pdf
+   introduction and **entire Section3 proof** read. It is datedApril2008;
+   JAMS22(2009),1093–1097/10.1090/S0894-0347-08-00607-3 is the later journal
+   identity, confirmed by exact publisher-deposited metadata. Section1 credits
+   independent Alon/Tao improvement. Its sharp binomial proof matches the local
+   full Dvir solution; our grid lemma explicitly earns formal polynomial
+   vanishing and e0/nonempty boundaries. Old real-Kakeya research status in
+   this preprint is not copied into2026 claims. Actual Springer publisher
+   bodies10.1007/BF02940714 and10.1007/BF02940715 confirm December1935,11,73–75
+   and76–83 for Chevalley/Warning. Their full originals are subscription text,
+   not read. Warning's publisher metadata incorrectly treats words 'Herrn
+   Chevalley' from the title as a coauthor; that obvious metadata parsing error
+   is **not adopted**. Exact local full power-sum/indicator argument supplies
+   the theorem without relying on historical citations.
+
+7. **Caps.** Actual publisher-deposited metadata confirms CLPAnnals185(2017),
+   331–337/10.4007/annals.2017.185.1.7 and EG339–343/10.4007/annals.2017.185.1.8;
+   MeshulamJCTA71(1995),168–172/10.1016/0097-3165(95)90024-1;
+   Edel/Ferret/Landjev/StormeJCTA99(2002),95–110/10.1006/jcta.2002.3261.
+   **Actual published EG article339–342**, through Theorem4 proof, was read at
+   https://annals.math.princeton.edu/wp-content/uploads/annals-v185-n1-p08-p.pdf .
+   Its Proposition2 groups low-degree monomials for a **matrix-rank** bound;
+   the paper refers to Lemma1 of **CLP**, not its own Lemma1. Corrected that
+   wrong locator and distinguished its method/Theorem4 from our symmetric
+   three-variable proof and odd-q extension. No analytic Cramer premise is
+   imported; local rational/MVT proof is complete. Article343 bibliography
+   only partly read; not the entire external research proof certified.
+   Actual Tao author main text13–93 (including every displayed equation and
+   both full diagonal-rank/low-degree lemmas),
+   https://terrytao.wordpress.com/2016/05/18/a-symmetric-formulation-of-the--croot-lev-pach-ellenberg-gijswijt-capset-bound/
+   read:18May2016, three-variable symmetry and what is now called slice rank.
+   The local finite pivot-support proof supplies the needed contraction step
+   explicitly; no later comment or Cramer/Stirling discussion is a premise.
+   Actual DiscreteAnalysis body
+   https://discreteanalysisjournal.com/article/3734-the-growth-rate-of-tri-colored-sum-free-sets
+   gives Kleinberg/Sawin/Speyer,*growth rate*,6July2018,2018:12,10pages,
+   DOI10.19086/da.3734; corrected missing word *rate*. Relevant publisher
+   explanatory text read, not full research proof certified.
+   Nature redirects were inaccessible and PMC returned a CAPTCHA. The ordinary
+   public OA repository API, not a CAPTCHA bypass,
+   https://www.ebi.ac.uk/europepmc/webservices/rest/PMC10794145/fullTextXML
+   supplied the article. Actual metadata gives Romera-Paredes etal,Nature625,
+   468–475,print2024,online14December2023. **Full Cap sets section**, including
+   construction discussion/Figures3–4 captions, read: authors report512 vectors
+   in dimension8 and a generating program. This supports only the bounded
+   statement 'reports computer-assisted cap-set constructions'. No current
+   best bound, complete supplementary search or program-generated construction
+   independently certified. The manuscript's old 'current lower bound' had
+   already been removed. No unsupported new research result is announced here.
+
+Downloaded-file identities are in V3-035-research-files.json. Raw exact Crossref
+query results are /tmp/volume3-v034-crossref.json; twelve matches were read and
+the wrong deBruijn result rejected. Search results were leads, never original-
+text evidence. Failed web PDF fetches were followed by ordinary requests to the
+same public author URLs where successful, with actual content checks/hashes.
