@@ -126,7 +126,13 @@ class TestVolume2Manuscript(unittest.TestCase):
         self.assertIn(r"\begin{proposition}[roots of unity]", complex_roots)
         self.assertIn(r"\begin{theorem}[roots-of-unity filter]", complex_roots)
         self.assertIn("[Brahmagupta's identity]", complex_roots)
-        self.assertIn(r"\begin{reminder}[well ordering]", sums)
+        # Well ordering is stated as a definition, then turned into induction.
+        # The old reminder box was the same principle; the definition keeps it
+        # on the page before the proof that uses it.
+        self.assertIn(r"\begin{definitionx}[well ordering]", sums)
+        self.assertIn(r"Every nonempty subset of $\N$ has a least element.", sums)
+        self.assertIn(r"\begin{proposition}[induction principles]", sums)
+        self.assertIn("Well ordering gives strong induction.", sums)
 
         expected = {
             "ch04-arithmetic-functions": (

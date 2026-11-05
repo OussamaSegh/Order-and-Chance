@@ -46,7 +46,7 @@ A few part names were adjusted so the part matches the chapters that actually si
 | --- | --- | --- |
 | 1 First Principles | The Language of Proof | Language |
 | 1 | Counting and Sums | Sums, counting |
-| 1 | Algebra, Limits and Functions | Sequences, complex numbers, polynomials, linear algebra, integrals. The requested name was “Limits and Functions”; algebra is in this block. |
+| 1 | Algebra, Limits and Functions | Sequences, orders, complex numbers, polynomials, linear algebra, integrals. The requested name was “Limits and Functions”; algebra is in this block. Orders sits between sequences and complex numbers. |
 | 1 | Chance and Inequality | Inequalities, probability |
 | 2 The Integers | Divisibility | Divisibility |
 | 2 | The Primes | Primes |

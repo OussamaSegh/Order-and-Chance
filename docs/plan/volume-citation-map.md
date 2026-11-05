@@ -307,7 +307,7 @@ The pass left these because one phrase named two homes, or the appendix letter w
 | --- | --- |
 | `volume2-integers` reciprocity tools | Cyclic units and reciprocity stay in Volume 2, Chapters 4 and 5. The \(p\)-adic squares are Volume 13, Chapter 8. |
 | `volume2-integers` characters tools | \(\mathbb Z[\omega]\) stays in Volume 2, Chapter 10. The quadratic integers are Volume 13, Chapter 1. |
-| `volume4-chance` `ch12-method.tex` | Adjacency eigenvalues are Volume 8, Chapter 9. Ramanujan graphs are Volume 8, Chapter 11. The matrix-tree theorem is Volume 12, Appendix A. Stirling's formula is Volume 1, Exercise 3.7. Jensen's inequality is Volume 1, Theorem 9.2. The Collatz appendix is not in the printed series; the sentence keeps the open question and drops the pointer. |
+| `volume4-chance` `ch12-method.tex` | Adjacency eigenvalues are Volume 8, Chapter 9. Ramanujan graphs are Volume 8, Chapter 11. The matrix-tree theorem is Volume 12, Appendix A. The central-binomial form of Stirling's formula, with the constant $\sqrt{2\pi}$, is Volume 1, Theorem 8.6. Exercise 3.7 only sharpens the shape and leaves the constant unknown. Jensen's inequality is Volume 1, Theorem 9.2. The Collatz appendix is not in the printed series; the sentence keeps the open question and drops the pointer. |
 | `volume8-analysis` `linear-ch08-graphs.tex` | Cheeger is Chapter 10 of that book, expanders and Ramanujan graphs are Chapter 11, and the matrix-tree theorem is Volume 12, Appendix A. |
 | `volume8-analysis` `linear-ch11-inequalities.tex` | The order-\(668\) account is not a printed chapter. Volume 3, Chapter 13, builds the known Hadamard matrices. |
 | `volume9-shapes` forms, curvature, coverings | The continuous argument is Volume 7, Lemma 6.1, in the Jordan chapter. |
