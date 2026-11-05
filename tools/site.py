@@ -145,7 +145,7 @@ def main(dist: str, out: str) -> None:
         print_file = dist_dir / "kdp" / filename(volume, "print", ROOT)
         if print_file.exists():
             shutil.copy(print_file, out_dir / print_file.name)
-            print_pdf = f'<a href="{quote(print_file.name)}" download title="Paperback interior without the front cover">Print PDF</a>'
+            print_pdf = f'<a href="{quote(print_file.name)}" download title="Paperback interior with bleed; choose Bleed (PDF only) in KDP">Print PDF</a>'
         kdp = []
         for suffix, label, tip in KDP:
             src = dist_dir / "kdp" / filename(volume, suffix, ROOT)

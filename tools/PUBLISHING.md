@@ -12,7 +12,7 @@ readable label and verifies its stored name, byte count and supplied SHA-256 dig
 GitHub replaces spaces with dots even on asset rename; its release labels retain
 the readable names. GitHub Pages downloads preserve literal spaces and are the
 canonical direct download links in the README. Source directories and reader routes use the
-`volumeN-` stems. A reader URL published under the previous stem redirects to that route. Cache schema 8 forces a full rebuild; stale old downloads
+`volumeN-` stems. A reader URL published under the previous stem redirects to that route. Cache schema 9 forces a full rebuild; stale old downloads
 are removed during assembly. There are still exactly two PDFs and one EPUB per book.
 
 # Required KDP export preparation
@@ -27,7 +27,7 @@ artwork is preserved. Images must retain genuine >=300 physical ppi.
 
 The final files require structural/provenance checks and visual comparison against
 their raw source, with `kdp-preflight.json` and `cover-preflight.json` retained by
-CI and the schema-8 cache. The actual exported print count determines every spine.
+CI and the schema-9 cache. The actual exported print count determines every spine.
 Ghostscript, Poppler and pinned PyMuPDF are required. This latest rule supersedes
 historical raw-TeX-copy, identical-print/read-stream and paper-only final-cover
 raster instructions below. It does not authorize changes to manuscript content,
@@ -55,7 +55,7 @@ remain vectors. Normal builds use committed artwork; the regression suite also u
 
 # Publishing a volume on Amazon KDP
 
-`./build.sh` produces two distinct **7 × 10 inch PDFs** and one **EPUB** per volume,
+`./build.sh` produces a **7 × 10 inch reading PDF**, a **7.125 × 10.25 inch print PDF with bleed**, and one **EPUB** per volume,
 plus the paperback cover and publishing metadata:
 
 | File | What it is | Where it goes in KDP |
@@ -63,12 +63,12 @@ plus the paperback cover and publishing metadata:
 | `dist/<Book>.epub` | Reflowable eBook with cover, table of contents and copyright page | Kindle eBook > Manuscript |
 | `dist/kdp/<Book> - eBook Cover.jpg` | Front cover, 1792 x 2560 px JPEG | Kindle eBook > Cover |
 | `dist/<Book>.pdf` | Downloadable reading PDF with the approved front cover followed by the complete interior | Public download; use the print file below for KDP |
-| `dist/kdp/<Book> - Print.pdf` | Paperback interior without the front cover: 7 x 10 in, no bleed, embedded fonts | Paperback > Manuscript |
+| `dist/kdp/<Book> - Print.pdf` | Paperback interior without the front cover: 7.125 x 10.25 in with bleed, 7 x 10 finished trim, embedded fonts | Paperback > Manuscript |
 | `dist/kdp/<Book> - Paperback Cover.pdf` | Back cover, spine and front cover with 0.125 in bleed | Paperback > Cover ("upload a cover you already have") |
 | `dist/kdp/<Book> - Print Metadata.json` | Actual pages, spine, margins and cover sheet dimensions | Production reference |
 | `dist/kdp/<Book> - Publishing Listing.md` | Title fields, description (at most 4000 characters) and 7 keywords | Kindle eBook and Paperback > Details |
 
-In KDP choose: trim size 7 x 10 in, **Premium color ink on white paper**, no bleed, matte or glossy cover.
+In KDP choose: trim size 7 x 10 in, **Premium color ink on white paper**, **Bleed (PDF only)**, matte or glossy cover.
 The download page links the publishing files on each volume's card ("Paperback & publishing files").
 The spine width is computed for Premium color on white paper (**0.002347 in per page**).
 Colour interiors do not use the black-ink/cream-paper coefficients. Premium colour
@@ -128,7 +128,7 @@ KDP rules followed by the build (checked against the KDP help pages in October 2
 
 ## Shared print layout and local paperback builds
 
-The production trim for all fifteen main volumes and the problem book is
+The production trim for all fifteen volumes is
 **7 × 10 inches**. `common/print-layout.json` defines trim, bleed and the white-paper
 premium-colour spine coefficient. After editing it, run `python3 tools/print_layout.py` to regenerate
 its tracked TeX counterpart. The normal build and CI reject an unsynchronised pair.
@@ -139,7 +139,8 @@ the build removes their old output files. The separate `-print.pdf` is now requi
 listings and `dist/kdp/<Book> - Print Metadata.json` without rebuilding EPUB or HTML.
 The metadata records the actual interior page count, even-rounded KDP page count,
 spine, gutter and exact cover sheet size. Never reuse a wrap from the former trim.
-All interior pages are checked at 504 × 720 PDF points; wraps are checked at
+Reading/source pages are checked at 504 × 720 PDF points; print pages at
+513 × 738 points with mirrored 7 × 10 trim and extended divider backgrounds. Wraps are checked at
 (14.25 + spine) × 10.25 inches. Fonts must be embedded vector fonts.
 
 ### Pagination and source preparation
@@ -161,16 +162,17 @@ changes because its spine depends on the new actual page count.
 EPUB CSS requests whole boxes and keeps headings with following content. Reading
 systems control pagination and may divide material taller than their viewport.
 
-`tools/book_pdf.py` clones the complete print PDF and inserts the uniformly scaled
+`tools/book_pdf.py` clones the original typeset PDF and inserts the uniformly scaled
 front page, preserving body streams, annotations, metadata, bookmarks and named
 destinations. The cover has its own page label; interior labels are preserved.
 Install `tools/requirements-build.txt` for the pinned PDF library and Pillow.
 
-Cache schema 6 and the `library-v6-` Actions namespace force a full migration.
-Before snapshotting, both PDFs are checked for 7 × 10 geometry and embedded
-fonts. The print page count must agree with paperback metadata; the reading file
-must have exactly one added cover and identical body streams, annotation counts,
-page labels and correctly shifted named destinations. Retired
+Cache schema 9 and the `library-v9-` Actions namespace force all volumes to rebuild.
+Before snapshotting, the reading PDF's 7 × 10 pages and the print PDF's bleed
+canvas/trim/backgrounds are checked with embedded fonts. The print page count
+must agree with paperback metadata; the reading file must have exactly one added
+cover and retain the raw source's body streams, annotation counts, page labels and
+correctly shifted named destinations. The trimmed print must match visually. Retired
 variants are removed during cache assembly and rejected before release. Missing
 PDF, EPUB, reader, covers or metadata makes a cached book incomplete.
 

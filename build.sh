@@ -52,7 +52,8 @@ for volume in "${volumes[@]}"; do
     pdftoppm -png -singlefile -scale-to-x 1792 -scale-to-y 2560 "$out/cover.pdf" "$out/cover"
   fi
 
-  # Typeset the print interior once: 7 x 10 in, no bleed. The full
+  # Typeset once at the 7 x 10 trim for reading. The print exporter adds
+  # mirrored outside/top/bottom bleed without scaling or reflowing this body. The full
   # cover (back, spine, front) with 0.125in bleed and the spine width of KDP's formula for white
   # paper, 0.002347in per page for premium colour. The interior design (docs/design/interior.md)
   # uses a 0.9in gutter at every page count, which meets KDP's inside-margin minimum up to 828 pages.
@@ -74,7 +75,7 @@ for volume in "${volumes[@]}"; do
   python3 "$root/tools/book_pdf.py" "$out/cover.pdf" "$out/main.pdf" "$root/dist/$public.pdf"
   python3 "$root/tools/kdp_pdf.py" "$out/main.pdf" "$root/dist/kdp/$public - Print.pdf" \
     --report "$out/kdp-preflight.json"
-  python3 "$root/tools/check_cover_pdf.py" "$root/dist/kdp/$public - Print.pdf" --interior
+  python3 "$root/tools/check_cover_pdf.py" "$root/dist/kdp/$public - Print.pdf" --interior --bleed
   python3 "$root/tools/check_interior_style.py" "$root/dist/kdp/$public - Print.pdf"
   pages=$(pdfinfo "$root/dist/kdp/$public - Print.pdf" | sed -n 's/^Pages: *//p')
   python3 "$root/tools/check_cover_pdf.py" "$root/dist/$public.pdf" --interior
@@ -102,7 +103,7 @@ for volume in "${volumes[@]}"; do
   pdftoppm -jpeg -jpegopt quality=95 -singlefile -scale-to-x 1792 -scale-to-y 2560 "$out/cover.pdf" \
     "$root/dist/kdp/$public - eBook Cover"
   if $pdf_only; then
-    echo "   dist/$public.pdf (cover + $pages pages); dist/kdp/$public - Print.pdf ($pages print pages, 7 x 10 in)"
+    echo "   dist/$public.pdf (cover + $pages pages, 7 x 10 in); dist/kdp/$public - Print.pdf ($pages print pages, 7.125 x 10.25 in with bleed)"
     continue
   fi
 

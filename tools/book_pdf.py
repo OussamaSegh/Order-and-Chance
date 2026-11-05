@@ -95,7 +95,7 @@ def check_pair(download, interior, report=None):
         raise ValueError('Download must contain one front cover plus the print interior')
     if report is not None:
         check_reading(download, report)
-    compare_pages(download, interior, offset=1)
+    compare_pages(download, interior, offset=1, trim_bleed=True)
     return pages
 
 

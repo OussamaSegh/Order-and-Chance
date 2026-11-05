@@ -88,7 +88,7 @@ def main(volume_dir: str, out: str) -> None:
              f"| Series | {series} (volume: {number}) |",
              "| Edition number | 1 |",
              f"| Paperback trim | {LAYOUT['trim_width_in']} x {LAYOUT['trim_height_in']} in |",
-             "| Paperback interior | Premium color ink, white paper, no bleed |",
+             "| Paperback interior | Premium color ink, white paper, Bleed (PDF only) |",
              "| Author | SEGHAIER Oussama |",
              "| Publishing rights | I own the copyright and I hold the necessary publishing rights |",
              "| Primary audience | Adults; no sexually explicit content |",
