@@ -2,16 +2,14 @@
 
 Internal AI review, not a human or spoken read-aloud session. Main route and all
 four appendix sources have been read completely during their A/B reviews. This
-map records the actual earned mathematical route. The final keyed global
-voice/cadence/adversarial-first-reader pass has manual closure through all12main
-chapters/front/end and AppendixA atV3-031:706globalrecords.147globalrows in B/C/D
-remainpending; all110whole-volumeconcept later-use statuses pending. A now moves
-from rabbit direction to positive spectral dominance, earns period/primitive
-criteria, then defines finite stochastic paths before stationary convergence;
-mean-population and pathwise probability claims are distinguished. The C12
-finitegeometry/loop route is complete, with normal-versus-centre wording clarified
-after actual output inspection. A map alone does not approve prose/dependencies;
-see GLOBAL-CH01–12/GLOBAL-APPA and actual keyed registers.
+map records the actual earned route. The final keyed global written cadence and
+adversarial first-reader pass has closure through all twelve main chapters,
+front/end matter and Appendices A/B at V3-033:772 global records.81 C/D rows and
+all116 whole-volume conceptual later-use chains remain pending. B asks which
+basis is known before the entries: cyclic shifts lead to characters, cube
+distances to code bounds, and the regular representation to full determinant
+factors. The next appendix asks how linear algebra counts without a group action.
+A map alone does not approve prose or dependencies; see the keyed global reports.
 
 | Source | Incoming question | Earned answer | Reason for the next source |
 | --- | --- | --- | --- |

@@ -1110,3 +1110,68 @@ explicitly stated above:
 - Bryan-Leise-2006.pdf: 608079bytes, SHA256 `af2216dce6abe01b13ea40579a2b9810ea227adc0914a481e85a06b6c2a1693c`.
 - Birkhoff-1957-Jentzsch-crossref.json: 2908bytes, SHA256 `df368ae427cea46b79471dccaad432b520eb732767b4c5ec211a165e182112d0`.
 - Dulmage-Mendelsohn-1964-crossref.json: 2963bytes, SHA256 `b59e869618533c17bd97f34060a8beccbab15f8e934dff958be546ac3ed82a13`.
+
+## H-APPB — complete global bibliography/history pass, 5 November 2026
+
+Solo internal AI source review. The earlier V3-015 pending-history paragraph is
+historical; the following evidence and bounded corrections close this B pass.
+No external whole-book or new research proof is certified from metadata/abstract.
+
+The Weyl primary page remained unavailable: the NKU institutional PDF redirects
+to a403, the alternative PDF was inaccessible, and Google Books page5 did not
+open. Actual Cambridge/MAA Kazarinoff, Geometric Inequalities, Chapter3 summary
+quotes the same words and attribution, not just a search snippet:
+https://www.cambridge.org/core/books/abs/geometric-inequalities/reflection-principle/D95D23D8024DFC0F6BB33DC009EE746A
+This is trustworthy secondary corroboration, not an original-page inspection.
+The book now opens with an authored concrete question about a circulant's
+entry-independent eigenbasis. The old quotation is not declared false; its
+removal improves the incoming question and removes an incidental source-access
+issue without losing any mathematical target.
+
+Actually read Patterson, Gauss Sums, printed506-508: diary entries118/123,
+1801 conjecture, August30,1805 proof and September3 letter; the author explicitly
+distinguishes the1811 publication. Actual manuscript facsimile509/510 was opened
+as images, with the dated heading and the lightning passage compared against
+the printed German transcription and English translation. This is a scholarly
+reproduction of a primary letter, not a claim to decipher every handwritten
+word or to certify the entire18-page mathematical chapter. The book now gives
+the letter's exact date and paraphrases the lightning comparison instead of
+presenting an approximate English phrase as an exact quotation.
+https://webusers.imj-prg.fr/~pierre.charollois/Patterson_Gauss_sums_in_Goldstein_Schappacher.pdf
+Local PDF SHA256 e24c3296b2a772ac7959b09266d2a6f2d747f165408af1caa72af195707286c5.
+The unordered Paley spectrum uses g(1)^2=p, proved locally, and does not assume
+Gauss's unproved positive evaluation. The later full exercise proves the
+Legendre multiplier and only a conditional positive-sign assignment.
+
+Actually opened both original Delsarte report cover/title spreads. They state
+Philips Research Reports Supplements1973No10, Eindhoven copyright, and thesis,
+Universite Catholique de Louvain, June1973. The institutional dissertation record
+agrees. Corrected the misleading thesis-at-Philips-laboratory-in-Brussels phrase.
+https://users.wpi.edu/~martin/RESEARCH/philips.pdf
+SHA25675369085e195e98d0e032b048f934e5506e8b368e130f76161df623993fc2ef5.
+https://research.dial.uclouvain.be/entities/publication/7c6fb939-72d8-4dbd-a505-005a43543186
+The54-page file contains scanned two-page spreads and no extracted body text;
+only the actual two viewed spreads are approved as historical evidence. No claim
+to read the whole thesis. The finite inequalities are reconstructed in our book.
+
+All eight bibliography groups/sixteen works checked individually:
+
+| Entry | Actual source read and supported metadata/content | Limit/correction |
+|---|---|---|
+| Hawkins1971/2013 | Springer article body, January1971,7:142-170, DOI10.1007/BF00411808; actual book body/TOC DOI10.1007/978-1-4614-6333-7,2013. Public chapter13 preview461 opening explicitly discusses the correspondence and April12,1896 letter. | Received1970 not publication;2015 softcover not original. Only relevant preview opening, not whole book or original letters. |
+| Davis/Gray | Actual WorldCat4804321 body gives PhilipJ Davis,WileyNewYork,c1979. Actual Stanford author https://www-ee.stanford.edu/~gray/toeplitz.html gives Gray's official2(3)(2006)155-239 citation and separate December24,2009 revision. | Crossref query returned a1982 Chao review, rejected as the book. Now publisher403. Metadata, not whole-book proof approval. |
+| Serre/Terras | Actual Springer book body/TOC DOI10.1007/978-1-4684-9884-4 and public chapter6 preview61-62, characters/duality/orthogonality, read. Actual Cambridge Terras frontmatter byline/print1999 and DOI10.1017/CBO9780511626265 agree with publisher-deposited Crossref. | Serre pointer narrowed to VI Section1; whole chapter is arithmetic progressions. Terras2010 online not print1999; publisher excerpt body has no extracted text and is not claimed read. |
+| Paley/Greenwood-Gleason/Hanson-Petridis | Actual Paley Wiley metadata already read at DOI10.1002/sapm1933121311,12(1933)311-320. Actual publisher-deposited Crossref10.4153/CJM-1955-001-4 gives CJM7(1955)1-7 and both authors/title. Actual Wiley https://londmathsoc.onlinelibrary.wiley.com/doi/10.1112/plms.12322 body gives122(3),353-358,March2021, first online March19,2020. | Paley full PDF403, Greenwood full paper not read. Hanson source now says article in the2021 journal volume; relevant author arxiv intro/cor1.5pp4-5 were actually read earlier, not the whole research proof. No first-ever improvement claim. |
+| Ireland/Rosen | Actual Springer DOI10.1007/978-1-4757-2103-4 book body,secondedition1990 and TOC Chapter6 Quadratic Gauss Sums66-78. | Removed unread specific sign-proof annotation. Initial Crossref hit was Chapter12, not the book; not adopted. |
+| Delsarte/MacWilliams-Sloane/MRRW | Original Delsarte cover/title as above. Actual author https://neilsloane.com/doc/ms77.html confirms first1977,North-Holland,762pp, separate1998impression. Actual Caltech https://authors.library.caltech.edu/records/3mas1-6h321 body gives all4 authors,March1977,IEEE23(2)157-166 and DOI10.1109/TIT.1977.1055688. | Removed unread MacWilliams chapters5/17 pointers; author page's relevant erratum cautions against unrestricted proof transfer. Caltech abstract supports the asymptotic subject, not certification of its proof or a current-record claim. |
+| Cohn-Elkies/Viazovska | Actual Annals https://annals.math.princeton.edu/2003/157-2/p09 and https://annals.math.princeton.edu/2017/185-3/p07 bodies give exact titles,bylines,volumes/pages and DOI. Abstracts read to verify outlook subject. | No research proof certified.2009 online upload not Cohn's2003 volume;2016 received not Viazovska's2017 publication. |
+| Godsil/Royle | Actual Springer DOI10.1007/978-1-4613-0163-9 body/TOC,2001,Chapter10 Strongly Regular Graphs217-247; actual public preview217-218 read, including definition and pentagon example. | Removed unread specific Paley-coverage annotation.2013ebook not first2001. Not a substitute for our local spectral/counting proofs. |
+
+Public Springer preview URLs are /pdf/preview/ followed by the chapter DOI at
+https://page-one.springer.com : Serre10.1007/978-1-4684-9884-4_6,
+Hawkins10.1007/978-1-4614-6333-7_13 and Godsil10.1007/978-1-4613-0163-9_10.
+Some preview endpoints returned two pages, not one; exact read scopes above.
+Several guessed/dead publisher URLs and three rate-limited Crossref requests
+failed; those failures are not evidence and no access control was bypassed.
+Current source bibliography has only supported, bounded annotations. Research
+outlooks supply no premise to any main/appendix proof or exercise.

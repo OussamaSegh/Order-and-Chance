@@ -1,12 +1,11 @@
 # Conceptual prerequisite and story ledger
 
-Current V3-031: all12mainchapters/allfourappendices have fresh named/exercise
-A/B records; separate global closure through main/front/end/A totals706manual
-records.147globalrows in B/C/Dremainpending,64of392labels and3of88literalearlier
-mentions pending.107firstchains reviewed/threepending; all110whole-volumeconcept
-later-use statuses pending. A backward-reference scan is not a conceptualaudit.
-The table below is an incremental historical record; fresh keyed registers and
-dated reports define current coverage, not an initial pending row or count alone.
+Current V3-033: all twelve main chapters and four appendices have fresh core
+A/B evidence. Separate global closure through main/front/end/A/B totals772 manual
+rows;81 C/D rows,35/392 label uses and1/88 literal earlier context remain pending.
+114 first chains reviewed,two pending; all116 whole-volume later-use chains still
+pending.277 older accepted global rows need explicit domain/claim columns. The
+historical table below does not override current keyed source/evidence records.
 
 | Concept | Definition/example before invocation | Actual proof location read | First valid use / correction |
 | --- | --- | --- | --- |
@@ -597,3 +596,16 @@ stated limit nowexplicitly requiresprimitivity. ActualV4coupling170-214is future
 outlookonly, hashguarded fordrift.18labeluses/fourearliercontexts manuallyrecorded;
 sevenfirstchains include Perron, period, rays, finiteMarkov, meanmodel, Jordan
 rates and earlier Landau notation, with all later-useclosure stillpending.
+
+## V3-033 actual B imports and forward-reference audit
+
+Reopened complete current C6 Gauss747-916,C11 regular373-443,actual V1 spectral
+378-401,V2 cyclic134-140 and Euler45-113. Actual V2 main has no chapter reset and
+preface is unnumbered: Euler's explicit supplementary law is Chapter6, corrected
+in B. Every29 B label occurrence and both literal earlier contexts classified;
+no exercise pointer supplies an unearned premise. Local character count,
+Hoffman bound, Walsh/Krawtchouk/LP arguments, finite compactness and the complete
+nonabelian determinant/irreducibility proof were reconstructed in both directions
+where available. Six new explicit chains plus the completed Paley first chain
+retain pending whole-volume status. Earlier source hashes guard drift, including
+main/include order. Unreferenced arguments are in all66 GLOBAL-APPB decisions.

@@ -231,6 +231,24 @@ def check_lp_empty_code_contract(source=None):
     assert 'nonempty' in before_distribution, 'A distance distribution divides by the code size'
 
 
+def check_distance_zero_length_contract(source=None):
+    """D_1 exists only when the standing binary length is positive."""
+    source = SOURCE.read_text() if source is None else source
+    paragraph = source.split('The cube has more symmetry than translations:', 1)[1].split(
+        r'\begin{definition}', 1)[0]
+    assert re.search(r'for \$n\\ge1\$, \$D_1\$', paragraph), (
+        'At n=0 only D_0 exists; qualify the D_1 adjacency assertion')
+
+
+def check_earlier_residue_contract(source=None):
+    """Keep the pointer matched to the actual earlier Euler-criterion proof."""
+    source = SOURCE.read_text() if source is None else source
+    paragraph = source.split('The next example uses squares.', 1)[1].split(
+        r'\begin{figure}', 1)[0]
+    assert '(Volume~2, Chapter~6)' in paragraph, (
+        'The actual earlier Euler-criterion proof is in Volume 2 Chapter 6')
+
+
 def check_local_contract(source=None):
     source = SOURCE.read_text() if source is None else source
     assert 'not all equal' in source
@@ -243,6 +261,8 @@ def check_local_contract(source=None):
     assert 'found in Volume~8' not in source
     check_walsh_zero_length_contract(source)
     check_lp_empty_code_contract(source)
+    check_distance_zero_length_contract(source)
+    check_earlier_residue_contract(source)
 
 
 if __name__ == '__main__':
