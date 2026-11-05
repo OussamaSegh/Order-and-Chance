@@ -81,3 +81,12 @@ exposition and occurrence dependencies remain pending. Actual source order is
 now guarded; remaining80 earlier-volume occurrences require global correction.
 APPC-REVIEW/first-record/curricular/regressions and immutable1b94857e manifests
 contain exact checkpoint evidence, not final all-book or external approval.
+
+## V3-017 advancement
+
+All155 named/163 exact exercise triples have explicit internal A/B decisions.
+All four advanced appendices fully included. Global819 keyed exposition,
+unnamed mathematics, conceptual order, historical/metadata and voice decisions
+remain pending with all dependency occurrences. Final artifacts/CI gates remain.
+APPD-REVIEW and prompt-first records distinguish already-valid proofs/solutions
+from true index/convention/local-tool corrections and dated research scope.

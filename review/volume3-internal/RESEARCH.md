@@ -180,3 +180,23 @@ Gauss/Olbers chronology/quotation and remaining appendix bibliography metadata
 remain explicitly pending global historical review. Removed the unsupported
 current-best code-record claim and incidental Bessel/magic-function/medal
 catalog, without loss of a named or graded finite target.
+
+## V3-017 — Paley/Sylvester and dated Hadamard report (2026-11-05)
+
+Actual arXiv version page https://arxiv.org/abs/2610.27175 lists only v1,
+19October2026. Reopened actual https://arxiv.org/html/2610.27175v1 introduction
+and classical construction overview, not merely the abstract: twelve listed
+orders, August announcement and authors' account of verification. The book
+now attributes that dated report explicitly. No new external large matrix or
+full research proof independently checked; this does not certify new research.
+Our complete classical general proofs and finite extension-field probes are
+recorded separately in APPD-REVIEW, not inherited from the new report.
+
+Read actual Wiley record https://doi.org/10.1002/sapm1933121311 : Paley,
+On Orthogonal Matrices,J.Math.Phys.12(1933),311–320,April1933. Full PDF403;
+no claim to read inaccessible original article. Actual Sylvester scan at
+https://rcin.org.pl/impan/Content/115436/PDF/WA35_140256_11371-2_Art96.pdf :
+original publication header and sections6–8, collected pp619–623, especially
+power-of-two sign orthogonality621–622; original Phil.Mag.34(1867),461–475.
+Matrix images not reliably represented in text; web screenshot attempts returned
+placeholders, not actual images seen. Those historical access limits are explicit.

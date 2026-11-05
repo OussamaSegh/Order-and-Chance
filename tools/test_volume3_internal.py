@@ -21,11 +21,19 @@ import check_chapter12
 import check_appendix_a
 import check_appendix_b
 import check_appendix_c
+import check_appendix_d
 import inventory as volume3_inventory
 import registers as volume3_registers
 
 
 class Volume3InternalReview(unittest.TestCase):
+    def test_hadamard_sylvester_examples_and_domains(self):
+        check_appendix_d.check_sylvester_and_source_examples()
+        check_appendix_d.check_local_contract()
+
+    def test_paley_prime_and_nonprime_power_constructions(self):
+        check_appendix_d.check_prime_power_character_and_paley()
+
     def test_combinatorial_incidence_and_polynomial_coefficients(self):
         check_appendix_c.check_incidence_families_and_fano()
         check_appendix_c.check_nullstellensatz_coefficients()

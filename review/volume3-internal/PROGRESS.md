@@ -1,5 +1,49 @@
 # Progress
 
+## V3-017: final Paley appendix, named/exercise A/B closure
+
+Entire original/revised D source, six named proofs, both prompts/hints/finding
+ideas/full solutions read. Independent first solutions precede answer exposure.
+APPD-REVIEW reconstructs each target twice: independent conic correlation count,
+row-by-row PaleyI and anticommuting two-by-two tensor PaleyII checks supplement
+the actual source block proofs. All155 named+163 exercise triples now have fresh
+internal A/B records,318 accepted. This is not whole-mathematics completion:
+global819 keyed exposition/concept/history/voice rows include unnamed reasoning
+still awaiting exact manual closure; all dependency occurrences remain pending.
+
+Correct Sylvester family/order indexing, explicitly state positive order and
+real-valued matrix arithmetic, prove Kronecker index identities and binary Walsh
+formula before use. Replace duplicated proof summary with the actual symmetric
+cross-term reason for doubling. Both full general Paley constructions and both
+original exercise answers were already sound; no nonexistent sign repair claimed.
+Preserve all targets/full answers/grades. Exact old/new/addition/research-scope
+JSON discloses the changes. Actual earlier finite-field existence/cyclicity
+proofs reopened in full, not availability inferred from titles.
+
+Exact probes cover14 odd prime-power fields including9/25/27/49, every character
+product/nonzero-shift correlation/conic count, all Q/Gram/transpose identities,
+full real Paley matrices and wrong-congruence-branch failures. Actual source
+exercise matrix cells, Sylvester1..64/binary indices and small-order obstructions
+are recomputed. Finite tests support, never replace, the full general proofs.
+498 full tests pass,zero skips70.701s;35 focused pass10.424s. Logs:
+/tmp/volume3-v017-tests.log and-focused.log. Inventory/register freshness,
+inherited379labels/384refs/163triples and whitespace pass.
+
+Actual current arXiv version history and full relevant introduction/classical
+construction text read. Hadamard October2026 update is a dated attributed author
+report; no large external matrix/new research proof independently checked.
+Actual Paley publisher metadata read, original PDF403. Actual Sylvester primary
+scan's publication header and relevant text read; some matrix images lost in
+text and screenshot attempts returned placeholders, not viewed images. Exact
+access limits recorded; no human refereeing or research-proof certificate.
+
+Immutable1fe85903 all-format build is running and predates D repairs. No new D
+actual-page/EPUB/reader approval claimed. Latest completed package remains
+1b94857e502reading/501print, with exact opened pages/manifests. Next global pass
+must close all unnamed/concept/history/story/voice and occurrence evidence,
+correct actual earlier printed locators, reconcile publication copy, then freeze
+source and inspect all actual outputs/CIartifacts before exact-head merge.
+
 ## V3-016: Linear Algebra Method, full internal mathematics
 
 Read all C main prose,18 named proofs,10 prompts/hints/finding ideas/full
