@@ -46,7 +46,16 @@ def inspect_pdf(path: Path) -> tuple[int, str]:
     assert not unresolved, f"Unresolved cross-reference {unresolved.group()}: {path}"
     check_reed_solomon_heading(text)
     check_think_heading_keeps(text)
+    check_sylvester_prompt_spacing(text)
     return pages, text
+
+
+def check_sylvester_prompt_spacing(text: str) -> None:
+    # Text-mode \dots consumed the following space in the actual PDFs,
+    # producing “1807, …Show”. Check the rendered sentence boundary.
+    normalized = " ".join(text.split())
+    assert re.search(r"1807,\s*(?:…|\.\s*\.\s*\.)\.\s+Show that\b", normalized), (
+        "Sylvester sequence must end with an ellipsis, full stop and spaced Show")
 
 
 def check_think_heading_keeps(text: str) -> None:

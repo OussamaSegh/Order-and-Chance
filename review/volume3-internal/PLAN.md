@@ -5,18 +5,18 @@ and production review, not independent human refereeing or formal verification.
 The user authorizes the complete review and an exact-head merge only after all
 available acceptance gates pass. No Amazon upload or account action is authorized.
 
-## Current acceptance checkpoint — V3-057
+## Current acceptance checkpoint — V3-058
 
 | Work | Current evidence |
 | --- | --- |
-| Internal source review | Complete at frozen producing commit `15d32333`: 158 named results, 163 full triples, 857 global records, 120 concepts, 393 label uses and 88 earlier contexts. Internal AI review only. |
+| Internal source review | Complete at V058 corrected source guard `cd0d8e15…d4439`; fresh producing build pending: 158 named results, 163 full triples, 857 global records, 120 concepts, 393 label uses and 88 earlier contexts. Internal AI review only. |
 | Matched build | Actual complete `15d32333` all-format build: 518 reading / 517 print; ISBN9798167514683, matched wrap and listing. Output checks and final EPUBCheck5.3 pass. |
-| Actual PDF visuals | 1011/1035 inspected:1009 accepted,2 with open ellipsis-spacing finding,24 unopened.376 actual current openings and635 exact prior-pixel retentions.252 print facings inspected/251 accepted. All12main chapters and Appendices A–C complete through all solutions/bibliography; D opening/divisibility proof also inspected. All9tabulars opened in both editions/color/gray. |
+| Actual PDF visuals | 1035/1035 inspected:1033 accepted,2 awaiting corrected-output reopening,0 unopened.400 actual current openings and635 exact prior-pixel retentions.258 print facings inspected/257 accepted. All12chapters/A–D/afterword/covernote complete. All22figure keys match source. All9tabulars opened in both editions/color/gray. |
 | Digital measurements | Actual unmodified52 EPUB and48 reader narrow/wide instances pass; exact current relevant bytes retain prior evidence. |
 | Reader behavior / destinations | 652 disclosure/backlink/close checks and48 page/control checks pass. All4674 reader and21835 EPUB local destinations pass;163 exact triples each. |
 | Digital visuals | All88 actual figure views complete:22 figures × reader/EPUB ×390/1280. Further paragraph/formula baseline/shape and theme appearance work remains. |
-| CI comparison | Historical e531 overall terminal success and actual artifact comparison. Current11d196ad run1743 is in progress; prior2784a569 detailed query had all15book build steps active. Final head terminal CI and relevant artifact comparison remain required. |
-| Merge / publication | Draft. Open ellipsis-spacing finding requires correction/rebuild/affected reopening. Remaining visual and final-head gates open. Native Kindle, KDP account/Previewer, ISBN ownership and physical proof remain publication follow-ups. |
+| CI comparison | Historical e531 overall terminal success and actual artifact comparison. Currentc1f7c838 run1744 is in progress; final corrected head needs its own terminal CI/artifact comparison. Final head terminal CI and relevant artifact comparison remain required. |
+| Merge / publication | Draft. Ellipsis source correction is complete; new immutable build and affected reopening remain required. Remaining visual and final-head gates open. Native Kindle, KDP account/Previewer, ISBN ownership and physical proof remain publication follow-ups. |
 
 Detailed evidence: [progress](PROGRESS.md), [restart](CHECKPOINT.md),
 [current acceptance](CURRENT-ACCEPTANCE.json),
