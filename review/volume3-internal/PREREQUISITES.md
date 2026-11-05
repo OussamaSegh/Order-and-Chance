@@ -555,3 +555,22 @@ Both radical directions check actual roots of unity/radicands/normality before
 invocation. Current reduction-mod-prime comparison to complex roots remains an
 explicit V13 outlook, never a premise. General Galois and five further first chains
 reviewed; all91 whole-volume/later-use statuses remain pending.
+
+## C11 global closure, V3-029
+
+Actual V1 ch07 real Gram-Schmidt/projection323-363 was reread; complex Hermitian
+geometry is locally earned, including empty bases and nonzero norms. Actual V1
+ch05 differentiation346-382, ratio-test geometric comparison and signed-series
+Cauchy-product proof611-658, and ch06 inverse-function proof28-44 were reread.
+The latter's reminder52-56 admits exp/trig derivatives; the actual Taylor exercise
+uses that contract and cannot independently earn it. New C11 circulant solution
+supplies geometric sine limit/addition-formula derivatives and a uniform-tail
+exponential construction, then a global inverse log and explicit four-Rolle
+log-cos remainder. No later analytic-series or integration theorem is needed.
+Actual V2 ch06 Euler proof55-113 and ch14 character definition44-61/count136-142/
+orthogonality163-191 were reread. Their finite homomorphism language is already
+available at entry; general trace characters and complex representations are
+then defined and proved locally. All28 C11 label occurrences and five literal
+earlier contexts are manually classified. New conceptual chains are explicit;
+whole-volume/later-use closure remains pending. Earlier source file hashes guard
+drift, not approval of every theorem in those earlier volumes.

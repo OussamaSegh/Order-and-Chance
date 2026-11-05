@@ -1,5 +1,109 @@
 # Progress
 
+## V3-029: complete representations/characters global pass
+
+Solo internal AI review, not independent human refereeing or formal verification.
+Read the entire current Chapter 11, all ten complete named proofs, eleven full
+prompt/hint/finding-idea/solution sets, the actual 59-cell figure and all nine
+bibliography entries. The written voice/cadence and adversarial first-reader pass
+is not a human or spoken read-aloud session. Original CH11-PROMPT-FIRST chronology
+is retained; the new analysis addition was reconstructed after reading the old
+answer, with no new blinded-solve claim.
+
+GLOBAL-CH11 has 55 individually keyed domain/claim/A/B records, including all
+unreferenced arguments. Ten named proof pairs and ten unchanged exercise triples
+were individually compared by actual source hashes; V3-029-retained-identities
+records them. The changed circulant triple has a new complete reconstruction A
+and adversarial B in exercises.json. No mathematical target was weakened and all
+complete answers remain. All four printed tables and all 59 figure cells, class
+sizes, row/column relations, colors, coordinates and captions were rechecked.
+The cube identity is exactly24=1+1+4+9+9; A5 is60=1+9+9+16+25. Finite checks also
+reconfirm every A5 commutator count, signed involution model, walk eigenvalue
+absolute value and holding/periodic endpoint; they support the general proofs.
+
+Repairs: sign values are {±1} contained in C*, not all nonzero real scalars
+(the old equality incorrectly included2). Cyclic examples now require n>=1.
+The opening distinguishes dimensions from their squares and starts with the
+triangle matrix action. A class-indicator basis now earns the class-function
+dimension before orthogonality uses that space. The walk's earlier Rolle repair
+still differentiated functions that V1 explicitly admits. The new solution earns
+trigonometric derivatives by the triangle/sector/tangent squeeze and addition
+formulas. It constructs E=sum x^k/k!, proves differentiation using a uniform
+bound on tail difference quotients, earns positivity/range and the inverse log,
+and then gives the explicit fourth derivative and four-Rolle remainder. No
+future power-series or integration-existence theorem supplies a premise.
+
+Actually reread the earlier V1 real projection proof, product/quotient/chain
+rules, ratio and absolute Cauchy-product proofs, and monotone inverse-function
+proof. Its admitted elementary-function reminder and actual Taylor exercise
+were distinguished from independent derivative proofs. Actual V2 Euler criterion
+and character definition/count/finite projector proofs were read, not inferred
+from a title. Five literal earlier-source contexts and28 label occurrences now
+have manual classifications. Representation and general character first chains
+are reviewed; four further chains cover complex geometry, algebraic integers,
+real forms/indicators and locally earned elementary derivatives. All95 conceptual
+whole-volume statuses remain pending their later-use closure:90 first chains
+reviewed, five priority chains pending. General source/exercise/named coverage:
+**914 accepted =157 named +163 full triples +594 global;256 global pending** in
+C12 and all four appendices. Inventory remains1653 items/598 prose/118 bibliography,
+22 examples/22 figures/9 tables/22 included sources.279/389 label occurrences and
+68/88 literal earlier-source contexts accepted. Counts never approve an item.
+
+History: original Dirichlet scan has27 paper pages, starting45 and continuing
+70 then a last page misnumbered81. Book now gives45-71 with that misprint explicit;
+its1837 volume/date is not silently turned into a printing-date claim. Actually
+opened relevant original46-47,70/last and opening images. Cooley/Tukey original
+297-298 were opened and read beyond abstract for the two-stage factorization and
+cost. Actual Schur collected-text opening/TOC, Maschke publisher record, Serre
+publisher TOC, James/Liebeck publisher copyright/TOC and IMS Diaconis issue TOC
+were read with exact access limits. Earlier Adin signed-model proof reads remain
+scoped to actual sections. RESEARCH records URLs, downloaded-file hashes and
+unavailable full-original/full-book proof limits. Unsupported incidental slogans
+and an unlocated A5 annotation were replaced by precise supported pointers.
+
+**513 tests passed, zero skips,56.263s**, /tmp/volume3-v029-full-tests.log, after
+source/checker/manual-register changes and before these descriptive reports.
+Source/inventory/freshness/whitespace checks pass. The original sign source
+actually fails the new sign gate before the correction and passes afterward.
+The original walk also fails the new local-prerequisite gate; independent exact
+polynomial differentiation and difference-quotient factorization checks support
+the repair. Tests and string gates are not mathematical proofs.
+
+Immutable **a0c09b53**, BEFORE this C11 batch, fully built all formats under the
+current bleed pipeline:516 reading /515 print, KDP516, spine1.2111in, matched
+wrap15.4611x10.25in.85 public/5 report hashes in preliminary-a0c09b53-artifacts.
+Actual EPUBCheck5.3.0 zero messages; actual output checker PASS7 renders/26XHTML.
+All60 actual font/renderer/common sources matched af1 byte-for-byte before local
+formula-cache reuse; provenance records this without a GitHub-cache guarantee.
+Build used20737 formula instances/9444 unique and22 full-width1800px plates.
+All515 print canvases/trim parity checked; solid backgrounds11/153/243 extended,
+only page445 flattened600ppi; unchanged quality thresholds retained.
+
+Actually opened reading281/283/293 and print280/282/292 at2x in BOTH colour and
+grayscale, six physical pages/twelve full renders. The C10 opening, complete
+cyclic-cubic explanation and polygon-classification/Frobenius page are legible,
+with no observed clipping/collision and usable gray references/rules. Record is
+preliminary-a0c09b53-visual. The65537 certificate is on a preceding page and was
+not approved by these samples. Opening has an ordinary page-foot in- continuation;
+its following page remains unreviewed in this sample. No whole-page/facing/digital
+approval is inferred. This snapshot predates C11 changes; new final pagination
+must be reopened. Earlier no-bleed snapshots remain historical.
+
+Fresh origin/main remainsd97c0bf4 (PR105), already merged ataf1c3fe4. Exactaf1
+CI1713/run41984307424 was terminal successful; exacta0 CI1714/run41992317151 is
+still in progress at this checkpoint. New C11 head needs its own CI. Never
+cancelled main/unrelated runs; caches save only main. Record terminal advancement
+in the PR, without another commit solely to record the previous commit's CI.
+
+Continue C12/A-D full global prose/dependency/history/story passes; strengthen
+older global JSON evidence with explicit per-item domains and claims (C11 now
+has them), then enforce that schema before final acceptance. This is an open
+register-format task, not mathematical approval by migration. All final concept
+later-use closure, source freeze, every actual PDF page/gray/facing review,
+actual narrow/wide EPUB/reader interactions/shape/links and actual CI artifact
+comparison remain required. No ISBN assignment invented or borrowed. Native
+Kindle/KDP account/ISBN ownership/physical proof remain publication follow-ups.
+
 ## V3-028: complete Galois-theory global pass and current-main integration
 
 Solo internal AI review, not independent human refereeing or formal verification.

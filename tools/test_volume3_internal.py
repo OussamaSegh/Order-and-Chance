@@ -30,6 +30,9 @@ import registers as volume3_registers
 
 
 class Volume3InternalReview(unittest.TestCase):
+    def test_walk_analysis_is_locally_earned_and_exact_derivative(self):
+        check_chapter11.check_local_walk_analysis()
+
     def test_cyclic_vector_zero_and_small_fields_and_matrix_power(self):
         check_chapter7.check_cyclic_vectors_and_power_example()
 

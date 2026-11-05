@@ -183,3 +183,17 @@ question asks what matrix actions and traces reveal about arbitrary groups; it
 matches actual C11. Full source and every solution read for written cadence /
 adversarial first-reader method, not a human or spoken session. No named target
 or complete solution lost; final typography/digital review is separate.
+
+## C11 global story/cadence pass, V3-029
+
+The incoming question is the cube's sum of squared dimensions. The triangle
+matrix action gives a concrete object before the trace definition. Averaging
+produces stable complements, then maps between irreducibles yield orthogonality;
+regular multiplicities answer the opening question. The actual S3/S4/A5 tables
+turn that basis theorem into computations. The abelian case leads to finite
+Fourier coordinates, modular filters and an earned walk estimate. A cube quarter
+turn reconnects matrices with spatial motion and asks C12's rotation question.
+The shuffle and Burnside/Frobenius structural results are marked outlooks with
+no role as premises. Entire prose, proofs, complete answers, captions and sources
+received the written cadence/adversarial first-reader pass, not a spoken/human
+session. GLOBAL-CH11 records each actual source fragment and boundaries.

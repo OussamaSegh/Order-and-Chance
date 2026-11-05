@@ -847,3 +847,65 @@ Local external version identities (not approval of every page/proof):
 | Abel-1826-page84.jpg | 415175 | f94fdbf7bfc35d257a905b2df1ab19968e899cc8787b42c60a99d8da937f9c44 |
 | Volklein-1996-frontmatter.pdf | 646342 | fa94164a7dd9b32b872b1f7ab484019252b87ab4077a04627efe6bb4eca61949 |
 | Dummit-Foote-third.pdf | 37002369 | 3367d9ea25c6d6ce658fbabf4e425e2b5b66374ecfcf88c39202b56193e1e526 |
+
+## V3-029 Chapter11 global bibliography/history (access 5 November2026)
+
+- Frobenius1896: actual author Conrad introduction and reference21 read in
+  https://kconrad.math.uconn.edu/articles/groupdet.pdf ; original Schur reprint
+  opening footnote cites1896p985; actual Deaconescu/Walls publisher bibliography
+  https://www.degruyterbrill.com/document/doi/10.1515/crelle-2014-0152/html
+  reference1 confirms985-1021. Original1896 full37-page paper not opened, and no
+  external proof certified. Nonabelian qualification matters because abelian
+  characters predate it. No claim that modern article abstract verifies a proof.
+- Maschke actual publisher title/byline/citation/body:
+  https://link.springer.com/article/10.1007/BF01476165 . MathAnn52,363-368,1899;
+  publisher says June1899. Full original subscription article unavailable.
+- Schur actual collected-text TOC and reprinted opening143/original406-407:
+  https://dokumen.pub/issai-schur-gesammelte-abhandlungen-i-iii-0387056300-9780387056302.html .
+ 1905/header6April/communication23March; introduction explicitly contrasts
+  Burnside's Hermitian route. OCR middle text is corrupted, so not used to certify
+  original full proof. Our mixed averaging routes are not all labeled Schur's.
+- Serre actual Springer body/TOC:
+  https://link.springer.com/book/10.1007/978-1-4684-9458-7 .1977,GTM42;
+  PartI1 generalities3-9/2characters10-24; induction25-31/compact32-34/examples35-43.
+  Annotation gives actual1-2 pointers, without a forty-page slogan/full-book claim.
+- James/Liebeck actual publisher front:
+  https://assets.cambridge.org/052181/2054/frontmatter/0521812054_frontmatter.pdf .
+  Actual digital3 copyright and4 TOC images opened: first1993,second2001;
+  tables18,restriction20,induction21,algebraic integers22,real representations23.
+  Full A5 worked text not accessed; annotation now lists actually supported topics.
+- Diaconis actual IMS-published issue TOC:
+  https://www.jstor.org/stable/i397389 . Author/title/volume11/year1988 and main
+  i-vi+1-192/back193-198 read. ProjectEuclid DOI and UCI page inaccessible;
+  no entire monograph read claimed. Earlier actual1981 transposition-paper model
+ 159-160 and theorem reads above remain scoped; distinct1980 report date retained.
+- Adin/Postnikov/Roichman actual arXiv version-history body reread:
+  https://arxiv.org/abs/0709.3962v1 .25Sep2007v1 versus26Mar2008v2. Earlier actual
+  author-PDF relevant proof sections, read after independent derivation, recorded
+  above. No Hecke/general research-proof certification.
+- Cooley/Tukey actual original paper:
+  https://web.stanford.edu/class/cme324/classics/cooley-tukey.pdf . Opened actual
+  images297-298 and read the factorization (1)-(13), two-stage costN(r1+r2) and
+  recursive Nsum rj. Other three pages rendered but not opened/read in this pass.
+  Title/authors and received17Aug1964 visible; publication1965 metadata confirmed
+  by actual IBM Research publication record search lead, not assigned that received
+  date. Associated with FFT does not assert first-ever discovery.
+- Dirichlet actual Hathi/Google original scan, university-hosted:
+  https://sites.math.rutgers.edu/~alexk/2022S572/Dirichlet1837.pdf .28digitalpages=
+  cover+27paperpages. Opened opening45,46,47,70 and last images. Original last is
+  printed81 immediately after70: actual page71, not a37-page article. Opening
+  reads27July1837. Actual46-47 primitive-root index and root-unity geometric sums
+  read; not entire analytic proof. Full downloaded Werke reprint first-page note
+  also repeats45-81, so that note alone would perpetuate the error. A StackExchange
+  lead pointed to misnumbering; the actual original scan supplies the evidence.
+  Book records volumeFOR1837 and45-71(last misnumbered81), without an unverified
+  original printing-year assertion or unsupported claim about when the word arose.
+
+Downloaded source identities below do not mean every page was opened or every
+external proof verified. Images/text/read limits above are the actual evidence.
+
+- `Conrad-origin-representation-theory.pdf`: 258507 bytes, SHA256 `199e0bcd4859ae68c5a87e0329430314ae06d134fb53a2df872ef26b5b761bd4`.
+- `James-Liebeck-2001-frontmatter.pdf`: 105404 bytes, SHA256 `77d41749435eecc145676297fcf3d85b0550ddab8d7129f97e7f33217502f9c3`.
+- `Cooley-Tukey-1965.pdf`: 363726 bytes, SHA256 `b4fa04410bcbf324eca035ab9d94818f075cee2f2ae38e99ebb0e2348e64654a`.
+- `Dirichlet-1837-original.pdf`: 3095515 bytes, SHA256 `28e84740e81f6beeed5bad5553571dba9eeb86f95c82005a192b68278326f60f`.
+- `Dirichlet-Werke-reprint.pdf`: 4463137 bytes, SHA256 `3fa6b0caf705fdae18af16d3fdb6a4de9e1c705fe18e2b1614fc707c4e63baab`.

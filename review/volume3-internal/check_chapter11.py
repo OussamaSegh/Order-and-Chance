@@ -299,6 +299,35 @@ def check_local_indicator_prerequisites():
     assert r'\bar\phi' not in source  # Algebraic conjugate is not complex conjugation.
 
 
+def check_local_walk_analysis():
+    source = SOURCE.read_text()
+    solution = source.split(r'\begin{solution}{ex:circulant}', 1)[1].split(r'\end{solution}', 1)[0]
+    for required in ('inscribed triangle', 'difference quotient of the tail',
+                     'independently of', 'inverse-function rule', r'\sec^4x',
+                     'Four successive applications of Rolle'):
+        assert required in solution, required
+    # Independent polynomial differentiation: f'=-u, u'=1+u².
+    polynomial = [Q(0), Q(-1)]
+    for _ in range(3):
+        derivative = [i*polynomial[i] for i in range(1, len(polynomial))]
+        result = [Q(0)]*(len(derivative)+2)
+        for i, a in enumerate(derivative):
+            result[i] += a; result[i+2] += a
+        polynomial = result
+    assert polynomial == [Q(-2), 0, Q(-8), 0, Q(-6)]
+    for u in (Q(-3), Q(-1, 2), Q(0), Q(2, 3), Q(4)):
+        assert sum(a*u**i for i, a in enumerate(polynomial)) == (
+            -2*(1+u*u)**2-4*u*u*(1+u*u))
+    # Exact factorization supporting the uniform difference-quotient bound.
+    for x, y in ((Q(-1, 2), Q(1, 3)), (Q(3, 2), Q(7, 4)),
+                 (Q(-2), Q(-3, 2)), (Q(0), Q(1))):
+        r = max(Q(1), abs(x), abs(y))
+        for k in range(1, 19):
+            quotient = (x**k-y**k)/(x-y)
+            assert quotient == sum(x**j*y**(k-1-j) for j in range(k))
+            assert abs(quotient) <= k*r**(k-1)
+
+
 def check_foundations():
     # Nonunitary coordinates for a C4 representation; exact Gaussian-integer powers.
     def mul(a, b):
@@ -332,6 +361,10 @@ def check_foundations():
     assert '$G$ is finite' in source and r'd\ge0' in source and r'$V\ne0$' in source
     assert 'spectral theorem, Volume~1' not in source
     assert 'conjugate-linear in the second' in source
+    # 2 is an invertible real scalar, but it is not a sign value.
+    assert 2 != 0 and 2 not in (-1, 1)
+    assert r'\{\pm1\}=GL_1(\C)\cap\R' not in source
+    assert r'\{\pm1\}\subseteq\C^*=GL_1(\C)' in source
     # The modular counterexample: all three possible complementary lines fail.
     u = [[1, 1], [0, 1]]; power = identity
     for _ in range(3):
@@ -343,6 +376,7 @@ def check_foundations():
 
 if __name__ == '__main__':
     check_foundations()
+    check_local_walk_analysis()
     check_actual_character_figure()
     check_walks_and_filters()
     check_commutators_and_integer_group()
