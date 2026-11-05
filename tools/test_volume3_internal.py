@@ -19,11 +19,23 @@ import check_chapter10
 import check_chapter11
 import check_chapter12
 import check_appendix_a
+import check_appendix_b
 import inventory as volume3_inventory
 import registers as volume3_registers
 
 
 class Volume3InternalReview(unittest.TestCase):
+    def test_symmetry_appendix_fourier_cubic_and_actual_figures(self):
+        check_appendix_b.check_circulants_and_cubic()
+        check_appendix_b.check_paley_and_actual_figures()
+
+    def test_symmetry_appendix_codes_and_block_determinants(self):
+        check_appendix_b.check_codes_and_krawtchouk()
+        check_appendix_b.check_nonabelian_group_determinant()
+
+    def test_symmetry_appendix_local_prerequisites_and_boundaries(self):
+        check_appendix_b.check_local_contract()
+
     def test_positive_matrix_periods_and_sharp_exponent(self):
         check_appendix_a.check_periods_and_wielandt()
 

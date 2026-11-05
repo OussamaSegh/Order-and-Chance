@@ -381,3 +381,33 @@ analysis theorem. Bipartite full spectrum uses the actual earlier *real*
 spectral theorem, all kernels/ranks/zeros supplied. Uniform shuffle conclusion
 requires the explicitly stated fixed random position-permutation model.
 Global keyed context/first-use/exposition closure still remains a separate gate.
+
+
+## V3-015: finite Fourier/spectral/code route and full nonabelian determinant
+
+Reopened actual C11 Hermitian/orthogonality/regular-decomposition and radix-two
+proof sites, plus C6 Gauss primitive/denominator/UFD/multivariable proofs.
+APPB-REVIEW lists exact reads and reconstructs the imports. Define normal,
+adjoint and unitary before invoking them; align Hermitian convention linear
+first, and explicitly distinguish the appendix unnormalized transform from
+C11. Earn arbitrary-n FFT count by local padding/folding, no stale future V5
+premise. Character completeness is checked both by commuting translations and
+actual earlier finite abelian structure; dual row orthogonality uses the square
+matrix inverse, not an unearned bidual identification.
+
+Replace essential future Volume8 Hoffman premise by the full finite local
+indicator/eigenvalue proof; square coset multiplication earns clique bound
+before use. Define strong regularity before its caption. Prove generalized
+binomial degree/leading term, generating identity and K totals before LP
+boundedness invokes them; closure of distance algebra comes from actual pair
+orbits. Nonempty distributions/d>=1/n0/singleton/empty conventions make every
+division and finite maximum valid. Full nonabelian factorization and polynomial
+irreducibility are now actually earned by algebra-block coordinates and generic
+determinant induction from earlier Gauss, rather than assumed from C11's square
+sum. The report independently reconstructs Phi inverse from actual matrix-unit
+orthogonality. No future optional route supplies an essential premise.
+
+Named/exercise status is separate from the810 remaining keyed global exposition/
+history/voice rows and occurrence/context classifications. Unsupported incidental
+research record/catalog claims are removed with explicit losses; surviving
+outlooks and attributions still need global primary-source closure.

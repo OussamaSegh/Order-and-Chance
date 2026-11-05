@@ -56,20 +56,20 @@ do not claim a successful PR run creates reusable PR library caches. Never cance
 main publication runs or unrelated work. Terminal CI belongs in the PR description
 without an endless sequence of commits recording their predecessors.
 
-## Active checkpoint V3-014
+## Active checkpoint V3-015
 
-All twelve main chapters and the complete Positive Matrices appendix have named/
-exercise A/B closure:120/155 named and139/163 triples. APPA-PROMPT-FIRST and
-APPA-REVIEW record actual exposure, both reconstructions, all full answers,
-source defects and explicit curricular/domain losses. The next three appendices
-contain35 named/24 exercises, fully in scope. Global804 exposition/history/
-concept/story/voice rows and dependency classifications remain separate pending
-gates. Current source corrections need new immutable artifacts and actual pixels.
+All twelve main chapters and the first two appendices have named/exercise A/B
+closure:131/155 named and151/163 triples,282 accepted. APPB-PROMPT-FIRST and
+APPB-REVIEW contain full exposure/domain/earlier-tool/derivation/answer records,
+including the newly earned complete nonabelian factorization. Remaining24 named/
+12 exercises are in combinatorial.tex and paley.tex, fully in scope. Inventory
+has1609 items/569 prose after six local argument chunks added; global810
+exposition/history/concept/voice rows and occurrence classifications remain.
 
-Immutable447ac825 all-format snapshot has496 reading/495 print pages,KDP496,
-spine1.1641in,85 public hashes, actual EPUBCheck5.3.0zero and output pass. Only
-its print406 was opened so far, revealing two weak PageRank node labels now
-corrected in source. No visual approval transfers to changed pages. All earlier
-packages retain their own limited evidence. Final all-page/facing/grayscale,
-reader/EPUB narrow-wide/link/disclosure and CI-artifact comparison remain open.
-The complete authorized job continues; draft PR104 must not be merged yet.
+Immutable e00b5836 snapshot has498 reading/497 print,KDP498,spine1.1688in,
+85 public hashes,actual EPUBCheck5.3.0zero and output pass. Only its print408 was
+opened in colour/grayscale, confirming the A/C node-label repair. Whole-book
+flow/facing and every other page remain pending; no approval transfers without
+relevant file/pixel identity. This predates B source repairs. Final all-page,
+actual reader/EPUB narrow-wide/link/disclosure/theme/formula-shape and actual
+CIartifact comparison remain open. Draft PR104 must not be merged yet.

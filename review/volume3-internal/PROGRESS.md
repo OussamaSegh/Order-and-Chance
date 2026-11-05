@@ -1,5 +1,58 @@
 # Progress
 
+## V3-015: Symmetry Diagonalises, full internal mathematics
+
+Read the entire second appendix and all twelve complete triples, with all first
+solutions before hints/answers. APPB-REVIEW reconstructs all11 named arguments
+and all12 exercises twice, plus unnamed groups including the complete
+nonabelian irreducible group-determinant factorization. Manual totals now
+131/155 named and151/163 exercises,282 accepted. Remaining24 named/12 exercises
+are in combinatorial.tex and paley.tex, fully in scope. Inventory grows from
+1603 to1609 items and563 to569 prose chunks because local arguments are added;
+155 named/163 triples/22 examples/22 figures/108 bibliography/9 tabular unchanged.
+Global810 exposition/history/voice rows and occurrence dependencies remain pending.
+
+Earn the essential Hoffman bound locally instead of borrowing future V8.
+Define adjoint/normal/unitary/strong regularity before use, align Hermitian and
+Fourier conventions, earn arbitrary-n FFT padding/folding, polynomial degree,
+distance-algebra closure, code triangle inequality and LP boundedness/attainment.
+Explicit empty/singleton/n0/d0 domains preserve all valid finite bounds. Correct
+real cubic sign at equal inputs and the unrestricted even-M equality comment.
+Preserve the full nonabelian determinant target: prove algebra-block isomorphism,
+regular determinant multiplicities and generic determinant irreducibility via
+actual earlier Gauss/UFD proofs, independently checking the block inverse from
+matrix-unit orthogonality. No named/graded target lost; all old/new/domain/loss
+changes are disclosed in JSON. Stars retained, all complete solutions preserved.
+
+Finite support checks401 actual curve points/14 markers,13 actual Paley vertices/
+39 coloured edges, five exact prime graph identities,68 P17 triangles/no4-sets,
+274 small codes, all affine/simplex distances and exact S3 block determinants.
+Full general A/B proofs remain separate.493 full tests pass,zero skips53.287s;
+30 focused4.766s, inherited379labels/387refs/163triples, freshness and whitespace
+pass. Initial full run correctly failed on unreconciled source-hash evidence;
+reconcile current source and rerun, without weakening an assertion. Both logs
+are preserved and the genuine numerical counterexamples are recorded separately.
+
+Read actual Hanson/Petridis intro/Cor1.5, not just abstract, and correct the
+false first-improvement-at-all claim with a precise prime-field nonpremise
+outlook. No full research-proof certification. Unsupported incidental current
+coding record/Bessel/magic-function catalog removed with disclosed loss; primary
+Weyl/Gauss quotation evidence and global bibliography remain pending.
+
+Immutable e00b5836 all-format snapshot:498 reading/497 print,KDP498,
+spine1.1688in,same-build wrap,85 public hashes. Actual EPUBCheck5.3.0zero messages
+and output checker pass. Actually reopened full print408 in colour/grayscale:
+all8 node labels/15 links/caption read, corrected white A/C contrast confirmed.
+Large lower white area and whole-book facing/flow remain global review issues;
+no unshown page approval. This snapshot predates B repairs. e00 CI41941879056
+has terminal list/debs/V3build/site success,publish skipped; new head needs its
+own run. Main refetched and still actual103 merge7f87c2ab; no concurrent change.
+
+Next: complete combinatorial and Paley appendices, then all global keyed
+concept/history/story/voice, final source freeze/all-page/digital/link/CIartifact
+checks and exact-head merge gates. Draft remains open; no unavailable external
+human reviewer is requested and no publication/account action is performed.
+
 ## V3-014: Positive Matrices appendix, full internal mathematics
 
 The entire first appendix and all twelve prompt/hint/idea/solution triples were

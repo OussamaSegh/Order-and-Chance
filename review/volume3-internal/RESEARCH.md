@@ -157,3 +157,26 @@ Local PDF: `/workspace/volume3-review-sources/Galois-1846-381-444.pdf`,2582693by
 SHA256 `f351b61639757abebb5c0f98937822c22e40ccdf60762da130708ae26ba60319`.
 This checks attribution/context, not all original proofs or every historical
 priority claim. Other bibliography/history rows remain pending.
+
+
+## H-APPB-HANSON — primary result and access limits,5November2026
+
+Read actual Hanson/Petridis arxiv1905.09134v3 (6May2020),
+https://arxiv.org/pdf/1905.09134, introduction and Corollary1.5 at printedpp4–5.
+The statement gives omega(omega-1)<=(p-1)/2 in the prime Paley case and notes
+prior slight improvements for certain primes. It expressly limits this method
+to prime fields. Current source replaces the false first-improvement-at-all
+claim by that precise attributed nonpremise outlook. Journal metadata lead:
+Proceedings of the London Mathematical Society122(2021),353–358,
+https://doi.org/10.1112/plms.12322. Full publisher metadata remains in the
+whole-book pass. Only intro/corollary and proof opening read here; no full
+research-proof certification. Generic determinant and finite spectral/code
+proofs in this appendix are reconstructed locally, independently of this paper.
+
+Weyl1952 Google Books catalog was read (title/author/publisher/year/168pages),
+but direct primary page5 attempt was inaccessible. Search snippets/secondary
+quotation repeats do not approve the epigraph. Actual primary quote page,
+Gauss/Olbers chronology/quotation and remaining appendix bibliography metadata
+remain explicitly pending global historical review. Removed the unsupported
+current-best code-record claim and incidental Bessel/magic-function/medal
+catalog, without loss of a named or graded finite target.
