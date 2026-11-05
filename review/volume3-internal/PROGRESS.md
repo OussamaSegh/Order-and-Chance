@@ -2796,3 +2796,26 @@ needs its own finalterminalCI and affectedartifactidentity/comparison.
 
 Continueall671PDFpages and84digitalfigurecaptures/formula/themeappearance;
 source review completeinternally,production remainsopen,PRstaysdraft.
+
+
+## V3-047 — actual module/Smith/Jordan chapter and field-extension opening
+
+Actual coverage advanced364→428of1035physicalPDFpages:385currentactualopenings
+and43exactpriorpixelretentions;106printfacings,607pending. Reading1–214 and
+print1–213,plusprint446. Every added page was actually opened in full2×color
+and grayscale within unrescaled four-page canvases,then manually described.
+
+Chapter7 is complete through all8fullsolutions and references. Actuals include
+the5matrixSmithdiagram/operationarrows/caption,generalPIDtermination/uniqueness,
+moduledecomposition,all rational/Jordan/companionmatrices,zero-dimensional cases,
+Cayley–Hamilton,the6roworder360table,prime-alignmentarray,and5rownilpotent
+kernelarray. Both-edition strokes,boxcontrast,headers/folios and facing gutters
+fit. Chapter8opening and towerlaw boxes/proofs also inspected. No new source
+or layout defect identified;source/renderingfreeze e531 remains unchanged.
+
+Actual00407dffCI1733/42063929684wasinprogressatquery:listpublishing/source
+tests passed,all15bookjobs includingV3building. This is not terminalsuccess.
+Prior522tests and strictV045source/ledger gates retain stated scopes;this
+evidence-only batch did not repeat broadtests without a source change.
+Continueall607pendingPDFpages,84digitalfigurecapturesandformula/themeappearance,
+then exactfinalheadCI/artifacts/currentmain/cleantree checks before ready/merge.

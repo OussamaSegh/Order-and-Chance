@@ -1,4 +1,4 @@
-# Restart checkpoint — V3-046
+# Restart checkpoint — V3-047
 
 Continue the entire authorized solo internal AI review through final actual
 acceptance and head-matched merge. Do not stop at this checkpoint. No agents,
@@ -11,7 +11,7 @@ rough estimate4–8morehours was given for remaining production work.
 Repository /workspace/Order-and-Chance, branch
 editorial/volume3-complete-internal-review-20261104; draft PR104
 https://github.com/OussamaSegh/Order-and-Chance/pull/104.
-Parent cfc85b8293d3e427717eb8fd24cd6756f7d5a880; read actual HEAD after this commit.
+Parent 00407dffb9ce116372a3bac24de90f9b57f01f81; read actual HEAD after this commit.
 Original correct PR103 merge7f87c2ab00fdb0c7791dc833423b98bef0870f01.
 Main d97c0bf4e9f5b2d5fd543f0550db62e7eac5a678 was freshly fetched and integrated
 af1c3fe4; fetch again before final merge. Preserve unrelated user changes.
@@ -20,7 +20,7 @@ Activate /workspace/volume3-tools/activate.sh for fitz/TeX/build/tests.
 Playwright uses /opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3
 and /usr/bin/chromium. ZXing uses that Python with
 PYTHONPATH=/workspace/volume3-tools/extra-python. EPUBCheck5.3 jar is
-/workspace/volume3-tools/epubcheck-5.3.0/epubcheck.jar. About650MB disk free before
+/workspace/volume3-tools/epubcheck-5.3.0/epubcheck.jar. About459MB disk free before
 further captures; prune only owned regenerable caches/duplicate extractions,
 never public artifacts, reports, source/git worktrees or actual visual evidence.
 All required repo/environment/style/CI/V2 review instructions already read.
@@ -50,13 +50,13 @@ running build/test/browser sessions from V044 completed; scratch CI comparison
 session48325 also completed its report. No source changes since e531, only review
 helpers/evidence; future artifact-source identity must still be proven.
 
-Actual page coverage364/1035:reading1–182,print1–181,plusprint446.321actualcurrent
-openings and43exactpriorpixelretentions;90printfacings;671pending. All actual
+Actual page coverage428/1035:reading1–214,print1–213,plusprint446.385actualcurrent
+openings and43exactpriorpixelretentions;106printfacings;607pending. All actual
 openings contain whole2×originalpages in color/gray,eachmanuallydescribed. Four-page
 2×2canvases never resize original2×pages. Figures actuallyseen inboth editions:
 fig:symmetries,kernel-fibres,lattices,necklaces,fifteen,small,lattice;linear:fig:paley print446only.
-5.tabular.1R141/P140all9rowsalsoseen;PartII R154/P153actualfullbleed/grayscale.
-Authoritative candidate-e531ae06-visual.json. Nextreading183/print182. Generated UNOPENEDfourpagegroups183–194/P182–193alreadyready.
+5.tabular.1R141/P140all9rows and7.tabular.1R203/P202all6rowsseen;Smith Figure7.1R190/P189all5matrices/arrows/captionseen;PartII R154/P153actualfullbleed/grayscale.
+Authoritative candidate-e531ae06-visual.json. Nextreading215/print214. Generated UNOPENEDgroups215–226/P214–225ready.
 Scratch renderer /tmp/volume3-render-four.py edition START END;generationonly.
 Additive recorder /tmp/volume3-record-opened-flex.py edition OBSFILE;requirespending
 rows andmanualperpageobservation/opened_image_pages. Never feed unopenedpages.
@@ -110,11 +110,11 @@ V3-045-footnote-behavior.json:8actuallocal/CI reader/EPUB reference/backlinkclic
 sequences390/1280pass. Fouractual localnoteframes OPENED;CIcorrespondingpixelsidentical.
 EPUB1280returnref boxy=-.1875px wasfalsepositivefractionalinlineleading;actualink
 visible,documented1pxroundingtolerance,noassetsourcefix. Currentfootnote8checksallpass.
-Reviewheadcfc85b82CI1732/42062269748inprogressatquery;terminalfinalheadrequired.
+Reviewhead00407dffCI1733/42063929684inprogressatquery;actual listtests passed,all15booksbuilding;terminalfinalheadrequired.
 Priorfb761CI1731automaticallycancelledafterPRsupersession;15bookjobssuccess,
 sitewascancelled,notoverallterminalsuccess. No main/unrelatedrunwascancelled.
 
-Next:reading183/print182 onward;all671pendingpages,bothmodes/facings;
+Next:reading215/print214 onward;all607pendingpages,bothmodes/facings;
 84digitalfigurecaptures+formula/themeappearance;actualCI EPUB/footnoteclassificationdone;
 keepcoherentcommits/currentPR/docs. Preserve frozen source unless genuine defect;
 new source changes need affected math/render/CI review. Finalheadclean/currentmain,
@@ -125,3 +125,7 @@ physicalproof remainpublicationfollowups;no Amazonaccountaction.
 
 V046actual manualobservations:/tmp/volume3-v046-{reading,print}-{c5a,c5end-c6a,c6end}.json.
 Newevidenceonly,nomanuscript/renderchange. StrictgateslastV045PASS.
+
+V047actual manualobservations:/tmp/volume3-v047-{reading,print}-{c7a,c7b,c7end}.json.
+AllChapter7includingcomplete8solutions/bibliographyandC8opening/towerlawactuallyseen.
+No new defect or manuscript/rendering-source change. Source/renderingfreeze preserved.
