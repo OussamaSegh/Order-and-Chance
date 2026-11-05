@@ -1,147 +1,19 @@
-# Restart checkpoint — V3-051
+# Restart checkpoint — V3-052
 
-CURRENT ADVANCEMENT supersedes below:local Needspace5baselines in ch11-characters.tex beforeinitialthink added;actualPDFheading/questionregression fails correctlyonabcR321/P320. Newsourceguard3a5d81092e58195b4f5283a739c8b54fd1b284af0f8bf84e93bd7e9eedaa9836;1662items/1178manualdecisions(onlynewlayoutfragment),allprior1661fragmenthashes/120conceptanchorhashesunchanged. Bothstrictgates/sourcecheckerPASS. Fullunittestsactive /tmp/volume3-v051-tests.log. Neednewimmutableallformatbuild atactual051commit,notabc. Compare/reopenallaffectedpages/pagination,actualoutput/EPUBCheckbeforeclosingheadingfinding. Currentcandidateabc644inspected640accepted4affected391unopened,160facings159accepted1affected. NextactualunseenC11pagesR323/P322,howeveraffected321/322mustfirstreopennewbuild. No new math/sourcecontent changes beyond localpagekeep. No earlyfinal/checkpointstop.
+Continue the entire authorized SOLO internal AI review through final technicalacceptance and headmatchedmerge. No subagents,anotherreviewerrequest,human/spoken/formalclaim,orAmazonaction. Userfullcurricularfreedom,ISBN9798167514683includedandprioractualbarcode decoded. OriginaluntouchedpostPR103471print/472reading,current517/518(+46).
 
-CURRENT ADVANCEMENT: producingabc3d1cbd2cadcbfac6211058665e828d33518a2 immutableallformat build complete at/workspace/volume3-final-abc3d1cb. Actualoutputchecker518/517/7samples/26XHTML andEPUBCheck5.3zeroPASS. Manifestcandidate-abc3d1cb-artifacts.json. PDFidentityall1035whole2xRGB/gray;onlyR256/258P255/257changed frome531 andallfour+neighborsactualreopened. Reed–Solomon findingclosed. All actualreader/theme/mathresources exactbytes;9510EPUBmembers onlytwoUUID/timeXML differences;explicitbounded prioractualgeometry/link/behavior/4figure/footnote retention and coverpixel/JPEGidentity V3-050-digital-cover-identity.json.
+Repo/worktree:/workspace/Order-and-Chance,branch editorial/volume3-complete-internal-review-20261104,PR104https://github.com/OussamaSegh/Order-and-Chance/pull/104 DRAFT. Parent15d32333f327b3a293ecbd5073735ed4365db88c;getactualHEADafterthiscommit. CorrectoriginalPR103merge7f87c2ab00fdb0c7791dc833423b98bef0870f01. Mainlastd97c0bf4e9f5b2d5fd543f0550db62e7eac5a678 integratedataf1c3fe4;fetchagainbeforemerge,preserveunrelatedchanges. Allrequiredinstructions/style/toolchain/CI/V2recordsread.
 
-Newactualproductionfinding:PauseandThink headingalone atbottomR321/P320,wholequestion onR322/P321. Correct source locally withoutchangingapprovedseriesfonts/design. Needspace+PDF-onlyblock likely appropriate;inspectactualsourcefilename;regression againstactualPDFpage/text (oldfails),thennewimmutablebuild andallchangedpages/pagination reopens. Currentvisualledgercandidate-abc3d1cb-visual.json644inspected(88actualabc+556priorpixelretained),640accepted/4affected,391unopened.160printfacings159accepted/1affected. Readingthrough322/print321plus446. Complete C10actuallyopenedallproofs,11solutions,bothfigures,bibliography. NewC11pages321/322NOTaccepted.
+Sourcefrozenproducing15d32333,guard3a5d81092e58195b4f5283a739c8b54fd1b284af0f8bf84e93bd7e9eedaa9836. Completeinternalreview158named/163triples/857global=1178manualdecisions,120conceptchains/393labeluses/88actualearliercontexts.1662inventoryitems/605prose/118bibgroups/22examples/22figinputs/9tabular/22includedfiles. OneextraitemisPDFNeedspacelayoutcommand;all1661priorfragmenthashes/120conceptanchorhashesunchanged. Allmain/A–D/front/end/afterword/cover/publishingreadpersonallywithsubstantiveA/B,writtencadence/adversarialfirstreader. Honestexposure/research/accesslimits remain.
 
-Sourceguard6e3f67181a40fdf9a4f94a066912d9e9523ad761e9a809dc79321f87ce249941 beforekeepamendment. Mathematicalsourcecomplete;freshnessledger must be refreshedbounded only ifnewsourcechange. Testsafterheadingchange522/zero skips/60.643sPASS. NewabcCIrun1736/42067740206actualV3jobandallstepssuccess;overallinprogressatquery. No terminalcurrentheadsuccessclaim.
+Actualcompleteimmutableallformatbuild /workspace/volume3-final-15d32333 exit0,PRODUCING-COMMIT.txt exact15d. Manifestcandidate-15d32333-artifacts.json85publicfiles/reports.518reading/517print/KDPnormalized518,spine1.2157in/wrap15.4657x10.25. ActualfinalEPUBCheck5.3zero/outputcheckerPASS,bothactualPDFheadingregressionsPASS.522tests/zero skips/61.318sPASS. Strict/sourcegatespassed. PrematureintermediateEPUBCheck25errorsnotfinal:logsarchivedandexplicitlyexcluded;finalafterbuildchecksactuallyrerunzero.
 
-Renderhelpers/tmp/volume3-render-four-abc.py and/tmp/volume3-record-opened-flex-abc.py targetabc. ActualnewviewsR283–322/P282–321color/gray;notes/tmp/volume3-v050-{reading,print}-c10[a-i].json plusc10end-c11start. Generatedthrough322/P321only;nextpageviews neednewcandidateafterkeepfix. Disk~160MBfree afterpruningonlyold d47 regeneratedsitewithfullhashmanifest;no dist/source/reports/actualimagesdeleted. Preservework;no subagents.
+NEWauthoritativevisualcandidate-15d32333-visual.json644of1035accepted:8actualcurrentR319–322/P318–321+636exactpriorwhole2xRGB/grayretentions;391pending;160printfacings. BothactualReed–SolomondashandorphanC11PauseandThinkheadingcorrected/reopened. V3-052all1035pageidentityagainstabc:onlyR321/322P320/321changed;allfourplusfourneighborsactuallyopenedcolor/gray,headingandentirequestiontogether,nopaginationchange. Allprioracceptedsourceevidencepreservedhistorically. NextUNSEENPDFR323/P322onward. Newgenerated44pagespereditionR319–362/P318–361 bysession66841(mayfinished);generationnotapproval. Newhelpers/tmp/volume3-render-four-15d.py and/tmp/volume3-record-opened-flex-15d.py. Actualpageswhole2xunrescaled2x2canvas,color/grayopened;manualperpageobsrequired.
 
-The following preserved context is historical when overridden above.
+All88digitalfigureviewsactuallyopened(V3-052-digital-visual.json):22figs×reader/EPUB×390/1280.87prioractuale531capturesretainedbyfullnewrelevantHTML/XHTML/CSS/JS/fonts/PNG/SVGbyteidentity;onefreshcurrentreadercharacter-table1280x1800figureandfullviewportopenedbecauseold844helementcapturecaughtfixedheaderoverlay. Dense390labelsmayneedzoom;notnativeKindlelegibilityclaim. Currentall143sitefilescompared;allcontentresourcesidentical;9510EPUBmembersonlytwoUUID/timeXMLchanges;81/85publicfilesidentical. Wrapwhole2xRGB/grayandJPEGidentityretainactualpriorcover/barcodeevidence. V3-052digital/coveridentityreport. Actualprior52EPUB/48readergeometry,652disclosures/48controls,alllocaldestinations30reader4674/26EPUB21835and163exacttriplesretainedonlybyexactrelevantbytes. Formula/paragraphbaseline/shapes/widthextremes/lightdarkmenuappearanceSTILLPENDINGbeyondcaption/footnote/9glyphandsomewideappearanceviews.
 
-Continue the entire authorized solo internal AI review through final actual
-acceptance and head-matched merge. Do not stop at this checkpoint. No agents,
-other-reviewer request, human/spoken/formal-verification claim or Amazon action.
-User gave full curricular freedom, supplied paperback ISBN9798167514683 (included
-and actual barcode decoded), and said continue/make it perfect. Original untouched
-post-PR103 actual build was471print/472reading; revised517/518 (+46). Earlier
-rough estimate4–8morehours was given for remaining production work.
+Latest15dCIrun1738/42072609445inprogressatquery;no terminalcurrentheadpassclaimed. Historicale531run1730/42051380146actualterminaloverallSUCCESS/all15jobsV3steps. HistoricalactualCIcomparisoncandidate-e531ae06-ci-comparison.json/V3-045:reading518all2xRGB/wrapidentical,print516/517identical,P446actuallocalCIcolorgrayopenedtinyAAonly;EPUBboundedXML/9glyphpairs/footnotecomparisonsclosed. Latestfinalheadartifactmustbeactuallydownloaded/compared;newheadterminalCI/headmatchedmergegatesopen. Librarycachessaveonlymain;docPRcanrebuildall15;nevercancelmain/unrelatedruns. TerminalCIlatestadvancementinPRnotCI-onlycommitloop.
 
-Repository /workspace/Order-and-Chance, branch
-editorial/volume3-complete-internal-review-20261104; draft PR104
-https://github.com/OussamaSegh/Order-and-Chance/pull/104.
-Parent 11a64ff46d29200e3afafbc15eec6a65efa79aa0; read actual HEAD after this commit.
-Original correct PR103 merge7f87c2ab00fdb0c7791dc833423b98bef0870f01.
-Main d97c0bf4e9f5b2d5fd543f0550db62e7eac5a678 was freshly fetched and integrated
-af1c3fe4; fetch again before final merge. Preserve unrelated user changes.
+Activate/workspace/volume3-tools/activate.shforfitz/TeX/GS/Pandoc/tests/build. Playwright/Chromiumuse/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3 and/usr/bin/chromium. ZXingdefault3.12withPYTHONPATH=/workspace/volume3-tools/extra-python. EPUBCheckjar/workspace/volume3-tools/epubcheck-5.3.0/epubcheck.jar. Alwayssetexplicitcorrectcwd. Currentsite/workspace/volume3-final-15d32333/build/site. e531localactualsiteretained;abc/d47/CIe531generatedsitesprunedwithfullhashmanifests,recreatablefromretaineddist. Olde531/d47formulacachesprunedwithallfilehashmanifests;abc/new15dcacheshardlinkedretained. Publicartifacts/reports/source/worktrees/actualvisualimagesnotdeleted. Disk~87MBfreebeforefurtherpages;pruneonlyownedregenerableswithprovenanceasneeded.
 
-Activate /workspace/volume3-tools/activate.sh for fitz/TeX/build/tests.
-Playwright uses /opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3
-and /usr/bin/chromium. ZXing uses that Python with
-PYTHONPATH=/workspace/volume3-tools/extra-python. EPUBCheck5.3 jar is
-/workspace/volume3-tools/epubcheck-5.3.0/epubcheck.jar. About459MB disk free before
-further captures; prune only owned regenerable caches/duplicate extractions,
-never public artifacts, reports, source/git worktrees or actual visual evidence.
-All required repo/environment/style/CI/V2 review instructions already read.
-Always set the immutable build/site working directory explicitly. Root partial
-outputs from earlier cwd mistakes are not selected evidence.
-
-Full internal source review is complete:158named+163exactfulltriples+856global=
-1177 accepted item decisions,120 complete first/later concept chains,393 label
-uses and88 actual earlier-source contexts. Inventory1661items/604prose/118bibgroups/
-22examples/22figureinputs/9tabular/22includedfiles. Main/A–D/front/end/afterword/
-cover/publishing read personally, substantive A/B reconstructions, written cadence
-and adversarial-first-reader passes. Honest exposure/research/access limits remain.
-No identified unresolved math/editorial source finding at guarded snapshot
-7fb26f7ef266e56ec87b837f9aad10b5dc9a746ef5e67d06f5219e8510b6d0bd.
-Both strict --require-complete gates pass; scripts never assign mathematical approval.
-
-Selected immutable candidate /workspace/volume3-final-e531ae06, producing exactly
- e531ae061fed09bd689d04665374544e679820a7.
-All formats complete:518reading/517print/KDP518,spine1.2157in,wrap15.4657×10.25in.
-Actual EPUBCheck zero; actual output checker passes. Reading7×10;print513×738pt,
-mirrored outside/top/bottom bleed, no binding bleed; preserve approved cover family,
-art, typography, fixed7TeXpt spine. Canonical author ISBN in copyright/wrap/listing,
-actual matched wrap4× independently decoded9798167514683. No ownership/KDP/physical
-proof claim. candidate-e531ae06-artifacts.json has85 public identities/18reports.
-Full build log /tmp/volume3-v043-immutable-build.log, testsV044522/71.751s. All
-running build/test/browser sessions from V044 completed; scratch CI comparison
-session48325 also completed its report. No source changes since e531, only review
-helpers/evidence; future artifact-source identity must still be proven.
-
-Actual page coverage492/1035:reading1–246,print1–245,plusprint446.449actualcurrent
-openings and43exactpriorpixelretentions;122printfacings;543pending. All actual
-openings contain whole2×originalpages in color/gray,eachmanuallydescribed. Four-page
-2×2canvases never resize original2×pages. Figures actuallyseen inboth editions:
-fig:symmetries,kernel-fibres,lattices,necklaces,fifteen,small,lattice;linear:fig:paley print446only.
-5.tabular.1R141/P140all9rows and7.tabular.1R203/P202all6rowsseen;Smith Figure7.1R190/P189all5matrices/arrows/captionseen;PartII R154/P153actualfullbleed/grayscale.
-Authoritative candidate-e531ae06-visual.json. Nextreading247/print246;rendernextC9groups before opening.
-Scratch renderer /tmp/volume3-render-four.py edition START END;generationonly.
-Additive recorder /tmp/volume3-record-opened-flex.py edition OBSFILE;requirespending
-rows andmanualperpageobservation/opened_image_pages. Never feed unopenedpages.
-Actual V045observation files /tmp/volume3-v045-{reading,print}-{c3,c4start,c4a,c4b,c4end}.json;
-print44–65 /tmp/volume3-v045-opened-print-c2.json. Do not rerun init/overwritecoverage.
-Images /workspace/volume3-final-visual-e531ae06. Disk~500MBfree;only pruneowned
-regenerableduplicate caches/sites,neverpublicartifacts/reports/actualviews.
-
-Actual unmodified EPUB26XHTML×390/1280=52 measurements and reader24×2=48 pass,
-zero reported problems. Reader helper has HTTP guard; no injected URI rule.
-The URI fixes in epub.css/reader.css are already in the actual selected output;
-V2 display wrappers/run-in spacing/SVG sizing/proportional scaling preserved.
-Actual reader behavior:326 hints/solutions eachwidth=652 actual summary-open,
-visible content, prompt-backlink, target and close checks;48 theme storage/reload/
-menu/shade/sidebar controls;0problems. Existing folded-content IDs tested;none
-invented. Executed helper archived under candidate build/reader-behavior-executed.py;
-its provenance correction is disclosed, permanent helper hashes at startup.
-Actual local HTML/XHTML href/src/poster/refresh/fragment audit:30readerfiles/4674
-and26EPUBfiles/21835destinations, exact163keyedtriples each,0problems. Real hint/
-solution blocks have noIDs;record block ordinal and prompt backlink,do not invent
-source destinations. EPUBCheck also validates package resources. External URL
-availability/nativeKindle are not claimed.
-
-Digital images: /workspace/volume3-digital-e531ae06 has88 actual wholefigure+caption
-screens (22figures×reader/EPUB×390/1280), generated with actual unmodified assets,
-DPR1. Only fig:symmetries four screenshots ACTUALLY OPENED (both editions,widths).
-V3-044-digital-visual.json accepts those4;other84pending. Dense table labels small
-at390;highres detail preserved,no native-device-legibility claim. Continue all22
-figures, formula baseline/shape/scale/clipping samples, actual light/dark/menu/
-navigation appearance and Paley footnote. Loading/geometry pass is not visual approval.
-Capture source /tmp/volume3-digital-figures.py;actual manifest in candidate
-build/volume3-symmetry/digital-figure-captures.json. Do not rerun unnecessarily.
-
-Actual e531CI run1730/42051380146 terminal SUCCESS, all15bookjobs and V3steps
-inspected. Latest advancement goes in PR;new reviewhead needs own terminalCI.
-Library caches save only on main;do not cancelmain/unrelatedruns or assertPRcache.
-Actual96member ZIP /workspace/volume3-ci-e531ae06.zip,40962313B,
-SHAe67946f5d521ac495a06cb496cb5f64af351b7cc00ac19b9cc7875655accdb55 matchesGitHub,
-artifact13427628677;extracted /workspace/volume3-ci-e531ae06.
-Actual comparison candidate-e531ae06-ci-comparison.json:80/85public byteidentical;
-all518reading2×RGBpages/wrapmatch;516/517printmatch. Onlyprint446differs1017of
-1514376pixels,meanabs.0037168224,max29;local+CI full2× color/grayactuallyopened,
-no observed lost/clipped math/graph/caption/layout. Files/screens in
-/workspace/volume3-ci-visual-e531ae06. These identities DO NOT approve unopened pages.
-Actual e531CI differences now internallyclassified:V3-045-ci-epub-classification.json.
-9510EPUBmembers,18differentnames=9PNGpairs,18differenttextXML,zero differentcommonPNG.
-20909mathuses/141verifiedroundingmathattrchanges;explicitboundedXML normalization.
-18currentglyphfiles byte-identical to actuallyopened priorA0pairs;onlyglyphshape
-retained,notcurrentparagraphbaseline. ActualCI EPUBCheck5.3zero.
-V3-045-footnote-behavior.json:8actuallocal/CI reader/EPUB reference/backlinkclick
-sequences390/1280pass. Fouractual localnoteframes OPENED;CIcorrespondingpixelsidentical.
-EPUB1280returnref boxy=-.1875px wasfalsepositivefractionalinlineleading;actualink
-visible,documented1pxroundingtolerance,noassetsourcefix. Currentfootnote8checksallpass.
-Reviewhead00407dffCI1733/42063929684inprogressatquery;actual listtests passed,all15booksbuilding;terminalfinalheadrequired.
-Priorfb761CI1731automaticallycancelledafterPRsupersession;15bookjobssuccess,
-sitewascancelled,notoverallterminalsuccess. No main/unrelatedrunwascancelled.
-
-Next:reading247/print246 onward;all543pendingpages,bothmodes/facings;
-84digitalfigurecaptures+formula/themeappearance;actualCI EPUB/footnoteclassificationdone;
-keepcoherentcommits/currentPR/docs. Preserve frozen source unless genuine defect;
-new source changes need affected math/render/CI review. Finalheadclean/currentmain,
-no unresolved findings/all required checks/terminalsuccessfulCIexacthead ->ready,
-headmatchedmergecommit,verifyGitHubmerge/main. Finalreviewpackage+matchedartifact
-identities+PR/mergeSHA+honestlimits. NativeKindle/KDPaccountPreviewer/ISBNownership/
-physicalproof remainpublicationfollowups;no Amazonaccountaction.
-
-V046actual manualobservations:/tmp/volume3-v046-{reading,print}-{c5a,c5end-c6a,c6end}.json.
-Newevidenceonly,nomanuscript/renderchange. StrictgateslastV045PASS.
-
-V047actual manualobservations:/tmp/volume3-v047-{reading,print}-{c7a,c7b,c7end}.json.
-AllChapter7includingcomplete8solutions/bibliographyandC8opening/towerlawactuallyseen.
-No new defect or manuscript/rendering-source change. Source/renderingfreeze preserved.
-
-V048actualobservations:/tmp/volume3-v048-{reading,print}-{c8a,c8end}.json.
-FullChapter8/8solutions/references,pentagonFigure8.1R228/P227,PartIIIdividerR244/P243
-andC9openingactuallyseenbothmodes/editions;no newdefect orsourcechange.
+Remaining:all391PDFpagesincludingallappendices/afterword/finalmatterandfacings;furtheractualnarrow/wideformulabaseline/shape/themeappearance;finalCIartifactcomparison/terminalheadCI/currentbase/cleantree/noidentifiedunresolvedfinding,readyandheadmatchedmergecommitverifyGitHub/main. NativeKindle/Paperwhite,KDPaccount/PrintPreviewer,ISBNownershipandphysicalproofunavailablepublicationfollowups;notmergeblockers. Nofinalatcheckpoint;continuework.

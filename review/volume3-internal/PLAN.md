@@ -1682,3 +1682,6 @@ CURRENT V3-050 advancement supersedes earlier next-build instructions: actualabc
 
 
 CURRENT V3-051: localC11thinkheadingkeep correction andactualbefore-failingPDFregression implemented. Newguard3a5d8109…aa9836,1662items(onlyoneaddedlayoutfragment),1178manualdecisions;allprior1661fragments and120conceptanchorhashes unchanged. Bothstrict/source gatespass;fulltestsrunning. Build freshimmutable051snapshot,actualoutput/EPUBCheck,compareall1035pagepixels/relevantdigitalassets andopenaffectedpages. Then resumeC11actualvisualreview afterR320/P319;existing321/322and320/321areexplicitdefects.391unopened. No sourceacceptance impliesrenderapproval.
+
+
+CURRENT V3-052: sourcefrozenat15d32333,guard3a5d8109…aa9836;internalmath/editorialcomplete. Bothactualheadingfindingsclosed,newimmutable518/517build/output/EPUBCheckPASS.644/1035PDFpagesaccepted(8currentopenings+636exactpriorpixels),391pending;all88digitalfiguresviewscompletewithdense390zoom/nativeevidencelimits. Next:actualPDFR323/P322onwardthroughC11,C12,A–D/end,allfacings/gray,formula/paragraphbaseline/themeappearance;actualfinalheadCIartifactcomparison,currentmain/cleanhead/terminalchecks/ready/headmatchedmerge. Do notstopatcheckpoint.
