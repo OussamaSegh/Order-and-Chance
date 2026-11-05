@@ -2,14 +2,16 @@
 
 Internal AI review, not a human or spoken read-aloud session. Main route and all
 four appendix sources have been read completely during their A/B reviews. This
-map records the actual earned mathematical route; the final keyed global
+map records the actual earned mathematical route. The final keyed global
 voice/cadence/adversarial-first-reader pass has manual closure through all12main
-chapters atV3-030:662globalrecords (31front/end+631main).191globalrows in the four
-appendices remainpending; all104whole-volumeconcept later-use statuses pending.
-The C12 question now starts with actual quarterturns, earns two-sheet topology
-and every loop-group law locally, then constructs/classifies finite rotations
-and finishes its complete arithmetic/counting workshop. A story map alone does
-not approve prose/dependencies; see keyed GLOBAL-CH01–12 and current registers.
+chapters/front/end and AppendixA atV3-031:706globalrecords.147globalrows in B/C/D
+remainpending; all110whole-volumeconcept later-use statuses pending. A now moves
+from rabbit direction to positive spectral dominance, earns period/primitive
+criteria, then defines finite stochastic paths before stationary convergence;
+mean-population and pathwise probability claims are distinguished. The C12
+finitegeometry/loop route is complete, with normal-versus-centre wording clarified
+after actual output inspection. A map alone does not approve prose/dependencies;
+see GLOBAL-CH01–12/GLOBAL-APPA and actual keyed registers.
 
 | Source | Incoming question | Earned answer | Reason for the next source |
 | --- | --- | --- | --- |

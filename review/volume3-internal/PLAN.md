@@ -850,3 +850,88 @@ everyactualPDFpage/gray/facing,actualnarrow/wide EPUB/HTML/all links/destination
 controls/formula shape, finalheadCI and clean/headmatchedmerge still required.
 Unavailable Kindle/KDPaccount/ISBNownership/physicalproof remain publicationfollowups,
 no Volume3ISBNinvented/borrowed and no Amazon upload/account action.
+
+## V3-031: complete Positive Matrices global pass
+
+Solo internal AI review, not independent human refereeing or formal verification.
+Entire current AppendixA, eight full named proofs, twelve complete triples,
+both whole figure sources and eight bibliography groups/thirteen works read.
+GLOBAL-APPA gives44individually keyed domain/claim/A/B decisions, including every
+unreferenced argument. Written cadence/adversarial-first-reader method, not a
+human or spoken session. Original APPA-PROMPT-FIRST exposure chronology retained.
+All eight full named/proof pairs and twelve full prompt/hint/solution triples
+individually SHA-matched after rereading; V3-031-retained-identities. Full original
+mathematical targets and all reader-facing solutions preserved.
+
+Opening now compares eigenvalue moduli explicitly. A local finite path law
+normalizes by successive row sums and earns muP^k before its probabilistic use;
+infinitynorm defined at first use. PageRank describes the proved stationary
+probability/distribution limit rather than silently claim an almost-sure
+long-run visit frequency. Leslie is explicitly a mean-population model, its limit
+explicitly requires primitivity, and adult-surviving rabbits called two-stage
+rather than a strict Leslie matrix. Fullperiod/[0]/positive/irreducible/primitive
+and Jordan-polynomial/r0 distinctions rechecked; no norm atzero or nonexistent
+spectralmaxempty. The actual11periodarrows and15PageRankarrows, all rounded ranks,
+nodeareas/coordinates/captions and50/85/86step exactbounds rechecked. Finite
+computations support the general proofs, never replace them.
+
+Actually reopened complete C7 Jordan828-905, V1 spectral378-400, V1 O/reminder
+181-194/geometricproof195-204 and full earlier BW/Cauchy246-266. Actual V1main
+setcounter(chapter,-1)/include route confirms printed sequenceChapter3/linear7,
+despite source filenames. ActualV4coupling170-214read for future-topic pointer,
+not a premise or complete V4review; seam hash added.18labeluses/fourearliercontexts
+classified;328/392labels,85/88literalearliermentions accepted.107firstchainsreviewed/
+threepending; all110whole-volumeconcept statuses pending later-useclosure.
+**1026accepted=157named+163fulltriples+706global;147globalpending(B66,C65,D16).**
+Inventory1656items/601prose/118bibliography/22examples/22figures/9tables/22sources.
+No count/script/hash automatically approves a mathematical item.
+
+Actual historical evidence/access limits in H-APPA RESEARCH: originalFrobenius456/
+477images and1912header/release, originalHolladay/Varga631/634+1958wrapper,
+Schneiderauthorarchiveopening/translation/commentary5/9-10, originalBrin/Page107/
+109text, Bryan/Leiserelevantmodifiedmatrix/1normtext, actualpublisherTOCs/bodies
+and AMS/Duke-depositedCrossrefmetadata. ActualMarkovRussianreprinttitle/intro/end
+156images show25March1907dateline, while scholarlyjournalcitationusesvol15(1906);
+these are distinguished. ExternalAItranscriptionclaims not inherited. Removed
+unearned first-proofpriority/Rosenblatt1957proof attribution and unread-content
+annotations; no mathematical bound/sharpness weakened. Wholeexternalbooks/papers/
+researchproofs not falsely certified from metadata or abstract.
+
+Actual3bC12reading370/371/372 andprint369/370/371 opened in BOTHcolour/grayscale
+at2x,sixphysicalpages/twelverenders. Loopgroup laws, coordinate/matrix/five-neighbour
+displays and completefiniteface/dual argument legible; no observed clipping/
+collision, pagebreak originisinterior/to the hull followed correctly. Found an
+ambiguous relativeclause after facecentres/normals; current C12 explicitly says
+EACHNORMALhas squaredlength3(thecentrehasphi^4/3). That one whole paragraph was
+manually reopened/rekeyed with freshA/B and conceptualanchor, not silently
+hash-migrated. Itsreading372/print371pixels stillneedreopening. Theorem12.5box
+wholeatfoot; longproofcontinues on unopenedfollowingpage. No facing/allpage/
+figure/browser approval inferred. preliminary-3bffe82f-visual records limits.
+
+**Final current-source514testsPASS,zero skips,56.232s** after BOTHlastcopyfixes,
+/tmp/volume3-v031-final-tests.log. Earlier56.208srun preceded C12normalclarification/
+closingquote correction and is not substituted for final run. Requiredsource,
+inventory/freshness/whitespace checks pass afterall source changes; noassertion
+weakened. ExistingexactAppendixA/C12support probes pass; this batch adds clear
+local arguments/provenance without pretending source-wording checks are proofs.
+
+Immutable producingcommit3bffe82f, BEFOREthisApass/C12copyclarification, completed
+allformats516reading/515print,KDP516,spine1.2111in,matchedwrap15.4611x10.25in.
+85public/5report hashes in preliminary-3bffe82f-artifacts. ActualEPUBCheck5.3.0zero,
+actualoutputcheckerPASS7renders26XHTML.20821mathuses/9495unique,22plates1800px.
+All60actualfont/renderer/commonbyteidentities checked beforelocalformulacachereuse,
+provenance retained, noGithubPRcache guarantee. This sample is not finalpagination.
+Fresh fetchedmain remainsd97c0bf4, already integratedaf1c3fe4. Exact3bCI1716/
+run42001786278 stillinprogress at this checkpoint; exacta1run1715terminalSUCCESS.
+NewAheadneedsownCI. Nevercancelmain/unrelatedruns; laterterminaladvancementinPR,
+not endlessdoccommits solely previousCI.
+
+Continue B/C/Dentireglobal prose/dependency/history/story/concept passes. A fresh field scan finds277acceptedglobal rows stillmissing explicit domain/claim
+fields(429alreadyexplicit); theolder539figure was a cohort, not actual missing fields.
+Manually complete those277and enforce strictschema;
+A/C11/C12explicit. Then whole-volumeconceptlateruses, finalsourcefreeze/everyactual
+PDFpage/color/gray/facings, narrow/wide actualEPUB/HTMLbaseline/shape/links/every
+exercisehintsolutiondestination/navigation/theme/menu/disclosures, finalCIartifact
+comparison and exactreviewedhead clean/base/terminalCI/ready/headmatchedmerge.
+Kindle/KDPaccount/ISBNownership/physicalproof remain unavailable publicationfollowups;
+noV3ISBNinvented/borrowed, noAmazonaction, nootherreviewer request.

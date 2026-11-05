@@ -1,12 +1,12 @@
 # Conceptual prerequisite and story ledger
 
-Current V3-030: all12mainchapters/allfourappendices have fresh named/exercise
-A/B records; separate complete global closure through C12/front/end totals662
-manualrecords.191appendixglobalrows remainpending,82of392labeluses and7of88literal
-earliermentions pending.100concept firstchains reviewed/fourpending; all104whole-
-volumeconcept later-use statuses remainpending. A backward-reference scan is not
-a conceptual audit. The table below is an incremental historical record; fresh
-per-chapter/register evidence and dated additions define actual current coverage.
+Current V3-031: all12mainchapters/allfourappendices have fresh named/exercise
+A/B records; separate global closure through main/front/end/A totals706manual
+records.147globalrows in B/C/Dremainpending,64of392labels and3of88literalearlier
+mentions pending.107firstchains reviewed/threepending; all110whole-volumeconcept
+later-use statuses pending. A backward-reference scan is not a conceptualaudit.
+The table below is an incremental historical record; fresh keyed registers and
+dated reports define current coverage, not an initial pending row or count alone.
 
 | Concept | Definition/example before invocation | Actual proof location read | First valid use / correction |
 | --- | --- | --- | --- |
@@ -584,3 +584,16 @@ explicitly cite it. C12 common-refinement proof earns proper Lipschitz integrals
 then full Jensen earns log singularity limits. No later integration/topology/
 series-exchange theorem supplies a premise. Exact GLOBAL-CH12 domains/A/B,
 31labeluses,13earliercontexts and tenfirstchain decisions are recorded in JSON.
+
+## V3-031 actual A imports and probability/model contract
+
+Actually reread C7 thm:jordan828-905 and V1 ch07 full symmetric spectral378-400;
+V1 ch05 O/reminder181-194/geometric195-204 and full BW/Cauchy246-266. Actual V1main
+counter startschapter-1, so sequenceChapter3/linearChapter7 are correct. A supplies
+its finitecoordinatecompactness and every Jordan error bound locally. Finite
+Markovpath products normalize before muP^k; only distribution limits proved,
+not an almost-sure empiricalvisit law. Leslie models mean populations and its
+stated limit nowexplicitly requiresprimitivity. ActualV4coupling170-214is future
+outlookonly, hashguarded fordrift.18labeluses/fourearliercontexts manuallyrecorded;
+sevenfirstchains include Perron, period, rays, finiteMarkov, meanmodel, Jordan
+rates and earlier Landau notation, with all later-useclosure stillpending.

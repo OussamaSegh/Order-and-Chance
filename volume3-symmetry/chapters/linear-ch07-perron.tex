@@ -12,7 +12,10 @@ multiply a non-negative vector by a matrix repeatedly, does its direction
 approach a limit? An eigenvalue larger in absolute value than all the others
 would suggest an answer, but we must prove that such an eigenvalue exists.
 
-Perron's theorem says something stronger for a strictly positive matrix: there is a simple largest eigenvalue and a corresponding eigenvector with every coordinate positive. The positivity of the entries has forced a very particular shape on the spectrum.
+Perron's theorem gives a positive eigenvalue whose modulus is strictly larger
+than that of every other eigenvalue, and a corresponding eigenvector with
+every coordinate positive. That eigenvalue is simple, so no Jordan block
+can add a competing term at the same growth rate.
 
 Zeros make the situation subtler. For a non-negative matrix, the directed graph of the non-zero entries matters. Cycles in that graph can create several eigenvalues on the outer spectral circle; their positions are governed by the greatest common divisor of cycle lengths.
 
@@ -336,7 +339,7 @@ $M(x/z)\le M(x/y)M(y/z)$ and $m(x/z)\ge m(x/y)m(y/z)$ give its triangle
 inequality after taking logarithms. Thus it is a metric on positive rays,
 called Hilbert's projective metric. The elementary oscillation estimate above
 already provides every contraction bound used in this appendix; Birkhoff's
-paper in the further reading develops this other metric.
+paper is listed below for further reading.
 \end{remark}
 
 \section{Non-negative matrices: Frobenius's theorem}
@@ -651,8 +654,9 @@ this proves convergence along
 the whole sequence.
 \end{proof}
 
-How large must $k$ be? Wielandt stated the sharp answer in 1950 without proof; the first published proofs came in 1957
-and 1958 (Rosenblatt, Holladay and Varga), and Wielandt's own unpublished proof appeared in print only in 2002.
+How large must $k$ be? Wielandt stated the sharp bound in 1950 without a
+proof. Holladay and Varga published a proof in 1958. Schneider's 2002 paper
+reproduces a proof found in Wielandt's mathematical diaries.
 
 \begin{theorem}[Wielandt]\label{linear:thm:wielandt}
 If $A\ge0$ of size $n\ge2$ is primitive, then $A^{(n-1)^2+1}>0$.
@@ -727,10 +731,15 @@ Exercise~\ref{linear:ex:wielandtsharp} proves sharpness for every $n\ge2$.
 \section{Markov chains and PageRank}
 
 A \emph{stochastic} matrix $P\ge0$ has rows summing to $1$: $P\mathbf 1=\mathbf 1$. It describes a Markov chain, $p_{ij}$ being the
-probability to move from state $i$ to state $j$, and a probability distribution $\mu$ (a row vector) evolves as $\mu\mapsto\mu
-P$. The vector $\mathbf 1>0$ is a non-negative eigenvector for the eigenvalue $1$, so $\rho(P)=1$ when $P$ is irreducible
+probability to move from state $i$ to state $j$, using the same rule at each
+step and depending only on the current state. For a finite path
+$i_0,\ldots,i_k$, assign probability
+$\mu_{i_0}p_{i_0i_1}\cdots p_{i_{k-1}i_k}$, where $\mu$ is the initial
+probability row. Summing successively over the last state shows that these
+probabilities sum to $1$. Summing over paths ending at $j$ gives the $j$-th
+entry of $\mu P^k$. In particular one step sends $\mu$ to $\mu P$. The vector $\mathbf 1>0$ is a non-negative eigenvector for the eigenvalue $1$, so $\rho(P)=1$ when $P$ is irreducible
 (Theorem~\ref{linear:thm:frobenius}: non-negative eigenvectors belong to $\rho$), and indeed for every stochastic $P$, since $\|Px\|_\infty
-\le\|x\|_\infty$.
+\le\|x\|_\infty$, where $\|x\|_\infty=\max_i|x_i|$.
 
 \begin{corollary}[ergodic theorem for Markov chains]\label{linear:cor:markov}
 Let $P$ be a stochastic matrix that is irreducible with period $1$. There is a unique probability vector $\pi$ with $\pi P=\pi$;
@@ -780,9 +789,10 @@ $r<q<1$; a bound $O(r^k)$ needs further hypotheses, such as diagonalizability.
 
 \begin{example}[PageRank]\label{linear:exa:pagerank}
 Model a surfer on the web: from page $i$ with $d_i$ outgoing links, follow one at random ($p_{ij}=1/d_i$ for each link
-$i\to j$; a page with no links is given links to all pages). The importance of a page should be the long-run fraction of
-time the surfer spends there, the stationary distribution of $P$. But the web graph is not strongly connected, so Brin and
-Page added teleportation: with probability $1-\alpha$, the surfer jumps to a uniformly random page. The \emph{Google matrix}
+$i\to j$; a page with no links is given links to all pages). We seek an equilibrium probability for each page, a stationary distribution
+of $P$. Such a web graph need not be strongly connected. Add teleportation,
+as in the PageRank model: with probability $1-\alpha$, the surfer jumps to
+a uniformly random page. The \emph{Google matrix}
 \[
 G=\alpha P+\frac{1-\alpha}n\mathbf 1\mathbf 1^{\mathsf T},\qquad\alpha=0.85,
 \]
@@ -819,15 +829,16 @@ are $C:0.351$, $A:0.329$, $B:0.169$, and between $0.019$ and $0.040$ for the oth
 
 \begin{example}[Leslie models]\label{linear:exa:leslie}
 Divide a female population into age classes $1,\dots,n$. Each step, a female of class $i$ gives birth on average to $f_i\ge0$
-daughters, and for $i<n$ survives into class $i+1$ with probability $s_i\in(0,1]$. The vector $x_k$ of class sizes evolves by
-$x_{k+1}=Lx_k$, with the \emph{Leslie matrix}
+daughters, and for $i<n$ survives into class $i+1$ with probability $s_i\in(0,1]$. The resulting mean-population model is
+$x_{k+1}=Lx_k$, where $x_k$ records mean class sizes and the \emph{Leslie matrix} is
 \[
 L=\begin{pmatrix}f_1&f_2&\cdots&f_{n-1}&f_n\\s_1&0&\cdots&0&0\\0&s_2&&&0\\&&\ddots&&\vdots\\0&0&\cdots&s_{n-1}&0\end{pmatrix}.
 \]
 If $f_n>0$, the graph $\Gamma(L)$ contains the cycle $1\to n\to n-1\to\dots\to2\to1$ (the edge $1\to j$ comes from
 $f_j>0$ and the edge $j+1\to j$ from $s_j>0$), so $L$ is irreducible; if moreover two consecutive $f_i,f_{i+1}$ are positive,
 there are cycles $1\to i\to\dots\to1$ of lengths $i$ and $i+1$, the period is $1$ and $L$ is primitive.
-For any $x_0\ge0$, $x_0\ne0$, and $w^{\mathsf T}z=1$, we have
+Whenever $L$ is primitive, for any $x_0\ge0$, $x_0\ne0$, and
+$w^{\mathsf T}z=1$, we have
 $L^kx_0/\rho^k\to(w^{\mathsf T}x_0)z$ with $w^{\mathsf T}x_0>0$.
 The total population's successive ratio tends to $\rho$, and the class
 proportions tend to the \emph{stable age distribution} $z/\sum_i z_i$.
@@ -839,12 +850,14 @@ Substitute into the first row and divide by $\rho z_1>0$ to get the
 Exercise~\ref{linear:ex:leslie} finds the full characteristic polynomial,
 including reducible cases and zero eigenvalues.
 
-Fibonacci's rabbits, counted in pairs, are a Leslie model with two classes, juveniles and adults, $f_1=0$,
+Fibonacci's rabbits, counted in pairs, give a two-stage population model,
+juveniles and adults, with $f_1=0$,
 $f_2=1$, $s_1=1$, and one extra entry $1$ in position $(2,2)$ because adults remain adults:
 $L=\bigl(\begin{smallmatrix}0&1\\1&1\end{smallmatrix}\bigr)$ in the coordinates $(J,A)$ of the opening question, with
 $\rho=\varphi=\frac{1+\sqrt5}2$ and Perron vector $z=(1,\varphi)$ (indeed $Lz=(\varphi,1+\varphi)=\varphi z$). This $L$ is
 primitive ($L^2>0$), so the fraction of juveniles tends to $\frac1{1+\varphi}=\frac1{\varphi^2}\approx0.382$, whatever the
-start: the golden ratio twice, as the growth factor and in the stable proportions.
+nonzero non-negative start: the golden ratio appears both as the growth
+factor and in the stable proportions.
 \end{example}
 
 \begin{beauty}
@@ -1499,11 +1512,10 @@ The graph is strongly connected and has cycles of lengths $n$ and $n-1$, which a
 nicht negativen Elementen}, Sitzungsberichte der Preussischen Akademie (1912), 456--477.
 \item L.~Collatz, \emph{Einschlie\ss ungssatz f\"ur die charakteristischen Zahlen von Matrizen}, Mathematische Zeitschrift 48
 (1942), 221--226; H.~Wielandt, \emph{Unzerlegbare, nicht negative Matrizen}, Mathematische Zeitschrift 52 (1950), 642--648.
-\item G.~Birkhoff, \emph{Extensions of Jentzsch's theorem}, Transactions of the AMS 85 (1957), 219--227 (Hilbert's metric).
+\item G.~Birkhoff, \emph{Extensions of Jentzsch's theorem}, Transactions of the AMS 85 (1957), 219--227.
 \item H.~Schneider, \emph{Wielandt's proof of the exponent inequality for primitive nonnegative matrices}, Linear Algebra and its
-Applications 353 (2002), 5--10 (with the history: D.~Rosenblatt 1957, J.~C.~Holladay and R.~S.~Varga 1958); A.~L.~Dulmage and
-N.~S.~Mendelsohn, \emph{Gaps in the exponent set of primitive matrices}, Illinois Journal of Mathematics 8 (1964), 642--656 (which
-exponents below $(n-1)^2+1$ never occur).
+Applications 353 (2002), 5--10 (with a facsimile, transcription and translation of the diary proof); A.~L.~Dulmage and
+N.~S.~Mendelsohn, \emph{Gaps in the exponent set of primitive matrices}, Illinois Journal of Mathematics 8 (1964), 642--656.
 \item A.~A.~Markov, \emph{Extension of the law of large numbers to dependent quantities} (in Russian), Izvestiya
 Fiziko-Matematicheskogo Obshchestva Kazan 15 (1906), 135--156.
 \item P.~H.~Leslie, \emph{On the use of matrices in certain population mathematics}, Biometrika 33 (1945), 183--212.
@@ -1511,5 +1523,5 @@ Fiziko-Matematicheskogo Obshchestva Kazan 15 (1906), 135--156.
 30 (1998), 107--117; K.~Bryan and T.~Leise, \emph{The \$25{,}000{,}000{,}000 eigenvector: the linear algebra behind Google},
 SIAM Review 48 (2006), 569--581.
 \item E.~Seneta, \emph{Non-negative Matrices and Markov Chains}, 2nd ed., Springer, 1981; C.~D.~Meyer, \emph{Matrix Analysis and
-Applied Linear Algebra}, SIAM, 2000, Chapter~8 (with a history of Perron--Frobenius theory).
+Applied Linear Algebra}, SIAM, 2000, Chapter~8, ``Perron--Frobenius Theory of Nonnegative Matrices.''
 \end{itemize}

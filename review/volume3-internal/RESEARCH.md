@@ -998,3 +998,115 @@ Downloaded PDF identities (actual files; rendering alone is not opened evidence)
 - Shoemake-1985.pdf: 8771287bytes, SHA256 `6b1d32f03380e402f2189141e4c32c30e3be3bf06407ab642fdc4d1461a69703`.
 - Dunton-Grimm-1966-Fibonacci.pdf: 2739667bytes, SHA256 `6afd152112bb524a602d304d3374b0c90dcad7d99feb39162fee1030ecbc55c2`.
 - Sylvester-1880-Vulgar-Fractions-collected.pdf: 2341507bytes, SHA256 `3c0ec85e2544e2d0157bffc4569fd8d98dab2f7099408a39aaac23fbfb09f6a0`.
+
+## H-APPA — Positive Matrices: actual access and attribution limits,5November2026
+
+Internal AI metadata/history review, not human refereeing or certification of
+external whole books/research proofs. Eight bibliography groups contain thirteen
+works. GLOBAL-APPA keys every group; local complete proofs do not rely on the
+external works supplying an unproved premise.
+
+- Perron actual Springer publisher body
+  https://link.springer.com/article/10.1007/BF01449896 :OskarPerron,title
+  ZurTheoriederMatrices,MathAnn64,248-263,June1907. Original subscription paper
+  not opened. Do not copy search-source wrong adjacent DOI BF01449895.
+- Frobenius actual ETH record
+  https://www.e-rara.ch/zut/doi/10.3931/e-rara-18865 has offprint place/date
+  uncertainty. Actual original scan https://www.e-rara.ch/zut/download/pdf/5929358
+  opened456/477images: original title/byline, relevant introductory irreducible/
+  simple peripheral-root statement and headerSitzungsberichte1912; last header
+  session23May1912, release6June. This supersedes uncertain offprint catalog
+  dating. Only those relevant original pages read, not full22page original proof.
+- Collatz actual publisher body
+  https://link.springer.com/article/10.1007/BF01180013 confirms MZ48,221-226,
+  Dec1942,received11Nov1941. Actual Geodesic record
+  https://geodesic.mathdoc.fr/item/MZ_1942__48_168987/ read. The different
+  Integralgleichungen title belongs to another article; do not merge them.
+  Full subscription original unavailable.
+- Wielandt actual library record
+  https://geodesic.mathdoc.fr/item/MZ_1950__52_169144/ :MZ52(1950),642-648.
+  Actual Holladay/Varga original reprint
+  https://www.math.kent.edu/~varga/pub/paper_7.pdf : wrapper and631/634images
+  opened;631 explicitly says1950p648stated sharpbound withoutproof, then offers
+  a proof; wrapperAug1958,ProcAMS9no4,631-634. Not all four original paper pages
+  reviewed; no external proof certification beyond independently earning our bound.
+- Schneider actual author archive index entry149 and original scan
+  https://people.math.wisc.edu/hans/paper_archive/scanned_papers/hs149.pdf . Read
+  actual opening5, relevant German transcription/English translation and commentary
+  9-10, not merely abstract. OriginalLAA353(2002),5-10. Commentary identifies
+  first publication of diary pages and explicitly limits historical guesses about
+  the1949notation. OCR of handwritten/matrix facsimile unreliable; no claim to
+  decipher/certify it or reconstruct all original Cayley interpolations. Our
+  complete bound uses a different finite shortest-cycle proof. Two guessed
+  archive paths404 before actual scanned_papers location found; actual PDFaccess
+  succeeded. PublisherScienceDirect403 did not cause a false fulltext claim.
+- Removed book's unsupported first-published-proof superlative and exact
+  Rosenblatt1957proof attribution. Actual Wiley Rosenblatt metadata identifies
+  https://onlinelibrary.wiley.com/doi/abs/10.1002/nav.3800040206 ,DavidRosenblatt,
+  NavalResearchLogistics4(1957),151-167,earlierversionJune1956. Metadata alone
+  does not establish that article's proof of this bound. Current chronology says
+  Wielandt1950announcement,Holladay/Varga1958proof and Schneider2002diarypublication,
+  all supported by actual relevant original text. No mathematical theorem or
+  sharpness target lost; only unearned priority detail removed.
+- Dulmage/Mendelsohn original publisherPDF/fullpage links returned HTML/iframe,
+  not paper. Actual Duke-deposited Crossref record
+  https://api.crossref.org/works/10.1215/ijm/1256059464 read:authors/title/vol8no4,
+  1Dec1964; page field absent, so not invented from it. Actual published-reference
+  body https://dml.cz/handle/10338.dmlcz/100729 reference2 corroborates642-656.
+  Removed detailed unread gap-classification annotation. No original paper proof
+  certified from title, DOI or abstract.
+- Birkhoff actual AMS-deposited Crossref record
+  https://api.crossref.org/works/10.1090/S0002-9947-1957-0087058-6 read:Garrett,
+  TransAMS85no1,1957,219-227,title. AMSfullPDF/HTML403 and JSTORbody unavailable;
+  search excerpt was only a lead, not a claimed original read. Removed content
+  annotation; local Hilbert-ray metric axioms fully proved and no external sharp
+  contraction/fixed-point result supplies a premise.
+- Markov scanned JEHPS reprint downloaded from
+  https://raw.githubusercontent.com/GZancewicz/original-markov-paper-latex/main/Markov_1906_Extension_Law_Large_Numbers_Reprint_JEHPS.pdf . Actual first Russian
+  title/intro image and last156image read: actual last dateline25March1907.
+  First scan footer1, not135, so original/reprint pagination distinguished.
+  The repository AI transcription/claimed parallel verification is not inherited;
+  README only locates the original scan. No full Russian proof certified. Actual
+  scholarly reference197 at https://www.numdam.org/articles/10.24033/rhm.219/
+  gives conventional Kazansocietyser2vol15(1906),135-156 and translatedtitle.
+  Bibliography uses that volume-year, not a1906composition or exactprinting claim.
+- Leslie actual publisher issue body
+  https://academic.oup.com/biomet/issue/33/3 shows title/bylinePHLeslie,33no3,
+  Nov1945,183-212,DOI10.1093/biomet/33.3.183. Article fullaccess redirects to
+  inaccessible Silverchair; no whole30page original read. Local mean-model and
+  full characteristic-polynomial/positive-root proofs independently earned.
+- Brin/Page actual original Stanford-hosted journalPDF
+  https://snap.stanford.edu/class/cs224w-readings/Brin98Anatomy.pdf . Actual first
+  header/byline107 and109Sec2.1.1-2.1.2text read:CNIS30(1998),107-117,parameter
+  d=.85,randomsurfer and weightedinlinks. InfolabHTML/PDFtimeouts before this
+  successful original download. Original paper has normalization/d-versus1-d
+  inconsistencies in formula/prose; not imported. Our explicit rowstochastic
+  G and its complete contraction proof supply mathematics, no unproved modern
+  claim that this remains Google's entire actual ranking system.
+- Bryan/Leise actual RoseHulman author record
+  https://scholar.rose-hulman.edu/math_fac/117/ and original SIAMPDF hosted at
+  https://npflueger.github.io/teaching/272-17fall/Bryan-Leise.pdf . First header569,
+  Sec3.1modifiedmatrix and later1norm argument text read beyond abstract.48no3,
+  2006,569-581,DOI10.1137/050623280; title dollar amount is historical title,
+  not a current company valuation. Their column-stochasticm=.15 corresponds to
+  our transposed rowconventionalpha=.85. Not the full external article/code proof.
+- Seneta actual publisher body/copyright/edition2/TOC
+  https://link.springer.com/book/10.1007/0-387-32792-4 read:1981copyright,
+  later2006paperback/eBookrelease,firstedition1973not confused with2nd1981.
+  Full subscription book not read.
+- Meyer author Chapter8PDF503 and SIAMpublisher unavailable. Actual licensed
+  chapter excerpt/TOC https://www.globalspec.com/reference/69734/203279/chapter-8-perron-frobenius-theory-of-nonnegative-matrices read:chapter8title,PerronFrobenius
+  TheoryofNonnegativeMatrices,SIAM2000copyright,CarlMeyer. Replaced unread
+  history annotation with exact chapter title; closing quotes corrected during
+  final source read. No whole external book proof certification.
+
+Exact downloaded identities; generated scan images not listed as opened unless
+explicitly stated above:
+- Frobenius-1912-Nonnegative.pdf: 5896501bytes, SHA256 `0f8d1bee879f601a803e3d4d2570cb10cdedaab091332e8f89e8cdead05d078b`.
+- Holladay-Varga-1958.pdf: 740715bytes, SHA256 `e48d83b24f685db4957772dd1b9c4582cf66ef258dceb3654e8208e505b120e9`.
+- Schneider-2002-Wielandt.pdf: 207374bytes, SHA256 `bfca1816f8a95024862662bd6fe7d3b09856bb9444c1c08ec6eb8b32da31ce53`.
+- Markov-1906-JEHPS-scan.pdf: 21031177bytes, SHA256 `32a5e7a4e388e1ffd3855b671ab39c8194b0d021c673f632bcb21c8b2880a887`.
+- Brin-Page-1998-Anatomy.pdf: 1492735bytes, SHA256 `3a155ade395c7789876a0bc08a1842f909486438c1b1739ae531fa5c797d93f0`.
+- Bryan-Leise-2006.pdf: 608079bytes, SHA256 `af2216dce6abe01b13ea40579a2b9810ea227adc0914a481e85a06b6c2a1693c`.
+- Birkhoff-1957-Jentzsch-crossref.json: 2908bytes, SHA256 `df368ae427cea46b79471dccaad432b520eb732767b4c5ec211a165e182112d0`.
+- Dulmage-Mendelsohn-1964-crossref.json: 2963bytes, SHA256 `b59e869618533c17bd97f34060a8beccbab15f8e934dff958be546ac3ed82a13`.
