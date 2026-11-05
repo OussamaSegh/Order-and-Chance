@@ -1,5 +1,57 @@
 # Progress
 
+## V3-021: complete Chapter3 global pass and actual first-page findings
+
+All43C3expositionfragments read/reconstructed, including unnamedaction/cycle/
+counting/vectorquotient arguments,actual14necklaces andall7bibliographyitems.
+Fivechangedexerciseprompt/hint/fullsolutionrecords explicitlyreopened andfreshly
+reconstructedA/B, samedomains/targets/grades, no newblindedsolvingclaim. Seven
+namedproofs byteunchanged. Total485accepted=155named+163triples+167global
+(31front/end+49C1+44C2+43C3);656exposition/unnamed/history/voice rowsremain.
+1622inventoryitems,580prose,109bibliography (Fine/Hersteinadded); othercounts
+155named/163triples/22examples/22figures/9tabular unchanged.
+
+Earncoset/colouringactionsandfiniteimagereplacementforinfiniteG/finiteX before
+averaging. Definefaithful/permutationrepresentation/cycletype/simplegraph/degree/
+A-stableandoperatorpolynomialnotationbeforeuse. Graphcountuseslocalvertexcycle
+partition6/3/8/6,nolaterS4conjugacyclassification. Onecompletebinarycountkept,
+duplicateremoved; ternary130alreadycorrect. Positivebeadsn>=1,rotationsrvscoloursk,
+explicitFermatnegativeintegerreduction,uniformmatrix/emptyn0model andunipotent
+boundary, Touchardprime-binomialprooflocally. Fulladvancedtargets retained.
+ActualV1polynomialderivative/multiplicity/directsumproofs,V2prime-binomialGauss
+proof read. ActualprimaryMcKay119image/PolyaGermanintro/1987translatorpreface/
+Hararytitle-TOC,officialdepositedmetadata/LMSauthorbibliographyread; inaccessible
+original/researchprooflimitsexplicit,notabstractcertification. Old/new/loss and
+exactmanualA/B inGLOBAL-CH03,V3-021disclosure/regressions,RESEARCH.
+
+All20C3labelusesmanuallyclassified,total47accepted/337pending. Threeearlier
+mentionsjoin25:28of81accepted,53pending. Fortyfirst-usechainsreviewed,15priority
+pending; ALL55whole-volumeconceptstatuses stillpending. Generalconceptual audit
+includesunnamedreasoning andsolutions,notonlylabelorbackwardscans.
+
+Immutable0b61bf09allformatscompleted:508reading/507print,KDP508,spine1.1923in,
+wrap15.4423x10.25in,samebuild,85public+5reporthashes. ActualEPUBCheck5.3zero
+messages andoutputcheckerPASS. Actuallyopenedfullreading13/45/48 andprint12/44/47
+colour2x,latter48/47alsogray2x. FoundC1matri-/ces.aloneandC2arrowscrossingstacked
+integerlabels. ShortenC1questionandhorizontalizeC2triples,samemathdata; reopen
+actualsource/global/twoearliermentions/includedfigrecordandmanuallyrecheck.
+Newsourcefixesrequireactualnewpage/plate/changed-paginationreopening. C2opener
+fit/legibilityobservedonlyatthischeckpoint; facingreviewpending. No pageapproval
+transferred: reading/printpixelsdifferandbothopened. Onlyactualseen1b948eBook
+frontJPEGtransfersbyprovenwholefilebyteidentity. Othergeneratedpagesunopened.
+SnapshotpredatesC3andtheselatestproductionfixes; rootdistmixescheckpoints.
+
+503fullunittests passzero skips53.340s beforethefinaltwoC1/figureproduction-only
+edits;40currentfocusedpass7.666safterthem. Currentinherited379labels/384refs/
+163triples,inventory/register/conceptfreshness/diffcheckpass. No broadrepeat
+withoutnewsource/failure; finalallchecksrequiredafterfreeze. Fullreviewgate
+intentionallyfailsforpendingwork. MainrefetchedunchangedactualPR103merge7f87.
+Exact0bCI1702/41960503696 list/debs/V3and13otherbuildssucceeded,V8stillrunning
+atlastjobdetailobservation; summaryinprogress,notterminalall-success. Earlier
+ebaeCI1700terminalsuccess. Main-onlylibrarycaches,no main/unrelatedcancellation.
+ContinuefullC4–12+A–Dglobal,thenfinalsourcefreeze/every-page/digital/CIartifact/
+cleanhead/currentbase/terminalheadCI/ready/head-matchedmergecommitgates.
+
 ## V3-020: complete Chapter2 global and solution-terminology follow-up
 
 Read the entire current C2 source, all eight named proofs, all eight actual

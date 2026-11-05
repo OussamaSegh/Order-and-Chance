@@ -167,3 +167,14 @@ full domains/targets/grades; exact reconstructions in GLOBAL-CH02. This follow-u
 shows why named/exercise mathematical closure was not whole conceptual closure.
 The49exposition-fragment decisions remain byte-fresh; their global first-use
 claims do not automatically certify later or nested exercise terminology.
+
+## V3-021 actual first-page production follow-up
+
+Actual0b61bf09 reading13/print12 andreading45/print44 opened/readincolour2x;
+actualreading48/print47 opened/readincolourandgrayscale2x. C1firstparagraphhas
+matri-/ces. aloneonlastline: questionshortenedwithoutclaim/toolchanges; new
+source/global/earlier-occurrence evidence reopenedandmanuallyrechecked. C2kernel
+figure's arrows crossstackedintegerlabels: replaceeachtriplebyhorizontalinputs,
+allninevalues/arrows/bucketsunchanged. Includedfigurehashguardautomatically
+reopeneditsrecord; freshdata A/Bacceptanceisnotpixelapproval. Bothnewfixesrequire
+actualnewpage/plate/changed-pagination reopening. No visualapprovaltransferred.

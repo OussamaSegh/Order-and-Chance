@@ -1,12 +1,12 @@
 # Conceptual prerequisite and story ledger
 
-Current V3-020: all twelve main chapters and all four appendices have fresh
+Current V3-021: all twelve main chapters and all four appendices have fresh
 named/exercise A/B records. The separate global review has exact manual closure
-for front/end31+C1:49+C2:44 fragments. Remaining697 exposition/unnamed/history/
-voice rows,357 label-reference classifications,56of81 literal earlier mentions
+for front/end31+C1:49+C2:44+C3:43 fragments. Remaining656 exposition/unnamed/history/
+voice rows,337 label-reference classifications,53of81 literal earlier mentions
 and all later conceptual occurrence closure remain pending. A backward-reference
-scan is not a conceptual audit. `concepts.json` has28 manual first-use chains,
-17 priority pending chains; ALL45 whole-volume concept statuses remain pending.
+scan is not a conceptual audit. `concepts.json` has40 manual first-use chains,
+15 priority pending chains; ALL55 whole-volume concept statuses remain pending.
 The initial table below is an incremental record, with later additions scoped
 to their dated checkpoints. Its initial pending rows do not override the fresh
 per-chapter/register evidence.

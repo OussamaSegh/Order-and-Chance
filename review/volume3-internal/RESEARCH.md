@@ -238,3 +238,57 @@ supportquotientsCh3/directsemidirectCh5. Authorlinkedweb_pref.pdf502, notread.
 Artin exactsameeditionmetadata/actualTOC fromC1 supports boundedCh2description;
 no exactfirstreleaseday/copyrightpageseen claim. No researchproof certification
 fromabstracts/snippets; furtherreading supplies no essential book premise.
+
+## H-C03 — counting attribution/metadata,5November2026
+
+McKay: https://www.maths.tcd.ie/~bnick/McKay.pdf downloaded actual2pagearchived
+PDF; secondpageoriginalMonthly119 actuallyopened/readwholeMcKayarticle, excluding
+nextunrelatedarticle belowit. SHA2567d3a9d09b2f46ad7a07e6c721e59a25e8da7d83b753cbe142fd1e5022523a51d.
+Actualtitle/JamesH.McKay/rotatingtuples agree; fullproofisnotliterallyoneparagraph.
+Uni retypesetfulltextalso read at
+https://yuvalfilmus.cs.technion.ac.il/Manuscripts/McKay%20Another%20Proof%20of%20Cauchy%27s%20Group%20Theorem.pdf .
+JSTORfrontmatterconfirmsMonthly66(2),Feb1959,p119; nextarticle's119–120 is not
+McKay'spage range. Bookcitationnowdescribes rotatingtupleargument, notparagraphcount.
+
+Polya: actual Germanprimaryintro145–147 at
+https://archive.ymsc.tsinghua.edu.cn/pacm_download/117/5571-11511_2006_Article_BF02546665.pdf
+read chemicalisomer/graphcontext andoctahedral24rotationcycleexample. Firstpage
+printed28May1937; archiveindex1937.12isnotautomaticallyoriginalreleasedate.
+Citationyear1937 correct. Actual1987Springerfrontmatter/preface at
+https://link.springer.com/content/pdf/bfm:978-1-4612-4664-0/1 andpublisherDOI
+https://doi.org/10.1007/978-1-4612-4664-0 read:title/authors/year/Englishtranslation
+andRead'ssupplement. ActualtranslatorDorotheeAeppli; no claimReadtranslatedit.
+Notall110originalpages,all1987bookproofs orcurrentresearch results certified.
+
+Gustafson: actual publisher-deposited CrossrefJSON
+https://api.crossref.org/works/10.1080/00029890.1973.11993437 read W.H.Gustafson,
+Monthly80(9),1031–1034,printNov1973 versusonline11April2018. OriginalTandF403,
+JSTORstable2318778onlyscriptplaceholder; fulloriginalpaper notread. Actual2007
+GivensJMMtext https://jointmathematicsmeetings.org/meetings/national/jmm-archive/1035-20-1384.pdf
+explicitlyattributes5/8boundtoGustafson1973. Onlythatattributioncheckedthere,
+notnewsemigroupresearchprovedfromabstract. Ourfinitegroupgeneralbound already
+fullyreconstructed independentlyinCH03,includingD4/Q8exact40/64.
+
+Harary/Palmer: actualpreviewtitle/copyrightandTOCppvii–viii read at
+https://api.pageplace.de/preview/DT0400.9781483273785_A23882849/preview-9781483273785_A23882849.pdf :
+AcademicPress1973,PolyaCh2,treesCh3,graphsCh4. ArtinCh6sameactualsecond-edition
+TOC/metadatareadinC1,boundedgroupaction/Platonicdescriptiononly.
+Neumann: actualLiebeck/PraegerLMSobituaryDOI10.1112/blms.12690 PDF
+https://mathshistory.st-andrews.ac.uk/LMS/neumann_peter_lms_obit.pdf ,PDFpp19/26,
+historydiscussionandpublicationlistitem35 confirmtitle/MathScientist4(1979)
+133–141. Original1979articleunavailablehere; do notclaimitsfulltextread.
+
+Fine/Herstein: originalpapertextintro/theorem1readthroughmirror
+https://scispace.com/pdf/the-probability-that-a-matrix-be-nilpotent-55cdbyli66.pdf ;
+OCRsuperscriptsunreliable, actualimage/fullproofnotclaimed. Actualpublisher-deposited
+https://api.crossref.org/works/10.1215/ijm/1255454112 confirmsN.J.Fine/I.N.Herstein,
+IllinoisJMath2(1958),date1Nov1958; DOItoolinaccessible,originDownloadrequest
+returnedHTMLnotPDF,mirrorrequest200empty. Removedemptylocalplaceholder;
+no localoriginalPDF/pageimageevidenceclaimed. Generalqclassicalcount/1958
+attributioncorroboratedbyactualLeinsterpeer-reviewedversionintroductionp1,
+https://www.pure.ed.ac.uk/ws/portalfiles/portal/165190848/1912.12562.pdf ,beyondits
+abstract. Also readbackgroundlinearfactspp2–3; notclaimfullnewbijectionproof
+certified. Ourfullgiven-fieldFitting/recurrenceproofandBsubtractionwerewritten
+beforethisreading. AddactualFine/Hersteinbibliography,108->109. Removeunqualified
+SteinbergtagfromimmediateGLtranslationcase; general1968algebraic-groupcount
+notearned/usedhere, AMSoriginal403. Fullmathematicaltargetretained.

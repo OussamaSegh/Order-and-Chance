@@ -3,8 +3,8 @@
 Internal AI review, not a human or spoken read-aloud session. Main route and all
 four appendix sources have been read completely during their A/B reviews. This
 map records the actual earned mathematical route; the final keyed global
-voice/cadence/adversarial-first-reader pass is still in progress.124 fragments have current manual closure at V3-020 (31front/end,49C1,44C2);
-697 other exposition fragments, including unnamed reasoning, history and
+voice/cadence/adversarial-first-reader pass is still in progress.167 fragments have current manual closure at V3-021 (31front/end,49C1,44C2,43C3);
+656 other exposition fragments, including unnamed reasoning, history and
 conceptual order, remain.
 A route map alone does not approve their prose or dependencies.
 
