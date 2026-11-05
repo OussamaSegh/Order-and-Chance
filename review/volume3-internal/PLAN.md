@@ -5,6 +5,24 @@ and production review, not independent human refereeing or formal verification.
 The user authorizes the complete review and an exact-head merge only after all
 available acceptance gates pass. No Amazon upload or account action is authorized.
 
+## Current acceptance checkpoint — V3-043
+
+| Work | Current evidence |
+| --- | --- |
+| Internal mathematics/editorial/prerequisites/story | Complete at the guarded ISBN source snapshot: 158 named, 163 full triples, 856 global records, 120 concepts, 393 label uses and 88 earlier contexts. |
+| Current matched ISBN build | d47cd540: 518 reading / 517 print; correct scanned ISBN; actual EPUBCheck/output gates pass; 85 public identities. |
+| Actual PDF visuals | 43 of 1035 pages covered, including 21 exact prior-pixel transfers; 10 print facings; 992 pages pending. |
+| EPUB rendering measurements | Actual unmodified 52 narrow/wide instances pass; digital visual/behavior/link work remains. |
+| Reader rendering measurements | Provisional 48 instances pass with URI fix injected; new unmodified build and all behavior/link checks remain. |
+| Tests | Current 522 pass; strict internal completeness/freshness and whitespace pass. |
+| Final CI / merge | Open. Current candidate V3 job passed; final head still needs terminal overall CI and final artifact comparison. Keep draft. |
+| Publication follow-ups | Native Kindle, KDP account/Previewer, ownership and physical proof unavailable; no Amazon account action. |
+
+Detailed evidence: [progress](PROGRESS.md), [restart](CHECKPOINT.md),
+[candidate artifacts](candidate-d47cd540-artifacts.json),
+[actual per-page record](candidate-d47cd540-visual.json). Historical checkpoints
+below remain scoped to their producing sources, not current acceptance.
+
 ## Baseline
 
 - PR #103 was verified merged on GitHub, 4 November 2026, at

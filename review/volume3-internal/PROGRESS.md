@@ -1,5 +1,98 @@
 # Progress
 
+## V3-043: actual ISBN artifacts and reader clipping correction
+
+The immutable ISBN build at `d47cd54065875977ca9420d92010e7d0d12bd003`
+completed in all formats. Actual counts remain **517 print / 518 reading pages**;
+KDP's even count is 518, spine 1.2157 in, and its matched wrap is
+15.4657 x 10.25 in. Copyright, actual exported wrap and generated listing all
+contain the author's paperback ISBN `9798167514683`. The actual wrap was rendered
+at 4x and independently decoded by ZXing 3.1.1 as a valid EAN-13 with exactly
+those digits. No agency/account ownership, vendor acceptance or physical-proof
+claim follows from the scan. The decoder was installed in an owned external
+Python target after the build venv proved to have no pip; no check was skipped.
+
+Actual EPUBCheck 5.3.0 again reports zero fatals/errors/warnings/infos; the output
+checker passes 518 reading/517 print, 26 XHTML and seven generated samples.
+The unmodified corrected EPUB now passes all **52 actual 390/1280 px page/viewport
+measurements with zero reported problems**, resolving the two whole-page URL
+overflows. `candidate-d47cd540-artifacts.json` records 85 public files and ten
+actual report identities, including the independent barcode scan. These checks
+are not approval of unopened pages or all digital behavior.
+
+Actual new copyright pages (reading 5 / print 4) were reopened in colour and
+grayscale, with the corrected print 4-5 facing spread. The whole actual wrap was
+opened in both modes; its spine detail was opened at 3x and the fixed 7 TeX pt
+size checked against the approved cover instructions. The actual 1792x2560 eBook
+JPEG was opened. Titles, subtitle, author, blurb/math, frames, art and barcode box
+fit; the approved family/art were preserved. No physical spine-legibility claim.
+
+The 21 other previously opened pages have identical full 2x raw RGB AND grayscale
+pixels in the new PDFs. Their existing decisions transfer only on that exact
+identity; they are not misreported as new openings. Four earlier print facings
+also have actual identical composite pixels. Twenty new body pages were then
+actually opened in full-resolution two-page images in both modes: reading 13-22,
+print 12-21. Each page remains at its full 2x dimensions inside the image, not a
+thumbnail. Each has its own observation in `candidate-d47cd540-visual.json`.
+Current coverage is **43/1035 physical pages: 22 actual new/reopened + 21 exact
+prior-pixel transfers; 992 remain pending**. Ten print facings are covered.
+The complete actual Figure 1.1/table/cube-axis panel and caption were opened in
+both editions/modes. The other figures and all remaining pages still need review.
+
+The actual HTML reader exposed the same long-URL problem as clipping: its body
+width stayed 390 while the C6 link extended to x=515.906 and C9 to x=446.375.
+This is why a body-width/loading check alone is insufficient. Added the URI-only
+wrapping rule to reader.css. Actual before/injected-rule-after screenshots for
+both pages were opened: right edges become 367.781 / 368.156, with text/math,
+bullets and fixed header intact. Destinations/text are unchanged. All four images
+and exact geometry are in `V3-043-reader-url-regression.json`; this remains a
+provisional regression, not a new unmodified-reader acceptance.
+
+Added a reusable actual-reader browser checker. It expands every disclosure,
+checks math errors, URI/inline bounds, intentional pan containers, image loading
+and aspect, and records runtime/network failures. A provisional pass over all
+24 actual reader pages at 390/1280 (48 instances), with only the new URI rule
+injected, reports zero problems. Each width has 20,955 math spans, 326 expanded
+hint/solution disclosures and 23 images (cover plus 22 plates); font states are
+loaded. Largest measured image aspect discrepancy is 0.008686 (includes pixel
+rounding). No manual approval follows from these numbers. The tool was then
+strengthened to record HTTP >=400 responses too; the next unmodified final pass
+must use that version. Navigation/theme/menu/every local link and triple block/
+backlink/disclosure behavior, and actual digital visual samples, remain open.
+
+Current source/code **522 tests pass, zero skips, 60.380 s**; required source,
+inventory and both strict mathematical completeness/freshness gates pass, as
+does whitespace. Mathematical source/registers and code were held fixed during
+the suite; descriptive visual reports advance separately. The 120 conceptual
+closures and 1,177 item decisions remain current; this batch changes no book
+mathematics or teaching text. The new browser checker and real failing/passing
+URL fixtures provide production regressions; no mathematical proof is inferred.
+
+Fresh main fetch remains `d97c0bf4e9f5b2d5fd543f0550db62e7eac5a678`, already
+integrated. Actual e696 CI run 1728 ended cancelled after the subsequent push;
+its 15 book jobs passed, not its overall run. At the last actual d47 job query,
+V3 build/bleed/output/upload and 13 other book jobs passed; Volume 8 was active,
+so run 1729 was not terminal. The new reader-fix head needs its own terminal CI.
+No main publication or unrelated run was cancelled. Main-only library caching
+still applies; no reusable PR-cache claim or CI-only commit loop.
+
+To make room for remaining page renders, pruned only six owned obsolete formula
+caches. Every e696 cache file was byte-compared with the retained complete d47
+cache first; the five older snapshot caches had exact committed manifests.
+Public dist artifacts, manuscript/git worktrees, reports/provenance, actual visual
+images and CI comparisons were preserved. Exact paths/sizes are in
+`V3-043-cache-pruning.json`; about 1.3 GB was available after pruning.
+
+Next: build the reader-fix head immutably, recheck unmodified 48-instance reader
+and the matched outputs, then continue reading 23 / print 22 onwards. Retain older
+page evidence only after actual relevant identity. Complete all remaining pages,
+facings, figures/tables/displays/openings/final matter; digital asset/behavior/link
+review; actual final CI artifact comparison; exact-head clean/current-base and
+terminal-success gates before ready/head-matched merge and GitHub/main verification.
+Native Kindle/Paperwhite, KDP account/Print Previewer, ISBN ownership and physical
+proof remain publication follow-ups. Solo internal AI review, no human/spoken/
+formal-verification claim, other-reviewer request or Amazon account action.
+
 ## V3-042: author ISBN, real EPUB overflow repair and exact before/after counts
 
 Author supplied paperbackISBN **9798167514683**. Independent alternating1/3 sum

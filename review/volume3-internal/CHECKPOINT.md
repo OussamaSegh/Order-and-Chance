@@ -1,374 +1,111 @@
-# Restart checkpoint — V3-042
+# Restart checkpoint — V3-043
 
-Parente696a59550e9bc4b9f108f3bce08f6818a174ee9;readactualHEADaftercommit.
-Continueentireauthorizedjobthroughmerge,nopartialfinalstop.Noagents.
+Continue the entire authorized solo review through actual final acceptance and
+head-matched merge. Do not final-end at this checkpoint or ask whether to proceed.
+No agents, other-reviewer request, human/spoken/formal-verification claim, or Amazon
+action. User supplied paperback ISBN9798167514683 and authorized its inclusion;
+then clarified the before/after page question: untouched post-PR103 source was
+actually rebuilt at471print/472reading; revised517print/518reading (+46), including
+after the ISBN. User was advised roughly4-8morehours for remaining production work.
+Latest user:continue,make it perfect. Status questions steer ongoing work.
 
-## V3-042: author ISBN, real EPUB overflow repair and exact before/after counts
+Repository /workspace/Order-and-Chance,branch
+editorial/volume3-complete-internal-review-20261104;PR104:
+https://github.com/OussamaSegh/Order-and-Chance/pull/104 (draft).
+Parent d47cd54065875977ca9420d92010e7d0d12bd003;read actual HEAD after this commit.
+Correct original PR103merge7f87c2ab00fdb0c7791dc833423b98bef0870f01.
+Fresh main d97c0bf4e9f5b2d5fd543f0550db62e7eac5a678 integratedaf1c3fe4.
+Current manuscript guarded snapshot7fb26f7ef266e56ec87b837f9aad10b5dc9a746ef5e67d06f5219e8510b6d0bd.
 
-Author supplied paperbackISBN **9798167514683**. Independent alternating1/3 sum
-and existing EANencoder agree on checkdigit3;95modules/guards checked. Canonical
-main.tex now renews bookisbnprint after the shared definition,so copyright and
-actual build's back-cover barcode use the same number. No separate eBookISBN
-invented. Listing generator previously omitted assignedISBNs;now reads/validates
-the canonical renewal and emits a paperback-only field. Actual old e696 output
-fails the expected ISBN-row assertion and wrongly accepts a bad checksum;new
-output passes/rejects respectively. Two focused unit tests cover valid/unassigned
-editions and invalid length/checksum/non-BooklandEAN. Accountownership was not
-inspected;this is the author's supplied assignment,not an agency/account audit.
-Actual new barcode/render/scan and matched counts await the next full build.
+Activate /workspace/volume3-tools/activate.sh for fitz/TeX/build/tests.
+For Playwright use existing default Python3.12 explicitly:
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3.
+The build venv has no pip/Playwright. Independent ZXing3.1.1 installed under
+/workspace/volume3-tools/extra-python;use that as PYTHONPATH with defaultPython.
+Chromium /usr/bin/chromium. EPUBCheck5.3jar:
+/workspace/volume3-tools/epubcheck-5.3.0/epubcheck.jar.
+Never use sandbox_permissions;approvalnever. Start commands in the intended
+immutable checkout explicitly:two initial working-directory slips were caught;
+root ignored partial outputs/sites are NOT selected evidence. Never rerun initial
+visual-initialization scripts over later additive records.
 
-This is a bounded metadata-only main diff:old initial synthetic block becomes
-two freshly reconstructed records. All1659 other existing item fragments,
-all158whole named proofs/163fulltriples/22figure sources and allotherbook/earlier/
-seam/sharedTeX sources are identical. All120 concepts' actual first anchors retain
-identical bytes;title coordinates shift2lines. Each chain's existing substantive
-laterA/B/boundaries is explicitly retained with old/new snapshot and exact bounded
-diff reason,not automatically approved by checksum/inventory. Old metadata record
-reopened before rekeying and preserved inV3-042-ISBN-REVIEW. New snapshot
-7fb26f7ef266e56ec87b837f9aad10b5dc9a746ef5e67d06f5219e8510b6d0bd.
-Current inventory1661items/604prose,856global;1177itemdecisions/120completeconcepts,
-393labeluses/88literalearliercontexts. Named/exercise/figure targets unchanged.
+The full internal source review is complete (see PROGRESS/individual A/B records):
+158named (original155+PID/quartic/planar),163exactfulltriples,856global=1177items;
+120completeconcepts,393refs,88literalearliercontexts. Inventory1661items/604prose/
+118bibliogroups/22examples/22figureinputs/9tables/22files. All main/A-D/front/end/
+cover/publishing/afterword sources were personally read;written cadence and
+adversarial first-reader pass informed,not human/spoken/blind. Metadata-only ISBN
+amendment has exact fragment/anchor identity retention and two fresh rows.
+Both strict --require-complete gates pass. No unresolved source math/editorial
+finding is identified;production is still open. Preserve honest exposure and
+external research/access/classification limits in the records.
 
-Complete actual pre-ISBN e696 build succeeded in allformats:518reading/517print,
-KDPnormalized518,spine1.2157in,matchedwrap15.4657x10.25in. ActualEPUBCheck5.3
-zero errors/warnings;outputcheck518/517,7generatedsamples/26XHTML;520frozen
-unit tests63.635s.85publichashes/nineactualreports inpre-isbn-e696a595-artifacts.
-20909mathuses/9534unique,22fullwidth1800pxplates. All60renderer/font/common
-bytes compared before cachecopy. An initial wrong-working-directory build was
-caught/stopped only locally;its partial outputs were not selected. Currentmain
-freshfetch remainsd97c0bf4;no main/unrelated run cancelled,PRcachesarenotreusable.
+Immutable completed ISBN build:
+/workspace/volume3-final-d47cd540,producingd47cd54065875977ca9420d92010e7d0d12bd003.
+Actual518reading/517print,KDP518,spine1.2157in,wrap15.4657x10.25in.
+ActualEPUBCheckzero/outputpass;85publichashes/10reports in
+candidate-d47cd540-artifacts.json. Correct ISBN on actualcopyright/wrap/listing;
+actual exported wrap4x ZXing decode exactly9798167514683. Actual copyrightR5/P4,
+wrapcolor+gray,spinedetail3x,eBook1792x2560JPEG opened. Fixed7TeXptspine matches
+approveddesign;no physical readability/ownership/KDPclaim. Prior pre-ISBN e696
+artifacts/reports/publicfiles preserved underpre-isbn-e696a595-*.
 
-Actual full2x pages opened individually in color/grayscale:reading1-12/print1-11
-(**23physicalpages/46renders**). Five actual trim-relative facing spreads
-print2-3,4-5,6-7,8-9,10-11 opened bothmodes. Exact per-page observations/hashes in
-pre-isbn-e696a595-visual;the remaining1012physicalpages staypending. Coverfamily,
-seriescatalogue,fulltitle,copyrightwiththen-unassignedISBN,preface/two displays,
-allcontentspages and firstcharcoaldivider legible;bleed/gutter/spread concerns
-checkedforonlythese pages. No thumbnail/hash/render-generation approval.
-These are PRE-ISBN pages;new copyright/barcode must be reopened,and other earlier
-evidence transfers only through actual relevant pixel/fileidentity.
+Actual PDF coverage atd47:reading1-22/print1-21 =43of1035pages;992pending.
+22actual new/reopened plus21exactprior rawRGB/grayscale pixel transfers from
+actual e696openings. The whole images are2x,notthumbnail;new body viewed in
+full-resolution two-page images. Per-page observations/hash and10printfacings in
+candidate-d47cd540-visual.json. Figure1.1/table/cubeaxes/fullcaption actuallyopened
+R19/P18color+gray. Otherfigures/digitalplates stillpending. Current image directory
+/workspace/volume3-final-visual-d47cd540. Next pagesR23/P22. A reading fullspread
+is2016x1440 (each1008x1440);printfullspread2052x1476(each1026x1476). Use even-left/
+odd-right physicalprintpairs. Actualimageopening mustprecede manualstatus updates.
+Preserve all images/reports/publicdist;only owned regenerable caches may be pruned.
+Six latest cacheprunings recordedV3-043-cache-pruning;complete d47cache retained;
+about1.3GBfree before further renders. Other snapshots may be gitworktrees:never
+remove wholesale. Oldcache removal retained actual publicEPUBs and provenance.
 
-Fresh actual unmodified EPUB browser pass at390/1280px checked52page/viewport
-instances,loading/images/bounds/aspects. It caught2whole-page overflows,not tables:
-C6Conrad longURL makeswidth470 and C9Denso longURL width407 at390. ActualDOM
-inspection identifies a.uri as the cause. New EPUB-only a.uri wrapping rule keeps
-link text/targets and approved formula/plate styling intact. Focused real-browser
-before/injected-rule-after gives470->390 and407->390;allfourviewport screenshots
-actuallyopened and match the measurements,V3-042-url-wrap-regression. This is
-provisional modified-browser regression evidence,not approval of a rebuilt EPUB.
-The next unmodified all52instances and actual assets require fresh review.
-Buildvenv lacked Playwright;used existing defaultPython3.12Playwright/Chromium
-for actual browserwork,without skipping. NativeKindle remains unavailable.
+EPUB:realunmodified d47assets26XHTMLx390/1280=52checks,0problems. Earlier actual
+e696pass caughtC6/C9longURI widths470/407;actual before/injectedafter viewport
+images opened andsourceepub.csswrap fixes it. Final user/device behavior still
+needsreal screens;actualonly loading/bounds/aspects are not visualapproval.
 
-User clarifiedbefore/after meant the ENTIREreview. Rebuilt untouched actualPR103
-merge7f87c2ab in its own gitarchive:actual471print/472reading pages;currentpreISBN
-review517print/518reading,**+46pages**. ActualPDFhashes/buildlog in
-V3-042-original-page-count.json. Its old7x10printgeometry precedesPR105bleed,
-not the new policy;this is an exact body-count comparison,no oldbookapproval.
-User advised4-8morehours based on remaining actualpage/digitalcoverage;no guarantee.
+Reader:the same URI was CLIPPED whilebodywidth390,withrightedge515.906/446.375.
+Working correctionreader.css a.uri wrap;four actual before/after provisional
+screens opened. New reusable review/volume3-internal/check_reader_browser.py
+measures all actualreaderpages at390/1280,expandsallhints/solutions,checksKaTeX/
+font/image/URI/inlinebounds andintentionalpan;nowalsoHTTP>=400. Provisionald47site
+48instances withonlynewURIruleinjected passes0;20955mathspans/326disclosures/
+23imagesperwidth,fontsloaded,maximageaspect0.008686 (includesrounding).
+V3-043-reader-all-provisional.json andreader-url-regression.json recordscopes.
+Finalnewunmodified48pass (omit--uri-rule-from) isrequired,plusactualscreens,
+theme/menu/nav/disclosures/localhrefs/fragments/every163triple block/backlink.
+Actual hint/solutiondivs have noIDs:they backlink toexerciseIDs and reader.js wraps
+themindetails.reveal. Audit every block/backlink/actualdisclosure,do not invent
+existing hint/solutiondeepanchors. Sourcekeys/triples arecomplete;outputauditpending.
+No fullpage screenshots beyond43PDFpages/4provisionalreaderURLs are approved.
 
-Current corrected source/code **522tests pass,zero skips,59.608s**,with book/
-registers frozen during suite. Requiredsource/inventory/bothstrictcompleteness/
-whitespace gates pass. No assertion weakened;no new mathematics from finite probes.
-E696CIrun1728actualall15bookjobs/V3stepssuccess,siteactive atlastquery;no overall
-terminalsuccessclaimed and newISBN/URLhead requiresitsownCI. KeepPRdraft.
+TestsV3-043:522pass,0skips,60.380s;/tmp/volume3-v043-tests.log;requiredsource/
+inventory/bothstrictcompleteness/freshness/whitespacepass. Current sourcechanges
+reader.css/newbrowserhelper;no bookmathor teaching sourcechanges inthisbatch.
+Next freeze/build thiscommit immutably allformats,compare60actualmathrenderer/
+font/sharedbytes beforelocalcachecopyfromd47 (retained),thenactualEPUBCheck/output/
+unmodifiedreader/EPUBmeasurements. Anyrealnewsourcechangereopensaffectedsemantic/
+render evidence. Can transfer actualprior pageevidenceonly by relevantfile/pixels.
 
-Next:immutable matched ISBN/URL build,actualnewcount/barcode/copyright/listing/
-EPUBCheck/outputchecks;reopen affected render evidence. Continue every remaining
-actualreading/printpage/facings/gray/allfigures/tables/displays/openings/appendices/
-finalmatter;actualnarrow/wideEPUBandreaderbaseline/shape/aspect/loading/clipping/
-overflow/disclosures/nav/theme/menu/alllocallinks/163tripledestinations;actualfinal
-CIartifactcomparison/exactterminalCI/clean/currentbase/ready/headmatchedmerge.
-Nohuman/formal/spokenreviewclaim,another-reviewerrequest or Amazonaccountaction.
+CI:lastactuale696run1728/42038449642 terminalCANCELLED afternewpush;all15bookjobs
+hadpassed,notoverall. d47run1729/42043467902active;actualV3allstepspassed,13other
+bookjobspassed,Volume8activeatlastquery. NewheadneedsownterminalCI. Prior3b4e
+1721/42018844333terminalsuccessactuallyinspected. Librarycaches saveONLYMAIN.
+Nevermanuallycancelmainpublication/unrelatedwork. PRdocumentationcommitscanstill
+rebuildbooksagainstoldermaincache. FinalterminalCIadvancementgoesinPRbody,notan
+endlessCI-onlycommitloop. KeepPRdescriptioncurrentatmeaningfulcommits;latestbody
+isfunctionsstorev3prbodyorfetchwithoutprintingall. NeedactualfinalCIartifact
+comparison;priora0CIcomparisonisnotfinal. Finalheadclean/currentbase/no unresolved
+findings/actualterminalsuccess/exactreviewedheadbefore ready/headmatchedmergecommit.
+VerifyGitHubmergedandresultingmainSHA. NormalrepoPagesautomationallowed;noAmazon.
 
-## Earlier detailed checkpoint (historical)
-
-# Restart checkpoint — V3-041
-
-Parent1a5f0d0eb3868af1d90cbd04f2314dd3861dd963;readactualHEADaftercommit.
-Continueentireauthorizedreviewthroughmerge,no partial finalstop.
-
-## V3-041: complete internal source review; freeze for production review
-
-All120 manually keyed concepts now have actual first chains and explicit later
-locations,reconstructionA,adversarialB,boundaries and the current whole-review
-snapshot. The last40 decisions are in V3-039-concept-decisions-part5/6.json:
-finite-field generators/subfields/binary trace/decoding/Moore/power sums;normal
-fields/cyclotomics/radical envelope/resolvents;Hermitian/integrality/FS;quaternion
-cover/loops/convex solids/Hurwitz;local integral/zeta/spectral/Markov arguments;
-all finite Fourier/code/LP/Hadamard/Paley branches. No status was generated by
-inventory or a keyword scan. First-chain/global/core full records support each
-informed semantic closure. Internal AI review,not human refereeing or formal
-verification. No unresolved internal mathematical/editorial finding is identified
-at this source snapshot;final production gates remain open.
-
-Scope precision:actual C9/C10 trace occurrences were read. The book proves the
-binary finite-field trace in the full m-sequence problem,including nonzero even
-whenTr1=0;it does not offer a general field-norm theorem. Matrix trace,quaternion
-norm,quadratic element norms and Euclidean functions have separate definitions
-and checked laws. No general trace/norm coverage is invented. The source has its
-original characteristic-zero general Galois contract,with independently earned
-finite-field theory and explicit inseparable boundaries. No narrower replacement
-is silently certified. C12 coordinate reread confirms face-centre squared norm
-phi^4/3 versus support-normal squared norm3;one review note's imprecise 'norm'
-was corrected before this checkpoint,not a new manuscript change.
-
-Current-evidence cleanup found stale historical 'pending' descriptions in accepted
-C6/C7/C12 records and the original C11 FS reconstruction. Corrected44 descriptive
-fields by exact row/field with old text hashes inV3-041-current-evidence-wording;
-no approval flags or actual source identities changed. The entire actual FS
-solution1619-1860 was reread:projection/flip/dual dimension,real-form antilinearJ,
-signed orientation cocycle,cycle-root enumeration,identity/n0 cases all agree.
-Original prompt-first A is preserved separately;current A no longer says its
-already-completed adversarial test/source insertion is pending. C7's relocated
-Kronecker and C12 advanced workshop are explicitly closed by their actual records.
-The publishing reader-contract row now names completed conceptual closure while
-keeping final rendering/CI open. Original checkpoint documents remain historical.
-
-Strict **registers --require-complete** and **check_global_ledgers --require-complete**
-both pass:158named+163fulltriples+855global=1176itemdecisions;393labeluses,
-88literalearliercontexts,120completeconcepts. Inventory1660items/603prose/
-22examples/22figures/9tables/118bibliogroups/22files unchanged. All12chapters,
-allfourappendices,front/endmatter,afterword/cover/publishing copy have personally
-read written-cadence/adversarial-first-reader records in the855global decisions.
-Exposure limits remain recorded;this was an informed written pass,not a blind,
-human or spoken session. Fresh V2->V3/V3->V4 seams are inV3-039.
-
-SOURCE-FREEZE.json records the actual source/plate/support/earlier-proof snapshot
-5bbfa9ce5dd073458cd126aae41f5abeddcddc6dac79b17b2daf7ede01519aeb.
-No book source changed afterV3-038;all later source changes must reopen affected
-semantic and production evidence. V3-039520tests/code/source pass remains scoped;
-focused strict completeness/inventory/whitespace now pass. Next immutable build
-from this producing commit will run required build/output/actualEPUBCheck and
-fresh final checks. Previous3b4e artifacts are preliminary,not final identities.
-
-Continue every actual reading/printpage,color/grayscale/facing concern,allfigures/
-tables/displays/openings/appendices/finalmatter;actual narrow/wideEPUB/reader math
-loading/baseline/shape/aspect/clipping/overflow/navigation/themes/menu/disclosures,
-alllocallinks/fragments/163tripledestinations;actualfinalCIartifactcomparison.
-Then clean/currentbase/exactreviewedhead/terminalsuccess before ready/headmatched
-mergecommit andGitHub/mainverification. NativeKindle/KDPaccount/PrintPreviewer/
-ISBNownership/physicalproof remain unavailable publicationfollowups;noAmazonaction.
-
-## Earlier detailed checkpoint (historical)
-
-# Restart checkpoint — V3-040
-
-Parent5bec52c6358f7e382963f67620dcc4b8ae0864a0;readactualHEADaftercommit.
-Continueentireauthorizedjobthroughmerge;notapartialfinalcheckpoint.
-
-## V3-040: 80 of 120 whole-volume concept chains closed
-
-Forty further individual later-use decisions close direct/semidirect products
-through Frobenius maps,with precise locations,A/adversarialB and boundaries in
-V3-039-concept-decisions-part3/4.json. Rechecked actual first-chain anchors and
-full earlier individual A/B evidence;substantive later reasoning distinguishes
-normal/characteristic,free-action/free-module,perfect/simple,group/operator
-nilpotence,primitive field/multiplicative generators,and formal/analytic sums.
-General PID termination uses ACC,not a Euclidean norm;the explicit non-Euclidean
-example and its locally computed F4 supply no circular C9 premise. The inseparable
-counterexamples block overgeneralization of the original char0 Galois route.
-
-The C11 signed involution index set was reopened at its actual prompt842-865:
-it is explicitly tau²=e and includes identity,including n=0;the full solution
-and hint conventions were compared. The group order-two definition is not used
-to remove that identity from the square-root count. Topological homology and
-transcendence classifications remain nonpremise sourced outlooks;all actual
-quadratic-tower/loop/Smith routes have their own earned arguments.
-
-Current strict freshness passes **80 accepted/40 pending whole chains**,all120
-firstchains;1176item decisions,393refuses,88earliercontexts unchanged. Book source
-and the exact reviewed snapshot are unchanged sinceV3-038. The520-test suite at
-V3-039 remains scoped to that code/source checkpoint;focused strict checks pass
-after these data-only decisions. No redundant broad rerun or new source test.
-No new build/visual approval;all final production gates remain open. Continue the
-remaining40 closures,source freeze,matched artifacts/everypage/actual browser and
-links/final CIcomparison/exact terminalCI/ready/headmatchedmerge. InternalAIonly;
-no other reviewer,formal/human/spoken claim or Amazonaction.
-
-## Earlier detailed checkpoint (historical)
-
-# Restart checkpoint — V3-039
-
-Parent2db9eb9d7034703151ab02bdde8abcb68ac515e6;read actual HEAD after commit.
-Continue the entire authorized solo internal review,no partial final response.
-
-## V3-039: substantive whole-volume concept evidence (40 of 120)
-
-Closed the first40 keyed concepts individually against their actual later uses:
-group/composition/field/linear coordinates through kernel/image and automorphisms.
-V3-039-concept-decisions-part1/2.json preserve each exact location list, later
-reconstruction, adversarial reconstruction and boundary judgment. Existing complete
-item A/B records and actual earlier proof reads support this informed continuation;
-this is not approval by reference direction, keyword counts, flags or inherited
-rewrite status. All remaining80 concept closures stay pending.
-
-Fresh seam reread:actual V2 field-guide ending immediately before V3 preface;
-actual V3 afterword before V4 main/preface/first probability-space proofs.
-Canonical V4 subtitle is The Logic of Uncertainty in common/volume-subtitles.json
-and its generated TeX;the old fallback string in V4 main is not the canonical
-production title. V3's finite product-space bridge needs no future measure theory.
-Optional routes checked:A afterC7 needs V1 sequence compactness and elementary
-log laws,not C11 derivatives;B afterC11,C/D afterC9 have locally earned additions.
-
-Strengthened check_global_ledgers:every accepted later-use chain now requires five
-substantive fields and the exact whole-review snapshot. It hashes book source,
-plates/portraits,publishing/supporting source,shared TeX,canonical subtitle/layout,
-actual earlier proof sources and seam sources. Hash generation supplies identity
-only;manual judgments supply approval. Original first-anchor guard remains first.
-Executed actual old2db checker with120 completion flags and no later-use evidence:
-it incorrectly accepted all120. New guard rejects that same fixture. New focused
-regressions also reject drift beyond first-use anchors;no assertion weakened.
-
-**520 tests pass,zero skips,63.970s**, /tmp/volume3-v039-tests.log,with source and
-registers frozen at the first20 closures during suite. Subsequent second20 data-only
-manual decisions pass focused strict freshness. Required source checker,inventory,
-1176 item registers,393 reference uses,88 literal earlier contexts and whitespace
-checks pass. All120 first chains remain reviewed;40 whole chains accepted/80pending.
-No book source changed,so1660items/603prose/158named/163triples/855global retained.
-
-No new build or visual approval. Latest matched3b4e artifacts precede later book
-changes. Continue the other80 manual closures,then freeze/build and inspect every
-actual reading/print page and narrow/wide EPUB/reader/link behavior,compare final
-actual CI artifacts,and require clean exact-head terminal CI before ready/merge.
-Repository merge remains distinct from unavailable Kindle/KDP/ISBNownership/
-physical-proof publication follow-ups. No other-reviewer request or Amazonaction.
-
-## Prior detailed checkpoint (historical)
-
-# Restart checkpoint — V3-038
-
-Continue the ENTIRE authorized solo internal AI review through compactions;
-do not final-end at a checkpoint or ask whether to proceed. No subagents,
-another-reviewer request,human/spoken/formal review claim or Amazonaccountaction.
-PR104:https://github.com/OussamaSegh/Order-and-Chance/pull/104
-Branch editorial/volume3-complete-internal-review-20261104,parent
-1b98ad3672f3f87155974cf524b908649e3454cf;read actualHEAD aftercommit.
-Activate /workspace/volume3-tools/activate.sh. Updates aboutonce/minute.
-Latestuseraskedhowlong:severalhours realistic,no reliablefinishyet. All current
-worktree changes thisreview'sown,preserveunrelatedchanges.
-
-OriginalPR103merge7f87c2ab00fdb0c7791dc833423b98bef0870f01. Lastfreshmain
-d97c0bf4e9f5b2d5fd543f0550db62e7eac5a678 integratedaf1c3fe4. Actual updated
-instructions/fullCI read. Reading7x10;print513x738ptallpages,9pttopbottom/outside
-bleed,no bindingbleed,trimsizeGSthenopaqueprovenbackgroundvectorunderlay,
-BleedPDFonly/schema9. Librarycache savesonlymain,no reusablePRcacheguarantee.
-Nevercancelmainpublication/unrelatedwork. Source notyetfinalfrozen.
-
-## V3-038: teach algebra terminology before invoking it
-
-Whole-concept continuation found two early uses of algebra terminology. C11's
-complete divisibility solution ends with a new explanation of its actual integer
-class-product relations, replacing undefined 'integer algebra'. C12 now defines
-real algebra (real vector space,identity,multiplication linear in each argument)
-and division algebra (nonzero,both side multiplications by every nonzero element
-bijective) before the Frobenius/Hurwitz outlook. Matrix bilinearity and the
-already earned quaternion inverse explicitly prove H is a division algebra.
-The classification statements/hypotheses are unchanged and still nonpremise
-outlooks; no octonion-classification proof is newly claimed. Existing B later
-complex matrix-algebra definition is not used to justify earlier terminology.
-
-Read the ENTIRE current ex:divides prompt,hint,findingidea,parts(a)-(c),tools and
-leads. Fresh full A/B in V3-038-fresh-divisibility-triple.json:dependent finite
-Z-generators require the correct A^T eigenvector convention;nonzero generator
-vector makes the integer characteristic polynomial vanish. Mixed-power spans
-earn closure and monic rational denominator gives integrality. Integer class
-pair counts earn scalar integrality;character orthogonality earns d divides|G|.
-Independent torsionfree-lattice/CH and regular integer classsum methods agree.
-No division by a character value;d>=1/trivialG/x0/dependent generators checked.
-Three stars retained with actual discovery route. Original prompt-first history
-preserved;this current reread is informed,not a new blind solve,human referee
-or formal verification. Complete reader-facing proof retained,no weaker target.
-
-Exact independent A5 computation:all60 elements,five actual classes/all25 class
-products,per-element coefficients constant integers;central scalar tuple
-(1,-5,0,2+2sqrt5,2-2sqrt5) satisfies every relation. Nonrational scalar obeys
-monicX²-4X-16. V3-038-class-scalar-probe.json records the support,not a replacement
-for the full general proof. The other39 entire named/proof pairs/full triples in
-C11/C12 are individually source-identical to1b98ad36 after reread,not approved
-from count/ordinal alone;V3-038-retained-identities.json.
-
-C12 former single identity/classification block becomes three,each with fresh
-explicit domain/claim/A/B:Euler identity,local real/division definition with two
-proof routes (inverse maps and norm-kernel-rank),unchanged bounded classification
-outlook. Actual earlier V2 four-square proof160-176 reread:full mixed-term
-expansion/prime reduction/strict descent means its optional future quaternion
-parenthesis is not an essential premise. Changed Euler reference context and
-literal V2 mention freshly reclassified. A newly explicit real/division-algebra
-outlook chain brings first-use register to120. Changed C-algebraic-integer full
-solution anchor gets fresh semantic decision;other25 coordinate shifts retain
-only exact fragment identity. Freshness guards caught the intermediate changed
-anchor/context;no stale evidence bypass or assertion weakened.
-
-**1176 item decisions=158 named+163 full triples+855 global,all393 label uses,
-all88 literal earlier contexts;every global record has completeCORE+role.**
-All120 first-use chains reviewed;all120 whole-volume later-use closures pending.
-Fresh inventory1660items/603prose/118bibliographygroups/22examples/22figures/
-9tabular/22sourcefiles. +2 items/prose are the split locally taught definition
-and separately identified outlook,not extra named theorem approvals. Original
-155 named plus locally earned PID/quartic/planar3 remain158.
-
-Final current-source **518 tests pass,zero skips,56.464s**,
-/tmp/volume3-v038-tests.log;required source/inventory/strictregister/global-ledger
-freshness and whitespace pass. Source/registers frozen during fullsuite;later
-writes descriptive reports. No new unit tests merely mirroring low-impact prose;
-actual complete fresh affected mathematical reconstructions provide evidence.
-No current build/pixel approval:latest all-format3b4e precedes C bibliography,
-D prose and current C11/C12 changes,so final affected pagination needs review.
-
-To make room for final outputs,removed only redundant regenerable formula caches
-in14 older owned snapshots with matching committed artifact manifests. Preserved
-all public dist artifacts,manuscript/git worktree state,build reports/provenance,
-actual visual evidence/CI comparisons and five selected recent caches. Exact
-logical sizes/paths in V3-038-cache-pruning.json;disk now~1.7GB free. This is not
-a GitHub PR-cache claim;library caches saveonlymain. No main/unrelated runs
-cancelled. Final terminal CI advancement belongs inPR,no CI-only commit loop.
-
-Next:120 explicit manual whole-volume concept closures,including unreferenced
-arguments/figures/captions/hints/answers and exact earlier proofs. Add strict
-substantive later-use evidence/source/figure/supplemental drift guard;flags or
-backward-reference scans alone cannot approve concepts. Then final committed
-source freeze/all-format matched build,actual every reading/printpage/gray/
-facing concern/all figures/tables/displays/openings/appendices/final matter;
-actual narrow/wide EPUB/reader mathloading/baseline/shape/aspect/clipping/overflow/
-nav/theme/menu/disclosures/all local links and163triple destinations;actualfinal
-CIartifactcomparison. Only then exactreviewedhead/clean/currentbase/no unresolved
-findings/terminalCI/ready/headmatchedmergecommit andGitHub/mainverification.
-NativeKindle,KDPaccount/PrintPreviewer,ISBNownership,physicalproof unavailable
-publicationfollowups. No another-reviewer request,inventedISBN or Amazonaction.
-
-NEXT V3-039: concepts.json120 IDs in existing order. All first-use chains actual
-manualreviewed,all later-use pending. Allmain/A-D/global855 source contexts and
-fullcore already personally read/reconstructed;now explicitly address each
-concept later hypotheses/invocations across book,not autoapprove from counts or
-labeldirection. Add fields later_use_locations,later_use_reconstruction,
-adversarial_later_check and substantive earlier-proof/source scope. Add strict
-checker rejecting flag-only acceptance. Recommend a single top-level actual
-source/figure/supporting hash manifest with per-concept reviewed-snapshot hash,
-so any later source/figure/supporting drift blocks finalgate. This is freshness,
-not generated mathematical approval. Current checker tests onlythreeflags and
-firstchainanchors,which mustbe strengthened before closing. Wholefirstreader/
-voice pass throughall855 has actualwritten evidence;reportasinternalwritten,
-not human/spoken. Read actualV2ending/V3opening/V3ending/V4opening again before
-finalseamclosure;seam-sources hashesalreadyguarded.
-
-EarlyC11/C12algebra issue nowresolved asabove,no new essentialfuturepremise.
-Actual ex:divides proof uses dependent generators/A^T,not a freebasis;freshB
-can use earned C7 torsionfree structure/CH. Classscalar nonrational A5probe exact.
-C12newchain C-REAL-DIVISION-ALGEBRA-OUTLOOK120th. Existingclassificationoutlook
-unchanged/quoted;no full researchproof certification.
-
-All277 legacyglobal explicitfields completed V3-037 (five keyeddocuments),strict
-CORE+role guard now rejects actual old5cabdata and passes current. C8Needspace
-staleclassificationfixed onlyafter relevant sixaf1/3b4e pages exact2xRGB/gray
-identity;publicfilespreserved,finalnewpaginationstillneedsfreshinspection.
-
-Latest completeallformat snapshot3b4e:518reading/517print,KDP518,spine1.2157in,
-wrap15.4657x10.25;actualEPUBCheckzero/outputPASS;85public/6reports;8actualnewproof/
-C12pages16colorgray2xrenders opened,scopedC8transferabove. BeforeC035C036C038
-sourcechanges. No actualnarrow/widebrowserreviewyet;Chromium/Playwrightavailable.
-Finalallpagereview AFTERsourcefreeze,not hash/thumbnailapproval. Disk~1.7GBfree;
-14oldownedformula cachespruned only,allpublicartifacts/manualvisual/CIcomparison
-preserved. Keepselected3b4e/3bffe/a1/a0/af1caches forfinalrebuild;checkactual60
-renderer/font/commonbytesbeforecopying. Oldbuildscontaingitworktrees,do notdelete
-wholesale. Actuala0CIcomparison remains scoped,not finalhead.
+Allcurrentworkingchangesareours;preserveunrelatedfuturechanges. Conciseupdates
+aboutonce/minute. NativeKindle/Paperwhite,KDPaccount/PrintPreviewer,ISBNownership,
+physicalpaperbackproof areunavailablepublicationfollowups,notreasonstostopavailable
+technicalwork. EarlierdetailedhistoryandmethodsremaininPROGRESS,PLAN,RESEARCH,
+PREREQUISITES,GLOBAL-STORYandkeyedregisters;thisrestartfileiscurrent,notapproval.
