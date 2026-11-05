@@ -1,3 +1,39 @@
+# Restart checkpoint — V3-040
+
+Parent5bec52c6358f7e382963f67620dcc4b8ae0864a0;readactualHEADaftercommit.
+Continueentireauthorizedjobthroughmerge;notapartialfinalcheckpoint.
+
+## V3-040: 80 of 120 whole-volume concept chains closed
+
+Forty further individual later-use decisions close direct/semidirect products
+through Frobenius maps,with precise locations,A/adversarialB and boundaries in
+V3-039-concept-decisions-part3/4.json. Rechecked actual first-chain anchors and
+full earlier individual A/B evidence;substantive later reasoning distinguishes
+normal/characteristic,free-action/free-module,perfect/simple,group/operator
+nilpotence,primitive field/multiplicative generators,and formal/analytic sums.
+General PID termination uses ACC,not a Euclidean norm;the explicit non-Euclidean
+example and its locally computed F4 supply no circular C9 premise. The inseparable
+counterexamples block overgeneralization of the original char0 Galois route.
+
+The C11 signed involution index set was reopened at its actual prompt842-865:
+it is explicitly tau²=e and includes identity,including n=0;the full solution
+and hint conventions were compared. The group order-two definition is not used
+to remove that identity from the square-root count. Topological homology and
+transcendence classifications remain nonpremise sourced outlooks;all actual
+quadratic-tower/loop/Smith routes have their own earned arguments.
+
+Current strict freshness passes **80 accepted/40 pending whole chains**,all120
+firstchains;1176item decisions,393refuses,88earliercontexts unchanged. Book source
+and the exact reviewed snapshot are unchanged sinceV3-038. The520-test suite at
+V3-039 remains scoped to that code/source checkpoint;focused strict checks pass
+after these data-only decisions. No redundant broad rerun or new source test.
+No new build/visual approval;all final production gates remain open. Continue the
+remaining40 closures,source freeze,matched artifacts/everypage/actual browser and
+links/final CIcomparison/exact terminalCI/ready/headmatchedmerge. InternalAIonly;
+no other reviewer,formal/human/spoken claim or Amazonaction.
+
+## Earlier detailed checkpoint (historical)
+
 # Restart checkpoint — V3-039
 
 Parent2db9eb9d7034703151ab02bdde8abcb68ac515e6;read actual HEAD after commit.
