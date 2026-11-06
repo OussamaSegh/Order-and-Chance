@@ -63,7 +63,7 @@ Legend: `planned` means designed and not yet the manuscript. `written` means a f
 | Preface | written | Fresh. Not yet read against the built PDF |
 | Ch. 1 Counting and Paradoxes | written | Fresh manuscript, three figures, eight exercises with hints and solutions. Not yet a reader pass |
 | Ch. 2 Discrete Random Variables | written | Fresh. Exercise 2.6 is the long cycle and the hundred prisoners. Birthday-wait solution (Exercise 2.7) uses a Riemann-sum comparison; re-read the shift by 2 on the reader pass |
-| Ch. 3 Generating Functions | planned | |
+| Ch. 3 Generating Functions | written | Fresh. Exercise 3.7 is the series for $(1-4x)^{-1/2}$ and the Catalan formula |
 | Ch. 4 Inequalities, Large Numbers and Entropy | planned | |
 | Ch. 5 Continuous Probability Done Properly | planned | Title kept so “Chapter 5” still means densities and integrals. Content does not pretend to be Lebesgue’s theory |
 | Ch. 6 Convergence and the Central Limit Theorem | planned | Lindeberg must remain formal environment **6.10** |
@@ -84,11 +84,11 @@ Legend: `planned` means designed and not yet the manuscript. `written` means a f
 
 ## Last completed milestone
 
-**Milestone 2 — Chapter 2 written.** Commit of Chapter 1 is `c16c2d95`. Chapter 2 is in the working tree at this update and is committed with this handoff.
+**Milestone 3 — Chapter 3 written.** Latest manuscript commit will be recorded by `git log -1` on this branch after the commit that contains this sentence. Chapters 1–3 and the preface are the new text. Chapters 4–12 and `extremal.tex` are still the previous manuscript.
 
 ## Current WIP
 
-Chapter 3 is next. Do not reopen Chapter 1. On the reader pass, re-check the Riemann-sum comparison in the solution of Exercise 2.7 (the factor coming from shifting $m$ by $2$).
+Chapter 4 is next: Chernoff, Hoeffding, Borel–Cantelli on the coin space of Chapter 1, the bounded strong law, Bernstein’s proof of Weierstrass, finite-alphabet entropy. Do not rewrite Chapters 1–3 except to repair a named defect. Reader-pass items already noted: Exercise 2.7’s Riemann-sum shift; the convexity argument for extinction when the mean equals 1 in Theorem 3 (extinction), which uses that a power series agreeing with the identity on an interval is the identity.
 
 ## Decisions already made
 
@@ -110,7 +110,7 @@ Chapter 3 is next. Do not reopen Chapter 1. On the reader pass, re-check the Rie
 
 ## Exact next actions
 
-1. Chapters 1 and 2 and the preface are written. Next write Chapters 3 and 4. Preserve exercise 3.7, the series for $(1-4x)^{-1/2}$.
+1. Chapters 1–3 and the preface are written. Next write Chapter 4, then Chapters 5–8, then 9–12 and the appendix. Exercise 3.7 is done. Keep formal-environment counts 6.10, 9.5, 11.4, and 11.12 when those chapters are written.
 2. Update this ledger to `written` for each finished file. Commit and push.
 3. Write Chapters 5–8, then 9–12 and the appendix, under the same rule.
 4. Reader pass, then voice pass. Fix what those passes find.
