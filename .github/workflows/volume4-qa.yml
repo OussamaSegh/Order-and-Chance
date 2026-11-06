@@ -1,4 +1,4 @@
-name: Volume 4 native PDF QA
+name: Volume 4 native production QA
 
 # Independent manuscript build; does not replace or bypass the full Build books
 # workflow or its protected Volume 3 conceptual-review gate.
@@ -47,18 +47,28 @@ jobs:
             python3-pil pandoc poppler-utils ghostscript pngquant
       - name: Install publishing helpers
         run: python3 -m pip install -r tools/requirements-build.txt
-      - name: Build only Volume 4 reading and print PDFs, including native checks
-        run: ./build.sh --pdf-only volume4-chance
+      - name: Install oxipng for the EPUB figure pipeline
+        run: |
+          if ! command -v oxipng >/dev/null; then
+            curl -fsSL -o /tmp/oxipng.tar.gz -L https://github.com/shssoichiro/oxipng/releases/download/v9.1.5/oxipng-9.1.5-x86_64-unknown-linux-musl.tar.gz
+            sudo tar -C /usr/local/bin -xzf /tmp/oxipng.tar.gz --strip-components=1 oxipng-9.1.5-x86_64-unknown-linux-musl/oxipng
+          fi
+          oxipng --version
+          command -v pandoc
+          command -v pdftocairo
+          command -v pngquant
+      - name: Build Volume 4 reading and print PDFs, full EPUB, online reader and publishing cover
+        run: ./build.sh volume4-chance
       - name: Record exact pages and file digests
         if: success()
         run: |
-          find dist -type f \( -name '*.pdf' -o -name '*.json' \) -print0 | sort -z | xargs -0 -r sha256sum > volume4-native-sha256.txt
+          find dist -type f \( -name '*.pdf' -o -name '*.epub' -o -name '*.json' \) -print0 | sort -z | xargs -0 -r sha256sum > volume4-native-sha256.txt
           find dist -type f -name '*Print.pdf' -print0 | while IFS= read -r -d '' f; do
             echo "Print interior: $f"
             pdfinfo "$f" | grep -E 'Pages:|Page size:'
           done
           cat volume4-native-sha256.txt >> "$GITHUB_STEP_SUMMARY"
-      - name: Upload Volume 4 PDFs and compilation diagnostics
+      - name: Upload Volume 4 production files and compilation diagnostics
         if: always()
         uses: actions/upload-artifact@v4
         with:
@@ -68,7 +78,11 @@ jobs:
           path: |
             volume4-native-sha256.txt
             dist/*.pdf
+            dist/*.epub
             dist/kdp/*.pdf
+            dist/kdp/*.jpg
+            dist/kdp/*.json
+            build/volume4-chance/figures/*.log
             build/volume4-chance/main.log
             build/volume4-chance/main.stdout
             build/volume4-chance/main.oclayout
