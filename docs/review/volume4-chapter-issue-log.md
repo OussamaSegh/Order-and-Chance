@@ -54,6 +54,14 @@ These are whole-chapter reads of the current text, not patch checks. No report h
 - Printed Chapter 2, `ch02-discrete.tex`, figures `ch02-poissonbars` and `ch02-cycles`: Composer-2.5 `bc-116a4eb8-3533-59a9-bb7a-58242659606c`.
 - Printed Chapter 3, `ch03-generating.tex`, figures `ch03-familytree`, `ch03-cobweb`, and `ch03-contour`: Composer-2.5 `bc-fa0ed148-5add-5089-b85d-e4f5bfb4686a`.
 
+## Full rereads of Chapters 4--6 at `970ea787`, in progress
+
+These are whole-chapter reads of the current text, not patch checks. No report has returned. Do not start a second read of the same SHA. Chapters 1--3 and 14 were not edited.
+
+- Printed Chapter 4, `ch04-inequalities.tex`, figures `ch04-chernoff` and `ch04-bernstein`: Composer-2.5 `bc-1f7033f0-40f9-5f8c-8117-4ce7ecf233dc`.
+- Printed Chapter 5, both `ch05-continuous.tex` and `ch05-geometric.tex`, figures `ch05-polar`, `ch05-cantor`, `ch01-bertrand`, and `ch01-buffon`: Composer-2.5 `bc-d8d4b0e0-eb5e-57cc-8b54-2f5738b71d08`.
+- Printed Chapter 6, `ch06-clt.tex`, figures `ch06-sums` and `ch06-lindeberg`: Composer-2.5 `bc-38fe06c1-e0f0-5fa2-a2e1-459b109d08b4`.
+
 ## Acceptance blockers still open, from this ledger
 
 A chapter's review gate closes only when a distinct reviewer reads the whole of its current text and reports no remaining defect. A patch recheck does not do that. As of `ba74cccb`:
