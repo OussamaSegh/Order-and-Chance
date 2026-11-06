@@ -135,7 +135,7 @@ See Equation~\eqref{eq:zero}.
                 capture_output=True, text=True, check=True)
         for expected in ["0 Language", "0.1 Statements", "Theorem 0.1",
                          "Exercise 0.1", "Hint for Exercise", "Solution of Exercise",
-                         "Figure 1 A diagram.", "1 Sums", "Theorem 1.1", "Exercise 1.1"]:
+                         "Figure 1. A diagram.", "1 Sums", "Theorem 1.1", "Exercise 1.1"]:
             self.assertIn(expected, visible_text(result.stdout))
         for label, number in [("ch:zero", "0"), ("sec:zero", "0.1"),
                               ("thm:zero", "0.1"), ("fig:zero", "1")]:

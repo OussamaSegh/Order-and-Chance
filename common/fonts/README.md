@@ -9,7 +9,7 @@ bundled here so PDF, EPUB and web builds never depend on system fonts.
 | `Garamond-Math.otf` | mathematics (stylistic sets 1, 2) | CTAN `garamond-math` (2022-01-03) | `OFL-GaramondMath.txt` |
 | `CormorantGaramond-SemiBold.ttf` | headings, opener masthead and title | exact copy of the cover file `tools/assets/fonts/CormorantGaramond-SemiBold.ttf` (v4.004) | `OFL-Cormorant.txt` |
 | `CormorantGaramond-SemiBoldItalic.ttf`, `CormorantGaramond-Light.ttf` | italic headings, opener numerals | CTAN `cormorantgaramond` (v3.6) | `OFL-Cormorant.txt` |
-| `FiraSans-Book/BookItalic/Medium/MediumItalic.otf` | labels, running heads, captions | CTAN `fira` (v4.301) | `OFL-Fira.txt` |
+| `FiraSans-Book/BookItalic/Medium/MediumItalic/SemiBold/SemiBoldItalic.otf` | labels, running heads, captions (SemiBold is the figure label) | CTAN `fira` (v4.301) | `OFL-Fira.txt` |
 | `DejaVuSansMono*.ttf` | code and Lean Unicode symbols | https://dejavu-fonts.github.io/ | `LICENSE-DejaVu.txt` |
 
 All OTF/TTF files are unmodified originals. Each EB Garamond, Cormorant Garamond and Fira Sans
