@@ -14,7 +14,7 @@ A writer's mathematical reconstruction, critical rereading, numerical check, or 
 | 2 Random Variables and Their Laws | All main proof statements and eight exercises/hints/solutions inspected on 6 Nov 2026; corrections C2-01–C2-07 pushed | PENDING — none assigned or reported | Post-fix critical pass, full reader/voice, native figure/PDF check, independent review |
 | 3 Generating Functions and Random Families | Full source/exercise inspection; author fixes `7bb94ec9`, `87699c36`, illustration `3e63117f` | PENDING | Post-fix proof/figure pass; reader/voice, native build and independent review |
 | 4 Concentration and the Laws of Large Numbers | Full source/exercise inspection and author corrections `9cb2451d` | PENDING | Post-fix critical pass; reader/voice, native build and independent review |
-| 5 Continuous Chance | Draft plus `3ab3ad32` angle repair | PENDING | Mathematical and reader passes |
+| 5 Continuous Chance | First author inspection of main text, geometric chapter, eight exercise/hint/solution pairs; prior `3ab3ad32`, corrections `b09ce014`, `7a70ac01` | PENDING | Post-fix reread, PDF, reader/voice and independent review |
 | 6 Why the Bell Curve Appears | Draft only | PENDING | Mathematical and reader passes |
 | 7 Entropy, Codes and Typical Sequences | Draft plus `62f02af4` environment repair | PENDING | Mathematical and reader passes |
 | 8 Random Walks | Draft plus `966843f6` last-visit repair | PENDING | Mathematical and reader passes |
@@ -76,6 +76,22 @@ Chapter 3 writer inspected the chapter's three numbered main results, all eight 
 | **C4-06** | `thm:weierstrass` proof and `ex:runs` | **Proof clarity** | Weierstrass proof stopped at `2ε` rather than translating back to an arbitrary tolerance; runs proof implicitly needs `0<ε<1`. | Explicit tolerance `η/2` and exercise domain. Commit `9cb2451d`. | Writer check only. |
 
 Chapter 4 writer inspected five main numbered environments, six exercises, hints and solutions, logarithmic tail numerics, the bounded-variable assumptions, the one-sided bounds and the associated TikZ figure source. Checks confirm `P(Bin(1000,1/2)≥600)≈1.364232078×10^-10`, `e^-20≈2.061153622×10^-9` and the entropy-optimised bound `≈1.799938120×10^-9`. **No native PDF, independent review or full post-fix source reread completed.**
+
+
+## Chapter 5 findings (first writer inspection only, independent reviewer PENDING)
+
+| ID | Location | Severity | Finding | Resolution | Recheck |
+| --- | --- | --- | --- | --- | --- |
+| **C5-01** | `ch05-continuous.tex`, paragraph after `prop:inverse` | **Major prerequisite gap** | Original text applied Chapter 4's finite-digit strong law directly to inverse-CDF variables which depend on infinitely many bits. The stated Ch. 4 hypotheses do not cover this. | Added explicit dyadic upper/lower step-function approximation for a bounded nondecreasing quantile, with expected gap at most `2^-m(Q(1)-Q(0))`, then uses the already proved finite-digit strong law and countable union of null events. Also states generalised inverse / right-continuity requirements. Commits `b09ce01484fd775e638e33793d5af91808cc5d2d`, `7a70ac01202da3235eb4ff015d06f91ec266ba62`. | Writer checked telescoping bound; independent reviewer/PDF pending. |
+| **C5-02** | `prop:fubini` following paragraph | **Unjustified limit order** | Claimed one may exchange improper double integrals just by taking the limit from equalities on compact rectangles. This requires tail control. | Explicitly require controlled tails (e.g. Gaussian) and disallow blanket interchange. Commit `b09ce014`. | Writer checked logical scope; independent pending. |
+| **C5-03** | `prop:densitymean` | **Rigor of definition** | Presentation looked like a proved general theorem but essentially introduced an expectation definition, with an unsupported jump from finite intervals to arbitrary `g`. | Clarified that the equality is an adopted definition; verified agreement with finite interval sums via step approximations, local uniform continuity and absolute-integral tail. Commit `b09ce014`. | Reader/mathematical second pass pending. |
+| **C5-04** | `thm:dct`, end of proof and differentiation remark | **Hypothesis and proof clarity** | Proof did not explicitly justify integrability of the limit or complete tolerance bound; differentiation remark omitted local-uniform quotient and a common dominant requirement. | Added absolute-integrability consequence, 3ε estimate, and explicit conditions for applying result to difference quotients. Commit `b09ce014`. | Independent pending. |
+| **C5-05** | `ex:counter` solution | **False/incomplete argument** | Claimed a general lower envelope asymptotic unnecessarily; did not clearly note that convergence at 0 and local uniform convergence both fail. | Simple contradiction `g(0)≥f_n(0)=n` for every `n`; named failures of both theorem hypotheses. Commit `b09ce014`. | Writer rechecked elementary argument; independent pending. |
+| **C5-06** | `ex:cantor` part (c) solution | **Implicit measure prerequisite** | Deduced continuity of distribution function from no atoms without a justified countable-continuity theorem; contradiction with continuous density omitted the complement outside support. | Stage-n cylinder proof: an arbitrarily small interval intersects at most two retained cylinders, each mass 2^-n, giving continuity; density zero outside [0,1] and on dense union of removed intervals. Commit `b09ce014`. | Writer checked cylinder estimate; independent pending. |
+| **C5-07** | Chapter opening | **Overstated event class** | Said all zero sets of continuous functions “have lengths,” potentially invoking unproved general measure machinery. | Restricted examples to interval events and explicit probability limits with approximation. Commit `b09ce014`. | Reader review pending. |
+
+Inspected Chapter 5 main file and `ch05-geometric.tex`, including six core propositions/theorems, Bertrand's three sampling models, Buffon's needle, eight exercise statements/hints/solutions and the Cantor construction. Prior Buffon-angle fix `3ab3ad32` retained. Other historical/book references were not comprehensively independently verified. Mathematical post-fix second pass, new diagrams, native PDF checks and distinct second-review evidence are open.
+
 
 ## Project-wide blockers
 
