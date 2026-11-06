@@ -1,6 +1,22 @@
 # Handoff: Volume 4 rewrite
 
-## Latest checkpoint — 6 November 2026, Chapter 5 transformations
+## Latest checkpoint — 6 November 2026, Chapter 6 third-moment rate
+
+**Preserved.** `677d5e6a` is an ancestor. `origin/main` is `5c4840cc`. No other volume was edited. Do not mark Chapters 2--6 accepted.
+
+**Chapter 6.** Commit `d50be021` places an i.i.d.\ third-moment rate, with the constant $2\sqrt{2/\pi}$, immediately before Lindeberg's theorem, and compares the normal tail, the continuity correction, and Hoeffding for one hundred fair tosses. Exercise `ex:thirdmoment` has a hint and a solution. Lindeberg's number is unchanged because the new block is an unnumbered example. A distinct reviewer must still read the whole chapter at the pushed SHA, not only this block. The chapter is not accepted.
+
+**Chapter 5 older material.** Composer-2.5 agent `bc-8c6d139e-d0c4-5556-8d87-0892cf31d703` read the theorems and the older exercises at `677d5e6a` and listed gaps in uniqueness, the disk integral, the mean approximation, and the Box--Muller tail. Those sentences were repaired in `ca8e9489`. That repair is not yet rechecked. The six-item review of `baebc58b` does not cover this. Chapter 5 is not accepted. Chapters 2 and 3 still have no full-page PDF acceptance.
+
+**Page count.** The last success is still 161 print pages at `2d687357`. Do not reuse it for `d50be021`. Record the next successful `./build.sh volume4-chance`.
+
+**C-GROUP.** Unchanged. Do not edit Volume 3.
+
+**Exact next step.** Have a distinct reviewer read all of `ch06-clt.tex` at `d50be021`, including the older proofs and every exercise. Rebuild and record the page count of that SHA. Then continue at Chapter 7.
+
+---
+
+## Previous checkpoint — 6 November 2026, Chapter 5 transformations
 
 **Preserved.** `3b2addca` is an ancestor. `origin/main` is `5c4840cc`. No other volume was edited. Do not mark Chapters 2, 3, 4, or 5 accepted.
 
