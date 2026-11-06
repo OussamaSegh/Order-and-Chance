@@ -34,6 +34,10 @@ Composer-2.5 agent `bc-07d4be85-61da-50c8-b2ce-2e58eae56f40` read `thm:dyadicito
 
 Composer-2.5 agent `bc-711a7fce-2d77-5971-9c7f-404fb43507b3` read Theorem `thm:top` and the three-card mean at `f91d5483` by `git show`. It did not accept the chapter. Passed: success probabilities $(k+1)/n$, the uniform-insertion induction, stages with mean $nH_n$, the value $11/2$, and $n e^{-t/n}\le e^{-c}$. It asked that stationarity be named in the total-variation step and that independence of the deck and $\tau$ be tied to the insertion ranks. Those two sentences were added after `f91d5483`. Composer-2.5 agent `bc-b821e9d3-bb39-5826-8b04-7848f9a54b2b` re-read them at `c144e921`. The shuffle sentences passed. The dyadic sentence failed: it omitted the factor $1/2$ in front of the Riemann sum and of $\sum Z_k$. The display and the proof now both carry that factor, and the square-mean bound on the halved sum is $M^2/(2N)$. That repair is later than `c144e921` and is not rechecked. The chapters are not accepted.
 
+## Poisson chapter at `cc9d8332`
+
+Composer-2.5 agent `bc-e87b2af0-6822-5d7c-a34f-82e6260394ab` read the whole file `ch09-poisson.tex` at `cc9d8332` by `git show`, including every exercise, hint, and solution. It did not accept the chapter. The recomputed values passed: $e^{-1}$, $e^{-3}$, the gap density $\lambda^2 u e^{-\lambda u}$, means $10$ and $20$, the race probabilities, the bound $0.008$, and $\rho/(1-\rho)$. It said the Le Cam union bound was invalid because mismatches can cancel. That objection mistakes the direction: if every coordinate agrees, the sums agree, so unequal sums sit inside the union of the mismatches, and the union bound still applies. The proof now says so. The phrase ``more due'' is now ``due sooner''. Those two sentences are later than `cc9d8332` and are not rechecked. The chapter is not accepted.
+
 ## Per-chapter independent-review register
 
 | Chapter | Authoring / writer inspection | Independent second reviewer | Unresolved gate |
