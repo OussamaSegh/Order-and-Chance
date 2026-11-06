@@ -23,7 +23,22 @@ With $p=c/n$ and $\binom{n}{k}\le(en/k)^k$, and with $(1-p)^{k(n-k)}\le\exp(-ck(
 \[
  \mathbb E[N_k]\le\frac{n}{ck^2}\bigl(ce^{1-c}\bigr)^k\exp\bigl(ck^2/n\bigr).
 \]
-The function $\ln c+1-c$ has derivative $1/c-1$ and a maximum value $0$ at $c=1$, so $\rho=ce^{1-c}<1$ for $0<c<1$. For $k\le n^{1/3}$ the exponential factor is at most $2$ once $n$ is large. Thus $\mathbb E[N_k]\le(2n/(ck^2))\rho^k$. Summing the geometric series from $k=\lceil A\ln n\rceil$ onward tends to $0$ if $A>1/\ln(1/\rho)$. Markov's inequality says that, with high probability, $N_k=0$ throughout that range, so every component has at most $A\ln n$ vertices.
+The function $\ln c+1-c$ has derivative $1/c-1$ and a maximum value $0$ at $c=1$, so $\rho=ce^{1-c}<1$ for $0<c<1$. For $k\le n^{1/3}$ the exponential factor is at most $2$ once $n$ is large. Thus $\mathbb E[N_k]\le(2n/(ck^2))\rho^k$. The sum of these bounds from $k=\lceil A\ln n\rceil$ to $n^{1/3}$ tends to $0$ when $A>1/\ln(1/\rho)$. This does \emph{not} yet rule out components larger than $n^{1/3}$. The following separate exploration argument handles every size.
+
+Explore the component of a fixed vertex by breadth-first search. When a vertex is processed, reveal its edges to as-yet undiscovered vertices. That number of new neighbours is $\operatorname{Bin}(m_i,c/n)$ for some $m_i\le n$. Fresh previously unexamined edges make these binomial draws conditionally independent of the earlier exploration. Add independent dummy Bernoulli trials to make an upper bound $Y_i\sim\operatorname{Bin}(n,c/n)$ at every step, independent across $i$. If the component contains at least $k\ge2$ vertices, its queue cannot empty before $k-1$ vertices have been processed; therefore $\sum_{i=1}^{k-1}Y_i\ge k-1$.
+
+For any $\theta>0$, independence and the elementary exponential Markov inequality give
+\[
+\begin{aligned}
+P(|C(v)|\ge k)&\le e^{-\theta(k-1)}\Bigl(1+\frac cn(e^\theta-1)\Bigr)^{n(k-1)}\\
+&\le\exp\bigl(-(k-1)[\theta-c(e^\theta-1)]\bigr).
+\end{aligned}
+\]
+Because $c<1$, a sufficiently small fixed $\theta>0$ makes $a=\theta-c(e^\theta-1)>0$ (the derivative of this difference at $0$ is $1-c$). A union bound over all $n$ vertices yields
+\[
+P(\exists\text{ component of size}\ge k)\le n e^{-a(k-1)}.
+\]
+Taking $k=\lceil A\ln n\rceil$ with $A>1/a$ makes the bound tend to zero, without any restriction $k\le n^{1/3}$. This completes the theorem. The spanning-tree argument above separately gives a useful sharper estimate for individual small component sizes.
 \end{proof}
 
 
@@ -32,7 +47,7 @@ The constant $A$ depends only on $c$, through $\rho=ce^{1-c}$. The proof bounds 
 \section{Exercises}
 
 \begin{exercise}[$\star\star$]\label{ex:connectivity}
-Let $p=(\ln n+\omega)/n$. If $\omega\to+\infty$, show that $G(n,p)$ has no isolated vertex with high probability. If $\omega\to-\infty$, show that an isolated vertex exists with high probability.
+Let $p=(\ln n+\omega(n))/n$ and assume $0\le p\le1$ for all sufficiently large $n$ (otherwise $G(n,p)$ is not defined). If $\omega\to+\infty$, show that $G(n,p)$ has no isolated vertex with high probability. If $\omega\to-\infty$ while $p>0$, show that an isolated vertex exists with high probability. State separately what happens at $p=0$.
 \end{exercise}
 
 
@@ -55,7 +70,7 @@ While fewer than $\delta n$ vertices have been seen, each new vertex has a $\mat
 \section{Solutions}
 
 \begin{solution}{ex:connectivity}
-\writeup Let $I$ be the number of isolated vertices. Then $\mathbb E[I]=n(1-p)^{n-1}\le n\exp(-(n-1)p)$. If $\omega\to+\infty$, this tends to $0$, so Markov's inequality gives $P(I\ge1)\to0$. If $\omega\to-\infty$ and $|\omega|\le\ln n$, so that $p\in(0,1)$ for large $n$, then $-\ln(1-p)=p+O(p^2)$ and $n p^2=O((\ln n)^2/n)\to0$, hence
+\writeup Let $I$ be the number of isolated vertices. Then $\mathbb E[I]=n(1-p)^{n-1}\le n\exp(-(n-1)p)$. If $\omega\to+\infty$, this tends to $0$, so Markov's inequality gives $P(I\ge1)\to0$. If $p=0$ for some $n$, every vertex is isolated and the lower-regime conclusion is immediate for those $n$; assume $p>0$ in the calculation that follows. If $\omega\to-\infty$ and $0<p\le1$, the formula for $p$ implies $0<p\le\ln n/n$ for large $n$, so $-\ln(1-p)=p+O(p^2)$ and $n p^2=O((\ln n)^2/n)\to0$, hence
 \[
  \ln\mathbb E[I]=\ln n-(n-1)(-\ln(1-p))=-\omega+o(1)\to+\infty.
 \] For the second moment, two distinct vertices are both isolated when $2n-3$ specific edges are absent, so $\mathbb E[I(I-1)]=n(n-1)(1-p)^{2n-3}$. Hence
@@ -74,7 +89,7 @@ The probability generating function of the offspring law is $f_n(s)=(1-c/n+(c/n)
 \[
  \ln f_n(s)=m\ln\bigl(1-\tfrac{c}{n}(1-s)\bigr)\to -\mu(1-s),
 \]
-so $f_n(s)\to f(s)=\exp(\mu(s-1))$, uniformly on $[0,1]$ because the convergence of $(1-a/m)^{m}$ type expansions is monotone in the error $O((c/n)^2 m)=O(1/n)$. Let $\eta_n$ be the extinction probability of $Z$, the smallest root of $s=f_n(s)$ in $[0,1]$, and let $\eta$ be the smallest root of $s=f(s)$. Theorem~\ref{thm:extinction} gives $\eta<1$ because the Poisson$(\mu)$ mean is $\mu>1$. Every limit point $L$ of $\eta_n$ satisfies $L=f(L)$. The value $1$ is a root, but it is not the limit: $f_n'(1)=mc/n\to\mu>1$, so for large $n$ one has $f_n(s)<s$ on an interval $(1-\varepsilon,1)$, and the smallest root stays $\le 1-\varepsilon$. Thus $\eta_n\to\eta$. A process that survives has infinite progeny, so $P(T\ge\delta n)\ge P(T=\infty)=1-\eta_n$. Therefore $P(|C(v)|\ge\delta n)\ge1-\eta_n$, which is at least $(1-\eta)/2$ for every large $n$.
+so $f_n(s)\to f(s)=\exp(\mu(s-1))$, uniformly on $[0,1]$ because the convergence of $(1-a/m)^{m}$ type expansions is monotone in the error $O((c/n)^2 m)=O(1/n)$. Let $\eta_n$ be the extinction probability of $Z$, the smallest root of $s=f_n(s)$ in $[0,1]$, and let $\eta$ be the smallest root of $s=f(s)$. Theorem~\ref{thm:extinction} gives $\eta<1$ because the Poisson$(\mu)$ mean is $\mu>1$. Every limit point $L$ of $\eta_n$ satisfies $L=f(L)$. The value $1$ is a root, but it is not the limit: $f_n'(1)=mc/n\to\mu>1$, and $f_n''(s)=m(m-1)(c/n)^2(1-c(1-s)/n)^{m-2}$ is bounded uniformly for $s\in[0,1]$ and large $n$. Taylor's formula at $1$ therefore provides a fixed $\varepsilon>0$ such that $f_n(s)<s$ for $s\in(1-\varepsilon,1)$ for all large $n$. Since $f_n(0)>0$ and $f_n$ is continuous, its smallest fixed point must be at most $1-\varepsilon$. Thus $\eta_n\to\eta$. A process that survives has infinite progeny, so $P(T\ge\delta n)\ge P(T=\infty)=1-\eta_n$. Therefore $P(|C(v)|\ge\delta n)\ge1-\eta_n$, which is at least $(1-\eta)/2$ for every large $n$.
 \end{solution}
 
 
