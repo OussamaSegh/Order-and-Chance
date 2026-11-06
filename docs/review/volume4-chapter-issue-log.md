@@ -51,6 +51,14 @@ Appendix B, preface, blurb, back matter, photographs, and the full-book reader/b
 - Remaining: repeat a post-fix writer second pass; exact pushed SHA second reviewer with identification/report; voice/reader checks; native PDF and downstream reference checks. **No checkmark for acceptance.**
 
 
+### Chapter 2 post-fix writer reread — 6 Nov 2026 (not independent)
+
+Read the **currently committed** \`volume4-chance/chapters/ch02-discrete.tex\` after the repairs \`01c85fbb\` and \`fe2136ce\`, not the obsolete pre-repair text. Rechecked the finite-law definitions and absolute-convergence hypotheses; Poisson limit including \`k=0\`; the rare-trials Taylor inequality and actual rounding; exact fixed-point counting; cycle indicators and the $H_n$ sum; the coupon-stage indexing and countable finite-word model; and the statements, hints and worked solutions for records, fixed-point variance, Quicksort, factorial moments, reservoir sampling, long cycles/the prisoners, birthday first-collision time and Poisson sums.
+
+Computed the birthday expectation from exact products for $N=2,10,100,1000,10000$: $2.5$, $4.66021568$, $13.20996063$, $40.30321293$, $125.99912187$. Ratios to $\sqrt{\pi N/2}$ are about $1.41047$, $1.17583$, $1.05400$, $1.01690$, $1.00533$, consistent with (but not a proof of) the asymptotic. Rechecked the corrected sum-of-squares integral bound and order-$N^{-1/2}$ error on a fixed $A\sqrt N$ window, and the Gaussian-integral tail comparison. Separately computed $(0.98)^{100}=0.13261955589475$, with analytic enclosing bounds $e^{-2.02083}=0.13254540672464$ and $e^{-2.02}=0.13265546508012$.
+
+Read the native TikZ source for both \`ch02-poissonbars.tex\` and \`ch02-cycles.tex\`; the second uses the curve $1/x$ at the bar centres. **No new mathematical defect was identified in this reread**, but this is one author's reconstruction, **not an independent review**. Exact native figure rendering, visual legibility, bibliography against primary copies, and all downstream cross-volume number migrations remain open. Chapter 2 mathematical/figure/independent acceptance checkboxes therefore stay **unchecked**.
+
 ## Chapter 3 findings (writer inspection; independent reviewer PENDING)
 
 | ID | Location | Severity | Finding | Resolution | Recheck |
