@@ -1,16 +1,18 @@
 # Handoff: Volume 4 rewrite
 
-## Latest checkpoint — 6 November 2026, Chapter 2 voice at `7078dfe5`
+## Latest checkpoint — 6 November 2026, native PDF of `7078dfe5`
 
-**Pushed voice commit.** `7078dfe5012f4188fa7b13eebb073806f602f01f`. It preserves `f43088ac`. `origin/main` is still `5c4840ccdbae22abfa8a28d01b8c5d1ab16355e6`.
+**Preserved.** `f43088ac` is an ancestor. `origin/main` is `5c4840ccdbae22abfa8a28d01b8c5d1ab16355e6`. No other volume was edited. PR #111 stays draft.
 
-**Chapter 2 voice.** Independent subagent composer-2.5, agent `bc-d2380e3f-fe74-5ab0-ac81-fbe223bfd8e8`, read that SHA with `git show` and passed the Sound human test. It reported no mathematical regression in the coupon mean, the record probability, the Poisson quotient, or the birthday bound. It did not sign a PDF or chapter acceptance. The full exercise-by-exercise mathematical signoff remains the recheck of the file in `34307b91`. The independent-review checkbox stays open. Chapter 2 is not complete until the native PDF of `7078dfe5` has been inspected.
+**Chapter 2 voice, pushed SHA `7078dfe5012f4188fa7b13eebb073806f602f01f`.** Independent subagent composer-2.5, agent `bc-d2380e3f-fe74-5ab0-ac81-fbe223bfd8e8`, read that SHA with `git show` and passed the Sound human test. It reported no mathematical regression in the coupon mean, the record probability, the Poisson quotient, or the birthday bound. The full exercise-by-exercise mathematical recheck remains the one of the file in `34307b91`. The independent-review box stays open. Chapter 2 is not accepted: that box and the whole-book page-by-page certification are still open.
 
-**Chapter 3.** A different composer-2.5 agent, `bc-4b9198e8-92b4-5e68-9eaa-8562741b5bfc`, read `ch03-generating.tex` and `ch03-familytree.tex` at `7078dfe5`. No false statement. It asked for a plainer Dyck split and one independence sentence in the total-progeny solution. Those two sentences are committed locally on top of `7078dfe5` and are not pushed until Actions run `42270414089` finishes, so that build is not cancelled.
+**Native build of that SHA.** GitHub Actions [run 42270414089](https://github.com/OussamaSegh/Order-and-Chance/actions/runs/42270414089) ran `./build.sh volume4-chance` and succeeded. Reading PDF `dist/Volume 4 - Chance.pdf`: **158 pages**, 504 × 720 pt, sha256 `cc995193c7302e46cbb08160a7785cc0149a6c97a9e1fec9e0976bf5c01faf2d`. Print interior `dist/kdp/Volume 4 - Chance - Print.pdf`: **157 pages**, 513 × 738 pt, sha256 `2a9edb5fd054616a8f66fd24ac86a8df8047f52ebfe33338a37c9460a0b06a25`. Chapter 2 figure pages of the reading PDF (pages 27 and 30) were inspected: charcoal binomial bars against rust Poisson bars, and the \(1/k\) curve through the cycle bars. Both figure logs wrote a one-page PDF with no error. Page 32 shows the empty-box proposition inside its frame. This is not a high-resolution inspection of all 158 pages. The count is 157 interior pages, still far below 400–500. The older 155-page count was `658af447`.
 
-**Native build.** GitHub Actions run `42270414089` is the `./build.sh volume4-chance` of `7078dfe5`. Record its page count only from that run's log. The 155-page figure at `658af447` is older. The Volume 3 `C-GROUP` gate is still the protected failure in `Build books` and is not to be edited.
+**Chapter 3.** A different composer-2.5 agent, `bc-4b9198e8-92b4-5e68-9eaa-8562741b5bfc`, read the chapter at `7078dfe5` and found no false statement. The Dyck first-return sentence and the progeny independence sentence are in `e25ed35b`. They still need that reviewer’s recheck of the pushed file. Voice and PDF signoff for Chapter 3 are open.
 
-**Exact next step.** When run `42270414089` finishes, read the print page count and inspect the Chapter 2 figures in that PDF. Then push the two Chapter 3 sentences and have agent `bc-4b9198e8` re-read that pushed SHA. Do not tick Chapter 2 complete before the PDF inspection.
+**C-GROUP.** `Build books` still fails the protected Volume 3 conceptual snapshot. Do not edit Volume 3 or that snapshot.
+
+**Exact next step.** Ask agent `bc-4b9198e8` to re-read `ch03-generating.tex` at the pushed SHA that contains `e25ed35b`. Then continue the mathematical review at Chapter 4. Do not tick Chapter 2 or Chapter 3 complete.
 
 ---
 
