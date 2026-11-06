@@ -56,7 +56,7 @@ Markov's inequality from Volume~1, applied to the nonnegative variable $e^{\lamb
  P(S-\mathbb ES\ge t)=P\bigl(e^{\lambda(S-\mathbb ES)}\ge e^{\lambda t}\bigr)
  \le\exp\Bigl(-\lambda t+\frac{\lambda^2}{8}\sum_i(b_i-a_i)^2\Bigr).
 \]
-Choose $\lambda=4t/D>0$. The exponent becomes $-2t^2/\sum_i(b_i-a_i)^2$. The lower tail is the same statement for $-X_i$.
+The exponent $\psi(\lambda)=-\lambda t+\lambda^2 D/8$ has derivative $-t+\lambda D/4$ and second derivative $D/4>0$, so it is minimised at $\lambda=4t/D>0$. That choice makes the exponent $-2t^2/\sum_i(b_i-a_i)^2$. The lower tail is the same statement for $-X_i$.
 \end{proof}
 
 For a fair coin, each summand lies in $\{0,1\}$, so $b_i-a_i=1$ and $\sum(b_i-a_i)^2=n$. If $S$ is the number of heads,
@@ -69,6 +69,40 @@ Take $n=1000$ and $t=100$. Then $600$ heads or more has probability at most $e^{
 \]
 One fortieth is a true sentence and a bad estimate.
 
+\begin{examplex}[four bounds, one coin]
+The same event shows what each inequality is allowed to use. Let $S$ be the number of heads in $n$ fair tosses, and let $A$ be the event $S\ge 0.6n$.
+
+Markov uses only that $S\ge0$ and $\mathbb E S=n/2$. Volume~1 gives $P(S\ge 0.6n)\le (n/2)/(0.6n)=5/6$. The same $5/6$ would hold for any nonnegative variable with that mean. Fairness of the coin never entered, beyond the mean.
+
+Chebyshev uses the variance. Here $\operatorname{Var}S=n/4$, so
+\[
+ P(|S-n/2|\ge 0.1n)\le\frac{n/4}{(0.1n)^2}=\frac{1}{0.04n}.
+\]
+The event $A$ is contained in the two-sided event, so the same number bounds $P(A)$. At $n=100$ the bound is $1/4$. At $n=1000$ it is $1/40$.
+
+Hoeffding uses the bounds $0$ and $1$ and independence. The theorem gives $P(A)\le\exp(-2n\cdot 0.01)=e^{-n/50}$. At $n=100$ this is $e^{-2}=0.1353\ldots$. At $n=1000$ it is $e^{-20}=2.061\ldots\times 10^{-9}$.
+
+The Bernoulli moment is sharper than Hoeffding's lemma, because it is exact. For $\lambda>0$,
+\[
+ \mathbb E[e^{\lambda S}]=\Bigl(\frac{1+e^{\lambda}}{2}\Bigr)^n,
+\]
+so Markov's inequality yields
+\[
+ P(S\ge an)\le\exp\Bigl(-n\bigl(\lambda a-\ln(1+e^{\lambda})+\ln 2\bigr)\Bigr)
+\]
+whenever $a\in(1/2,1)$. Write $\phi(\lambda)=\lambda a-\ln(1+e^{\lambda})$. Then $\phi'(\lambda)=a-e^{\lambda}/(1+e^{\lambda})$ and
+\[
+ \phi''(\lambda)=-\frac{e^{\lambda}}{(1+e^{\lambda})^2}<0,
+\]
+so $\phi$ is strictly concave and the critical point is a maximum. Setting $\phi'(\lambda)=0$ gives $e^{\lambda}=a/(1-a)$, hence $\lambda=\ln(a/(1-a))>0$. Substituting produces
+\[
+ \phi(\lambda)+\ln 2=a\ln(2a)+(1-a)\ln\bigl(2(1-a)\bigr).
+\]
+Call the right-hand side $D(a\|\tfrac12)$. The optimised bound is $\exp(-n D(a\|\tfrac12))$. At $a=0.6$, $D(0.6\|\tfrac12)=0.020135\ldots$. For $n=100$ the bound is $0.1335\ldots$, a little under Hoeffding's $0.1353\ldots$. For $n=1000$ it is $1.800\ldots\times 10^{-9}$. The exact tail $\sum_{k=600}^{1000}\binom{1000}{k}2^{-1000}$ is $1.364\ldots\times 10^{-10}$.
+
+Use Markov when the variable is nonnegative and a mean is all you have. Use Chebyshev when a variance is all you have. Use Hoeffding when the variables are independent and each one sits in a known interval. Use the relative-entropy bound when they are Bernoulli, because then the moment generating function is exact and the calculus above is legitimate.
+\end{examplex}
+
 \begin{figure}[ht]
 \centering
 \fig{ch04-chernoff}
@@ -76,11 +110,7 @@ One fortieth is a true sentence and a bad estimate.
 \label{fig:chernoff}
 \end{figure}
 
-The same exponential estimate specialises to the binomial relative-entropy bound when the summands are Bernoulli, by optimising $\lambda$ against the exact Bernoulli moment $1-p+pe^{\lambda}$ instead of Hoeffding's lemma. For $S\sim\mathrm{Bin}(n,1/2)$ and $a>1/2$,
-\[
- P(S\ge an)\le\exp\bigl(-n D(a\|\tfrac12)\bigr),
-\]
-where $D(a\|\tfrac12)=a\ln(2a)+(1-a)\ln(2(1-a))$. At $a=0.6$ and $n=1000$, $D(0.6\|\tfrac12)=0.020135\ldots$ and the bound is $1.800\ldots\times 10^{-9}$, slightly tighter than $e^{-20}$. The proof is Markov's inequality on $e^{\lambda S}$ and the choice of $\lambda$ that minimises the exponent; it is Exercise~\ref{ex:chernoffbin}.
+The fair-coin calculation is the case $p=1/2$ of a bound that keeps the success probability. Exercise~\ref{ex:chernoffbin} asks for that extension. The derivative test is the same one written out above.
 
 \section{Borel--Cantelli}
 
@@ -171,11 +201,11 @@ Let $a>0$ and $p>0$. Determine for which $p$ there is a nonnegative random varia
 \end{exercise}
 
 \begin{exercise}[$\star\star$]\label{ex:chernoffbin}
-Let $S$ be binomial$(n,1/2)$ and let $a\in(1/2,1)$. Prove
+Let $S$ be binomial$(n,p)$ with $0<p<a<1$. Prove
 \[
- P(S\ge an)\le\exp\bigl(-n D\bigr),\qquad D=a\ln(2a)+(1-a)\ln\bigl(2(1-a)\bigr),
+ P(S\ge an)\le\exp\bigl(-n D(a\|p)\bigr),
 \]
-by applying Markov's inequality to $e^{\lambda S}$ and minimising the resulting exponent in $\lambda>0$.
+where $D(a\|p)=a\ln(a/p)+(1-a)\ln((1-a)/(1-p))$. Apply Markov's inequality to $e^{\lambda S}$ and maximise the resulting exponent in $\lambda>0$. Check that $p=1/2$ recovers the bound in the example above.
 \end{exercise}
 
 \begin{exercise}[$\star$]\label{ex:bcfinite}
@@ -200,7 +230,7 @@ Let $R_n$ be the longest run of heads in $n$ fair tosses. Show that $R_n/\log_2 
 To keep the specified mean $a$ and tail probability $p$, place mass $p$ at $a/p$ and the rest at $0$. For equality at threshold $a$, use a possibly different law supported at $0$ and $a$.
 \end{hint}
 \begin{hint}{ex:chernoffbin}
-$\mathbb E[e^{\lambda S}]=( (e^{\lambda}+1)/2 )^n$. Take logarithms and set the derivative in $\lambda$ to zero.
+The moment is $(1-p+pe^{\lambda})^n$. Differentiate the exponent and solve for $e^{\lambda}$. The second derivative shows the critical point is a maximum.
 \end{hint}
 \begin{hint}{ex:bcfinite}
 At stage $n$, each preceding interval has $n$ (or $n^2$) equal children. Each selected first child has conditional fraction $1/n$ (or $1/n^2$), and a prescribed finite string of choices has probability the product of those fractions. Now compare the two series.
@@ -223,17 +253,21 @@ If $r=\lfloor(1+\varepsilon)\log_2 n\rfloor$, use a union bound over at most $n$
 \end{solution}
 
 \begin{solution}{ex:chernoffbin}
-\idea The Bernoulli moment generating function is elementary, and the best $\lambda$ is the one that matches the threshold $a$ to the tilted mean.
-\writeup $\mathbb E[e^{\lambda S}]=(1/2+e^{\lambda}/2)^n$. Markov's inequality gives
+\idea The Bernoulli moment is elementary. The best $\lambda$ tilts the mean from $p$ up to $a$.
+\writeup Write $q=1-p$. Then $\mathbb E[e^{\lambda S}]=(q+pe^{\lambda})^n$, so
 \[
- P(S\ge an)\le e^{-\lambda an}\Bigl(\frac{1+e^{\lambda}}{2}\Bigr)^n
- =\exp\Bigl(-n\bigl(\lambda a-\ln(1+e^{\lambda})+\ln 2\bigr)\Bigr).
+ P(S\ge an)\le\exp\Bigl(-n\bigl(\lambda a-\ln(q+pe^{\lambda})\bigr)\Bigr).
 \]
-Let $\phi(\lambda)=\lambda a-\ln(1+e^{\lambda})$. Then $\phi'(\lambda)=a-e^{\lambda}/(1+e^{\lambda})$. Set the derivative to zero: $e^{\lambda}/(1+e^{\lambda})=a$, so $e^{\lambda}=a/(1-a)$ and $\lambda=\ln(a/(1-a))>0$ because $a>1/2$. Substitute:
+Let $\phi(\lambda)=\lambda a-\ln(q+pe^{\lambda})$. Then
 \[
- \phi(\lambda)=a\ln\frac{a}{1-a}-\ln\Bigl(\frac{1}{1-a}\Bigr)=a\ln a+(1-a)\ln(1-a).
+ \phi'(\lambda)=a-\frac{pe^{\lambda}}{q+pe^{\lambda}},\qquad
+ \phi''(\lambda)=-\frac{pqe^{\lambda}}{(q+pe^{\lambda})^2}<0.
 \]
-The exponent is $-n(\phi(\lambda)+\ln 2)=-n\bigl(a\ln(2a)+(1-a)\ln(2(1-a))\bigr)$.
+The critical point is a maximum. Setting $\phi'(\lambda)=0$ gives $e^{\lambda}=aq/(p(1-a))$, so $\lambda=\ln(a/p)-\ln((1-a)/q)>0$ because $a>p$. At that value, $q+pe^{\lambda}=q/(1-a)$, and
+\[
+ \phi(\lambda)=a\ln\frac{a}{p}+(1-a)\ln\frac{1-a}{q}=D(a\|p).
+\]
+Thus $P(S\ge an)\le\exp(-n D(a\|p))$. If $p=1/2$, then $D(a\|\tfrac12)=a\ln(2a)+(1-a)\ln(2(1-a))$, which is the exponent in the example.
 \end{solution}
 
 \begin{solution}{ex:bcfinite}
