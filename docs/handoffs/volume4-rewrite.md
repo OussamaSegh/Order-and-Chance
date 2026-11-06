@@ -62,7 +62,7 @@ Legend: `planned` means designed and not yet the manuscript. `written` means a f
 | Content plan `docs/plan/book-04.md` | written | Replaces the keep-and-admit-measure plan |
 | Preface | written | Fresh. Not yet read against the built PDF |
 | Ch. 1 Counting and Paradoxes | written | Fresh manuscript, three figures, eight exercises with hints and solutions. Not yet a reader pass |
-| Ch. 2 Discrete Random Variables | planned | |
+| Ch. 2 Discrete Random Variables | written | Fresh. Exercise 2.6 is the long cycle and the hundred prisoners. Birthday-wait solution (Exercise 2.7) uses a Riemann-sum comparison; re-read the shift by 2 on the reader pass |
 | Ch. 3 Generating Functions | planned | |
 | Ch. 4 Inequalities, Large Numbers and Entropy | planned | |
 | Ch. 5 Continuous Probability Done Properly | planned | Title kept so “Chapter 5” still means densities and integrals. Content does not pretend to be Lebesgue’s theory |
@@ -84,11 +84,11 @@ Legend: `planned` means designed and not yet the manuscript. `written` means a f
 
 ## Last completed milestone
 
-**Milestone 1 — preface and Chapter 1 written.** Not yet compiled. The contract commit is `ec63bab7`. The draft PR is number 111.
+**Milestone 2 — Chapter 2 written.** Commit of Chapter 1 is `c16c2d95`. Chapter 2 is in the working tree at this update and is committed with this handoff.
 
 ## Current WIP
 
-Chapter 2 is next. Do not rewrite Chapter 1 unless a named defect appears. Known limits, not defects: the Penney citation gives the journal and year, not a page; Buffon’s essay is cited by work and year, not by page. The ballot proof is the reflection comparison; André’s 1887 note is cited for the direct count, not as the source of the picture.
+Chapter 3 is next. Do not reopen Chapter 1. On the reader pass, re-check the Riemann-sum comparison in the solution of Exercise 2.7 (the factor coming from shifting $m$ by $2$).
 
 ## Decisions already made
 
@@ -110,7 +110,7 @@ Chapter 2 is next. Do not rewrite Chapter 1 unless a named defect appears. Known
 
 ## Exact next actions
 
-1. Chapter 1 and the preface are written. Next write Chapters 2–4 fresh, with figures, exercises, hints, and solutions. Preserve exercise numbers 2.6 (long cycle and the hundred prisoners) and 3.7 (binomial series for \((1-4x)^{-1/2}\)). Exercise 1.7 is already the Dyck-path count.
+1. Chapters 1 and 2 and the preface are written. Next write Chapters 3 and 4. Preserve exercise 3.7, the series for $(1-4x)^{-1/2}$.
 2. Update this ledger to `written` for each finished file. Commit and push.
 3. Write Chapters 5–8, then 9–12 and the appendix, under the same rule.
 4. Reader pass, then voice pass. Fix what those passes find.
