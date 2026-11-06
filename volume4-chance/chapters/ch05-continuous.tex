@@ -5,14 +5,14 @@ A uniform point of $[0,1]$ equals $\frac12$ with probability $0$, and it equals 
 single number with probability $0$. The average is an integral, not a sum.
 \end{center}
 
-Chapters~1 to~4 added probabilities of intervals and of finite-bit events. A single point inside $[0,1)$ has length $0$. If a measurement can fall anywhere on a line, its expectation cannot be a sum over values. This chapter builds that expectation from the Riemann integral of Volume~1, proves the repeated integral of a continuous function on a rectangle, and constructs as many independent normal variables as a later proof asks for. It does not assign a length to every subset of the line. Vitali showed in 1905 that countable additivity, translation invariance, and a length for every subset cannot hold together, if one grants the axiom of choice. The sets used below are intervals, finite unions of intervals, and zero sets of continuous functions. Those have lengths.
+Chapters~1 to~4 added probabilities of intervals and of finite-bit events. A single point inside $[0,1)$ has length $0$. If a measurement can fall anywhere on a line, its expectation cannot be a sum over values. This chapter builds that expectation from the Riemann integral of Volume~1, proves the repeated integral of a continuous function on a rectangle, and constructs as many independent normal variables as a later proof asks for. It does not assign a length to every subset of the line. Vitali showed in 1905 that countable additivity, translation invariance, and a length for every subset cannot hold together, if one grants the axiom of choice. The sets used below are intervals and finite unions of intervals, together with certain limits of such events whose probabilities are established by explicit approximations. We do not assume a general length or probability for every zero set of a continuous function.
 
 \section{Distribution functions and densities}
 
 Let $X$ be a random variable, in the sense that $\{X\le x\}$ is an event whose probability we can compute, for every real $x$. The \emph{distribution function} is $F(x)=P(X\le x)$. It is increasing, $F(x)\to0$ as $x\to-\infty$ and $F(x)\to1$ as $x\to\infty$ whenever the model is a probability, and it is right-continuous when the events $\{X\le x+1/n\}$ shrink to $\{X\le x\}$ with probabilities tending to $F(x)$. For the variables in this chapter that limit is part of the construction.
 
 \begin{definition}[density]\label{def:density}
-A nonnegative continuous function $f$ on $\R$, or continuous on $\R$ except at finitely many jumps that do not affect the integral, is a \emph{density} of $X$ when
+A nonnegative function $f$ that is continuous except at finitely many points (and has finite one-sided limits there) is a \emph{density} of $X$ when
 \[
  P(a<X\le b)=\int_a^b f(t)\,\dd t
 \]
@@ -31,7 +31,7 @@ Volume~1, Chapter~8, gives $\int_{-\infty}^{\infty}e^{-u^2}\,\dd u=\sqrt{\pi}$. 
 If $X$ has density $f$ and $\int |x|f(x)\,\dd x<\infty$, then $\mathbb E[X]=\int_{-\infty}^{\infty} x f(x)\,\dd x$. If $g$ is continuous and $\int |g|f<\infty$, then $\mathbb E[g(X)]=\int g(x)f(x)\,\dd x$.
 \end{proposition}
 \begin{proof}
-The second claim is the definition we adopt for $\mathbb E[g(X)]$, and it agrees with the countable formula when $g$ is a step function constant on finitely many intervals: both sides add $g$ times the probability of each interval. A continuous $g$ of compact support is a uniform limit of such step functions, by uniform continuity. The general integrable case follows by cutting the tails, using the hypothesis $\int |g|f<\infty$.
+We define the expectation of an integrable function of a continuously distributed variable by the integral in the statement. For a step function on finitely many intervals, this agrees with summing each value times the interval probability, by the density definition. A continuous compactly supported function is uniformly approximated by step functions, and the corresponding integrals converge by their explicit uniform-error bound. For a general continuous $g$ with $\int|g|f<\infty$, truncate to $[-A,A]$ and use the absolute-integral tail to make the remaining contribution small. This shows how the definition extends the finite-interval calculation rather than asserting an unproved general integration theorem.
 \end{proof}
 
 \begin{proposition}[Gaussian tail]\label{prop:gausstail}
@@ -60,7 +60,7 @@ Both inner integrals are continuous in the outer variable.
 Continuity on a compact rectangle is uniform. The Riemann sums over a grid are finite double sums, and addition is commutative, so the two orders of summation agree exactly at each grid. As the mesh tends to $0$, both iterated integrals equal the common limit of those sums. The inner integral is continuous in the outer variable because $|f|$ is bounded and the integrand moves uniformly when the outer variable moves a little.
 \end{proof}
 
-This is the only Fubini theorem used in the rest of the volume. It is not the theorem for arbitrary nonnegative measurable functions. Volume~7 proves that statement. When an integral below is improper, the equality is the limit of the equality on compact rectangles, taken one end at a time.
+This is the rectangle version of Fubini used in this volume. It is not the theorem for arbitrary nonnegative measurable functions, which Volume~7 proves. For an improper integral we use it on compact rectangles first and pass to a limit only when the tails are controlled, for example by the explicit Gaussian decay proved above. The existence of two iterated improper integrals alone would not justify exchanging their order.
 
 \begin{proposition}[polar rectangles]\label{prop:polar}
 Let $h$ be continuous and bounded on $\R^2$. For $R>0$,
@@ -100,7 +100,11 @@ Strict increase and continuity give $F(F^{-1}(u))=u$ and $F^{-1}(F(x))=x$. The i
 
 Apply this to the standard normal distribution function $\Phi(x)=\int_{-\infty}^x\phi$. It is continuous and strictly increasing from $0$ to $1$. The variables $Z_k=\Phi^{-1}(U_k)$ are independent standard normals: every finite subcollection has the product distribution function, because the $U_k$ are independent and each coordinate transforms by $\Phi^{-1}$.
 
-A bounded random variable with distribution function $F$ is $F^{-1}(U_k)$ on the $k$th block. Theorem~\ref{thm:sllnbound} then applies to any i.i.d.\ bounded sequence, not only to finite-valued ones. The gap estimate in that proof never used finiteness of the value set beyond the existence of the copies and the bound $M$.
+Theorem~\ref{thm:sllnbound} does \emph{not} apply directly to $X_k=F^{-1}(U_k)$: one such variable generally depends on infinitely many digits, whereas the theorem assumes a finite-digit function. Here is the additional step for a bounded, nondecreasing quantile $Q=F^{-1}$ with finite endpoint values. Partition $[0,1)$ into intervals $I_{j,m}=[j2^{-m},(j+1)2^{-m})$ and, on each interval, define the step bounds $L_m(u)=Q(j2^{-m})$ and $R_m(u)=Q((j+1)2^{-m})$. Then $L_m(U_k)\le Q(U_k)\le R_m(U_k)$, and both bounds depend only on the first $m$ digits of $U_k$. Moreover their expected gap is exactly
+\[
+\mathbb E[R_m(U_k)-L_m(U_k)]=2^{-m}\sum_{j=0}^{2^m-1}\bigl(Q((j+1)2^{-m})-Q(j2^{-m})\bigr)=2^{-m}(Q(1)-Q(0)).
+\]
+For each fixed $m$, Chapter~4's strong law applies to the independent copies of $L_m(U_k)$ and $R_m(U_k)$. Intersecting the probability-one conclusions over all integers $m$ and squeezing the averages of $Q(U_k)$ between them gives convergence to its integral mean, since the expectation of the two bounds differs by at most $2^{-m}(Q(1)-Q(0))$. Thus the finite-digit hypothesis can be removed for this bounded quantile model by an explicit approximation, without borrowing a general product-measure theorem.
 
 \section{Passing a limit under the integral}
 
@@ -108,10 +112,10 @@ A bounded random variable with distribution function $F$ is $F^{-1}(U_k)$ on the
 Let $f_n$ and $f$ be continuous on $\R$, with $f_n\to f$ uniformly on every bounded interval, and suppose $|f_n(x)|\le g(x)$ for a continuous $g$ with $\int_{-\infty}^{\infty}g<\infty$. Then $\int f_n\to\int f$.
 \end{theorem}
 \begin{proof}
-The bound passes to $f$, so $f$ is integrable. Fix $\varepsilon>0$ and choose $A$ so that $\int_{|x|>A}g<\varepsilon$. On $[-A,A]$ the convergence is uniform, so for large $n$ the integral of $|f_n-f|$ over that segment is less than $\varepsilon$. The tails contribute at most $2\varepsilon$. 
+The bound $|f|\le g$ passes to the limit, so the improper integral of $f$ exists absolutely. Fix $\varepsilon>0$ and choose $A$ so that $\int_{|x|>A}g<\varepsilon$. On $[-A,A]$ the convergence is uniform, so for large $n$ the integral of $|f_n-f|$ over that segment is less than $\varepsilon$. The two tails together contribute at most $2\varepsilon$, giving $|\int f_n-\int f|<3\varepsilon$. Since $\varepsilon$ is arbitrary, the difference tends to zero.
 \end{proof}
 
-Differentiation under the integral sign, when it is used in Chapter~6, is this theorem applied to difference quotients, once a continuous dominant is in hand.
+Differentiation under the integral sign in Chapter~6 requires more than this theorem by itself: the relevant difference quotients must converge locally uniformly and admit one integrable continuous bound. When those hypotheses are verified, the theorem applies to the quotients and justifies taking their integrals to the derivative.
 
 \section{Box--Muller}
 
@@ -215,7 +219,7 @@ $U=e^{-R^2/2}$, and $U$ is uniform.
 
 \begin{solution}{ex:counter}
 \idea A tall thin tent has area $1$ and disappears at each fixed $x\ne0$. No single integrable curve sits above all of them.
-\writeup The graph consists of two right triangles of base $1/n$ and height $n$, or one triangle of base $2/n$ and height $n$. Its area is $\tfrac12\cdot(2/n)\cdot n=1$. For $x\ne0$, eventually $1/n<|x|$, so $f_n(x)=0$. At $0$, $f_n(0)=n$ does not converge to $0$, but a single point does not affect the integral of the limit if one sets the limit equal to $0$ everywhere. Suppose a continuous $g\ge f_n$ for every $n$. On $|x|\le1/n$ the tent reaches height at least $n/2$ on a large subinterval, so $g(x)\ge n/2$ for some $x$ with $|x|\le1/n$. In particular $g$ is unbounded near $0$ and cannot be continuous on $\R$ unless we abandon continuity, and $\int g=\infty$ because the lower envelope of the tents is of order $1/|x|$. Theorem~\ref{thm:dct} asks for one integrable continuous dominant. There is none.
+\writeup The graph consists of two right triangles of base $1/n$ and height $n$, or one triangle of base $2/n$ and height $n$. Its area is $\tfrac12\cdot(2/n)\cdot n=1$. For $x\ne0$, eventually $1/n<|x|$, so $f_n(x)=0$. At $0$, $f_n(0)=n$ does not converge to $0$, but a single point does not affect the integral of the limit if one sets the limit equal to $0$ everywhere. If a continuous $g$ dominated every tent, it would satisfy $g(0)\ge f_n(0)=n$ for every $n$, which is impossible for a real-valued continuous function. Moreover, $f_n$ does not converge to a finite value at $0$ and does not converge uniformly on any interval containing $0$. Thus neither the local-uniform-convergence hypothesis nor the continuous-dominant hypothesis of Theorem~\ref{thm:dct} holds. Pointwise convergence away from a single point is not enough for the stated theorem.
 \end{solution}
 
 \begin{solution}{ex:densityunique}
@@ -272,7 +276,7 @@ The mean is
 
 (b) The number $X$ has ternary expansion $0.(2B_1)(2B_2)(2B_3)\ldots$, because $2B_k\in\{0,2\}$. So $X\in C$ for every outcome. A single value $x$ specifies every ternary digit, except on the countable set of endpoints, which have two expansions. Either way only one sequence of bits, or two, realises $x$. A single infinite bit string has probability $0$, being contained in cylinders of length $2^{-N}$ for every $N$.
 
-(c) $P(X\le x)$ moves continuously because $P(X=x)=0$: the distribution function has no jumps. Suppose a continuous $f$ were a density. On each removed middle-third interval the probability is $0$, so $\int f=0$ there, and continuity forces $f=0$ on that interval. The removed intervals are dense in $[0,1]$: every subinterval of $[0,1]$ contains a removed middle third at a late enough stage. A continuous function that vanishes on a dense set vanishes everywhere. Then $\int f=0$, which is not $1$.
+(c) We can check continuity without assuming an unproved general continuity theorem for probabilities. Fix $x$ and $\varepsilon>0$. At stage $n$ of the construction, each retained interval carries probability $2^{-n}$, and at most two such intervals can meet a sufficiently short interval around $x$ (their distinct interiors have a positive gap unless they share an endpoint). Choose $n$ with $2^{1-n}<\varepsilon$, then choose the neighbourhood small enough to meet at most two stage-$n$ intervals. Its probability is at most $2^{1-n}<\varepsilon$, proving continuity of $P(X\le x)$. Suppose a continuous $f$ were a density. On each removed middle-third interval the probability is $0$, so $\int f=0$ there, and continuity forces $f=0$ on that interval. The removed intervals are dense in $[0,1]$: every subinterval of $[0,1]$ contains a removed middle third at a late enough stage. A continuous function that vanishes on a dense subset of $[0,1]$ vanishes throughout that interval. The density must also vanish outside $[0,1]$, because each interval wholly outside has probability zero. It would therefore integrate to $0$, contradicting the required total mass $1$.
 \end{solution}
 
 \begin{solution}{ex:radius}
