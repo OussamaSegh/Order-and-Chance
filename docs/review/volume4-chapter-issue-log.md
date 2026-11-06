@@ -6,6 +6,14 @@ Scope: draft PR #111, branch `cursor/volume4-rewrite-ee7f`. This is an editorial
 
 A writer's mathematical reconstruction, critical rereading, numerical check, or compiler pass is **not** an independent second review. Every chapter needs a separate identified reviewer who examined the **exact pushed commit**. Record that reviewer's identity, date, commit, report, issue disposition, and rechecks here. Mathematical and voice gates that have closed are listed below with the reviewer and the SHA. None of them is production approval, and no checkbox is ticked. No review is attributed to a nonexistent person or model. A pass on a named repair is not acceptance of the chapter.
 
+## Whole-volume read at `c5aafd64`
+
+Composer-2.5 `bc-a4cc96d9-695e-52bd-9e92-690a4607d680` read the manuscript at `c5aafd64`, including the included geometric file and every figure the chapters pull in. Two items were reported.
+
+The blurb says every step used in a proof is proved in this volume or in Volumes 1--3. The later-volume sentences in the chapters are previews or explicit refusals: Lévy's continuity theorem ``is not a step here'', the unbounded strong law ``is not a step in this volume'', Itô's formula is ``not a proved theorem of this volume'', the sharp transposition window is not the bound that is proved, and the general Fubini and Tonelli theorems are replaced by the rectangle integral and the dyadic cover. There is no modular-forms citation. That sentence is not a defect.
+
+The ratio test is cited as Volume~1, Chapter~5. In the published Volume~1, the counter starts at $-1$, so Sequences, Series and Limits is printed Chapter~3, and the ratio test is in that chapter. The sentence now says Chapter~3. This edits `ch03-generating.tex`, so the Chapter~3 mathematical and voice gate at `bc7db483` no longer covers the file. Chapter~2 was not edited. The repaired sentence has no full reread.
+
 ## Chapter 6 gate, reviewer and SHA
 
 The Chapter 6 file `ch06-clt.tex` was last changed in `30d77d7589ebbe5a1d982f0a00d2aceed9a99a38`. Composer-2.5 `bc-38fe06c1-e0f0-5fa2-a2e1-459b109d08b4` read the whole chapter at `970ea787` and found three defects. Composer-2.5 `bc-55d39ade-073c-5ad5-b8df-3eef408bd960` reread the whole chapter at `30d77d75` and reported a spelling clash that the source does not contain. Composer-2.5 `bc-45402df8-26d2-5eea-b1a3-0f88e50efa41` reread the whole chapter and both figures at `30d77d75` and found no remaining defect. That is the close of the mathematical and voice review of Chapter 6. It is not a production acceptance. The file is unchanged through `3030925c`.
@@ -102,7 +110,8 @@ These are whole-chapter reads of the current text, not patch checks. No report h
 
 A chapter's review gate closes only when a distinct reviewer reads the whole of its current text and reports no remaining defect. A patch recheck does not do that. As of the Chapter 9 sentence recorded above:
 
-- Chapters 1--14 and the appendix: mathematical and voice gates closed at the SHAs named in this log. Production and the every-page ledger remain open. No box is ticked.
+- Chapters 1, 2, 4--14, the appendix, and the front and back matter: mathematical and voice gates closed at the SHAs named in this log. Production and the every-page ledger remain open. No box is ticked.
+- Chapter 3: the ratio-test citation was Chapter 5 and is now Chapter 3 of Volume 1. The gate at `bc7db483` does not cover that sentence.
 - Front and back matter: mathematical and voice gate closed at `0d81054f`. Production and the every-page ledger remain open. No box is ticked.
 - The fresh whole-volume read, the Volume 5--15 citation sweep, and the every-page ledger have not been started.
 - The fresh whole-volume review, the Volume 5--15 citation sweep, and the every-page visual ledger have not been started.
