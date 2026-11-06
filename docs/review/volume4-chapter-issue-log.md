@@ -23,7 +23,7 @@ A writer's mathematical reconstruction, critical rereading, numerical check, or 
 | 11 Martingales and Fair Games | Targeted author post-fix source checks; Doob/Azuma/pattern waiting `5efbfe9c`; original `45ad353c` | PENDING — no distinct reviewer | Full native PDF, figure/provenance and voice/reader passes; independently signed mathematical second review |
 | 12 Brownian Motion | Targeted author post-fix source checks; dyadic-variation and bridge independence `99f79545`; original `0ed6a684`, `e09011fa` | PENDING — no distinct reviewer | Full native PDF, figure/provenance and voice/reader passes; independently signed mathematical second review |
 | 13 The Probabilistic Method | Targeted author post-fix source checks; prime residue existence and crossing-endpoint hypotheses `a480bca2`; original `6f6bbd4c` | PENDING — no distinct reviewer | Full native PDF, figure/provenance and voice/reader passes; independently signed mathematical second review |
-| 14 Random Graphs and the Search for Structure | Author post-fix pass; global exploration exponent `74e94307`; original `4676780b` | PENDING — no distinct reviewer | Full native PDF, figure/provenance and voice/reader passes; independently signed mathematical second review |
+| 14 Random Graphs and the Search for Structure | Author end-to-end source reread, `4676780b` and `74e94307`; three worked exercises `7c273b71`, filtration clarification `f7a4b507`, native schematic `14e68f00`/`f5746d1e` | PENDING — no separate reviewer | Full native PDF/figure checks, reader/voice, distinct mathematical reviewer |
 
 Appendix B, preface, blurb, back matter, photographs, and the full-book reader/build/voice checks remain separate open gates.
 
@@ -185,6 +185,19 @@ Read `volume4-chance/main.tex` and followed its `\\input{chapters/...}` route (p
 This newer result is scoped to the actual `main.tex` route; the earlier 203/165 scan was a separate broader source scan and is retained only as historical evidence, not silently substituted. Neither scan resolves cross-volume citations, TeX macros, errors in compiled pages, figure appearance, bibliography accuracy, or mathematical correctness. No native build was performed here.
 
 **CI checkpoint:** GitHub Actions [run #1829](https://github.com/OussamaSegh/Order-and-Chance/actions/runs/42248963841) at `a480bca2` completed failure; 528 Python tests OK with 31 skips, V3 mathematical examples passed, and the reviewed conceptual-snapshot gate failed with `Whole-volume conceptual source/figure drift: C-GROUP`. The reading/print/EPUB/site/publish jobs were **skipped**. Updating a review snapshot without genuine authorization and re-review is prohibited. No native Volume 4 PDF was generated or inspected in this continuation.
+
+## Substantive Chapter 14 and Appendix B additions — 6 November 2026
+
+**Chapter 14:** `7c273b71` added three reader exercises with complete hints and solutions: counting triangles by indicator variables and the vanishing first moment, bounding expected component size through breadth-first layer means, and bounding the critical-window probability of isolated vertices from its first two factorial moments. The breadth-first exercise's conditioning was clarified at `f7a4b507` by explicitly using the history **before** exposing the current layer's new edges. `14e68f00` added `figures/ch14-exploration.tex`; `f5746d1e` placed it in the theorem exposition and identified it explicitly as a schematic rather than simulated/observed graph data. The native TikZ render is still **uninspected**.
+
+**Appendix B:** `f0738688` added two nontrivial exercises with full hints and solutions: the sharp two-colour Schur threshold of five and the complementary-pair classification at `n=2k` for sharp Erdős–Ko–Rado families. The source and mathematical steps received author-side checking, not independent verification.
+
+**Current routed-source audit after additions:** On the current `main.tex` route (preface, fourteen chapters, Appendix B and About the Cover: 17 text files), a static scan found **206 distinct labels, no duplicates, 166 local references with no missing targets, 100 exercises with 100 matching hints and 100 matching solutions**, and no orphan hint or solution. All **12** named TikZ figure files referenced by that route were fetched from GitHub and exist. The check does **not** validate LaTeX compilation, all dynamically generated references, figure legibility, the actual PDF page count, historical claims, external citations or mathematical proofs. The older 200/161/95 and 203/165 snapshots in this log are superseded for the routed manuscript as of these commits.
+
+**Latest checked CI in this span:** [run #1838](https://github.com/OussamaSegh/Order-and-Chance/actions/runs/42254537363) on `f0738688` completed **failure** after **528 Python tests OK (31 skipped)** and Volume 3 example checks passed. The blocker remains `Whole-volume conceptual source/figure drift: C-GROUP`. Build, site and publishing jobs were skipped; neither the new diagram nor the expanded exercises received native TeX/PDF verification. Do not change the manual Volume 3 conceptual review snapshot just to pass the guard.
+
+**Outstanding mathematical cross-checks:** challenge the probabilistic couplings and conditional independence assumptions in the new Chapter 14 susceptibility solution, the exact Schur/complement exercises, the broader all-chapter prerequisite order and the Chapter 6 continuous-event cylinder proof. A distinct reviewer is still required to sign exact pushed SHAs. No complete chapter or production gate has been accepted.
+
 
 ## Project-wide blockers
 
