@@ -1,5 +1,22 @@
 # Handoff: Volume 4 rewrite
 
+## Latest checkpoint — 6 November 2026, after `f7647627` (routed source expansion)
+
+**Branch:** `cursor/volume4-rewrite-ee7f`, draft PR [#111](https://github.com/OussamaSegh/Order-and-Chance/pull/111). The issue log at `docs/review/volume4-chapter-issue-log.md`, through commit `f7647627b875714bd3776a5296748f26c3689c22`, is the definitive status for the newest mathematical edits. This handoff itself advances the branch SHA; verify the actual PR HEAD before the next edit. No merge, no force-push, no changes to another volume manuscript or reviewer approval.
+
+**Most recent added substance:** Chapter 14 gained three exercises with full worked hints and solutions at `7c273b71`—triangle counts, component susceptibility, and the isolated-vertex threshold. The finite-history conditioning for its breadth-first argument was made explicit at `f7a4b507`. A schematic BFS layer diagram was added at `14e68f00` and integrated at `f5746d1e`; it represents no observed or simulated result and has NOT been visually compiled or verified. Appendix B gained the exact two-colour Schur threshold and complementary-pair Erdős–Ko–Rado extremal constructions, each as an exercise/hint/solution, at `f0738688`.
+
+**Latest static audit after all additions:** **17 routed source files, 206 unique labels (zero duplicates), 166 local references (zero unresolved), 100 exercise statements, 100 matching hints, 100 matching solutions, 12 referenced TikZ figure source files (all 12 confirmed on branch)**. These numbers were recomputed after the Chapter 14 figure integration. The audit cannot establish a valid TeX build, readability, mathematical proof accuracy or a production-page count.
+
+**Latest checked CI:** [GitHub Actions #1838](https://github.com/OussamaSegh/Order-and-Chance/actions/runs/42254537363), on `f0738688`: **528 unit tests OK, 31 skipped** and Volume 3 example checks passed, then **`Whole-volume conceptual source/figure drift: C-GROUP`** stopped the workflow. The native book-build, print/KDP, EPUB, site and publishing jobs were skipped. This is the inherited V3 approved-review snapshot including shared `common/cover-notes.json`. **Do not update or remove its manual review approval without separate authorized verification**. Later runs triggered by these new commits must be checked at their own HEAD and may expose additional blockers.
+
+**Acceptance still open:** Current manuscript does not have a verified native PDF/EPUB/print/KDP/wrap, full page-by-page visual inspection, authentic photo/figure licence audit, complete human reader/voice pass, cross-volume migration fixes or 400–500-page production validation. The earlier 131–135-page one-pass XeLaTeX is not valid final evidence. Chapters 7–13 have targeted author corrections but still need a full clean post-fix proof/prerequisite/exercise/hint/solution reread. Chapter 6's finite-cylinder proof and Chapter 1's repaired run proof need adversarial rechecking. Chapter 14 and Appendix B are source-audited, but no independent reviewer has signed exact SHAs for ANY of the fourteen chapters. PR stays **draft and unmerged** until owner acceptance.
+
+**Next practical step:** Recheck and test the new Chapter 14/Appendix exercises and native figures when the toolchain is available, then continue a systematic post-fix audit of Chapters 7–13 with prerequisite tracing; separately arrange an authorized V3 review-snapshot reconciliation to unblock builds. Keep the issue log, handoff, PR body and tests synchronized, and never interpret a skipped build as a pass.
+
+---
+
+
 ## Most recent continuation — 6 November 2026, after `fc79b8fe` (Ch14 and Appendix B)
 
 **Branch/PR:** `cursor/volume4-rewrite-ee7f`, draft [PR #111](https://github.com/OussamaSegh/Order-and-Chance/pull/111), not merged. The latest issue-log commit before this handoff was `fc79b8feac957cabc47daf32687a7a707f6d653a`; this handoff edit creates a newer commit. Always verify GitHub PR HEAD before editing to avoid overwriting later contributions. There has been no force-push or edit to another volume manuscript.
