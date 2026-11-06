@@ -10,7 +10,9 @@
 
 **What this pass did not do.** No native `./build.sh volume4-chance` in this session. The last measured interior was 155 pages at `658af447`, before this chapter grew. Voice/reader pass of Chapter 2 is open. Chapters 3–14 and Appendix B are untouched in this session. The protected Volume 3 `C-GROUP` gate is unchanged. No other volume manuscript was edited. PR #111 stays draft.
 
-**Exact next step.** Start the same mathematical and exercise review at Chapter 3, `volume4-chance/chapters/ch03-generating.tex`, against the post-fix source (`f13c8aea` and later), including the family-tree figure and all eight exercise/hint/solution triples. Record defects in the issue log. Do not restart Chapter 2 unless a new defect is named. Then continue in order. A native rebuild is due after a few chapters have grown, not instead of the Chapter 3 read.
+**Voice edit after `34307b91`.** The reader pass rewrote the record solution, split the coupon-collector paragraph, and replaced two stiff openers. The mathematics is unchanged. Do not call Chapter 2 complete: the voice box waits on a reviewer of the pushed SHA of that edit, and the native PDF of that SHA has not been inspected. The 155-page count at `658af447` is earlier than `34307b91`.
+
+**Exact next step.** Have a distinct reviewer read the pushed voice commit of `ch02-discrete.tex` and record the SHA. Inspect the native PDF of that same SHA, including the two Chapter 2 figures. Only then tick the voice and PDF boxes if they actually pass. Chapter 2 is not accepted while either box is open. After that, review Chapter 3, `volume4-chance/chapters/ch03-generating.tex`.
 
 ---
 
