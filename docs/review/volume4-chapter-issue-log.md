@@ -20,7 +20,13 @@ Composer-2.5 `bc-14b23f85-81fb-56d9-8671-e8627c52b142` read the whole of printed
 
 ## Chapter 12 and 13 full rereads at `94837ea3`, two defects
 
-Composer-2.5 `bc-d1db9a2f-da03-5d73-b03d-0b60a5f18a24` read the whole of printed Chapter 12. There is no figure. Six exercises passed. `ex:maxjoint` used $M_1$ before it was defined. The exercise now sets $M_t=\max_{s\le t}B_s$, and the hitting-time hint uses the same definition. The nowhere-differentiable theorem said a path is nowhere differentiable, while the proof rules out a finite derivative. The statement now says there is no finite derivative, which is what differentiability requires, and it does not claim that a difference quotient cannot tend to infinity. Composer-2.5 `bc-cbc74ec9-37e8-55d2-8223-bc365923a1d6` read the whole of printed Chapter 13. There is no figure. All six exercises passed. The local lemma cited $\ln(1+u)\le u$ at $u=1/d$ without inverting $(1+1/d)^d\le e$. The proof now writes that inversion, so $(d/(d+1))^d\ge e^{-1}$. These two repairs have no full reread. The Chapter 12 and 13 review gates stay open.
+Composer-2.5 `bc-d1db9a2f-da03-5d73-b03d-0b60a5f18a24` read the whole of printed Chapter 12. There is no figure. Six exercises passed. `ex:maxjoint` used $M_1$ before it was defined. The exercise now sets $M_t=\max_{s\le t}B_s$, and the hitting-time hint uses the same definition. The nowhere-differentiable theorem said a path is nowhere differentiable, while the proof rules out a finite derivative. The statement now says there is no finite derivative, which is what differentiability requires, and it does not claim that a difference quotient cannot tend to infinity. Composer-2.5 `bc-cbc74ec9-37e8-55d2-8223-bc365923a1d6` read the whole of printed Chapter 13. There is no figure. All six exercises passed. The local lemma cited $\ln(1+u)\le u$ at $u=1/d$ without inverting $(1+1/d)^d\le e$. The proof now writes that inversion, so $(d/(d+1))^d\ge e^{-1}$. Composer-2.5 `bc-d1e2521c-b867-5f91-9ad0-8665b11d598e` read the whole of Chapter 12 at `285122b4` and found no remaining defect. Composer-2.5 `bc-3f85cfd0-ed9e-55ed-b894-1e4207fafa56` read the whole of Chapter 13 at the same SHA and found none. Those two review gates are closed for mathematics and voice. They are not production acceptances.
+
+## Appendix and front matter at `285122b4`
+
+Composer-2.5 `bc-2665c2a0-f6d4-5008-aac9-67f36a8ec469` read the whole of `extremal.tex` at `285122b4`. There is no figure. All five exercises passed, and the Turán, Ramsey, Schur, sunflower, EKR, and length-3 colouring arguments passed. That closes the mathematical and voice review of the appendix at `285122b4`. It is not a production acceptance.
+
+Composer-2.5 `bc-afeef77a-9c5a-5c2d-aad6-583e278d57fe` read the preface, About the Cover, and the blurb. The blurb's named theorems match the chapter titles. The cover note's twelve rows describe the drawing. The following sentences are about Galton's machine and do not give that machine a row count. The note is generated from `common/cover-notes.json`, which was not edited. The preface had italicised ``Calculation: From Formula to Insight'' as one title. The volume title is Calculation, and `common/volume-subtitles.json` gives the subtitle From Formula to Insight. The preface now names those two strings separately. That sentence has no full reread. The front and back matter gate stays open.
 
 ## Chapter 9 full reread at `3030925c`, one defect
 
@@ -96,9 +102,8 @@ These are whole-chapter reads of the current text, not patch checks. No report h
 
 A chapter's review gate closes only when a distinct reviewer reads the whole of its current text and reports no remaining defect. A patch recheck does not do that. As of the Chapter 9 sentence recorded above:
 
-- Chapters 1--11 and 14: mathematical and voice gates closed at the SHAs named in this log. Production and the every-page ledger remain open. No box is ticked.
-- Chapters 12 and 13: full reads at `94837ea3` found the undefined maximum and the uninverted local-lemma bound. The repaired sentences have no full reread.
-- Appendix `extremal.tex`, the preface, and the closing matter are in the book. They have no full independent reread of the current SHA recorded here.
+- Chapters 1--14 and the appendix: mathematical and voice gates closed at the SHAs named in this log. Production and the every-page ledger remain open. No box is ticked.
+- The preface sentence that names Volume 5 has no full reread. The cover note and the blurb were read at `285122b4` and were not edited.
 - The fresh whole-volume review, the Volume 5--15 citation sweep, and the every-page visual ledger have not been started.
 
 ## Chapter 14 (random graphs) whole-chapter read at `b81932e3`, not acceptance
