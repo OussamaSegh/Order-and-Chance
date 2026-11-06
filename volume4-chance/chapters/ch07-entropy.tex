@@ -33,20 +33,24 @@ For i.i.d.\ copies $X_1,X_2,\ldots$ with the same finite law, the probability of
 \[
  -\frac1n\log_2 P(X_1=a_1,\ldots,X_n=a_n)=\frac1n\sum_{i=1}^n\log_2\frac1{p_{a_i}}.
 \]
-The summands are i.i.d.\ and bounded, because every $p_a$ in the support is positive and the alphabet is finite. Theorem~\ref{thm:sllnbound} says the average converges almost surely to $\mathbb E[\log_2(1/p_X)]=H(X)$.
+The summands are i.i.d.\ and bounded, because every $p_a$ in the support is positive and the alphabet is finite. For rational masses this is the bounded-variable strong law of Chapter~4, because the symbols can be realised using finite digits. For arbitrary positive finite-alphabet masses, each symbol is obtained from a uniform by a finite partition of $[0,1)$; the bounded monotone step-function approximation proved after Proposition~\ref{prop:inverse} in Chapter~5 applies to its information content once the symbol probabilities are arranged in nondecreasing order. Thus the averages converge almost surely to $\mathbb E[\log_2(1/p_X)]=H(X)$ without silently assuming finite binary expansions for arbitrary probabilities.
 
 \begin{theorem}[typical sequences]\label{thm:aep}
 Let $\varepsilon>0$. The set of strings of length $n$ whose probability $p$ satisfies
 \[
  2^{-n(H(X)+\varepsilon)}\le p\le 2^{-n(H(X)-\varepsilon)}
 \]
-has probability tending to $1$. Every such string has probability at most $2^{-n(H(X)-\varepsilon)}$, so the set contains at most $2^{n(H(X)+\varepsilon)}$ strings once $n$ is large enough that its probability exceeds $1/2$.
+has probability tending to $1$. Denote this set by $T_n(\varepsilon)$. For all sufficiently large $n$ its number of strings satisfies
+\[
+ \frac12\,2^{n(H(X)-\varepsilon)}<|T_n(\varepsilon)|\le2^{n(H(X)+\varepsilon)}.
+\]
+So nearly all the probability is carried by a set whose size grows exponentially at rate $H(X)$.
 \end{theorem}
 \begin{proof}
-The almost-sure convergence just recorded implies convergence in probability of the same averages, which is the first sentence. If a set of probability greater than $1/2$ consists of points each of mass at most $2^{-n(H-\varepsilon)}$, then the number of points is at least one, and at most the reciprocal of that mass times $1$, hence at most $2^{n(H+\varepsilon)}$ after adjusting $\varepsilon$ by the factor coming from the lower bound in the display. More directly: each listed string has mass at least $2^{-n(H+\varepsilon)}$, and the masses sum to at most $1$, so there are at most $2^{n(H+\varepsilon)}$ of them.
+The information sum is an average of independent bounded variables. Its variance is $\operatorname{Var}(\log_2(1/p_X))/n$, so Chebyshev's inequality from Volume~1 proves directly that $P(T_n(\varepsilon))\to1$, without requiring a separate almost-sure-to-in-probability theorem. Each string in $T_n(\varepsilon)$ has mass at least $2^{-n(H+\varepsilon)}$, and the total mass is at most $1$, so $|T_n(\varepsilon)|\le2^{n(H+\varepsilon)}$. Conversely, each such string has mass at most $2^{-n(H-\varepsilon)}$, while their total mass eventually exceeds $1/2$. Therefore $|T_n(\varepsilon)|>\frac12\,2^{n(H-\varepsilon)}$.
 \end{proof}
 
-The count $2^{nH}$ is the size of the set of strings one actually sees.
+For a fair coin, every one of the $2^n$ binary strings has mass $2^{-n}$: the typical set can be the whole space. For a biased coin, most strings cluster near the expected frequency of heads, and the number of typical strings grows like $2^{nH}$ rather than $2^n$. The theorem supplies both an upper and a lower exponential bound, not the exact count of any one finite sample.
 
 \section{Prefix codes}
 
@@ -56,17 +60,57 @@ A binary code assigns to each symbol $a$ a word $c(a)$ in the alphabet $\{0,1\}$
 If $c$ is a prefix code with word lengths $\ell(a)$, then $\sum_a 2^{-\ell(a)}\le 1$. Conversely, any positive integers $\ell(a)$ with that sum at most $1$ are the lengths of some prefix code.
 \end{theorem}
 \begin{proof}
-In the full binary tree, the codeword of length $\ell$ blocks $2^{-\ell}$ of the leaves at every deeper level. Prefix-freeness means the blocked sets are disjoint, so the sum is at most $1$. Conversely, if the sum is at most $1$, assign words from the shortest length upward, always taking the lexicographically first free node of that length. The inequality leaves a free node at each step.
+In the full binary tree, the codeword of length $\ell$ blocks $2^{-\ell}$ of the leaves at every deeper level. Prefix-freeness means the blocked sets are disjoint, so the sum is at most $1$. Conversely, sort the requested lengths as $\ell_1\le\cdots\le\ell_m$. Suppose the first $i-1$ codewords have been assigned, with none the prefix of another. Among the $2^{\ell_i}$ binary words of length $\ell_i$, the earlier words block exactly $\sum_{j<i}2^{\ell_i-\ell_j}$ descendants. Since
+\[
+\sum_{j\le i}2^{-\ell_j}\le\sum_{j\le m}2^{-\ell_j}\le1,
+\]
+there are at most $2^{\ell_i}-1$ blocked words, so an unblocked word exists. Choose the first one in lexicographic order. Because every earlier word has length at most $\ell_i$ and we avoided its descendants, the new word creates no prefix conflict. Continue through all $m$ symbols.
 \end{proof}
 
 \begin{theorem}[Shannon's code]\label{thm:shannon}
 Let $\ell(a)=\lceil\log_2(1/p_a)\rceil$. Then $\sum 2^{-\ell(a)}\le 1$, so a prefix code of these lengths exists, and its expected length $L$ satisfies $H(X)\le L<H(X)+1$.
 \end{theorem}
 \begin{proof}
-$\ell(a)\ge\log_2(1/p_a)$, so $2^{-\ell(a)}\le p_a$ and the sum is at most $1$. Also $\ell(a)<\log_2(1/p_a)+1$, so $L=\sum p_a\ell(a)<\sum p_a\log_2(1/p_a)+1=H(X)+1$. The lower bound $L\ge H(X)$ is Gibbs' inequality applied to $q_a=2^{-\ell(a)}/Z$ if one normalises, or directly: $\sum p_a\log_2(1/p_a)\le\sum p_a\ell(a)$ because $\log_2(1/p_a)\le\ell(a)$.
+$\ell(a)\ge\log_2(1/p_a)$, so $2^{-\ell(a)}\le p_a$ and the sum is at most $1$. Also $\ell(a)<\log_2(1/p_a)+1$, so $L=\sum p_a\ell(a)<\sum p_a\log_2(1/p_a)+1=H(X)+1$. The lower bound here follows term by term from $\log_2(1/p_a)\le\ell(a)$. More generally, \emph{every} binary prefix code has $L\ge H(X)$, even if its lengths were not chosen by rounding. Indeed, let $Z=\sum_a2^{-\ell(a)}\le1$ by Kraft, and set $q_a=2^{-\ell(a)}/Z$. Gibbs' inequality yields
+\[
+ H(X)\le\sum_a p_a\log_2(1/q_a)
+ =\sum_a p_a\ell(a)+\log_2 Z\le L.
+\]
 \end{proof}
 
-The law of large numbers says a long sample looks like its mean. The equipartition theorem says a long sample looks like one of about $2^{nH}$ strings. Those are two faces of the same independence. Random walks, in the next chapter, ask a different question: not how large a sum is, but whether it returns.
+The tree shows a prefix code that attains the entropy exactly.
+
+\begin{figure}[ht]
+\centering
+\fig{ch07-prefixtree}
+\caption{One complete binary prefix code. The four symbols have probabilities $1/2$, $1/4$, $1/8$ and $1/8$ and receive words $0$, $10$, $110$ and $111$. No endpoint of a word is above another endpoint. Kraft's sum is $1$, and the average codeword length equals the entropy $7/4$ bits.}
+\label{fig:prefix}
+\end{figure}
+
+For example, a message consisting of $a$, $b$, $c$, $d$ is transmitted as $0\,10\,110\,111$. A decoder reads the tree from its root, emits a symbol at a leaf, and starts again. The expected length per symbol is
+\[
+L=\tfrac12\cdot1+\tfrac14\cdot2+\tfrac18\cdot3+\tfrac18\cdot3=\tfrac74.
+\]
+The entropy has exactly the same value. This is the special case where each mass is a negative power of $2$.
+
+\section{Coding long blocks}
+
+Coding one symbol at a time wastes up to one bit per symbol because lengths must be integers. Coding a block of $n$ independent symbols reduces that overhead to less than one bit per \emph{block}. A block is one symbol from the finite alphabet $A^n$. Its entropy is
+\[
+H(X_1,\ldots,X_n)=-\sum_{a_1,\ldots,a_n}\prod_{i=1}^np_{a_i}
+  \log_2\Bigl(\prod_{i=1}^np_{a_i}\Bigr)
+=nH(X),
+\]
+by expanding the logarithm and summing the other coordinates to $1$. Apply Shannon's code to the block law. There is a prefix code with average length $L_n$ satisfying
+\[
+nH(X)\le L_n<nH(X)+1,
+\qquad H(X)\le\frac{L_n}{n}<H(X)+\frac1n.
+\]
+So the entropy is the best achievable average number of bits per original symbol, in the limit of coding long independent blocks with prefix codes. This statement is a source-coding theorem. It makes no claim about dependence or communication through a noisy channel.
+
+The typical-set theorem tells us what the code is exploiting. Most of the probability is carried by roughly $2^{nH}$ likely blocks, rather than by all $|A|^n$ possible blocks. The integer-length argument shows how that saving becomes a real code.
+
+Random walks, in the next chapter, ask a different question about repeated randomness: not how many typical strings there are, but whether a running sum will ever return.
 
 \section{Exercises}
 
@@ -74,10 +118,48 @@ The law of large numbers says a long sample looks like its mean. The equipartiti
 For a Bernoulli$(p)$ variable, $0<p<1$, show that $H(p)=-p\log_2 p-(1-p)\log_2(1-p)$ has a maximum at $p=1/2$, and that the maximum value is $1$.
 \end{exercise}
 
+
+\begin{exercise}[$\star$]\label{ex:prefixoptimal}
+Let $P(a)=1/2$, $P(b)=1/4$ and $P(c)=P(d)=1/8$. Check that the words $0$, $10$, $110$, $111$ form a prefix code, calculate its expected length, and prove that no binary prefix code has smaller expected length.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:entropychain}
+For finite random variables $X$ and $Y$, define $H(Y\mid X)=\sum_xP(X=x)H(Y\mid X=x)$, omitting zero-probability terms. Starting from $P(X=x,Y=y)=P(X=x)P(Y=y\mid X=x)$, prove the chain rule $H(X,Y)=H(X)+H(Y\mid X)$. Calculate the two sides when $X$ is a fair bit and $Y=X$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:entropyproduct}
+Show that if $X$ and $Y$ are independent finite-alphabet variables, then $H(X,Y)=H(X)+H(Y)$. Explain why the independence hypothesis cannot be dropped, using $Y=X$ with $X$ a fair bit.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:ambiguouscode}
+The three codewords $0$, $01$, $10$ are not prefix-free. Show that the bit string $010$ can be decoded as two different pairs of source symbols. Compare with Figure~\ref{fig:prefix}.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:typicalcount}
+Let $X$ be Bernoulli$(1/4)$ and let $T_n(\varepsilon)$ be the typical set from Theorem~\ref{thm:aep}. Verify that $P(T_n(\varepsilon))\to1$ by Chebyshev, identify $H(X)$ explicitly, and use the two bounds in the theorem to bound $\log_2|T_n(\varepsilon)|/n$ for large $n$. State what happens as $\varepsilon\downarrow0$.
+\end{exercise}
+
 \section{Hints}
 
 \begin{hint}{ex:entropymax}
 Differentiate. The second derivative of $-p\ln p-(1-p)\ln(1-p)$ is negative.
+\end{hint}
+
+
+\begin{hint}{ex:prefixoptimal}
+No selected codeword is the beginning of another. Compare its average length with entropy, then use Kraft and Gibbs for any competitor.
+\end{hint}
+\begin{hint}{ex:entropychain}
+Inside the double sum for $H(X,Y)$, write $-\log_2 p_{xy}=-\log_2 p_x-\log_2 p_{y\mid x}$.
+\end{hint}
+\begin{hint}{ex:entropyproduct}
+For independent coordinates, $P(Y=y\mid X=x)=P(Y=y)$. The copying case has only two joint outcomes rather than four.
+\end{hint}
+\begin{hint}{ex:ambiguouscode}
+Compare the split $0\,|\,10$ with another split using the codeword $01$.
+\end{hint}
+\begin{hint}{ex:typicalcount}
+The information of one head is $\log_2 4$ and of one tail is $\log_2(4/3)$. The information sum has bounded variance.
 \end{hint}
 
 \section{Solutions}
@@ -91,6 +173,54 @@ Differentiate. The second derivative of $-p\ln p-(1-p)\ln(1-p)$ is negative.
 So $h'$ vanishes only at $p=1/2$, and $h$ has a maximum there. Now $h(1/2)=\ln 2$, and dividing by $\ln 2$ converts to bits, giving $H(1/2)=1$. For every other $p\in(0,1)$, $H(p)<1$.
 \end{solution}
 
+
+\begin{solution}{ex:prefixoptimal}
+\idea Draw the leaves in the binary tree, then compare length with the entropy lower bound.
+\writeup No word in $\{0,10,110,111\}$ begins another word in that set, so decoding stops unambiguously at each leaf. The mean length is $L=(1/2)1+(1/4)2+(1/8)3+(1/8)3=7/4$. The entropy is $H=(1/2)\cdot1+(1/4)\cdot2+2(1/8)\cdot3=7/4$. For any other prefix code with lengths $\ell_i$, Kraft gives $Z=\sum_i2^{-\ell_i}\le1$. Gibbs applied to $q_i=2^{-\ell_i}/Z$ yields $H\le L+\log_2 Z\le L$. Thus no other prefix code has smaller mean.
+\end{solution}
+
+\begin{solution}{ex:entropychain}
+\idea Split the information of the pair into the information needed to identify $X$ and the information still needed for $Y$ after that.
+\writeup Write $p_{xy}=p_xp_{y\mid x}$ whenever $p_{xy}>0$. Then, with zero-mass terms omitted,
+\[
+\begin{aligned}
+H(X,Y)&=-\sum_{x,y}p_{xy}\log_2(p_xp_{y\mid x})\\
+&=-\sum_xp_x\log_2p_x\sum_y p_{y\mid x}
+  -\sum_xp_x\sum_y p_{y\mid x}\log_2p_{y\mid x}\\
+&=H(X)+H(Y\mid X).
+\end{aligned}
+\]
+When $X$ is a fair bit and $Y=X$, the pair has only $(0,0)$ and $(1,1)$, each of probability $1/2$, so $H(X,Y)=1$. Knowing $X$ determines $Y$, so $H(Y\mid X)=0$ and $H(X)=1$.
+\end{solution}
+
+\begin{solution}{ex:entropyproduct}
+\idea Independence says that knowing $X$ does not change the law of $Y$.
+\writeup If $X$ and $Y$ are independent, then for every $x$ of positive probability the conditional masses $p_{y\mid x}=p_y$, hence $H(Y\mid X)=H(Y)$. The chain rule of Exercise~\ref{ex:entropychain} gives $H(X,Y)=H(X)+H(Y)$. If $Y=X$ and $X$ is fair, both marginal entropies are $1$ bit but the joint entropy is only $1$ bit. The extra bit of marginal entropy is not new information.
+\end{solution}
+
+\begin{solution}{ex:ambiguouscode}
+\idea A prefix conflict can create a second parsing of the same transmitted bits.
+\writeup The bit string $010$ is either $0\,|\,10$ (the first and third symbols) or $01\,|\,0$ (the second and first symbols). Both concatenations produce the same bits. In contrast, no codeword in Figure~\ref{fig:prefix} is a prefix of another, and the decoder knows when each word ends.
+\end{solution}
+
+\begin{solution}{ex:typicalcount}
+\idea Information per symbol is a bounded random variable; apply Chebyshev and then count the total mass of the typical set.
+\writeup Put $I_i=\log_2(1/p_{X_i})$, so $I_i$ equals $2$ with probability $1/4$ and $\log_2(4/3)$ with probability $3/4$. Its mean is
+\[
+H(X)=\frac14\cdot2+\frac34\log_2(4/3)
+= -\frac14\log_2(1/4)-\frac34\log_2(3/4).
+\]
+Its variance is finite. Since the $I_i$ are independent, Chebyshev gives
+$P(|n^{-1}\sum_{i=1}^n I_i-H(X)|>\varepsilon)\le
+\operatorname{Var}(I_1)/(n\varepsilon^2)\to0$.
+Therefore $P(T_n(\varepsilon))\to1$. For all sufficiently large $n$ the typical-set count gives
+\[
+H(X)-\varepsilon-\frac1n
+<\frac{\log_2|T_n(\varepsilon)|}{n}
+\le H(X)+\varepsilon,
+\]
+where $\frac12=2^{-1}$ supplies the $1/n$. First let $n\to\infty$ and then $\varepsilon\downarrow0$: the exponential growth rate is $H(X)$.
+\end{solution}
 
 \section*{Sources and further reading}
 
