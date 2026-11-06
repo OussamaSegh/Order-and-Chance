@@ -399,7 +399,7 @@ Page numbers are the 7×10 interiors in `review/7X10-PAGINATION.md`, except wher
 | 1 | 295 print pages (`docs/DESIGN.md`) | 300–330 | Light. The ten chapters stay. Thread the series question through the preface and the field guide. |
 | 2 | 189 in the October reconstruction, through the field guide; `ch14-characters.tex` is in `main.tex` and is about 520 lines | 230–270 | Moderate. Part titles, forward pointers from the quadratic chapters, no deletion of the reconstruction. |
 | 3 | 372 | 370–400 | Moderate. The Galois repairs are in. Representations become a part. Appendix cross-references. |
-| 4 | 251 | 260–290 | Light to moderate. Part split. Lindeberg's limsup written out if it is still compressed. One cross-reference. |
+| 4 | 251 | 400–500 | The owner set this range on 6 November 2026 (t67u). It replaces the earlier 260–290 cell. Fourteen chapters, full proofs and solutions, approved type size. Not a quota and not a reason to thin the book. |
 | 5 | 178 | 190–220 if one saddle-point argument is added | Moderate. Notation warnings. The functional-equation sentence is already repaired. |
 | 6 | 176 | 190–220 | Moderate. The liminf repair and the Maier remark are in. Part IV named. The story's turn has to be audible in the preface. |
 | 7 | 179, plus the harder-problem chapter | 210–240 | Moderate. Conditional expectation becomes a theorem. The problem chapter is retitled. |

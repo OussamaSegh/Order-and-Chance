@@ -17,6 +17,10 @@
 
 Bertrand's paradox and Buffon's needle are in Chapter 5. Entropy is Chapter 7, not a section of Chapter 4. The Volume 5 handoff is at the end of Chapter 14. Lindeberg remains Theorem 6.10. Colouring is Lemma 10.5. Brownian existence is Theorem 12.4 and reflection is Theorem 12.12. Crossing is Exercise 13.4.
 
+## Page budget
+
+Owner decision of 6 November 2026 (t67u, t68u): the planning range is **400–500 pages** in the approved series typography. This replaces every earlier 260–290 figure for Volume 4. The range is a check against the native 7×10 book, not a quota. Do not add filler, shrink the type, or delete a proof or a solution to land inside it. If a finished native build falls outside 400–500, report the count and the tradeoff. A one-pass XeLaTeX file of an unfinished manuscript is not that measurement.
+
 ## Promise
 
 Counting settles a question only after the experiment is named. The same rules produce the law of large numbers, the central limit theorem, the convergence of a finite Markov chain, a martingale stopped at a bounded time, and a Brownian path built from explicit Gaussians. The Gaussian integral of Volume 1 becomes the law of one coordinate, and then the shape of a sum of many small independent pieces. The probabilistic method turns an expectation into a proof that an object exists. That move is the one Volumes 14 and 15 use when they talk about the primes.

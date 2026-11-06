@@ -16,7 +16,7 @@ Head `d07a4e33` on `cursor/volume4-rewrite-ee7f`. The fourteen-chapter skeleton 
 
 Chapter 1 has a dedicated pushed commit `b267c681` and a mathematical second pass (definitions, ballot proof including `b=0`, digit cylinders, outer content, all eight exercises, hints, and solutions). Voice review of Chapter 1 is not done. No other chapter has a passed second pass. Repair commits, not acceptance: Chapter 2 `4d4c87c9` (Exercise 2.7 index shift), Chapter 3 `ebc3cd9b` (remark moved out of the extinction proof), Chapter 5 angle wording `3ab3ad32`, Chapter 7 exercise environment `62f02af4`, Chapter 8 last-visit identity `966843f6` (Theorem 8.5; the integral arcsine density is not claimed), Chapter 14 subcritical count `d07a4e33`.
 
-One `xelatex -interaction=nonstopmode main.tex` in `volume4-chance` exited 0 and wrote `main.pdf` (131 pages) with undefined references. That is not `./build.sh`, not a print PDF, and not a page-count verdict. The 260–290 target is still open; do not thin proofs to meet it.
+One `xelatex -interaction=nonstopmode main.tex` in `volume4-chance` exited 0 and wrote `main.pdf` (131 pages) with undefined references, before the figures added after that pass. That is not `./build.sh`, not a print PDF, and not a page-count verdict. The planning range is **400–500 pages** (owner decision t67u/t68u, 6 November 2026). It replaces 260–290. Do not thin proofs to meet it, and do not pad chapters to meet it.
 
 The owner execution contract is the section `OWNER_APPROVED_V4_CONTRACT` on draft PR 111, outside the agent body markers. Do not replace that section with a run summary. Update its checkboxes and evidence SHAs only when a subgate is actually done. `written` is not `verified`.
 
@@ -108,7 +108,7 @@ Legend: `planned` means designed and not yet the manuscript. `written` means a f
 
 ## Current WIP
 
-Next unfinished step: the same two-pass read of Chapter 2, starting from the Poisson limit through Exercise 2.7, whose index-shift sentence is now explicit and still needs the rest of the solution re-read in place. Do not mark Chapter 2 complete because of `4d4c87c9`.
+Next unfinished step: the same two-pass read of Chapter 2, starting from the Poisson limit through Exercise 2.7. The binomial/Poisson bars are a computed illustration, not that pass. Do not mark Chapter 2 complete because of a repair commit or a figure. Independent review of every chapter is pending: no second reviewer has reported.
 
 ## Decisions already made
 
@@ -132,11 +132,25 @@ Next unfinished step: the same two-pass read of Chapter 2, starting from the Poi
 
 1. Second-pass Chapter 2 in full. Commit that chapter alone and push. Then Chapter 3, and so on. A repair commit does not check the mathematical box.
 2. On the PR, edit evidence SHAs inside `OWNER_APPROVED_V4_CONTRACT` only. Do not delete or rewrite that section. Transient status goes inside the `CURSOR_AGENT_PR_BODY` markers.
-3. After the manuscript passes are further along, run `./build.sh volume4-chance` from the repository root. Record the command, the exit code, and the page count. Do not call that an all-volume CI run. Do not delete flagship proofs to land in 260–290 pages.
+3. After the manuscript passes are further along, run `./build.sh volume4-chance` from the repository root. Record the command, the exit code, and the page count. Do not call that an all-volume CI run. The planning range is 400–500 pages. Do not delete flagship proofs, and do not add filler, to land inside it.
+
+## Independent review
+
+Owner rule t71u, 6 November 2026. Each chapter needs a second reviewer who is not the writer. The writer's own reconstruction and critical re-read are self-checks. They are never an independent review, and they never check the independent-review box.
+
+An independent-review record must name the reviewer, the pushed commit that was read, the date, the scope, and a log of findings with file, section, theorem or exercise, severity, fix commit, and what is still open. If no distinct reviewer has done that work, the gate stays **pending**. Do not invent a signoff. A chapter with an open mathematical or prerequisite defect is not accepted.
+
+| Chapter | Writer self-check | Independent review |
+| --- | --- | --- |
+| 1 | Mathematical self-pass recorded at `b267c681` by the writing agent on 6 November 2026. Voice not done. The digit figure added later is not part of that pass. | **Pending.** No distinct reviewer. |
+| 2–14, preface, appendix | Not second-passed, except the named repair commits in the ledger above. | **Pending.** No distinct reviewer. |
+
+No independent-review report exists. Nothing in this book has been accepted under t71u.
 
 ## Tests and builds actually run
 
 - `xelatex -interaction=nonstopmode main.tex` in `volume4-chance`, log `/tmp/v4-xelatex-2.log`, exit 0, `main.pdf` 131 pages, undefined references (one pass). Not `./build.sh`. The PDF was not committed.
+- A later pass, log `/tmp/v4-xelatex-3.log`, exit 0, 135 pages, still with undefined references. It includes the digit diagram, the computed binomial/Poisson bars, the reflection step, and the Galton-board photograph. Not `./build.sh`. Still far below 400 pages because the manuscript is unfinished, not because proofs were cut.
 - Python: `22/365 = 0.0602739\ldots`, `365\ln 2 = 252.99872\ldots`, so `253/365>\ln 2` and `\exp(-253/365)<1/2`.
 
 Earlier session checks, not re-run as a book test:
