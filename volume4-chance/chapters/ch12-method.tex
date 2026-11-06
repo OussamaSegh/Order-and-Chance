@@ -18,6 +18,12 @@ If $\binom{n}{k}2^{1-\binom{k}{2}}<1$, some $2$-colouring of $K_n$ has no monoch
 Linearity gives $\mathbb E[X]=\binom{n}{k}2^{1-\binom{k}{2}}$, since each clique is monochromatic with probability $2^{1-\binom{k}{2}}$. A mean below $1$ forces $P(X=0)>0$. For $n=\lfloor 2^{k/2}\rfloor$ one has $\binom{n}{k}2^{1-\binom{k}{2}}\le 2^{1+k/2}/k!<1$ when $k\ge3$.
 \end{proof}
 
+The same averaging, applied to vertices rather than cliques, finds an independent set. Take the star with three leaves. The centre has degree $3$ and each leaf has degree $1$. In a uniform random order, the probability that a vertex precedes all its neighbours is $1/(\deg v+1)$. The expected number of such vertices is
+\[
+ \frac1{3+1}+\frac1{1+1}+\frac1{1+1}+\frac1{1+1}=\frac74.
+\]
+Some order therefore keeps at least two of them, and the kept set is independent: a kept vertex has no earlier neighbour, so no edge inside the kept set. The three leaves form an independent set of size $3$. The expectation $7/4$ does not find that set. It only proves that size $2$ occurs.
+
 \begin{theorem}[symmetric local lemma]\label{thm:lll}
 Let $A_1,\ldots,A_m$ be events with $P(A_i)\le p$. Suppose each event has a set $D_i$ of at most $d$ other events such that $A_i$ is independent of the \emph{joint collection} of all events outside $D_i\cup\{i\}$ (a dependency graph). If $ep(d+1)\le1$, then $P(\bigcap_{i=1}^m A_i^c)>0$.
 \end{theorem}
@@ -49,6 +55,23 @@ P\bigl(\bigcap_{i=1}^m A_i^c\bigr)
 \]
 The factor $(1-x)^d$, not the weaker union-bound denominator $1-dx$, is what makes the numerical hypothesis work.
 \end{proof}
+
+The numerical hypothesis is easy to check on a matching of bad events, and there the first moment does not finish the job. The Taylor series for the exponential in Volume~1, Chapter~8, is $e=\sum_{n\ge0}1/n!$. For $n\ge1$ one has $n!\ge2^{n-1}$, so $1/n!\le2^{1-n}$. Therefore
+\[
+ e<1+\sum_{n\ge1}2^{1-n}=1+2=3,
+\]
+the inequality being strict because $3!>2^{2}$. Let $\mathcal F$ consist of the eight $4$-element sets
+\begin{align*}
+&\{1,2,3,4\},\{1,5,6,7\},\\
+&\{8,9,10,11\},\{8,12,13,14\},\\
+&\{15,16,17,18\},\{15,19,20,21\},\\
+&\{22,23,24,25\},\{22,26,27,28\}.
+\end{align*}
+Each set meets exactly one other set, and the shared element is the first entry of the pair. Colour the twenty-eight points independently red or blue. For a fixed $4$-set the probability of being monochromatic is $2^{1-4}=1/8$. Eight sets give total expectation $1$, so a mean below $1$ does not apply. The dependency graph is four disjoint edges: the bad event of a set depends only on the colours of its four points, and every set that does not meet it is a function of other coins. Those events, taken together, are independent of it. Thus $d=1$ and $p=1/8$, and
+\[
+ e(d+1)p=\frac e4<\frac34<1.
+\]
+Theorem~\ref{thm:lll} supplies a colouring with no monochromatic member. The dependency used here is joint: one set is independent of the whole family of sets that miss it, not merely of each of them one at a time.
 
 \section{The second moment}
 
@@ -84,7 +107,25 @@ A connected plane graph satisfies $v-e+f=2$. A simple connected plane graph with
 A tree has $e=v-1$ and one face. Each added edge splits a face and raises $e$ and $f$ by one. For the inequality, $2e\ge 3f$ because every face has at least three edges and every edge meets at most two faces. Substitute $f=e-v+2$.
 \end{proof}
 
-A drawing with no crossings is a plane graph. The crossing number in Exercise~\ref{ex:crossing} counts how many crossings a drawing is forced to have. Chapter~14 asks the same question for a random graph: which patterns appear on their own.
+A drawing with no crossings is a plane graph. The crossing number $\operatorname{cr}(G)$ is the least number of crossings in a drawing of $G$.
+
+\begin{proposition}[crossings]\label{prop:crossing}
+Let $G$ be a simple graph with $n\ge3$ vertices and $m$ edges. Then $\operatorname{cr}(G)\ge m-3n$. If $m\ge4n$, then $\operatorname{cr}(G)\ge m^3/(64n^2)$.
+\end{proposition}
+\begin{proof}
+Delete one edge from each crossing of a minimum drawing. What remains is a plane graph, so Proposition~\ref{prop:euler} gives $m-\operatorname{cr}(G)\le3n-6\le3n$, and $\operatorname{cr}(G)\ge m-3n$. The same comparison $\operatorname{cr}(G')\ge m'-3n'$ holds for every simple graph, including one with fewer than three vertices, because the right side is then nonpositive.
+
+Now keep each vertex independently with probability $p=4n/m\le1$. A crossing of a drawing in which every crossing uses four distinct endpoints survives only if all four are kept, which has probability $p^4$. An edge survives with probability $p^2$. Such a drawing exists: a crossing of two adjacent edges can be removed by swapping the two short tails, and a point where more than two edges cross can be perturbed into ordinary double points. Taking expectations in $\operatorname{cr}(G')\ge m'-3n'$ therefore gives $p^4\operatorname{cr}(G)\ge p^2 m-3pn$, so
+\[
+ \operatorname{cr}(G)\ge\frac{m}{p^2}-\frac{3n}{p^3}=\frac{m^3}{16n^2}-\frac{3m^3}{64n^2}=\frac{m^3}{64n^2}.
+\]
+\end{proof}
+
+For $K_{20}$ one has $n=20$ and $m=\binom{20}{2}=190$. The deletion bound is $190-60=130$. Here $m>4n$ and $p=8/19$, so the second bound is
+\[
+ \frac{190^3}{64\cdot400}=\frac{6859000}{25600}=267+\frac{119}{128},
+\]
+because $190^2=36100$, $36100\cdot190=6859000$, and $25600\cdot267=6835200$. A crossing number is an integer, so $\operatorname{cr}(K_{20})\ge268$. The integer $268$ is larger than $130$. Deleting an edge per crossing and sampling the vertices are different arguments.
 
 \section{Exercises}
 
@@ -149,12 +190,7 @@ A fixed $k$-set is monochromatic with probability $2^{1-k}$. Events attached to 
 \end{solution}
 
 \begin{solution}{ex:crossing}
-\writeup Delete one edge from each crossing. The remainder is plane, so $m-\operatorname{cr}(G)\le 3n-6$ by Proposition~\ref{prop:euler}, and $\operatorname{cr}(G)\ge m-3n$.
-
-Retain each vertex with probability $p=4n/m\le1$. For \emph{every} resulting induced graph, including graphs with fewer than three vertices or several components, the universal inequality $\operatorname{cr}(G')\ge m'-3n'$ holds: for $n'\ge3$ remove crossing edges and apply the planar edge bound, and for $n'\le2$ its right-hand side is nonpositive. Taking expectations requires no ignored error term. A crossing of a fixed original drawing survives only if its four distinct endpoints are retained, with probability $p^4$, while an edge survives with probability $p^2$. Choose a minimum-crossing drawing in general position, with no crossing between adjacent edges away from their common endpoint: such an adjacent crossing can be eliminated by swapping the short crossing tails and smoothing, without introducing new intersections. Also perturb any multiple-edge crossing to distinct pairwise crossings. Every remaining crossing involves exactly four distinct endpoint vertices, and survives vertex deletion with probability $p^4$. Hence the expected number of surviving crossings of this fixed drawing is $p^4\operatorname{cr}(G)$, which is at least the expected crossing number of the induced graph. Consequently $p^4\operatorname{cr}(G)\ge p^2 m-3pn$, and
-\[
- \operatorname{cr}(G)\ge\frac{m}{p^2}-\frac{3n}{p^3}=\frac{m^3}{16n^2}-\frac{3m^3}{64n^2}=\frac{m^3}{64n^2}.
-\]
+\writeup This is Proposition~\ref{prop:crossing}. The deletion gives $m-\operatorname{cr}(G)\le3n-6$. With $p=4n/m$ the expectation $p^4\operatorname{cr}(G)\ge p^2 m-3pn$ rearranges to $m^3/(64n^2)$.
 \end{solution}
 
 \begin{solution}{ex:propertyb}
