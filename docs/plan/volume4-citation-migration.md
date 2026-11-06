@@ -48,7 +48,7 @@ These files were not changed. The new number is what a later edit of that line w
 | Theorem 6.10, Lindeberg | `volume15-order-and-chance/chapters/ch03-shuffling.tex:165` and `:396` | Still Theorem 6.10. |
 | Theorem 6.15, Gaussian vectors | `volume12-random-motion/chapters/ch01-gaussian.tex:39` and `:85`; `volume12-random-motion/chapters/ch03-martingales.tex:556`; `volume8-analysis/chapters/ch11-harder.tex:1139` | Theorem 6.14 (`thm:gaussvec`). |
 | Exercise 6.1, Slutsky | `volume15-order-and-chance/chapters/ra-selberg.tex:26`; `ra-additive.tex:170`; `volume8-analysis/chapters/ch11-cue.tex:32` | Still Exercise 6.1. |
-| Theorem 7.7, arcsine | `volume15-order-and-chance/chapters/ra-anatomy.tex:174` and `:238` | There is no arcsine theorem in the manuscript. The walk chapter proves reflection, ruin, and Pólya. The continuous arcsine law is not claimed. |
+| Theorem 7.7, arcsine | `volume15-order-and-chance/chapters/ra-anatomy.tex:174` and `:238` | Theorem 8.5 (`thm:arcsine`) is the exact last-visit identity $P(L_{2n}=2k)=u_{2k}u_{2n-2k}$. The integral density is not claimed. |
 | Theorem 7.9, gambler's ruin | `volume12-random-motion/chapters/ch03-martingales.tex:451` and `:538` | Theorem 8.2 (`thm:ruin`). |
 | Theorem 7.12, returns | `volume12-random-motion/chapters/ch08-networks.tex:24` | Pólya is Theorem 8.4 (`thm:polya`). The visit criterion is Proposition `prop:visits` in the same chapter; its printed number is the third numbered environment of Chapter 8, so Proposition 8.3. |
 | Chapter 7, walks / cone | `volume12-random-motion/chapters/ch05-analysis.tex:25` and `:268` | Chapter 8. |

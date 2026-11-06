@@ -2,7 +2,7 @@
 
 \begin{center}\itshape
 Join each pair of $n$ vertices with probability $c/n$.\\
-If $c<1$ every component is small. If $c>1$ one component is linear in $n$.
+If $c<1$, every component has size $O(\log n)$.
 \end{center}
 
 The probabilistic method of Chapter~13 proved that an object exists. This chapter asks what a typical object looks like. ``With high probability'' still means that the probability tends to $1$ as $n\to\infty$.
@@ -15,11 +15,19 @@ Let $G(n,p)$ have $n$ labelled vertices and each edge present independently with
 If $p=c/n$ with $0<c<1$, then with high probability every component of $G(n,p)$ has at most $A\log n$ vertices, for a constant $A=A(c)$.
 \end{theorem}
 \begin{proof}
-The expected number of paths on $k+1$ vertices is at most $n(c)^k$. Choose $k=\lceil A\log n\rceil$ with $A$ large enough that this expectation, summed over $k$ in that range, tends to $0$. A large component contains such a path. Markov's inequality finishes the argument.
+A component on exactly $k$ vertices contains a spanning tree, and it has no edge leaving its vertex set. The Prüfer encoding puts the trees on a fixed labelled set of $k$ vertices in bijection with the words of length $k-2$ on that set: delete the smallest leaf and record its neighbour, and reverse the record by attaching the next unused label as a leaf. There are therefore $k^{k-2}$ such trees. Let $N_k$ be the number of vertex sets of size $k$ that span a connected subgraph and have no edge leaving the set. A union bound over those trees gives
+\[
+ \mathbb E[N_k]\le\binom{n}{k}k^{k-2}p^{k-1}(1-p)^{k(n-k)}.
+\]
+With $p=c/n$ and $\binom{n}{k}\le(en/k)^k$, and with $(1-p)^{k(n-k)}\le\exp(-ck(1-k/n))$,
+\[
+ \mathbb E[N_k]\le\frac{n}{ck^2}\bigl(ce^{1-c}\bigr)^k\exp\bigl(ck^2/n\bigr).
+\]
+The function $\ln c+1-c$ has derivative $1/c-1$ and a maximum value $0$ at $c=1$, so $\rho=ce^{1-c}<1$ for $0<c<1$. For $k\le n^{1/3}$ the exponential factor is at most $2$ once $n$ is large. Thus $\mathbb E[N_k]\le(2n/(ck^2))\rho^k$. Summing the geometric series from $k=\lceil A\ln n\rceil$ onward tends to $0$ if $A>1/\ln(1/\rho)$. Markov's inequality says that, with high probability, $N_k=0$ throughout that range, so every component has at most $A\ln n$ vertices.
 \end{proof}
 
 
-The constant $A$ depends only on $c$. The proof is a first-moment bound on long paths. It does not identify the limiting proportion of vertices in the giant component. That proportion is the survival probability of a Poisson$(c)$ Galton--Watson process, from Theorem~\ref{thm:extinction}, and the exercise below stops at a linear lower bound.
+The constant $A$ depends only on $c$, through $\rho=ce^{1-c}$. The proof bounds the expected number of isolated connected sets. It does not identify a giant component for $c>1$. Exercise~\ref{ex:giant} gives a positive lower bound on the probability that one vertex has a linear component, and stops there. The survival probability of Theorem~\ref{thm:extinction} is the candidate for the fraction of vertices in that component; the limit of the fraction is not proved.
 
 \section{Exercises}
 
@@ -29,7 +37,7 @@ Let $p=(\ln n+\omega)/n$. If $\omega\to+\infty$, show that $G(n,p)$ has no isola
 
 
 \begin{exercise}[$\star\star\star$]\label{ex:giant}
-Let $p=c/n$ with $c>1$. Show that with high probability $G(n,p)$ has a component on at least $\delta n$ vertices for some $\delta(c)>0$. The exact branching-process constant is not required.
+Let $p=c/n$ with $c>1$, and fix a vertex $v$. Show that there exist $\delta>0$ and $\alpha>0$, depending only on $c$, such that $P(|C(v)|\ge\delta n)\ge\alpha$ for every large $n$. Do not claim that a linear component exists with probability tending to $1$: the argument below gives a positive lower bound, not a limit $1$.
 \end{exercise}
 
 
@@ -40,19 +48,33 @@ The expected number of isolated vertices is $n(1-p)^{n-1}$.
 \end{hint}
 
 \begin{hint}{ex:giant}
-Breadth-first search dominates a Galton--Watson process of mean greater than $1$ until a linear number of vertices is reached.
+While fewer than $\delta n$ vertices have been seen, each new vertex has a $\mathrm{Bin}(\lfloor n(1-\delta)\rfloor,p)$ number of fresh neighbours, which is a Galton--Watson offspring law of mean greater than $1$.
 \end{hint}
 
 
 \section{Solutions}
 
 \begin{solution}{ex:connectivity}
-\writeup Let $I$ be the number of isolated vertices. Then $\mathbb E[I]=n(1-p)^{n-1}\le n\exp(-(n-1)p)$. If $\omega\to+\infty$, this tends to $0$, so Markov's inequality gives $P(I\ge1)\to0$. If $\omega\to-\infty$, then $\mathbb E[I]\to\infty$. Two distinct vertices are both isolated with probability $(1-p)^{2n-O(1)}\sim\mathbb E[I]^2/n^{0}\cdot e^{O(|\omega|)}$, and Chebyshev's inequality yields $P(I=0)\to0$.
+\writeup Let $I$ be the number of isolated vertices. Then $\mathbb E[I]=n(1-p)^{n-1}\le n\exp(-(n-1)p)$. If $\omega\to+\infty$, this tends to $0$, so Markov's inequality gives $P(I\ge1)\to0$. If $\omega\to-\infty$ and $|\omega|\le\ln n$, so that $p\in(0,1)$ for large $n$, then $-\ln(1-p)=p+O(p^2)$ and $n p^2=O((\ln n)^2/n)\to0$, hence
+\[
+ \ln\mathbb E[I]=\ln n-(n-1)(-\ln(1-p))=-\omega+o(1)\to+\infty.
+\] For the second moment, two distinct vertices are both isolated when $2n-3$ specific edges are absent, so $\mathbb E[I(I-1)]=n(n-1)(1-p)^{2n-3}$. Hence
+\[
+ \frac{\mathbb E[I(I-1)]}{\mathbb E[I]^2}=\Bigl(1-\frac1n\Bigr)(1-p)^{-1}.
+\]
+The right side equals $1+O(p+1/n)=1+O((\ln n)/n)$. Therefore $\mathrm{Var}(I)/\mathbb E[I]^2\to0$ once $\mathbb E[I]\to\infty$, and Chebyshev's inequality yields $P(I=0)\to0$.
 \end{solution}
 
 
 \begin{solution}{ex:giant}
-\writeup Explore the component of a fixed vertex. While $o(n)$ vertices have been seen, the number of new neighbours stochastically dominates a Poisson random variable of mean $c'>1$ close to $c$, up to an error probability $o(1)$. Theorem~\ref{thm:extinction} says the corresponding Galton--Watson process survives with probability $1-\eta>0$. Survival produces at least $\delta n$ vertices for a small $\delta>0$, with probability bounded below independently of $n$. Hence some graph has a component of that order, and the failure probability of the exploration tends to $0$, so the event holds with high probability.
+\idea While the explored set is still a small fraction of the graph, breadth-first search dominates a supercritical Galton--Watson process.
+\writeup Fix $\delta>0$ with $\mu=c(1-\delta)>1$, and set $m=\lfloor n(1-\delta)\rfloor$. Breadth-first search from $v$ inspects, at the $i$th discovered vertex, the edges from that vertex into the yet unexplored set. Those edges have not been looked at before, and the edge indicators are independent, so the number of new neighbours is a binomial random variable. As long as fewer than $\delta n$ vertices have been discovered, the unexplored set has size at least $m$, and a $\mathrm{Bin}(m',p)$ count with $m'\ge m$ is a $\mathrm{Bin}(m,p)$ count plus an independent nonnegative remainder. Deleting the remainder couples the search to a Galton--Watson process $Z$ with offspring law $\mathrm{Bin}(m,c/n)$, up to the first time $\delta n$ vertices are seen. If the total progeny $T$ of $Z$ satisfies $T\ge\delta n$, the component of $v$ has at least $\delta n$ vertices.
+
+The probability generating function of the offspring law is $f_n(s)=(1-c/n+(c/n)s)^m$. For $s\in[0,1]$,
+\[
+ \ln f_n(s)=m\ln\bigl(1-\tfrac{c}{n}(1-s)\bigr)\to -\mu(1-s),
+\]
+so $f_n(s)\to f(s)=\exp(\mu(s-1))$, uniformly on $[0,1]$ because the convergence of $(1-a/m)^{m}$ type expansions is monotone in the error $O((c/n)^2 m)=O(1/n)$. Let $\eta_n$ be the extinction probability of $Z$, the smallest root of $s=f_n(s)$ in $[0,1]$, and let $\eta$ be the smallest root of $s=f(s)$. Theorem~\ref{thm:extinction} gives $\eta<1$ because the Poisson$(\mu)$ mean is $\mu>1$. Every limit point $L$ of $\eta_n$ satisfies $L=f(L)$. The value $1$ is a root, but it is not the limit: $f_n'(1)=mc/n\to\mu>1$, so for large $n$ one has $f_n(s)<s$ on an interval $(1-\varepsilon,1)$, and the smallest root stays $\le 1-\varepsilon$. Thus $\eta_n\to\eta$. A process that survives has infinite progeny, so $P(T\ge\delta n)\ge P(T=\infty)=1-\eta_n$. Therefore $P(|C(v)|\ge\delta n)\ge1-\eta_n$, which is at least $(1-\eta)/2$ for every large $n$.
 \end{solution}
 
 
