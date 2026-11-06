@@ -67,28 +67,28 @@ Legend: `planned` means designed and not yet the manuscript. `written` means a f
 | Ch. 4 Inequalities, Large Numbers and Entropy | written | Hoeffding, Borel–Cantelli, bounded strong law, Bernstein–Weierstrass, finite entropy. Gilmer left out on purpose |
 | Ch. 5 Continuous Probability Done Properly | written | Riemann densities, continuous Fubini on rectangles, polar rectangles, inverse distribution functions, continuous dominated convergence, Box–Muller. Exercise 5.7 is the Cantor distribution. Not Lebesgue theory |
 | Ch. 6 Convergence and the Central Limit Theorem | written | Lindeberg is the tenth numbered formal environment. Exercises 6.1 and 6.7 are Slutsky and the cycle CLT |
-| Ch. 7 Random Walks | planned | |
-| Ch. 8 Markov Chains | planned | Exercises 8.6 and 8.8 are series interfaces |
-| Ch. 9 Poisson Processes | planned | Colouring lemma must remain formal environment **9.5** |
-| Ch. 10 Conditional Expectation and Martingales | planned | |
-| Ch. 11 Brownian Motion | planned | Existence theorem environment **11.4**, reflection **11.12** |
-| Ch. 12 The Probabilistic Method | planned | Crossing lemma remains exercise **12.4** |
-| Appendix Extremal and Ramsey | planned | |
-| Gilmer section | planned removal | See map. Constant is real; the section is restored only if entropy in Ch. 4 is already written and the inequality is re-proved there |
-| Workshop `pb:*` problems | planned removal from the logical path | Not referenced by `\ref` outside this volume. Map records each family |
-| Exercises, hints, solutions | planned | Interface numbers in the register |
-| Figures | planned | New TikZ only, design 5e palette |
-| Voice pass | not started | |
-| Reader pass (Volumes 1–3 only) | not started | |
+| Ch. 7 Random Walks | written | Reflection, ruin, Pólya. Exercise 7.8 is the electrical network |
+| Ch. 8 Markov Chains | written | Coupling convergence. Exercises 8.6 and 8.8 are top-to-random and rising sequences |
+| Ch. 9 Poisson Processes | written | Colouring lemma is the fifth numbered formal environment |
+| Ch. 10 Conditional Expectation and Martingales | written | Optional stopping, the unit-win counter-example, ABRACADABRA |
+| Ch. 11 Brownian Motion | written | Existence is formal environment 4; reflection is formal environment 12. Exercise 11.3 is the zero set |
+| Ch. 12 The Probabilistic Method | written | Exercise 12.4 is the crossing lemma. Euler is proved before it |
+| Appendix Extremal and Ramsey | written | Turán, Ramsey, Schur, sunflower, Erdős–Ko–Rado |
+| Gilmer section | removed from the book | Not included. The file `gilmer.tex` remains unused |
+| Workshop `pb:*` problems | removed from the logical path | Not cited outside this volume |
+| Exercises, hints, solutions | written | Interface numbers checked by order in each chapter file |
+| Figures | written | New TikZ plates for Chapters 1, 2, 4, 5, 6 |
+| Voice pass | not started | Next, after a compile |
+| Reader pass (Volumes 1–3 only) | partial | Mean-one extinction in Chapter 3 replaced by the series expansion. Exercise 2.7 still to be re-read against the built book |
 | Build | not started | |
 
 ## Last completed milestone
 
-**Milestone 6 — Chapter 6 written** on this commit. Lindeberg is formal environment 10 in that chapter. Next is Chapter 7.
+**Milestone 7 — manuscript drafted through the appendix**, not yet compiled. Chapters 1–12 and the extremal appendix are the new text. Next: compile, fix errors, reader pass, voice pass, full `./build.sh volume4-chance`.
 
 ## Current WIP
 
-Chapter 7, then 8–12 and the appendix, without stopping between them except to commit and push.
+Compile of `volume4-chance` is the next action. Known soft spots to re-read after the log is clean: the Cauchy characteristic-function limit in Exercise 6.4, the local-theorem expansion in Theorem 6 (local), the giant-component sketch in Exercise 12.7, and the Riemann-sum shift in Exercise 2.7.
 
 ## Decisions already made
 
