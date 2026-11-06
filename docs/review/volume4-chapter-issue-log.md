@@ -15,15 +15,15 @@ A writer's mathematical reconstruction, critical rereading, numerical check, or 
 | 3 Generating Functions and Random Families | Full source/exercise inspection; author fixes `7bb94ec9`, `87699c36`, illustration `3e63117f` | PENDING | Post-fix proof/figure pass; reader/voice, native build and independent review |
 | 4 Concentration and the Laws of Large Numbers | Full source/exercise inspection and author corrections `9cb2451d` | PENDING | Post-fix critical pass; reader/voice, native build and independent review |
 | 5 Continuous Chance | First author inspection of main text, geometric chapter, eight exercise/hint/solution pairs; prior `3ab3ad32`, corrections `b09ce014`, `7a70ac01` | PENDING | Post-fix reread, PDF, reader/voice and independent review |
-| 6 Why the Bell Curve Appears | Draft only | PENDING | Mathematical and reader passes |
-| 7 Entropy, Codes and Typical Sequences | Draft plus `62f02af4` environment repair | PENDING | Mathematical and reader passes |
-| 8 Random Walks | Draft plus `966843f6` last-visit repair | PENDING | Mathematical and reader passes |
-| 9 Markov Chains and Mixing | Draft only | PENDING | Mathematical and reader passes |
-| 10 The Poisson Clock | Draft only | PENDING | Mathematical and reader passes |
-| 11 Martingales and Fair Games | Draft only | PENDING | Mathematical and reader passes |
-| 12 Brownian Motion | Draft only | PENDING | Mathematical and reader passes |
-| 13 The Probabilistic Method | Draft only | PENDING | Mathematical and reader passes |
-| 14 Random Graphs and the Search for Structure | Draft plus `d07a4e33` component-count repair | PENDING | Mathematical and reader passes |
+| 6 Why the Bell Curve Appears | `c86b006f` first author mathematical/exercise inspection and central-limit proof repair | PENDING — no distinct reviewer | Post-fix independent/reviewer, voice/reader, native build checks open |
+| 7 Entropy, Codes and Typical Sequences | `a184391c` expanded source-coding exposition and exercises; figure `0c61153e` | PENDING — no distinct reviewer | Post-fix independent/reviewer, voice/reader, native build checks open |
+| 8 Random Walks | `aca08f93` first author proof/exercise inspection and recurrence/reflection fixes | PENDING — no distinct reviewer | Post-fix independent/reviewer, voice/reader, native build checks open |
+| 9 Markov Chains and Mixing | `bf8fa250` first author proof/exercise inspection and uniqueness/coupling fixes | PENDING — no distinct reviewer | Post-fix independent/reviewer, voice/reader, native build checks open |
+| 10 The Poisson Clock | `8f200c2f` first author proof/exercise inspection and Le Cam coupling fix | PENDING — no distinct reviewer | Post-fix independent/reviewer, voice/reader, native build checks open |
+| 11 Martingales and Fair Games | `45ad353c` first author proof/exercise inspection and stopping-time repair | PENDING — no distinct reviewer | Post-fix independent/reviewer, voice/reader, native build checks open |
+| 12 Brownian Motion | `0ed6a684`, `e09011fa` first author proof/exercise inspection and pathwise repairs | PENDING — no distinct reviewer | Post-fix independent/reviewer, voice/reader, native build checks open |
+| 13 The Probabilistic Method | `6f6bbd4c` first author proof/exercise inspection and local-lemma repair | PENDING — no distinct reviewer | Post-fix independent/reviewer, voice/reader, native build checks open |
+| 14 Random Graphs and the Search for Structure | `4676780b` first author proof/exercise inspection and subcritical-tail repair | PENDING — no distinct reviewer | Post-fix independent/reviewer, voice/reader, native build checks open |
 
 Appendix B, preface, blurb, back matter, photographs, and the full-book reader/build/voice checks remain separate open gates.
 
@@ -93,9 +93,55 @@ Chapter 4 writer inspected five main numbered environments, six exercises, hints
 Inspected Chapter 5 main file and `ch05-geometric.tex`, including six core propositions/theorems, Bertrand's three sampling models, Buffon's needle, eight exercise statements/hints/solutions and the Cantor construction. Prior Buffon-angle fix `3ab3ad32` retained. Other historical/book references were not comprehensively independently verified. Mathematical post-fix second pass, new diagrams, native PDF checks and distinct second-review evidence are open.
 
 
+
+## Chapters 6–14 and Appendix B — first author repair register (6 Nov 2026)
+
+These are author-side source inspections and repairs, **not** certified second passes or independent review. Every entry requires post-edit rereading of its exact pushed SHA, including all downstream uses, and a distinct, documented second reviewer.
+
+| ID | Chapter / anchor | Severity | Exact defect or missing premise | Fix commit | Outstanding evidence |
+| --- | --- | --- | --- | --- | --- |
+| C6-01 | 6, \`thm:lindeberg\` | **Major false inequality** | The claimed upper bound on truncated Gaussian second moment by variance times a Gaussian-tail probability is false. | \`c86b006f\` uses Gaussian fourth moments and \`max_k Var(X_{n,k})\to0\`. | Independent arithmetic/Taylor proof and native TeX. |
+| C6-02 | 6, \`cor:clt\` | **Major proof gap** | Gaussian convolution does not yield smooth functions lying strictly between sharp indicators. | \`c86b006f\` supplies explicit degree-seven \`C^3\` step cutoffs and a CDF squeeze. | Independently check monotonicity, derivatives and assumptions. |
+| C6-03 | 6, \`thm:gc\`, \`lem:diffint\`, \`ex:poissonhalf\` | **Prerequisite scope** | Bounded empirical indicators need the Chapter 5 finite-digit extension; differentiated transforms need local-uniform convergence; the Poisson CLT requires an i.i.d. Poisson(1) decomposition. | \`c86b006f\`. | Post-fix reader/independent checks. |
+| C7-01 | 7, \`thm:aep\` | **Incorrect counting proof** | Original typical-set proof mixed up lower and upper bounds on individual string probabilities. | \`a184391c\` proves both \`(1/2)2^{n(H-eps)}<|T_n|≤2^{n(H+eps)}\` via total mass. | Verify edge cases and CDF/prerequisite use. |
+| C7-02 | 7, \`thm:kraft\`, \`thm:shannon\` | **Incomplete converse / thin exposition** | Kraft converse asserted free words without counting blocked descendants; no worked prefix code or block-coding argument. | \`a184391c\` supplies finite inductive counting, code-tree diagram \`0c61153e\`, long-block coding and five additional exercise/hint/solution sets. | Post-fix independent proof/typography/image check. |
+| C8-01 | 8, \`thm:polya\` | **False path count** | Claimed a planar return in \`2m\` steps requires exactly \`m\` horizontal steps. | \`aca08f93\` constructs two independent one-dimensional walks by diagonal coordinates. | Independent re-derive count. |
+| C8-02 | 8, Fourier proof of \`thm:polya\` | **Major asymptotic gap** | The characteristic function also attains absolute value one at the all-\`pi\` torus point, omitted by the draft's estimate. | \`aca08f93\` controls Gaussian neighborhoods around both torus points. | Recheck local coordinates and constants. |
+| C8-03 | 8, \`thm:rwreflect\`, \`thm:arcsine\` / solutions | **Quantifier, constant and exercise error** | Reflection bijection needed \`b≤a\`; first-return constant was twice the correct value; an exercise solution misused the initial endpoint range. | \`aca08f93\`. | Post-fix recheck and figure test. |
+| C9-01 | 9, \`thm:stationary\` | **False proof** | Used a right-harmonic maximum principle for a left stationary vector. | \`bf8fa250\` uses positivity and maximal ratios of stationary distributions. | Distinct reviewer needed. |
+| C9-02 | 9, \`thm:ergodic\` | **Incorrect coupling kernel** | Subtracted a per-state minorization \`delta\` without multiplying by state count, so residual rows were not normalized. | \`bf8fa250\` uses \`epsilon=|\mathcal X| delta\`, valid residual stochastic rows, and a finite aperiodic primitivity argument. | Independent mixing/coupling recheck. |
+| C10-01 | 10, \`thm:lecam\` | **False distribution** | Indicator that a Poisson(\`p\`) count is positive has success probability \`1-e^{-p}\`, not \`p\`; old proof did not couple the claimed Bernoulli law. | \`8f200c2f\` adds an exact auxiliary Bernoulli choice on \`N_i=0\` and bounds mismatch by \`p(1-e^{-p})≤p²\`. | Full independent coupling check. |
+| C10-02 | 10, M/M/1 and bus exercise | **Model/assumption gap** | Continuous holding-time paths were incorrectly called a countable sample space; age/residual-life example needed a two-sided stationary process. | \`8f200c2f\`. | Check explosion/invariance argument and time horizon. |
+| C11-01 | 11, \`thm:monkey\` | **Major optional-stopping gap** | Applied a theorem valid only for bounded stopping times to an unbounded first-word time. | \`45ad353c\` stops at \`tau∧N\`, bounds wealth by \`11·26^11\`, then uses bounded and monotone limits. | Verify betting convention, word overlap and stopping hypotheses. |
+| C11-02 | 11, \`thm:azuma\` | **Missing conditional calculation** | Conditional exponential induction and zero-increment degenerate case were omitted. | \`45ad353c\`. | Post-fix independent check. |
+| C12-01 | 12, \`thm:pwz\` | **False argument** | Positive quadratic variation globally does not rule out differentiability at a particular point. | \`0ed6a684\` uses three independent small increments and a countable \`K\` Borel–Cantelli bound. | Full independent proof and pathwise edge checks. |
+| C12-02 | 12, \`prop:scaling\`, \`prop:restart\` | **Process domain and stopping gap** | Inversion invoked \`B_{1/t}\` beyond the only constructed interval; random-time restart was asserted from deterministic fresh normals. | \`0ed6a684\` extends Brownian motion by unit-interval copies, derives continuity at zero and approximates hitting time by dyadic grid stopping times. | Independent strong Markov proof, no signed review. |
+| C12-03 | 12, \`ex:zeros\`, \`ex:pvariation\` | **False implication / unjustified exchange** | Non-isolation of 0 alone cannot imply an uncountable zero set; divergent expectation is not almost-sure divergence; Tonelli-style integration had not been proved. | \`e09011fa\` uses finite dyadic covers, a stronger no-isolated-zero target and pathwise comparison with quadratic variation. | Independent validation, native PDF. |
+| C12-04 | 12, stochastic-integral preview | **Unproved downstream claim** | Quadratic variation alone does not prove convergence of the displayed stochastic integral or Itô's formula. | \`0ed6a684\` marks statement as a preview deferred to Volume 12. | Source/prerequisite review. |
+| C13-01 | 13, \`thm:lll\` | **False numerical inequality and dependency assumption** | Used \`p(d+1)≤1/e≤1/(d+1)\`, false for general \`d\`; “depends on” lacked the joint-independence condition. | \`6f6bbd4c\` supplies induction with \`x(1-x)^d\` and a joint dependency graph. | Exact inequality/review. |
+| C13-02 | 13, \`ex:crossing\` | **Unjustified omitted error** | Proof ignored an \`O(1)\` term without a uniform bound for all induced graphs. | \`6f6bbd4c\` applies \`cr(G')≥m'-3n'\` for all subgraphs. | Check general-position crossing assumptions. |
+| C14-01 | 14, \`thm:subcrit\` | **Major logical gap** | Spanning-tree bound covered only \`k≤n^{1/3}\`, then claimed it ruled out all larger components. | \`4676780b\` adds a dominating binomial exploration process and uniform exponential tail. | Independent coupling and parameter recheck. |
+| C14-02 | 14, \`ex:connectivity\`, \`ex:giant\` | **Input domain and asymptotic details** | Edge probability must stay in \`[0,1]\`; supercritical fixed-point separation needed a uniform Taylor bound. | \`4676780b\` clarifies domain/zero edge case and quantifies derivative gap. | Distinct reviewer. |
+| AB-01 | Appendix B, \`thm:turan\` | **Missing extremal tie case** | Zykov symmetrization only argued when nonadjacent vertices have different degrees. | \`f2fc8fa0\` adds tie-breaking by fewest twin classes and proves balanced-part conclusion. | Independent proof and extremal cases. |
+| AB-02 | Appendix B, \`thm:ekr\` | **Incorrect circle-arc criterion** | “Starts at least k steps apart” does not guarantee disjoint arcs on a circle. | \`f2fc8fa0\` pairs disjoint candidate arcs with explicit modular start positions. | Distinct reviewer and endpoint tests. |
+
+### Static integration check (not a native build)
+
+Across the existing Volume 4 chapter sources and Appendix B, a connector-backed inspection counted **203 unique LaTeX labels, 165 references, 0 unmatched references and 0 duplicate labels**. Every declared exercise had a matching hint and solution, including new Chapter 7 exercises, in the source-level checks. This is **not** a TeX compilation, figure-render test, substantive mathematical certification or cross-volume citation repair.
+
+### CI discovery and blocker (6 Nov 2026)
+
+- Workflow run **1807**, on \`f2fc8fa0\`: failed at stale shared cover notes in \`test_series_cover\`; 528 tests, one failure, 31 skips. Native build skipped.
+- Corrected generated \`docs/COVER-NOTES.md\` (\`465cb4c4\`) and two hashes in \`tools/assets/series/manifest.json\` (\`23b908ff\`). No cover art or other-volume manuscript changed.
+- Run **1809**, on \`23b908ff\`: 528 tests **OK** (31 skipped), but V3 review inventory stale because its supporting hash covered \`common/cover-notes.json\`. Native build skipped.
+- Updated **only that supporting-source digest** in generated \`review/volume3-internal/inventory.json\` (\`d9ff6659\`), not Volume 3 manuscript or reviewer decisions.
+- Run **1810**, on \`d9ff6659\`: 528 tests **OK**, 31 skipped; Volume 3 core mathematical examples pass. It then fails at \`Whole-volume conceptual source/figure drift: C-GROUP\` from \`review/volume3-internal/check_global_ledgers.py\`. The manual V3 \`concepts.json\` reviewed snapshot includes shared \`common/cover-notes.json\`. **Do not blindly rewrite that reviewed snapshot hash or its review verdict; a separate authorized Volume 3 conceptual reconciliation is required.** The build/site/publishing jobs were skipped; no native V4 PDF passed CI.
+- GitHub workflow links: \`https://github.com/OussamaSegh/Order-and-Chance/actions/runs/42238510863\`, \`https://github.com/OussamaSegh/Order-and-Chance/actions/runs/42244018735\`, \`https://github.com/OussamaSegh/Order-and-Chance/actions/runs/42244365867\`.
+
+
 ## Project-wide blockers
 
 1. No distinct independent mathematical reviewer has yet examined an exact pushed chapter commit. Every independent-review gate stays PENDING.
-2. This chat runtime has GitHub connector access for branch reads/writes but no git network transport (DNS lookup of github.com failed) and no mounted full repository. Native `./build.sh volume4-chance` and PDF visual checks were **not run here**; prior 135-page one-pass XeLaTeX remains provisional evidence only.
+2. This chat runtime has GitHub connector access for branch reads/writes but no git network transport (DNS lookup of github.com failed) and no mounted full repository. Native `./build.sh volume4-chance` and PDF visual checks were **not run here**; GitHub CI is blocked in the Volume 3 reviewed conceptual-snapshot check before native V4 builds. Prior 135-page one-pass XeLaTeX remains provisional evidence only.
 3. No edits to Volumes 1–3 or Volumes 5–15. Downstream references remain listed as unresolved migrations, not silently repaired.
 4. The 400–500-page planning target has not been measured on a completed native book; do not infer a page count from any draft.
