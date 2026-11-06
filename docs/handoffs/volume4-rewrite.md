@@ -1,5 +1,26 @@
 # Handoff: Volume 4 rewrite
 
+## Continuation checkpoint — 6 November 2026, after `b8f98bc2`
+
+**Checkpoint source:** GitHub PR #111 HEAD was `b8f98bc26885f59fd8061894093be970a11e42e2` when this continuation began. The branch then advanced with the pushed commits listed below, through the review-log update `fad70e7ed8d3b3248fa37ca8dd4e7493ebc700f2`. This handoff update itself is the final checkpoint commit; run `git rev-parse HEAD` or inspect PR #111 for its complete SHA. No force-push, merge, or out-of-scope volume edit occurred.
+
+**What was actually done:** Full writer inspection of the Chapter 2 manuscript (the Poisson limit, fixed-point Poisson approximation, cycle mean, coupon collector, all eight exercise statements, hints, and solutions), then first author mathematical inspections of Chapters 3 and 4. Several substantive proof and modelling defects were found and repaired. **The independent second-review gate remains PENDING for every chapter. The post-fix critical reread, complete reader/voice passes, mathematical review of Chapters 5–14 and Appendix B, native PDF/EPUB/KDP builds and full-page visual verification are NOT complete.** Chapter 1's prior math self-signoff was challenged by a newly found gap; it requires recheck and distinct review.
+
+**Pushed work, in order:**
+- Chapter 2: `01c85fbb` (birthday asymptotic sum-of-squares estimate, Taylor upper bound and incorrect rounding, reservoir sampling, Quicksort); `0ba6e24d` (replace false straight-line figure with the reciprocal curve); `fe2136ce` (construct independent base-`r` coupon draws and correct the Poisson-addition hint).
+- Chapter 1 prerequisite repair: `95c84ad2` (the original proof established at least one run, not infinitely many; now takes countable union over the last-run block index).
+- Chapter 3: `7bb94ec9` (avoid false claim that an infinite countable product is countable, justify increasing extinction probability by first-extinction series, give finite-partial-sum proof and Poisson-Galton–Watson limit); `3e63117f` (new native tree diagram); `87699c36` (integrate figure and justify Catalan-series convergence).
+- Chapter 4: `9cb2451d` (repair Borel–Cantelli's quantifiers and a false infinite-product construction in an exercise; mixed-radix cylinders make independent `1/n` and `1/n²` events exactly; correct scope of finite-digit strong law, degenerate Hoeffding cases, one-sided plot caption and tolerance step).
+- Review evidence: `9fca158f` created **`docs/review/volume4-chapter-issue-log.md`**; `fad70e7e` added Chapters 3–4 findings. The log gives stable anchors, severity, resolutions, recheck status and PENDING independent-review entries for all 14 chapters.
+
+**Actual tests in this continuation:** checked numerical identities with local Python (Poisson/binomial bars, Poisson rare-trial probability, `H_{52}`, prisoner survival, Gaussian tail/Chernoff/Hoeffding). The draft source, editor's repairs, and figure formulas were inspected. **No native PDF/EPUB/print build was run**. The GitHub connector can read and write branch files, but the container cannot resolve `github.com` for `git clone`/fetch, and no complete repo checkout or project toolchain is mounted. Prior one-pass 135-page XeLaTeX output is not a production build and not a final page count.
+
+**Exact next step:** On the **latest remote HEAD of this branch**, begin the **post-fix mathematical/prerequisite/exercise/hint/solution recheck of Chapter 2** against `fe2136ce` plus the later commits. Recompute the finite-`N` birthday bounds, review the new base-`r` cylinder argument and examine both Chapter 2 figures in the actual native PDF. Record and fix any new issues. Then repeat the post-fix pass on Chapter 3 (`87699c36`) and Chapter 4 (`9cb2451d`), before continuing the first full mathematical and reader pass at **Chapter 5 — Continuous Chance**. Keep Chapter 1's repaired run proof in the prerequisite recheck. Follow Chapter 5 through Chapter 14 and Appendix B in printed order, one dedicated commit and push per completed writing/review milestone. A distinct independent reviewer must examine exact pushed SHAs of each chapter and log evidence before **any** acceptance box is checked.
+
+**Remaining systemic actions:** finish rewriting/reader/style checks for 5–14 and Appendix B, inspect preface/blurb/ending and V5 bridge, document authentic photograph licence/creator and visual checks, close (or explicitly defer) the out-of-scope downstream citation repairs in `docs/plan/volume4-citation-migration.md`, perform the repository's native `./build.sh volume4-chance` and production checks in a toolchain-equipped checkout, inspect every generated PDF page and actual 400–500-page result, and obtain independent second reviews. Keep PR draft and unmerged; do not edit other volumes to conceal citation drift.
+
+---
+
 Status of this file: **living handoff**. It is updated on the rewrite branch and committed with each milestone. A later agent should resume from this file and the repository, without redoing finished milestones.
 
 ## Current contract (6 November 2026)
@@ -12,7 +33,7 @@ Restart: read this file, then `volume4-chance/main.tex`, then the migration docu
 
 ## Status
 
-Head `d07a4e33` on `cursor/volume4-rewrite-ee7f`. The fourteen-chapter skeleton is in `volume4-chance/main.tex`. Title page subtitle is *The Logic of Uncertainty*.
+Earlier milestone head `d07a4e33` (superseded by the continuation checkpoint above). The fourteen-chapter skeleton is in `volume4-chance/main.tex`. Title page subtitle is *The Logic of Uncertainty*.
 
 Chapter 1 has a dedicated pushed commit `b267c681` and a mathematical second pass (definitions, ballot proof including `b=0`, digit cylinders, outer content, all eight exercises, hints, and solutions). Voice review of Chapter 1 is not done. No other chapter has a passed second pass. Repair commits, not acceptance: Chapter 2 `4d4c87c9` (Exercise 2.7 index shift), Chapter 3 `ebc3cd9b` (remark moved out of the extinction proof), Chapter 5 angle wording `3ab3ad32`, Chapter 7 exercise environment `62f02af4`, Chapter 8 last-visit identity `966843f6` (Theorem 8.5; the integral arcsine density is not claimed), Chapter 14 subcritical count `d07a4e33`.
 
@@ -79,10 +100,10 @@ Legend: `planned` means designed and not yet the manuscript. `written` means a f
 | Old-to-new map | written | `docs/plan/volume4-old-to-new.md` |
 | Content plan `docs/plan/book-04.md` | written | Replaces the keep-and-admit-measure plan |
 | Preface | written | Not second-passed |
-| Ch. 1 From Games to Probability Spaces | math-checked | Commit `b267c681`. Bertrand and Buffon live in Chapter 5. Exercise 1.7 is still the Dyck count. Voice not checked |
-| Ch. 2 Random Variables and Their Laws | repair only | `4d4c87c9` states the Exercise 2.7 shift. The chapter is not second-passed |
-| Ch. 3 Generating Functions and Random Families | repair only | `ebc3cd9b` moved the Chapter 14 sentence out of the extinction proof. Not second-passed |
-| Ch. 4 Concentration and the Laws of Large Numbers | drafted | Entropy removed to Chapter 7. Not second-passed |
+| Ch. 1 From Games to Probability Spaces | prior self-pass; repair pending recheck | `b267c681` earlier self-pass, `95c84ad2` fixes the infinitely-many-runs quantifier gap. Independent and voice review pending. |
+| Ch. 2 Random Variables and Their Laws | author inspection + repairs, not independently verified | `4d4c87c9`, `01c85fbb`, `0ba6e24d`, `fe2136ce`; post-fix critical and native figure passes pending. |
+| Ch. 3 Generating Functions and Random Families | author inspection + repairs | `ebc3cd9b`, `7bb94ec9`, `3e63117f` (figure), `87699c36`; post-fix review pending. |
+| Ch. 4 Concentration and the Laws of Large Numbers | author inspection + repairs | Entropy removed to Chapter 7; `9cb2451d` repairs Borel–Cantelli and exercise model. Post-fix review pending. |
 | Ch. 5 Continuous Chance | repair only | `3ab3ad32` fixes the Buffon angle to \([0,\pi]\). Bertrand and Buffon are in `ch05-geometric.tex`. Not second-passed |
 | Ch. 6 Why the Bell Curve Appears | drafted | Lindeberg still the tenth numbered environment (Theorem 6.10). Not second-passed |
 | Ch. 7 Entropy, Codes and Typical Sequences | repair only | `62f02af4` restores the exercise environment. Kraft and Shannon coding are drafted. Not second-passed |
@@ -108,7 +129,7 @@ Legend: `planned` means designed and not yet the manuscript. `written` means a f
 
 ## Current WIP
 
-Next unfinished step: the same two-pass read of Chapter 2, starting from the Poisson limit through Exercise 2.7. The binomial/Poisson bars are a computed illustration, not that pass. Do not mark Chapter 2 complete because of a repair commit or a figure. Independent review of every chapter is pending: no second reviewer has reported.
+Chapter 2's first author mathematical read has identified and repaired errors, and the Chapter 3–4 first author inspections have been added. The precise next unfinished step is the **post-fix mathematical critical pass** of Chapter 2, then Chapters 3 and 4; next untouched chapter is **5 — Continuous Chance**. Do not mark chapters accepted because of repair commits, figure additions, or writer self-inspection. The log in `docs/review/volume4-chapter-issue-log.md` is now the anchor for findings. Independent review of every chapter is pending: no distinct reviewer has reported.
 
 ## Decisions already made
 
@@ -130,7 +151,7 @@ Next unfinished step: the same two-pass read of Chapter 2, starting from the Poi
 
 ## Exact next actions
 
-1. Second-pass Chapter 2 in full. Commit that chapter alone and push. Then Chapter 3, and so on. A repair commit does not check the mathematical box.
+1. Finish **post-fix** Chapter 2 mathematical/exercise/figure reread, then complete the same gate for Chapters 3 and 4. Begin the uninspected chapter sequence at Chapter 5. Push each coherent chapter or fix milestone; do not repeat completed repairs. A repair commit does not check the mathematical box.
 2. On the PR, edit evidence SHAs inside `OWNER_APPROVED_V4_CONTRACT` only. Do not delete or rewrite that section. Transient status goes inside the `CURSOR_AGENT_PR_BODY` markers.
 3. After the manuscript passes are further along, run `./build.sh volume4-chance` from the repository root. Record the command, the exit code, and the page count. Do not call that an all-volume CI run. The planning range is 400–500 pages. Do not delete flagship proofs, and do not add filler, to land inside it.
 
@@ -143,7 +164,7 @@ An independent-review record must name the reviewer, the pushed commit that was 
 | Chapter | Writer self-check | Independent review |
 | --- | --- | --- |
 | 1 | Mathematical self-pass recorded at `b267c681` by the writing agent on 6 November 2026. Voice not done. The digit figure in `e76c6a8c` is not part of that pass. | **Pending.** No distinct reviewer. |
-| 2–14, preface, appendix | Not second-passed, except the named repair commits in the ledger above. Figure commits, still not a self-pass of the chapter: Chapter 2 `3661489e`, Chapter 6 photograph `020a41b3`, Chapter 8 reflection step `6bc1f755`. | **Pending.** No distinct reviewer. |
+| 2–14, preface, appendix | Writer inspected and repaired Ch. 2–4 in this continuation, but post-fix critical passes remain open. Other chapters not second-passed. Earlier figure commits: Chapter 2 `3661489e`, Chapter 6 photograph `020a41b3`, Chapter 8 reflection `6bc1f755`; Chapter 3 tree `3e63117f`. | **Pending.** No distinct reviewer. |
 
 No independent-review report exists. Nothing in this book has been accepted under t71u.
 
