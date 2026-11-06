@@ -1,5 +1,7 @@
 # Volume 4 — mathematical, reader, figure, and independent-review issue log
 
+Reviewer model for every new entry: **grok-4.7**, highest effort, in a fresh session. Composer-2.5 gates earlier in this file are provisional only.
+
 Scope: draft PR #111, branch `cursor/volume4-rewrite-ee7f`. This is an editorial working log, **not** a certificate that a chapter is accepted. Source line numbers refer to the snapshot where an issue was discovered; use the stable file, section, theorem or exercise label after edits.
 
 ## Review rule
@@ -13,6 +15,10 @@ Composer-2.5 `bc-a4cc96d9-695e-52bd-9e92-690a4607d680` read the manuscript at `c
 The blurb says every step used in a proof is proved in this volume or in Volumes 1--3. The later-volume sentences in the chapters are previews or explicit refusals: Lévy's continuity theorem ``is not a step here'', the unbounded strong law ``is not a step in this volume'', Itô's formula is ``not a proved theorem of this volume'', the sharp transposition window is not the bound that is proved, and the general Fubini and Tonelli theorems are replaced by the rectangle integral and the dyadic cover. There is no modular-forms citation. That sentence is not a defect.
 
 The ratio test is cited as Volume~1, Chapter~5. In the published Volume~1, the counter starts at $-1$, so Sequences, Series and Limits is printed Chapter~3, and the ratio test is in that chapter. The sentence now says Chapter~3. Composer-2.5 `bc-0ef01221-12ce-53c5-9865-26bfddec3bbe` read the whole of printed Chapter 3 and the three figures at `a99133b9` and found no remaining defect. That closes the mathematical and voice review of Chapter 3 again, at `a99133b9`. It is not a production acceptance. Chapter 2 was not edited, so its gate at `bc7db483` still covers that file. The Volume 5--15 citation sweep has not been done. The old map still numbers walks as Chapter 7; the printed book numbers walks as Chapter 8.
+
+## Chapter 13 full read at `8edea7ca`, grok-4.7
+
+Grok-4.7 `bc-2c00d628-1597-574d-9061-9d34302b8b3d` read the whole of printed Chapter 13 and `figures/ch12-ramsey.tex` at `8edea7ca`. The alteration arithmetic, the figure, the Caro--Wei argument, and the $K_{2,3}$ solution passed. Five defects: the bound $R(k,k)>2^{k/2}$ was only $R>\lfloor 2^{k/2}\rfloor$ when $k$ is odd; the crossing proof quoted the connected Euler inequality for a plane graph that may be disconnected; the local-lemma induction used the inductive hypothesis before the conditioning event was known to have positive probability; Chebyshev's event was identified with $\{X=0\}$ rather than shown to contain it; the sum-free solution never transferred $a+b=c$ to the residues, and it stopped at the expectation. The sentence ``it is used only after this sentence'' was revision meta. Those repairs are in the working tree and have no full reread. Chapter 13 is not accepted.
 
 ## Chapter 6 gate, reviewer and SHA
 
