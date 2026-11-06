@@ -93,6 +93,44 @@ L=\tfrac12\cdot1+\tfrac14\cdot2+\tfrac18\cdot3+\tfrac18\cdot3=\tfrac74.
 \]
 The entropy has exactly the same value. This is the special case where each mass is a negative power of $2$.
 
+\begin{examplex}[a law that is not dyadic]
+Take probabilities $1/2$, $1/3$ and $1/6$. Shannon's lengths are $\lceil\log_2 2\rceil=1$, $\lceil\log_2 3\rceil=2$ and $\lceil\log_2 6\rceil=3$. Kraft's sum is $1/2+1/4+1/8=7/8\le 1$, so the words $0$, $10$, $110$ form a prefix code. The expected length is
+\[
+ L_S=\tfrac12\cdot 1+\tfrac13\cdot 2+\tfrac16\cdot 3=\tfrac53.
+\]
+The entropy is $H=\tfrac12\log_2 2+\tfrac13\log_2 3+\tfrac16\log_2 6=\tfrac23+\tfrac12\log_2 3=1.459\ldots$. The gap $L_S-H$ is about $0.207$, safely under one bit, and it is not zero.
+
+Merging the two smaller masses first produces a shorter code. Combine $1/3$ and $1/6$ into a node of mass $1/2$, then join that node to the remaining mass $1/2$. The resulting lengths are $1$, $2$ and $2$, with words $0$, $10$ and $11$. The expected length is
+\[
+ L_H=\tfrac12\cdot 1+\tfrac13\cdot 2+\tfrac16\cdot 2=\tfrac32.
+\]
+The saving against Shannon's lengths is $1/6$ of a bit. The next theorem says no prefix code beats this merge.
+\end{examplex}
+
+\begin{proposition}[chain rule]\label{prop:chain}
+For finite-alphabet variables $X$ and $Y$, write $H(Y\mid X)=\sum_x P(X=x)\,H(Y\mid X=x)$, omitting outcomes of probability zero. Then $H(X,Y)=H(X)+H(Y\mid X)$.
+\end{proposition}
+\begin{proof}
+On every pair with positive probability, $P(X=x,Y=y)=P(X=x)P(Y=y\mid X=x)$. Split the logarithm:
+\[
+ -\log_2 P(X=x,Y=y)=-\log_2 P(X=x)-\log_2 P(Y=y\mid X=x).
+\]
+Average over the joint law. The first sum is $H(X)$, because the conditional probabilities of $Y$ add to $1$. The second sum is $H(Y\mid X)$.
+\end{proof}
+
+If $X$ is a fair bit and $Y=X$, then $H(Y\mid X)=0$ and $H(X,Y)=H(X)=1$. The pair does not carry two bits. If instead $X$ and $Y$ are independent, the conditional law of $Y$ does not depend on $X$, so $H(Y\mid X)=H(Y)$ and the joint entropy is the sum of the marginals. Iterating gives $H(X_1,\ldots,X_n)=nH(X)$ for i.i.d.\ copies, which is the count used for block codes below. The direct expansion of $\log_2$ of a product, written in that section, is the same identity without naming the conditional entropy.
+
+\begin{theorem}[Huffman merge]\label{thm:huffman}
+For a finite alphabet of at least two symbols, repeatedly merging two nodes of smallest probability, and giving the two children one extra bit, produces a binary prefix code of minimal expected length.
+\end{theorem}
+\begin{proof}
+Proceed by induction on the number $m$ of symbols. For $m=2$ the words $0$ and $1$ have expected length $1$. Any prefix code uses at least one bit on a symbol that is not certain, so this is minimal.
+
+Suppose $m\ge 3$, and that the claim is known for alphabets of size $m-1$. Among prefix codes, one of minimal length may be taken to be a full tree: a node with only one child can be deleted, and every word below it shortens by one bit. In a full tree every deepest leaf has a sibling. If a symbol of probability $p$ sits strictly deeper than a symbol of probability $q<p$, swapping them decreases the expected length by $(p-q)$ times the difference of depths. So both of the two smallest probabilities may sit at maximum depth. They may be made siblings by swapping within that depth, which does not increase the length.
+
+Delete those two sibling leaves and give their parent their combined probability. The code that remains is a prefix code for an alphabet of $m-1$ symbols, and the original expected length is the reduced length plus the combined probability. By induction the reduced code may be replaced by a Huffman code for the reduced alphabet without increasing its length. Putting the two light symbols back as children of the merged node is exactly one run of the merge procedure, and it is optimal.
+\end{proof}
+
 \section{Coding long blocks}
 
 Coding one symbol at a time wastes up to one bit per symbol because lengths must be integers. Coding a block of $n$ independent symbols reduces that overhead to less than one bit per \emph{block}. A block is one symbol from the finite alphabet $A^n$. Its entropy is
@@ -124,7 +162,7 @@ Let $P(a)=1/2$, $P(b)=1/4$ and $P(c)=P(d)=1/8$. Check that the words $0$, $10$, 
 \end{exercise}
 
 \begin{exercise}[$\star\star$]\label{ex:entropychain}
-For finite random variables $X$ and $Y$, define $H(Y\mid X)=\sum_xP(X=x)H(Y\mid X=x)$, omitting zero-probability terms. Starting from $P(X=x,Y=y)=P(X=x)P(Y=y\mid X=x)$, prove the chain rule $H(X,Y)=H(X)+H(Y\mid X)$. Calculate the two sides when $X$ is a fair bit and $Y=X$.
+Proposition~\ref{prop:chain} is the chain rule. Let $X$ be a fair bit. Given $X$, let $Y$ equal $X$ with probability $2/3$ and equal $1-X$ with probability $1/3$. Compute $H(Y\mid X)$ and $H(X,Y)$. Check that $Y$ is still a fair bit, and compare $H(X,Y)$ with $H(X)+H(Y)$.
 \end{exercise}
 
 \begin{exercise}[$\star\star$]\label{ex:entropyproduct}
@@ -150,7 +188,7 @@ Differentiate. The second derivative of $-p\ln p-(1-p)\ln(1-p)$ is negative.
 No selected codeword is the beginning of another. Compare its average length with entropy, then use Kraft and Gibbs for any competitor.
 \end{hint}
 \begin{hint}{ex:entropychain}
-Inside the double sum for $H(X,Y)$, write $-\log_2 p_{xy}=-\log_2 p_x-\log_2 p_{y\mid x}$.
+Given $X$, the conditional law of $Y$ is Bernoulli$(1/3)$ up to swapping the labels. The chain rule adds that conditional entropy to $H(X)$.
 \end{hint}
 \begin{hint}{ex:entropyproduct}
 For independent coordinates, $P(Y=y\mid X=x)=P(Y=y)$. The copying case has only two joint outcomes rather than four.
@@ -180,22 +218,18 @@ So $h'$ vanishes only at $p=1/2$, and $h$ has a maximum there. Now $h(1/2)=\ln 2
 \end{solution}
 
 \begin{solution}{ex:entropychain}
-\idea Split the information of the pair into the information needed to identify $X$ and the information still needed for $Y$ after that.
-\writeup Write $p_{xy}=p_xp_{y\mid x}$ whenever $p_{xy}>0$. Then, with zero-mass terms omitted,
+\idea After $X$ is known, $Y$ is a biased coin. The chain rule adds that bias to one bit.
+\writeup Given either value of $X$, the conditional distribution of $Y$ is a Bernoulli law with masses $2/3$ and $1/3$. Its entropy is
 \[
-\begin{aligned}
-H(X,Y)&=-\sum_{x,y}p_{xy}\log_2(p_xp_{y\mid x})\\
-&=-\sum_xp_x\log_2p_x\sum_y p_{y\mid x}
-  -\sum_xp_x\sum_y p_{y\mid x}\log_2p_{y\mid x}\\
-&=H(X)+H(Y\mid X).
-\end{aligned}
+ H(Y\mid X)=-\tfrac13\log_2\tfrac13-\tfrac23\log_2\tfrac23
+ =\log_2 3-\tfrac23=0.91829\ldots.
 \]
-When $X$ is a fair bit and $Y=X$, the pair has only $(0,0)$ and $(1,1)$, each of probability $1/2$, so $H(X,Y)=1$. Knowing $X$ determines $Y$, so $H(Y\mid X)=0$ and $H(X)=1$.
+Proposition~\ref{prop:chain} gives $H(X,Y)=1+H(Y\mid X)=1.91829\ldots$. By symmetry $P(Y=1)=1/2$, so $H(Y)=1$ and $H(X)+H(Y)=2$. The joint entropy is smaller because $Y$ still leans toward $X$.
 \end{solution}
 
 \begin{solution}{ex:entropyproduct}
 \idea Independence says that knowing $X$ does not change the law of $Y$.
-\writeup If $X$ and $Y$ are independent, then for every $x$ of positive probability the conditional masses $p_{y\mid x}=p_y$, hence $H(Y\mid X)=H(Y)$. The chain rule of Exercise~\ref{ex:entropychain} gives $H(X,Y)=H(X)+H(Y)$. If $Y=X$ and $X$ is fair, both marginal entropies are $1$ bit but the joint entropy is only $1$ bit. The extra bit of marginal entropy is not new information.
+\writeup If $X$ and $Y$ are independent, then for every $x$ of positive probability the conditional masses $p_{y\mid x}=p_y$, hence $H(Y\mid X)=H(Y)$. Proposition~\ref{prop:chain} gives $H(X,Y)=H(X)+H(Y)$. If $Y=X$ and $X$ is fair, both marginal entropies are $1$ bit but the joint entropy is only $1$ bit. The extra bit of marginal entropy is not new information.
 \end{solution}
 
 \begin{solution}{ex:ambiguouscode}
