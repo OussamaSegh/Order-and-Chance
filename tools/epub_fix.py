@@ -67,7 +67,7 @@ def fix_volume_subtitle(root: ET.Element) -> bool:
     if not value:
         return False
     marker = metadata.find(f"{{{OPF}}}meta[@property='title-type'][.='subtitle']")
-    changed = False
+    changed = ensure_title_type(metadata, main_title, "main")
     target = None
     if marker is not None:
         target = next((t for t in titles if "#" + t.get("id", "") == marker.get("refines")), None)
@@ -80,6 +80,145 @@ def fix_volume_subtitle(root: ET.Element) -> bool:
         target.text = value
         changed = True
     return changed
+
+
+def ensure_title_type(metadata: ET.Element, title: ET.Element, kind: str) -> bool:
+    """Mark one dc:title with EPUB 3 title-type.
+
+    Kindle Previewer E2006 treats two untitled dc:title elements as a conversion
+    failure. The primary title has to be title-type main; the subtitle stays
+    title-type subtitle.
+    """
+    changed = False
+    title_id = title.get("id")
+    if not title_id:
+        title_id = "epub-title-1"
+        title.set("id", title_id)
+        changed = True
+    refine = "#" + title_id
+    existing = next(
+        (meta for meta in metadata.findall(f"{{{OPF}}}meta")
+         if meta.get("property") == "title-type" and meta.get("refines") == refine),
+        None,
+    )
+    if existing is None:
+        meta = ET.SubElement(metadata, f"{{{OPF}}}meta", {"refines": refine, "property": "title-type"})
+        meta.text = kind
+        return True
+    if (existing.text or "").strip() != kind:
+        existing.text = kind
+        return True
+    return changed
+
+
+XLINK = "http://www.w3.org/1999/xlink"
+
+
+def _local(tag: str) -> str:
+    return tag.rsplit("}", 1)[-1]
+
+
+def html_cover_page(text: str, page_href: str, cover_hrefs: set[str]) -> bool:
+    """True when an XHTML spine item only redisplays the declared cover image.
+
+    Pandoc's --epub-cover-image writes that page as an SVG wrapper and also
+    declares the same pixels with the cover-image property. Kindle's cover
+    rules say the extra HTML page can fail conversion, and its image rules say
+    SVG tags can cause errors.
+    """
+    if not cover_hrefs:
+        return False
+    try:
+        document = ET.fromstring(text)
+    except ET.ParseError:
+        return False
+    body = next((node for node in document.iter() if _local(node.tag) == "body"), None)
+    if body is None or re.sub(r"\s+", "", "".join(body.itertext())):
+        return False
+    names = {posixpath.basename(href) for href in cover_hrefs}
+    for node in body.iter():
+        src = (
+            node.get("src")
+            or node.get("href")
+            or node.get(f"{{{XLINK}}}href")
+            or ""
+        )
+        if not src:
+            continue
+        resolved = posixpath.normpath(posixpath.join(posixpath.dirname(page_href), unquote(src.split("#", 1)[0])))
+        if resolved in cover_hrefs or posixpath.basename(resolved) in names:
+            return True
+    return False
+
+
+def _drop_removed_links(text: str, hrefs: set[str]) -> str:
+    """Remove a list item whose anchors point only at a deleted HTML cover."""
+    def replace(match: re.Match) -> str:
+        block = match.group(0)
+        anchors = re.findall(r'href="([^"]+)"', block)
+        targets = [href.split("#", 1)[0] for href in anchors]
+        if targets and all(target in hrefs for target in targets):
+            return ""
+        return block
+    return re.sub(r"<li\b[^>]*>.*?</li>", replace, text, flags=re.S)
+
+
+def remove_duplicate_html_cover(resources: dict[str, bytes]) -> bool:
+    """Drop the HTML cover page when the cover image is already declared.
+
+    Keeps the image, ``properties="cover-image"`` and ``meta name="cover"``.
+    Removes the spine item, its manifest entry, a guide reference to that
+    page, and the page itself.
+    """
+    package = next(name for name in resources if name.endswith(".opf"))
+    root = ET.fromstring(resources[package])
+    manifest = root.find(f"{{{OPF}}}manifest")
+    spine = root.find(f"{{{OPF}}}spine")
+    if manifest is None or spine is None:
+        return False
+    items = list(manifest.findall(f"{{{OPF}}}item"))
+    by_id = {item.get("id"): item for item in items}
+    cover_hrefs = {
+        unquote(item.get("href", ""))
+        for item in items
+        if "cover-image" in item.get("properties", "").split()
+    }
+    if not cover_hrefs:
+        return False
+    removed: set[str] = set()
+    for itemref in list(spine.findall(f"{{{OPF}}}itemref")):
+        item = by_id.get(itemref.get("idref"))
+        if item is None or item.get("media-type") != "application/xhtml+xml":
+            continue
+        href = unquote(item.get("href", ""))
+        zip_name = posixpath.normpath(posixpath.join(posixpath.dirname(package), href))
+        text = resources.get(zip_name, b"").decode("utf-8", "replace")
+        if not html_cover_page(text, href, cover_hrefs):
+            continue
+        spine.remove(itemref)
+        manifest.remove(item)
+        resources.pop(zip_name, None)
+        removed.add(href)
+    if not removed:
+        return False
+    guide = root.find(f"{{{OPF}}}guide")
+    if guide is not None:
+        for ref in list(guide.findall(f"{{{OPF}}}reference")):
+            if unquote(ref.get("href", "")) in removed:
+                guide.remove(ref)
+        if len(list(guide)) == 0:
+            root.remove(guide)
+    for name, data in list(resources.items()):
+        if not name.endswith((".xhtml", ".html", ".ncx")):
+            continue
+        text = data.decode("utf-8")
+        updated = _drop_removed_links(text, removed)
+        if updated != text:
+            resources[name] = updated.encode("utf-8")
+    ET.register_namespace("", OPF)
+    ET.register_namespace("dc", "http://purl.org/dc/elements/1.1/")
+    resources[package] = ET.tostring(root, encoding="utf-8", xml_declaration=True)
+    return True
 
 
 def fix_manifest(data: bytes, package_path: str, resources: dict[str, bytes],
@@ -313,6 +452,7 @@ def main(path: str, figures: str | None = None, *, render_math: bool = True) -> 
             resources[name] = re.sub(
                 r"<math\b[^>]*>.*?</math>", fix_mathml, resources[name].decode("utf-8"), flags=re.S,
             ).encode("utf-8")
+    remove_duplicate_html_cover(resources)
     package = next(name for name in resources if name.endswith(".opf"))
     # Media added above is not in the original manifest. Plates and formulas both need entries.
     media_items = list(added)

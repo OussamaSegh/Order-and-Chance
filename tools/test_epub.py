@@ -317,6 +317,8 @@ Text.
                                   "Proof, Problem Solving and Mathematical Thinking"])
                 marker = metadata.find(f"{{{epub_fix.OPF}}}meta[@property='title-type'][.='subtitle']")
                 self.assertEqual(marker.get("refines"), "#" + titles[1].get("id"))
+                main = metadata.find(f"{{{epub_fix.OPF}}}meta[@property='title-type'][.='main']")
+                self.assertEqual(main.get("refines"), "#" + titles[0].get("id"))
                 items = package.findall(f"{{{epub_fix.OPF}}}manifest/{{{epub_fix.OPF}}}item")
                 nav = next(item for item in items if "nav" in item.get("properties", "").split())
                 self.assertIn("mathml", nav.get("properties", "").split())
@@ -344,6 +346,63 @@ Text.
             jar = os.environ.get("EPUBCHECK_JAR")
             if jar:
                 subprocess.run(["java", "-jar", jar, str(book)], capture_output=True, check=True)
+
+    def test_pandoc_svg_cover_page_is_removed(self):
+        import struct
+        import zlib
+        def chunk(tag, data):
+            return struct.pack(">I", len(data)) + tag + data + struct.pack(">I", zlib.crc32(tag + data) & 0xFFFFFFFF)
+        raw = b"\x00" + b"\x11\x22\x33" * 8
+        ihdr = struct.pack(">IIBBBBB", 8, 1, 8, 2, 0, 0, 0)
+        png = b"\x89PNG\r\n\x1a\n" + chunk(b"IHDR", ihdr) + chunk(b"IDAT", zlib.compress(raw)) + chunk(b"IEND", b"")
+        with tempfile.TemporaryDirectory() as directory:
+            work = Path(directory)
+            (work / "cover.png").write_bytes(png)
+            (work / "diagram.svg").write_text(
+                '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20">'
+                '<rect x="1" y="1" width="18" height="18"/></svg>')
+            book = work / "sample.epub"
+            subprocess.run(
+                ["pandoc", "-f", "latex", "-t", "epub3", "--mathml", "--toc",
+                 "--epub-cover-image", str(work / "cover.png"),
+                 "--lua-filter", str(TOOLS / "epub.lua"),
+                 "--metadata", "title=Order and Chance. Volume 1: First Principles",
+                 "--metadata", "subtitle=Wrong subtitle that the catalog replaces",
+                 "--metadata", "lang=en", "-o", str(book)],
+                input=SAMPLE, text=True, capture_output=True, check=True, cwd=work)
+            with zipfile.ZipFile(book) as archive:
+                cover_name = next(name for name in archive.namelist() if name.endswith("cover.xhtml"))
+                self.assertIn("<svg", archive.read(cover_name).decode("utf-8"))
+            epub_fix.main(str(book), render_math=False)
+            with zipfile.ZipFile(book) as archive:
+                names = archive.namelist()
+                self.assertFalse(any(name.endswith("cover.xhtml") for name in names))
+                self.assertTrue(any(name.endswith("cover.png") for name in names))
+                for name in names:
+                    if name.endswith(".xhtml"):
+                        self.assertNotIn("<svg", archive.read(name).decode("utf-8"))
+                package = ET.fromstring(archive.read(next(name for name in names if name.endswith(".opf"))))
+                metadata = package.find(f"{{{epub_fix.OPF}}}metadata")
+                dc = "http://purl.org/dc/elements/1.1/"
+                titles = metadata.findall(f"{{{dc}}}title")
+                self.assertEqual(titles[0].text, "Order and Chance. Volume 1: First Principles")
+                main = metadata.find(f"{{{epub_fix.OPF}}}meta[@property='title-type'][.='main']")
+                self.assertEqual(main.get("refines"), "#" + titles[0].get("id"))
+                cover_item = next(
+                    item for item in package.findall(f"{{{epub_fix.OPF}}}manifest/{{{epub_fix.OPF}}}item")
+                    if "cover-image" in item.get("properties", "").split())
+                self.assertTrue(cover_item.get("href", "").endswith("cover.png"))
+                guide_hrefs = [
+                    ref.get("href") for ref in package.findall(f"{{{epub_fix.OPF}}}guide/{{{epub_fix.OPF}}}reference")
+                    if ref.get("type") == "cover"]
+                self.assertEqual(guide_hrefs, [])
+                self.assertNotIn(b"cover.xhtml", b"".join(
+                    archive.read(name) for name in names if name.endswith((".xhtml", ".opf", ".ncx"))))
+                spine_ids = [ref.get("idref") for ref in package.findall(f"{{{epub_fix.OPF}}}spine/{{{epub_fix.OPF}}}itemref")]
+                self.assertNotIn(cover_item.get("id"), spine_ids)
+            again = book.read_bytes()
+            epub_fix.main(str(book), render_math=False)
+            self.assertEqual(book.read_bytes(), again)
 
 
 if __name__ == "__main__":
