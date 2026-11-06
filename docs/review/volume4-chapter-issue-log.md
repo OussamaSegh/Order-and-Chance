@@ -18,6 +18,10 @@ A second trio read `git show 7d7e62b5` and returned reports. None accepted a cha
 
 **Chapter 7, composer-2.5 `bc-d3270e58-f5e5-5b17-99c9-dd7d978eb880`.** Scope: `thm:kl`, `prop:gibbs`, `thm:mutual`, the numerical example, and the block-code arithmetic at `7d7e62b5`. It recomputed \(H(Y\mid X)=\log_2 3-2/3\approx 0.918295834\), \(I(X;Y)=5/3-\log_2 3\approx 0.081704166\), Shannon length \(L_2=10/3\), and Huffman length \(107/36\). It rebuilt the merge tree and found those lengths. Defects: the relative-entropy sum was indexed over all \(a\), and the solution of `ex:entropychain` wrote the masses \(1/3\) then \(2/3\) against the narrative order. Both were corrected after this read and are not rechecked. The reviewer did not audit the older strong-law paragraph.
 
+## Martingales written after the 169-page build
+
+Not reviewed. The chapter `ch10-martingales.tex` now contains: the optional-stopping identity written as a sum of increments; the count that 6 of 16 walks of length 4 hit $+2$ and the average of the stopped positions is $0$; Theorem `thm:upcross`, $(b-a)\mathbb E[U_n]\le\mathbb E[(a-X_n)_+]$, with the switch argument; the figure `ch10-upcross`, whose drawn path completes three crossings of $[-1,2]$; the orthogonal-increment formula and the square-mean Cauchy criterion when the sum of mean squares converges. The fair walk has $\mathbb E[(S_n-S_m)^2]=n-m$. The ABRACADABRA mean is written as the integer $3670344487444778$. A distinct read of the pushed SHA is still required. The chapter is not accepted.
+
 ## Per-chapter independent-review register
 
 | Chapter | Authoring / writer inspection | Independent second reviewer | Unresolved gate |

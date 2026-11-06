@@ -27,12 +27,85 @@ A fair random walk is a martingale. Bounded predictable multiples of its steps r
 If $X_n$ is a martingale and $\tau$ is a stopping time with $\tau\le N$ for a fixed integer $N$, then $\mathbb E[X_\tau]=\mathbb E[X_0]$.
 \end{theorem}
 \begin{proof}
-On $\{\tau\ge k\}$, which is determined by $\mathcal P_{k-1}$, the martingale property gives $\mathbb E[X_k\mathbf 1_{\tau\ge k}]=\mathbb E[X_{k-1}\mathbf 1_{\tau\ge k}]$. Write $X_\tau=\sum_{k=0}^N X_k\mathbf 1_{\tau=k}$ and telescope.
+Since $\tau\le N$,
+\[
+ X_\tau=X_0+\sum_{k=1}^N (X_k-X_{k-1})\mathbf 1_{\{\tau\ge k\}}.
+\]
+The event $\{\tau\ge k\}$ is the complement of $\{\tau\le k-1\}$, so it is determined by $\mathcal P_{k-1}$. Therefore
+\[
+ \mathbb E\bigl[(X_k-X_{k-1})\mathbf 1_{\{\tau\ge k\}}\bigr]
+ =\mathbb E\bigl[\mathbf 1_{\{\tau\ge k\}}\,\mathbb E[X_k-X_{k-1}\mid\mathcal P_{k-1}]\bigr]=0,
+\]
+because the inner conditional expectation vanishes. Each of the $N$ summands has mean zero, and $\mathbb E[X_\tau]=\mathbb E[X_0]$.
 \end{proof}
 
 \begin{examplex}[winning one unit]
 Let $S_n$ be a fair walk and let $\tau$ be the first time $S_n=1$. Then $S_\tau=1$ and $\mathbb E[S_\tau]=1\ne0$. The time $\tau$ is almost surely finite by Theorem~\ref{thm:polya}, and it is not bounded by any deterministic $N$. Theorem~\ref{thm:os} does not apply.
 \end{examplex}
+
+The same walk, forced to stop by a fixed time, keeps the mean. Stop at the first time the fair walk reaches $+2$, or at time $4$ if it has not. There are $2^4=16$ equally likely sequences of steps. Exactly $6$ of them hit $+2$. The other $10$ are still elsewhere at time $4$. The average of the sixteen stopped positions is $0$, as Theorem~\ref{thm:os} requires, and the stopped position is not almost surely $2$.
+
+\section{Upcrossings}
+
+An upcrossing of an interval $[a,b]$ is a piece of the path that starts at a value $\le a$ and later reaches a value $\ge b$, with no earlier completion of the same trip still open. Figure~\ref{fig:upcross} draws one walk of sixty steps. The shaded stretches are three completed crossings of the band from $-1$ up to $2$, ending at times $8$, $32$ and $50$.
+
+\begin{figure}[ht]
+\centering
+\fig{ch10-upcross}
+\caption{One fair-walk path. The dashed lines are the levels $-1$ and $2$. Each shaded block is a completed upcrossing of that band: the path is at or below $-1$ and later reaches $2$. This path completes three such crossings. It is a single sequence of steps, not a histogram.}
+\label{fig:upcross}
+\end{figure}
+
+\begin{theorem}[upcrossings]\label{thm:upcross}
+Let $X_n$ be a martingale and let $a<b$. Write $U_n$ for the number of upcrossings of $[a,b]$ completed by time $n$. Then
+\[
+ (b-a)\,\mathbb E[U_n]\le\mathbb E[(a-X_n)_+].
+\]
+\end{theorem}
+\begin{proof}
+Read the path from left to right and keep a switch that is off at the start. After observing $X_k$, turn the switch on if $X_k\le a$, and turn it off if $X_k\ge b$. Let $H_k$ be the position of the switch before step $k$ is revealed, so $H_k$ is $0$ or $1$ and is a function of $X_0,\ldots,X_{k-1}$. The accumulated gain
+\[
+ Y_n=\sum_{k=1}^n H_k(X_k-X_{k-1})
+\]
+has mean zero: each summand has conditional mean zero given $\mathcal P_{k-1}$.
+
+While the switch is on, the telescoping sum of increments equals the current position minus the position $X_{\mathrm{on}}$ at which the switch last turned on. That position satisfies $X_{\mathrm{on}}\le a$. Each time the switch turns off, the path is at least $b$, so the completed piece is at least $b-a$. If the switch is still on at time $n$, the unfinished piece equals $X_n-X_{\mathrm{on}}\ge X_n-a$, which is at least $-(a-X_n)_+$. If that unfinished piece is positive, omitting it only lowers the bound. In every case
+\[
+ Y_n\ge (b-a)U_n-(a-X_n)_+.
+\]
+Take expectations and use $\mathbb E[Y_n]=0$.
+\end{proof}
+
+For the fair walk, $a=-1$ and $b=1$, the inequality says $2\mathbb E[U_n]\le\mathbb E[(-1-S_n)_+]$. The positive part is at most $|S_n|+1$, and $\mathbb E[S_n^2]=n$, so $\mathbb E|S_n|\le\sqrt n$. Hence $\mathbb E[U_n]\le(\sqrt n+1)/2$. In a hundred steps the expected number of crossings of $[-1,1]$ is at most $11/2$.
+
+\section{Square-summable martingales}
+
+\begin{proposition}[orthogonal increments]\label{prop:orthinc}
+If $X_n$ is a martingale and $\mathbb E[X_n^2]<\infty$, then for $m<n$
+\[
+ \mathbb E[(X_n-X_m)X_m]=0,
+ \qquad
+ \mathbb E[X_n^2]=\mathbb E[X_0^2]+\sum_{k=1}^n\mathbb E[(X_k-X_{k-1})^2].
+\]
+\end{proposition}
+\begin{proof}
+The product $(X_n-X_m)X_m$ has conditional expectation $X_m\,\mathbb E[X_n-X_m\mid\mathcal P_m]=0$ given $\mathcal P_m$, so its mean is zero. Expand $\mathbb E[X_n^2]=\mathbb E[(X_0+\sum_{k=1}^n(X_k-X_{k-1}))^2]$. Cross terms between an increment and the sum of earlier positions vanish by the same conditioning, and distinct increments are orthogonal for the same reason.
+\end{proof}
+
+\begin{proposition}[square-mean Cauchy criterion]\label{prop:l2cauchy}
+If $X_n$ is a martingale and $\sum_{k\ge1}\mathbb E[(X_k-X_{k-1})^2]<\infty$, then $\mathbb E[(X_n-X_m)^2]\to0$ as $m,n\to\infty$.
+\end{proposition}
+\begin{proof}
+For $n>m$, the process $X_{m+j}-X_m$ is a martingale in the time $j$, and it starts at $0$. Proposition~\ref{prop:orthinc} gives
+\[
+ \mathbb E[(X_n-X_m)^2]=\sum_{k=m+1}^n\mathbb E[(X_k-X_{k-1})^2].
+\]
+The tail of a convergent series of nonnegative terms tends to $0$.
+\end{proof}
+
+This is the square-mean form of convergence that the finite-partition setting yields without a further completeness argument. The fair walk fails the hypothesis: each step has mean square $1$, so $\mathbb E[(S_n-S_m)^2]=n-m$, which does not tend to $0$. The walk keeps moving by order $\sqrt n$.
+
+The pattern argument later in the chapter does not use this criterion. It uses a deterministic bound on the wealth and passes to the limit by monotone convergence of the bounded stopping times.
 
 \begin{theorem}[Doob]\label{thm:doob}
 If $X_n$ is a martingale with $\mathbb E[X_n^2]<\infty$ and $a>0$, then
@@ -66,7 +139,7 @@ Markov's inequality followed by $\lambda=t/\sum c_k^2$ proves the stated bound w
 \section{ABRACADABRA}
 
 \begin{theorem}[waiting for a word]\label{thm:monkey}
-Independent uniform letters from an alphabet of $26$ symbols produce the word ABRACADABRA at a mean time $26^{11}+26^4+26$.
+Independent uniform letters from an alphabet of $26$ symbols produce the word ABRACADABRA at a mean time $26^{11}+26^4+26=3670344487444778$.
 \end{theorem}
 \begin{proof}
 A casino accepts one new gambler, with stake $1$, at each integer time. The gambler starting at time $k$ predicts the successive letters of the target word. After $r$ correct guesses their fortune is $26^r$; one wrong guess makes it $0$. After a full successful match the gambler stops. At each step the conditional expected fortune is unchanged, because the next correct letter has probability $1/26$. Let $W_t$ be the sum of all these fortunes after $t$ letters (including any prize completed on that step), and let $M_t=W_t-t$. A new $1$ stake enters at each time, so $M_t$ is a martingale.
