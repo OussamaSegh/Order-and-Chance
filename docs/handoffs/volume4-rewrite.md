@@ -38,8 +38,8 @@ Do not invent a second style guide. First-edition copy: reader-facing text does 
 ## Branch, base, PR
 
 - Branch: `cursor/volume4-rewrite-ee7f`
-- Base: `origin/main` at the commit this branch was cut from. Record the SHA in the latest milestone below.
-- PR: not opened at the first checkpoint. Open as a **draft** once a manuscript milestone is on the remote, and leave it unmerged.
+- Base: `origin/main` at `28db77df` (the commit this branch was cut from).
+- PR: draft, https://github.com/OussamaSegh/Order-and-Chance/pull/111 — do not merge.
 - Do not force-push. Do not rewrite pushed history.
 
 ## How to resume
@@ -60,8 +60,8 @@ Legend: `planned` means designed and not yet the manuscript. `written` means a f
 | Prerequisite register | written | `docs/plan/volume4-prerequisites.md` |
 | Old-to-new map | written | `docs/plan/volume4-old-to-new.md` |
 | Content plan `docs/plan/book-04.md` | written | Replaces the keep-and-admit-measure plan |
-| Preface | planned | |
-| Ch. 1 Counting and Paradoxes | planned | |
+| Preface | written | Fresh. Not yet read against the built PDF |
+| Ch. 1 Counting and Paradoxes | written | Fresh manuscript, three figures, eight exercises with hints and solutions. Not yet a reader pass |
 | Ch. 2 Discrete Random Variables | planned | |
 | Ch. 3 Generating Functions | planned | |
 | Ch. 4 Inequalities, Large Numbers and Entropy | planned | |
@@ -84,11 +84,11 @@ Legend: `planned` means designed and not yet the manuscript. `written` means a f
 
 ## Last completed milestone
 
-**Milestone 0 — contract.** Branch cut from current `origin/main`. Register, map, plan, and this handoff written. No manuscript file replaced yet.
+**Milestone 1 — preface and Chapter 1 written.** Not yet compiled. The contract commit is `ec63bab7`. The draft PR is number 111.
 
 ## Current WIP
 
-None in the manuscript. Next edit is `volume4-chance/chapters/preface.tex` and `ch01-counting.tex`, written fresh.
+Chapter 2 is next. Do not rewrite Chapter 1 unless a named defect appears. Known limits, not defects: the Penney citation gives the journal and year, not a page; Buffon’s essay is cited by work and year, not by page. The ballot proof is the reflection comparison; André’s 1887 note is cited for the direct count, not as the source of the picture.
 
 ## Decisions already made
 
@@ -110,12 +110,12 @@ None in the manuscript. Next edit is `volume4-chance/chapters/preface.tex` and `
 
 ## Exact next actions
 
-1. Write the preface and Chapters 1–4 fresh, with figures, exercises, hints, and solutions. Preserve exercise numbers 1.7 (Dyck/Catalan), 2.6 (long cycle and the hundred prisoners), 3.7 (binomial series for \((1-4x)^{-1/2}\)).
+1. Chapter 1 and the preface are written. Next write Chapters 2–4 fresh, with figures, exercises, hints, and solutions. Preserve exercise numbers 2.6 (long cycle and the hundred prisoners) and 3.7 (binomial series for \((1-4x)^{-1/2}\)). Exercise 1.7 is already the Dyck-path count.
 2. Update this ledger to `written` for each finished file. Commit and push.
 3. Write Chapters 5–8, then 9–12 and the appendix, under the same rule.
 4. Reader pass, then voice pass. Fix what those passes find.
 5. Build Volume 4 only, with the repository’s `./build.sh` path. Record the command and the result. Do not call a Volume 4 build an all-volume verification.
-6. Open the draft PR if it is not open, and update the PR body. Do not merge.
+6. Update the draft PR body at each manuscript milestone. Do not merge.
 
 ## Tests and builds actually run
 
