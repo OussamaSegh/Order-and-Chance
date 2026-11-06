@@ -12,9 +12,13 @@ Restart: read this file, then `volume4-chance/main.tex`, then the migration docu
 
 ## Status
 
-Manuscript skeleton is the fourteen-chapter book: parts and inputs in `main.tex`, Bertrand and Buffon in `chapters/ch05-geometric.tex`, entropy in `chapters/ch07-entropy.tex` (Kraft and Shannon coding included), random graphs in `chapters/ch14-graphs.tex`. Chapters 1–3 are the earlier drafts, reused, not yet re-audited line by line. No native PDF has been produced on this contract. Page count against 260–290 is unknown until that build.
+Head `d07a4e33` on `cursor/volume4-rewrite-ee7f`. The fourteen-chapter skeleton is in `volume4-chance/main.tex`. Title page subtitle is *The Logic of Uncertainty*.
 
-Named checks still open: Exercise 2.7 Riemann-sum shift; Exercise 6.4 Cauchy characteristic function; local-limit expansion in Chapter 6; giant-component exercise in Chapter 14 (first-moment path bound is the proved statement; the Poisson survival probability is marked as the heuristic); crossing-number small-graph estimate; Pólya integral in the walk chapter. Arcsine is not a numbered theorem. Inversion is not a numbered theorem. Shuffle profile labels 8.10, 8.22, 8.23, 8.24 are not in this manuscript.
+Chapter 1 has a dedicated pushed commit `b267c681` and a mathematical second pass (definitions, ballot proof including `b=0`, digit cylinders, outer content, all eight exercises, hints, and solutions). Voice review of Chapter 1 is not done. No other chapter has a passed second pass. Repair commits, not acceptance: Chapter 2 `4d4c87c9` (Exercise 2.7 index shift), Chapter 3 `ebc3cd9b` (remark moved out of the extinction proof), Chapter 5 angle wording `3ab3ad32`, Chapter 7 exercise environment `62f02af4`, Chapter 8 last-visit identity `966843f6` (Theorem 8.5; the integral arcsine density is not claimed), Chapter 14 subcritical count `d07a4e33`.
+
+One `xelatex -interaction=nonstopmode main.tex` in `volume4-chance` exited 0 and wrote `main.pdf` (131 pages) with undefined references. That is not `./build.sh`, not a print PDF, and not a page-count verdict. The 260–290 target is still open; do not thin proofs to meet it.
+
+The owner execution contract is the section `OWNER_APPROVED_V4_CONTRACT` on draft PR 111, outside the agent body markers. Do not replace that section with a run summary. Update its checkboxes and evidence SHAs only when a subgate is actually done. `written` is not `verified`.
 
 ## Task and acceptance
 
@@ -74,20 +78,22 @@ Legend: `planned` means designed and not yet the manuscript. `written` means a f
 | Prerequisite register | written | `docs/plan/volume4-prerequisites.md` |
 | Old-to-new map | written | `docs/plan/volume4-old-to-new.md` |
 | Content plan `docs/plan/book-04.md` | written | Replaces the keep-and-admit-measure plan |
-| Preface | written | Fresh. Not yet read against the built PDF |
-| Ch. 1 Counting and Paradoxes | written | Fresh manuscript, three figures, eight exercises with hints and solutions. Not yet a reader pass |
-| Ch. 2 Discrete Random Variables | written | Fresh. Exercise 2.6 is the long cycle and the hundred prisoners. Birthday-wait solution (Exercise 2.7) uses a Riemann-sum comparison; re-read the shift by 2 on the reader pass |
-| Ch. 3 Generating Functions | written | Fresh. Exercise 3.7 is the series for $(1-4x)^{-1/2}$ and the Catalan formula |
-| Ch. 4 Inequalities, Large Numbers and Entropy | written | Hoeffding, Borel–Cantelli, bounded strong law, Bernstein–Weierstrass, finite entropy. Gilmer left out on purpose |
-| Ch. 5 Continuous Probability Done Properly | written | Riemann densities, continuous Fubini on rectangles, polar rectangles, inverse distribution functions, continuous dominated convergence, Box–Muller. Exercise 5.7 is the Cantor distribution. Not Lebesgue theory |
-| Ch. 6 Convergence and the Central Limit Theorem | written | Lindeberg is the tenth numbered formal environment. Exercises 6.1 and 6.7 are Slutsky and the cycle CLT |
-| Ch. 7 Random Walks | written | Reflection, ruin, Pólya. Exercise 7.8 is the electrical network |
-| Ch. 8 Markov Chains | written | Coupling convergence. Exercises 8.6 and 8.8 are top-to-random and rising sequences |
-| Ch. 9 Poisson Processes | written | Colouring lemma is the fifth numbered formal environment |
-| Ch. 10 Conditional Expectation and Martingales | written | Optional stopping, the unit-win counter-example, ABRACADABRA |
-| Ch. 11 Brownian Motion | written | Existence is formal environment 4; reflection is formal environment 12. Exercise 11.3 is the zero set |
-| Ch. 12 The Probabilistic Method | written | Exercise 12.4 is the crossing lemma. Euler is proved before it |
-| Appendix Extremal and Ramsey | written | Turán, Ramsey, Schur, sunflower, Erdős–Ko–Rado |
+| Preface | written | Not second-passed |
+| Ch. 1 From Games to Probability Spaces | math-checked | Commit `b267c681`. Bertrand and Buffon live in Chapter 5. Exercise 1.7 is still the Dyck count. Voice not checked |
+| Ch. 2 Random Variables and Their Laws | repair only | `4d4c87c9` states the Exercise 2.7 shift. The chapter is not second-passed |
+| Ch. 3 Generating Functions and Random Families | repair only | `ebc3cd9b` moved the Chapter 14 sentence out of the extinction proof. Not second-passed |
+| Ch. 4 Concentration and the Laws of Large Numbers | drafted | Entropy removed to Chapter 7. Not second-passed |
+| Ch. 5 Continuous Chance | repair only | `3ab3ad32` fixes the Buffon angle to \([0,\pi]\). Bertrand and Buffon are in `ch05-geometric.tex`. Not second-passed |
+| Ch. 6 Why the Bell Curve Appears | drafted | Lindeberg still the tenth numbered environment (Theorem 6.10). Not second-passed |
+| Ch. 7 Entropy, Codes and Typical Sequences | repair only | `62f02af4` restores the exercise environment. Kraft and Shannon coding are drafted. Not second-passed |
+| Ch. 8 Random Walks | repair only | `966843f6` adds Theorem 8.5, the exact last-visit identity. Integral arcsine law not claimed. Not second-passed |
+| Ch. 9 Markov Chains and Mixing | drafted | Not second-passed |
+| Ch. 10 The Poisson Clock | drafted | Colouring lemma is the fifth numbered environment (Lemma 10.5). Not second-passed |
+| Ch. 11 Martingales and Fair Games | drafted | Not second-passed |
+| Ch. 12 Brownian Motion | drafted | Existence is environment 4 (Theorem 12.4); reflection is environment 12 (Theorem 12.12). Not second-passed |
+| Ch. 13 The Probabilistic Method | drafted | Crossing lemma is the fourth exercise (Exercise 13.4). Not second-passed |
+| Ch. 14 Random Graphs and the Search for Structure | repair only | `d07a4e33` replaces the path count by isolated trees. Giant-component exercise claims a positive lower bound for one vertex, not a high-probability giant. Not second-passed |
+| Appendix B Extremal and Ramsey | drafted | Counter still starts at 1 so the appendix prints as B. Not second-passed |
 | Gilmer section | removed from the book | Not included. The file `gilmer.tex` remains unused |
 | Workshop `pb:*` problems | removed from the logical path | Not cited outside this volume |
 | Exercises, hints, solutions | written | Interface numbers checked by order in each chapter file |
@@ -98,18 +104,18 @@ Legend: `planned` means designed and not yet the manuscript. `written` means a f
 
 ## Last completed milestone
 
-**Milestone 7 — manuscript drafted through the appendix**, not yet compiled. Chapters 1–12 and the extremal appendix are the new text. Next: compile, fix errors, reader pass, voice pass, full `./build.sh volume4-chance`.
+**Chapter 1 mathematical second pass**, commit `b267c681`, pushed. The pass recomputed the ballot count (including `b=0`), the cylinder probabilities, the eight exercise solutions, and `365\ln 2=252.9987\ldots`. It did not review the TikZ of `figures/ch01-ballot.tex` as a drawing, and it did not sign the voice box.
 
 ## Current WIP
 
-Compile of `volume4-chance` is the next action. Known soft spots to re-read after the log is clean: the Cauchy characteristic-function limit in Exercise 6.4, the local-theorem expansion in Theorem 6 (local), the giant-component sketch in Exercise 12.7, and the Riemann-sum shift in Exercise 2.7.
+Next unfinished step: the same two-pass read of Chapter 2, starting from the Poisson limit through Exercise 2.7, whose index-shift sentence is now explicit and still needs the rest of the solution re-read in place. Do not mark Chapter 2 complete because of `4d4c87c9`.
 
 ## Decisions already made
 
 1. **Foundation.** Volume 1 already proves finite probability, countable nonnegative sums, geometric and Poisson masses, Markov, Chebyshev, the weak law, inclusion–exclusion, Catalan paths as a counting exercise, Stirling with constant \(\sqrt{2\pi}\), the Gaussian integral, one-variable calculus, Jensen, Cauchy–Schwarz, and the spectral theorem for real symmetric matrices (`thm:spectral`). Volume 4 cites these and does not pretend they were not taught. It does not lean on Volume 3’s Perron appendix; finite Markov chains are done by averaging and coupling.
 2. **No silent measure theory.** Lebesgue measure on \(\mathbb R^d\), a general Fubini–Tonelli theorem, and an unconstructed infinite product are not used as proof steps. Infinite sequences of fair bits are built from the binary digits of one uniform on \([0,1]\), with probabilities of finite-bit events equal to lengths of intervals. Almost-sure statements are outer-content zero. Iterated integrals are proved for continuous functions on rectangles. A dominated-convergence theorem is proved for continuous integrands. Volume 5 already proves the continuous form it uses and only *mentions* a Lebesgue theorem in Volume 4; that mention will become slightly stale and is recorded under blockers. Volume 7 still constructs the general theory.
-3. **Chapter numbers stay.** Later volumes cite “Volume 4, Chapter \(n\)” and specific exercise numbers. The twelve chapters and the extremal appendix stay in the same order and keep the cited exercise slots. See the register for the list.
-4. **Formal-environment numbers that later books name.** Chapter 6’s tenth formal box is Lindeberg’s theorem. Chapter 9’s fifth is the colouring lemma. Chapter 11’s fourth is existence of Brownian motion; the twelfth is the reflection principle. Do not insert an extra `definition`/`theorem`/`proposition`/`lemma`/`corollary`/`example` ahead of those boxes. `examplex` and `definitionx` do **not** use the shared counter.
+3. **Fourteen chapters.** The owner plan of 6 November 2026 replaced the twelve-chapter number freeze. The map of live citations that now point at the wrong number is `docs/plan/volume4-citation-migration.md`. Do not edit other volumes to hide those lines. Do not revert to twelve chapters.
+4. **Numbers that are still true, and numbers that moved.** Lindeberg is still Theorem 6.10. Do not insert a numbered environment before it. Colouring is Lemma 10.5. Brownian existence is Theorem 12.4 and reflection is Theorem 12.12. Crossing is Exercise 13.4. Last visit is Theorem 8.5. `examplex` and `definitionx` do not use the shared counter. Inversion, the seven-shuffle profile, and van der Waerden are not theorems of this manuscript.
 5. **Workshop problems `pb:*`.** They leave the reader’s path. Many of their old solutions use Fourier analysis, representation theory, or later-volume inequalities. They are not cited from other volumes. Techniques that belong to this book (moment method, Hoeffding, ballot, coupon collector, electrical networks for reversible walks) stay in the main exercises.
 6. **Cover.** Do not redesign the Galton cover. About the Cover stays accurate if Chapter 6 is still the central limit theorem.
 7. **Volumes 1–3 are immutable.** Do not edit them to make an audit pass.
@@ -119,21 +125,21 @@ Compile of `volume4-chance` is the next action. Known soft spots to re-read afte
 - Volume 5, `chapters/ch04-integrals.tex`, says Volume 4, Chapter 5 proved dominated convergence for the Lebesgue integral. After the rewrite, Chapter 5 proves it for continuous functions and names the boundary. The Volume 5 sentence is then historically stale. Do not edit Volume 5 unless a later instruction allows a one-line citation repair.
 - Volume 7 says it discharges an “admitted fact (A1)” of the old Chapter 5. The new Chapter 5 constructs countable products of uniforms from one uniform, so that particular admission is no longer needed. Volume 7’s sentence is a pointer, not a false theorem.
 - Exercise 11.3 in later citations uses the zero set of Brownian motion and a Fubini/Tonelli sentence. The new solution must prove Lebesgue measure of the zero set is almost surely zero using only the integral theorems proved in this volume, and must say so without calling the tool Tonelli if Tonelli is not proved.
-- Gilmer’s frequency bound \((1-\ln 2)/2\) is correct as a numerical value of that expression. It returns at the end of Chapter 4 only after a fresh proof of the entropy inequality. Until that proof is written and checked, the section is absent on purpose.
-- Numeric theorem numbers other than 6.10, 9.5, 11.4, and 11.12 are not a series contract. Do not chase old numbers beyond those four.
+- Gilmer’s frequency bound \((1-\ln 2)/2\) is a numerical value of that expression. The comparison is not proved in this volume, and `gilmer.tex` is not included.
+- Downstream citation repairs are listed in `docs/plan/volume4-citation-migration.md`. Editing those other volumes needs an explicit instruction. The PR checklist was not patched in this turn: `update_pr` replaces the whole description and would move or drop the owner contract that sits outside the agent markers. The evidence to record, when a line-level edit is safe, is Chapter 1 written and math-checked at `b267c681`; title page checked in `main.tex`; repair SHAs `4d4c87c9`, `ebc3cd9b`, `3ab3ad32`, `62f02af4`, `966843f6`, `d07a4e33` with those boxes left open.
 
 ## Exact next actions
 
-1. Chapters 1–5 are written. Next write Chapter 6 with Lindeberg as formal environment 6.10, then Chapters 7–12 and the appendix.
-2. Update this ledger to `written` for each finished file. Commit and push.
-3. Write Chapters 5–8, then 9–12 and the appendix, under the same rule.
-4. Reader pass, then voice pass. Fix what those passes find.
-5. Build Volume 4 only, with the repository’s `./build.sh` path. Record the command and the result. Do not call a Volume 4 build an all-volume verification.
-6. Update the draft PR body at each manuscript milestone. Do not merge.
+1. Second-pass Chapter 2 in full. Commit that chapter alone and push. Then Chapter 3, and so on. A repair commit does not check the mathematical box.
+2. On the PR, edit evidence SHAs inside `OWNER_APPROVED_V4_CONTRACT` only. Do not delete or rewrite that section. Transient status goes inside the `CURSOR_AGENT_PR_BODY` markers.
+3. After the manuscript passes are further along, run `./build.sh volume4-chance` from the repository root. Record the command, the exit code, and the page count. Do not call that an all-volume CI run. Do not delete flagship proofs to land in 260–290 pages.
 
 ## Tests and builds actually run
 
-None yet on this branch. The numerical checks below were done in a Python session while fixing constants for the plan; they are not a book test.
+- `xelatex -interaction=nonstopmode main.tex` in `volume4-chance`, log `/tmp/v4-xelatex-2.log`, exit 0, `main.pdf` 131 pages, undefined references (one pass). Not `./build.sh`. The PDF was not committed.
+- Python: `22/365 = 0.0602739\ldots`, `365\ln 2 = 252.99872\ldots`, so `253/365>\ln 2` and `\exp(-253/365)<1/2`.
+
+Earlier session checks, not re-run as a book test:
 
 - \(\sum_{k=600}^{1000}\binom{1000}{k}/2^{1000} \approx 1.364\times 10^{-10}\) (log-gamma summation).
 - Chernoff information bound at the same point: \(\exp(-1000 D(0.6\|0.5)) \approx 1.800\times 10^{-9}\), with \(D(0.6\|0.5)\approx 0.02014\).
@@ -143,7 +149,7 @@ None yet on this branch. The numerical checks below were done in a Python sessio
 
 ## Artifacts
 
-No new PDF. Rebuild, when the manuscript is ready, from the repository root after `source /workspace/order-chance-system/activate.sh`, using `./build.sh volume4-chance` (confirm the selector in `build.sh` before launching). Outputs expected by `AGENTS.md`: `dist/volume4-chance.pdf`, `dist/kdp/volume4-chance-print.pdf`, EPUB, wrap. Do not invent a page count.
+Uncommitted local `volume4-chance/main.pdf`, 131 pages, from the single XeLaTeX pass above. Not a release file. Production targets remain `dist/volume4-chance.pdf`, `dist/kdp/volume4-chance-print.pdf`, the EPUB, and the wrap, from `./build.sh volume4-chance`.
 
 ## Remaining validation
 
