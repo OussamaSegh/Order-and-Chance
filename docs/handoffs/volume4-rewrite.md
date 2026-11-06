@@ -1,24 +1,29 @@
 # Handoff: Volume 4 rewrite
 
-## Latest checkpoint — 6 November 2026, scaling fix and Chapter 7
+## Latest checkpoint — 6 November 2026, final gates recorded, reviews not acceptance
 
-**Preserved.** `445c186f` is an ancestor. `origin/main` is `5c4840cc`. No other volume was edited. Do not mark any chapter accepted.
+**Preserved.** `445c186f` is an ancestor. Head before this note was `73ac3977`. `origin/main` is `5c4840cc`. No chapter is accepted.
 
-**Chapter 6 defect, fixed in `93be51a3`.** The third-moment bound at `d50be021` gave the comparison normals variance $\sigma^2/n$. The standardised summands $Y_k/(\sigma\sqrt n)$ have variance $1/n$. The sum of those wrong normals is $N(0,\sigma^2)$, not standard normal, and the term $2\sigma^3\sqrt{2/\pi}$ is not invariant under $Y\mapsto cY$. The corrected bound is
-\[
-\frac{M}{6\sqrt n}\Biggl(\frac{\rho}{\sigma^3}+2\sqrt{\frac{2}{\pi}}\Biggr).
-\]
-The fair-coin number $0.04326\ldots$ is unchanged because $\sigma=1$. A distinct reviewer must recompute this scaling on the pushed file. The whole-chapter read of `d50be021` does not cover the fix. The chapter is not accepted.
+### Final gates (owner, 6 November 2026)
 
-**Chapter 5 repairs.** `ca8e9489` answered the older-proof notes from agent `bc-8c6d139e` at `677d5e6a`. That repair has not been rechecked. Chapter 5 is not accepted. Chapters 2 and 3 still have no full-page PDF acceptance.
+Do these only after the manuscript, the mathematical reviews, the reader and style reviews, and the downstream citation update are finished. Do not spend repeated exhaustive visual passes on intermediate drafts.
 
-**Chapter 7, not accepted.** Commit `f9d7770d` proves the chain rule, compares Shannon lengths with a Huffman merge on probabilities $1/2$, $1/3$, $1/6$, and proves the merge is optimal for a finite alphabet. The old chain-rule exercise now computes a noisy copy. A whole-chapter reviewer of the pushed file is still required.
+1. **Every-page visual ledger, last.** Render and inspect every page of the final native reading PDF and, where the layout differs, the print PDF. The ledger names the build SHA, the file hash, the page number, what was seen, any defect, the fix, and the recheck. Automated layout checks do not replace that look. A later pagination change reopens the affected pages. Do not claim the book is visually accepted while any page of that exact artifact is unchecked.
+2. **Downstream references, immediately before that visual ledger.** Once Volume 4 chapter, theorem, and exercise numbers are stable, audit and update references to Volume 4 in Volumes 5 through 15. The repository has `volume1-first-principles` through `volume15-order-and-chance`. There is no Volume 16 directory and none will be created. Update only the citations that point at Volume 4. Record old target and new target. Do not rewrite unrelated prose. Do not edit Volume 3 to clear the `C-GROUP` gate.
 
-**Page count.** The last success is 163 print pages at `f3fd29ff`, before the scaling fix and Chapter 7. Do not reuse it for the new text. Record the next successful `./build.sh volume4-chance`.
+Intermediate native builds remain appropriate when a box overflows or a count is needed. The last successful count is still 163 print pages at `f3fd29ff`, before the scaling fix and Chapter 7. It is not the final artifact.
 
-**C-GROUP.** Unchanged. Do not edit Volume 3.
+### Reviews already in hand
 
-**Exact next step.** Recheck the Chapter 6 scaling at `93be51a3` and the Chapter 5 sentences at `ca8e9489` with distinct reviewers. Then review all of Chapter 7 at `f9d7770d`. Rebuild and replace 163 only with that new count.
+**Chapter 6 scaling.** Commit `93be51a3` removes the false factor $\sigma^3$ on the Gaussian third moment. Comparison normals have variance $1/n$. Composer-2.5 agent `bc-ad49b548-3c8d-5e04-8fed-1b7df0ea5b04` recomputed the rescaling $Y\mapsto cY$ on that commit and found the corrected bound right. The whole-chapter read of the earlier `d50be021` does not cover this fix. Chapter 6 is not accepted.
+
+**Chapter 5 repairs.** Agent `bc-4f508bb3-e5fa-5915-8dfa-a5cb835fb3a2` re-read `ca8e9489` and closed the five repair points. It asked that the polar cutoff not reuse the letter $R$. The cutoff is now $T$. That one sentence is newer than `ca8e9489` and is not a full-page acceptance. Chapters 2 and 3 still have no full-page PDF acceptance.
+
+**Chapter 7, not accepted.** Commit `f9d7770d` proves the chain rule and the Huffman merge. Agent `bc-6500b58a-ef24-5d09-8c3d-147607e02497` recomputed the new numbers and found no mathematical defect. It did not review every older exercise. The chain-rule sentence that said the conditional masses produce $H(X)$ has been reworded. A whole-chapter signoff is still open.
+
+**C-GROUP.** Unchanged. Do not edit Volume 3 to bypass it.
+
+**Exact next step.** Continue substantive writing at Chapter 8, `volume4-chance/chapters/ch07-walks.tex` (Random Walks). Do not open the every-page ledger and do not edit Volumes 5--15 until Volume 4 numbering is stable. Rebuild before replacing the 163-page count.
 
 ---
 
