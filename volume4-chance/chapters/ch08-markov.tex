@@ -98,6 +98,31 @@ The Ehrenfest chain is the same idea with unequal rates. Two urns share $d$ ball
 \]
 There is no other edge. Exercise~\ref{ex:ehrenfest} is the same check for a general $d$, with $\pi(k)=\binom{d}{k}2^{-d}$. For $d=2$ that formula is exactly $(1/4,1/2,1/4)$. The chain is periodic of period $2$, so Theorem~\ref{thm:ergodic} does not apply: from $0$ the chain is always at an even state after an even number of steps. The lazy chain $(P+I)/2$ is the version that the theorem does cover.
 
+\section{Top to random}
+
+Take a deck of $n$ cards. Remove the top card and put it back into one of the $n$ possible slots, chosen uniformly: above the whole deck, between two cards, or at the bottom. The uniform distribution on the $n!$ orders is stationary. Deleting whichever card is on top of a uniform deck and reinserting it uniformly just rebuilds a uniform deck.
+
+Let $B$ be the original bottom card, and let $\tau$ be the first time $B$ itself is the card being reinserted. Until then, every card placed below $B$ stays below $B$, in the order it arrived.
+
+\begin{theorem}[top to random]\label{thm:top}
+The deck at time $\tau$ is a uniform random permutation, independent of $\tau$. The waiting time $\tau$ has the same law as the coupon collector's time, so $\mathbb E[\tau]=n H_n$. For every fixed real $c$ and every large $n$, if $t=\lceil n\ln n+cn\rceil$, then the total variation distance from uniform after $t$ steps is at most $e^{-c}$.
+\end{theorem}
+\begin{proof}
+Write $k$ for the number of cards currently below $B$. The next reinsertion falls into one of the $k+1$ slots at or below $B$ with probability $(k+1)/n$, and otherwise it lands strictly above $B$ and leaves the block below $B$ unchanged. Conditional on landing in that block, the slot is uniform among those $k+1$ ranks.
+
+Start from $k=0$: only $B$ is in the marked block, and its order is a uniform order of one card. Suppose that, given the identities of the marked cards and the waiting times between additions, the cards below $B$ are in uniform random order. The next successful insertion puts the old top card into a uniform rank in the block. Inserting a new card into a uniform rank of a uniform order produces a uniform order of the enlarged block. The success probability depends only on $k$, not on which cards are marked or how they are ordered, so the waiting time does not carry information about that order.
+
+When $k=n-1$, every other card is below $B$, in uniform order, and $B$ is on top. The next step inserts $B$ into one of $n$ equally likely positions. The resulting deck is uniform, and the choice does not depend on $\tau$. The $n$ stages are geometric with success probabilities $1/n,2/n,\ldots,n/n$, which are the coupon-collector stages in reverse order. Theorem~\ref{thm:coupon} gives the mean $nH_n$.
+
+The law at a fixed time $t$ is a mixture of the uniform law on $\{\tau\le t\}$ and some other law on $\{\tau>t\}$. Lemma~\ref{lem:coupling} is not needed: the total variation distance to uniform is at most the probability of the second piece, because on the first piece the two laws agree. The coupon-collector bound $P(T>t)\le n(1-1/n)^t$ and the inequality $1-1/n\le e^{-1/n}$ from Volume~1, Chapter~9, give
+\[
+ P(\tau>t)\le n e^{-t/n}.
+\]
+If $t\ge n\ln n+cn$, then $n e^{-t/n}\le e^{-c}$.
+\end{proof}
+
+For three cards the stages have means $3$, $3/2$ and $1$, so $\mathbb E[\tau]=11/2$. There are $6$ possible decks, and the theorem says each appears at time $\tau$ with probability $1/6$, whatever the waiting time was. For a deck of $52$ cards and $c=2$, the same bound says that after $\lceil 52\ln 52+104\rceil$ steps the distance to uniform is at most $e^{-2}$. The logarithm is not evaluated: $t/n\ge\ln 52+2$ is enough to cancel the factor $52$.
+
 \section{Exercises}
 
 \begin{exercise}[$\star$]\label{ex:lazy}
@@ -121,7 +146,7 @@ Let $\pi>0$ and let $Q$ be symmetric and irreducible. Set $P(x,y)=Q(x,y)\min(1,\
 \end{exercise}
 
 \begin{exercise}[$\star\star$]\label{ex:toptorandom}
-Move the top card of an $n$-card deck to a uniform random position. Let $\tau$ be the first time the original bottom card has been inserted. Show that the deck at time $\tau$ is uniform and independent of $\tau$, that $\tau$ has the coupon-collector waiting-time law, and that for every fixed real $c$ the total variation distance to uniform after the integer number $t=\lceil n\ln n+cn\rceil$ of steps is at most $e^{-c}$, for all sufficiently large $n$.
+Move the top card of an $n$-card deck to a uniform random position. Let $\tau$ be the first time the original bottom card has been inserted. Using the stages in Theorem~\ref{thm:top}, check that $\mathbb E[\tau]=11/2$ when $n=3$. Then show, from the same stages, that the deck at time $\tau$ is uniform and independent of $\tau$, and that for every fixed real $c$ the total variation distance to uniform after $t=\lceil n\ln n+cn\rceil$ steps is at most $e^{-c}$ for all sufficiently large $n$.
 \end{exercise}
 
 \begin{exercise}[$\star$]\label{ex:period}
@@ -182,7 +207,7 @@ Non-adjacent descents are independent. Adjacent ones occur together with probabi
 \end{solution}
 
 \begin{solution}{ex:toptorandom}
-\writeup Let $B$ be the original bottom card. Cards below $B$ stay in their relative order until $B$ itself is moved. The number below $B$ increases as in the coupon collector: with $k$ cards already below, the top card is inserted below $B$ with probability $(k+1)/n$. The time $\tau$ until $B$ has been inserted is the collector's time $T$ of Theorem~\ref{thm:coupon}. To prove uniformity rather than assume it, mark $B$ together with all cards already below it. A move that puts the old top card \emph{above} $B$ leaves the marked block unchanged. A move that inserts that card at or below $B$ adds it to the marked block, and conditional on this kind of move its insertion position is uniform among the $k+1$ available ranks, where $k$ cards already lie below $B$. By induction, conditional on the identities of the marked cards and on the sequence of waiting times between additions, the $k$ cards below $B$ have uniform relative order: adding a new card at a uniformly chosen rank preserves this property. The success probability $(k+1)/n$ depends only on $k$, not on their identities or order, so the waiting times carry no information about that relative order.
+\writeup For $n=3$ the success probabilities are $1/3$, $2/3$ and $1$, so the mean is $3+3/2+1=11/2$. The general argument is Theorem~\ref{thm:top}. The same bookkeeping, written out once more, is as follows. Let $B$ be the original bottom card. Cards below $B$ stay in their relative order until $B$ itself is moved. The number below $B$ increases as in the coupon collector: with $k$ cards already below, the top card is inserted below $B$ with probability $(k+1)/n$. The time $\tau$ until $B$ has been inserted is the collector's time $T$ of Theorem~\ref{thm:coupon}. To prove uniformity rather than assume it, mark $B$ together with all cards already below it. A move that puts the old top card \emph{above} $B$ leaves the marked block unchanged. A move that inserts that card at or below $B$ adds it to the marked block, and conditional on this kind of move its insertion position is uniform among the $k+1$ available ranks, where $k$ cards already lie below $B$. By induction, conditional on the identities of the marked cards and on the sequence of waiting times between additions, the $k$ cards below $B$ have uniform relative order: adding a new card at a uniformly chosen rank preserves this property. The success probability $(k+1)/n$ depends only on $k$, not on their identities or order, so the waiting times carry no information about that relative order.
 
 When $k=n-1$, the original bottom card $B$ has reached the top; the other $n-1$ cards lie below it in uniform order, independently of the waiting times. The next move inserts $B$ at one of the $n$ equally likely positions, independently of the preceding choices. Thus at $\tau$ the whole deck is a uniform permutation, and its law does not depend on $\tau$. The stages have geometric success probabilities $1/n,2/n,\ldots,n/n$, exactly the coupon-collector stages read in reverse, so $\tau\stackrel d=T$.
 
