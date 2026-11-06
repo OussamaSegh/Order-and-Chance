@@ -13,10 +13,11 @@ Let $X$ take finitely many values, with $P(X=a)=p_a>0$. The \emph{Shannon entrop
 \[
  H(X)=\sum_a p_a\log_2\frac1{p_a}.
 \]
-The sum is finite. Changing the base of the logarithm multiplies $H$ by a constant; bits are the choice $\log_2$. A fair coin has $H=1$. A coin with $P(\mathrm{heads})=0.1$ has
+The sum is finite. Changing the base of the logarithm multiplies $H$ by a constant; bits are the choice $\log_2$. A fair coin has $H=1$. A coin with $P(\mathrm{heads})=1/10$ has
 \[
- H=0.1\log_2 10+0.9\log_2(10/9)=0.46899\ldots.
+ H=\frac1{10}\log_2 10+\frac9{10}\log_2\frac{10}9=\log_2 10-\frac95\log_2 3.
 \]
+The decimal $0.46899\ldots$ is a numerical evaluation of this expression. No proof below uses that decimal. The comparisons use $3<\log_2 10<10/3$, from $8<10$ and from $2^{10}=1024>1000=10^3$, and $3/2<\log_2 3<8/5$, from $2^3=8<9=3^2$ and from $2^8=256>243=3^5$.
 
 \begin{proposition}[Gibbs]\label{prop:gibbs}
 For an integer $m\ge1$, if $X$ takes at most $m$ values, then $H(X)\le\log_2 m$, with equality if and only if $X$ is uniform on exactly $m$ values.
@@ -35,7 +36,15 @@ For i.i.d.\ copies $X_1,X_2,\ldots$ with the same finite law, the probability of
 \]
 The summands are i.i.d.\ and bounded, because every $p_a$ in the support is positive and the alphabet is finite. For rational masses, choose a common denominator $r$ and use one base-$r$ digit from each independent uniform block, as in Chapter~2; this is a finite-digit model of Chapter~4's bounded strong law. A rational probability such as $1/3$ would \emph{not} be represented exactly by finitely many binary digits, so the choice of base matters. For arbitrary positive finite-alphabet masses, list the symbols in order of \emph{decreasing} probability. Their information values $\log_2(1/p_a)$ are then nondecreasing. A uniform point $U$ selects a symbol through consecutive intervals of lengths $p_a$, so its information is a bounded nondecreasing step function of $U$. The dyadic lower-and-upper approximation after Proposition~\ref{prop:inverse} in Chapter~5 extends the bounded strong law to this function. Its i.i.d.\ block copies therefore have information averages converging almost surely to $H(X)$. The typical-set theorem below also proves convergence in probability directly by Chebyshev's inequality.
 
-The set can be written down for two tosses. Take $P(\mathrm{heads})=0.1$, so $H(X)=0.46899\ldots$ as above, and take $\varepsilon=1/2$. A string is typical when its information per symbol lies within $1/2$ of $H(X)$, that is in an interval of length $1$ about $0.469$. The four strings and their information rates $-\frac12\log_2 p$ are approximately $3.322$ for HH, $1.737$ for HT and for TH, and $0.152$ for TT. Only TT falls inside the interval. The typical set therefore has one string, and its probability is $0.81$. The count bounds of the theorem are already true for this tiny set, since one string lies between $\tfrac12\cdot 2^{2(H-1/2)}$ and $2^{2(H+1/2)}$. The probability $0.81$ is not yet close to $1$. The theorem is the statement that the probability does become close to $1$, and that the exponential rate of the count settles at $H(X)$.
+The set can be written down for two tosses of this coin, with tolerance $\varepsilon=1/2$. The information per symbol of a string with probability $p$ is $-\frac12\log_2 p$. For TT one has $p=81/100$, so the rate equals $\log_2 10-2\log_2 3$. Subtracting from the entropy,
+\[
+ H-\bigl(\log_2 10-2\log_2 3\bigr)=\frac15\log_2 3<\frac15\cdot\frac85=\frac8{25}<\frac12.
+\]
+The rate lies below $H$ and within $1/2$ of it, so TT is typical. For HT, $p=9/100$ and the rate equals $\log_2 10-\log_2 3$, and
+\[
+ \bigl(\log_2 10-\log_2 3\bigr)-H=\frac45\log_2 3>\frac45\cdot\frac32=\frac65>\frac12.
+\]
+HT and TH sit outside the window, and HH is farther out. The typical set is the single string TT, whose probability is $81/100$. That probability is exact. It is not close to $1$. The same bounds give $H<\tfrac{10}3-\tfrac95\cdot\tfrac32=\tfrac{19}{30}$, so $2(H-\tfrac12)<\tfrac4{15}$ and $\tfrac12\cdot 2^{2(H-1/2)}<1$, while $2^{2(H+1/2)}>1$. One string lies strictly between the two count bounds. The theorem is the statement that the probability becomes close to $1$ for long strings, at an exponential rate $H$.
 
 \begin{theorem}[typical sequences]\label{thm:aep}
 Let $\varepsilon>0$. The set of strings of length $n$ whose probability $p$ satisfies
@@ -49,8 +58,20 @@ has probability tending to $1$. Denote this set by $T_n(\varepsilon)$. For all s
 So nearly all the probability is carried by a set whose size grows exponentially at rate $H(X)$.
 \end{theorem}
 \begin{proof}
-The information sum is an average of independent bounded variables. Its variance is $\operatorname{Var}(\log_2(1/p_X))/n$, so Chebyshev's inequality from Volume~1 proves directly that $P(T_n(\varepsilon))\to1$, without requiring a separate almost-sure-to-in-probability theorem. Each string in $T_n(\varepsilon)$ has mass at least $2^{-n(H+\varepsilon)}$, and the total mass is at most $1$, so $|T_n(\varepsilon)|\le2^{n(H+\varepsilon)}$. Conversely, each such string has mass at most $2^{-n(H-\varepsilon)}$, while their total mass eventually exceeds $1/2$. Therefore $|T_n(\varepsilon)|>\frac12\,2^{n(H-\varepsilon)}$.
+Let $I=\log_2(1/p_X)$ and let $I_1,\ldots,I_n$ be independent copies, one for each symbol of the string. Then $\mathbb E[I]=H(X)$. The alphabet is finite and every mass in the support is positive, so $I$ is bounded: $0\le I\le M$ with $M=\max_a\log_2(1/p_a)<\infty$. Hence $\operatorname{Var} I\le\mathbb E[I^2]\le M^2$. The string is atypical precisely when the average of the $I_j$ misses $H(X)$ by at least $\varepsilon$. Chebyshev's inequality from Volume~1 gives
+\[
+ P\bigl(|\bar I_n-H(X)|\ge\varepsilon\bigr)\le\frac{M^2}{n\varepsilon^2}.
+\]
+The right-hand side tends to $0$, so $P(T_n(\varepsilon))\to1$. This is a finite-$n$ bound, not only a limit: once $n>2M^2/\varepsilon^2$ the probability of the typical set exceeds $1/2$.
+
+Each string in $T_n(\varepsilon)$ has mass at least $2^{-n(H+\varepsilon)}$, and the total mass of any set of strings is at most $1$, so $|T_n(\varepsilon)|\le 2^{n(H+\varepsilon)}$. In the other direction, once the total mass of $T_n(\varepsilon)$ exceeds $1/2$, and each of its strings has mass at most $2^{-n(H-\varepsilon)}$, one has $|T_n(\varepsilon)|>\tfrac12\,2^{n(H-\varepsilon)}$. The threshold $n>2M^2/\varepsilon^2$ is a sufficient condition for that mass, read off from Chebyshev. It is not claimed to be the smallest such $n$.
 \end{proof}
+
+For the coin with heads probability $1/10$, the larger information is $\log_2 10<10/3$, so $M^2<100/9$. At tolerance $\varepsilon=1/2$,
+\[
+ \frac{2M^2}{\varepsilon^2}<\frac{2\cdot 100/9}{1/4}=\frac{800}9<89.
+\]
+Chebyshev therefore guarantees $P(T_n(1/2))>1/2$ for every $n\ge 89$, and the two count bounds of the theorem are in force from that $n$ on. The two-toss set above has probability $81/100$, which is already larger than $1/2$, but $n=2$ is far below $89$: the guarantee is sufficient, and this particular coin crosses $1/2$ earlier than the estimate sees. The decimal evaluation of $H$ is not an input to the guarantee.
 
 For a fair coin, every one of the $2^n$ binary strings has mass $2^{-n}$: the typical set can be the whole space. For a biased coin, most strings cluster near the expected frequency of heads, and the number of typical strings grows like $2^{nH}$ rather than $2^n$. The theorem supplies both an upper and a lower exponential bound, not the exact count of any one finite sample.
 
