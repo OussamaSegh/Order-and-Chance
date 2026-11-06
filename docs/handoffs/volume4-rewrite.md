@@ -1,6 +1,22 @@
 # Handoff: Volume 4 rewrite
 
-## Latest checkpoint — 6 November 2026, native PDF of `7078dfe5`
+## Latest checkpoint — 6 November 2026, Chapter 4 four-bound comparison
+
+**Preserved.** `47f7999b` is an ancestor. `origin/main` is `5c4840cc`. No other volume was edited. PR #111 stays draft. Do not tick Chapter 2 or Chapter 3 complete.
+
+**Chapter 2 mathematical review of the pushed text.** Independent subagent composer-2.5, agent `bc-e1b77ef2-989c-5a48-a5b4-fda005bda762`, read `ch02-discrete.tex` at `47f7999b` with `git show`. The file is unchanged since `7078dfe5`. It recomputed the eight exercise targets it was given and reported no false statement. It did not sign voice or a PDF. Together with the voice pass of the same bytes at `7078dfe5`, the text has a distinct math read and a distinct voice read. Chapter complete stays unchecked: there is still no full-page visual acceptance of the book.
+
+**Chapter 3 voice.** A different composer-2.5 agent, `bc-577c582d-a175-5b48-aba8-0946f27989d9`, read `47f7999b` and did **not** pass Sound human. The repairs are commit `13113c29`. They are not yet rechecked.
+
+**Chapter 4 substance.** Commit `66b22317` derives Markov, Chebyshev, Hoeffding, and the fair-coin relative-entropy bound on one event, including the second-derivative test for $\lambda$. Exercise `ex:chernoffbin` is now the general success probability $p$, with a full solution. A distinct reviewer of `66b22317` is still required. The 157-page count is the build of `7078dfe5`, before this addition.
+
+**C-GROUP.** Unchanged. Do not edit Volume 3.
+
+**Exact next step.** Have a distinct reviewer read the pushed Chapter 4 file, and have agent `bc-577c582d` re-read the Chapter 3 voice edits at their pushed SHA. Then continue substantive writing at Chapter 5. Do not call any chapter accepted.
+
+---
+
+## Previous checkpoint — 6 November 2026, native PDF of `7078dfe5`
 
 **Preserved.** `f43088ac` is an ancestor. `origin/main` is `5c4840ccdbae22abfa8a28d01b8c5d1ab16355e6`. No other volume was edited. PR #111 stays draft.
 
