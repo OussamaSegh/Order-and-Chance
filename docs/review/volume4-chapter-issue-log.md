@@ -14,6 +14,14 @@ The Chapter 6 file `ch06-clt.tex` was last changed in `30d77d7589ebbe5a1d982f0a0
 
 Composer-2.5 `bc-51a79de0-65e2-58f8-acdf-7fd1eae37caf` read the whole of printed Chapter 7, `ch07-entropy.tex`, and `figures/ch07-prefixtree.tex` at `3030925c` and found no remaining defect. All six exercises passed. That closes the mathematical and voice review of Chapter 7 at `3030925c`. Composer-2.5 `bc-19314489-97bf-5f7b-8f16-95fec40b6e35` read the whole of printed Chapter 8, `ch07-walks.tex`, and `figures/ch08-reflectstep.tex` at the same SHA and found no remaining defect. All eight exercises passed, including the control of $|\phi|^n$ at the origin and at every corner. That closes the mathematical and voice review of Chapter 8 at `3030925c`. Neither close is a production acceptance. Those two files are not edited by the Chapter 9 sentence below.
 
+## Chapters 9--11 full rereads at `94837ea3`
+
+Composer-2.5 `bc-14b23f85-81fb-56d9-8671-e8627c52b142` read the whole of printed Chapter 9 and `figures/ch08-chain.tex` at `94837ea3` and found no remaining defect. The adjacent-pair count is $n-2$, and the factor $2$ sits in the variance formula. That closes the mathematical and voice review of Chapter 9 at `94837ea3`. Composer-2.5 `bc-0715e371-e090-5ded-967d-abb71ef4cda5` read the whole of printed Chapter 10 and both figures at the same SHA and found none. Composer-2.5 `bc-e3a1fe4d-b963-5bff-ab82-73348fbba1ab` read the whole of printed Chapter 11 and the upcrossing figure at the same SHA and found none. Those three closes are not production acceptances. The Chapter 9, 10, and 11 files are not edited by the repairs below.
+
+## Chapter 12 and 13 full rereads at `94837ea3`, two defects
+
+Composer-2.5 `bc-d1db9a2f-da03-5d73-b03d-0b60a5f18a24` read the whole of printed Chapter 12. There is no figure. Six exercises passed. `ex:maxjoint` used $M_1$ before it was defined. The exercise now sets $M_t=\max_{s\le t}B_s$, and the hitting-time hint uses the same definition. The nowhere-differentiable theorem said a path is nowhere differentiable, while the proof rules out a finite derivative. The statement now says there is no finite derivative, which is what differentiability requires, and it does not claim that a difference quotient cannot tend to infinity. Composer-2.5 `bc-cbc74ec9-37e8-55d2-8223-bc365923a1d6` read the whole of printed Chapter 13. There is no figure. All six exercises passed. The local lemma cited $\ln(1+u)\le u$ at $u=1/d$ without inverting $(1+1/d)^d\le e$. The proof now writes that inversion, so $(d/(d+1))^d\ge e^{-1}$. These two repairs have no full reread. The Chapter 12 and 13 review gates stay open.
+
 ## Chapter 9 full reread at `3030925c`, one defect
 
 Composer-2.5 `bc-0192976a-6eea-5f20-964d-0e45f3c46a18` read the whole of printed Chapter 9, `ch08-markov.tex`, and `figures/ch08-chain.tex`. Eight exercises passed. `ex:risingmean` failed on the sentence ``There are $2(n-2)$ ordered adjacent pairs in the variance sum.'' There are $n-2$ adjacent pairs. The factor $2$ belongs to the variance formula, which counts each unordered pair twice. The displayed variance $(n+1)/12$ was already right. The sentence now says that. This repair has no full reread. The Chapter 9 review gate stays open. Chapters 1--8 and 14 were not edited.
@@ -88,9 +96,8 @@ These are whole-chapter reads of the current text, not patch checks. No report h
 
 A chapter's review gate closes only when a distinct reviewer reads the whole of its current text and reports no remaining defect. A patch recheck does not do that. As of the Chapter 9 sentence recorded above:
 
-- Chapters 1, 2, 3, 4, 5, 6, 7, 8, and 14: mathematical and voice gates closed at the SHAs named in this log. Production and the every-page ledger remain open. No box is ticked.
-- Chapter 9: full read at `3030925c` found the pair count. The repaired sentence has no full reread.
-- Chapters 10--13: earlier whole reads plus later patch rechecks. Their review gates stay open.
+- Chapters 1--11 and 14: mathematical and voice gates closed at the SHAs named in this log. Production and the every-page ledger remain open. No box is ticked.
+- Chapters 12 and 13: full reads at `94837ea3` found the undefined maximum and the uninverted local-lemma bound. The repaired sentences have no full reread.
 - Appendix `extremal.tex`, the preface, and the closing matter are in the book. They have no full independent reread of the current SHA recorded here.
 - The fresh whole-volume review, the Volume 5--15 citation sweep, and the every-page visual ledger have not been started.
 
