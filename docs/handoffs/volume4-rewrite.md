@@ -66,7 +66,7 @@ Legend: `planned` means designed and not yet the manuscript. `written` means a f
 | Ch. 3 Generating Functions | written | Fresh. Exercise 3.7 is the series for $(1-4x)^{-1/2}$ and the Catalan formula |
 | Ch. 4 Inequalities, Large Numbers and Entropy | written | Hoeffding, Borel–Cantelli, bounded strong law, Bernstein–Weierstrass, finite entropy. Gilmer left out on purpose |
 | Ch. 5 Continuous Probability Done Properly | written | Riemann densities, continuous Fubini on rectangles, polar rectangles, inverse distribution functions, continuous dominated convergence, Box–Muller. Exercise 5.7 is the Cantor distribution. Not Lebesgue theory |
-| Ch. 6 Convergence and the Central Limit Theorem | planned | Lindeberg must remain formal environment **6.10** |
+| Ch. 6 Convergence and the Central Limit Theorem | written | Lindeberg is the tenth numbered formal environment. Exercises 6.1 and 6.7 are Slutsky and the cycle CLT |
 | Ch. 7 Random Walks | planned | |
 | Ch. 8 Markov Chains | planned | Exercises 8.6 and 8.8 are series interfaces |
 | Ch. 9 Poisson Processes | planned | Colouring lemma must remain formal environment **9.5** |
@@ -84,11 +84,11 @@ Legend: `planned` means designed and not yet the manuscript. `written` means a f
 
 ## Last completed milestone
 
-**Milestone 5 — Chapter 5 written** on this commit. Chapters 1–5 are the new text. Chapters 6–12 and the appendix are still the previous manuscript.
+**Milestone 6 — Chapter 6 written** on this commit. Lindeberg is formal environment 10 in that chapter. Next is Chapter 7.
 
 ## Current WIP
 
-Chapter 6 is next. Lindeberg must be the tenth numbered formal environment (`definition`, `proposition`, `lemma`, `theorem`, `corollary`, `example` — not the `x` variants).
+Chapter 7, then 8–12 and the appendix, without stopping between them except to commit and push.
 
 ## Decisions already made
 
