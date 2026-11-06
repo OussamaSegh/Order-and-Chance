@@ -1,0 +1,78 @@
+name: Volume 4 native PDF QA
+
+# Independent manuscript build; does not replace or bypass the full Build books
+# workflow or its protected Volume 3 conceptual-review gate.
+on:
+  pull_request:
+    paths:
+      - 'volume4-chance/**'
+      - 'common/**'
+      - 'tools/**'
+      - '.github/workflows/volume4-qa.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: volume4-qa-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  volume4-native:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 55
+    steps:
+      - uses: actions/checkout@v4
+      - name: Restore existing TeX package cache
+        id: tex
+        uses: actions/cache/restore@v4
+        with:
+          path: debs
+          key: tex-debs-ubuntu-24.04-v4-pngquant
+      - name: Install cached TeX toolchain
+        if: steps.tex.outputs.cache-hit == 'true'
+        run: |
+          sudo dpkg -i debs/*.deb >/dev/null
+          command -v xelatex
+          command -v gs
+          command -v pdfinfo
+      - name: Install TeX toolchain if cache is absent
+        if: steps.tex.outputs.cache-hit != 'true'
+        run: |
+          sudo apt-get -o Acquire::Retries=5 update
+          sudo apt-get -o Acquire::Retries=5 install -y --no-install-recommends \
+            texlive-latex-base texlive-latex-recommended texlive-latex-extra \
+            texlive-fonts-recommended tex-gyre texlive-pictures texlive-xetex \
+            python3-pil pandoc poppler-utils ghostscript pngquant
+      - name: Install publishing helpers
+        run: python3 -m pip install -r tools/requirements-build.txt
+      - name: Build only Volume 4 reading and print PDFs, including native checks
+        run: ./build.sh --pdf-only volume4-chance
+      - name: Record exact pages and file digests
+        if: success()
+        run: |
+          find dist -type f \( -name '*.pdf' -o -name '*.json' \) -print0 | sort -z | xargs -0 -r sha256sum > volume4-native-sha256.txt
+          find dist -type f -name '*Print.pdf' -print0 | while IFS= read -r -d '' f; do
+            echo "Print interior: $f"
+            pdfinfo "$f" | grep -E 'Pages:|Page size:'
+          done
+          cat volume4-native-sha256.txt >> "$GITHUB_STEP_SUMMARY"
+      - name: Upload Volume 4 PDFs and compilation diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: volume4-native-${{ github.run_id }}
+          if-no-files-found: warn
+          retention-days: 10
+          path: |
+            volume4-native-sha256.txt
+            dist/*.pdf
+            dist/kdp/*.pdf
+            build/volume4-chance/main.log
+            build/volume4-chance/main.stdout
+            build/volume4-chance/main.oclayout
+            build/volume4-chance/kdp-preflight.json
+            build/volume4-chance/cover-preflight.json
+            build/volume4-chance/edition-qa.json
+            build/volume4-chance/production-output-qa.json
