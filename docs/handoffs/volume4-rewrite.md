@@ -1,6 +1,22 @@
 # Handoff: Volume 4 rewrite
 
-## Latest checkpoint — 6 November 2026, Chapter 4 four-bound comparison
+## Latest checkpoint — 6 November 2026, Chapter 5 transformations
+
+**Preserved.** `3b2addca` is an ancestor. `origin/main` is `5c4840cc`. No other volume was edited. Do not mark Chapters 2, 3, 4, or 5 accepted.
+
+**Chapter 4 older sections.** Independent subagent composer-2.5, agent `bc-a31dd44f-69c4-5168-8200-3f9a62eb97a7`, read Borel--Cantelli, the bounded strong law, Weierstrass, and exercises `ex:bcfinite`, `ex:bernstein2`, `ex:gapfill`, `ex:runs` at `3b2addca`. It reported no defect. That does not accept the chapter: voice and a native PDF of the later coin comparison are still open, and the review is not a full-page check.
+
+**Chapter 5 writing, not a finished chapter.** Commit `baebc58b` derives an exponential from one uniform, proves that a nonnegative density has mean equal to the integral of its tail, computes the mean of the Box--Muller radius, works the minimum and maximum of two independent uniforms, and differentiates the chord-length law in Bertrand's distance model. Exercise `ex:usquare` has a hint and a solution. The older theorems and the other exercises were not rewritten. A distinct reviewer of `baebc58b` is required before any acceptance language. Chapters 2 and 3 still have no full-page PDF acceptance.
+
+**Page count.** Do not reuse 157. That number is the print interior of `7078dfe5` only. The next native `./build.sh volume4-chance` after this writing is the first count that includes it.
+
+**C-GROUP.** Unchanged. Do not edit Volume 3.
+
+**Exact next step.** Record the review of this Chapter 5 commit, then continue substantive writing at Chapter 6's elementary Lindeberg array, and rebuild before quoting a page count.
+
+---
+
+## Previous checkpoint — 6 November 2026, Chapter 4 four-bound comparison
 
 **Preserved.** `47f7999b` is an ancestor. `origin/main` is `5c4840cc`. No other volume was edited. PR #111 stays draft. Do not tick Chapter 2 or Chapter 3 complete.
 
