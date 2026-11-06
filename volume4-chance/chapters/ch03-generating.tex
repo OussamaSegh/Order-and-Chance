@@ -13,7 +13,7 @@ Let $X$ be a random variable with values in $\{0,1,2,\ldots\}$ and $P(X=k)=p_k$.
 \[
  f(s)=\mathbb E[s^X]=\sum_{k\ge0}p_k s^k,\qquad s\in[0,1].
 \]
-The series converges at $s=1$ to $1$, and on $[0,1)$ it converges absolutely. Termwise differentiation on $[0,r]$ for any $r<1$ is legitimate: the differentiated series $\sum k p_k s^{k-1}$ is dominated by $\sum k p_k r^{k-1}$, a convergent numerical series because $k r^{k-1}$ grows more slowly than any $(1/r')^k$ with $r<r'<1$, and Volume~1's comparison test applies. Thus $f$ is continuous on $[0,1]$, differentiable on $[0,1)$, and
+The series converges at $s=1$ to $1$, and on $[0,1)$ it converges absolutely. Termwise differentiation on $[0,r]$ for any $0<r<1$ is legitimate: the differentiated series is uniformly bounded term by term by $k p_k r^{k-1}\le k r^{k-1}$, and $\sum_{k\ge1}kr^{k-1}=1/(1-r)^2$ by differentiating the geometric series of Volume~1 inside its interval of convergence. Thus $f$ is continuous on $[0,1]$, differentiable on $[0,1)$, and
 \[
  f'(s)=\sum_{k\ge1}k p_k s^{k-1}.
 \]
@@ -22,7 +22,7 @@ The series converges at $s=1$ to $1$, and on $[0,1)$ it converges absolutely. Te
 The limit $\lim_{s\uparrow1}f'(s)$ equals $\mathbb E[X]$, in $[0,\infty]$.
 \end{proposition}
 \begin{proof}
-For $s\in[0,1)$ the terms $k p_k s^{k-1}$ increase to $k p_k$ as $s\uparrow1$. The supremum of the sums of finitely many such terms is $\sum k p_k=\mathbb E[X]$, by the monotone rearrangement of nonnegative series in Volume~1, Chapter~3. That supremum is also $\lim_{s\uparrow1}f'(s)$.
+For $s\in(0,1)$ the terms $k p_k s^{k-1}$ increase to $k p_k$ as $s\uparrow1$. Since every term is nonnegative, $f'(s)\le\sum_{k\ge1}kp_k=\mathbb E[X]$. For every fixed $K$, $f'(s)\ge\sum_{k=1}^Kkp_ks^{k-1}$, whose limit is $\sum_{k=1}^Kkp_k$. Taking the supremum over $K$ gives the matching lower bound, even when the mean is infinite, by the nonnegative-series convention of Volume~1.
 \end{proof}
 
 In particular, if $\mathbb E[X]<\infty$, then $f'(1)$ exists as a left derivative and equals the mean. The second factorial moment is the same argument applied to $f''$, when one needs it. Exercise~\ref{ex:randomsumvar} records the variance formula.
@@ -51,14 +51,14 @@ The double sum is absolutely convergent for $s\in[0,1]$, so the product of the s
 A binomial count is a sum of $n$ independent Bernoulli variables, and $(1-p+ps)^n$ is the product of the factors $1-p+ps$. A sum of independent Poisson variables of parameters $\lambda$ and $\mu$ has generating function $e^{\lambda(s-1)}e^{\mu(s-1)}=e^{(\lambda+\mu)(s-1)}$, which is the Poisson$(\lambda+\mu)$ function. That is the generating-function proof of Exercise~\ref{ex:twopoisson}.
 
 \begin{proposition}[random sums]\label{prop:randomsum}
-Let $N,X_1,X_2,\ldots$ be independent, with the $X_i$ identically distributed, nonnegative, and integer valued, and with $N$ nonnegative and integer valued. Let $S=0$ when $N=0$, and $S=X_1+\cdots+X_N$ otherwise. If $g$ is the generating function of $N$ and $f$ is the generating function of $X_1$, then $S$ has generating function $g(f(s))$.
+Let $N$ be nonnegative and integer valued. Conditional on $N=n$, draw $n$ independent, identically distributed nonnegative integer-valued variables with a fixed common law that does not depend on $n$. Let $S$ be their sum, with $S=0$ when $n=0$. If $g$ is the generating function of $N$ and $f$ is the generating function of one summand, then $S$ has generating function $g(f(s))$.
 \end{proposition}
 \begin{proof}
 Condition on $N=n$. For $n=0$, $\mathbb E[s^S\mid N=0]=1$. For $n\ge1$, independence and Proposition~\ref{prop:pgfsum} give $\mathbb E[s^S\mid N=n]=f(s)^n$. Therefore
 \[
  \mathbb E[s^S]=\sum_{n\ge0}P(N=n)f(s)^n=g\bigl(f(s)\bigr).
 \]
-The conditioning is a partition into the events $\{N=n\}$, each of which we can compute because $N$ and the $X_i$ are independent on a countable product of countable spaces. A finite product of countable sets is countable, and a countable union over $n$ of the spaces for $(N,X_1,\ldots,X_n)$ is still a countable model of the kind Volume~1 allows.
+There is no need to assume that a countably infinite Cartesian product is countable (it need not be). Sample $N$ first and then its finite list of summands: the disjoint union over $n\ge0$ of these finite lists is a countable sample space. Its masses are $P(N=n)$ multiplied by the conditional finite-list masses, and their total is $\sum_nP(N=n)=1$. The displayed calculation uses only nonnegative sums on that space.
 \end{proof}
 
 \section{Galton--Watson extinction}
@@ -71,11 +71,11 @@ The extinction probability $\eta$ is the smallest root of $s=f(s)$ in $[0,1]$. I
 \begin{proof}
 Let $\eta_n=P(Z_n=0)$. Then $\eta_0=0$ and $\eta_1=p_0=f(0)$. Conditioning on the first generation, $Z_n$ is the sum of $Z_1$ independent copies of a process with the same law, so $\eta_{n}=f(\eta_{n-1})$ for $n\ge1$. Since $f$ is increasing on $[0,1]$ and $\eta_1=f(0)\ge0=\eta_0$, induction gives $\eta_n\le\eta_{n+1}\le1$. The limit $L=\lim\eta_n$ satisfies $L=f(L)$ by continuity of $f$.
 
-The event $\{Z_n=0\}$ increases to the extinction event, because once the population hits $0$ it stays there. Thus $\eta=P(\bigcup_n\{Z_n=0\})=\lim\eta_n=L$, where the probability of the increasing union is the limit of the probabilities: each $\{Z_n=0\}$ is an event in a countable model built generation by generation, and the finite-additivity argument of Volume~1 for an increasing sequence of events with probabilities $\eta_n$ gives the limit. Concretely, $\eta\ge\eta_n$ for every $n$, and if the line dies, it dies at some finite generation, so the extinction event is the union.
+Extinction by time $n$ depends only on the first $n$ finite generations, whose joint laws are determined by the offspring masses. Let $D_j$ be the event of \emph{first} extinction in generation $j$. These events are disjoint and $\eta_n=\sum_{j=1}^nP(D_j)$. The event of eventual extinction is their countable union, with probability defined by the nonnegative sum $\eta=\sum_{j\ge1}P(D_j)$. Hence $\eta=\lim_n\eta_n=L$. No conclusion about an increasing union is drawn from finite additivity alone.
 
 Now let $r\in[0,1]$ be any root of $s=f(s)$. Then $\eta_0=0\le r$, and if $\eta_{n-1}\le r$ then $\eta_n=f(\eta_{n-1})\le f(r)=r$. So $L\le r$. The limit is the smallest root.
 
-It remains to locate that root. The function $f(s)-s$ has $f(1)-1=0$. Suppose $\mathbb E[X]=m$ exists in $[0,\infty]$. If $m>1$, then Proposition~\ref{prop:pgfmean} gives $(1-f(s))/(1-s)\to m>1$ as $s\uparrow1$, so $1-f(s)>1-s$ for $s$ close to $1$, that is $f(s)<s$ on a left neighbourhood of $1$. Combined with $f(0)\ge0$, the intermediate-value theorem supplies a root in $[0,1)$. The smallest root is then strictly less than $1$, so $\eta<1$.
+It remains to locate that root. The function $f(s)-s$ has $f(1)-1=0$. Suppose $\mathbb E[X]=m$ exists in $[0,\infty]$. If $m>1$, then the nonnegative-series identity $(1-f(s))/(1-s)=\sum_{k\ge1}p_k(1+s+\cdots+s^{k-1})$ tends to $m$ as $s\uparrow1$ (by the same finite-partial-sum argument as Proposition~\ref{prop:pgfmean}), so $1-f(s)>1-s$ for $s$ close to $1$, that is $f(s)<s$ on a left neighbourhood of $1$. Combined with $f(0)\ge0$, the intermediate-value theorem supplies a root in $[0,1)$. The smallest root is then strictly less than $1$, so $\eta<1$.
 
 If $m<1$, the same expansion gives
 \[
@@ -280,7 +280,7 @@ For the slope, differentiate $1-\rho=e^{-c\rho}$ with respect to $c$, treating $
 \[
  -\rho'=e^{-c\rho}(-\rho-c\rho')=-(1-\rho)(\rho+c\rho').
 \]
-At $c=1$, $\rho=0$ is the only root, and the equation becomes indeterminate. Set $\rho=(c-1)\alpha(c)$ with $\alpha$ to be found, or expand $e^{-c\rho}=1-c\rho+c^2\rho^2/2+O(\rho^3)$. Then $1-\rho=1-c\rho+c^2\rho^2/2+O(\rho^3)$, so $\rho(c-1)=c^2\rho^2/2+O(\rho^3)$. For $\rho\ne0$, $c-1=c^2\rho/2+O(\rho^2)$. As $c\downarrow1$, $\rho\to0$, hence $\rho\sim 2(c-1)$.
+At $c=1$, $\rho=0$ is the only root, and the equation becomes indeterminate. Set $\rho=(c-1)\alpha(c)$ with $\alpha$ to be found, or expand $e^{-c\rho}=1-c\rho+c^2\rho^2/2+O(\rho^3)$. Then $1-\rho=1-c\rho+c^2\rho^2/2+O(\rho^3)$, so $\rho(c-1)=c^2\rho^2/2+O(\rho^3)$. For $\rho\ne0$, $c-1=c^2\rho/2+O(\rho^2)$. As $c\downarrow1$, $\rho\to0$: any subsequential limit $r\in[0,1]$ would solve $1-r=e^{-r}$, whose only solution is $r=0$ (since $e^{-r}>1-r$ for $r>0$). The Taylor remainder is uniform for $c\in[1,2]$ and $0\le\rho\le1$, so the preceding identity then gives $\rho\sim2(c-1)$.
 \end{solution}
 
 \section*{Sources and further reading}
