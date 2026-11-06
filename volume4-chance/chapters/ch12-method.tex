@@ -19,10 +19,35 @@ Linearity gives $\mathbb E[X]=\binom{n}{k}2^{1-\binom{k}{2}}$, since each clique
 \end{proof}
 
 \begin{theorem}[symmetric local lemma]\label{thm:lll}
-If $P(A_i)\le p$, each $A_i$ depends on at most $d$ of the others, and $ep(d+1)\le1$, then $P(\bigcap_i A_i^c)>0$.
+Let $A_1,\ldots,A_m$ be events with $P(A_i)\le p$. Suppose each event has a set $D_i$ of at most $d$ other events such that $A_i$ is independent of the \emph{joint collection} of all events outside $D_i\cup\{i\}$ (a dependency graph). If $ep(d+1)\le1$, then $P(\bigcap_{i=1}^m A_i^c)>0$.
 \end{theorem}
 \begin{proof}
-Let $D_i$ be a dependency set of size at most $d$. The inductive claim is that $P(A_i\mid\bigcap_{j\in S}A_j^c)\le 1/(d+1)$ whenever $i\notin S$ and the conditioning event is nonempty. If $S$ misses $D_i$, independence reduces the probability to $P(A_i)\le p\le 1/(d+1)$. In general, split $S$ into the part inside $D_i$ and the part outside. The numerator of the resulting conditional probability is at most $p$, by independence from the outside part. The denominator is at least $1-d/(d+1)$, by the inductive hypothesis applied to the at most $d$ events inside $D_i$, one at a time. The ratio is at most $p(d+1)\le 1/e\le 1/(d+1)$. Multiplying the successive conditional probabilities of the complements gives a positive lower bound $(1-1/(d+1))^m$.
+If $d=0$, the events are mutually independent, and $p\le1/e<1$ gives $P(\bigcap_iA_i^c)=\prod_i(1-P(A_i))>0$. Assume $d\ge1$ and put $x=1/(d+1)<1$. Since $(1-1/(d+1))^d\ge e^{-1}$ (use $\ln(1+u)\le u$ with $u=1/d$), the hypothesis gives
+\[
+ p\le\frac1{e(d+1)}\le x(1-x)^d.
+\]
+
+We prove by induction on the number of conditioning events that, for every $i\notin S$ and every nonempty conditioning event,
+\[
+ P\bigl(A_i\mid\bigcap_{j\in S}A_j^c\bigr)\le x.
+\]
+For $S=\varnothing$, this follows from $p\le x$. For general $S$, split $S=T\cup R$, where $T=S\cap D_i$ has at most $d$ members and $R=S\setminus D_i$. By the dependency-graph condition, $A_i$ is independent of the joint avoidance event for all $j\in R$, so
+\[
+P(A_i\mid\bigcap_{j\in R}A_j^c)=P(A_i)\le p.
+\]
+Conditioning further on avoiding $T$ can increase this probability by at most the reciprocal of
+\[
+P\bigl(\bigcap_{j\in T}A_j^c\mid\bigcap_{j\in R}A_j^c\bigr)
+=\prod_{j\in T}P\bigl(A_j^c\mid\text{avoid earlier members of }T\text{ and all }R\bigr)
+\ge(1-x)^{|T|}\ge(1-x)^d.
+\]
+The inductive claim applies in each factor because its conditioning set has at most $|S|-1$ elements. Therefore $P(A_i\mid\text{avoid }S)\le p/(1-x)^d\le x$. The same factors are strictly positive, so all conditioning events used are nonempty. Finally,
+\[
+P\bigl(\bigcap_{i=1}^m A_i^c\bigr)
+=\prod_{i=1}^m P(A_i^c\mid A_1^c,\ldots,A_{i-1}^c)
+\ge(1-x)^m>0.
+\]
+The factor $(1-x)^d$, not the weaker union-bound denominator $1-dx$, is what makes the numerical hypothesis work.
 \end{proof}
 
 \section{Euler's formula}
@@ -58,6 +83,11 @@ Let $\operatorname{cr}(G)$ be the minimum number of crossings in a drawing of a 
 Show that a family of fewer than $2^{k-1}$ sets of size $k$ has a $2$-colouring of the ground set with no monochromatic member.
 \end{exercise}
 
+
+\begin{exercise}[$\star\star$]\label{ex:localcolour}
+Let $\mathcal F$ be a family of subsets of a finite ground set, each of size $k\ge2$. Assume every set of $\mathcal F$ intersects at most $d$ other sets. Colour the ground-set elements independently red or blue. Prove that $\mathcal F$ has a colouring with no monochromatic member whenever $e(d+1)2^{1-k}\le1$. Explain why the dependency condition is joint independence, not merely pairwise independence of the bad events.
+\end{exercise}
+
 \section{Hints}
 
 \begin{hint}{ex:carowei}
@@ -75,6 +105,10 @@ One deleted edge per crossing leaves a plane graph. A crossing survives in a ran
 \begin{hint}{ex:propertyb}
 A fair colouring makes a $k$-set monochromatic with probability $2^{1-k}$.
 \end{hint}
+\begin{hint}{ex:localcolour}
+A fixed $k$-set is monochromatic with probability $2^{1-k}$. Events attached to disjoint sets are functions of disjoint collections of fair bits.
+\end{hint}
+
 \section{Solutions}
 
 \begin{solution}{ex:carowei}
@@ -92,7 +126,7 @@ A fair colouring makes a $k$-set monochromatic with probability $2^{1-k}$.
 \begin{solution}{ex:crossing}
 \writeup Delete one edge from each crossing. The remainder is plane, so $m-\operatorname{cr}(G)\le 3n-6$ by Proposition~\ref{prop:euler}, and $\operatorname{cr}(G)\ge m-3n$.
 
-Retain each vertex with probability $p=4n/m\le1$. In the induced drawing, $\mathbb E[\operatorname{cr}']\ge\mathbb E[m']-3\mathbb E[n']$, ignoring an $O(1)$ that does not affect the final inequality when $m$ is large; for small graphs the bound $m^3/(64n^2)$ may be checked directly or replaced by the trivial $0$ when it is smaller than $m-3n$. A crossing survives with probability $p^4$ and an edge with probability $p^2$. Hence $p^4\operatorname{cr}(G)\ge p^2 m-3pn$, and
+Retain each vertex with probability $p=4n/m\le1$. For \emph{every} resulting induced graph, including graphs with fewer than three vertices or several components, the universal inequality $\operatorname{cr}(G')\ge m'-3n'$ holds: for $n'\ge3$ remove crossing edges and apply the planar edge bound, and for $n'\le2$ its right-hand side is nonpositive. Taking expectations requires no ignored error term. A crossing of a fixed original drawing survives only if its four distinct endpoints are retained, with probability $p^4$, while an edge survives with probability $p^2$. Using a drawing with exactly $\operatorname{cr}(G)$ crossings, the expected number of surviving crossings is $p^4\operatorname{cr}(G)$ and is at least the expected crossing number of the induced graph. Consequently $p^4\operatorname{cr}(G)\ge p^2 m-3pn$, and
 \[
  \operatorname{cr}(G)\ge\frac{m}{p^2}-\frac{3n}{p^3}=\frac{m^3}{16n^2}-\frac{3m^3}{64n^2}=\frac{m^3}{64n^2}.
 \]
@@ -100,6 +134,11 @@ Retain each vertex with probability $p=4n/m\le1$. In the induced drawing, $\math
 
 \begin{solution}{ex:propertyb}
 \writeup A fair random colouring makes a fixed $k$-set monochromatic with probability $2^{1-k}$. Fewer than $2^{k-1}$ sets give an expectation below $1$.
+\end{solution}
+
+\begin{solution}{ex:localcolour}
+\idea The only events a monochromatic-set event can depend on are those sharing some colour variable with its set.
+\writeup For $F\in\mathcal F$, let $A_F$ mean that all elements of $F$ have the same colour. Both all-red and all-blue have probability $2^{-k}$, so $P(A_F)=2^{1-k}$. If $G$ is disjoint from $F$, $A_G$ depends only on colour variables not used in $A_F$. More strongly, $A_F$ is independent of the \emph{joint family} of all events from sets disjoint from $F$, since all those events together are functions only of colour variables outside $F$. The intersection graph of the sets is therefore a valid dependency graph, with degree at most $d$. Theorem~\ref{thm:lll} applies under $e(d+1)2^{1-k}\le1$ and gives a positive probability that no $A_F$ occurs. Some actual colouring thus has no monochromatic set.
 \end{solution}
 
 \section*{Sources and further reading}
