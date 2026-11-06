@@ -43,7 +43,9 @@ For every $n\ge1$ and every string $\varepsilon_1,\ldots,\varepsilon_n\in\{0,1\}
 In particular the digits are mutually independent and each is fair: $P(b_k=1)=1/2$.
 \end{proposition}
 \begin{proof}
-The set of $u$ whose first $n$ chosen digits are $\varepsilon_1,\ldots,\varepsilon_n$ is the half-open interval $[m/2^n,(m+1)/2^n)$, where $m=\varepsilon_1 2^{n-1}+\cdots+\varepsilon_n$. That interval has length $2^{-n}$. The event $\{b_k=1\}$ is the union of the $2^{n-1}$ such intervals of length $2^{-n}$ in which the $k$th digit is $1$, if we take any $n\ge k$. The total length is $1/2$. A finite collection of digit events is a condition on finitely many coordinates, so the probability of an intersection is the product of the probabilities, by counting the strings.
+The set of $u$ whose first $n$ chosen digits are $\varepsilon_1,\ldots,\varepsilon_n$ is the half-open interval $[m/2^n,(m+1)/2^n)$, where $m=\varepsilon_1 2^{n-1}+\cdots+\varepsilon_n$. The left endpoint has the chosen expansion, the one that ends in zeros, and the right endpoint belongs to the next interval. That interval has length $2^{-n}$.
+
+To read one digit, take any $n\ge k$. The event $\{b_k=1\}$ is the union of the $2^{n-1}$ cylinders of length $2^{-n}$ in which the $k$th digit is $1$. The total length is $1/2$. For distinct positions $k_1,\ldots,k_r$, choose $n$ at least as large as every one of them. The intersection fixes $r$ digits and leaves the other $n-r$ free, so it is a union of $2^{n-r}$ cylinders and has probability $2^{-r}$. That is the product of the one-digit probabilities. Finite-bit events are finite unions of such cylinders.
 \end{proof}
 
 An event that depends on finitely many digits is a finite union of these cylinders. Call it a \emph{finite-bit event}. Its probability is a sum of lengths, hence a multiple of a negative power of $2$.
@@ -54,7 +56,7 @@ Some questions ask about the whole sequence: whether infinitely many digits are 
 For $A\subseteq[0,1)$, the \emph{outer content} $P^*(A)$ is the infimum of all sums $\sum_i(d_i-c_i)$ in which the intervals $[c_i,d_i)$ cover $A$. A property holds \emph{almost surely} when the set of outcomes where it fails has outer content $0$.
 \end{definition}
 
-If $A$ is already a finite union of disjoint intervals, $P^*(A)$ equals its probability. One cover is $A$ itself, and no cover can be shorter, because lengths are additive on disjoint intervals inside $[0,1)$.
+If $A$ is a finite union of disjoint intervals, one cover is $A$ itself, so $P^*(A)$ is at most the probability already assigned to $A$. Every argument in this chapter uses that upper bound. A matching lower bound, that no cover is shorter, is not required here.
 
 \begin{proposition}[countable subadditivity]\label{prop:subadd}
 If $A\subseteq\bigcup_{n\ge1}A_n$, then $P^*(A)\le\sum_{n\ge1}P^*(A_n)$.
@@ -66,11 +68,11 @@ Fix $\eta>0$. Cover $A_n$ by intervals whose lengths sum to less than $P^*(A_n)+
 This is the only infinite additivity the early chapters use. If $A_n$ are finite-bit events and $\sum_n P(A_n)<\infty$, then the set of outcomes that lie in infinitely many $A_n$ has outer content $0$. Indeed, that set is contained in $\bigcup_{n\ge N}A_n$ for every $N$, so its outer content is at most $\sum_{n\ge N}P(A_n)$, which can be made small. Chapter~4 turns this remark into the first Borel--Cantelli lemma and pairs it with a converse for independent events.
 
 \begin{example}[a run of heads, eventually]\label{ex:run}
-Let $A_n$ be the event that tosses $n,n+1,n+2$ are all heads, that is $b_n=b_{n+1}=b_{n+2}=1$. Then $P(A_n)=1/8$, and $\sum_n P(A_n)=\infty$. The events overlap, so the first remark does not apply. The disjoint blocks $A_{3m}$ are independent by Proposition~\ref{prop:bits}, and $\sum_m P(A_{3m})=\infty$ as well. For each $M$,
+Let $A_n$ be the event that tosses $n,n+1,n+2$ are all heads, that is $b_n=b_{n+1}=b_{n+2}=1$. Then $P(A_n)=1/8$, and $\sum_n P(A_n)=\infty$. The events overlap, so the convergent-sum remark does not apply. The blocks $A_{3},A_{6},A_{9},\ldots$ use disjoint digits, so they are independent by Proposition~\ref{prop:bits}, and $\sum_m P(A_{3m})=\infty$ as well. For each $M$,
 \[
  P\bigl(A_3^c\cap A_6^c\cap\cdots\cap A_{3M}^c\bigr)=\Bigl(\frac78\Bigr)^M,
 \]
-because the blocks use distinct digits. The set where only finitely many blocks occur is contained in that intersection once $M$ is large, up to the outcomes after the last block we included; more precisely, the set where none of the blocks $A_3,\ldots,A_{3M}$ occurs has probability $(7/8)^M$, and the set where no block occurs at all is contained in every one of those sets. Its outer content is $0$. Almost every sequence therefore has infinitely many disjoint runs of three heads.
+because the blocks use distinct digits. Let $Z$ be the set of sequences in which none of these blocks occurs. Then $Z$ is contained in the displayed intersection for every $M$, so $P^*(Z)\le(7/8)^M$ for every $M$. Hence $P^*(Z)=0$. Almost every sequence has infinitely many disjoint runs of three heads.
 \end{example}
 
 The same estimate, with $1-x\le e^{-x}$ from Volume~1, Chapter~9, gives $(7/8)^M\le e^{-M/8}$. The probability of waiting through the first $M$ blocks and seeing no run is at most $e^{-M/8}$. That is a finite-bit computation. The almost-sure statement is the passage to every $M$ at once, which is Proposition~\ref{prop:subadd}.
@@ -97,7 +99,9 @@ Let $a>b\ge0$. In a uniform random order of $a$ ballots for $A$ and $b$ ballots 
 \begin{proof}
 Let $n=a+b$ and $k=a-b>0$. The number of paths from height $0$ to height $k$ in $n$ steps is $\binom{n}{a}$, since exactly $a$ steps are $+1$.
 
-A favourable path has first step $+1$. From time $1$ onward it is a path of length $n-1$ from height $1$ to height $k$ that stays at height at least $1$. Among all paths of length $n-1$ from $1$ to $k$, we subtract those that touch $0$.
+If $b=0$, then $n=a$ and the only path is a string of $A$s. It stays positive, and the probability is $1=a/a$. Assume $b\ge1$ for the rest of the count, so that every factorial below has a nonnegative argument.
+
+A favourable path has first step $+1$. From time $1$ onward it is a path of length $n-1$ from height $1$ to height $k$ that stays at height at least $1$. Among all paths of length $n-1$ from $1$ to $k$, subtract those that touch $0$.
 
 The total number of paths of length $n-1$ from $1$ to $k$ equals the number of paths of length $n-1$ with displacement $k-1$, which is $\binom{n-1}{(n+k)/2-1}$. Here $(n+k)/2=a$ is an integer, because $n$ and $k$ are both even or both odd.
 
@@ -121,6 +125,7 @@ Dividing by the total number of paths, $\binom{n}{a}$, leaves $k/n=(a-b)/(a+b)$.
 Check the smallest unequal election, $a=2$ and $b=1$. The three orders are $AAB$, $ABA$, $BAA$. Only $AAB$ stays strictly ahead: the heights are $1,2,1$. The formula gives $(2-1)/(2+1)=1/3$.
 
 If $a=b$, the final height is $0$, so strict leadership through the last ballot is impossible. The probability is $0$, and the hypothesis $a>b$ is not decorative.
+
 The digits constructed above are functions on $[0,1)$. A function on a sample space is a random variable, and an average of one is an expectation. Chapter~2 takes up those words for countable values, including the Poisson limit that Volume~1 stated as a family of masses and did not yet obtain from the binomial law.
 
 \section{Exercises}
@@ -203,7 +208,7 @@ There are four orders. The formula uses $a-b$ over $a+b$.
 \[
  1-q\le\frac{22}{365}.
 \]
-Since $22/365=0.06027\ldots<0.0603$, the probability is less than $0.0603$. The pair count in Volume~1 looks at $\binom{23}2=253$ possible shared days, and $253/365>\ln2$, which is why that probability exceeds $1/2$. Here only $22$ comparisons are in the event. Most shared birthdays in the group of $23$ do not involve you.
+Since $22/365=0.06027\ldots<0.0603$, the probability is less than $0.0603$. The shared-birthday event of Volume~1 is different. There $P(\text{all }23\text{ birthdays distinct})=\prod_{k=1}^{22}(1-k/365)\le\exp\bigl(-\sum_{k=1}^{22}k/365\bigr)=\exp(-253/365)$. The sum $253/365$ is larger than $\ln2$, because $365\ln2=252.9987\ldots$, so that product is strictly less than $1/2$. The event in this exercise uses only the $22$ comparisons with your own day.
 \end{solution}
 
 \begin{solution}{ex:twochildren}
@@ -227,7 +232,9 @@ p_{\mathrm{TH}}&=\tfrac12\cdot0+\tfrac12 p_{\mathrm T}.
 \end{align*}
 The last two equations force $p_{\mathrm T}=p_{\mathrm{TH}}=0$. Then $p_{\mathrm{HH}}=1/2$, $p_{\mathrm H}=1/4$, and $p_\varnothing=1/8$.
 
-The same conclusion is the single path HHH, of probability $1/8$. Every other infinite sequence of fair tosses produces a tail while HHH has not yet occurred, and the preceding paragraph says THH then comes first. Walter Penney posed this waiting game in the \emph{Journal of Recreational Mathematics} in 1974. The odds $7$ to $1$ against HHH are the computation above, not a property of the two patterns as sets of three letters.
+The same value $1/8$ is the probability of the single word HHH. Any other sequence has a first tail, and until that tail the tosses are a block of heads. The pattern HHH has already occurred in that block only if the block has length at least $3$, which is the word HHH itself. After the first tail the state is T, and $p_{\mathrm T}=0$, so HHH does not win from there.
+
+From T the game still ends. Each visit to TH is followed by heads, and a win for THH, with probability $1/2$, independently of the past. The probability of $k$ failed visits is $2^{-k}$, which tends to $0$. So THH wins with probability $7/8$. Walter Penney posed this waiting game in the \emph{Journal of Recreational Mathematics} in 1974. The odds $7$ to $1$ against HHH are this computation, not a comparison of the two words as unordered sets of letters.
 \end{solution}
 
 \begin{solution}{ex:montyn}
@@ -269,9 +276,9 @@ The triple intersection requires both dice odd and the sum odd, which is impossi
 \idea Put one extra $X$ in front of a Dyck path. The new sequence is always strictly ahead, and every strictly-ahead sequence with one extra $X$ arises this way.
 \writeup Let $\mathcal D_n$ be the set of Dyck paths of semilength $n$, and let $\mathcal B_n$ be the set of sequences of $n+1$ letters $X$ and $n$ letters $Y$ in which every prefix has more $X$s than $Y$s. Theorem~\ref{thm:ballot}, with $a=n+1$ and $b=n$, says
 \[
- |\mathcal B_n|=\frac{(n+1)-n}{(n+1)+n}\binom{2n+1}{n+1}=\frac1{2n+1}\binom{2n+1}{n}.
+ |\mathcal B_n|=\frac{1}{2n+1}\binom{2n+1}{n+1}.
 \]
-The last binomial coefficient equals $\binom{2n+1}{n+1}$. Then
+The symmetry $\binom{2n+1}{n+1}=\binom{2n+1}{n}$ rewrites the count as $\frac1{2n+1}\binom{2n+1}{n}$. Then
 \[
  \frac1{2n+1}\binom{2n+1}{n}=\frac{(2n)!}{n!\,(n+1)!}=\frac1{n+1}\binom{2n}{n}.
 \]
@@ -293,9 +300,8 @@ The first two stay at least $1$. The third hits $0$. The fourth starts negative.
 \section*{Sources and further reading}
 
 \begin{enumerate}
-\item J.~Bertrand, Solution d'un probl\`eme, \emph{Comptes Rendus de l'Acad\'emie des Sciences} \textbf{105} (1887), 369. The statement of the ballot probability. The chord problem is in his \emph{Calcul des probabilit\'es}, Gauthier-Villars, Paris, 1889, p.~4.
+\item J.~Bertrand, Solution d'un probl\`eme, \emph{Comptes Rendus de l'Acad\'emie des Sciences} \textbf{105} (1887), 369. The statement of the ballot probability.
 \item D.~Andr\'e, Solution directe du probl\`eme r\'esolu par M.~Bertrand, \emph{Comptes Rendus de l'Acad\'emie des Sciences} \textbf{105} (1887), 436--437. A direct count of the favourable ballot orders.
-\item G.-L.\ Leclerc, Comte de Buffon, Essai d'arithm\'etique morale, in the \emph{Suppl\'ement} to the \emph{Histoire naturelle}, 1777. The needle.
 \item W.~Feller, \emph{An Introduction to Probability Theory and Its Applications}, vol.~I, 3rd ed., Wiley, 1968, Chapter~III. The reflection comparison for paths, in the form used above.
 \item W.~Penney, Journal of Recreational Mathematics \textbf{7} (1974). The waiting game for two patterns.
 \end{enumerate}
