@@ -87,14 +87,32 @@ Let $X_i$ be independent Bernoulli random variables with means $p_i$, and let $S
 \]
 \end{theorem}
 \begin{proof}
-Couple $X_i$ with a Poisson random variable $N_i$ of mean $p_i$ so that $P(X_i\ne N_i)\le p_i^2$. One such coupling is to realise both from a Poisson process of rate $p_i$ on $[0,1]$: let $X_i$ be the indicator that the process is positive, and let $N_i$ be the count. Then $\{X_i\ne N_i\}$ is contained in $\{N_i\ge2\}$, whose probability is at most $\mathbb E[N_i(N_i-1)]/2=p_i^2/2\le p_i^2$. The sums of the coupled variables satisfy $P(S\ne\sum N_i)\le\sum p_i^2$. Total variation is at most the probability that the coupled copies differ, and $\sum N_i$ is Poisson of mean $\sum p_i$ by Lemma~\ref{lem:colouring} applied to independent Poissons, or by the generating function in Chapter~3.
+We construct one exact coupling for each $i$, using independent auxiliary randomness across indices. Put $p=p_i\in[0,1]$ and draw $N_i\sim\operatorname{Poisson}(p)$. If $N_i\ge1$, let $X_i=1$. If $N_i=0$, let $X_i=1$ with conditional probability
+\[
+\alpha_p=\frac{p-(1-e^{-p})}{e^{-p}}.
+\]
+This is a valid probability: $e^{-p}\ge1-p$ implies $\alpha_p\ge0$, and $p\le1$ gives $\alpha_p\le1$. Then
+\[
+P(X_i=1)=P(N_i\ge1)+P(N_i=0)\alpha_p=(1-e^{-p})+p-1+e^{-p}=p,
+\]
+so $X_i$ really is Bernoulli$(p)$, unlike the indicator $\mathbf1_{\{N_i\ge1\}}$, whose success probability would be $1-e^{-p}$. The copies for distinct $i$ are independent by construction.
+
+A discrepancy occurs only when $N_i=0$ but $X_i=1$, or when $N_i\ge2$ (since then $X_i=1\ne N_i$). Its probability is
+\[
+\begin{aligned}
+P(X_i\ne N_i)&=e^{-p}\alpha_p+P(N_i\ge2)\\
+&=p-1+e^{-p}+1-(1+p)e^{-p}
+=p(1-e^{-p})\le p^2.
+\end{aligned}
+\]
+The union bound gives $P(\sum_iX_i\ne\sum_iN_i)\le\sum_i p_i^2$. Total variation is at most the mismatch probability of any coupling, and the independent Poisson counts sum to a Poisson variable of parameter $\sum_i p_i$ by Chapter~3.
 \end{proof}
 
 \begin{theorem}[M/M/1]\label{thm:mm1}
 Customers arrive as a Poisson process of rate $\lambda$ and require independent exponential service of rate $\mu>\lambda$. The number in the system is a Markov chain on $\{0,1,2,\ldots\}$. It has stationary distribution $\pi_k=(1-\rho)\rho^k$ with $\rho=\lambda/\mu$, and the stationary mean number in the system is $\rho/(1-\rho)$.
 \end{theorem}
 \begin{proof}
-The chain moves from $k\ge1$ to $k+1$ at rate $\lambda$ and to $k-1$ at rate $\mu$, and from $0$ to $1$ at rate $\lambda$. Detailed balance $\pi_k\lambda=\pi_{k+1}\mu$ forces $\pi_{k+1}=\rho\pi_k$, so $\pi_k=\pi_0\rho^k$. The sum is $1$ when $\pi_0=1-\rho$. The mean is $\sum k\pi_k=\rho/(1-\rho)$. The balance equations determine the law; the chain can be realised by exponential clocks on the countable state space, which is a countable model in the sense of Volume~1 once one uses the jump chain and the holding times separately.
+The chain moves from $k\ge1$ to $k+1$ at rate $\lambda$ and to $k-1$ at rate $\mu$, and from $0$ to $1$ at rate $\lambda$. Detailed balance $\pi_k\lambda=\pi_{k+1}\mu$ forces $\pi_{k+1}=\rho\pi_k$, so $\pi_k=\pi_0\rho^k$. The sum is $1$ when $\pi_0=1-\rho$. The mean is $\sum k\pi_k=\rho/(1-\rho)$. The balance equations determine the stationary law. The process itself is not a countable sample space: its exponential holding times are continuous. Construct the arrival and service clocks from independent uniform blocks as in Chapter~5. The total jump rate is at most $\lambda+\mu$, so in a finite interval the number of actual jumps is dominated by the finite number of arrivals of a Poisson clock of that rate; explosion cannot occur. Detailed balance for the rate matrix then makes the geometric distribution invariant. This establishes the stated stationary law, not a blanket theorem about all countable-state chains.
 \end{proof}
 
 For $\rho=0.9$ the mean number present is $9$. For $\rho=0.99$ it is $99$. The mean explodes as the server approaches saturation, although the chain remains positive recurrent for every $\rho<1$.
@@ -110,7 +128,7 @@ Let $E_i$ be independent exponential random variables of rates $\lambda_i$. Show
 \end{exercise}
 
 \begin{exercise}[$\star\star$]\label{ex:bus}
-Buses arrive as a Poisson process of rate $1/10$ per minute. You arrive at a fixed time. What is your expected wait, and what is the expected length of the gap you occupy?
+Buses follow a stationary Poisson process on the entire time line, of rate $1/10$ per minute (arrivals have occurred in the past as well as in the future). You arrive at a fixed time. What is your expected wait, and what is the expected length of the gap you occupy?
 \end{exercise}
 
 \begin{exercise}[$\star\star$]\label{ex:lecamnum}
@@ -157,11 +175,16 @@ by integrating $e_1$ from $0$ to $\infty$ and $e_2$ from $(t-e_1)_+$ . Different
 \end{solution}
 
 \begin{solution}{ex:minexp}
-\writeup $P(\min E_i>t)=\prod e^{-\lambda_i t}=e^{-(\sum\lambda_i)t}$. The minimum equals $E_j$ when $E_j$ is smaller than the others. Integrating the joint density on that region, or competing the hazards, gives probability $\lambda_j/\sum\lambda_i$: the first event in a collection of independent Poisson processes is of type $j$ with that probability, by Theorem~\ref{thm:thinning} read at the first point.
+\writeup $P(\min E_i>t)=\prod e^{-\lambda_i t}=e^{-(\sum\lambda_i)t}$. For $E_j$ to be the smallest at time $t$, it must fall in an infinitesimal interval there while all other clocks exceed $t$. Independence and the densities give the exact integral
+\[
+P(E_j=\min_i E_i)=\int_0^\infty\lambda_j e^{-\lambda_j t}\prod_{i\ne j}e^{-\lambda_i t}\,\dd t
+=\frac{\lambda_j}{\sum_i\lambda_i}.
+\]
+Ties have probability zero for continuous independent clocks.
 \end{solution}
 
 \begin{solution}{ex:bus}
-\writeup The forward wait is exponential of rate $1/10$, with mean $10$ minutes. The gap containing your arrival is the sum of the age and the residual life, with mean $20$ minutes.
+\writeup The forward wait is exponential of rate $1/10$, with mean $10$ minutes. Because the process is defined on the whole time line, the age since the previous arrival also has the exponential law with mean $10$ minutes (apply the no-point probability to the interval $[-t,0]$). Thus the expected length of the gap containing the arrival time is $10+10=20$ minutes. For a process started at time zero, the backward age is truncated and this conclusion would need a different model.
 \end{solution}
 
 \begin{solution}{ex:lecamnum}
