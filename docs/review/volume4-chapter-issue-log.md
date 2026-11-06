@@ -32,7 +32,7 @@ Composer-2.5 agent `bc-07d4be85-61da-50c8-b2ce-2e58eae56f40` read `thm:dyadicito
 
 ## Top-to-random at `f91d5483`
 
-Composer-2.5 agent `bc-711a7fce-2d77-5971-9c7f-404fb43507b3` read Theorem `thm:top` and the three-card mean at `f91d5483` by `git show`. It did not accept the chapter. Passed: success probabilities $(k+1)/n$, the uniform-insertion induction, stages with mean $nH_n$, the value $11/2$, and $n e^{-t/n}\le e^{-c}$. It asked that stationarity be named in the total-variation step and that independence of the deck and $\tau$ be tied to the insertion ranks. Those two sentences were added after `f91d5483` and are not rechecked.
+Composer-2.5 agent `bc-711a7fce-2d77-5971-9c7f-404fb43507b3` read Theorem `thm:top` and the three-card mean at `f91d5483` by `git show`. It did not accept the chapter. Passed: success probabilities $(k+1)/n$, the uniform-insertion induction, stages with mean $nH_n$, the value $11/2$, and $n e^{-t/n}\le e^{-c}$. It asked that stationarity be named in the total-variation step and that independence of the deck and $\tau$ be tied to the insertion ranks. Those two sentences were added after `f91d5483`. Composer-2.5 agent `bc-b821e9d3-bb39-5826-8b04-7848f9a54b2b` re-read them at `c144e921`. The shuffle sentences passed. The dyadic sentence failed: it omitted the factor $1/2$ in front of the Riemann sum and of $\sum Z_k$. The display and the proof now both carry that factor, and the square-mean bound on the halved sum is $M^2/(2N)$. That repair is later than `c144e921` and is not rechecked. The chapters are not accepted.
 
 ## Per-chapter independent-review register
 

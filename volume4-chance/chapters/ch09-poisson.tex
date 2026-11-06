@@ -18,7 +18,7 @@ Let $T>0$ be a random variable with a continuous survival function $G(t)=P(T>t)$
 $G(0)=1$. If $G(1)=0$, then $G(1/n)^n=0$, so $G(1/n)=0$, and continuity forces $G(0)=0$, which is absurd. If $G(1)=1$, then $G(n)=1$ and $T$ is infinite. So $G(1)=e^{-\lambda}$ for some $\lambda>0$. Then $G(p/q)=e^{-\lambda p/q}$ on the positive rationals, and continuity extends the formula to every $t\ge0$.
 \end{proof}
 
-The lack of memory is the computation $P(E>s+t\mid E>s)=e^{-\lambda t}$. A bus whose gaps are exponential does not become more due because you have already waited.
+The lack of memory is the computation $P(E>s+t\mid E>s)=e^{-\lambda t}$. Take rate $\lambda=1/10$, in units of one per minute. Then $P(E>10)=e^{-1}$. Conditional on having already waited ten minutes, the remaining wait is a fresh copy of $E$, so its mean is still ten minutes. A bus whose gaps are exponential does not become more due because you have already waited.
 
 \section{Arrival times}
 
@@ -50,6 +50,8 @@ The event $\{N(t)=n\}$ is $\{T_n\le t<T_n+E_{n+1}\}$. Independence of $E_{n+1}$ 
 \]
 where $\Delta_n(t)$ is the simplex inside $[0,t]^n$. The volume of that simplex is $t^n/n!$, because the $n!$ possible orderings of $n$ distinct coordinates partition the cube up to boundaries of volume zero. Therefore $P(N(t)=n)=e^{-\lambda t}(\lambda t)^n/n!$, and the conditional distribution is uniform on the simplex, which is the law of the order statistics.
 \end{proof}
+
+For rate $1$ and $t=1$, the formula says $P(N(1)=0)=P(N(1)=1)=e^{-1}$ and $P(N(1)\ge2)=1-2e^{-1}$. Numerically $e^{-1}=0.36787\ldots$, so a unit interval is empty about $37\%$ of the time and holds one point just as often. Conditional on exactly two points, their positions are the order statistics of two independent uniforms: the earlier one has density $2(1-u)$ on $[0,1]$, because $P(\min(U,V)>u)=(1-u)^2$.
 
 \begin{lemma}[colouring]\label{lem:colouring}
 Let $N$ be Poisson with mean $\mu$. Conditional on $N=n$, split the $n$ points into $k$ colours with probabilities $p_1,\ldots,p_k$. The colour counts are independent, and colour $j$ is Poisson with mean $\mu p_j$.
@@ -87,7 +89,14 @@ Keep each point of a Poisson process of rate $\lambda$ independently with probab
 On each finite interval the count is Poisson, and Lemma~\ref{lem:colouring} splits it. The increments on disjoint intervals remain independent because the original increments were independent and the coins are fresh.
 \end{proof}
 
-Superposition is the same lemma read backwards: independent Poisson processes of rates $\lambda$ and $\mu$ merge into one of rate $\lambda+\mu$.
+\begin{theorem}[superposition]\label{thm:superpose}
+Let $N$ and $M$ be independent Poisson processes of rates $\lambda$ and $\mu$. Their sum $N+M$ is a Poisson process of rate $\lambda+\mu$.
+\end{theorem}
+\begin{proof}
+On an interval of length $\ell$ the two counts are independent Poissons of means $\lambda\ell$ and $\mu\ell$. Lemma~\ref{lem:colouring}, read in reverse, says that a Poisson count of mean $(\lambda+\mu)\ell$, coloured red with probability $\lambda/(\lambda+\mu)$, splits into independent Poissons of those two means. The sum of the colours is the original count, so $N(I)+M(I)$ is Poisson of mean $(\lambda+\mu)\ell$. Disjoint intervals use disjoint increments of $N$ and of $M$, hence independent sums.
+\end{proof}
+
+For a check, take $\lambda=1$ and $\mu=2$ on an interval of length $1$. The merged count has mean $3$, and $P(N+M=0)=e^{-3}$. Colouring a Poisson$(3)$ point red with probability $1/3$ returns a Poisson$(1)$ count, which is the first process.
 
 Fix a time $t>0$ in the process that starts at $0$. The residual life is the wait $R_t=T_{N(t)+1}-t$ until the next point.
 
@@ -98,7 +107,30 @@ For every $t\ge0$ and $s\ge0$, $P(R_t>s)=e^{-\lambda s}$. The mean wait is $1/\l
 The event $\{R_t>s\}$ is the event of no point in $(t,t+s]$. Theorem~\ref{thm:increments} says that increment is Poisson of mean $\lambda s$, so its probability of equalling zero is $e^{-\lambda s}$. The mean of a nonnegative variable is the integral of its tail, $\int_0^\infty e^{-\lambda s}\,\dd s=1/\lambda$.
 \end{proof}
 
-The age is different if the process has a beginning. On the half-line the time since the previous point is at most $t$. To give the age the same law, run an independent Poisson process of rate $\lambda$ backward from $0$, and use its points as the past. The forward residual and the backward age are then independent exponential variables of rate $\lambda$, by the same increment computation on the two sides. Their sum is the gap that covers the instant $0$. Exercise~\ref{ex:twoexp} identifies the density of that sum as $\lambda^2 u e^{-\lambda u}$ on $(0,\infty)$, whose mean is $2/\lambda$. A typical gap, one of the original exponential variables, has mean $1/\lambda$. You are more likely to fall into a long gap, because a long gap covers more of the line. If buses arrive at rate $1/10$ per minute, the mean wait is ten minutes, and the mean length of the gap you stepped into is twenty minutes.
+The age is different if the process has a beginning. On the half-line the time since the previous point is at most $t$. To give the age the same law, run an independent Poisson process of rate $\lambda$ backward from $0$, and use its points as the past. The forward residual $R$ and the backward age $A$ are then independent exponential variables of rate $\lambda$, by the same empty-interval computation on the two sides.
+
+\begin{figure}[ht]
+\centering
+\fig{ch09-inspection}
+\caption{One timeline. The arrow marks a fixed time $t$. The shaded gap is the one that covers $t$: its left part is the age $A_t$ and its right part is the residual wait $R_t$. The dots are a drawing of that mechanism, not a measured sample.}
+\label{fig:inspection}
+\end{figure}
+
+Their sum $L=A+R$ is the length of the gap that covers the instant. The joint density of $(A,R)$ is $\lambda e^{-\lambda a}\lambda e^{-\lambda r}$ on the positive quadrant. Integrate over $a+r>u$:
+\[
+ P(L>u)=\int_0^\infty\lambda e^{-\lambda a}\int_{(u-a)_+}^\infty\lambda e^{-\lambda r}\,\dd r\,\dd a=e^{-\lambda u}(1+\lambda u).
+\]
+Differentiating $1-e^{-\lambda u}(1+\lambda u)$ gives the density $\lambda^2 u e^{-\lambda u}$. The mean is $\int_0^\infty P(L>u)\,\dd u=2/\lambda$, which is also the sum of the two exponential means. A typical gap, one of the original exponential variables, has mean $1/\lambda$. The covering gap is longer because a long gap covers more of the line. If buses arrive at rate $1/10$ per minute, the mean wait is ten minutes and the mean length of the gap you stepped into is twenty minutes.
+
+\begin{proposition}[two competing clocks]\label{prop:race}
+Let $E$ and $F$ be independent exponentials of rates $\lambda$ and $\mu$. Then $\min(E,F)$ is exponential of rate $\lambda+\mu$, and $P(E<F)=\lambda/(\lambda+\mu)$.
+\end{proposition}
+\begin{proof}
+$P(\min(E,F)>t)=e^{-\lambda t}e^{-\mu t}$. And
+\[
+ P(E<F)=\int_0^\infty\lambda e^{-\lambda t}e^{-\mu t}\,\dd t=\frac{\lambda}{\lambda+\mu}.
+\]
+\end{proof}
 
 \begin{theorem}[Le Cam]\label{thm:lecam}
 Let $X_i$ be independent Bernoulli random variables with means $p_i$, and let $S=\sum X_i$. Let $N$ be Poisson with mean $\sum p_i$. Then
@@ -128,11 +160,18 @@ P(X_i\ne N_i)&=e^{-p}\alpha_p+P(N_i\ge2)\\
 The union bound gives $P(\sum_iX_i\ne\sum_iN_i)\le\sum_i p_i^2$. Total variation is at most the mismatch probability of any coupling, and the independent Poisson counts sum to a Poisson variable of parameter $\sum_i p_i$ by Chapter~3.
 \end{proof}
 
+Twenty events of probability $0.02$ have total mean $0.4$. The theorem bounds the distance to Poisson$(0.4)$ by $20\cdot(0.02)^2=0.008$. The same count with one event of probability $0.4$ would only give the useless bound $0.16$, so the smallness of each $p_i$ is what the square is using.
+
 \begin{theorem}[M/M/1]\label{thm:mm1}
 Customers arrive as a Poisson process of rate $\lambda$ and require independent exponential service of rate $\mu>\lambda$. The number in the system is a Markov chain on $\{0,1,2,\ldots\}$. It has stationary distribution $\pi_k=(1-\rho)\rho^k$ with $\rho=\lambda/\mu$, and the stationary mean number in the system is $\rho/(1-\rho)$.
 \end{theorem}
 \begin{proof}
-The chain moves from $k\ge1$ to $k+1$ at rate $\lambda$ and to $k-1$ at rate $\mu$, and from $0$ to $1$ at rate $\lambda$. Detailed balance $\pi_k\lambda=\pi_{k+1}\mu$ forces $\pi_{k+1}=\rho\pi_k$, so $\pi_k=\pi_0\rho^k$. The sum is $1$ when $\pi_0=1-\rho$. The mean is $\sum k\pi_k=\rho/(1-\rho)$. The balance equations determine the stationary law. The process itself is not a countable sample space: its exponential holding times are continuous. Construct the arrival and service clocks from independent uniform blocks as in Chapter~5. The total jump rate is at most $\lambda+\mu$, so in a finite interval the number of actual jumps is dominated by the finite number of arrivals of a Poisson clock of that rate; explosion cannot occur. Detailed balance for the rate matrix then makes the geometric distribution invariant. This establishes the stated stationary law, not a blanket theorem about all countable-state chains.
+While the queue holds $k\ge1$ customers, the next event is the earlier of an arrival and a service completion. Proposition~\ref{prop:race} says that wait is exponential of rate $\lambda+\mu$, and the arrival wins with probability $\lambda/(\lambda+\mu)$. From $0$ only an arrival is possible, at rate $\lambda$. Detailed balance $\pi_k\lambda=\pi_{k+1}\mu$ forces $\pi_{k+1}=\rho\pi_k$, so $\pi_k=\pi_0\rho^k$. The sum is $1$ when $\pi_0=1-\rho$. For $|\rho|<1$,
+\[
+ \sum_{k\ge0}\rho^k=\frac1{1-\rho},\qquad
+ \sum_{k\ge1}k\rho^{k-1}=\frac1{(1-\rho)^2},
+\]
+the second identity by differentiating the first. Hence $\sum k\rho^k=\rho/(1-\rho)^2$ and the stationary mean is $\rho/(1-\rho)$. The balance equations determine the stationary law. The process itself is not a countable sample space: its exponential holding times are continuous. Construct the arrival and service clocks from independent uniform blocks as in Chapter~5. The total jump rate is at most $\lambda+\mu$, so in a finite interval the number of actual jumps is dominated by the finite number of arrivals of a Poisson clock of that rate; explosion cannot occur. Detailed balance for the rate matrix then makes the geometric distribution invariant. This establishes the stated stationary law, not a blanket theorem about all countable-state chains.
 \end{proof}
 
 For $\rho=0.9$ the mean number present is $9$. For $\rho=0.99$ it is $99$. The mean explodes as the server approaches saturation, although the chain remains positive recurrent for every $\rho<1$.
@@ -224,4 +263,5 @@ Ties have probability zero for continuous independent clocks.
 \begin{enumerate}
 \item S.~D.~Poisson, \emph{Recherches sur la probabilit\'e des jugements}, Bachelier, Paris, 1837.
 \item L.~Le Cam, An approximation theorem for the Poisson binomial distribution, \emph{Pacific J.\ Math.} \textbf{10} (1960), 1181--1197. Theorem~\ref{thm:lecam}, in the form proved above.
+\item W.~Feller, \emph{An Introduction to Probability Theory and Its Applications}, Vol.~II, 2nd ed., Wiley, 1971. The comparison of a typical gap with the gap that covers a fixed time.
 \end{enumerate}
