@@ -16,6 +16,12 @@ A writer's mathematical reconstruction, critical rereading, numerical check, or 
 
 Printed Chapter 10 is The Poisson Clock, file `ch09-poisson.tex`, matching the architecture table in `docs/plan/book-04.md`. The superseded notes in that file number the same material as Chapter 9. The architecture table is the one in force.
 
+## Chapter 10 whole-chapter read at `ea3af05f`, not acceptance
+
+Composer-2.5 `bc-0fddd4e6-ee16-5f12-a807-d90f9222ff8a` read the whole of `ch09-poisson.tex` at `ea3af05f3427098c5eb7b1cbcaeec1605d0a1f39`, from the chapter opening through the sources, including every exercise, hint, and solution and both figure captions. It did not accept the chapter. Passes: `ex:twoexp`, `ex:minexp` (algebra), `ex:bus`, `ex:lecamnum`, `ex:emptycheck`, `ex:superpose`. Failures: the solution of `ex:mm1mean` stopped at "Multiply by $1-\rho$" and never wrote the stationary mean; the thinning paragraph jumped from conditional complementarity to unconditional independence; the minimum solution wrote $P(E_j=\min_i E_i)$ for an event of probability zero. It also noted the citations of Exercise `ex:gamma`, Chapter 3, and Chapter 5. Those citations point at real earlier results. The moment formula used for the strong law is now proved in the chapter by integration by parts, and the sum of many Poisson variables is the product of the Chapter 3 generating functions. The figure filenames follow the file numbers; the captions were not found false.
+
+The detached build of `ea3af05f` exited 1. `tools/check_book_layout.py` reported a multiply defined label `prop:empty`, which is also the label of the empty-box proposition in Chapter 2. That run produced no certified page count. The Poisson emptiness proposition is now `prop:emptiness`. The repaired sentences are later than `ea3af05f` and have no recheck. Chapter 10 is not accepted.
+
 ## Distinct reads of `7d7e62b5` — 6 November 2026
 
 The first three requested runs, `bc-73e785d6` (Chapter 6), `bc-706ce232` (Chapter 5), and `bc-faf94f3e` (Chapter 7), left empty transcripts. They are not reviews and are not counted.
