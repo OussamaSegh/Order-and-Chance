@@ -26,7 +26,7 @@ Composer-2.5 `bc-d1db9a2f-da03-5d73-b03d-0b60a5f18a24` read the whole of printed
 
 Composer-2.5 `bc-2665c2a0-f6d4-5008-aac9-67f36a8ec469` read the whole of `extremal.tex` at `285122b4`. There is no figure. All five exercises passed, and the Turán, Ramsey, Schur, sunflower, EKR, and length-3 colouring arguments passed. That closes the mathematical and voice review of the appendix at `285122b4`. It is not a production acceptance.
 
-Composer-2.5 `bc-afeef77a-9c5a-5c2d-aad6-583e278d57fe` read the preface, About the Cover, and the blurb. The blurb's named theorems match the chapter titles. The cover note's twelve rows describe the drawing. The following sentences are about Galton's machine and do not give that machine a row count. The note is generated from `common/cover-notes.json`, which was not edited. The preface had italicised ``Calculation: From Formula to Insight'' as one title. The volume title is Calculation, and `common/volume-subtitles.json` gives the subtitle From Formula to Insight. The preface now names those two strings separately. That sentence has no full reread. The front and back matter gate stays open.
+Composer-2.5 `bc-afeef77a-9c5a-5c2d-aad6-583e278d57fe` read the preface, About the Cover, and the blurb. The blurb's named theorems match the chapter titles. The cover note's twelve rows describe the drawing. The following sentences are about Galton's machine and do not give that machine a row count. The note is generated from `common/cover-notes.json`, which was not edited. The preface had italicised ``Calculation: From Formula to Insight'' as one title. The volume title is Calculation, and `common/volume-subtitles.json` gives the subtitle From Formula to Insight. The preface now names those two strings separately. Composer-2.5 `bc-595f48e2-3d54-52b8-9159-78daa719177f` read the preface, About the Cover, and the blurb at `0d81054f` and found no remaining defect. That closes the mathematical and voice review of the front and back matter at `0d81054f`. It is not a production acceptance. Every chapter gate and the appendix gate are closed for mathematics and voice. The fresh whole-volume read has not been done. No checkbox is ticked.
 
 ## Chapter 9 full reread at `3030925c`, one defect
 
@@ -103,7 +103,8 @@ These are whole-chapter reads of the current text, not patch checks. No report h
 A chapter's review gate closes only when a distinct reviewer reads the whole of its current text and reports no remaining defect. A patch recheck does not do that. As of the Chapter 9 sentence recorded above:
 
 - Chapters 1--14 and the appendix: mathematical and voice gates closed at the SHAs named in this log. Production and the every-page ledger remain open. No box is ticked.
-- The preface sentence that names Volume 5 has no full reread. The cover note and the blurb were read at `285122b4` and were not edited.
+- Front and back matter: mathematical and voice gate closed at `0d81054f`. Production and the every-page ledger remain open. No box is ticked.
+- The fresh whole-volume read, the Volume 5--15 citation sweep, and the every-page ledger have not been started.
 - The fresh whole-volume review, the Volume 5--15 citation sweep, and the every-page visual ledger have not been started.
 
 ## Chapter 14 (random graphs) whole-chapter read at `b81932e3`, not acceptance
