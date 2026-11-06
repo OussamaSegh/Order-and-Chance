@@ -1,5 +1,45 @@
 # Handoff: Volume 4 rewrite
 
+## Latest checkpoint — 6 November 2026, after PR #111 CI runs #1807–#1810
+
+**Work branch:** \`cursor/volume4-rewrite-ee7f\`. Started this continuation from \`b8f98bc26885f59fd8061894093be970a11e42e2\`. The review-log update \`0e3e99b44239383105cdff4b6e513a5fbb1783df\` is the latest known pushed commit before writing this checkpoint. This handoff edit adds its own commit; use the PR HEAD shown by GitHub as the final complete SHA. PR remains **draft, open, unmerged**. No force-push or other-volume manuscript edit.
+
+**What has advanced:** First **author-side mathematical inspections** and corrective commits have now reached Chapters **2–14**, plus a Chapter 1 prerequisite repair and Appendix B. Chapters 2–5 are documented in detail in \`docs/review/volume4-chapter-issue-log.md\`, and Chapters 6–14/Appendix B now have individually traceable defect/commit entries there. Chapter **7 entropy** was materially expanded with a rigorous typical-set count, Kraft converse, block-code explanation, a code-tree diagram and additional fully worked exercises. Chapter 2 received a **post-fix author reread** and numerical birthday-limit tests at \`0e3e99b4\`.
+
+**Chapter-specific pushed milestones, after the prior checkpoint:**
+
+- Chapter 5: \`b09ce014\` and \`7a70ac01\` (bounded-law strong-law prerequisite, inverse quantile model, continuous integral proofs, Cantor exercise).
+- Chapter 6: \`c86b006f\` (false Gaussian truncated-moment bound in Lindeberg, classical CLT test cutoffs, Glivenko–Cantelli prerequisite).
+- Chapter 7: \`0c61153e\` and \`a184391c\` (prefix tree and expanded source-coding manuscript).
+- Chapter 8: \`aca08f93\` (planar-return counting, Fourier torus second critical point, reflection and first-return formulas).
+- Chapter 9: \`bf8fa250\` (left stationary distribution proof and correctly normalized Doeblin coupling).
+- Chapter 10: \`8f200c2f\` (exact Le Cam Bernoulli/Poisson coupling, continuous-time queue and stationary-bus assumptions).
+- Chapter 11: \`45ad353c\` (word-waiting optional stopping via bounded times, Azuma conditional calculation).
+- Chapter 12: \`0ed6a684\`, \`e09011fa\` (valid nowhere-differentiability and Brownian time-inversion reasoning, random-time restart, zero-set and p-variation exercises).
+- Chapter 13: \`6f6bbd4c\` (dependency-graph local lemma and exact crossing bound).
+- Chapter 14: \`4676780b\` (uniform exploration-process tail for all subcritical component sizes and edge-probability domain).
+- Appendix B: \`f2fc8fa0\` (Zykov tie case in Turán's theorem and correct circular-arc pairing in Erdős–Ko–Rado).
+- Static scan: 203 unique Volume 4 LaTeX labels, 165 local \`ref\` calls, none missing or duplicated; every declared exercise has a matching hint and solution. This is source-level, **not** a native TeX test.
+
+**Current CI findings — confirmed from GitHub Actions job logs, not inferred:**
+
+1. Run [#1807](https://github.com/OussamaSegh/Order-and-Chance/actions/runs/42238510863) at \`f2fc8fa0\`: 528 Python tests with one error (stale \`docs/COVER-NOTES.md\`), 31 skipped; native build skipped.
+2. Mechanical Vol. 4 cover-name synchronization: \`465cb4c4\` updated only the Volume 4 chapter title in \`docs/COVER-NOTES.md\`; \`23b908ff\` updated the two related generated hashes in \`tools/assets/series/manifest.json\`. No cover artwork was changed.
+3. Run [#1809](https://github.com/OussamaSegh/Order-and-Chance/actions/runs/42244018735) at \`23b908ff\`: **all 528 Python tests OK** (31 skipped); next gate failed because the Volume 3 source inventory includes the hash of shared \`common/cover-notes.json\`.
+4. \`d9ff6659\` mechanically updated that **one supporting-source digest only** in \`review/volume3-internal/inventory.json\`; no Volume 3 manuscript or review decision changed.
+5. Run [#1810](https://github.com/OussamaSegh/Order-and-Chance/actions/runs/42244365867) at \`d9ff6659\`: **all 528 tests OK** (31 skipped), Volume 3 examples/checker pass, but \`review/volume3-internal/check_global_ledgers.py\` fails at **\`Whole-volume conceptual source/figure drift: C-GROUP\`**. Its manually reviewed snapshot includes the shared cover-notes source. This is an intentional evidence gate: **do not change \`concepts.json\` reviewed snapshot hash or its approval status without a genuinely authorized Volume 3 conceptual recheck**. Build, site and publishing jobs were skipped at this stage. Later checkpoints may rerun and reproduce the blocker; always inspect the new actual run.
+
+**Native build:** There is still no fully mounted repository or working GitHub clone in this runtime; the GitHub connector can read/update files, but does not run \`./build.sh\`. The CI runner has not reached the V4 native build. No successful native PDF, EPUB, KDP or wrap check occurred in this continuation. The earlier one-pass 131–135-page XeLaTeX output had unresolved references and is **not** a verified reading or production PDF. The approved 400–500-page target remains **unmet and unmeasured on a valid book**; expand substance only, never pad.
+
+**Review status and next action (do not skip):** No distinct second reviewer of any Chapter 1–14 has been identified or submitted an exact-commit report (PR reviewers list was empty). None of the independent-review, complete-chapter, reader/voice, full proofreading, native illustration or production boxes may be checked. Resume **next at the post-fix mathematical/prerequisite/exercise/hint/solution reread of Chapter 3, then Chapter 4, then Chapters 5–14 and Appendix B in print order**. Chapter 2 has already had the post-fix *author* reread documented at \`0e3e99b4\`; do not waste time starting it from scratch, but inspect its two TikZ figures in a native build. Recheck Chapter 1's infinitely-many-runs repair. Assign a different actual reviewer per chapter, record their identity, exact commit, comments and disposition in the issue log; self-review is not independent.
+
+**Exactly what remains:** (1) Post-fix theorem/proof/example/exercise/hint/solution verification for Chapters 3–14 and Appendix B; further verification of Ch1/Ch2; full prerequisite/downstream citations. (2) Full reader, voice and native figure/photo provenance inspections for all chapters, preface, blurb and closing transition; increase substantive depth to the approved 400–500 pages without padding. (3) Authentic photo licences, creator/provenance and alt-text check. (4) Current migration map and external-volume citations (do not edit other volumes without authorization). (5) **Resolve CI blocker through separate authorized Volume 3 review-snapshot reconciliation**, without falsely transferring approvals; rerun full CI. (6) Native \`./build.sh volume4-chance\`, reading PDF, print/KDP, EPUB and wrap production, inspect every page, resolve warnings and record artifact paths/hash. (7) Genuine second reviewer of each chapter, logged and signed to exact pushed SHAs. (8) Close all PR checkboxes truthfully, keep PR unmerged until owner acceptance.
+
+The rest of this handoff contains older chronological ledger entries. This checkpoint supersedes their historical “next Chapter 2” and “no Chapters 5–14 inspected” statuses.
+
+---
+
+
 ## Continuation checkpoint — 6 November 2026, after `b8f98bc2`
 
 **Checkpoint source:** GitHub PR #111 HEAD was `b8f98bc26885f59fd8061894093be970a11e42e2` when this continuation began. The branch then advanced with the pushed commits listed below, through the review-log update `fad70e7ed8d3b3248fa37ca8dd4e7493ebc700f2`. This handoff update itself is the final checkpoint commit; run `git rev-parse HEAD` or inspect PR #111 for its complete SHA. No force-push, merge, or out-of-scope volume edit occurred.
