@@ -8,11 +8,13 @@
 
 **Chapter 5 writing, not a finished chapter.** Commit `baebc58b` derives an exponential from one uniform, proves that a nonnegative density has mean equal to the integral of its tail, computes the mean of the Box--Muller radius, works the minimum and maximum of two independent uniforms, and differentiates the chord-length law in Bertrand's distance model. Exercise `ex:usquare` has a hint and a solution. The older theorems and the other exercises were not rewritten. A distinct reviewer of `baebc58b` is required before any acceptance language. Chapters 2 and 3 still have no full-page PDF acceptance.
 
-**Page count.** Do not reuse 157. Actions run 42273398181 on `a6abf8fa` failed: the single Chapter 4 example box exceeded the 7×10 text height. That box is now split into two. A successful `./build.sh volume4-chance` after the split is the first count that includes the Chapter 5 writing.
+**Page count, new.** [Run 42273766219](https://github.com/OussamaSegh/Order-and-Chance/actions/runs/42273766219) built `2d687357` with `./build.sh volume4-chance` and succeeded. Print interior **161 pages**, 513 × 738 pt, sha256 `e22646207fc2b43ecd05d46fc90b59c83b313ffa8879790c31214e777a689686`. Reading PDF 162 pages, sha256 `4fa5bb6daa3b5a0f27ed066beb3cf64169d7bfe234379cd4ac527f19f0c4e9ad`. The earlier run 42273398181 failed because one Chapter 4 box was too tall; that box was split before this build. 161 is still far below 400–500. It replaces 157 as the measured count. It is not a full-page visual acceptance.
+
+**Chapter 5 review.** Composer-2.5 agent `bc-1e17fd56-779a-5675-bf62-41ecb1fc1fd0` read `baebc58b` and found no defect in the six new calculations. It did not review every older exercise and did not accept the chapter. The Chapter 5 file is unchanged by the later box split.
 
 **C-GROUP.** Unchanged. Do not edit Volume 3.
 
-**Exact next step.** Record the review of this Chapter 5 commit, then continue substantive writing at Chapter 6's elementary Lindeberg array, and rebuild before quoting a page count.
+**Exact next step.** Continue substantive writing at Chapter 6, starting with an elementary Lindeberg array before the general theorem, then a distinct reviewer of that pushed SHA. Do not tick Chapters 2--5 complete. Chapters 2 and 3 still have no full-page PDF acceptance.
 
 ---
 
