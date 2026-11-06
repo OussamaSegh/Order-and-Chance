@@ -1,6 +1,20 @@
 # Handoff: Volume 4 rewrite
 
-## Latest checkpoint — 6 November 2026, after `f7647627` (routed source expansion)
+## Latest checkpoint — 6 November 2026, Chapter 2 mathematical review
+
+**Remote reference used before editing.** `origin/main` is `5c4840ccdbae22abfa8a28d01b8c5d1ab16355e6` (merge of PR #112, Kindle EPUB cover-page packaging). This branch was `511b694d8be1d3fb6af11324184c62c9ba20e701`. The two histories diverged at `28db77df`. Main's only new files are `docs/DESIGN.md`, `docs/reviews/volume1-kdp-epub-conversion-2026-11-06.md`, and the EPUB check/fix tests. A merge commit brought those in without touching the Volume 4 manuscript and without a conflict. Do not reset this branch to main.
+
+**Chapter 2.** The post-fix author reread at `0e3e99b4` had not closed the mathematical box. A fresh pass of `volume4-chance/chapters/ch02-discrete.tex`, both included figures, and the Volume 1 sources those sentences cite, found three real gaps and then added the occupancy count the depth note asked for. The issue log entries are C2-08 through C2-12. The corrected chapter file is in the commit that contains this paragraph if that commit is the one created with the file, otherwise it is the parent that introduced the chapter diff. Verify with `git log -1 -- volume4-chance/chapters/ch02-discrete.tex`.
+
+**Distinct reviewer.** Independent subagent, model composer-2.5, agent `bc-d2380e3f-fe74-5ab0-ac81-fbe223bfd8e8`. It is not the writer. It read the chapter at `511b694d` and reported the false birthday bound at \(m=1\) and the missing \(p_n>0\) sentence. After the correction it re-read the whole chapter file in the working tree and reported those defects closed, with no new mathematical defect. It did **not** approve voice, a native PDF, or chapter acceptance. The independent-review checkbox stays **unchecked** until a reviewer signs the pushed SHA as such. Do not treat this recheck as that signature, and do not treat the writer's pass as independent.
+
+**What this pass did not do.** No native `./build.sh volume4-chance` in this session. The last measured interior was 155 pages at `658af447`, before this chapter grew. Voice/reader pass of Chapter 2 is open. Chapters 3–14 and Appendix B are untouched in this session. The protected Volume 3 `C-GROUP` gate is unchanged. No other volume manuscript was edited. PR #111 stays draft.
+
+**Exact next step.** Start the same mathematical and exercise review at Chapter 3, `volume4-chance/chapters/ch03-generating.tex`, against the post-fix source (`f13c8aea` and later), including the family-tree figure and all eight exercise/hint/solution triples. Record defects in the issue log. Do not restart Chapter 2 unless a new defect is named. Then continue in order. A native rebuild is due after a few chapters have grown, not instead of the Chapter 3 read.
+
+---
+
+## Previous checkpoint — 6 November 2026, after `f7647627` (routed source expansion)
 
 **Branch:** `cursor/volume4-rewrite-ee7f`, draft PR [#111](https://github.com/OussamaSegh/Order-and-Chance/pull/111). The issue log at `docs/review/volume4-chapter-issue-log.md`, through commit `f7647627b875714bd3776a5296748f26c3689c22`, is the definitive status for the newest mathematical edits. This handoff itself advances the branch SHA; verify the actual PR HEAD before the next edit. No merge, no force-push, no changes to another volume manuscript or reviewer approval.
 

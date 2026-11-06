@@ -32,18 +32,23 @@ Let $\lambda>0$, and let $p_n\in[0,1]$ satisfy $np_n\to\lambda$. For each fixed 
 \]
 \end{theorem}
 \begin{proof}
-Since $np_n\to\lambda$, one has $p_n\to0$. For $k=0$ the probability is $(1-p_n)^n$. Volume~1, Chapter~3, gives $\ln(1-x)/x\to-1$ as $x\to0$. Hence
+Since $np_n\to\lambda>0$, one has $p_n\to0$. For every large $n$ this forces $0<p_n<1$: otherwise $np_n$ could not approach a positive limit. Volume~1, Chapter~3, records the standing fact $\ln'(1)=1$. The difference quotient at $1$ therefore gives
+\[
+ \frac{\ln(1-x)}{x}
+ =\frac{\ln(1-x)-\ln 1}{-x}\cdot(-1)\to-1
+\]
+as $x\to0$. For $k=0$ the probability is $(1-p_n)^n$, so
 \[
  n\ln(1-p_n)=(np_n)\cdot\frac{\ln(1-p_n)}{p_n}\to\lambda\cdot(-1)=-\lambda,
 \]
 and $(1-p_n)^n\to e^{-\lambda}$.
 
-For $k\ge1$,
+For $k\ge1$ and $n\ge k$,
 \[
  \binom{n}{k}p_n^k(1-p_n)^{n-k}
  =\frac1{k!}\Biggl(\prod_{j=0}^{k-1}(np_n-jp_n)\Biggr)\,(1-p_n)^{n-k}.
 \]
-Each term $np_n-jp_n$ tends to $\lambda$. The product tends to $\lambda^k$. And $(1-p_n)^{n-k}=(1-p_n)^n(1-p_n)^{-k}\to e^{-\lambda}$.
+Each term $np_n-jp_n$ tends to $\lambda$. The product tends to $\lambda^k$. And $(1-p_n)^{n-k}=(1-p_n)^n(1-p_n)^{-k}\to e^{-\lambda}$, because $(1-p_n)^{-k}\to1$.
 \end{proof}
 
 \begin{figure}[ht]
@@ -56,11 +61,19 @@ Each term $np_n-jp_n$ tends to $\lambda$. The product tends to $\lambda^k$. And 
 The bars in Figure~\ref{fig:poissonbars} were evaluated from the two formulas at $k=0,\ldots,8$. At $k=0$ the binomial mass is $0.12158$ and the Poisson mass is $0.13534$. Nothing in the picture was obtained by tossing a coin.
 
 \begin{example}[one hundred rare trials]\label{ex:rare}
-Take $n=100$ and $p=0.02$, so $np=2$. The probability of no success is $(0.98)^{100}$. Taylor's formula for $\ln(1-x)$ with Lagrange remainder, Volume~1, Chapter~8, gives a point $\xi\in(0,x)$ with
+Take $n=100$ and $p=0.02$, so $np=2$. The probability of no success is $(0.98)^{100}$. The integral form of Taylor's formula, Volume~1, Chapter~8, at order $1$ and centre $0$, gives, for $0<x<1$,
 \[
- \ln(1-x)=-x-\frac{x^2}{2(1-\xi)^2}.
+ \ln(1-x)=-x-\int_0^x\frac{x-t}{(1-t)^2}\,\mathrm dt.
 \]
-For $x=0.02$ the quantity $-\ln(1-x)$ therefore lies between $x+x^2/2$ and $x+x^2/(2(1-x)^2)$, that is between $0.0202$ and $0.02+0.0004/(2\cdot0.98^2)$. The second number is $0.0202082\ldots$. Multiplying by $100$,
+On $[0,x]$ the weight $x-t$ is nonnegative, and $1\le 1/(1-t)^2\le 1/(1-x)^2$. The integral of $x-t$ from $0$ to $x$ is $x^2/2$, so
+\[
+ \frac{x^2}2\le\int_0^x\frac{x-t}{(1-t)^2}\,\mathrm dt\le\frac{x^2}{2(1-x)^2}.
+\]
+The left inequality is strict. On $[\tfrac x2,\tfrac{3x}4]$ one has $x-t\ge x/4$ and $1/(1-t)^2-1\ge 1/(1-x/2)^2-1>0$. The difference of the integrands is continuous and at least the positive constant $(x/4)\bigl(1/(1-x/2)^2-1\bigr)$ on an interval of length $x/4$. Volume~1's comparison of integrals then makes the difference of the two integrals positive. Therefore
+\[
+ x+\frac{x^2}2<-\ln(1-x)\le x+\frac{x^2}{2(1-x)^2}.
+\]
+For $x=0.02$ the two ends are $0.0202$ and $0.02+0.0004/(2\cdot0.98^2)$. The second number is $0.0202082\ldots$, and $100$ times it is less than $2.02083$. Multiplying the inequality by $100$,
 \[
  2.02<-\,100\ln(0.98)<2.02083,
 \]
@@ -71,7 +84,26 @@ so
 The bounds give $0.132545\ldots<(0.98)^{100}<0.132655\ldots$. Direct evaluation gives $(0.98)^{100}=0.132619\ldots$, while the Poisson mass is $e^{-2}=0.135335\ldots$. The gap at $n=100$ is about $0.0027$. The bounds alone do not fix the fourth decimal place. Theorem~\ref{thm:poissonlimit} says the gap closes as $n$ grows with $np$ held at $2$. It does not say the gap is already invisible.
 \end{example}
 
-Chapter~10 replaces this comparison by Le Cam's inequality, an explicit bound in total variation.
+\begin{examplex}[an explicit gap for no successes]
+The same integral bound gives a rate, still only for the probability of no success. Let $\lambda>0$ and let $n>\lambda$ be an integer. Set $x=\lambda/n$. The inequality of Example~\ref{ex:rare} yields
+\[
+ \lambda+\frac{\lambda^2}{2n}
+ <-n\ln\Bigl(1-\frac\lambda n\Bigr)
+ \le\lambda+\frac{\lambda^2}{2n(1-\lambda/n)^2}.
+\]
+Exponentiating and reversing the inequalities,
+\[
+ \exp\Bigl(-\lambda-\frac{\lambda^2}{2n(1-\lambda/n)^2}\Bigr)
+ \le\Bigl(1-\frac\lambda n\Bigr)^n
+ <e^{-\lambda}.
+\]
+Write $a=\lambda^2/(2n(1-\lambda/n)^2)>0$. The mean value theorem in Volume~1, Chapter~3, gives $e^{-a}=1-ae^{\xi}$ for some $\xi\in(-a,0)$. Since $e^{\xi}<1$, one has $e^{-a}>1-a$, so $1-e^{-a}<a$. Therefore
+\[
+ 0<e^{-\lambda}-\Bigl(1-\frac\lambda n\Bigr)^n
+ \le e^{-\lambda}\frac{\lambda^2}{2n(1-\lambda/n)^2}.
+\]
+For $\lambda=2$ and $n=100$ the upper bound is about $0.00282$, and the gap computed above is about $0.00272$. Chapter~10 replaces the comparison of the whole laws by Le Cam's inequality, an explicit bound in total variation. The bound here is only the $k=0$ term.
+\end{examplex}
 
 The number of fixed points of a uniform random permutation is the case the series meets first. Let $F_n$ be that number. Volume~1 shows $\mathbb E[F_n]=1$, and that $P(F_n=0)=D_n/n!$ differs from $e^{-1}$ by at most $1/(n+1)!$. The full law converges as well.
 
@@ -108,8 +140,14 @@ Choose $k$ elements in $\binom{n}{k}$ ways, arrange them in a cycle in $(k-1)!$ 
 \[
  \mathbb E[X_k]=\binom{n}{k}\frac{(k-1)!(n-k)!}{n!}=\frac1k.
 \]
-Sum over $k$. For a deck of $52$ cards the integral comparison in Volume~1, Chapter~8, gives $\ln53\le H_{52}\le1+\ln52$, because $1/x$ is decreasing: the sum $\sum_{k=1}^{52}1/k$ sits between $\int_1^{53}x^{-1}\,\mathrm dx$ and $1+\int_1^{52}x^{-1}\,\mathrm dx$. Those bounds are $\ln53\approx3.970$ and $1+\ln52\approx4.951$. The sum itself is $4.538\ldots$. A shuffled deck has, on average, fewer than five cycles.
+Sum over $k$. For a deck of $52$ cards the integral test in Volume~1, Chapter~3, compares a decreasing positive function with the areas of the unit bars. Applied to $1/x$, it gives $\ln53\le H_{52}\le1+\ln52$: the sum $\sum_{k=1}^{52}1/k$ sits between $\int_1^{53}x^{-1}\,\mathrm dx$ and $1+\int_1^{52}x^{-1}\,\mathrm dx$. Those bounds are $\ln53\approx3.970$ and $1+\ln52\approx4.951$. The sum itself is $4.538\ldots$. A shuffled deck has, on average, fewer than five cycles.
 \end{proof}
+
+\begin{examplex}[six permutations, counted by hand]
+The same count can be checked by writing every permutation of $\{1,2,3\}$. The identity has three cycles. Each of the three transpositions has two: the $2$-cycle and one fixed point. Each of the two $3$-cycles is a single cycle. The total is $3+3\cdot2+2\cdot1=11$, so the mean number of cycles is $11/6$. And $H_3=1+\frac12+\frac13=\frac{11}6$.
+
+Counting by length gives the same check. The identity contributes three $1$-cycles and the three transpositions contribute one each, six in all, so the mean number of $1$-cycles is $1$. Only the transpositions contribute a $2$-cycle, three of them, and the mean is $\frac12$. The two $3$-cycles give mean $\frac13$.
+\end{examplex}
 
 Two cycles of length greater than $n/2$ cannot sit inside $\{1,\ldots,n\}$. Exercise~\ref{ex:prisoners} uses that disjointness.
 
@@ -121,12 +159,12 @@ Each box contains one of $n$ coupons, uniformly and independently of the other b
 For $n\ge1$, $\mathbb E[T]=nH_n$. Moreover $H_n/\ln n\to1$, so $\mathbb E[T]\sim n\ln n$.
 \end{theorem}
 \begin{proof}
-Let $T_0=0$ and, for $0\le i\le n-1$, let $T_{i+1}$ be the number of further boxes needed to obtain a new coupon after $i$ distinct coupons are already in hand. Then $T=T_1+\cdots+T_n$. Given the past, $T_i$ is a geometric waiting time with success probability $p_i=(n-i+1)/n$: the first success on independent trials, in the sense of Volume~1. There are only $n$ stages, and each stage is a function of a countable list of finite words. The set of all finite sequences of outcomes of the whole experiment, stopped at time $T$, is a countable union of finite sets, hence countable. Volume~1's tail sum gives $\mathbb E[T_i]=1/p_i=n/(n-i+1)$. Linearity, legitimate because each expectation is finite and there are finitely many of them, yields
+Let $T_0=0$ and, for $0\le i\le n-1$, let $T_{i+1}$ be the number of further boxes needed to obtain a new coupon after $i$ distinct coupons are already in hand. Then $T=T_1+\cdots+T_n$. Given the past, $T_i$ is a geometric waiting time with success probability $p_i=(n-i+1)/n$: the first success on independent trials, in the sense of Volume~1. That probability depends only on how many coupons are already in hand, not on which ones, so every past with $i-1$ coupons produces the same conditional law. The unconditional expectation is therefore the mean $1/p_i$ of that geometric waiting time. There are only $n$ stages, and each stage is a function of a countable list of finite words. The set of all finite sequences of outcomes of the whole experiment, stopped at time $T$, is a countable union of finite sets, hence countable. Volume~1's tail sum gives $\mathbb E[T_i]=1/p_i=n/(n-i+1)$. Linearity, legitimate because each expectation is finite and there are finitely many of them, yields
 \[
  \mathbb E[T]=\sum_{i=1}^n\frac{n}{n-i+1}=n\sum_{j=1}^n\frac1j=nH_n.
 \]
 
-Since $1/x$ is decreasing,
+Since $1/x$ is decreasing, the bar comparison of Volume~1, Chapter~3, gives
 \[
  \ln(n+1)=\int_1^{n+1}\frac{\mathrm dx}x\le\sum_{k=1}^n\frac1k=H_n\le1+\int_1^n\frac{\mathrm dx}x=1+\ln n
 \]
@@ -138,6 +176,27 @@ With $n$ coupons, the last new coupon takes about $n$ boxes on its own. Which ea
 \end{think}
 
 None. The waiting time $T_i$ has mean $n/(n-i+1)$, which is largest at the last stage, $i=n$, where the mean is $n$. The first stage has mean $1$. The expensive part of the collection is the end, not the beginning. That is why $\mathbb E[T]$ is of order $n\ln n$ rather than of order $n$.
+
+Indicators do the same job for boxes. Throw $m\ge1$ balls independently and uniformly into $n$ boxes. The base-$n$ digits of the uniform number in Chapter~1 supply the throws.
+
+\begin{proposition}[empty boxes]\label{prop:empty}
+Let $Z$ be the number of empty boxes after $m\ge1$ throws into $n$ boxes. For $n\ge1$,
+\[
+ \mathbb E[Z]=n\Bigl(1-\frac1n\Bigr)^m.
+\]
+For $n\ge2$,
+\[
+ \mathbb E[Z(Z-1)]=n(n-1)\Bigl(1-\frac2n\Bigr)^m.
+\]
+If $m=n$, then $\mathbb E[Z]/n=(1-1/n)^n\to e^{-1}$ as $n\to\infty$.
+\end{proposition}
+\begin{proof}
+Let $I_j$ indicate that box $j$ is empty. Each ball misses box $j$ with probability $1-1/n$, and the $m$ balls are independent, so $P(I_j=1)=(1-1/n)^m$. Linearity gives the first formula.
+
+For $n\ge2$ and $j\ne\ell$, both boxes are missed with probability $1-2/n$. There are $n(n-1)$ ordered pairs $(j,\ell)$, and $Z(Z-1)=\sum_{j\ne\ell}I_jI_\ell$. Linearity gives the second formula. The case $m=n$ is the $k=0$ clause of Theorem~\ref{thm:poissonlimit} with $\lambda=1$.
+\end{proof}
+
+Two boxes and two balls give $\mathbb E[Z]=2\cdot(1/2)^2=1/2$. The four equally likely outcomes are $(1,1)$, $(1,2)$, $(2,1)$ and $(2,2)$. Two of them leave one box empty, and two leave none. The average is $1/2$. The second formula gives $\mathbb E[Z(Z-1)]=2\cdot1\cdot0^2=0$: with two balls in two boxes, $Z$ is $0$ or $1$, so $Z(Z-1)=0$.
 
 The digits of Chapter~1, the cycle count, and the coupon time are all random variables. A sum of independent copies has a generating function that multiplies. Chapter~3 computes with that product, and reads the extinction of a family name off a fixed point of the product.
 
@@ -302,37 +361,46 @@ The lower end is $\ln\bigl((2n+1)/(n+1)\bigr)\to\ln2$, and the upper end is $\ln
 \]
 Volume~1's tail sum gives $\mathbb E[W_N]=\sum_{m\ge0}p_m$.
 
-The inequality $1-x\le e^{-x}$ yields, for $2\le m\le N$,
+The tangent bound $1-x\le e^{-x}$ from Volume~1 yields, for $2\le m\le N$,
 \[
- p_m\le\exp\Bigl(-\frac{(m-1)(m-2)}{2N}\Bigr).
+ p_m\le\exp\Bigl(-\sum_{j=1}^{m-1}\frac jN\Bigr)
+ =\exp\Bigl(-\frac{(m-1)m}{2N}\Bigr).
 \]
-For the matching lower estimate, $-\ln(1-x)\le x+2x^2$ on $[0,1/2]$. Indeed the series $-\ln(1-x)=\sum_{r\ge1}x^r/r$ gives $-\ln(1-x)\le x+x^2\sum_{s\ge0}x^s=x+x^2/(1-x)$, and $1/(1-x)\le2$ when $x\le1/2$. Thus, whenever $m-1\le N/2$,
+For $m\ge2$ one has $(m-1)m-(m-2)^2=3m-4\ge2$, so
 \[
- -\ln p_m=\sum_{j=1}^{m-1}-\ln\Bigl(1-\frac jN\Bigr)
- \le\sum_{j=1}^{m-1}\Bigl(\frac jN+2\frac{j^2}{N^2}\Bigr)
- \le\frac{(m-1)m}{2N}+\frac{2m^3}{3N^2}.
+ p_m\le\exp\Bigl(-\frac{(m-2)^2}{2N}\Bigr).
 \]
-The elementary bound $-\ln(1-x)\ge x$ gives the companion
-\[
- -\ln p_m\ge\frac{(m-1)m}{2N}.
-\]
+The values $p_0$ and $p_1$ are $1$. The exponential on the right is strictly smaller than $1$ at $m=1$, so that comparison is stated only for $m\ge2$.
 
-Fix $A>0$ and restrict to $N\ge4$ and $1\le m\le A\sqrt N$. Then $(m-1)/N\le A/\sqrt N\le1/2$ for $N\ge4A^2$, and the cubic error is at most $2A^3/(3\sqrt N)$, since $\sum_{j=1}^{m-1}j^2\le\int_0^m x^2\,\mathrm dx=m^3/3$. So
+For the matching lower estimate, Example~\ref{ex:rare} gives $-\ln(1-x)\le x+x^2/(2(1-x)^2)$. On $[0,1/2]$ one has $1/(2(1-x)^2)\le2$, hence $-\ln(1-x)\le x+2x^2$. Volume~1, Chapter~8, also records $-\ln(1-x)\ge x$ for $0\le x<1$. Thus, whenever $m-1\le N/2$,
+\[
+ \frac{(m-1)m}{2N}
+ \le-\ln p_m
+ \le\frac{(m-1)m}{2N}+\frac{2m^3}{3N^2},
+\]
+where $\sum_{j=1}^{m-1}j^2\le\int_0^m x^2\,\mathrm dx=m^3/3$.
+
+Fix $A>0$. For $N\ge\max(4,4A^2)$ and $2\le m\le A\sqrt N$, one has $(m-1)/N\le A/\sqrt N\le1/2$, and the cubic error is at most $2A^3/(3\sqrt N)$. So
 \[
  \exp\Bigl(-\frac{m^2}{2N}-\frac{C_A}{\sqrt N}\Bigr)
  \le p_m
- \le\exp\Bigl(-\frac{(m-2)^2}{2N}\Bigr)
+ \le\exp\Bigl(-\frac{(m-2)^2}{2N}\Bigr),
 \]
-on this range, for a constant $C_A$ depending only on $A$. The upper bound uses $(m-2)^2$ rather than $m^2$. Shifting the index by $2$ changes the sum by at most two terms, each at most $1$, so after division by $\sqrt N$ the two Riemann sums differ by $O(1/\sqrt N)$. The factor $e^{C_A/\sqrt N}$ tends to $1$. The sums
+with $C_A=2A^3/3$. The sums from $m=2$ to $\lfloor A\sqrt N\rfloor$ differ from the corresponding Gaussian Riemann sums by at most two terms of size at most $1$, and the factor $e^{C_A/\sqrt N}$ tends to $1$. The sums
 \[
  \frac1{\sqrt N}\sum_{m=0}^{\lfloor A\sqrt N\rfloor}\exp\Bigl(-\frac{m^2}{2N}\Bigr)
 \]
-are Riemann sums for $\int_0^A e^{-u^2/2}\,\mathrm du$. Therefore
+are Riemann sums for $\int_0^A e^{-u^2/2}\,\mathrm du$. The two terms $p_0$ and $p_1$ contribute $2/\sqrt N$. Therefore
 \[
  \frac1{\sqrt N}\sum_{m\le A\sqrt N}p_m\to\int_0^A e^{-u^2/2}\,\mathrm du.
 \]
 
-The tail $\sum_{m>A\sqrt N}p_m$ is at most $\sum_{m>A\sqrt N}\exp(-(m-2)^2/(2N))$ plus the empty contribution past $N$. Compare with the integral of $e^{-u^2/2}$ from $A-1$ to $\infty$, multiplied by $\sqrt N$. That integral tends to $0$ as $A\to\infty$, uniformly in $N$ large. First let $N\to\infty$, then $A\to\infty$. The normalised expectation converges to $\int_0^\infty e^{-u^2/2}\,\mathrm du=\sqrt{\pi/2}$. Hence $\mathbb E[W_N]\sim\sqrt{\pi N/2}$.
+For the tail, $p_m=0$ once $m>N$. For $2\le m\le N$, the bound above gives $p_m\le\exp(-(m-2)^2/(2N))$. The map $x\mapsto\exp(-x^2/(2N))$ decreases on $[0,\infty)$. The bar comparison in the integral test of Volume~1, Chapter~3, says that a decreasing nonnegative function satisfies $f(k)\le\int_{k-1}^k f$ for each integer $k\ge1$. Hence, for an integer $K\ge1$,
+\[
+ \sum_{k\ge K}\exp\Bigl(-\frac{k^2}{2N}\Bigr)
+ \le\int_{K-1}^\infty\exp\Bigl(-\frac{x^2}{2N}\Bigr)\,\mathrm dx.
+\]
+The substitution $u=x/\sqrt N$ turns the right side into $\sqrt N\int_{(K-1)/\sqrt N}^\infty e^{-u^2/2}\,\mathrm du$. Choose $K$ to be the least integer strictly larger than $A\sqrt N-2$, and take $A>3$ and $N$ large enough that this $K$ is at least $1$. Then $(K-1)/\sqrt N\ge A-3$, so the tail $\sum_{m>A\sqrt N}p_m$, divided by $\sqrt N$, is at most $\int_{A-3}^\infty e^{-u^2/2}\,\mathrm du$. That integral tends to $0$ as $A\to\infty$. First let $N\to\infty$ with $A$ fixed, then let $A\to\infty$. The quotient $\mathbb E[W_N]/\sqrt N$ converges to $\int_0^\infty e^{-u^2/2}\,\mathrm du=\sqrt{\pi/2}$. Hence $\mathbb E[W_N]\sim\sqrt{\pi N/2}$.
 \end{solution}
 
 \begin{solution}{ex:twopoisson}
