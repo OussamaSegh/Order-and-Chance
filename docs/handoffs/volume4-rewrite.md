@@ -64,7 +64,7 @@ Legend: `planned` means designed and not yet the manuscript. `written` means a f
 | Ch. 1 Counting and Paradoxes | written | Fresh manuscript, three figures, eight exercises with hints and solutions. Not yet a reader pass |
 | Ch. 2 Discrete Random Variables | written | Fresh. Exercise 2.6 is the long cycle and the hundred prisoners. Birthday-wait solution (Exercise 2.7) uses a Riemann-sum comparison; re-read the shift by 2 on the reader pass |
 | Ch. 3 Generating Functions | written | Fresh. Exercise 3.7 is the series for $(1-4x)^{-1/2}$ and the Catalan formula |
-| Ch. 4 Inequalities, Large Numbers and Entropy | planned | |
+| Ch. 4 Inequalities, Large Numbers and Entropy | written | Hoeffding, Borel–Cantelli, bounded strong law, Bernstein–Weierstrass, finite entropy. Gilmer left out on purpose |
 | Ch. 5 Continuous Probability Done Properly | planned | Title kept so “Chapter 5” still means densities and integrals. Content does not pretend to be Lebesgue’s theory |
 | Ch. 6 Convergence and the Central Limit Theorem | planned | Lindeberg must remain formal environment **6.10** |
 | Ch. 7 Random Walks | planned | |
@@ -84,11 +84,11 @@ Legend: `planned` means designed and not yet the manuscript. `written` means a f
 
 ## Last completed milestone
 
-**Milestone 3 — Chapter 3 written**, commit `90ec341f`. Chapters 1–3 and the preface are the new text. Chapters 4–12 and `extremal.tex` are still the previous manuscript. Draft PR: https://github.com/OussamaSegh/Order-and-Chance/pull/111
+**Milestone 4 — Chapter 4 written** on this commit. Chapters 1–4 and the preface are the new text. Chapters 5–12 and `extremal.tex` are still the previous manuscript. Draft PR: https://github.com/OussamaSegh/Order-and-Chance/pull/111
 
 ## Current WIP
 
-Chapter 4 is next: Chernoff, Hoeffding, Borel–Cantelli on the coin space of Chapter 1, the bounded strong law, Bernstein’s proof of Weierstrass, finite-alphabet entropy. Do not rewrite Chapters 1–3 except to repair a named defect. Reader-pass items already noted: Exercise 2.7’s Riemann-sum shift; the convexity argument for extinction when the mean equals 1 in Theorem 3 (extinction), which uses that a power series agreeing with the identity on an interval is the identity.
+Chapter 5 is next. Gilmer’s union-closed bound stays out: the entropy section does not contain a checked proof of the constant $(1-\ln 2)/2$. Reader-pass items: Exercise 2.7; the mean-one case of extinction in Chapter 3; the identification of $L''$ with a tilted variance in Hoeffding’s lemma (the bound $\le(b-a)^2/4$ is the step to re-read).
 
 ## Decisions already made
 
@@ -110,7 +110,7 @@ Chapter 4 is next: Chernoff, Hoeffding, Borel–Cantelli on the coin space of Ch
 
 ## Exact next actions
 
-1. Chapters 1–3 and the preface are written. Next write Chapter 4, then Chapters 5–8, then 9–12 and the appendix. Exercise 3.7 is done. Keep formal-environment counts 6.10, 9.5, 11.4, and 11.12 when those chapters are written.
+1. Chapters 1–4 and the preface are written. Next write Chapter 5, then 6–8, then 9–12 and the appendix. Keep formal-environment counts 6.10, 9.5, 11.4, and 11.12.
 2. Update this ledger to `written` for each finished file. Commit and push.
 3. Write Chapters 5–8, then 9–12 and the appendix, under the same rule.
 4. Reader pass, then voice pass. Fix what those passes find.
