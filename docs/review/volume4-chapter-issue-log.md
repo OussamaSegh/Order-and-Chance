@@ -4,7 +4,17 @@ Scope: draft PR #111, branch `cursor/volume4-rewrite-ee7f`. This is an editorial
 
 ## Review rule
 
-A writer's mathematical reconstruction, critical rereading, numerical check, or compiler pass is **not** an independent second review. Every chapter needs a separate identified reviewer who examined the **exact pushed commit**. Record that reviewer's identity, date, commit, report, issue disposition, and rechecks here. At this checkpoint **none of Chapters 1–14 has a verified independent reviewer or approval**. No review is attributed to a nonexistent person or model.
+A writer's mathematical reconstruction, critical rereading, numerical check, or compiler pass is **not** an independent second review. Every chapter needs a separate identified reviewer who examined the **exact pushed commit**. Record that reviewer's identity, date, commit, report, issue disposition, and rechecks here. At this checkpoint **none of Chapters 1–14 has a verified independent reviewer or approval**. No review is attributed to a nonexistent person or model. A pass on a named repair is not acceptance of the chapter.
+
+## Scope ledger for the latest rechecks
+
+| Item | SHA read | Reviewer | Scope, exactly | Result | Acceptance |
+| --- | --- | --- | --- | --- | --- |
+| Chapter 7, typical-set window direction | `76c55e79` | Composer-2.5 `bc-45964628-99a5-5b66-9a33-6e07923b395c` | The corrected sentence only: the typical set is $\|\bar I_n-H\|\le\varepsilon$, and Chebyshev on $\|\bar I_n-H\|\ge\varepsilon$ bounds the complement. Not the rest of the chapter. | **Pass.** The earlier sentence at `5b7e46fe` had the inequality reversed. | Chapter 7 is not accepted. |
+| Chapter 8, averaged Fourier remainder | `914cfa52` | Composer-2.5 `bc-c4be1229-f9c3-5164-881a-88b367e4e85e` | The remainder chain in `thm:polya` only: $\|R\|\le\|\theta\|^4/(24d)$ on $\|\theta\|^2\le2$, including every corner. The earlier full-argument read at `d5ef7a1c` by `bc-623eb12b` failed the looser remainder and is not this recheck. | **Pass** on that chain. | Chapter 8 is not accepted. |
+| Chapter 9, lazy-chain solution | `914cfa52` | Composer-2.5 `bc-c4be1229-f9c3-5164-881a-88b367e4e85e` | The solution of `ex:lazy` only. The whole-chapter read at `d5ef7a1c` by `bc-a187a70c` failed this solution and did not accept the chapter. | **Pass** on the repaired solution. | Chapter 9 is not accepted. |
+
+Printed Chapter 10 is The Poisson Clock, file `ch09-poisson.tex`, matching the architecture table in `docs/plan/book-04.md`. The superseded notes in that file number the same material as Chapter 9. The architecture table is the one in force.
 
 ## Distinct reads of `7d7e62b5` — 6 November 2026
 

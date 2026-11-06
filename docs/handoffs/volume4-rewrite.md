@@ -1,5 +1,9 @@
 # Handoff: Volume 4 rewrite
 
+## Page length — owner clarification, 6 November 2026
+
+For every book in the series, the ideal length is between 300 and 600 pages, and 600 is a maximum. Three hundred is not a mandatory minimum. Do not add filler to enter that range, and do not cut a needed argument to stay under 600. This supersedes the older 400–500 planning range. Content is governed by a complete proof, by teaching that earns its place, and by the approved subject. Report a page count as a measurement. The ideal range is context, not a pass/fail test. Published Volumes 1–3 stay frozen; do not reopen them to chase a length. Older paragraphs below that call a count a failure for lying outside 400–500 are history, and this note replaces that judgment.
+
 ## Latest checkpoint — 6 November 2026, `|phi|^n` repair and Markov hitting times
 
 **Preserved.** `4f8a4f88` and `76c55e79` are ancestors. Head of the manuscript commit is `d5ef7a1cdc5c9efc3568673bc113ab4fbd4e4112`. `origin/main` is `5c4840cc`. No chapter is accepted. Volumes 1–3 were not edited.
@@ -8,9 +12,9 @@
 
 **Reviews of `d5ef7a1c`, not acceptance.** Composer-2.5 `bc-45964628` passed the typical-set window at `76c55e79` and failed the old Fourier bound. Composer-2.5 `bc-623eb12b` read the full `|φ|^n` argument at `d5ef7a1c` and did not accept Chapter 8. The absolute value, the corners, the single `ρ`, and the series passed. The averaged remainder failed: `|R|≤|θ|^4/24` was not the average of the coordinate errors. The repair is `|R|≤|θ|^4/(24d)` on the ball `|θ|^2≤2`, where `φ≥1/2`, and the same bound at every corner. Composer-2.5 `bc-a187a70c` read every Chapter 9 exercise at `d5ef7a1c` and did not accept the chapter. The numerical checks passed. The lazy-chain solution did not prove irreducibility; it now carries a positive path from `P` to `Q`. Composer-2.5 `bc-c4be1229` re-read both repairs at `914cfa52` and passed them. It did not accept either chapter. Chapter 8 and Chapter 9 are not accepted.
 
-**Clean build of `d5ef7a1c`.** Detached worktree `/tmp/v4-build-d5ef7a1c`, not edited during `./build.sh --pdf-only volume4-chance`. Print interior **199 pages**, 513 × 738 pt, sha256 `75a97cdaccd5b10d2fcd85ceff4275bc3b30ef61b1f35fd218b13f2cce60dc02`. Reading PDF 200 pages, sha256 `222c4c2110fc9701995d4623bfec907431792b72c662a4591d0342feabb45957`. Layout: 245 boxes, no overflow. 199 replaces 197 and is still far below 400–500. This is not a page-by-page visual acceptance.
+**Clean build of `d5ef7a1c`.** Detached worktree `/tmp/v4-build-d5ef7a1c`, not edited during `./build.sh --pdf-only volume4-chance`. Print interior **199 pages**, 513 × 738 pt, sha256 `75a97cdaccd5b10d2fcd85ceff4275bc3b30ef61b1f35fd218b13f2cce60dc02`. Reading PDF 200 pages, sha256 `222c4c2110fc9701995d4623bfec907431792b72c662a4591d0342feabb45957`. Layout: 245 boxes, no overflow. The print interior measured 199 pages. That number is a measurement, not a shortfall. This is not a page-by-page visual acceptance.
 
-**Exact next step.** The remainder and the lazy-chain solution passed at `914cfa52`. That pass is not acceptance, and those sentences are not in the 199-page PDF of `d5ef7a1c`. Continue the approved plan with a proved section of the next chapter whose latest text has no whole-chapter review, then build that snapshot from a detached worktree. The whole-volume review, the Volume 5–15 citations, and the every-page ledger stay pending. Do not merge.
+**Exact next step.** Printed Chapter 10 is The Poisson Clock, `ch09-poisson.tex`. The new material is the kept-gap calculation, the two-arrival simplex, and the mean time to emptiness for rates 1 and 2. A distinct reviewer must read the whole chapter at the commit that contains them: every proof, example, exercise, hint, solution, figure, and dependency, including voice. A pass on one calculation is not acceptance. Then build that snapshot from a detached worktree and report the page count as a measurement. The whole-volume review, the Volume 5–15 citations, and the every-page ledger stay pending. Do not merge.
 
 ## Previous checkpoint — 6 November 2026, final gates recorded, reviews not acceptance
 

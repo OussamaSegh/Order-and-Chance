@@ -19,6 +19,10 @@ Bertrand's paradox and Buffon's needle are in Chapter 5. Entropy is Chapter 7, n
 
 ## Page budget
 
+Owner clarification, 6 November 2026, for the whole series: an ideal book is between 300 and 600 pages, and 600 is a maximum. Three hundred is not a minimum that a book must reach. Do not add filler in order to enter the range, and do not cut a needed proof in order to stay under 600. This replaces the 400–500 planning range below. What goes into a book is a complete argument, a point the reader needs, the approved subject, or clearer teaching. A page count is a measurement. The ideal range is context for that measurement, not a test the book passes or fails. Published Volumes 1–3 stay as they are; this note does not reopen them.
+
+The next paragraph is the earlier Volume 4 planning note. It stays as history.
+
 Owner decision of 6 November 2026 (t67u, t68u): the planning range is **400–500 pages** in the approved series typography. This replaces every earlier 260–290 figure for Volume 4. The range is a check against the native 7×10 book, not a quota. Do not add filler, shrink the type, or delete a proof or a solution to land inside it. If a finished native build falls outside 400–500, report the count and the tradeoff. A one-pass XeLaTeX file of an unfinished manuscript is not that measurement.
 
 ## Promise

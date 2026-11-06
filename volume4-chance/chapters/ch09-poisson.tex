@@ -51,7 +51,11 @@ The event $\{N(t)=n\}$ is $\{T_n\le t<T_n+E_{n+1}\}$. Independence of $E_{n+1}$ 
 where $\Delta_n(t)$ is the simplex inside $[0,t]^n$. The volume of that simplex is $t^n/n!$, because the $n!$ possible orderings of $n$ distinct coordinates partition the cube up to boundaries of volume zero. Therefore $P(N(t)=n)=e^{-\lambda t}(\lambda t)^n/n!$, and the conditional distribution is uniform on the simplex, which is the law of the order statistics.
 \end{proof}
 
-For rate $1$ and $t=1$, the formula says $P(N(1)=0)=P(N(1)=1)=e^{-1}$ and $P(N(1)\ge2)=1-2e^{-1}$. Numerically $e^{-1}=0.36787\ldots$, so a unit interval is empty about $37\%$ of the time and holds one point just as often. Conditional on exactly two points, their positions are the order statistics of two independent uniforms: the earlier one has density $2(1-u)$ on $[0,1]$, because $P(\min(U,V)>u)=(1-u)^2$.
+For rate $1$ and $t=1$, the formula says $P(N(1)=0)=P(N(1)=1)=e^{-1}$ and $P(N(1)\ge2)=1-2e^{-1}$. The decimal $e^{-1}=0.36787\ldots$ is an evaluation of that exact value. It is not an input to the identities below.
+
+Conditional on $N(t)=2$, the two arrivals are uniform on the simplex $0<t_1<t_2<t$. That simplex has area $t^2/2$: the square $[0,t]^2$ has area $t^2$, and the two orderings of a pair split it evenly, up to the diagonal of area zero. The earlier arrival exceeds $u$, for $0\le u\le t$, when both points lie in $(u,t]$. The remaining simplex has area $(t-u)^2/2$, so the survival function is $((t-u)/t)^2$. Differentiating the distribution function $1-((t-u)/t)^2$ gives the density $2(t-u)/t^2$ on $[0,t]$. For $t=1$ this is $2(1-u)$.
+
+Both arrivals lie in $[0,t/2]$ on a simplex of area $(t/2)^2/2$. Dividing by $t^2/2$ gives $1/4$. The same fraction is $(1/2)^2$, the chance that two independent uniforms on $[0,t]$ both fall in the first half. The condition $N(t)=2$ has already ordered them.
 
 \begin{lemma}[colouring]\label{lem:colouring}
 Let $N$ be Poisson with mean $\mu$. Conditional on $N=n$, split the $n$ points into $k$ colours with probabilities $p_1,\ldots,p_k$. The colour counts are independent, and colour $j$ is Poisson with mean $\mu p_j$.
@@ -86,14 +90,21 @@ Conditional on $N(t_m)=n$, the points are uniform in $[0,t_m]$ by Theorem~\ref{t
 Keep each point of a Poisson process of rate $\lambda$ independently with probability $p$. The kept points form a Poisson process of rate $\lambda p$, independent of the discarded points, which form a Poisson process of rate $\lambda(1-p)$.
 \end{theorem}
 \begin{proof}
-On each finite interval the count is Poisson, and Lemma~\ref{lem:colouring} splits it. The increments on disjoint intervals remain independent because the original increments were independent and the coins are fresh.
+The definition asks for exponential gaps, so consider the wait $S$ from time $0$, or from a point that has just been kept, until the next kept point. Independent increments and memoryless gaps make the future a fresh copy of the original process. The event $\{S>t\}$ means that every original point in $(0,t]$ was discarded. Conditioning on the original count,
+\[
+ P(S>t)=\sum_{n\ge0}e^{-\lambda t}\frac{(\lambda t)^n}{n!}(1-p)^n
+ =e^{-\lambda t}e^{\lambda t(1-p)}=e^{-\lambda p t}.
+\]
+Thus $S$ is exponential of rate $\lambda p$. The coins and the increments used for the next gap are new, so successive kept gaps are independent. The kept points are therefore a Poisson process of rate $\lambda p$ in the sense of Definition~\ref{def:pp}. The discarded points are the same construction with probability $1-p$. Independence of the two processes is not a consequence of splitting one set of coins: given the original points, the discarded set is the complement of the kept set. Lemma~\ref{lem:colouring}, applied to any finite collection of intervals, makes the kept counts and the discarded counts independent Poissons. Figure~\ref{fig:poissonclock} draws one such split.
 \end{proof}
 
 \begin{theorem}[superposition]\label{thm:superpose}
 Let $N$ and $M$ be independent Poisson processes of rates $\lambda$ and $\mu$. Their sum $N+M$ is a Poisson process of rate $\lambda+\mu$.
 \end{theorem}
 \begin{proof}
-On an interval of length $\ell$ the two counts are independent Poissons of means $\lambda\ell$ and $\mu\ell$. Lemma~\ref{lem:colouring}, read in reverse, says that a Poisson count of mean $(\lambda+\mu)\ell$, coloured red with probability $\lambda/(\lambda+\mu)$, splits into independent Poissons of those two means. The sum of the colours is the original count, so $N(I)+M(I)$ is Poisson of mean $(\lambda+\mu)\ell$. Disjoint intervals use disjoint increments of $N$ and of $M$, hence independent sums.
+The merged process is also a sequence of gaps. From any moment, the next point of $N$ and the next point of $M$ are independent exponential clocks of rates $\lambda$ and $\mu$, by the same memoryless restart used for one process. The earlier clock exceeds $t$ only if both do, so its survival function is $e^{-\lambda t}e^{-\mu t}=e^{-(\lambda+\mu)t}$. When it rings, the other clock and all later clocks are still fresh, so the next merged gap is a new copy, independent of the past. The merged points are therefore a Poisson process of rate $\lambda+\mu$ under Definition~\ref{def:pp}.
+
+The count on an interval of length $\ell$ is Poisson of mean $(\lambda+\mu)\ell$ by Theorem~\ref{thm:uniform} applied to that process. The same count is the sum of the two original counts. Lemma~\ref{lem:colouring}, read in reverse, recovers the same fact from a single Poisson of mean $(\lambda+\mu)\ell$ coloured red with probability $\lambda/(\lambda+\mu)$: the colour counts are independent Poissons of means $\lambda\ell$ and $\mu\ell$, and their sum is the merged count.
 \end{proof}
 
 For a check, take $\lambda=1$ and $\mu=2$ on an interval of length $1$. The merged count has mean $3$, and $P(N+M=0)=e^{-3}$. Colouring a Poisson$(3)$ point red with probability $1/3$ returns a Poisson$(1)$ count, which is the first process.
@@ -209,7 +220,36 @@ While the queue holds $k\ge1$ customers, the next event is the earlier of an arr
 the second identity by differentiating the first. Hence $\sum k\rho^k=\rho/(1-\rho)^2$ and the stationary mean is $\rho/(1-\rho)$. The balance equations determine the stationary law. The process itself is not a countable sample space: its exponential holding times are continuous. Construct the arrival and service clocks from independent uniform blocks as in Chapter~5. The total jump rate is at most $\lambda+\mu$, so in a finite interval the number of actual jumps is dominated by the finite number of arrivals of a Poisson clock of that rate; explosion cannot occur. Detailed balance for the rate matrix then makes the geometric distribution invariant. This establishes the stated stationary law, not a blanket theorem about all countable-state chains.
 \end{proof}
 
-For $\rho=0.9$ the mean number present is $9$. For $\rho=0.99$ it is $99$. The mean explodes as the server approaches saturation, although the chain remains positive recurrent for every $\rho<1$.
+For $\rho=1/2$ the stationary mean is $1$. For $\rho=9/10$ it is $9$, and for $\rho=99/100$ it is $99$. The mean grows as the server approaches saturation. The chain still has a stationary distribution for every $\rho<1$.
+
+The stationary mean is a count of customers. The next calculation is a duration, and the two numbers happen to agree in one example. They are not the same quantity.
+
+\begin{proposition}[time to emptiness]\label{prop:empty}
+Arrivals have rate $1$ and service has rate $2$. Start with one customer. The mean time until the system is empty is $1$. In stationarity, $\pi_k=2^{-(k+1)}$, the probability of at least two customers is $1/4$, and the flow across the edge from $0$ to $1$ balances: both $\pi_0\cdot 1$ and $\pi_1\cdot 2$ equal $1/2$.
+\end{proposition}
+\begin{proof}
+The stationary formulas are Theorem~\ref{thm:mm1} at $\rho=1/2$. Then $\pi_0=1/2$ and $\pi_1=1/4$, so both sides of the detailed balance across that edge equal $1/2$. The tail is a geometric series,
+\[
+ \sum_{k\ge2}2^{-(k+1)}=2^{-3}+2^{-4}+\cdots=\frac{1/8}{1-1/2}=\frac14.
+\]
+
+The duration needs the jump chain. While at least one customer is present, the next event is an arrival with probability $1/3$ and a departure with probability $2/3$, and the wait for that event is exponential of rate $3$. Let $S_n$ be the number of customers after $n$ jumps, with $S_0=1$, and let the chain stop at $0$. Write $\tau$ for the number of jumps until $S$ hits $0$, and $\tau_L$ for the first time $S$ hits $0$ or a fixed level $L\ge2$.
+
+Let $h_k$ be the probability of hitting $0$ before $L$, starting from $k$. Then $h_0=1$, $h_L=0$, and $h_k=\frac13 h_{k+1}+\frac23 h_{k-1}$. The differences satisfy $h_{k+1}-h_k=2(h_k-h_{k-1})$, so $h_k-h_{k-1}=2^{k-1}(h_1-h_0)$. Summing from $1$ to $k$ and using $h_0=1$ gives $h_k=1+(h_1-1)(2^k-1)$. The condition $h_L=0$ forces $h_1-1=-1/(2^L-1)$, and therefore the probability of hitting $L$ before $0$, starting from $1$, is $1/(2^L-1)$.
+
+Until $\tau_L$, the next step changes the position by $\pm1$ and has conditional mean $-1/3$, so $S_{n\wedge\tau_L}+\frac13(n\wedge\tau_L)$ is a martingale. From every site in $\{1,\ldots,L-1\}$, one run of at most $L$ steps hits $\{0,L\}$ with probability at least $(1/3)^L$, so $\tau_L$ has finite mean. The stopped martingale at time $\tau_L\wedge n$ has mean $1$. The position stays between $0$ and $L$, so its expectation passes to the limit. The time $\tau_L\wedge n$ increases to $\tau_L$, so its expectation does too. Therefore
+\[
+ \mathbb E[S_{\tau_L}]+\frac13\mathbb E[\tau_L]=1.
+\]
+The position at $\tau_L$ is $L$ only on the event of hitting $L$, so $\mathbb E[S_{\tau_L}]=L/(2^L-1)$ and $\mathbb E[\tau_L]=3\bigl(1-L/(2^L-1)\bigr)$.
+
+As $L$ increases, $\tau_L$ increases to $\tau$. The probability that $\tau$ has not occurred by $\tau_L$ is the probability of hitting $L$, which tends to $0$. Thus $\tau$ is finite, and monotone convergence gives $\mathbb E[\tau]=3$.
+
+Each of those jumps, while the queue is still nonempty, waits an exponential time $H_i$ of rate $3$, mean $1/3$, independent of the direction and of the earlier jumps. The emptiness time is $\sum_{i=1}^{\tau}H_i$. The event $\{\tau\ge i\}$ is decided by the first $i-1$ jumps, so
+\[
+ \mathbb E\Bigl[\sum_{i=1}^{\tau}H_i\Bigr]=\sum_{i\ge1}\mathbb E[H_i]\,P(\tau\ge i)=\frac13\mathbb E[\tau]=1.
+\]
+\end{proof}
 
 \section{Exercises}
 
@@ -233,6 +273,10 @@ Twenty independent events of probability $0.02$ occur or not. Bound the total va
 In Theorem~\ref{thm:mm1}, derive $\sum_{k\ge0}k\rho^k=\rho/(1-\rho)^2$ for $|\rho|<1$, and conclude that the stationary mean is $\rho/(1-\rho)$.
 \end{exercise}
 
+\begin{exercise}[$\star\star$]\label{ex:emptycheck}
+In Proposition~\ref{prop:empty}, arrivals have rate $1$ and service has rate $2$. From $\pi_k=2^{-(k+1)}$, check the balance across the edge from $0$ to $1$, and show that the stationary probability of at least two customers is $1/4$.
+\end{exercise}
+
 \begin{exercise}[$\star$]\label{ex:superpose}
 Use Lemma~\ref{lem:colouring} to show that the sum of independent Poisson random variables of means $\lambda$ and $\mu$ is Poisson of mean $\lambda+\mu$.
 \end{exercise}
@@ -253,6 +297,9 @@ Theorem~\ref{thm:lecam} with twenty copies of $p^2$.
 \end{hint}
 \begin{hint}{ex:mm1mean}
 Differentiate $\sum\rho^k=1/(1-\rho)$.
+\end{hint}
+\begin{hint}{ex:emptycheck}
+The two sides of the balance are $\pi_0$ times the arrival rate and $\pi_1$ times the service rate. The tail is a geometric series.
 \end{hint}
 \begin{hint}{ex:superpose}
 A Poisson$(\lambda+\mu)$ count, coloured with probabilities $\lambda/(\lambda+\mu)$ and $\mu/(\lambda+\mu)$, splits into the two summands.
@@ -287,6 +334,10 @@ Ties have probability zero for continuous independent clocks.
 
 \begin{solution}{ex:mm1mean}
 \writeup Differentiate $\sum_{k\ge0}\rho^k=1/(1-\rho)$ to obtain $\sum_{k\ge1}k\rho^{k-1}=1/(1-\rho)^2$, hence $\sum k\rho^k=\rho/(1-\rho)^2$. Multiply by $1-\rho$.
+\end{solution}
+
+\begin{solution}{ex:emptycheck}
+\writeup $\pi_0=1/2$ and $\pi_1=1/4$. The flow $0\to1$ is $(1/2)\cdot1=1/2$, and the flow $1\to0$ is $(1/4)\cdot2=1/2$. The tail is $\sum_{k\ge2}2^{-(k+1)}=1/8+1/16+\cdots=(1/8)/(1/2)=1/4$.
 \end{solution}
 
 \begin{solution}{ex:superpose}
