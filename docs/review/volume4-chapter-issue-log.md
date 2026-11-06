@@ -4,7 +4,19 @@ Scope: draft PR #111, branch `cursor/volume4-rewrite-ee7f`. This is an editorial
 
 ## Review rule
 
-A writer's mathematical reconstruction, critical rereading, numerical check, or compiler pass is **not** an independent second review. Every chapter needs a separate identified reviewer who examined the **exact pushed commit**. Record that reviewer's identity, date, commit, report, issue disposition, and rechecks here. At this checkpoint **none of Chapters 1–14 has a verified independent reviewer or approval**. No review is attributed to a nonexistent person or model. A pass on a named repair is not acceptance of the chapter.
+A writer's mathematical reconstruction, critical rereading, numerical check, or compiler pass is **not** an independent second review. Every chapter needs a separate identified reviewer who examined the **exact pushed commit**. Record that reviewer's identity, date, commit, report, issue disposition, and rechecks here. Mathematical and voice gates that have closed are listed below with the reviewer and the SHA. None of them is production approval, and no checkbox is ticked. No review is attributed to a nonexistent person or model. A pass on a named repair is not acceptance of the chapter.
+
+## Chapter 6 gate, reviewer and SHA
+
+The Chapter 6 file `ch06-clt.tex` was last changed in `30d77d7589ebbe5a1d982f0a00d2aceed9a99a38`. Composer-2.5 `bc-38fe06c1-e0f0-5fa2-a2e1-459b109d08b4` read the whole chapter at `970ea787` and found three defects. Composer-2.5 `bc-55d39ade-073c-5ad5-b8df-3eef408bd960` reread the whole chapter at `30d77d75` and reported a spelling clash that the source does not contain. Composer-2.5 `bc-45402df8-26d2-5eea-b1a3-0f88e50efa41` reread the whole chapter and both figures at `30d77d75` and found no remaining defect. That is the close of the mathematical and voice review of Chapter 6. It is not a production acceptance. The file is unchanged through `3030925c`.
+
+## Chapters 7 and 8 full rereads at `3030925c`
+
+Composer-2.5 `bc-51a79de0-65e2-58f8-acdf-7fd1eae37caf` read the whole of printed Chapter 7, `ch07-entropy.tex`, and `figures/ch07-prefixtree.tex` at `3030925c` and found no remaining defect. All six exercises passed. That closes the mathematical and voice review of Chapter 7 at `3030925c`. Composer-2.5 `bc-19314489-97bf-5f7b-8f16-95fec40b6e35` read the whole of printed Chapter 8, `ch07-walks.tex`, and `figures/ch08-reflectstep.tex` at the same SHA and found no remaining defect. All eight exercises passed, including the control of $|\phi|^n$ at the origin and at every corner. That closes the mathematical and voice review of Chapter 8 at `3030925c`. Neither close is a production acceptance. Those two files are not edited by the Chapter 9 sentence below.
+
+## Chapter 9 full reread at `3030925c`, one defect
+
+Composer-2.5 `bc-0192976a-6eea-5f20-964d-0e45f3c46a18` read the whole of printed Chapter 9, `ch08-markov.tex`, and `figures/ch08-chain.tex`. Eight exercises passed. `ex:risingmean` failed on the sentence ``There are $2(n-2)$ ordered adjacent pairs in the variance sum.'' There are $n-2$ adjacent pairs. The factor $2$ belongs to the variance formula, which counts each unordered pair twice. The displayed variance $(n+1)/12$ was already right. The sentence now says that. This repair has no full reread. The Chapter 9 review gate stays open. Chapters 1--8 and 14 were not edited.
 
 ## Scope ledger for the latest rechecks
 
@@ -74,11 +86,12 @@ These are whole-chapter reads of the current text, not patch checks. No report h
 
 ## Acceptance blockers still open, from this ledger
 
-A chapter's review gate closes only when a distinct reviewer reads the whole of its current text and reports no remaining defect. A patch recheck does not do that. As of `ba74cccb`:
+A chapter's review gate closes only when a distinct reviewer reads the whole of its current text and reports no remaining defect. A patch recheck does not do that. As of the Chapter 9 sentence recorded above:
 
-- Chapter 14: review gate closed for mathematics and voice at `ba74cccb`. Production and the every-page ledger remain open.
-- Chapters 1--13: whole-chapter reads exist for earlier SHAs, and later repairs have patch rechecks. None of those patch rechecks is a full reread of the current file. Their review gates stay open. No box is ticked.
-- Appendix `extremal.tex`, the preface, and the closing Volume 5 paragraph are in the book. They have no full independent reread of the current SHA recorded here.
+- Chapters 1, 2, 3, 4, 5, 6, 7, 8, and 14: mathematical and voice gates closed at the SHAs named in this log. Production and the every-page ledger remain open. No box is ticked.
+- Chapter 9: full read at `3030925c` found the pair count. The repaired sentence has no full reread.
+- Chapters 10--13: earlier whole reads plus later patch rechecks. Their review gates stay open.
+- Appendix `extremal.tex`, the preface, and the closing matter are in the book. They have no full independent reread of the current SHA recorded here.
 - The fresh whole-volume review, the Volume 5--15 citation sweep, and the every-page visual ledger have not been started.
 
 ## Chapter 14 (random graphs) whole-chapter read at `b81932e3`, not acceptance
