@@ -8,7 +8,7 @@
 
 **Chapter 5 writing, not a finished chapter.** Commit `baebc58b` derives an exponential from one uniform, proves that a nonnegative density has mean equal to the integral of its tail, computes the mean of the Box--Muller radius, works the minimum and maximum of two independent uniforms, and differentiates the chord-length law in Bertrand's distance model. Exercise `ex:usquare` has a hint and a solution. The older theorems and the other exercises were not rewritten. A distinct reviewer of `baebc58b` is required before any acceptance language. Chapters 2 and 3 still have no full-page PDF acceptance.
 
-**Page count.** Do not reuse 157. That number is the print interior of `7078dfe5` only. The next native `./build.sh volume4-chance` after this writing is the first count that includes it.
+**Page count.** Do not reuse 157. Actions run 42273398181 on `a6abf8fa` failed: the single Chapter 4 example box exceeded the 7×10 text height. That box is now split into two. A successful `./build.sh volume4-chance` after the split is the first count that includes the Chapter 5 writing.
 
 **C-GROUP.** Unchanged. Do not edit Volume 3.
 
