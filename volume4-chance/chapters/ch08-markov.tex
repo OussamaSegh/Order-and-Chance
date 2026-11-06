@@ -9,7 +9,7 @@ A random walk on a graph steps to a neighbour. A Markov chain on a finite set ma
 
 \section{Transition matrices}
 
-Let $\mathcal X$ be a finite set. A transition matrix satisfies $P(x,y)\ge0$ and $\sum_y P(x,y)=1$. A chain with initial law $\mu$ is built by drawing each next state from the current row, using fresh blocks of bits. The law of $X_n$ is $\mu P^n$.
+Let $\mathcal X$ be a finite set. A transition matrix satisfies $P(x,y)\ge0$ and $\sum_y P(x,y)=1$. A chain with initial law $\mu$ is built by drawing each next state from the current row, using fresh independent uniform coordinates of the kind constructed in Chapter~5 (finite base-$r$ digits suffice when all probabilities are rational). The law of $X_n$ is $\mu P^n$.
 
 \begin{examplex}[three states]
 On $\{1,2,3\}$, let
@@ -29,7 +29,7 @@ Every finite transition matrix has a stationary distribution. An irreducible cha
 \begin{proof}
 From any start, the averages $\nu_N=N^{-1}\sum_{n=0}^{N-1}\mu_n$ lie in the simplex. Bolzano--Weierstrass in each coordinate, Volume~1, Chapter~3, and a diagonal extraction produce a limit $\pi$. Then $\nu_N P-\nu_N=N^{-1}(\mu_N-\mu_0)\to0$, so $\pi P=\pi$.
 
-If $\pi$ and $\pi'$ are stationary and the chain is irreducible, a positive maximum of $\pi-\pi'$ at $x$ propagates along every edge with $P(x,y)>0$, because $(\pi-\pi')(x)$ equals the $P(x,\cdot)$-average of $\pi-\pi'$. Irreducibility forces $\pi-\pi'$ constant, hence zero.
+Suppose the chain is irreducible. Every stationary probability $\pi$ has strictly positive coordinates. Indeed, some coordinate $\pi(x)$ is positive, and for every $y$ there exists $n$ with $P^n(x,y)>0$, so stationarity gives $\pi(y)=\sum_z\pi(z)P^n(z,y)\ge\pi(x)P^n(x,y)>0$. If $\pi$ and $\pi'$ are two stationary probabilities, choose $r=\max_x\pi(x)/\pi'(x)$, and set $h=r\pi'-\pi$. Then $h$ is a nonnegative stationary row vector and has a zero coordinate at a maximiser. If it had a positive coordinate, irreducibility and the same argument applied to $hP^n=h$ would make every coordinate positive, contradiction. Thus $h=0$. Summing coordinates yields $r=1$ and $\pi'=\pi$. This argument uses left stationary vectors throughout; taking a harmonic maximum under $P$ would be a proof about right eigenvectors, not about stationary laws.
 \end{proof}
 
 \section{Convergence}
@@ -40,7 +40,19 @@ Total variation is $\|\mu-\nu\|=\frac12\sum_x|\mu(x)-\nu(x)|=\max_A|\mu(A)-\nu(A
 If $P$ is irreducible and aperiodic on a finite set, with stationary law $\pi$, then $\|P^n(x,\cdot)-\pi\|\to0$ for every $x$.
 \end{theorem}
 \begin{proof}
-Some $n_0$ has $P^{n_0}(u,v)>0$ for all $u,v$. Let $\delta=\min P^{n_0}>0$. Couple two chains, one from $x$ and one from $\pi$, in blocks of length $n_0$. From current states $u$ and $v$, with probability $\delta$ send both to a common draw, and with probability $1-\delta$ move them independently under the residual kernels $(P^{n_0}(u,\cdot)-\delta)/(1-\delta)$. They meet with probability at least $\delta$ on each block, and stay together afterwards. The probability they differ at time $n$ is at most $(1-\delta)^{\lfloor n/n_0\rfloor}$, which tends to $0$, and total variation is at most that probability.
+First we explain why one power has all entries positive. Fix a state $s$. In an irreducible chain, the period is the gcd of the lengths of its closed walks from $s$ back to $s$; aperiodicity says this gcd is $1$. Some finite collection of those lengths already has gcd $1$. Their nonnegative integer combinations therefore contain all sufficiently large integers: choose one length $r$, find for each residue modulo $r$ a nonnegative combination of the others with that residue, and add multiples of $r$. Given states $u,v$, irreducibility supplies a path from $u$ to $s$ and one from $s$ to $v$. Inserting sufficiently long closed walks at $s$ shows that $P^n(u,v)>0$ for all sufficiently large $n$. As the state space is finite, one common $n_0$ works for every pair.
+
+Write $m=|\mathcal X|$ and $\delta=\min_{u,v}P^{n_0}(u,v)>0$. Then $\epsilon=m\delta\in(0,1]$. For every row and destination $y$,
+\[
+P^{n_0}(u,y)=\epsilon\frac1m+(1-\epsilon)R_u(y),
+\qquad
+R_u(y)=\frac{P^{n_0}(u,y)-\delta}{1-m\delta}
+\]
+when $\epsilon<1$. Each $R_u$ is a genuine probability row: its entries are nonnegative and their sum is $1$. If $\epsilon=1$ every row is already uniform, so the coupling meets in one block. Otherwise couple two chains in blocks of $n_0$ steps. At the start of a block, with probability $\epsilon$ choose one common uniform state for both, and with probability $1-\epsilon$ draw from the two residual rows. Once the chains meet, couple their further evolution identically. At every block before meeting the conditional chance of a meeting is at least $\epsilon$. Hence the probability the two chains still differ after $k$ full blocks is at most $(1-\epsilon)^k$. Start one chain from $x$ and the other from $\pi$, so the second chain stays stationary. The coupling inequality gives
+\[
+\|P^n(x,\cdot)-\pi\|_{\rm TV}\le (1-\epsilon)^{\lfloor n/n_0\rfloor}\to0.
+\]
+Between block endpoints, advance both chains with the same transition mechanism; a matched pair never separates.
 \end{proof}
 
 For random transpositions the sharp window sits near $\frac12 n\ln n$ and is proved in Volume~11. The bound above is only exponential convergence.
