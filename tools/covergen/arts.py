@@ -13,65 +13,59 @@ def isprime(n):
         if n%d==0: return False
     return True
 
-# 2 The Integers -- Ulam spiral of 1..71^2
+# 2 The Integers -- prime circles: radius sqrt(p) for each prime p <= 53,
+# with the lattice points x^2 + y^2 = p. Approved plate V2-E.
 def v2():
-    s=Scene(); N=71*71; x=y=0; pts=[(0,0)]; dx,dy=1,0; step=1; n=1
-    while n<N:
-        for _ in range(2):
-            for _ in range(step):
-                if n>=N: break
-                x+=dx;y+=dy;n+=1;pts.append((x,y))
-            dx,dy=-dy,dx
-        step+=1
-    Rd=35.5
-    for i,(a,b) in enumerate(pts,1):
-        r=math.hypot(a,b)
-        if isprime(i) and r<Rd: s.dot(a,b,0.30,op=0.95*(1-0.75*(r/Rd)**2),halo=0.5*(1-r/Rd))
-    s.dot(0,0,0.42,col=IV,halo=1.0)
+    s=Scene()
+    def representations(n):
+        r=int(math.sqrt(n))
+        return [(x,y) for x in range(-r,r+1) for y in range(-r,r+1) if x*x+y*y==n]
+    # Disc of radius 6: the count proved in Sums of Squares.
+    if sum(1 for x in range(-6,7) for y in range(-6,7) if x*x+y*y<=36)!=113:
+        raise RuntimeError('lattice-point count N(6)')
+    for p in range(2,54):
+        if not isprime(p): continue
+        pts=representations(p)
+        if p%4==3:
+            if pts: raise RuntimeError(p)
+            s.circle(0,0,math.sqrt(p),w=0.32,op=0.20)
+        else:
+            if p==2 and len(pts)!=4: raise RuntimeError(pts)
+            if p%4==1 and len(pts)!=8: raise RuntimeError((p,len(pts)))
+            if any(math.gcd(x,y)!=1 for x,y in pts): raise RuntimeError(p)
+            s.circle(0,0,math.sqrt(p),w=0.58,op=0.78,glow=0.45)
+            for x,y in pts: s.dot(x,y,0.16,op=0.98,halo=0.7)
+    # Keeps the outer stroke inside the fitted art window, as in the approved sample.
+    s.circle(0,0,math.sqrt(53)+0.15,w=0.01,op=0.0)
+    s.dot(0,0,0.10,col=IV,op=1,halo=0.9)
+    s.fill_frac=0.90
     return s,'bbox'
 
-# 3 Symmetry -- icosahedron, its rotation axes and its 15 mirror circles
+# 3 Symmetry -- Paley graph P_13. Approved plate V3-B.
+# Vertices are residues mod 13. An edge joins x and y when x-y is a nonzero square.
 def v3():
-    s=Scene(); f=(1+5**.5)/2
-    V=[]
-    for a in (-1,1):
-        for b in (-f,f): V+=[(0,a,b),(a,b,0),(b,0,a)]
-    V=np.array(V,float)
-    E=[(i,j) for i in range(12) for j in range(i+1,12) if abs(np.linalg.norm(V[i]-V[j])-2)<1e-9]
-    F=[(i,j,k) for (i,j) in E for k in range(j+1,12) if (i,k) in E and (j,k) in E]
-    def R(ax,ang):
-        ax=np.array(ax,float); ax/=np.linalg.norm(ax); c,s_=math.cos(ang),math.sin(ang); x,y,z=ax
-        return np.array([[c+x*x*(1-c),x*y*(1-c)-z*s_,x*z*(1-c)+y*s_],[y*x*(1-c)+z*s_,c+y*y*(1-c),y*z*(1-c)-x*s_],[z*x*(1-c)-y*s_,z*y*(1-c)+x*s_,c+z*z*(1-c)]])
-    M=R((1,0,0),-0.42)@R((0,0,1),0.30)@R((0,1,0),0.55)
-    W=V@M.T; view=np.array([0,0,1.0])
-    front={}
-    for t in F:
-        n=np.cross(W[t[1]]-W[t[0]],W[t[2]]-W[t[0]]); c=W[list(t)].mean(0)
-        if n@c<0: n=-n
-        vis=n@view>0
-        for e in ((t[0],t[1]),(t[0],t[2]),(t[1],t[2])):
-            e=tuple(sorted(e)); front[e]=front.get(e,False) or vis
-    Rc=math.sqrt(1+f*f)
-    # mirror planes are perpendicular to the 15 two-fold axes (edge midpoints)
-    mids=[(W[i]+W[j])/2 for i,j in E]; axes2=[]
-    for m in mids:
-        u=m/np.linalg.norm(m)
-        if not any(abs(abs(u@a)-1)<1e-6 for a in axes2): axes2.append(u)
-    t=np.linspace(0,2*np.pi,361)
-    for u in axes2:
-        a=np.cross(u,[0.3,0.5,0.8]); a/=np.linalg.norm(a); b=np.cross(u,a)
-        C=Rc*(np.outer(np.cos(t),a)+np.outer(np.sin(t),b))
-        s.line(C[:,:2],w=0.25,op=0.10)
-    s.line(np.stack([Rc*np.cos(t),Rc*np.sin(t)],1),w=0.45,op=0.35)
-    for (i,j),vis in front.items():
-        if vis: s.line(W[[i,j],:2],w=0.95,op=1.0,glow=1.0)
-        else: s.line(W[[i,j],:2],w=0.40,op=0.28)
-    # one axis of each kind, in ivory: 5-fold (vertices), 3-fold (faces), 2-fold (edges)
-    v5=W[0]/np.linalg.norm(W[0]); fc=W[list(F[3])].mean(0); v3_=fc/np.linalg.norm(fc); v2_=axes2[4]
-    for u,L in ((v5,1.32),(v3_,1.32),(v2_,1.32)):
-        s.line(np.array([-u[:2]*Rc*L,u[:2]*Rc*L]),w=0.45,op=0.75,col=IV)
-    for i in range(12):
-        z=W[i,2]; s.dot(W[i,0],W[i,1],0.055 if z>0 else 0.035,col=IV if z>0 else 'ocCoral',op=1 if z>0 else .4,halo=.6 if z>0 else 0)
+    s=Scene(); p=13
+    squares={pow(i,2,p) for i in range(1,p)}
+    if squares!={1,3,4,9,10,12}: raise RuntimeError(squares)
+    def adj(i,j): return i!=j and (i-j)%p in squares
+    edges=[(i,j) for i in range(p) for j in range(i+1,p) if adj(i,j)]
+    if [sum(adj(i,j) for j in range(p)) for i in range(p)]!=[6]*p or len(edges)!=39:
+        raise RuntimeError(len(edges))
+    lam,mu=[],[]
+    for i in range(p):
+        for j in range(i+1,p):
+            common=sum(adj(i,k) and adj(j,k) for k in range(p))
+            (lam if adj(i,j) else mu).append(common)
+    if set(lam)!={2} or set(mu)!={3}: raise RuntimeError((set(lam),set(mu)))
+    weights={1:(0.78,0.96,0.75),3:(0.40,0.50,0.20),4:(0.30,0.34,0.0)}
+    ang=lambda i: math.radians(90-360*i/p)
+    pts=[(math.cos(ang(i)),math.sin(ang(i))) for i in range(p)]
+    s.circle(0,0,1,w=0.35,op=0.22)
+    for i,j in edges:
+        d=min((i-j)%p,(j-i)%p); w,op,glow=weights[d]
+        s.line([pts[i],pts[j]],w=w,op=op,glow=glow)
+    for x,y in pts: s.dot(x,y,0.035,col=IV,op=1,halo=0.65)
+    s.fill_frac=0.86
     return s,'bbox'
 
 # 4 Chance -- Galton board, binomial(12,1/2) bins and the normal limit

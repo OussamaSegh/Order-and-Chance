@@ -1,4 +1,4 @@
-"""Independent reconstruction of field-guide arithmetic and complete cover data."""
+"""Independent reconstruction of field-guide arithmetic and the Volume 2 cover."""
 
 import math
 import unittest
@@ -6,48 +6,64 @@ import unittest
 from tools.series_cover import _front
 
 
-def spiral_position(n):
-    if n == 1:
-        return 0, 0
-    k = (math.isqrt(n-1)+1)//2
-    side, distance = 2*k, (2*k+1)**2-n
-    if distance < side:
-        return k-distance, -k
-    if distance < 2*side:
-        return -k, -k+distance-side
-    if distance < 3*side:
-        return -k+distance-2*side, k
-    return k, k-distance+3*side
+def _primes_to(limit):
+    sieve = [True] * (limit + 1)
+    sieve[0] = sieve[1] = False
+    for d in range(2, math.isqrt(limit) + 1):
+        if sieve[d]:
+            for n in range(d * d, limit + 1, d):
+                sieve[n] = False
+    return [n for n in range(limit + 1) if sieve[n]]
+
+
+def _representations(n):
+    radius = int(math.sqrt(n))
+    return [(x, y) for x in range(-radius, radius + 1)
+            for y in range(-radius, radius + 1) if x * x + y * y == n]
 
 
 class FieldGuideCoverChecks(unittest.TestCase):
-    def test_full_prime_spiral_by_closed_coordinates_and_eratosthenes(self):
-        limit = 71**2
-        sieve = [True]*(limit+1)
-        sieve[0] = sieve[1] = False
-        for d in range(2, math.isqrt(limit)+1):
-            if sieve[d]:
-                for n in range(d*d, limit+1, d):
-                    sieve[n] = False
-        positions = [spiral_position(n) for n in range(1, limit+1)]
-        self.assertEqual(len(set(positions)), limit)
-        self.assertEqual(set(positions), {(a, b) for a in range(-35, 36) for b in range(-35, 36)})
-        expected = {positions[n-1] for n in range(2, limit+1)
-                    if sieve[n] and sum(v*v for v in positions[n-1]) < 35.5**2}
+    def test_prime_circles_are_the_sums_of_two_squares(self):
+        # The disc count proved in Sums of Squares, independent of the plate.
+        self.assertEqual(sum(1 for x in range(-6, 7) for y in range(-6, 7)
+                             if x * x + y * y <= 36), 113)
+        primes = _primes_to(53)
+        self.assertEqual(primes, [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53])
+        expected = {}
+        for prime in primes:
+            points = _representations(prime)
+            if prime % 4 == 3:
+                self.assertEqual(points, [])
+            elif prime == 2:
+                self.assertEqual(set(points), {(x, y) for x in (-1, 1) for y in (-1, 1)})
+            else:
+                self.assertEqual(len(points), 8)
+                self.assertTrue(all(math.gcd(x, y) == 1 for x, y in points))
+            expected[prime] = set(points)
         scene, mode = _front().arts.v2()
         self.assertEqual(mode, 'bbox')
-        self.assertTrue(all(item[0] == 'dot' for item in scene.items))
-        coral = [tuple(item[1][0]) for item in scene.items if item[4] == 'ocCoral']
-        origin = [tuple(item[1][0]) for item in scene.items if item[4] == 'ocCoverTitle']
-        self.assertEqual(len(coral), len(set(coral)))
-        self.assertEqual(set(coral), expected)
+        self.assertEqual(scene.fill_frac, 0.90)
+        circles = [item for item in scene.items if item[0] == 'circle']
+        dots = [item for item in scene.items if item[0] == 'dot']
+        drawn = {round(item[2] ** 2) for item in circles if item[4] > 0}
+        self.assertEqual(drawn, set(primes))
+        for item in circles:
+            prime = round(item[2] ** 2)
+            if item[4] == 0:
+                self.assertAlmostEqual(item[2], math.sqrt(53) + 0.15)
+                continue
+            if prime % 4 == 3:
+                self.assertEqual((item[3], item[4], item[6]), (0.32, 0.20, 0.0))
+            else:
+                self.assertEqual((item[3], item[4], item[6]), (0.58, 0.78, 0.45))
+        coral = [tuple(int(v) for v in item[1][0]) for item in dots if item[4] == 'ocCoral']
+        origin = [tuple(int(v) for v in item[1][0]) for item in dots if item[4] == 'ocCoverTitle']
         self.assertEqual(origin, [(0, 0)])
-        self.assertNotIn((0, 0), expected)
-        for item in scene.items:
-            if item[4] == 'ocCoral':
-                self.assertEqual(item[2], .30)
-                self.assertGreater(item[3], 0)
-                self.assertLessEqual(item[3], .95)
+        self.assertEqual(set(coral), set().union(*expected.values()))
+        self.assertEqual(len(coral), 4 + 8 * sum(1 for p in primes if p % 4 == 1))
+        for point in coral:
+            self.assertIn(point[0] * point[0] + point[1] * point[1],
+                          {p for p in primes if p % 4 != 3})
 
     def test_field_guide_bezout_inverse_and_complete_nonunit_obstruction(self):
         self.assertEqual(3*12-35, 1)

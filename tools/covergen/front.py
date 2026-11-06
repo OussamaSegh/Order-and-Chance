@@ -103,7 +103,9 @@ def artwork(number):
     if number == 1:
         return collatz_art.art()
     scene, mode = arts.ARTS[number]()
-    return scene.to_tikz(center=mode)
+    # Volumes 2 and 3 carry the fit used by the approved sample plates.
+    # Every other volume keeps the shared full-window fit.
+    return scene.to_tikz(center=mode, fill_frac=getattr(scene, 'fill_frac', 1.0))
 
 
 def wrap_lines(text, limit=8000):
