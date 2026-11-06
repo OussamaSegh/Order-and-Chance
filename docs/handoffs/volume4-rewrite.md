@@ -2,7 +2,7 @@
 
 ## Checkpoint to hand over — 6 November 2026, `63f9c18d`
 
-Local head and `origin/cursor/volume4-rewrite-ee7f` are both `63f9c18d3c5e7d14f42d2867840dbd934b52bb04`. The working tree is clean. PR #111 is draft and unmerged. No production checkbox is ticked. Volumes 1–3 and shared layout were not edited.
+The citation corrections are `63f9c18d3c5e7d14f42d2867840dbd934b52bb04`. This handoff note is the commit after it. PR #111 is draft and unmerged. No production checkbox is ticked. Volumes 1–3 and shared layout were not edited.
 
 **Citations.** Two commits retarget Volume 4 references in Volumes 5–15 to the printed numbers of the current book. `43d7d93b` is the first pass. `63f9c18d` corrects the misses: Le Cam is Theorem 10.12 again, not optional stopping; line-broken Borel--Cantelli, Catalan, and Gaussian pointers use the printed numbers; conditional expectation is Definition 11.1; total variation is Chapter 9. The record is `docs/review/volume4-citation-sweep.md`. Sentences whose result is not a numbered theorem of the current book were left unchanged. Those include Fourier inversion, the integral arcsine limit, the riffle model and the seven-shuffle distances, almost-sure $L^2$ martingale convergence, Doob's inequality in the form $\lambda P(X^*\ge\lambda)\le\mathbb E X_n$, Pólya's urn, full van der Waerden, and the bounded-difference inequality with the factor 2. This is not a finished review.
 
