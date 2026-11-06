@@ -22,7 +22,7 @@ Let $X$ satisfy $a\le X\le b$ and $\mathbb E X=0$. Then for every real $\lambda$
 \]
 \end{lemma}
 \begin{proof}
-The exponential is convex, so on $[a,b]$ its graph lies under the chord:
+If $a=b$, then $X=0$ since its mean is zero, and both sides of the asserted inequality equal $1$. Assume $a<b$. The exponential is convex, so on $[a,b]$ its graph lies under the chord:
 \[
  e^{\lambda x}\le\frac{b-x}{b-a}e^{\lambda a}+\frac{x-a}{b-a}e^{\lambda b}.
 \]
@@ -44,10 +44,10 @@ Let $X_1,\ldots,X_n$ be independent, with $a_i\le X_i\le b_i$. Set $S=X_1+\cdots
 \[
  P(S-\mathbb E S\ge t)\le\exp\Bigl(-\frac{2t^2}{\sum_{i=1}^n(b_i-a_i)^2}\Bigr),
 \]
-and the same bound holds for $P(S-\mathbb E S\le -t)$.
+and the same bound holds for $P(S-\mathbb E S\le -t)$. If $\sum_i(b_i-a_i)^2=0$, both probabilities are zero; in that degenerate case the displayed exponential expression is not used.
 \end{theorem}
 \begin{proof}
-The moment generating function of a sum of independent variables is the product of the factors, because $e^{\lambda X_i}$ are independent and the expectation of a finite product of independent nonnegative variables factors (expand the finite sum that defines each expectation). Lemma~\ref{lem:hoeffding} applied to $X_i-\mathbb E X_i$ gives
+If all $b_i-a_i$ vanish, every $X_i$ is constant, so both tails vanish for $t>0$. Otherwise put $D=\sum_i(b_i-a_i)^2>0$. The moment generating function of a sum of independent variables is the product of the factors, because $e^{\lambda X_i}$ are independent and the expectation of a finite product of independent nonnegative variables factors (expand the finite sum that defines each expectation). Lemma~\ref{lem:hoeffding} applied to $X_i-\mathbb E X_i$ gives
 \[
  \mathbb E[e^{\lambda(S-\mathbb ES)}]\le\exp\Bigl(\frac{\lambda^2}{8}\sum_i(b_i-a_i)^2\Bigr).
 \]
@@ -56,7 +56,7 @@ Markov's inequality from Volume~1, applied to the nonnegative variable $e^{\lamb
  P(S-\mathbb ES\ge t)=P\bigl(e^{\lambda(S-\mathbb ES)}\ge e^{\lambda t}\bigr)
  \le\exp\Bigl(-\lambda t+\frac{\lambda^2}{8}\sum_i(b_i-a_i)^2\Bigr).
 \]
-Choose $\lambda=4t/\sum_i(b_i-a_i)^2$. The exponent becomes $-2t^2/\sum_i(b_i-a_i)^2$. The lower tail is the same statement for $-X_i$.
+Choose $\lambda=4t/D>0$. The exponent becomes $-2t^2/\sum_i(b_i-a_i)^2$. The lower tail is the same statement for $-X_i$.
 \end{proof}
 
 For a fair coin, each summand lies in $\{0,1\}$, so $b_i-a_i=1$ and $\sum(b_i-a_i)^2=n$. If $S$ is the number of heads,
@@ -72,7 +72,7 @@ One fortieth is a true sentence and a bad estimate.
 \begin{figure}[ht]
 \centering
 \fig{ch04-chernoff}
-\caption{Upper bounds on $P(|S_n/n-1/2|\ge 0.1)$ for a fair coin. The charcoal bars are Chebyshev's bound $1/(4n\cdot 0.01)$. The rust bars are Hoeffding's bound $\exp(-2n\cdot 0.01)$. At $n=1000$ the rust bar is $\exp(-20)$, too short to see on this scale; the charcoal bar is still $0.025$.}
+\caption{Upper bounds on the one-sided probability $P(S_n/n-1/2\ge 0.1)$ for fair coin tosses. The charcoal bars use Chebyshev's (two-sided, hence also one-sided) bound $1/(4n\cdot0.01)$. The rust bars show Hoeffding's one-sided bound $\exp(-2n\cdot0.01)$. At $n=1000$ the latter is $e^{-20}$, too short to see on this scale, while the Chebyshev bar is $0.025$. A two-sided Hoeffding bound would have an additional factor $2$.}
 \label{fig:chernoff}
 \end{figure}
 
@@ -84,7 +84,7 @@ where $D(a\|\tfrac12)=a\ln(2a)+(1-a)\ln(2(1-a))$. At $a=0.6$ and $n=1000$, $D(0.
 
 \section{Borel--Cantelli}
 
-Let $A_1,A_2,\ldots$ be events in the coin space of Chapter~1, each a finite-bit event, so that $P(A_n)$ is a length. Write $A_n\text{ i.o.}$ for the set of outcomes that lie in infinitely many of the $A_n$.
+Let $A_1,A_2,\ldots$ be events in the uniform-interval model of Chapter~1, each a finite union of half-open intervals whose probability is the sum of their lengths. Finite-bit events satisfy this condition. So do events defined by finitely many successive equal partitions with radices $r_1,r_2,\ldots$, where $r_j\ge2$ may vary: after $m$ stages each prescribed digit string is an interval of length $(r_1\cdots r_m)^{-1}$. These digit coordinates are independent by exactly the cylinder argument of Chapter~1. The proofs below need no probability of arbitrary subsets. Write $A_n\text{ i.o.}$ for the set of outcomes that lie in infinitely many of the $A_n$.
 
 \begin{theorem}[Borel--Cantelli]\label{thm:bc}
 \begin{enumerate}[label=(\alph*)]
@@ -103,7 +103,7 @@ The right-hand side tends to $0$ as $N\to\infty$.
 \[
  P\Bigl(\bigcap_{n=N}^{N+m}A_n^c\Bigr)=\prod_{n=N}^{N+m}(1-P(A_n))\le\exp\Bigl(-\sum_{n=N}^{N+m}P(A_n)\Bigr).
 \]
-If the series of probabilities diverges, the right-hand side tends to $0$ as $m\to\infty$. The set where none of $A_N,A_{N+1},\ldots$ occurs is contained in every one of those finite intersections, so its outer content is $0$. That set is the complement of $A_n\text{ i.o.}$ inside the outcomes from index $N$ on. Since $N$ is arbitrary, almost every sequence lies in infinitely many $A_n$.
+If the series of probabilities diverges, the right-hand side tends to $0$ as $m\to\infty$. The set where none of $A_N,A_{N+1},\ldots$ occurs is contained in every one of those finite intersections, so its outer content is $0$. Call that set $Z_N=\bigcap_{n\ge N}A_n^c$. The event that only finitely many $A_n$ occur is $\bigcup_{N\ge1}Z_N$. Each $Z_N$ has outer content zero, so countable subadditivity (Proposition~\ref{prop:subadd}) gives $P^*(\bigcup_NZ_N)=0$. Thus almost every sequence lies in infinitely many $A_n$.
 \end{proof}
 
 Part (a) does not need independence. Part (b) does. Example~\ref{ex:run} is part (b) for the disjoint runs of three heads: $P(A_{3m})=1/8$ and the blocks use distinct digits, so they are independent, and the sum diverges.
@@ -113,7 +113,7 @@ Part (a) does not need independence. Part (b) does. Example~\ref{ex:run} is part
 The weak law controls each $n$ separately. The strong law says that a single sequence of averages settles.
 
 \begin{theorem}[strong law, bounded case]\label{thm:sllnbound}
-Let $X_1,X_2,\ldots$ be independent, identically distributed, and bounded, say $|X_i|\le M$, and suppose each $X_i$ is a function of its own finite block of digits in the coin space of Chapter~1. Let $\mu=\mathbb E[X_1]$. Then
+Let $X_1,X_2,\ldots$ be independent, identically distributed, and bounded, say $|X_i|\le M$, and suppose each $X_i$ is a function of its own finite block of coordinates in a uniform-interval digit partition as described above, so events determined by finitely many of the $X_i$ are finite unions of intervals. Let $\mu=\mathbb E[X_1]$. Then
 \[
  \frac{X_1+\cdots+X_n}{n}\to\mu
 \]
@@ -124,7 +124,7 @@ Write $S_n=X_1+\cdots+X_n$ and $\sigma^2=\operatorname{Var}X_1\le\mathbb E[X_1^2
 \[
  P\bigl(|S_n/n-\mu|\ge\varepsilon\bigr)\le\frac{\sigma^2}{n\varepsilon^2}.
 \]
-Along $n_k=k^2$ the probabilities sum: $\sum_k\sigma^2/(k^2\varepsilon^2)<\infty$. Each deviation event depends on finitely many digits, because each $X_i$ does and only $n_k$ of them appear. Theorem~\ref{thm:bc}(a) says that almost surely $|S_{n_k}/n_k-\mu|<\varepsilon$ for all large $k$.
+Along $n_k=k^2$ the probabilities sum: $\sum_k\sigma^2/(k^2\varepsilon^2)<\infty$. Each deviation event is a finite union of the cylinder intervals in the assumed digit model, because only $n_k$ of the $X_i$ appear. Theorem~\ref{thm:bc}(a) says that almost surely $|S_{n_k}/n_k-\mu|<\varepsilon$ for all large $k$.
 
 Fill the gaps. If $n_k\le n<n_{k+1}$, then $n_{k+1}-n_k=2k+1$ and
 \begin{align*}
@@ -135,7 +135,7 @@ Fill the gaps. If $n_k\le n<n_{k+1}$, then $n_{k+1}-n_k=2k+1$ and
 The deterministic terms tend to $0$. Almost surely the middle term is eventually smaller than $\varepsilon$. So the limsup of $|S_n/n-\mu|$ is at most $\varepsilon$. Let $\varepsilon\downarrow0$ through the sequence $1/m$. A countable union of outer-content-zero sets still has outer content zero, by Proposition~\ref{prop:subadd}.
 \end{proof}
 
-Any i.i.d.\ sequence with finitely many values can be realised on disjoint blocks of fair bits, so the theorem covers coin tosses, dice, and every finite alphabet. A bounded variable with a density is built in Chapter~5 from a uniform digit block by the inverse distribution function. The algebra above does not change; only the construction of the copies is postponed.
+For instance, fair coins use binary digits and fair dice use base-$6$ digits as in Chapter~2. More generally, any finite-alphabet law with rational masses has a common denominator $r$ and can be obtained by grouping the $r$ equiprobable base-$r$ digits. An arbitrary bounded law need not have a finite-digit realisation (a Bernoulli law with parameter $1/3$, for example, cannot be represented by a fixed finite block of fair bits). The theorem's digit-partition hypothesis is therefore essential. The extension to general bounded laws, including variables with densities, requires additional event-model work; no unproved general measure theorem is used here.
 
 The hypothesis $|X_i|\le M$ is used to control the gaps between $k^2$ and $(k+1)^2$. A strong law with only $\mathbb E|X_1|<\infty$, and no bound, is proved in Volume~11. It is not a step in this volume.
 
@@ -157,7 +157,7 @@ Continuity on a closed bounded interval gives uniform continuity and a bound $|f
 &=\bigl|\mathbb E[f(S/n)-f(x)]\bigr|\\
 &\le\varepsilon\,P(|S/n-x|<\delta)+2M\,P(|S/n-x|\ge\delta).
 \end{align*}
-The binomial variance is $nx(1-x)\le n/4$, so Chebyshev's inequality yields $P(|S/n-x|\ge\delta)\le 1/(4n\delta^2)$. For every $n>M/(2\varepsilon\delta^2)$ the second term is smaller than $\varepsilon$, uniformly in $x$. The first term is at most $\varepsilon$.
+The binomial variance is $nx(1-x)\le n/4$, so Chebyshev's inequality yields $P(|S/n-x|\ge\delta)\le 1/(4n\delta^2)$. For every $n>M/(2\varepsilon\delta^2)$ the second term is smaller than $\varepsilon$, uniformly in $x$. The first term is at most $\varepsilon$. Since $\varepsilon$ is arbitrary, apply the argument with $\varepsilon=\eta/2$ for any desired uniform tolerance $\eta>0$.
 \end{proof}
 
 Polynomials are therefore dense in the continuous functions on a segment, in the uniform norm. Volume~6 cites this theorem when it approximates a continuous weight. The proof above is the one that citation points to.
@@ -179,7 +179,7 @@ by applying Markov's inequality to $e^{\lambda S}$ and minimising the resulting 
 \end{exercise}
 
 \begin{exercise}[$\star$]\label{ex:bcfinite}
-Let $A_n$ be independent events with $P(A_n)=1/n$. Show that almost every outcome lies in infinitely many $A_n$. If instead $P(A_n)=1/n^2$, show that almost every outcome lies in only finitely many.
+Construct independent cylinder events $A_n$ of probability $1/n$ by subdividing every interval into $n$ equal parts at stage $n\ge2$, with $A_n$ meaning that the $n$th digit selects the first part (put $A_1$ equal to the whole space). Show that almost every outcome lies in infinitely many $A_n$. Repeat with $n^2$ equal parts at stage $n$ and show that almost every outcome lies in only finitely many of those events.
 \end{exercise}
 
 \begin{exercise}[$\star\star$]\label{ex:bernstein2}
@@ -191,7 +191,7 @@ In the proof of Theorem~\ref{thm:sllnbound}, the subsequence was $n_k=k^2$. Show
 \end{exercise}
 
 \begin{exercise}[$\star\star\star$]\label{ex:runs}
-Let $R_n$ be the longest run of heads in $n$ fair tosses. Show that $R_n/\log_2 n\to 1$ in probability. A complete almost-sure statement is not required.
+Let $R_n$ be the longest run of heads in $n$ fair tosses. Show that $R_n/\log_2 n\to 1$ in probability. You may take $0<\varepsilon<1$ when bounding the two tails. A complete almost-sure statement is not required.
 \end{exercise}
 
 \section{Hints}
@@ -203,7 +203,7 @@ Put mass $p$ at $a/p$ only if you want expectation $a$ and a threshold $a$. For 
 $\mathbb E[e^{\lambda S}]=( (e^{\lambda}+1)/2 )^n$. Take logarithms and set the derivative in $\lambda$ to zero.
 \end{hint}
 \begin{hint}{ex:bcfinite}
-Compare $\sum 1/n$ and $\sum 1/n^2$ with the integral test from Volume~1, and apply Theorem~\ref{thm:bc}. The events have to be realised as independent finite-bit events; disjoint blocks of bits can do that for these probabilities only approximately. Use the theorem as stated for any independent family already constructed, and note that $P=1/n$ may be replaced by $c/n$.
+At stage $n$, each preceding interval has $n$ (or $n^2$) equal children. Each selected first child has conditional fraction $1/n$ (or $1/n^2$), and a prescribed finite string of choices has probability the product of those fractions. Now compare the two series.
 \end{hint}
 \begin{hint}{ex:bernstein2}
 $B_n(f)(x)=\mathbb E[(S/n)^2]=\operatorname{Var}(S/n)+(\mathbb E[S/n])^2$.
@@ -238,7 +238,7 @@ The exponent is $-n(\phi(\lambda)+\ln 2)=-n\bigl(a\ln(2a)+(1-a)\ln(2(1-a))\bigr)
 
 \begin{solution}{ex:bcfinite}
 \idea The harmonic series diverges and the square series converges. Independence is required only for the divergent half.
-\writeup The integral test of Volume~1 gives $\sum_{n\ge1}1/n=\infty$ and $\sum 1/n^2<\infty$. Theorem~\ref{thm:bc}(a) gives the convergent case, with no independence. For $P(A_n)=1/n$, part (b) needs an independent realisation. Disjoint blocks of $n$ fair bits can produce an event of probability $2^{-n}$, not $1/n$. Realise instead a sequence of independent events of probability $1/2$: the single bits $b_n$. Those satisfy $\sum P=\infty$ and fall under part (b), which is the intent of the exercise for the divergent regime. For probabilities exactly $1/n$, take independent geometric waiting times on the countable space of Volume~1, one for each $n$, on a countable product of countable sets, which is countable, and let $A_n$ be the event that the $n$th wait exceeds a threshold chosen so that the probability is $1/n$. Finite subcollections are independent by construction of the product masses. Part (b) applies and the sum diverges, so almost every outcome lies in infinitely many $A_n$.
+\writeup At stage $n\ge2$ split each interval from stage $n-1$ into $n$ equal half-open subintervals, and let $d_n\in\{0,\ldots,n-1\}$ record which subinterval contains the uniform point. Every prescribed string of digits up to stage $m$ determines an interval of length $1/m!$, so any finite selection of the $d_n$ is independent and $P(d_n=0)=1/n$. The event $A_n=\{d_n=0\}$ is a finite union of intervals. Since $\sum_{n\ge1}1/n$ diverges, Borel--Cantelli (b) shows that almost every point lies in infinitely many $A_n$. For the second family split each interval at stage $n$ into $n^2$ equal parts instead. The resulting independent digits give cylinder events $B_n$ with $P(B_n)=1/n^2$. Since $\sum_{n\ge1}1/n^2$ converges, Borel--Cantelli (a) shows that almost every point lies in only finitely many $B_n$. Both constructions use interval lengths, not an assumed infinite product measure.
 \end{solution}
 
 \begin{solution}{ex:bernstein2}
