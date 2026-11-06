@@ -65,7 +65,7 @@ Legend: `planned` means designed and not yet the manuscript. `written` means a f
 | Ch. 2 Discrete Random Variables | written | Fresh. Exercise 2.6 is the long cycle and the hundred prisoners. Birthday-wait solution (Exercise 2.7) uses a Riemann-sum comparison; re-read the shift by 2 on the reader pass |
 | Ch. 3 Generating Functions | written | Fresh. Exercise 3.7 is the series for $(1-4x)^{-1/2}$ and the Catalan formula |
 | Ch. 4 Inequalities, Large Numbers and Entropy | written | Hoeffding, Borel–Cantelli, bounded strong law, Bernstein–Weierstrass, finite entropy. Gilmer left out on purpose |
-| Ch. 5 Continuous Probability Done Properly | planned | Title kept so “Chapter 5” still means densities and integrals. Content does not pretend to be Lebesgue’s theory |
+| Ch. 5 Continuous Probability Done Properly | written | Riemann densities, continuous Fubini on rectangles, polar rectangles, inverse distribution functions, continuous dominated convergence, Box–Muller. Exercise 5.7 is the Cantor distribution. Not Lebesgue theory |
 | Ch. 6 Convergence and the Central Limit Theorem | planned | Lindeberg must remain formal environment **6.10** |
 | Ch. 7 Random Walks | planned | |
 | Ch. 8 Markov Chains | planned | Exercises 8.6 and 8.8 are series interfaces |
@@ -84,11 +84,11 @@ Legend: `planned` means designed and not yet the manuscript. `written` means a f
 
 ## Last completed milestone
 
-**Milestone 4 — Chapter 4 written** on this commit. Chapters 1–4 and the preface are the new text. Chapters 5–12 and `extremal.tex` are still the previous manuscript. Draft PR: https://github.com/OussamaSegh/Order-and-Chance/pull/111
+**Milestone 5 — Chapter 5 written** on this commit. Chapters 1–5 are the new text. Chapters 6–12 and the appendix are still the previous manuscript.
 
 ## Current WIP
 
-Chapter 5 is next. Gilmer’s union-closed bound stays out: the entropy section does not contain a checked proof of the constant $(1-\ln 2)/2$. Reader-pass items: Exercise 2.7; the mean-one case of extinction in Chapter 3; the identification of $L''$ with a tilted variance in Hoeffding’s lemma (the bound $\le(b-a)^2/4$ is the step to re-read).
+Chapter 6 is next. Lindeberg must be the tenth numbered formal environment (`definition`, `proposition`, `lemma`, `theorem`, `corollary`, `example` — not the `x` variants).
 
 ## Decisions already made
 
@@ -110,7 +110,7 @@ Chapter 5 is next. Gilmer’s union-closed bound stays out: the entropy section 
 
 ## Exact next actions
 
-1. Chapters 1–4 and the preface are written. Next write Chapter 5, then 6–8, then 9–12 and the appendix. Keep formal-environment counts 6.10, 9.5, 11.4, and 11.12.
+1. Chapters 1–5 are written. Next write Chapter 6 with Lindeberg as formal environment 6.10, then Chapters 7–12 and the appendix.
 2. Update this ledger to `written` for each finished file. Commit and push.
 3. Write Chapters 5–8, then 9–12 and the appendix, under the same rule.
 4. Reader pass, then voice pass. Fix what those passes find.
