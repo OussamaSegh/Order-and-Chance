@@ -16,8 +16,15 @@ On $\{1,2,3\}$, let
 \[
  P=\begin{pmatrix}1/2&1/2&0\\1/3&1/3&1/3\\0&1/2&1/2\end{pmatrix}.
 \]
-The vector $\pi=(2/7,3/7,2/7)$ satisfies $\pi P=\pi$. The first coordinate of $\pi P$ is $(2/7)(1/2)+(3/7)(1/3)=2/7$, and the other two match by the same arithmetic.
+The vector $\pi=(2/7,3/7,2/7)$ satisfies $\pi P=\pi$. The first coordinate of $\pi P$ is $(2/7)(1/2)+(3/7)(1/3)=2/7$, and the other two match by the same arithmetic. There is no arrow from $1$ to $3$ or from $3$ to $1$. The chain is still irreducible: $1$ reaches $3$ through $2$, and $3$ reaches $1$ through $2$.
 \end{examplex}
+
+\begin{figure}[ht]
+\centering
+\fig{ch08-chain}
+\caption{The three-state chain of the example. Rust arrows are the off-diagonal transitions. Charcoal loops are the holding probabilities. From state $1$ the first step is $(1/2,1/2,0)$. Its total variation distance to $\pi=(2/7,3/7,2/7)$ is $2/7$: the absolute differences are $3/14$, $1/14$ and $4/14$, and half their sum is $2/7$.}
+\label{fig:chain}
+\end{figure}
 
 \section{Irreducibility and stationary laws}
 
@@ -36,6 +43,30 @@ Suppose the chain is irreducible. Every stationary probability $\pi$ has strictl
 
 Total variation is $\|\mu-\nu\|=\frac12\sum_x|\mu(x)-\nu(x)|=\max_A|\mu(A)-\nu(A)|$.
 
+On two states the distance is a single number, and it can be computed exactly. Let $P(0,1)=p$ and $P(1,0)=q$ with $p,q\in(0,1]$. Balance of probability across the only edge gives $\pi(0)p=\pi(1)q$, so
+\[
+ \pi(0)=\frac{q}{p+q},\qquad \pi(1)=\frac{p}{p+q}.
+\]
+Let $\delta_n=P(X_n=0)-\pi(0)$. One step from either state multiplies the error by $1-p-q$:
+\[
+ P(X_{n+1}=0)=(1-p)P(X_n=0)+q\,P(X_n=1)
+ =(1-p-q)P(X_n=0)+q,
+\]
+and the same identity holds with $\pi(0)$ in place of $P(X_n=0)$. Subtract. Starting from $0$, one has $\delta_0=p/(p+q)$, so the total variation distance is $|\delta_n|=|\delta_0|\,|1-p-q|^n$.
+
+Take $p=1/2$ and $q=1/4$. Then $\pi(0)=1/3$ and $1-p-q=1/4$, so the distance from a start at $0$ is $(2/3)(1/4)^n$. After one step the chain is at $0$ with probability $1/2$, and $|1/2-1/3|=1/6$, which is $(2/3)(1/4)$. After three steps the distance is $1/96$.
+
+\begin{lemma}[coupling]\label{lem:coupling}
+Let $X$ and $Y$ be random variables on a finite set, defined on one probability space, with laws $\mu$ and $\nu$. Then $\|\mu-\nu\|\le P(X\ne Y)$.
+\end{lemma}
+\begin{proof}
+For any set $A$,
+\[
+ \mu(A)-\nu(A)=P(X\in A,\,Y\notin A)-P(Y\in A,\,X\notin A)\le P(X\ne Y).
+\]
+The same bound applies to $\nu(A)-\mu(A)$. The maximum over $A$ is the total variation distance.
+\end{proof}
+
 \begin{theorem}[convergence]\label{thm:ergodic}
 If $P$ is irreducible and aperiodic on a finite set, with stationary law $\pi$, then $\|P^n(x,\cdot)-\pi\|\to0$ for every $x$.
 \end{theorem}
@@ -48,7 +79,7 @@ P^{n_0}(u,y)=\epsilon\frac1m+(1-\epsilon)R_u(y),
 \qquad
 R_u(y)=\frac{P^{n_0}(u,y)-\delta}{1-m\delta}
 \]
-when $\epsilon<1$. Each $R_u$ is a genuine probability row: its entries are nonnegative and their sum is $1$. If $\epsilon=1$ every row is already uniform, so the coupling meets in one block. Otherwise couple two chains in blocks of $n_0$ steps. At the start of a block, with probability $\epsilon$ choose one common uniform state for both, and with probability $1-\epsilon$ draw from the two residual rows. Once the chains meet, couple their further evolution identically. At every block before meeting the conditional chance of a meeting is at least $\epsilon$. Hence the probability the two chains still differ after $k$ full blocks is at most $(1-\epsilon)^k$. Start one chain from $x$ and the other from $\pi$, so the second chain stays stationary. The coupling inequality gives
+when $\epsilon<1$. Each $R_u$ is a genuine probability row: its entries are nonnegative and their sum is $1$. If $\epsilon=1$ every row is already uniform, so the coupling meets in one block. Otherwise couple two chains in blocks of $n_0$ steps. At the start of a block, with probability $\epsilon$ choose one common uniform state for both, and with probability $1-\epsilon$ draw from the two residual rows. Once the chains meet, couple their further evolution identically. At every block before meeting the conditional chance of a meeting is at least $\epsilon$. Hence the probability the two chains still differ after $k$ full blocks is at most $(1-\epsilon)^k$. Start one chain from $x$ and the other from $\pi$, so the second chain stays stationary. Lemma~\ref{lem:coupling} gives
 \[
 \|P^n(x,\cdot)-\pi\|_{\rm TV}\le (1-\epsilon)^{\lfloor n/n_0\rfloor}\to0.
 \]
@@ -59,7 +90,13 @@ For random transpositions the sharp window sits near $\frac12 n\ln n$ and is pro
 
 \section{Reversibility}
 
-The chain is reversible for $\pi$ when $\pi(x)P(x,y)=\pi(y)P(y,x)$. Any such $\pi$ is stationary. The walk on an undirected graph that steps to a uniform neighbour is reversible for $\pi$ proportional to degree.
+The chain is reversible for $\pi$ when $\pi(x)P(x,y)=\pi(y)P(y,x)$. Summing over $x$ shows that any such $\pi$ is stationary. The walk on an undirected graph that steps to a uniform neighbour is reversible for $\pi$ proportional to degree: both sides of the balance equal $1$ on an edge and $0$ off the edge, up to the common normalising constant.
+
+The Ehrenfest chain is the same idea with unequal rates. Two urns share $d$ balls. The state is the number of balls in the left urn. From $k$ one ball is chosen uniformly and moved to the other urn, so the chain steps to $k+1$ with probability $(d-k)/d$ and to $k-1$ with probability $k/d$. For $d=2$ the states are $0,1,2$, and the only moves are $0\to1$, $2\to1$, and from $1$ to either neighbour with probability $1/2$. The candidate $\pi=(1/4,1/2,1/4)$ balances each edge:
+\[
+ \pi(0)\cdot 1=\tfrac14=\pi(1)\cdot\tfrac12,\qquad \pi(1)\cdot\tfrac12=\tfrac14=\pi(2)\cdot 1.
+\]
+There is no other edge. Exercise~\ref{ex:ehrenfest} is the same check for a general $d$, with $\pi(k)=\binom{d}{k}2^{-d}$. For $d=2$ that formula is exactly $(1/4,1/2,1/4)$. The chain is periodic of period $2$, so Theorem~\ref{thm:ergodic} does not apply: from $0$ the chain is always at an even state after an even number of steps. The lazy chain $(P+I)/2$ is the version that the theorem does cover.
 
 \section{Exercises}
 
