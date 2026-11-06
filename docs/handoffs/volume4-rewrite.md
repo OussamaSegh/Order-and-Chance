@@ -8,11 +8,11 @@
 
 **Native build of that SHA.** GitHub Actions [run 42270414089](https://github.com/OussamaSegh/Order-and-Chance/actions/runs/42270414089) ran `./build.sh volume4-chance` and succeeded. Reading PDF `dist/Volume 4 - Chance.pdf`: **158 pages**, 504 × 720 pt, sha256 `cc995193c7302e46cbb08160a7785cc0149a6c97a9e1fec9e0976bf5c01faf2d`. Print interior `dist/kdp/Volume 4 - Chance - Print.pdf`: **157 pages**, 513 × 738 pt, sha256 `2a9edb5fd054616a8f66fd24ac86a8df8047f52ebfe33338a37c9460a0b06a25`. Chapter 2 figure pages of the reading PDF (pages 27 and 30) were inspected: charcoal binomial bars against rust Poisson bars, and the \(1/k\) curve through the cycle bars. Both figure logs wrote a one-page PDF with no error. Page 32 shows the empty-box proposition inside its frame. This is not a high-resolution inspection of all 158 pages. The count is 157 interior pages, still far below 400–500. The older 155-page count was `658af447`.
 
-**Chapter 3.** A different composer-2.5 agent, `bc-4b9198e8-92b4-5e68-9eaa-8562741b5bfc`, read the chapter at `7078dfe5` and found no false statement. The Dyck first-return sentence and the progeny independence sentence are in `e25ed35b`. They still need that reviewer’s recheck of the pushed file. Voice and PDF signoff for Chapter 3 are open.
+**Chapter 3.** A different composer-2.5 agent, `bc-4b9198e8-92b4-5e68-9eaa-8562741b5bfc`, read the chapter at `7078dfe5` and found no false statement. It re-read the Dyck sentence and the progeny sentence at pushed SHA `a6fa5066` and called both correct. Voice, native PDF, and chapter acceptance for Chapter 3 stay open.
 
 **C-GROUP.** `Build books` still fails the protected Volume 3 conceptual snapshot. Do not edit Volume 3 or that snapshot.
 
-**Exact next step.** Ask agent `bc-4b9198e8` to re-read `ch03-generating.tex` at the pushed SHA that contains `e25ed35b`. Then continue the mathematical review at Chapter 4. Do not tick Chapter 2 or Chapter 3 complete.
+**Exact next step.** Continue at Chapter 4, `volume4-chance/chapters/ch04-inequalities.tex`, with a full theorem and exercise recompute and a distinct reviewer of the pushed SHA. Do not tick Chapter 2 or Chapter 3 complete.
 
 ---
 
