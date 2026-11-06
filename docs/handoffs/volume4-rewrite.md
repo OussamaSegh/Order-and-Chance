@@ -6,13 +6,13 @@
 
 **Chapter 2 mathematical review of the pushed text.** Independent subagent composer-2.5, agent `bc-e1b77ef2-989c-5a48-a5b4-fda005bda762`, read `ch02-discrete.tex` at `47f7999b` with `git show`. The file is unchanged since `7078dfe5`. It recomputed the eight exercise targets it was given and reported no false statement. It did not sign voice or a PDF. Together with the voice pass of the same bytes at `7078dfe5`, the text has a distinct math read and a distinct voice read. Chapter complete stays unchecked: there is still no full-page visual acceptance of the book.
 
-**Chapter 3 voice.** A different composer-2.5 agent, `bc-577c582d-a175-5b48-aba8-0946f27989d9`, read `47f7999b` and did **not** pass Sound human. The repairs are commit `13113c29`. They are not yet rechecked.
+**Chapter 3 voice.** Agent `bc-577c582d-a175-5b48-aba8-0946f27989d9` failed Sound human at `47f7999b`. It re-read the repaired passages at `13113c29` and passed that scope. It did not sign the whole chapter or a PDF.
 
-**Chapter 4 substance.** Commit `66b22317` derives Markov, Chebyshev, Hoeffding, and the fair-coin relative-entropy bound on one event, including the second-derivative test for $\lambda$. Exercise `ex:chernoffbin` is now the general success probability $p$, with a full solution. A distinct reviewer of `66b22317` is still required. The 157-page count is the build of `7078dfe5`, before this addition.
+**Chapter 4 substance.** Commit `66b22317` derives the four bounds on one coin, with the second-derivative test. A different composer-2.5 agent, `bc-1f69bb8e-8524-5432-b825-9fb8a950892b`, read that commit and found no defect in the new algebra or the numbers. It did not review the older Borel--Cantelli and Weierstrass proofs, and it did not sign acceptance. The measured print interior is still **157 pages** at `7078dfe5`, before this writing. No new native page count exists yet.
 
 **C-GROUP.** Unchanged. Do not edit Volume 3.
 
-**Exact next step.** Have a distinct reviewer read the pushed Chapter 4 file, and have agent `bc-577c582d` re-read the Chapter 3 voice edits at their pushed SHA. Then continue substantive writing at Chapter 5. Do not call any chapter accepted.
+**Exact next step.** Continue substantive writing at Chapter 5, `ch05-continuous.tex` and `ch05-geometric.tex`, with proved substitutions and contrasting Bertrand samples. Then have a distinct reviewer read that pushed SHA. Do not tick Chapter 2, 3, or 4 complete. Rebuild before quoting a page count newer than 157.
 
 ---
 
