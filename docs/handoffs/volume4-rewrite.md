@@ -4,14 +4,16 @@
 
 **Preserved.** `445c186f` is an ancestor. Head before this note was `73ac3977`. `origin/main` is `5c4840cc`. No chapter is accepted.
 
-### Final gates (owner, 6 November 2026)
+### Final order (owner, 6 November 2026)
 
-Do these only after the manuscript, the mathematical reviews, the reader and style reviews, and the downstream citation update are finished. Do not spend repeated exhaustive visual passes on intermediate drafts.
+No full-volume acceptance and no merge before all four stages are done. Stage 2 is a new whole-volume review. It does not replace the per-chapter second reviews required during stage 1.
 
-1. **Every-page visual ledger, last.** Render and inspect every page of the final native reading PDF and, where the layout differs, the print PDF. The ledger names the build SHA, the file hash, the page number, what was seen, any defect, the fix, and the recheck. Automated layout checks do not replace that look. A later pagination change reopens the affected pages. Do not claim the book is visually accepted while any page of that exact artifact is unchecked.
-2. **Downstream references, immediately before that visual ledger.** Once Volume 4 chapter, theorem, and exercise numbers are stable, audit and update references to Volume 4 in Volumes 5 through 15. The repository has `volume1-first-principles` through `volume15-order-and-chance`. There is no Volume 16 directory and none will be created. Update only the citations that point at Volume 4. Record old target and new target. Do not rewrite unrelated prose. Do not edit Volume 3 to clear the `C-GROUP` gate.
+1. **Finish the rewrite.** Complete the substantive manuscript under the approved four-part, fourteen-chapter plan, including the per-chapter mathematical, exercise, hint, solution, reader, and style reviews by distinct reviewers of pushed SHAs. Depth comes from proved mathematics, not padding. The 400--500 page range is a check on the finished native book, not a quota. Intermediate builds may catch a broken box or give a count. They are not the final visual review.
+2. **Whole-volume independent review, after the rewrite.** A reviewer who did not write the book reads the pushed manuscript from scratch: every theorem, proof, example, exercise, hint, and solution; prerequisites; coherence; reader and style; depth against the plan. Do not prime that reviewer to approve or to hide defects. Record identity, exact SHA, scope, and every issue. If no genuinely distinct reviewer is available, stop and say so. A self-review is not this stage.
+3. **Fixes, recheck, then citations.** Repair what stage 2 found and obtain an independent recheck of those repairs. Only then, with Volume 4 numbers stable, audit and update references to Volume 4 in Volumes 5 through 15. The tree contains `volume1-first-principles` through `volume15-order-and-chance`. There is no Volume 16, and none will be created. Change only citations that point at Volume 4, and record each old target and new target. Do not edit Volume 3 to clear `C-GROUP`.
+4. **Final build, then every page.** Run the native reading and print builds of that finished tree. Then render and inspect every page of those final PDFs. The ledger names the build SHA, the file hash, the page number, what was seen, any defect, the fix, and the recheck. Reading and print are both in scope where their layouts differ. Automated checks do not replace the look. A later change of pages reopens the affected pages of the new artifact. Do not call the book visually accepted while any page of that exact file is unchecked.
 
-Intermediate native builds remain appropriate when a box overflows or a count is needed. The last successful count is still 163 print pages at `f3fd29ff`, before the scaling fix and Chapter 7. It is not the final artifact.
+The last successful count is still 163 print pages at `f3fd29ff`. That file is not the final artifact.
 
 ### Reviews already in hand
 
@@ -23,7 +25,7 @@ Intermediate native builds remain appropriate when a box overflows or a count is
 
 **C-GROUP.** Unchanged. Do not edit Volume 3 to bypass it.
 
-**Exact next step.** Continue substantive writing at Chapter 8, `volume4-chance/chapters/ch07-walks.tex` (Random Walks). Do not open the every-page ledger and do not edit Volumes 5--15 until Volume 4 numbering is stable. Rebuild before replacing the 163-page count.
+**Exact next step.** Stage 1 is still open. Continue substantive writing at Chapter 8, `volume4-chance/chapters/ch07-walks.tex` (Random Walks), with a per-chapter reviewer of the pushed SHA. Do not start the whole-volume review, the Volume 5--15 citation edit, or the every-page ledger. Rebuild before replacing the 163-page count.
 
 ---
 
