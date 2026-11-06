@@ -90,6 +90,7 @@ def main(dist: str, out: str) -> None:
     shutil.copytree(assets / "fonts", out_dir / "fonts", dirs_exist_ok=True)
     # The interior faces of design 5e (docs/design/interior.md), self-hosted as WOFF2.
     for name in ("EBGaramond-Regular", "EBGaramond-Italic", "FiraSans-Book", "FiraSans-Medium",
+                 "FiraSans-SemiBold", "FiraSans-SemiBoldItalic",
                  "CormorantGaramond-SemiBold", "CormorantGaramond-SemiBoldItalic"):
         shutil.copy2(assets.parent.parent / "common/fonts" / f"{name}.woff2", out_dir / "fonts" / f"{name}.woff2")
     shutil.copy2(assets / "approved-charcoal-paper.png", out_dir / "paper.png")

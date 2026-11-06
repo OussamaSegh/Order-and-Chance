@@ -1,6 +1,6 @@
-# Figure lettering — 6 November 2026
+# Figure captions — 6 November 2026
 
-Diagram words and figure captions now share one sans size. Body text stays EB Garamond at 11.45 pt and mathematics stays Garamond-Math. Captions were already Fira Sans at 10 pt (`\small` in the 11 pt class): Medium for `FIGURE` and its number, Book for the sentence. The words, ticks and labels inside diagrams were mostly `\tiny` (6 pt) or `\scriptsize` (8 pt), and on the page the number-line mathematics measured 8.37 pt. They now use `\ocFigText` in `common/figure-packages.tex`: Fira Sans Book at 10/12 pt for ordinary text, Garamond-Math at 10.5 pt for notation. Explicit `\tiny`, `\scriptsize`, `\footnotesize` and `\small` inside a picture resolve to that step. The drawing is not scaled. Part-page and chapter-opener faces are unchanged because those nodes set their own font. Caption wording, theorem numbers and the body measure are unchanged.
+Only the caption under a figure changes. It is 8.75 pt on a 12 pt baseline, set in 92.5 percent of the text block. The label is `Figure 2.` in genuine Fira Sans SemiBold: the word and the period are charcoal, the numeral is rust, and the tracking is normal. The prose is Fira Sans Book, left aligned. Mathematics in that caption follows the 8.75 pt size. Text inside figures, table captions, body type, and figure geometry stay as they are on main. Details are in `docs/design/interior.md`.
 
 ---
 

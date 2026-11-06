@@ -29,9 +29,9 @@ The manuscripts (`volume*/chapters`) need no markup for any of it.
 | Body text, proofs, notes | EB Garamond (Regular, Italic, SemiBold, SemiBold Italic) | 11.5 pt on 14.75 pt (11 pt class size, `Scale=1.05`, `\linespread{1.085}`), lining figures |
 | Mathematics | Garamond-Math (stylistic sets 1, 2) | same scale as the text |
 | Headings, titles, the opener numeral | Cormorant Garamond SemiBold / SemiBold Italic / Light | chapter title 26/32 pt EB Garamond, black (unnumbered chapters 22/26 Cormorant), section 18/21, subsection 14/17; chapter label is small coral Fira capitals |
-| Labels, running heads, captions, folios | Fira Sans Book / Medium (+ italics) | labels 8.2 pt capitals, 8% tracking; captions 10/12 pt |
-| Diagram words | Fira Sans Book (Medium if the node asks for bold) | 10/12 pt, the caption size |
-| Diagram mathematics | Garamond-Math | 10 pt nominal, 10.5 pt after Scale=1.05 |
+| Labels, running heads, folios | Fira Sans Book / Medium (+ italics) | labels 8.2 pt capitals, 8% tracking |
+| Figure captions | Fira Sans SemiBold label, Book prose | 8.75 pt on a 12 pt baseline; “Figure 2.”, numeral in rust; prose on 92.5% of the text block |
+| Table captions | Fira Sans Medium label, Book prose | the shared `\small` caption, full text-block width |
 | Code | DejaVu Sans Mono | |
 
 The fonts are vendored under SIL OFL 1.1 in `common/fonts/`; the licences and sources
@@ -149,7 +149,7 @@ match):
 | Cyan, cyan, SkyBlue | light grey | C9BDB8 | light grey |
 | viridis colour map | charcoal → brown → rust → coral → cream | | |
 
-**Figure lettering.** Captions and the words inside diagrams share Fira Sans at 10 pt on 12 pt, one step under the 11.45 pt body. `FIGURE 3.2` is Fira Sans Medium; the caption sentence is Fira Sans Book, upright, not bold. Tick numbers, axis mathematics and other notation stay in Garamond-Math at the same 10 pt step (10.5 pt on the page). The shared setting is `\ocFigText` in `common/figure-packages.tex`. It is the default font of every TikZ picture, and inside a picture `\tiny`, `\scriptsize`, `\footnotesize` and `\small` all call it, so a figure that still says `font=\tiny` does not drop back to 6 pt. The picture is not scaled to enlarge the type. A part page or chapter opener that sets Cormorant, a measured `\fontsize`, or a box that was typeset before the picture keeps that face: the node’s own font key or the font commands in its text override the picture default. Superscripts stay in the math script size. A few labels sit on a grid tighter than 10 pt and keep a smaller face so they do not collide: the six row numbers on the length-246 sequence plot in Volume 15 are 6 pt, and the character tables of Volume 3 are widened in $x$ only so the class names fit the same 10 pt. Legend swatches that were stacked closer than 0.42 cm are spaced to 0.48 cm, and axis titles that sat on the tick numbers are lowered. The curves and cells are not scaled to enlarge the type.
+**Figure captions.** Only the caption under a figure changes. It is 8.75 pt on a 12 pt baseline. The label is sentence-case `Figure 2.`: Fira Sans SemiBold, no extra tracking, the word and the period in charcoal, the numeral in rust. One ordinary space, then the prose in Fira Sans Book, upright and not bold, left aligned. The caption measure is 92.5 percent of the text block, centred. Mathematics inside the caption is Garamond-Math at that text size times its 1.05 scale, about 9.19 pt. Words, ticks, and mathematics drawn inside the figure are unchanged, as are table captions, body type, and the figure geometry.
 
 Captions, and the few sentences that point at a figure's colours, use these words.
 Mathematical colourings keep their own names (Ramsey's red and blue edges, Pólya's
