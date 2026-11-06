@@ -6,7 +6,7 @@ For every book in the series, the ideal length is between 300 and 600 pages, and
 
 ## Chapter 1 full reread, gate still open
 
-Composer-2.5 `bc-97bf8746` read the whole of printed Chapter 1 at `92afc5f5` and did not production-accept it. All eight exercises passed. The digit figure matches. The ballot caption did not name which path steps first, and the figure source had a draft comment. The caption now matches the drawing: dashed first step $+1$, solid first step $-1$. The comment is gone. That repair has no full reread yet. Chapters 2 and 3 were not edited, so their reads of `92afc5f5` still cover the current files.
+Composer-2.5 `bc-97bf8746` read the whole of printed Chapter 1 at `92afc5f5` and did not production-accept it. All eight exercises passed. The digit figure matches. The ballot caption did not name which path steps first, and the figure source had a draft comment. The caption now matches the drawing: dashed first step $+1$, solid first step $-1$. The comment is gone. Composer-2.5 `bc-8af1491a` read the whole repaired chapter at `d39310db` and found no remaining defect. That closes the mathematical and voice review of Chapter 1 at that SHA. It is not production acceptance. Chapters 2 and 3 were not edited, so their reads of `92afc5f5` still cover the current files. The 205-page build of `ba74cccb` does not contain the new caption.
 
 ## Chapter 11 review, recorded
 
