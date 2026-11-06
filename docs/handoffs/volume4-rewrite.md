@@ -4,6 +4,10 @@
 
 For every book in the series, the ideal length is between 300 and 600 pages, and 600 is a maximum. Three hundred is not a mandatory minimum. Do not add filler to enter that range, and do not cut a needed argument to stay under 600. This supersedes the older 400–500 planning range. Content is governed by a complete proof, by teaching that earns its place, and by the approved subject. Report a page count as a measurement. The ideal range is context, not a pass/fail test. Published Volumes 1–3 stay frozen; do not reopen them to chase a length. Older paragraphs below that call a count a failure for lying outside 400–500 are history, and this note replaces that judgment.
 
+## Chapter 1 full reread, gate still open
+
+Composer-2.5 `bc-97bf8746` read the whole of printed Chapter 1 at `92afc5f5` and did not production-accept it. All eight exercises passed. The digit figure matches. The ballot caption did not name which path steps first, and the figure source had a draft comment. The caption now matches the drawing: dashed first step $+1$, solid first step $-1$. The comment is gone. That repair has no full reread yet. Chapters 2 and 3 were not edited, so their reads of `92afc5f5` still cover the current files.
+
 ## Chapter 11 review, recorded
 
 Printed Chapter 11 is Martingales and Fair Games, file `ch10-martingales.tex`. Composer-2.5 `bc-81a2074d` read the whole chapter at `fd4a5e41` and did not accept it. Every exercise passed. The upcrossing figure source matches the caption: levels $-1$ and $2$, three crossings ending at $8$, $32$ and $50$. The only defects were integrability missing from the definition, and almost-sure finiteness of the first win cited from Pólya. The repairs are in `8d21cad8`: each $X_n$ is integrable; the first hit of $+1$ is finite because the chance of hitting $-N$ first is $1/(N+1)$; three stopping conditions are sufficient and none is called necessary; a uniform bound does not need a finite mean. Composer-2.5 `bc-19c17929` rechecked that argument only and passed it. The pass is not acceptance of Chapter 11.
