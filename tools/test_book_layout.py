@@ -257,6 +257,61 @@ The letter-pattern frieze $\textsf{VΛVΛ}$ keeps its upright Greek lambdas.
             check(Path(directory) / 'sample.log', Path(directory) / 'sample.oclayout')
             check_style(Path(directory) / 'sample.pdf')
 
+    def test_figure_lettering_matches_caption_and_spares_the_part_page(self):
+        import fitz
+        with tempfile.TemporaryDirectory() as directory:
+            result = self.compile(directory, r'''
+\part{The Language of Proof}
+\chapter{Language}
+Body $x^2$ stays in the text face.
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}
+  \node[font=\tiny] at (0,0) {ray};
+  \node[font=\scriptsize] at (2.2,0) {$x^2$};
+\end{tikzpicture}
+\caption{The inequality $x^2>1$ holds on the ray.}
+\end{figure}
+''', passes=2)
+            self.assertEqual(result.returncode, 0, result.stdout[-4000:])
+            doc = fitz.open(str(Path(directory) / 'sample.pdf'))
+            part = doc[0]
+            # The part lockup is Cormorant, not the diagram sans.
+            part_fonts = {(s['font'], round(s['size'], 1))
+                          for b in part.get_text('dict')['blocks'] if b.get('type') == 0
+                          for l in b['lines'] for s in l['spans']}
+            self.assertIn(('CormorantGaramond-Light', 149.4), part_fonts)
+            self.assertTrue(any(name.startswith('CormorantGaramond') and size > 30
+                                for name, size in part_fonts))
+            chapter = doc[1]
+            rows = []
+            for b in chapter.get_text('dict')['blocks']:
+                if b.get('type') != 0:
+                    continue
+                for l in b['lines']:
+                    for s in l['spans']:
+                        rows.append((s['text'].strip(), s['font'], round(s['size'], 2)))
+            def size_of(fragment, family):
+                hits = [size for text, font, size in rows
+                        if fragment in text and family in font]
+                self.assertTrue(hits, f'{fragment} / {family} missing in {rows}')
+                return hits[0]
+            self.assertAlmostEqual(size_of('Body', 'EBGaramond'), 11.45, delta=0.15)
+            self.assertAlmostEqual(size_of('FIGURE', 'FiraSans-Medium'), 9.96, delta=0.2)
+            self.assertAlmostEqual(size_of('inequality', 'FiraSans-Book'), 9.96, delta=0.2)
+            self.assertNotIn('FiraSans-MediumItalic', ''.join(font for _, font, _ in rows))
+            # Ordinary diagram word: Fira Book at the caption size, not 6 pt.
+            self.assertAlmostEqual(size_of('ray', 'FiraSans-Book'), 9.96, delta=0.25)
+            # Body mathematics stays 11.45 pt; diagram mathematics is the caption size.
+            math_sizes = sorted({size for text, font, size in rows
+                                 if 'Garamond-Math' in font and '𝑥' in text})
+            self.assertTrue(any(abs(size - 11.45) < 0.2 for size in math_sizes), math_sizes)
+            self.assertTrue(any(abs(size - 10.46) < 0.3 for size in math_sizes), math_sizes)
+            scripts = [size for text, font, size in rows
+                       if text.strip() == '2' and 'Garamond-Math' in font]
+            self.assertTrue(scripts)
+            self.assertLess(min(scripts), 8.5)
+
     def test_grayscale_override_is_rejected(self):
         with tempfile.TemporaryDirectory() as directory:
             result = self.compile(directory, r'''
