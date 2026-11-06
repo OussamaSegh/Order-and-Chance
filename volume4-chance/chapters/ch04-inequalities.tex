@@ -108,6 +108,30 @@ Use Markov for a nonnegative variable and a mean. Use Chebyshev for a variance. 
 
 The fair-coin calculation is the case $p=1/2$ of a bound that keeps the success probability. Exercise~\ref{ex:chernoffbin} asks for that extension. The derivative test is the same one written out above.
 
+Hoeffding controls one sum. The next inequality controls the largest partial sum along the way.
+
+\begin{theorem}[Kolmogorov's inequality]\label{thm:kolmogorov}
+Let $Y_1,\ldots,Y_n$ be independent, each a function of its own finite block of digits in the model of Chapter~1, with $\mathbb E Y_i=0$ and $|Y_i|\le M$. Write $T_k=Y_1+\cdots+Y_k$. Then for every $t>0$,
+\[
+ P\Bigl(\max_{1\le k\le n}|T_k|\ge t\Bigr)\le\frac{\mathbb E[T_n^2]}{t^2}=\frac1{t^2}\sum_{i=1}^n\mathbb E[Y_i^2].
+\]
+\end{theorem}
+\begin{proof}
+Let $A_k$ be the event that $k$ is the smallest index with $|T_k|\ge t$. These events are disjoint, and their union is the event that the maximum is at least $t$. The blocks are disjoint, so a bounded function of $Y_1,\ldots,Y_k$ is independent of $Y_j$ for every $j>k$, and the expectation of the product factors. In particular $\mathbb E[T_k\mathbf 1_{A_k}Y_j]=\mathbb E[T_k\mathbf 1_{A_k}]\,\mathbb E[Y_j]=0$. Therefore
+\[
+ \mathbb E[T_k\mathbf 1_{A_k}(T_n-T_k)]=\sum_{j=k+1}^n\mathbb E[T_k\mathbf 1_{A_k}Y_j]=0.
+\]
+Expand $T_n=T_k+(T_n-T_k)$ on $A_k$:
+\[
+ \mathbb E[T_n^2\mathbf 1_{A_k}]
+ =\mathbb E[T_k^2\mathbf 1_{A_k}]+\mathbb E[(T_n-T_k)^2\mathbf 1_{A_k}]
+ \ge\mathbb E[T_k^2\mathbf 1_{A_k}]\ge t^2 P(A_k),
+\]
+because $|T_k|\ge t$ on $A_k$ and the squared increment has nonnegative expectation. Sum over $k$. The complementary event contributes a nonnegative piece of $\mathbb E[T_n^2]$, so $\mathbb E[T_n^2]\ge t^2 P(\max_k|T_k|\ge t)$. Independence of the centred blocks also gives $\mathbb E[T_n^2]=\sum_i\mathbb E[Y_i^2]$, since the cross terms $\mathbb E[Y_i Y_\ell]$ vanish for $i\ne\ell$.
+\end{proof}
+
+Three independent steps of size $\pm1$, each fair, check the constant. There are $8$ outcomes, equally likely. The first step always has absolute value $1$. The second step has absolute value $2$ precisely when the first two signs agree, which is $4$ of the $8$ outcomes. If they disagree, the second partial sum is $0$ and the third is $\pm1$, so the maximum absolute value is $1$. Thus $P(\max_{k\le3}|T_k|\ge2)=1/2$. The variance of $T_3$ is $3$, and the theorem bounds the probability by $3/4$. The inequality is in the right direction, and it is not an equality for this walk.
+
 \section{Borel--Cantelli}
 
 Let $A_1,A_2,\ldots$ be events in the uniform-interval model of Chapter~1, each a finite union of half-open intervals whose probability is the sum of their lengths. Finite-bit events satisfy this condition. So do events defined by finitely many successive equal partitions with radices $r_1,r_2,\ldots$, where $r_j\ge2$ may vary: after $m$ stages each prescribed digit string is an interval of length $(r_1\cdots r_m)^{-1}$. These digit coordinates are independent by exactly the cylinder argument of Chapter~1. The proofs below need no probability of arbitrary subsets. Write $A_n\text{ i.o.}$ for the set of outcomes that lie in infinitely many of the $A_n$.
@@ -133,6 +157,8 @@ If the series of probabilities diverges, the right-hand side tends to $0$ as $m\
 \end{proof}
 
 Part (a) does not need independence. Part (b) does. Example~\ref{ex:run} is part (b) for the disjoint runs of three heads: $P(A_{3m})=1/8$ and the blocks use distinct digits, so they are independent, and the sum diverges.
+
+The same first digit, repeated, shows why the independence hypothesis cannot be dropped. Let $A_n$ be the event that the first binary digit is $1$, for every $n\ge1$. Then $P(A_n)=1/2$ and $\sum_n P(A_n)=\infty$, but the intersection of any finite subcollection is still that single event, so the events are not independent. The set $A_n\text{ i.o.}$ is exactly $\{b_1=1\}$, which has probability $1/2$, not outer content $0$ for its complement. Part (a) does not apply, because the series diverges. Part (b) does not apply, because the events are not independent. Both refusals are necessary.
 
 \section{The strong law for bounded variables}
 
@@ -187,6 +213,15 @@ The binomial variance is $nx(1-x)\le n/4$, so Chebyshev's inequality yields $P(|
 \end{proof}
 
 Polynomials are therefore dense in the continuous functions on a segment, in the uniform norm. Volume~6 cites this theorem when it approximates a continuous weight. The proof above is the one that citation points to.
+
+\begin{figure}[ht]
+\centering
+\fig{ch04-bernstein}
+\caption{Bernstein polynomials of $f(x)=|x-\tfrac12|$ for $n=4$, $16$, and $64$. The black V is $f$. At $x=\tfrac12$ the degree-$4$ polynomial equals $\mathbb E[|S/4-\tfrac12|]=3/16=0.1875$, where $S$ is binomial$(4,\tfrac12)$; the label on that curve rounds the value to $0.188$. The curves are the binomial formula, not a sample of tosses.}
+\label{fig:bernstein}
+\end{figure}
+
+The value $3/16$ is a direct count. The masses of $S$ are $1,4,6,4,1$ over $16$, and the distances $|k/4-1/2|$ are $1/2,1/4,0,1/4,1/2$. The expectation is $(1\cdot\tfrac12+4\cdot\tfrac14+4\cdot\tfrac14+1\cdot\tfrac12)/16=3/16$. The curves for $n=16$ and $n=64$ sit closer to the V. That is Theorem~\ref{thm:weierstrass} at one continuous function.
 
 The exponential bounds above control one $n$. Chapter~5 gives a density to a point on the line, and Chapter~7 returns to the entropy of a finite alphabet once the bell curve is in place.
 
