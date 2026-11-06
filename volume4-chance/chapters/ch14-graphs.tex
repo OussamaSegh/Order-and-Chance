@@ -60,7 +60,57 @@ There is no restriction $k\le n^{1/3}$. This completes the theorem. The earlier 
 
 The constant $A$ depends only on $c$, explicitly through $\rho=ce^{1-c}$. The proof uses both the expected number of isolated connected sets and an independent exploration bound that controls \emph{every} component size. It does not identify a giant component for $c>1$. Exercise~\ref{ex:giant} gives a positive lower bound on the probability that one vertex has a linear component, and stops there. The survival probability of Theorem~\ref{thm:extinction} is the candidate for the fraction of vertices in that component; the limit of the fraction is not proved.
 
-Two other quantities illuminate what the theorem does and does not say. The number of triangles is a sum of indicators, so its expectation is a finite count even when the triangles overlap. The size of the component of one vertex can be bounded by comparing successive layers of a breadth-first exploration with a branching process. These are useful first-moment calculations, but neither by itself identifies a giant component. Exercises~\ref{ex:trianglecount} and~\ref{ex:susceptibility} make the comparison precise.
+Two other quantities illuminate what the theorem does and does not say. The size of the component of one vertex can be bounded by comparing successive layers of a breadth-first exploration with a branching process. That first-moment comparison does not identify a giant component. The number of triangles is a sum of indicators as well, and at $p=c/n$ its mean tends to a constant, so the first moment neither erases triangles nor forces one to exist. The second moment separates those two failures.
+
+\begin{theorem}[triangles]\label{thm:triangles}
+Let $T$ be the number of triangles in $G(n,p)$, and write $\lambda=c^3/6$ for a fixed $c>0$. If $p=c/n$, then
+\[
+ \frac{\lambda}{1+\lambda}
+ \le\liminf_{n\to\infty}P(T>0)
+ \le\limsup_{n\to\infty}P(T>0)
+ \le\min(1,\lambda).
+\]
+If instead $np\to\infty$ with $0<p\le1$, then $P(T>0)\to1$. If $np\to0$, then $P(T=0)\to1$.
+\end{theorem}
+\begin{proof}
+A set of three vertices spans a triangle with probability $p^3$, so $\mathbb E[T]=\binom{n}{3}p^3$ by linearity. For $p=c/n$ this is $c^3 n(n-1)(n-2)/(6n^3)\to\lambda$.
+
+Let $I_A$ be the indicator that the triple $A$ is a triangle. Then $\operatorname{Var}(I_A)=p^3(1-p^3)$. If two triples share at most one vertex, they determine six edges and no edge lies in both, so the indicators are independent and the covariance is zero. If they share two vertices, they share exactly one edge and together use five edges, so $\mathbb E[I_AI_B]=p^5$ and
+\[
+ \operatorname{Cov}(I_A,I_B)=p^5-p^6=p^5(1-p).
+\]
+The number of unordered pairs of triples that share an edge is $\binom{n}{2}\binom{n-2}{2}$: choose the shared pair, then the two private vertices. Each such pair contributes twice to the variance, once in each order. Therefore
+\begin{align*}
+ \operatorname{Var}(T)
+ &=\binom{n}{3}p^3(1-p^3)
+ +2\binom{n}{2}\binom{n-2}{2}p^5(1-p).
+\end{align*}
+The second term equals
+\[
+ \frac{n(n-1)(n-2)(n-3)}{2}\,p^5(1-p)
+ \le\frac{c^5}{2n}
+\]
+when $p=c/n$. It tends to $0$. The first term is $\mathbb E[T](1-p^3)\to\lambda$. Hence $\mathbb E[T^2]=\operatorname{Var}(T)+(\mathbb E[T])^2\to\lambda+\lambda^2$. Proposition~\ref{prop:second} gives $P(T>0)\ge(\mathbb E[T])^2/\mathbb E[T^2]$, so the liminf is at least $\lambda/(1+\lambda)$. Markov's inequality gives $P(T>0)\le\min\bigl(1,\mathbb E[T]\bigr)$, so the limsup is at most $\min(1,\lambda)$.
+
+If $np\to0$, then $\mathbb E[T]=\binom{n}{3}p^3\le(np)^3/6\to0$, and $P(T>0)\le\mathbb E[T]\to0$. If $np\to\infty$ and $p\le1$, the same variance formula yields
+\[
+ \operatorname{Var}(T)\le\mathbb E[T]+n^4 p^5,
+\]
+because $2\binom{n}{2}\binom{n-2}{2}\le n^4/2$ and $p^5(1-p)\le p^5$, up to replacing $n^4/2$ by $n^4$ for a convenient bound. Also $\binom{n}{3}\ge n^3/7$ for large $n$, so $\mathbb E[T]\ge n^3 p^3/7$. Then
+\[
+ \frac{\operatorname{Var}(T)}{(\mathbb E[T])^2}
+ \le\frac{7}{n^3 p^3}+\frac{7^2}{n^2 p}\to0,
+\]
+since $n^2 p=n\cdot(np)\to\infty$. Proposition~\ref{prop:second} forces $P(T=0)\to0$.
+\end{proof}
+
+For $c=1$ one has $\lambda=1/6$. The probability of at least one triangle therefore satisfies
+\[
+ \frac17\le\liminf P(T>0)\le\limsup P(T>0)\le\frac16.
+\]
+A mean near $1/6$ is compatible with a probability near $1/6$: the triangles are not hiding in a rare spike. The first moment alone cannot say this, because it does not control $\mathbb E[T^2]$.
+
+The size of one component is a different count. Exercise~\ref{ex:susceptibility} bounds its expectation. Exercises~\ref{ex:trianglecount} and~\ref{ex:giant} separate the first-moment statements that do not yet identify a giant component.
 
 \section{Exercises}
 
@@ -107,6 +157,10 @@ Use Cauchy--Schwarz and Markov's inequality to deduce
 Do not assert a limiting probability of $1-e^{-\lambda}$ without a further argument.
 \end{exercise}
 
+\begin{exercise}[$\star\star$]\label{ex:trianglesecond}
+In the proof of Theorem~\ref{thm:triangles}, the unordered pairs of triples that share an edge are counted by $\binom{n}{2}\binom{n-2}{2}$. Explain why those two triples determine five distinct edges, and why two triples that share at most one vertex have covariance zero. For $c=1$, compute $\lambda$ and the numerical bounds on $\liminf P(T>0)$ and $\limsup P(T>0)$.
+\end{exercise}
+
 \section{Hints}
 
 \begin{hint}{ex:connectivity}
@@ -126,6 +180,9 @@ Let $L_j$ be the number of vertices at distance exactly $j$ from $v$. Conditiona
 \end{hint}
 \begin{hint}{ex:criticalisolated}
 Two specified vertices are both isolated when $2n-3$ edges are absent. For any nonnegative variable $I$, $(\mathbb E I)^2\le \mathbb E[I^2]P(I>0)$.
+\end{hint}
+\begin{hint}{ex:trianglesecond}
+The shared pair is one edge. Each triple needs two further edges to its private vertex. Disjoint edge sets multiply.
 \end{hint}
 
 \section{Solutions}
@@ -198,6 +255,17 @@ Consequently $\mathbb E[I^2]=\mathbb E[I(I-1)]+\mathbb E[I]\to\lambda^2+\lambda$
  (\mathbb E I)^2\le\mathbb E[I^2]P(I>0),
 \]
 so $\liminf P(I>0)\ge\lambda^2/(\lambda^2+\lambda)=\lambda/(1+\lambda)$. Markov gives $P(I>0)\le\min(1,\mathbb E I)$, hence the upper bound. We have obtained two genuine bounds in the critical window, not the exact limiting law.
+\end{solution}
+
+\begin{solution}{ex:trianglesecond}
+\idea Five edges, not six, because the shared pair is counted once. The constant $\lambda$ is then an arithmetic substitution.
+\writeup Choose the two triples that share exactly two vertices. Those two vertices determine one edge. Each triple contains one further vertex, and each of those vertices is joined to both members of the pair, which is four more edges. No other edge is required, and the private vertices are distinct, so the five edges are distinct. If the triples share no vertex, or only one, they have no edge in common. Each indicator is a function of its own three edges, and those two sets of edges are disjoint, so the indicators are independent and the covariance is zero. For $c=1$, $\lambda=1/6$. Theorem~\ref{thm:triangles} then gives
+\[
+ \frac{1/6}{1+1/6}=\frac17
+ \le\liminf P(T>0)
+ \le\limsup P(T>0)
+ \le\frac16.
+\]
 \end{solution}
 
 \section*{Sources and further reading}
