@@ -30,6 +30,10 @@ Composer-2.5 agent `bc-99ae35c6-9ef0-5571-b342-305701cf67ee` read `ch12-method.t
 
 Composer-2.5 agent `bc-07d4be85-61da-50c8-b2ce-2e58eae56f40` read `thm:dyadicito`, the two-step call, and `thm:vdw3` at `e8e717cd` by `git show`. It did not accept the chapters. Passed: the integral remainder bound $\tfrac12\omega(|h|)h^2$, almost-sure vanishing of $R_N$, the square-mean bound $2M^2/N$ on $\sum Z_k$ with orthogonality for $j<k$, the hedge cost $4/3$, and both colouring cases, including the colouring of $\{1,\ldots,8\}$. It noted that a finite $N$ is not yet the integral. The theorem sentence now names the Riemann sum and $\sum Z_k$ separately. That sentence is later than `e8e717cd` and is not rechecked.
 
+## Top-to-random at `f91d5483`
+
+Composer-2.5 agent `bc-711a7fce-2d77-5971-9c7f-404fb43507b3` read Theorem `thm:top` and the three-card mean at `f91d5483` by `git show`. It did not accept the chapter. Passed: success probabilities $(k+1)/n$, the uniform-insertion induction, stages with mean $nH_n$, the value $11/2$, and $n e^{-t/n}\le e^{-c}$. It asked that stationarity be named in the total-variation step and that independence of the deck and $\tau$ be tied to the insertion ranks. Those two sentences were added after `f91d5483` and are not rechecked.
+
 ## Per-chapter independent-review register
 
 | Chapter | Authoring / writer inspection | Independent second reviewer | Unresolved gate |
