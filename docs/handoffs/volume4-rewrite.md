@@ -84,7 +84,7 @@ Legend: `planned` means designed and not yet the manuscript. `written` means a f
 
 ## Last completed milestone
 
-**Milestone 3 — Chapter 3 written.** Latest manuscript commit will be recorded by `git log -1` on this branch after the commit that contains this sentence. Chapters 1–3 and the preface are the new text. Chapters 4–12 and `extremal.tex` are still the previous manuscript.
+**Milestone 3 — Chapter 3 written**, commit `90ec341f`. Chapters 1–3 and the preface are the new text. Chapters 4–12 and `extremal.tex` are still the previous manuscript. Draft PR: https://github.com/OussamaSegh/Order-and-Chance/pull/111
 
 ## Current WIP
 
