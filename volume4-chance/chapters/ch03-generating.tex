@@ -13,7 +13,7 @@ Let $X$ be a random variable with values in $\{0,1,2,\ldots\}$ and $P(X=k)=p_k$.
 \[
  f(s)=\mathbb E[s^X]=\sum_{k\ge0}p_k s^k,\qquad s\in[0,1].
 \]
-The series equals $1$ at $s=1$, and it converges absolutely on $[0,1)$. On a segment $[0,r]$ with $0<r<1$, differentiate term by term. Each differentiated term is at most $k r^{k-1}$, and $\sum_{k\ge1}kr^{k-1}=1/(1-r)^2$ by differentiating the geometric series of Volume~1 inside its interval of convergence. The differentiated series therefore converges uniformly on $[0,r]$.
+The series equals $1$ at $s=1$, and it converges absolutely on $[0,1)$. On a segment $[0,r]$ with $0<r<1$, differentiate term by term. Each differentiated term is at most $k r^{k-1}$. Chapter~2 computed $\sum_{k\ge1}kr^k=r/(1-r)^2$ for this same $r$. Dividing by $r$ gives $\sum_{k\ge1}kr^{k-1}=1/(1-r)^2$. The differentiated series therefore converges uniformly on $[0,r]$.
 
 Continuity at $1$ is a tail estimate, not an informal swap of limits. Fix $K$. For $s\in[0,1]$,
 \[
@@ -31,17 +31,55 @@ The limit $\lim_{s\uparrow1}f'(s)$ equals $\mathbb E[X]$, in $[0,\infty]$.
 For $s\in(0,1)$ the terms $k p_k s^{k-1}$ increase to $k p_k$ as $s\uparrow1$. Since every term is nonnegative, $f'(s)\le\sum_{k\ge1}kp_k=\mathbb E[X]$. For every fixed $K$, $f'(s)\ge\sum_{k=1}^Kkp_ks^{k-1}$, whose limit is $\sum_{k=1}^Kkp_k$. Taking the supremum over $K$ gives the matching lower bound, even when the mean is infinite, by the nonnegative-series convention of Volume~1.
 \end{proof}
 
-In particular, if $\mathbb E[X]<\infty$, then $f'(1)$ exists as a left derivative and equals the mean. The second factorial moment is the same argument applied to $f''$, when one needs it. Exercise~\ref{ex:randomsumvar} records the variance formula.
+In particular, if $\mathbb E[X]<\infty$, then $f'(1)$ exists as a left derivative and equals the mean.
+
+The same derivative reads the masses themselves. One differentiation has just been justified. Repeating it is the same comparison.
+
+\begin{proposition}[the masses are the derivatives at $0$]\label{prop:pgfcoeff}
+For every integer $k\ge0$ and every $s\in[0,1)$,
+\[
+ f^{(k)}(s)=\sum_{n\ge k}n(n-1)\cdots(n-k+1)\,p_n s^{n-k},
+\]
+with the $k=0$ case equal to $f(s)$. In particular $p_k=f^{(k)}(0)/k!$.
+\end{proposition}
+\begin{proof}
+The case $k=0$ is the series. Suppose the formula holds for some $k$. Its right-hand side is a power series with nonnegative coefficients. On $[0,r]$ with $0<r<1$, the absolute value of a once-differentiated term is at most
+\[
+ n(n-1)\cdots(n-k)\,r^{n-k-1}.
+\]
+The ratio of the $(n+1)$st of these bounds to the $n$th tends to $r<1$, so the comparison series converges by the ratio test of Volume~1, Chapter~5. Uniform convergence on $[0,r]$ lets us differentiate once more, and the new series is the formula for $k+1$. At $s=0$ every term with $n>k$ vanishes, and the remaining term is $k!\,p_k$.
+\end{proof}
+
+Thus two functions on $[0,1]$ that agree as probability generating functions come from the same law: the derivatives at $0$ recover every $p_k$. For the Poisson function $e^{\lambda(s-1)}=e^{-\lambda}\sum_{k\ge0}(\lambda s)^k/k!$, the Taylor coefficient of $s^k$ is $e^{-\lambda}\lambda^k/k!$, which is the Poisson mass. The function was built from the masses, and the derivatives give them back.
+
+\begin{proposition}[variance from the second derivative]\label{prop:pgfvar}
+The limit $\lim_{s\uparrow1}f''(s)$ equals $\mathbb E[X(X-1)]$, in $[0,\infty]$. If that limit and $\mathbb E[X]$ are both finite, then $f''(1)$ exists as a left derivative and
+\[
+ \operatorname{Var}X=f''(1)+f'(1)-\bigl(f'(1)\bigr)^2.
+\]
+\end{proposition}
+\begin{proof}
+Proposition~\ref{prop:pgfcoeff} gives $f''(s)=\sum_{n\ge2}n(n-1)p_n s^{n-2}$ on $[0,1)$. The proof of Proposition~\ref{prop:pgfmean} applies to this series: the terms increase to $n(n-1)p_n$, so the limit is $\mathbb E[X(X-1)]$. Then $\mathbb E[X^2]=\mathbb E[X(X-1)]+\mathbb E[X]$, and the variance identity is the definition in Chapter~2.
+\end{proof}
 
 \begin{example}[three laws]\label{ex:pgfexamples}
 A Bernoulli variable of parameter $p$ has $f(s)=1-p+ps$. A binomial count of $n$ trials has $f(s)=(1-p+ps)^n$, by the binomial theorem. A Poisson variable of parameter $\lambda$ has
 \[
  f(s)=\sum_{k\ge0}e^{-\lambda}\frac{\lambda^k}{k!}s^k=e^{\lambda(s-1)}.
 \]
-Differentiating the Poisson function gives $f'(s)=\lambda e^{\lambda(s-1)}$, so $f'(1)=\lambda$, which matches Volume~1.
+Differentiating the Poisson function gives $f'(s)=\lambda e^{\lambda(s-1)}$ and $f''(s)=\lambda^2 e^{\lambda(s-1)}$, so $f'(1)=\lambda$ and $f''(1)=\lambda^2$. Proposition~\ref{prop:pgfvar} returns $\operatorname{Var}X=\lambda^2+\lambda-\lambda^2=\lambda$, which matches Volume~1. For the binomial function, $f'(s)=np(1-p+ps)^{n-1}$ and $f''(s)=n(n-1)p^2(1-p+ps)^{n-2}$. At $s=1$ the variance formula becomes
+\[
+ n(n-1)p^2+np-(np)^2=np(1-p).
+\]
 \end{example}
 
 \section{Sums}
+
+Two fair coins, scored as $0$ or $1$, have four outcomes of mass $1/4$. The sum is $0$, $1$, or $2$ with masses $1/4$, $1/2$, $1/4$. Each coin has generating function $\tfrac12+\tfrac12 s$, and the product is
+\[
+ \Bigl(\tfrac12+\tfrac12 s\Bigr)^2=\tfrac14+\tfrac12 s+\tfrac14 s^2,
+\]
+the generating function of the sum. The next proposition is this multiplication with the masses left general.
 
 \begin{proposition}[independent sums]\label{prop:pgfsum}
 If $X$ and $Y$ are independent and nonnegative integer valued, the generating function of $X+Y$ is the product of the generating functions. The same holds for any finite independent sum.
@@ -56,6 +94,15 @@ The double sum is absolutely convergent for $s\in[0,1]$, so the product of the s
 
 A binomial count is a sum of $n$ independent Bernoulli variables, and $(1-p+ps)^n$ is the product of the factors $1-p+ps$. A sum of independent Poisson variables of parameters $\lambda$ and $\mu$ has generating function $e^{\lambda(s-1)}e^{\mu(s-1)}=e^{(\lambda+\mu)(s-1)}$, which is the Poisson$(\lambda+\mu)$ function. That is the generating-function proof of Exercise~\ref{ex:twopoisson}.
 
+The product becomes a composition when the number of summands is itself random. Take $N$ with masses $P(N=0)=\tfrac12$, $P(N=1)=P(N=2)=\tfrac14$, and let each summand be a fair Bernoulli, independent of $N$ and of the other summand. The generating function of $N$ is $g(u)=\tfrac12+\tfrac14 u+\tfrac14 u^2$, and $f(s)=\tfrac12+\tfrac12 s$, so
+\begin{align*}
+ g(f(s))
+ &=\tfrac12+\tfrac14\Bigl(\tfrac12+\tfrac12 s\Bigr)+\tfrac14\Bigl(\tfrac12+\tfrac12 s\Bigr)^2\\
+ &=\tfrac12+\tfrac18+\tfrac18 s+\tfrac1{16}\bigl(1+2s+s^2\bigr)
+ =\tfrac{11}{16}+\tfrac14 s+\tfrac1{16}s^2.
+\end{align*}
+The same masses come from listing the outcomes. The case $N=0$ contributes $\tfrac12$ to $\{S=0\}$. The case $N=1$ contributes $\tfrac18$ to $\{S=0\}$ and $\tfrac18$ to $\{S=1\}$. The case $N=2$ contributes $\tfrac1{16}$, $\tfrac18$, and $\tfrac1{16}$ to $\{S=0,1,2\}$. Adding gives $11/16$, $1/4$, and $1/16$.
+
 \begin{proposition}[random sums]\label{prop:randomsum}
 Let $N$ be nonnegative and integer valued. Conditional on $N=n$, draw $n$ independent, identically distributed nonnegative integer-valued variables with a fixed common law that does not depend on $n$. Let $S$ be their sum, with $S=0$ when $n=0$. If $g$ is the generating function of $N$ and $f$ is the generating function of one summand, then $S$ has generating function $g(f(s))$.
 \end{proposition}
@@ -67,6 +114,8 @@ Condition on $N=n$. For $n=0$, $\mathbb E[s^S\mid N=0]=1$. For $n\ge1$, independ
 Sample $N$ first, then draw its finite list of summands. The outcomes are a countable union of finite lists, so the calculation is a nonnegative sum on a countable space. No infinite product is required. The masses are $P(N=n)$ times the conditional list masses, and they add to $\sum_n P(N=n)=1$.
 \end{proof}
 
+If $N$ is Poisson of parameter $\lambda$, then $g(u)=e^{\lambda(u-1)}$ and the sum has generating function $e^{\lambda(f(s)-1)}$. Exercise~\ref{ex:thinning} is the case in which each summand is a Bernoulli trial that decides whether a point is kept.
+
 \section{Galton--Watson extinction}
 
 Start with one individual. Each individual has a number of children distributed as $X$, independently of everyone else, with $P(X=k)=p_k$ and generating function $f$. Let $Z_n$ be the number of individuals in generation $n$, so $Z_0=1$ and, given $Z_n=m$, the next generation is a sum of $m$ independent copies of $X$. Let $\eta=P(Z_n=0\text{ for some }n)$ be the probability that the line dies out.
@@ -77,6 +126,23 @@ Start with one individual. Each individual has a number of children distributed 
 \caption{A possible family tree in the $0$-or-$2$-children model. One first-generation branch ends, while the other divides into two independent subfamilies. This is one possible outcome, not an observed frequency.}
 \label{fig:familytree}
 \end{figure}
+
+The picture is one outcome. The size of a generation has a mean whether or not that outcome dies.
+
+\begin{proposition}[generation means]\label{prop:genmean}
+Let $m=\mathbb E[X]$ be finite. Then $\mathbb E[Z_n]=m^n$ for every $n\ge0$. If the mean of $X$ is infinite, then $\mathbb E[Z_1]=\infty$.
+\end{proposition}
+\begin{proof}
+The case $n=0$ is $\mathbb E[Z_0]=1$. Given $Z_n=k$, generation $n+1$ is a sum of $k$ independent copies of $X$, so its conditional mean is $km$. Therefore
+\[
+ \mathbb E[Z_{n+1}]=\sum_{k\ge0}P(Z_n=k)\,km=m\,\mathbb E[Z_n],
+\]
+and $\mathbb E[Z_n]=m^n$ follows by induction. If $\sum_k kp_k=\infty$, the same split at $n=0$ gives $\mathbb E[Z_1]=\infty$.
+\end{proof}
+
+\begin{think}
+Each person has two children with probability $2/3$ and none with probability $1/3$. The mean number of children is $4/3$, so $\mathbb E[Z_n]=(4/3)^n$ grows. Must the surname survive?
+\end{think}
 
 \begin{theorem}[extinction]\label{thm:extinction}
 The extinction probability $\eta$ is the smallest root of $s=f(s)$ in $[0,1]$. If $\mathbb E[X]\le1$ and $P(X=1)<1$, then $\eta=1$. If $\mathbb E[X]>1$, then $\eta<1$.
@@ -105,6 +171,12 @@ Each inner sum is at most $k$, and it is strictly smaller than $k$ whenever $k\g
 If $P(X=1)=1$, then $f(s)=s$, every point is a root, the smallest root is $0$, and the population stays at $1$, so $\eta=0$. The hypothesis $P(X=1)<1$ excludes this case from the sentence $\eta=1$.
 \end{proof}
 
+When $m<1$ the generation means give a second proof that does not locate the root. Write $S_N=Z_0+\cdots+Z_N$, so $\mathbb E[S_N]=\sum_{n=0}^N m^n$ increases to $1/(1-m)$. The partial sums increase to the total progeny $T$, which may be infinite. Volume~1's tail sum gives $\mathbb E[S_N]=\sum_{k\ge0}P(S_N>k)$. For each fixed $k$, the events $\{S_N>k\}$ increase to $\{T>k\}$, so
+\[
+ \sum_{k=0}^{M-1}P(T>k)=\lim_{N\to\infty}\sum_{k=0}^{M-1}P(S_N>k)\le\lim_{N\to\infty}\mathbb E[S_N]=\frac1{1-m}.
+\]
+The left side is at least $M\,P(T=\infty)$, because $T>k$ whenever $T=\infty$. Therefore $P(T=\infty)\le 1/((1-m)M)$ for every integer $M\ge1$. Let $M\to\infty$. Thus $T$ is finite almost surely and $\eta=1$. The same sum of means diverges when $m\ge1$, and that divergence does not decide extinction. One child for certain has $m=1$ and $\eta=0$. The next two examples are a supercritical law, where the name survives with positive probability, and a critical law, where it dies almost surely.
+
 Chapter~14 uses the same branching count on a sparse random graph. There the subcritical regime is a first-moment bound on isolated trees. The survival probability $1-\eta$ is the natural guess for the fraction of vertices in a giant component. What that chapter proves in that direction is a positive lower bound on the chance that one fixed vertex lies in a linear-sized component.
 
 \begin{example}[two children or none]\label{ex:binary}
@@ -113,11 +185,53 @@ Suppose $P(X=0)=1-p$ and $P(X=2)=p$, with $0<p\le1$. Then $f(s)=1-p+ps^2$ and $\
  f(s)-s=1-p+ps^2-s=(1-s)\bigl(1-p(1+s)\bigr).
 \]
 The roots are $s=1$ and, when $p>0$, $s=(1-p)/p$. If $p\le1/2$, then $(1-p)/p\ge1$, so the smallest root in $[0,1]$ is $1$ and the line dies almost surely. If $p>1/2$, the smallest root is $(1-p)/p<1$. For $p=2/3$ that root is $1/2$.
+
+That answers the question above. The mean generation size grows like $(4/3)^n$, and still $P(Z_n=0)$ increases to $1/2$. The lines that are still alive carry the mean: since $P(Z_n>0)\to1/2$,
+\[
+ \mathbb E[Z_n\mid Z_n>0]=\frac{(4/3)^n}{P(Z_n>0)}
+\]
+is asymptotic to $2\,(4/3)^n$. Growth of the expectation is not the same event as survival.
 \end{example}
+
+\begin{example}[three equally likely family sizes]\label{ex:thirds}
+Let $p_0=p_1=p_2=\tfrac13$. Then $f(s)=(1+s+s^2)/3$ and
+\[
+ f'(s)=\frac{1+2s}3,\qquad f'(1)=1.
+\]
+Also $p_1=\tfrac13<1$. Theorem~\ref{thm:extinction} gives $\eta=1$. The same conclusion is the factorisation
+\[
+ f(s)-s=\frac{1-2s+s^2}3=\frac{(1-s)^2}3,
+\]
+so $f(s)>s$ on $[0,1)$ and the only root in $[0,1]$ is $1$. This is not the law of Exercise~\ref{ex:lotka}. There the masses are $\tfrac14,\tfrac12,\tfrac14$, and the fixed-point equation has a double root at $1$ for a different reason.
+\end{example}
+
+The proof of the theorem builds $\eta$ as the limit of $\eta_{n+1}=f(\eta_n)$ starting at $\eta_0=0$. Figure~\ref{fig:cobweb} draws that staircase for two laws with offspring in $\{0,1,2\}$.
+
+\begin{figure}[ht]
+\centering
+\fig{ch03-cobweb}
+\caption{The curve is $f$, the dashed line is the diagonal, and the staircase is the iteration $\eta_{n+1}=f(\eta_n)$ from $\eta_0=0$. Left: masses $\tfrac12,\tfrac14,\tfrac14$, mean $\tfrac34$, and the staircase climbs to $1$. Right: masses $\tfrac14,\tfrac14,\tfrac12$, mean $\tfrac54$, and the staircase stops at the smaller root $\tfrac12$. Computed curves, not sampled trees.}
+\label{fig:cobweb}
+\end{figure}
+
+On the right, $f(s)=\tfrac14+\tfrac14 s+\tfrac12 s^2$. The first three values are $\eta_1=\tfrac14$, $\eta_2=f(\tfrac14)=\tfrac{11}{32}$, and $\eta_3=f(\tfrac{11}{32})=\tfrac{809}{2048}$. These are the first three corners of the drawn staircase, and they sit below the root $\tfrac12$. On the left, $f(s)=\tfrac12+\tfrac14 s+\tfrac14 s^2$, and the first three values are $\tfrac12$, $\tfrac{11}{16}$, and $\tfrac{809}{1024}$, already past $0.79$ on the way to $1$.
 
 \section{Catalan numbers}
 
-Let $C_0=1$ and, for $n\ge1$, let $C_n$ be the number of Dyck paths of semilength $n$, from Exercise~\ref{ex:catalan}. A nonempty Dyck path starts with $X$. After that opening step, the first time the tallies of $X$ and $Y$ match again is a later step, and that step is a $Y$. Between the opening $X$ and that $Y$ sits a Dyck path, possibly empty. After that $Y$ sits another. Therefore
+Let $C_0=1$ and, for $n\ge1$, let $C_n$ be the number of Dyck paths of semilength $n$, from Exercise~\ref{ex:catalan}. For semilength $3$ the five paths are
+\[
+ XXXYYY,\quad XXYXYY,\quad XXYYXY,\quad XYXXYY,\quad XYXYXY.
+\]
+Each stays nonnegative and ends at height $0$. There is no sixth.
+
+\begin{figure}[ht]
+\centering
+\fig{ch03-contour}
+\caption{A plane tree on $9$ vertices and the contour walk around it, a Dyck path of $16$ steps. The path first returns to the axis at step $6$. The walk up to that return is one Dyck path, and the walk after it is another. That split is the recurrence for $C_n$.}
+\label{fig:contour}
+\end{figure}
+
+A nonempty Dyck path starts with $X$. After that opening step, the first time the tallies of $X$ and $Y$ match again is a later step, and that step is a $Y$. Between the opening $X$ and that $Y$ sits a Dyck path, possibly empty. After that $Y$ sits another. Figure~\ref{fig:contour} is one plane tree read by that same first return: the contour hits the axis at step $6$, and the walk up to that step is one Dyck path. Therefore
 \[
  C_n=\sum_{i=0}^{n-1}C_i C_{n-1-i},\qquad n\ge1.
 \]
