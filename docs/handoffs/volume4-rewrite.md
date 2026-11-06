@@ -2,7 +2,20 @@
 
 ## Latest checkpoint — 6 November 2026, final gates recorded, reviews not acceptance
 
-**Preserved.** `445c186f` is an ancestor. Head before this note was `73ac3977`. `origin/main` is `5c4840cc`. No chapter is accepted.
+**Preserved.** `445c186f` is an ancestor. Head before this note was `36f0fe60`. `origin/main` is `5c4840cc`. No chapter is accepted.
+
+### Published Volumes 1–3 (owner, 6 November 2026)
+
+Volumes 1, 2, and 3 are already published on Amazon. In this repository they are `volume1-first-principles`, `volume2-integers`, and `volume3-symmetry`. Treat those trees as the published references. Do not edit them. Do not edit shared layout or tooling, including `common/` and `.github/workflows/build.yml`, in order to clear the Volume 3 `C-GROUP` gate. The separate Volume 4 workflow stays a supplemental check and does not replace that gate.
+
+Volume 4 may cite only what those published files actually prove. A mismatch is recorded and repaired in Volume 4, or the claim is dropped. It is not repaired by changing a published book. The later citation sweep, after Volume 4 numbers are stable, still covers Volumes 5 through 15 only. The user wrote “V5–16”; the tree has no Volume 16, and none will be created.
+
+**Printed Volume 1 numbers**, from `main.tex` with the chapter counter set to $-1$ before *The Language of Mathematics*: 0 Language, 1 Sums, 2 Counting, 3 Sequences, Series and Limits, 4 Orders, 5 Complex Numbers, 6 Polynomials, 7 Linear Algebra, 8 Differential and Integral Calculus, 9 Inequalities, 10 First Probability. The numbered Volume 1 citations in the current Volume 4 chapters were checked against that order and against the labelled theorems. Two did not match the printed statement:
+
+- Gibbs’ proof said $\ln u\le u-1$ came from Chapter 9. Chapter 9 is Inequalities and proves $1-x\le e^{-x}$. The bound for every positive argument is the pair $\ln(1+u)\le u$ and $\ln(1-u)\le -u$ in Chapter 8. The sentence now cites that pair.
+- The normal density said Chapter 8 gives $\int_{-\infty}^{\infty}e^{-u^2}\,\mathrm du=\sqrt{\pi}$. The printed proposition is $\int_0^{\infty}e^{-x^2}\,\mathrm dx=\sqrt{\pi}/2$. The text now starts from that half-line integral. The radius mean uses the same substitution.
+
+The other numbered citations that were checked — Counting as Chapter 2, Sequences as Chapter 3 (mean value theorem, integral test, uniform continuity, Bolzano–Weierstrass), Linear Algebra as Chapter 7, Calculus as Chapter 8 for Taylor and Stirling, Inequalities as Chapter 9 for $1-x\le e^{-x}$, First Probability as Chapter 10 — match the published files. No Volume 4 sentence cites Volume 2 or Volume 3 by number. The register still says the main path uses no theorem of Volume 2, and no character theory, Jordan form, or Perron theorem from Volume 3. That register is a working list, not a certificate that every later chapter has been re-read against the published books.
 
 ### Final order (owner, 6 November 2026)
 
