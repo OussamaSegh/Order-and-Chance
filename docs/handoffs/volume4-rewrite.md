@@ -1,6 +1,18 @@
 # Handoff: Volume 4 rewrite
 
-## Latest checkpoint — 6 November 2026, final gates recorded, reviews not acceptance
+## Latest checkpoint — 6 November 2026, `|phi|^n` repair and Markov hitting times
+
+**Preserved.** `4f8a4f88` and `76c55e79` are ancestors. Head of the manuscript commit is `d5ef7a1cdc5c9efc3568673bc113ab4fbd4e4112`. `origin/main` is `5c4840cc`. No chapter is accepted. Volumes 1–3 were not edited.
+
+**What changed.** The Pólya bound for `d≥3` now estimates `u_n` by the integral of `|φ|^n`. On `|θ|^2≤6/d` one has `φ≥1/2`, so `|φ|=φ`. At each of the `2^d` corners, `-φ≥1/2`, so `|φ|=-φ`. One `ρ<1` bounds `|φ|` on the whole complement. A positive bound on the signed function `φ` is not the argument. Printed Chapter 9 (`ch08-markov.tex`) now proves that an irreducible chain has one period, computes the mean times `7` and `5` to reach state `3`, and shows that the two-ball Ehrenfest chain stays at total-variation distance `1/2`.
+
+**Reviews in flight, not acceptance.** Composer-2.5 `bc-45964628` read `76c55e79`: the typical-set window passed, and the old Fourier bound failed for the reason above. Composer-2.5 `bc-623eb12b` is reading the repaired full `|φ|^n` argument at `d5ef7a1c`. Composer-2.5 `bc-a187a70c` is reading every exercise, hint, and solution of Chapter 9 at the same SHA. Neither report is in yet. A pass on the Gaussian integral alone is not a pass on the argument. Chapter 8 and Chapter 9 are not accepted.
+
+**Clean build of `d5ef7a1c`.** Detached worktree `/tmp/v4-build-d5ef7a1c`, not edited during `./build.sh --pdf-only volume4-chance`. Print interior **199 pages**, 513 × 738 pt, sha256 `75a97cdaccd5b10d2fcd85ceff4275bc3b30ef61b1f35fd218b13f2cce60dc02`. Reading PDF 200 pages, sha256 `222c4c2110fc9701995d4623bfec907431792b72c662a4591d0342feabb45957`. Layout: 245 boxes, no overflow. 199 replaces 197 and is still far below 400–500. This is not a page-by-page visual acceptance.
+
+**Exact next step.** Record the two reviews of `d5ef7a1c` in the issue log. If either fails, repair that mathematics before adding another chapter. If both pass as rechecks, they still do not accept the chapters. Then continue the approved plan at the next chapter whose latest text has no whole-chapter review, with proved mathematics rather than another short numerical patch. The whole-volume review, the Volume 5–15 citations, and the every-page ledger stay pending. Do not merge.
+
+## Previous checkpoint — 6 November 2026, final gates recorded, reviews not acceptance
 
 **Preserved.** `445c186f` is an ancestor. Head before this note was `36f0fe60`. `origin/main` is `5c4840cc`. No chapter is accepted.
 
