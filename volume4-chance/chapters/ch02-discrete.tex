@@ -181,6 +181,48 @@ With $n$ coupons, the last new coupon takes about $n$ boxes on its own. Which ea
 
 None. The waiting time $T_i$ has mean $n/(n-i+1)$, which is largest at the last stage, $i=n$, where the mean is $n$. The first stage has mean $1$. The expensive part of the collection is the end, not the beginning. That is why $\mathbb E[T]$ is of order $n\ln n$ rather than of order $n$.
 
+The same stages have a variance. A geometric waiting time needs one identity first.
+
+\begin{lemma}[second moment of a geometric wait]\label{lem:geovar}
+Let $0<p\le1$ and let $G$ be the trial number of the first success on independent trials of probability $p$, so $P(G=k)=p(1-p)^{k-1}$ for integers $k\ge1$. Then $\mathbb E[G]=1/p$ and $\operatorname{Var}G=(1-p)/p^2$.
+\end{lemma}
+\begin{proof}
+Volume~1 gives the mean by the tail sum $\mathbb E[G]=\sum_{j\ge0}P(G>j)=\sum_{j\ge0}(1-p)^j=1/p$. For the second factorial moment, rearrange the nonnegative double sum:
+\[
+ \sum_{j\ge1}j\,P(G>j)=\sum_{j\ge1}j\sum_{k>j}P(G=k)=\sum_{k\ge2}P(G=k)\sum_{j=1}^{k-1}j=\sum_{k\ge2}P(G=k)\frac{k(k-1)}{2}.
+\]
+The inner sum is $k(k-1)/2$, so $2\sum_{j\ge1}j\,P(G>j)=\mathbb E[G(G-1)]$. Let $r=1-p\in[0,1)$ and $S_N=\sum_{j=1}^N jr^j$. Then $S_N-rS_N=\sum_{j=1}^N r^j-Nr^{N+1}=r(1-r^N)/(1-r)-Nr^{N+1}$. To see $Nr^N\to0$, pick an integer $m>r/(1-r)$, so $q=((m+1)/m)r<1$. For $n\ge m$ the sequence $a_n=nr^n$ satisfies $a_{n+1}\le q a_n$, hence $a_n\le a_m q^{n-m}$. Volume~1 gives $q^{n}\to0$, so $a_n\to0$. Therefore $S_N\to r/(1-r)^2=(1-p)/p^2$. Thus $\mathbb E[G(G-1)]=2(1-p)/p^2$. Then
+\[
+ \operatorname{Var}G=\mathbb E[G(G-1)]+\mathbb E[G]-(\mathbb E[G])^2=\frac{2(1-p)}{p^2}+\frac1p-\frac1{p^2}=\frac{1-p}{p^2}.
+\]
+If $p=1$, both sides are $0$.
+\end{proof}
+
+\begin{proposition}[variance of the coupon time]\label{prop:couponvar}
+The stage lengths $T_1,\ldots,T_n$ are independent, $T_i$ is geometric with success probability $p_i=(n-i+1)/n$, and
+\[
+ \operatorname{Var}T=n^2\sum_{k=1}^n\frac1{k^2}-nH_n.
+\]
+In particular $0\le\operatorname{Var}T<2n^2$.
+\end{proposition}
+\begin{proof}
+Once $i-1$ distinct coupons are in hand, each new box is a fresh coupon with probability $p_i$, whatever those $i-1$ coupons were and however long the earlier stages took. The conditional law of $T_i$ given $(T_1,\ldots,T_{i-1})$ is therefore geometric with success probability $p_i$, and it does not depend on the earlier lengths. The joint law factors, so the stages are independent.
+
+Lemma~\ref{lem:geovar} gives $\operatorname{Var}T_i=(1-p_i)/p_i^2$. Independence adds the variances. Set $k=n-i+1$. As $i$ runs from $1$ to $n$, the index $k$ runs from $n$ down to $1$, and $1-p_i=(n-k)/n$, so
+\[
+ \frac{1-p_i}{p_i^2}=\frac{n-k}{n}\cdot\frac{n^2}{k^2}=\frac{n^2}{k^2}-\frac nk.
+\]
+Summing over $k$ produces the displayed formula.
+
+The sum $\sum_{k=1}^n k^{-2}$ is at most $1+\int_1^n x^{-2}\,\mathrm dx=2-1/n<2$, by the same bar comparison Volume~1 uses for $H_n$, applied to the decreasing function $x^{-2}$ on $[1,\infty)$. The subtracted term $nH_n$ is positive, so the variance is less than $2n^2$. For $n=2$ the formula is $4(1+1/4)-2(1+1/2)=2$. Directly, $T_1=1$ and $T_2$ is geometric with $p=1/2$, whose variance is $2$.
+\end{proof}
+
+Since $0\le\operatorname{Var}T<2n^2$ and $\mathbb E[T]=nH_n$,
+\[
+ \frac{\sqrt{\operatorname{Var}T}}{\mathbb E[T]}<\frac{\sqrt2}{H_n}.
+\]
+The right side tends to $0$ because $H_n\to\infty$. The standard deviation is negligible beside the mean.
+
 Indicators do the same job for boxes. Throw $m\ge1$ balls independently and uniformly into $n$ boxes. The base-$n$ digits of the uniform number in Chapter~1 supply the throws.
 
 \begin{proposition}[empty boxes]\label{prop:empty}
