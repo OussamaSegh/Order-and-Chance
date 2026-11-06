@@ -2,6 +2,20 @@
 
 Status of this file: **living handoff**. It is updated on the rewrite branch and committed with each milestone. A later agent should resume from this file and the repository, without redoing finished milestones.
 
+## Current contract (6 November 2026)
+
+Fourteen chapters, four parts, as in `docs/plan/book-04.md`. Title page subtitle is **The Logic of Uncertainty**. Branch `cursor/volume4-rewrite-ee7f`, draft PR 111, do not merge, do not force-push, do not edit other volumes.
+
+The twelve-chapter number freeze is withdrawn. Live citations that still use the old numbers are listed in `docs/plan/volume4-citation-migration.md`. That list is an integration gate, not a completed repair.
+
+Restart: read this file, then `volume4-chance/main.tex`, then the migration document. Compile with `./build.sh volume4-chance` from the repository root after the TeX toolchain is present. Do not start a second branch.
+
+## Status
+
+Manuscript skeleton is the fourteen-chapter book: parts and inputs in `main.tex`, Bertrand and Buffon in `chapters/ch05-geometric.tex`, entropy in `chapters/ch07-entropy.tex` (Kraft and Shannon coding included), random graphs in `chapters/ch14-graphs.tex`. Chapters 1–3 are the earlier drafts, reused, not yet re-audited line by line. No native PDF has been produced on this contract. Page count against 260–290 is unknown until that build.
+
+Named checks still open: Exercise 2.7 Riemann-sum shift; Exercise 6.4 Cauchy characteristic function; local-limit expansion in Chapter 6; giant-component exercise in Chapter 14 (first-moment path bound is the proved statement; the Poisson survival probability is marked as the heuristic); crossing-number small-graph estimate; Pólya integral in the walk chapter. Arcsine is not a numbered theorem. Inversion is not a numbered theorem. Shuffle profile labels 8.10, 8.22, 8.23, 8.24 are not in this manuscript.
+
 ## Task and acceptance
 
 Rebuild `volume4-chance/` as a complete replacement of *Chance: The Logic of Uncertainty*. The reader has finished Volumes 1–3 only. The book must be followable at that boundary, including exercises, hints, and solutions. Do not merge.

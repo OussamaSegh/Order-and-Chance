@@ -4,7 +4,18 @@
 
 **Element.** A probability is a model you choose before you compute. Once the model is written, the load of a sum, a wait, or a path is a theorem.
 
-**Source.** `volume4-chance`. Twelve chapters and one appendix. The editorial map is `docs/plan/volume4-old-to-new.md`. The prerequisite register is `docs/plan/volume4-prerequisites.md`.
+**Source.** `volume4-chance`. Fourteen chapters in four parts, and Appendix B (extremal problems). Owner approval of 6 November 2026. The citation migration is `docs/plan/volume4-citation-migration.md`. The sections after the chapter list below are the earlier twelve-chapter notes; where they disagree with this list, this list wins.
+
+## Architecture
+
+| Part | Question | Chapters |
+| --- | --- | --- |
+| I. The Language of Chance | How do we describe a random experiment? | 1 From Games to Probability Spaces; 2 Random Variables and Their Laws; 3 Generating Functions and Random Families |
+| II. The Laws of Uncertainty | Why does randomness become predictable? | 4 Concentration and the Laws of Large Numbers; 5 Continuous Chance; 6 Why the Bell Curve Appears; 7 Entropy, Codes and Typical Sequences |
+| III. Chance in Motion | What changes when randomness evolves in time? | 8 Random Walks; 9 Markov Chains and Mixing; 10 The Poisson Clock; 11 Martingales and Fair Games; 12 Brownian Motion |
+| IV. Chance Reveals Structure | Can chance prove a deterministic theorem? | 13 The Probabilistic Method; 14 Random Graphs and the Search for Structure |
+
+Bertrand's paradox and Buffon's needle are in Chapter 5. Entropy is Chapter 7, not a section of Chapter 4. The Volume 5 handoff is at the end of Chapter 14. Lindeberg remains Theorem 6.10. Colouring is Lemma 10.5. Brownian existence is Theorem 12.4 and reflection is Theorem 12.12. Crossing is Exercise 13.4.
 
 ## Promise
 
@@ -14,13 +25,11 @@ Counting settles a question only after the experiment is named. The same rules p
 
 Volume 1, as proved there: counting and inclusion–exclusion, sequences and series, one-variable calculus, Stirling’s formula, the Gaussian integral, Jensen and Cauchy–Schwarz, finite and countable probability, Markov, Chebyshev, the weak law, and the spectral theorem for real symmetric matrices. Volumes 2 and 3 are not a step on the main path. Measure theory is not a prerequisite and is not an unproved lemma. What this book needs beyond Volume 1 is built in the chapter that uses it. The register lists every row.
 
-## How the subtitle is delivered
+## Earlier twelve-chapter notes
 
-The part names stay those of the catalogue.
+The part names and chapter blurbs below this heading are the previous contract. They are kept so the old-to-new notes remain readable. They are not the contents of `main.tex`.
 
-Discrete Probability is the logic: an experiment, a conditional probability, a generating function, and an inequality that turns “likely” into a bound. Limit Theorems makes one shape, the bell curve, out of a sum. Random Structures carries the same addition forward in time: a walk, a chain, a Poisson process, a martingale, a Brownian path, and then chance used as a proof.
-
-## Parts
+## Parts (superseded)
 
 | Part | Name | Chapters |
 | --- | --- | --- |

@@ -1,0 +1,97 @@
+\chapter{Entropy, Codes and Typical Sequences}
+
+\begin{center}\itshape
+A fair coin has entropy $1$ bit. A coin that lands heads with probability $0.1$\\
+has entropy about $0.469$ bits. The typical sequences are the ones you actually see.
+\end{center}
+
+Concentration says a sum settles near its mean. Entropy says which messages are typical. The two laws answer different questions. One is about the size of a fluctuation. The other is about the size of the set of strings that carry the probability.
+
+\section{Entropy of a finite alphabet}
+
+Let $X$ take finitely many values, with $P(X=a)=p_a>0$. The \emph{Shannon entropy} in bits is
+\[
+ H(X)=\sum_a p_a\log_2\frac1{p_a}.
+\]
+The sum is finite. Changing the base of the logarithm multiplies $H$ by a constant; bits are the choice $\log_2$. A fair coin has $H=1$. A coin with $P(\mathrm{heads})=0.1$ has
+\[
+ H=0.1\log_2 10+0.9\log_2(10/9)=0.46899\ldots.
+\]
+
+\begin{proposition}[Gibbs]\label{prop:gibbs}
+If $X$ takes at most $m$ values, then $H(X)\le\log_2 m$, with equality if and only if $X$ is uniform on $m$ values.
+\end{proposition}
+\begin{proof}
+The inequality $\ln u\le u-1$ for $u>0$, from Volume~1, Chapter~9, gives, for any probability masses $q_a>0$ on the same values,
+\[
+ \sum_a p_a\ln\frac{q_a}{p_a}\le\sum_a p_a\Bigl(\frac{q_a}{p_a}-1\Bigr)=\sum_a q_a-\sum_a p_a=0.
+\]
+Thus $\sum p_a\log_2(1/p_a)\le\sum p_a\log_2(1/q_a)$. Take $q_a=1/m$. Equality holds when $q_a=p_a$ for every $a$, because $\ln u=u-1$ only at $u=1$.
+\end{proof}
+
+For i.i.d.\ copies $X_1,X_2,\ldots$ with the same finite law, the probability of a particular string is the product of the symbol probabilities, so
+\[
+ -\frac1n\log_2 P(X_1=a_1,\ldots,X_n=a_n)=\frac1n\sum_{i=1}^n\log_2\frac1{p_{a_i}}.
+\]
+The summands are i.i.d.\ and bounded, because every $p_a$ in the support is positive and the alphabet is finite. Theorem~\ref{thm:sllnbound} says the average converges almost surely to $\mathbb E[\log_2(1/p_X)]=H(X)$.
+
+\begin{theorem}[typical sequences]\label{thm:aep}
+Let $\varepsilon>0$. The set of strings of length $n$ whose probability $p$ satisfies
+\[
+ 2^{-n(H(X)+\varepsilon)}\le p\le 2^{-n(H(X)-\varepsilon)}
+\]
+has probability tending to $1$. Every such string has probability at most $2^{-n(H(X)-\varepsilon)}$, so the set contains at most $2^{n(H(X)+\varepsilon)}$ strings once $n$ is large enough that its probability exceeds $1/2$.
+\end{theorem}
+\begin{proof}
+The almost-sure convergence just recorded implies convergence in probability of the same averages, which is the first sentence. If a set of probability greater than $1/2$ consists of points each of mass at most $2^{-n(H-\varepsilon)}$, then the number of points is at least one, and at most the reciprocal of that mass times $1$, hence at most $2^{n(H+\varepsilon)}$ after adjusting $\varepsilon$ by the factor coming from the lower bound in the display. More directly: each listed string has mass at least $2^{-n(H+\varepsilon)}$, and the masses sum to at most $1$, so there are at most $2^{n(H+\varepsilon)}$ of them.
+\end{proof}
+
+The count $2^{nH}$ is the size of the set of strings one actually sees.
+
+\section{Prefix codes}
+
+A binary code assigns to each symbol $a$ a word $c(a)$ in the alphabet $\{0,1\}$. It is a \emph{prefix code} when no codeword is a prefix of another. A receiver can then stop at the end of each word without a separating mark.
+
+\begin{theorem}[Kraft]\label{thm:kraft}
+If $c$ is a prefix code with word lengths $\ell(a)$, then $\sum_a 2^{-\ell(a)}\le 1$. Conversely, any positive integers $\ell(a)$ with that sum at most $1$ are the lengths of some prefix code.
+\end{theorem}
+\begin{proof}
+In the full binary tree, the codeword of length $\ell$ blocks $2^{-\ell}$ of the leaves at every deeper level. Prefix-freeness means the blocked sets are disjoint, so the sum is at most $1$. Conversely, if the sum is at most $1$, assign words from the shortest length upward, always taking the lexicographically first free node of that length. The inequality leaves a free node at each step.
+\end{proof}
+
+\begin{theorem}[Shannon's code]\label{thm:shannon}
+Let $\ell(a)=\lceil\log_2(1/p_a)\rceil$. Then $\sum 2^{-\ell(a)}\le 1$, so a prefix code of these lengths exists, and its expected length $L$ satisfies $H(X)\le L<H(X)+1$.
+\end{theorem}
+\begin{proof}
+$\ell(a)\ge\log_2(1/p_a)$, so $2^{-\ell(a)}\le p_a$ and the sum is at most $1$. Also $\ell(a)<\log_2(1/p_a)+1$, so $L=\sum p_a\ell(a)<\sum p_a\log_2(1/p_a)+1=H(X)+1$. The lower bound $L\ge H(X)$ is Gibbs' inequality applied to $q_a=2^{-\ell(a)}/Z$ if one normalises, or directly: $\sum p_a\log_2(1/p_a)\le\sum p_a\ell(a)$ because $\log_2(1/p_a)\le\ell(a)$.
+\end{proof}
+
+The law of large numbers says a long sample looks like its mean. The equipartition theorem says a long sample looks like one of about $2^{nH}$ strings. Those are two faces of the same independence. Random walks, in the next chapter, ask a different question: not how large a sum is, but whether it returns.
+
+\section{Exercises}[$\star\star$]\label{ex:entropymax}
+For a Bernoulli$(p)$ variable, $0<p<1$, show that $H(p)=-p\log_2 p-(1-p)\log_2(1-p)$ has a maximum at $p=1/2$, and that the maximum value is $1$.
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{ex:entropymax}
+Differentiate. The second derivative of $-p\ln p-(1-p)\ln(1-p)$ is negative.
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:entropymax}
+\idea The binary entropy is concave, and its derivative vanishes only at $1/2$.
+\writeup Work in natural units and convert at the end. Let $h(p)=-p\ln p-(1-p)\ln(1-p)$. Then
+\[
+ h'(p)=-\ln p+\ln(1-p)=\ln\frac{1-p}{p},\qquad h''(p)=-\frac1p-\frac1{1-p}<0.
+\]
+So $h'$ vanishes only at $p=1/2$, and $h$ has a maximum there. Now $h(1/2)=\ln 2$, and dividing by $\ln 2$ converts to bits, giving $H(1/2)=1$. For every other $p\in(0,1)$, $H(p)<1$.
+\end{solution}
+
+
+\section*{Sources and further reading}
+
+\begin{enumerate}
+\item C.~E.~Shannon, A mathematical theory of communication, \emph{Bell System Tech.\ J.} \textbf{27} (1948), 379--423 and 623--656. The entropy, the source-coding bound, and typical sequences for a finite alphabet.
+\end{enumerate}
