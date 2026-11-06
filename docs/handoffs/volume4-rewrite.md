@@ -1,6 +1,28 @@
 # Handoff: Volume 4 rewrite
 
-## Latest checkpoint — 6 November 2026, Chapter 6 third-moment rate
+## Latest checkpoint — 6 November 2026, scaling fix and Chapter 7
+
+**Preserved.** `445c186f` is an ancestor. `origin/main` is `5c4840cc`. No other volume was edited. Do not mark any chapter accepted.
+
+**Chapter 6 defect, fixed in `93be51a3`.** The third-moment bound at `d50be021` gave the comparison normals variance $\sigma^2/n$. The standardised summands $Y_k/(\sigma\sqrt n)$ have variance $1/n$. The sum of those wrong normals is $N(0,\sigma^2)$, not standard normal, and the term $2\sigma^3\sqrt{2/\pi}$ is not invariant under $Y\mapsto cY$. The corrected bound is
+\[
+\frac{M}{6\sqrt n}\Biggl(\frac{\rho}{\sigma^3}+2\sqrt{\frac{2}{\pi}}\Biggr).
+\]
+The fair-coin number $0.04326\ldots$ is unchanged because $\sigma=1$. A distinct reviewer must recompute this scaling on the pushed file. The whole-chapter read of `d50be021` does not cover the fix. The chapter is not accepted.
+
+**Chapter 5 repairs.** `ca8e9489` answered the older-proof notes from agent `bc-8c6d139e` at `677d5e6a`. That repair has not been rechecked. Chapter 5 is not accepted. Chapters 2 and 3 still have no full-page PDF acceptance.
+
+**Chapter 7, not accepted.** Commit `f9d7770d` proves the chain rule, compares Shannon lengths with a Huffman merge on probabilities $1/2$, $1/3$, $1/6$, and proves the merge is optimal for a finite alphabet. The old chain-rule exercise now computes a noisy copy. A whole-chapter reviewer of the pushed file is still required.
+
+**Page count.** The last success is 163 print pages at `f3fd29ff`, before the scaling fix and Chapter 7. Do not reuse it for the new text. Record the next successful `./build.sh volume4-chance`.
+
+**C-GROUP.** Unchanged. Do not edit Volume 3.
+
+**Exact next step.** Recheck the Chapter 6 scaling at `93be51a3` and the Chapter 5 sentences at `ca8e9489` with distinct reviewers. Then review all of Chapter 7 at `f9d7770d`. Rebuild and replace 163 only with that new count.
+
+---
+
+## Previous checkpoint — 6 November 2026, Chapter 6 third-moment rate
 
 **Preserved.** `677d5e6a` is an ancestor. `origin/main` is `5c4840cc`. No other volume was edited. Do not mark Chapters 2--6 accepted.
 
