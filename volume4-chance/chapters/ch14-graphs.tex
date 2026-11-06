@@ -15,7 +15,7 @@ Let $G(n,p)$ have $n$ labelled vertices and each edge present independently with
 If $p=c/n$ with $0<c<1$, then with high probability every component of $G(n,p)$ has at most $A\log n$ vertices, for a constant $A=A(c)$.
 \end{theorem}
 \begin{proof}
-A component on exactly $k$ vertices contains a spanning tree, and it has no edge leaving its vertex set. The Prüfer encoding puts the trees on a fixed labelled set of $k$ vertices in bijection with the words of length $k-2$ on that set: delete the smallest leaf and record its neighbour, and reverse the record by attaching the next unused label as a leaf. There are therefore $k^{k-2}$ such trees. Let $N_k$ be the number of vertex sets of size $k$ that span a connected subgraph and have no edge leaving the set. A union bound over those trees gives
+A component on exactly $k$ vertices contains a spanning tree, and it has no edge leaving its vertex set. The Prüfer encoding puts the trees on a fixed labelled set of $k$ vertices in bijection with the words of length $k-2$ on that set: delete the smallest leaf and record its neighbour, and reverse the record by attaching the next unused label as a leaf. There are therefore $k^{k-2}$ such trees. To reverse a word, read it from the left: the smallest label that is not in the remainder of the word, and that has not yet been attached, becomes a leaf on the letter just read. Let $N_k$ be the number of vertex sets of size $k$ that span a connected subgraph and have no edge leaving the set. A union bound over those trees gives
 \[
  \mathbb E[N_k]\le\binom{n}{k}k^{k-2}p^{k-1}(1-p)^{k(n-k)}.
 \]
@@ -25,7 +25,7 @@ With $p=c/n$ and $\binom{n}{k}\le(en/k)^k$, and with $(1-p)^{k(n-k)}\le\exp(-ck(
 \]
 The function $\ln c+1-c$ has derivative $1/c-1$ and a maximum value $0$ at $c=1$, so $\rho=ce^{1-c}<1$ for $0<c<1$. For $k\le n^{1/3}$ the exponential factor is at most $2$ once $n$ is large. Thus $\mathbb E[N_k]\le(2n/(ck^2))\rho^k$. The sum of these bounds from $k=\lceil A\ln n\rceil$ to $n^{1/3}$ tends to $0$ when $A>1/\ln(1/\rho)$. This does \emph{not} yet rule out components larger than $n^{1/3}$. The following separate exploration argument handles every size.
 
-Explore the component of a fixed vertex by breadth-first search. When a vertex is processed, reveal its edges to as-yet undiscovered vertices. That number of new neighbours is $\operatorname{Bin}(m_i,c/n)$ for some $m_i\le n$. Fresh previously unexamined edges make these binomial draws conditionally independent of the earlier exploration. Add independent dummy Bernoulli trials to make an upper bound $Y_i\sim\operatorname{Bin}(n,c/n)$ at every step, independent across $i$. If the component contains at least $k\ge2$ vertices, its queue cannot empty before $k-1$ vertices have been processed; therefore $\sum_{i=1}^{k-1}Y_i\ge k-1$.
+Explore the component of a fixed vertex by breadth-first search. Let $x_i$ be the number of new vertices found when the $i$th vertex of the component is processed. Begin with one vertex in the queue. After $t$ vertices have been processed, the queue holds $1-t+\sum_{i=1}^t x_i$ vertices. The component has at least $k\ge2$ vertices exactly when this queue is still positive after every one of the first $k-1$ processings. In particular it holds at least one vertex after $k-1$ processings, so $\sum_{i=1}^{k-1}x_i\ge k-1$. Each $x_i$, on those steps, is the number of successes in at most $n$ independent trials of probability $c/n$. Add dummy failures to make exactly $n$ trials. The resulting variables $Y_i$ are i.i.d.\ $\operatorname{Bin}(n,c/n)$, and $Y_i\ge x_i$. Thus, on the event that the component has size at least $k$, $\sum_{i=1}^{k-1}Y_i\ge k-1$.
 
 For any $\theta>0$, independence and the elementary exponential Markov inequality give
 \[
@@ -87,7 +87,7 @@ If instead $np\to\infty$ with $0<p\le1$, then $P(T>0)\to1$. If $np\to0$, then $P
 \begin{proof}
 A set of three vertices spans a triangle with probability $p^3$, so $\mathbb E[T]=\binom{n}{3}p^3$ by linearity. For $p=c/n$ this is $c^3 n(n-1)(n-2)/(6n^3)\to\lambda$.
 
-Let $I_A$ be the indicator that the triple $A$ is a triangle. Then $\operatorname{Var}(I_A)=p^3(1-p^3)$. If two triples share at most one vertex, they determine six edges and no edge lies in both, so the indicators are independent and the covariance is zero. If they share two vertices, they share exactly one edge and together use five edges, so $\mathbb E[I_AI_B]=p^5$ and
+Let $I_A$ be the indicator that the triple $A$ is a triangle. Then $\operatorname{Var}(I_A)=p^3(1-p^3)$. If two triples share no vertex, they determine six edges. If they share exactly one vertex, they still determine six edges: the three edges of one triple meet that vertex and the two other vertices of that triple, which are not the other triple's vertices. In both cases no edge lies in both triples, so the indicators are functions of disjoint sets of edges and the covariance is zero. If they share two vertices, they share exactly one edge and together use five edges, so $\mathbb E[I_AI_B]=p^5$ and
 \[
  \operatorname{Cov}(I_A,I_B)=p^5-p^6=p^5(1-p).
 \]
@@ -225,7 +225,7 @@ The right side equals $1+O(p+1/n)=1+O((\ln n)/n)$. Therefore $\mathrm{Var}(I)/\m
 
 \begin{solution}{ex:giant}
 \idea While the explored set is still a small fraction of the graph, breadth-first search dominates a supercritical Galton--Watson process.
-\writeup Fix $\delta>0$ with $\mu=c(1-\delta)>1$, and set $m=\lfloor n(1-\delta)\rfloor$. Breadth-first search from $v$ inspects, at the $i$th discovered vertex, the edges from that vertex into the yet unexplored set. Those edges have not been looked at before, and the edge indicators are independent, so the number of new neighbours is a binomial random variable. As long as fewer than $\delta n$ vertices have been discovered, the unexplored set has size at least $m$, and a $\mathrm{Bin}(m',p)$ count with $m'\ge m$ is a $\mathrm{Bin}(m,p)$ count plus an independent nonnegative remainder. Deleting the remainder couples the search to a Galton--Watson process $Z$ with offspring law $\mathrm{Bin}(m,c/n)$, up to the first time $\delta n$ vertices are seen. If the total progeny $T$ of $Z$ satisfies $T\ge\delta n$, the component of $v$ has at least $\delta n$ vertices.
+\writeup Fix $\delta>0$ with $\mu=c(1-\delta)>1$, and set $m=\lfloor n(1-\delta)\rfloor$. Breadth-first search from $v$ inspects, at the $i$th discovered vertex, the edges from that vertex into the yet unexplored set. Those edges have not been looked at before, and the edge indicators are independent, so the number of new neighbours is a binomial random variable. While fewer than $\delta n$ vertices have been discovered, at least $m$ vertices remain unexplored. Split those trials into a block of $m$ and a leftover block. The number of new neighbours is the sum of a $\operatorname{Bin}(m,c/n)$ count and an independent nonnegative count from the leftover. Discard the leftover. The retained counts are exactly the offspring of a Galton--Watson process $Z$ with that binomial law, and they are at most the true numbers of new neighbours. Therefore, up to the first time $\delta n$ vertices are seen, the component of $v$ is at least as large as the progeny of $Z$. If that progeny is at least $\delta n$, then $|C(v)|\ge\delta n$.
 
 The probability generating function of the offspring law is $f_n(s)=(1-c/n+(c/n)s)^m$. For $s\in[0,1]$,
 \[
@@ -234,8 +234,6 @@ The probability generating function of the offspring law is $f_n(s)=(1-c/n+(c/n)
 so $f_n(s)\to f(s)=\exp(\mu(s-1))$, uniformly on $[0,1]$ because the convergence of $(1-a/m)^{m}$ type expansions is monotone in the error $O((c/n)^2 m)=O(1/n)$. Let $\eta_n$ be the extinction probability of $Z$, the smallest root of $s=f_n(s)$ in $[0,1]$, and let $\eta$ be the smallest root of $s=f(s)$. Theorem~\ref{thm:extinction} gives $\eta<1$ because the Poisson$(\mu)$ mean is $\mu>1$. Every limit point $L$ of $\eta_n$ satisfies $L=f(L)$. The value $1$ is a root, but it is not the limit: $f_n'(1)=mc/n\to\mu>1$, and $f_n''(s)=m(m-1)(c/n)^2(1-c(1-s)/n)^{m-2}$ is bounded uniformly for $s\in[0,1]$ and large $n$. Taylor's formula at $1$ therefore provides a fixed $\varepsilon>0$ such that $f_n(s)<s$ for $s\in(1-\varepsilon,1)$ for all large $n$. Since $f_n(0)>0$ and $f_n$ is continuous, its smallest fixed point must be at most $1-\varepsilon$. Thus $\eta_n\to\eta$. A process that survives has infinite progeny, so $P(T\ge\delta n)\ge P(T=\infty)=1-\eta_n$. Therefore $P(|C(v)|\ge\delta n)\ge1-\eta_n$, which is at least $(1-\eta)/2$ for every large $n$.
 \end{solution}
 
-
-Volume~5, \emph{Calculation: From Formula to Insight}, takes the generating function of Chapter~3 and asks for a remainder you can write down. One infinite sequence of tosses, one Gaussian limit, one path, and one existence proof by expectation: those are the four shapes this book has. The primes are not yet these coins.
 
 \begin{solution}{ex:trianglecount}
 \idea Write the count as a sum of indicators and apply the first-moment inequality.
@@ -291,6 +289,8 @@ so $\liminf P(I>0)\ge\lambda^2/(\lambda^2+\lambda)=\lambda/(1+\lambda)$. Markov 
  \le\frac16.
 \]
 \end{solution}
+
+Volume~5, \emph{Calculation: From Formula to Insight}, takes the generating function of Chapter~3 and asks for a remainder you can write down. One infinite sequence of tosses, one Gaussian limit, one path, and one existence proof by expectation: those are the four shapes this book has used. The primes are not among them yet.
 
 \section*{Sources and further reading}
 
