@@ -19,7 +19,10 @@ class DependencyReviewChecks(unittest.TestCase):
 
     def test_actual_complete_reference_set_has_current_manual_explanations(self):
         result = checks.check(self.data, self.review)
-        self.assertEqual(result['references'], 319)
+        # 322 = 319 plus three backward citations in the Fermat-factor solution:
+        # the order proposition twice, and the congruences chapter once.
+        # The 85 forward uses are unchanged.
+        self.assertEqual(result['references'], 322)
         self.assertEqual(result['reviewed_forward_uses'], 85)
         self.assertIn('no automatic', result['scope'])
 
