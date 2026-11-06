@@ -176,6 +176,12 @@ The following is an **author-side mathematical/source recheck**, not a second pe
 
 Chapter 14 post-fix writer source check covered the Prüfer spanning-tree count, restricted small-component sum, globally dominating breadth-first offspring, the optimized exponential Markov bound, both connectivity and supercritical-local-giant exercise solutions and the stated limit of what is proved. Appendix B author recheck covered Turán symmetrization with degree ties, Ramsey recursion, Schur construction, the sunflower induction and cyclic-arc pairing in Erdős–Ko–Rado; all three exercise/hint/solution pairs were reread. These checks do **not** establish independent correctness, figure appearance, full reader quality, complete proof-tracing from Volumes 1–3 or the approved 400–500-page requirement.
 
+### Updated routed-source audit (6 November 2026)
+
+Read `volume4-chance/main.tex` and followed its `\\input{chapters/...}` route (preface, fourteen chapters, Appendix B), adding the referenced `about-the-cover.tex`. Across those **17 routed source files**, a static pattern scan found **200 LaTeX labels (all distinct), 161 local references (no unresolved target), 95 exercise keys, 95 corresponding hints and 95 corresponding solutions**, with no duplicate exercise key or unmatched hint/solution. The eleven unique TikZ figure stems referenced by `\\fig{...}` were fetched individually from the branch and all **11 source files exist**.
+
+This newer result is scoped to the actual `main.tex` route; the earlier 203/165 scan was a separate broader source scan and is retained only as historical evidence, not silently substituted. Neither scan resolves cross-volume citations, TeX macros, errors in compiled pages, figure appearance, bibliography accuracy, or mathematical correctness. No native build was performed here.
+
 **CI checkpoint:** GitHub Actions [run #1829](https://github.com/OussamaSegh/Order-and-Chance/actions/runs/42248963841) at `a480bca2` completed failure; 528 Python tests OK with 31 skips, V3 mathematical examples passed, and the reviewed conceptual-snapshot gate failed with `Whole-volume conceptual source/figure drift: C-GROUP`. The reading/print/EPUB/site/publish jobs were **skipped**. Updating a review snapshot without genuine authorization and re-review is prohibited. No native Volume 4 PDF was generated or inspected in this continuation.
 
 ## Project-wide blockers
