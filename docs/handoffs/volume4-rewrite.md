@@ -10,15 +10,25 @@ The citation corrections are `63f9c18d3c5e7d14f42d2867840dbd934b52bb04`. This ha
 
 **PDFs already delivered.** A clean detached build of `43d7d93b`, not edited during the run, produced the files copied to `/opt/cursor/artifacts/volume4_chance_reading_43d7d93b.pdf` (208 pages, sha256 `9b492abc1304cf7659c33e14caff63966f3412e04384cb4ba830d8c469f8e717`) and `volume4_chance_print_43d7d93b.pdf` (207 pages, sha256 `2906444b419b72a4e3c23a750bfb92c666071e814a6efae25a7d293a46bbe6d7`). The citation commits do not change Volume 4 chapter sources. A detached build of `63f9c18d` was started and had not finished when this note was written. It is not certified, and no hash is recorded for it. The every-page ledger has not started.
 
-**Not started.** The independent review of the corrected citation sweep, the certified build of `63f9c18d`, the every-page visual ledger, and the removed-material audit. The audit is the last step. Report its findings before any large restoration. Do not merge.
+**Next, then last.** The current sequence is still the quality pass on this manuscript, then fresh grok-4.7 chapter reviews, the whole-volume review, the citation review, the certified builds, and the every-page ledger. The removed-material audit follows those, and its findings go to the owner before any large restoration. The second full rewrite, matched to Volumes 1–3, is the final phase and has not started. Do not merge.
 
-## Final step, after the citation sweep, the builds, and the page ledger
+**Reviewer model, owner correction.** Use grok-4.7, at its highest reasoning effort, for writing and for every reviewer and subagent. Do not use grok-4.6, composer-2.5, or any other model. Independence is a fresh session with no writer context, adversarial instructions, an exact SHA, and a traceable issue log. Every log entry names the reviewer model as grok-4.7. Earlier composer-2.5 gates are provisional only.
+
+## Removed-material audit, after the citations, the builds, and the page ledger
 
 Do this only after three things are finished: the Volume 5–15 references to the current Volume 4, the clean native builds of that fixed commit, and the every-page visual ledger of those PDFs. Do not start it earlier, and do not let it interrupt that work.
 
 The job is an independent audit of everything removed from the old Volume 4, meaning the manuscript at the branch point on `origin/main`. The list includes the in-chapter workshop problems labelled `pb:*`, the probabilistic-method chapter that went from 2037 lines to 213, the Gilmer union-closed section, the measure-theory sections, and every other cut. For each removed item, decide whether to restore it or to keep it out. Restore it only when the mathematics is correct, a reader who has Volumes 1–4 can solve it, and it is genuinely worth teaching. Keeping it out needs a written reason. “Nothing later cites it” is not, by itself, a reason to drop good teaching. The ideal length remains 300–600 pages, with 600 as a maximum, and restored pages must not be padding.
 
-Report the audit to the parent before any large restoration. Putting material back would invalidate the final reviews, the builds, and the visual checks of the pages it touches, and those checks would have to be done again. No Volume 16 exists. Volumes 1–3 and the shared layout stay frozen.
+Report the audit to the owner before any large restoration. Putting material back would invalidate the final reviews, the builds, and the visual checks of the pages it touches, and those checks would have to be done again. No Volume 16 exists. Volumes 1–3 and the shared layout stay frozen. The audit is not the last phase. The coherence rewrite below waits until the owner has decided what this audit restores.
+
+## Final phase — a second full rewrite, after the owner decides the audit
+
+Do this only after the whole sequence is finished: the quality pass, the fresh grok-4.7 chapter reviews, the whole-volume review, the Volume 5–15 citation update and its review, the clean native builds, the every-page visual ledger, the removed-material audit, and the owner's decisions on that audit. Do not start it earlier.
+
+Then rewrite all of Volume 4 again, on grok-4.7 at its highest effort. Before writing, study the published Volumes 1–3 on `main`, read-only. Read them for voice, sentence rhythm, how chapters open and close, and how theorems, proofs, examples, exercises, hints, and solutions are presented. Match their notation, terminology, cross-references, boxes, and figures. Volume 4 should read as the same author's continuation of those books, in the house voice of `docs/WRITING-STYLE.md`. Volumes 1–3 stay frozen. Do not edit them to make the match.
+
+After that rewrite, redo every gate on the new text. Fresh grok-4.7 full reviews of each chapter, with issue logs that name the model. A whole-volume review. A citation recheck of Volumes 5–15 against the new Volume 4 numbers. Clean final builds of a fixed SHA. The every-page visual ledger of those PDFs. Ideal length 300–600 pages, 600 maximum, no filler. No merge.
 
 ## Page length — owner clarification, 6 November 2026
 
