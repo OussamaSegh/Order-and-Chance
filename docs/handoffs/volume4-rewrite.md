@@ -38,7 +38,7 @@ The last successful count is still 163 print pages at `f3fd29ff`. That file is n
 
 **C-GROUP.** Unchanged. Do not edit Volume 3 to bypass it.
 
-**Exact next step.** Stage 1 is still open. The third-moment example now multiplies by the normal density, and Chapter 7 proves relative entropy, mutual information, and the block lengths $10/3$ and $107/36$. A distinct reviewer must read that pushed SHA before those repairs count as rechecked. Then continue at Chapter 8, `volume4-chance/chapters/ch07-walks.tex`. Do not start the whole-volume review, the Volume 5--15 citation edit, or the every-page ledger. The 163-page count is still `f3fd29ff`. Rebuild before replacing it. No chapter is accepted.
+**Exact next step.** Stage 1 is still open. Pushed `7d7e62b5` writes the normal density into the third-moment rate and proves relative entropy, mutual information, and the block lengths $10/3$ and $107/36$. Distinct reviewers were started on that SHA: Chapter 6 scaling `bc-73e785d6`, Chapter 5 repairs `bc-706ce232`, Chapter 7 arithmetic `bc-faf94f3e`. Their reports are not yet in the issue log, so those repairs are not rechecked. The fair and unfair absorption times are now Proposition `prop:duration` in `ch07-walks.tex`, with the check $e_1=15/7$, $e_2=12/7$ at $p=2/3$, $N=3$. Continue from Markov chains after that duration proof is in the pushed tree and the three reports are logged. Do not start the whole-volume review, the Volume 5--15 citation edit, or the every-page ledger. The 163-page count is still `f3fd29ff`. No chapter is accepted.
 
 ---
 
