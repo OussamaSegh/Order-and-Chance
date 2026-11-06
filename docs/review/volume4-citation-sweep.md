@@ -57,6 +57,16 @@ This file records the sweep. It is not a production acceptance. A distinct revie
 
 Chebyshev's inequality and the weak law for uncorrelated variables are Volume 1, Chapter 10. The old pointers called them Volume 4, Proposition 4.1 or Theorem 4.2.
 
+## Repairs after the first pass
+
+A line break between `Volume~4,` and the number hid several targets from the first replacement. Borel--Cantelli in those places is now Theorem 4.4. The Catalan recurrence is Chapter 3. The Gaussian-vector citation split across a line is Theorem 6.14. The Brownian covariance next to Definition 12.1 is Proposition 12.2, and the nowhere-differentiable citation is Theorem 12.10.
+
+One replacement collided. Old Theorem 9.11 (Le Cam) was rewritten as Theorem 10.12, and the same pass then rewrote every Theorem 10.12, including that one, as Theorem 11.3 (optional stopping). The Le Cam sentence in `volume11-randomness/chapters/ch06-stein.tex` is Theorem 10.12 again. The three optional-stopping sentences remain Theorem 11.3.
+
+Old Theorem 10.4 meant conditional expectation. After the Poisson uniformity theorem took the number 10.4, those two sentences were pointing at the wrong theorem. They now say Definition 11.1, which is the finite-partition formula. The general $\sigma$-algebra definition is not a theorem of this volume.
+
+Total variation, written as half the $\ell^1$ distance, is defined in Chapter 9. Three sentences that still said Chapter 8 for that distance now say Chapter 9. The sentences that claim Volume 4 proved the transposition cutoff or seven riffle shuffles were not moved: Chapter 9 does not contain those arguments either.
+
 ## Left unchanged on purpose
 
 These sentences still name a result the current book does not prove. Changing the number would point at a different theorem. They are blockers, not silent edits.
