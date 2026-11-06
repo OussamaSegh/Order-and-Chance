@@ -40,7 +40,7 @@ Composer-2.5 `bc-116a4eb8-3533-59a9-bb7a-58242659606c` read the whole of printed
 
 Composer-2.5 `bc-fa0ed148-5add-5089-b85d-e4f5bfb4686a` read the whole of printed Chapter 3 and the three figure sources. All eight exercises passed, and the three captions match. It found no mathematical error. It flagged `\idea`, `\writeup`, and the `think` box. Those are the series solution labels ``How to find it.'' and ``Write-up.'', and the Pause-and-think box. They are not draft notes, and they are not removed. Two reader sentences were stiff: the opening now says the functions multiply and that this is the count being kept, and the thinning hint now says the exponent $\lambda(s-1)$ becomes $\lambda p(s-1)$. The forward mention of Chapter 14 is a preview, not a premise.
 
-These repairs are later than `92afc5f5` and have no full reread. The review gates for Chapters 2 and 3 stay open.
+Composer-2.5 `bc-39217dc3-98d4-5e6c-aa10-d604a02b0cb8` read the whole of Chapter 2 and both figures at `bc7db4834e66017a1577c6809ac1b96d14fc1577` and found no remaining defect. Composer-2.5 `bc-edd53730-4cd4-5f0c-b53c-fa4dd8f3d336` read the whole of Chapter 3 and the three figures at the same SHA and found none. Those two review gates are closed for mathematics and voice. They are not production acceptances, and no checkbox is ticked. The 205-page file of `ba74cccb` does not contain the new cycle caption or the two rewritten sentences. Chapter 1's text is unchanged since `d39310db`, so its closed review still covers the current file.
 
 ## Chapter 1 full reread at `92afc5f5`
 
