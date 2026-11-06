@@ -4,15 +4,15 @@
 
 **Preserved.** `677d5e6a` is an ancestor. `origin/main` is `5c4840cc`. No other volume was edited. Do not mark Chapters 2--6 accepted.
 
-**Chapter 6.** Commit `d50be021` places an i.i.d.\ third-moment rate, with the constant $2\sqrt{2/\pi}$, immediately before Lindeberg's theorem, and compares the normal tail, the continuity correction, and Hoeffding for one hundred fair tosses. Exercise `ex:thirdmoment` has a hint and a solution. Lindeberg's number is unchanged because the new block is an unnumbered example. A distinct reviewer must still read the whole chapter at the pushed SHA, not only this block. The chapter is not accepted.
+**Chapter 6, not accepted.** Commit `d50be021` places an i.i.d.\ third-moment rate, with the constant $2\sqrt{2/\pi}$, immediately before Lindeberg's theorem. Exercise `ex:thirdmoment` has a hint and a solution. Lindeberg's number is unchanged. Composer-2.5 agent `bc-e4e29702-9381-5f2d-8595-2ad0a98d851f` read the whole file at `d50be021`, including the older proofs and every exercise, and found no mathematical defect. It asked that the coin count not be called $S$. That one sentence, using $H$ for the number of heads, is a later commit and is not in the page count below. The chapter is not accepted: no voice pass and no full-page PDF acceptance.
 
 **Chapter 5 older material.** Composer-2.5 agent `bc-8c6d139e-d0c4-5556-8d87-0892cf31d703` read the theorems and the older exercises at `677d5e6a` and listed gaps in uniqueness, the disk integral, the mean approximation, and the Box--Muller tail. Those sentences were repaired in `ca8e9489`. That repair is not yet rechecked. The six-item review of `baebc58b` does not cover this. Chapter 5 is not accepted. Chapters 2 and 3 still have no full-page PDF acceptance.
 
-**Page count.** The last success is still 161 print pages at `2d687357`. Do not reuse it for `d50be021`. Record the next successful `./build.sh volume4-chance`.
+**Page count.** [Run 42275234502](https://github.com/OussamaSegh/Order-and-Chance/actions/runs/42275234502) built `f3fd29ff` with `./build.sh volume4-chance` and succeeded. Print interior **163 pages**, 513 × 738 pt, sha256 `b0fb58550e067c55e88256c69ac831fa3a403111f3bc496c5f7473f2b6054d27`. Reading PDF 164 pages, sha256 `e48cbee8e117e5859af0210ee5305ce053b1341bb9ff5aef1a40734258ae0b7e`. This includes the third-moment rate and the Chapter 5 proof repairs, and it replaces 161. It does not include the one-sentence $H$ disambiguation. It is not a full-page visual acceptance. 163 is still far below 400–500.
 
 **C-GROUP.** Unchanged. Do not edit Volume 3.
 
-**Exact next step.** Have a distinct reviewer read all of `ch06-clt.tex` at `d50be021`, including the older proofs and every exercise. Rebuild and record the page count of that SHA. Then continue at Chapter 7.
+**Exact next step.** Continue substantive writing at Chapter 7, `ch07-entropy.tex`, then a whole-chapter reviewer of that pushed SHA. Do not tick Chapters 2--6 complete. Chapters 2 and 3 still have no full-page PDF acceptance. Rebuild after the $H$ sentence before treating 163 as the count of the latest text.
 
 ---
 
