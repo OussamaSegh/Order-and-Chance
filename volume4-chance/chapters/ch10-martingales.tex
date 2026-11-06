@@ -13,7 +13,7 @@ Let $\mathcal P=\{A_1,\ldots,A_m\}$ be a partition into events of positive proba
 $\mathbb E[X\mid\mathcal P]$ equals $\mathbb E[X\mathbf 1_{A_j}]/P(A_j)$ on the atom $A_j$.
 \end{definition}
 
-It is constant on atoms, and $\mathbb E[\mathbb E[X\mid\mathcal P]]=\mathbb E[X]$. If $\mathcal Q$ refines $\mathcal P$, the tower property $\mathbb E[\mathbb E[X\mid\mathcal Q]\mid\mathcal P]=\mathbb E[X\mid\mathcal P]$ is a finite sum: each coarse atom is a union of fine atoms. On a finite-dimensional space of square-integrable random variables this is the orthogonal projection of Volume~1, Chapter~7, for the inner product $\mathbb E[UV]$.
+It is constant on atoms, and $\mathbb E[\mathbb E[X\mid\mathcal P]]=\mathbb E[X]$. If $\mathcal Q$ refines $\mathcal P$, the tower property $\mathbb E[\mathbb E[X\mid\mathcal Q]\mid\mathcal P]=\mathbb E[X\mid\mathcal P]$ is a finite sum: each coarse atom is a union of fine atoms. For square-integrable $X$, it is the orthogonal projection onto the finite-dimensional subspace of variables constant on the atoms, using the inner product $\mathbb E[UV]$ from Volume~1, Chapter~7: the residual has zero mean on each atom, hence is orthogonal to every such step variable.
 
 \section{Martingales and stopping}
 
@@ -48,7 +48,11 @@ Conditional Jensen, or $\mathbb E[Z^2]\ge(\mathbb E Z)^2$ on each atom, shows th
 If $|X_k-X_{k-1}|\le c_k$, then $P(X_n-X_0\ge t)\le\exp\bigl(-t^2/(2\sum c_k^2)\bigr)$ for $t>0$.
 \end{theorem}
 \begin{proof}
-On each atom the increment has conditional mean $0$ and lies in an interval of length at most $2c_k$. Lemma~\ref{lem:hoeffding}, applied conditionally, bounds the moment generating function by $\exp(\lambda^2 c_k^2/2)$. Markov's inequality and the choice of $\lambda$ are the same as in Theorem~\ref{thm:hoeffding}.
+On each atom the increment $D_k=X_k-X_{k-1}$ has conditional mean $0$ and lies in $[-c_k,c_k]$, an interval of length at most $2c_k$. Lemma~\ref{lem:hoeffding}, applied on each atom, gives $\mathbb E[e^{\lambda D_k}\mid\mathcal P_{k-1}]\le\exp(\lambda^2c_k^2/2)$. Multiply by the preceding $\mathcal P_{k-1}$-measurable factor, take expectations, and iterate to obtain
+\[
+\mathbb E[e^{\lambda(X_n-X_0)}]\le \exp\bigl(\tfrac12\lambda^2\sum_{k=1}^n c_k^2\bigr).
+\]
+Markov's inequality followed by $\lambda=t/\sum c_k^2$ proves the stated bound when the denominator is positive. If every $c_k=0$, the martingale is constant and the upper-tail probability is $0$ for $t>0.
 \end{proof}
 
 \section{ABRACADABRA}
@@ -57,7 +61,19 @@ On each atom the increment has conditional mean $0$ and lies in an interval of l
 Independent uniform letters from an alphabet of $26$ symbols produce the word ABRACADABRA at a mean time $26^{11}+26^4+26$.
 \end{theorem}
 \begin{proof}
-A casino takes fair bets of stake $1$ on the next letter. Gambler $k$ begins at time $k$ by betting that the letter is A, and if correct multiplies the stake by $26$ and bets on the next required letter, stopping at the first mistake. Each fortune is a martingale, so the expected total of the gamblers' wealth at the completion time $\tau$ equals $\mathbb E[\tau]$, one unit having been staked at each time. At time $\tau$ the gambler who started eleven letters earlier holds $26^{11}$. The block ABRA is both a suffix and a prefix, so the gambler who started four letters earlier holds $26^4$. The final A keeps a gambler who holds $26$. No other bet is still alive. Therefore $\mathbb E[\tau]=26^{11}+26^4+26$.
+A casino accepts one new gambler, with stake $1$, at each integer time. The gambler starting at time $k$ predicts the successive letters of the target word. After $r$ correct guesses their fortune is $26^r$; one wrong guess makes it $0$. After a full successful match the gambler stops. At each step the conditional expected fortune is unchanged, because the next correct letter has probability $1/26$. Let $W_t$ be the sum of all these fortunes after $t$ letters (including any prize completed on that step), and let $M_t=W_t-t$. A new $1$ stake enters at each time, so $M_t$ is a martingale.
+
+The first occurrence time $\tau$ is almost surely finite: in disjoint blocks of eleven letters, the word appears with probability $26^{-11}$ independently, so $P(\tau>11m)\le(1-26^{-11})^m\to0$. For $N\ge1$, put $T_N=\min(\tau,N)$. This is a bounded stopping time, so Theorem~\ref{thm:os} applied to $M$ gives
+\[
+ \mathbb E[W_{T_N}]=\mathbb E[T_N].
+\]
+We must justify passing to the unbounded time rather than simply invoking optional stopping there. At any time before the first occurrence, a surviving gambler must have started among the last eleven letters: an older gambler either lost or completed the target, which would already have stopped the clock. At $\tau$ the same bound holds, including the completed gambler. Each fortune is at most $26^{11}$, so $0\le W_{T_N}\le 11\cdot26^{11}$ for every $N$. As $N\to\infty$, $T_N\uparrow\tau$ and $W_{T_N}\to W_\tau$ almost surely; bounded convergence on the wealth and monotone convergence on the time give $\mathbb E[\tau]=\mathbb E[W_\tau]<\infty$.
+
+At the first completed ABRACADABRA the surviving gamblers are exactly those matching suffixes that are also prefixes. The full eleven-letter word pays $26^{11}$, the suffix ABRA of length four pays $26^4$, and the suffix A of length one pays $26$. There are no other proper prefix--suffix matches, so $W_\tau=26^{11}+26^4+26$ deterministically. Therefore
+\[
+ \mathbb E[\tau]=26^{11}+26^4+26.
+\]
+The stopping step is valid because we proved the bound and passed through $T_N$, not because unbounded optional stopping holds in general.
 \end{proof}
 
 A pattern with no prefix equal to a proper suffix has mean waiting time equal to the single leading power. Chapter~12 constructs a continuous martingale with Gaussian increments.
