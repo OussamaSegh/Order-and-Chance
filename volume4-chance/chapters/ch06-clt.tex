@@ -1,12 +1,12 @@
 \chapter{Why the Bell Curve Appears}
 
 \begin{center}\itshape
-One hundred fair dice sum to $350$ on average. The chance that the sum exceeds $400$\\
-is at most the normal tail beyond $\sqrt{60/7}$, which Chapter~5 bounds by $0.002$.\\
-Nobody lists the $6^{100}$ outcomes.
+One hundred fair dice sum to $350$ on average. The normal tail beyond $\sqrt{60/7}$\\
+is an estimate of the chance that the sum exceeds $400$, and Chapter~5 bounds\\
+that normal tail by $0.002$. Hoeffding's inequality bounds the dice by $e^{-2}$.
 \end{center}
 
-A single die has mean $7/2$ and variance $35/12$: the second moment is $(1^2+\cdots+6^2)/6=91/6$, and $91/6-(7/2)^2=35/12$. One hundred independent dice have mean $350$ and variance $3500/12$, so the standard deviation is $\sqrt{3500/12}\approx 17.08$. The value $400$ sits $(400-350)/17.08\approx 2.93$ standard deviations above the mean. The normal tail beyond $2.93$ equals $0.00171\ldots$. This chapter explains why that normal tail is the right approximation.
+A single die has mean $7/2$ and variance $35/12$: the second moment is $(1^2+\cdots+6^2)/6=91/6$, and $91/6-(7/2)^2=35/12$. One hundred independent dice have mean $350$ and variance $3500/12$, so the standard deviation is $\sqrt{3500/12}\approx 17.08$. The value $400$ sits $(400-350)/17.08\approx 2.93$ standard deviations above the mean. The number $0.002$ computed below bounds the corresponding normal tail. It does not, by itself, bound the dice. This chapter separates the estimate from a theorem that does.
 
 \begin{figure}[ht]
 \centering
@@ -58,60 +58,43 @@ Fix $\varepsilon>0$. Choose $\delta>0$ from uniform continuity so that $|u-v|<\d
 Let $X_i=F^{-1}(U_i)$ be i.i.d.\ copies, in the sense of Propositions~\ref{prop:manyuniforms} and~\ref{prop:inverse}, with $\mathbb E[X_1]=\mu$ and $\mathbb E[X_1^4]<\infty$. Set $S_n=X_1+\cdots+X_n$. Then $S_n/n\to\mu$ almost surely.
 \end{theorem}
 \begin{proof}
-Put $Z_i=X_i-\mu$ and $T_n=\sum_{i=1}^n Z_i$. Their fourth moments are finite, because $|x-\mu|^4\le8(|x|^4+|\mu|^4)$. Write $\mu_4=\mathbb E[Z_1^4]$ and $\sigma^2=\mathbb E[Z_1^2]$. On expanding $T_n^4$, any term containing an index to the first power has expectation $0$, by independence and centring. The remaining terms are $n$ fourth powers and $6\binom n2=3n(n-1)$ products of two squares. Thus
+Write $Z_i=X_i-\mu$ and $T_n=Z_1+\cdots+Z_n$. The claim $S_n/n\to\mu$ is the claim $T_n/n\to0$. The proof bounds the outer content of $\{|T_n|\ge n\varepsilon\}$, sums those bounds, and passes to every positive $\varepsilon$ at once.
+
+\emph{The fourth moment is of order $n^2$.} Since $|x-\mu|\le|x|+|\mu|$ and $(a+b)^2\le2(a^2+b^2)$, one has $(a+b)^4\le4(a^2+b^2)^2\le8(a^4+b^4)$. Thus $\mathbb E|Z_1|^4\le8(\mathbb E|X_1|^4+|\mu|^4)<\infty$. Write $\mu_4=\mathbb E[Z_1^4]$ and $\sigma^2=\mathbb E[Z_1^2]$. Expand $T_n^4=\sum_{i,j,k,\ell}Z_i Z_j Z_k Z_\ell$. If any index appears only once, independence and $\mathbb E[Z_i]=0$ make that term's expectation zero. The surviving patterns are a fourth power, and a product of two distinct squares. There are $n$ fourth powers. For an unordered pair $\{i,j\}$ the multinomial coefficient of $Z_i^2 Z_j^2$ is $4!/(2!2!)=6$, and there are $n(n-1)/2$ such pairs, so those terms contribute $6\cdot n(n-1)/2\cdot\sigma^4=3n(n-1)\sigma^4$. Therefore
 \[
  \mathbb E[T_n^4]=n\mu_4+3n(n-1)\sigma^4\le Cn^2
 \]
-for a constant $C$ independent of $n$.
+for a constant $C$ that does not depend on $n$.
 
-There is one point to earn before applying Borel--Cantelli. Each $Z_i$ depends on infinitely many binary digits, so $\{|T_n|\ge n\varepsilon\}$ is not generally a finite-bit event. We show directly that its \emph{outer content} obeys the fourth-moment bound.
+\emph{The deviation event need not be finite-bit.} Each $Z_i$ may depend on infinitely many binary digits, so Borel--Cantelli cannot be quoted for $\{|T_n|\ge n\varepsilon\}$ until an outer-content bound is proved from finite-bit events.
 
-Write $Z_i=Q(U_i)$ with the increasing continuous quantile $Q(u)=F^{-1}(u)-\mu$ on $(0,1)$. For $M>0$ put $Q_M(u)=\max(-M,\min(M,Q(u)))$. This bounded monotone function extends continuously to $[0,1]$: at either endpoint it is eventually constant if $Q$ is unbounded, and otherwise it has a finite monotone limit. By uniform continuity, for every $\eta>0$ there is a function $Y_{M,r}$, constant on each dyadic interval of length $2^{-r}$, such that
-\[
- \sup_{0\le u<1}|Y_{M,r}(u)-Q_M(u)|<\eta.
-\]
-Consequently $Y_{M,r}(U_1),\ldots,Y_{M,r}(U_n)$ depend on finitely many distinct digits and form an independent finite-valued family.
+\emph{Clip, then replace the clip by a step function.} Let $Q(u)=F^{-1}(u)-\mu$ on $(0,1)$, so $Z_i=Q(U_i)$, and let $Q_M=\max(-M,\min(M,Q))$. The clipped function is bounded and monotone, so it extends continuously to the compact interval $[0,1]$: if $Q$ is unbounded it is eventually constant near each endpoint, and otherwise the monotone limit is finite. Uniform continuity supplies, for every $\eta>0$, a function $Y_{M,r}$ constant on each dyadic interval of length $2^{-r}$ with $\sup_u|Y_{M,r}(u)-Q_M(u)|<\eta$. The variables $Y_{M,r}(U_i)$ depend on finitely many digits and are independent.
 
-Outside the event $B_M=\{\max_{i\le n}|Z_i|>M\}$, the unclipped and clipped sums agree. Therefore
+On the event that every $|Z_i|\le M$, the clipped sum $T_{n,M}=\sum_i Q_M(U_i)$ equals $T_n$. If in addition each step is within $\eta$ of the clip, the step sum differs from $T_{n,M}$ by less than $n\eta$. Hence, for $0<\eta<\varepsilon$,
 \[
  \{|T_n|\ge n\varepsilon\}
- \subseteq B_M\ \cup\
- \left\{\left|\sum_{i=1}^nY_{M,r}(U_i)\right|
-                   \ge n(\varepsilon-\eta)\right\},
- \qquad 0<\eta<\varepsilon.
+ \subseteq B_M\cup\Bigl\{\Bigl|\sum_{i=1}^n Y_{M,r}(U_i)\Bigr|\ge n(\varepsilon-\eta)\Bigr\},
 \]
-The second event is a finite-bit event. The first is a union of $n$ inverse images, under the uniform coordinates, of at most two intervals: because $Q$ is increasing, $\{|Q(U_i)|>M\}$ consists of an initial interval and a final interval. Each interval in a uniform coordinate can be covered by finite-digit cylinders with total length arbitrarily close to its interval length. Hence, by countable subadditivity,
-\[
- P^*(B_M)\le nP(|Z_1|>M).
-\]
-For the finite-bit event, Markov's inequality gives
+where $B_M=\{\max_{i\le n}|Z_i|>M\}$. The second event is finite-bit. The first is a union of $n$ events $\{|Q(U_i)|>M\}$. Since $Q$ is increasing, each of those is an initial interval of $[0,1)$ or a final interval, or a union of both. Such an interval can be covered by dyadic cylinders whose total length is arbitrarily close to its own length, so countable subadditivity gives $P^*(B_M)\le n P(|Z_1|>M)$.
+
+\emph{Pass to the limit in the right order.} Markov's inequality on the finite-bit event, followed by the comparison just made, yields
 \[
  P^*(|T_n|\ge n\varepsilon)
  \le nP(|Z_1|>M)
-  +\frac{\mathbb E[(\sum_{i=1}^nY_{M,r}(U_i))^4]}
-   {n^4(\varepsilon-\eta)^4}.
+ +\frac{\mathbb E\bigl[\bigl(\sum_i Y_{M,r}(U_i)\bigr)^4\bigr]}{n^4(\varepsilon-\eta)^4}.
 \]
-Let the dyadic mesh go to zero and then $\eta\downarrow0$. Uniform approximation makes the finite-sum fourth moments tend to that of $T_{n,M}=\sum_{i=1}^nQ_M(U_i)$. The elementary inequalities
+Fix $M$ and $\eta$. As $r\to\infty$ the step sum converges uniformly to $T_{n,M}$, so the fourth moments converge: choose $r$ large enough that the numerator is at most $\mathbb E[T_{n,M}^4]+n^2$. The elementary bounds $|a+b|^4\le8(|a|^4+|b|^4)$ and $|\sum a_i|^4\le n^3\sum|a_i|^4$, applied to $T_{n,M}=T_n-(T_n-T_{n,M})$ and to the coordinates of the difference, give
 \[
- |a+b|^4\le8(|a|^4+|b|^4),\qquad
- \left|\sum_{i=1}^n a_i\right|^4\le n^3\sum_{i=1}^n|a_i|^4
+ \mathbb E[T_{n,M}^4]
+ \le8\mathbb E[T_n^4]+8n^4\mathbb E\bigl[|Z_1|^4\mathbf 1_{\{|Z_1|>M\}}\bigr],
 \]
-give
+because $|Q-Q_M|\le|Q|$ on $\{|Q|>M\}$ and the difference vanishes elsewhere. Also $P(|Z_1|>M)\le\mathbb E[Z_1^4]/M^4$. Substitute $\mathbb E[T_n^4]\le Cn^2$. The resulting upper bound holds for every $M>0$ and every $\eta\in(0,\varepsilon)$. Send $M\to\infty$ first: both $n\mathbb E[Z_1^4]/M^4$ and the clipped fourth-moment tail tend to $0$. Then send $\eta\downarrow0$. What remains is
 \[
- \mathbb E[T_{n,M}^4]\le8\mathbb E[T_n^4]
-  +8n^4\,\mathbb E[|Z_1|^4\mathbf1_{\{|Z_1|>M\}}].
+ P^*(|T_n|\ge n\varepsilon)\le\frac{8C+1}{n^2\varepsilon^4}.
 \]
-The last expectation tends to zero as $M\to\infty$ by the finite fourth-moment hypothesis (equivalently, by the absolute-integral tail in Chapter~5). Also $P(|Z_1|>M)\le\mathbb E[Z_1^4]/M^4\to0$. Taking $M\to\infty$ proves the sufficient bound
-\[
- P^*(|T_n|\ge n\varepsilon)
- \le \frac{8Cn^2}{n^4\varepsilon^4}
- =\frac{8C}{n^2\varepsilon^4}.
-\]
-No unproved general product-measure theorem or interchange of infinite-digit events is needed.
+The extra $1$ is the room left for the dyadic error $n^2$ in the numerator.
 
-The right-hand side is summable in $n$. Apply countable subadditivity of outer content to the union of the events for $n\ge N$, and then let $N\to\infty$. Thus
-$P^*(\{|T_n|\ge n\varepsilon\text{ infinitely often}\})=0$.
-Intersect the conclusions for $\varepsilon=1/m$, $m\ge1$, to obtain $T_n/n\to0$ outside a set of outer content zero. Therefore $S_n/n\to\mu$ almost surely.
+\emph{Sum and let $\varepsilon$ tend to zero.} The right-hand side is summable in $n$. The outcomes that violate $|T_n|\ge n\varepsilon$ for infinitely many $n$ sit in $\bigcup_{n\ge N}\{|T_n|\ge n\varepsilon\}$ for every $N$, so their outer content is at most the tail of the series, which tends to $0$. Thus the outer content is $0$ for each fixed $\varepsilon>0$. The countable union over $\varepsilon=1/m$ still has outer content $0$, by Proposition~\ref{prop:subadd}. Outside that union, $T_n/n\to0$, and therefore $S_n/n\to\mu$.
 \end{proof}
 
 \section{The empirical distribution}
@@ -122,7 +105,29 @@ Let $F_n(x)=n^{-1}\#\{i\le n:X_i\le x\}$.
 For i.i.d.\ copies constructed by the inverse-distribution method, if their common distribution function $F$ is continuous, then $\sup_x|F_n(x)-F(x)|\to0$ almost surely.
 \end{theorem}
 \begin{proof}
-Fix $m\ge1$. Continuity of $F$, together with the limits $0$ and $1$ at $\pm\infty$ and the intermediate-value theorem, supplies $x_j$ with $F(x_j)=j/m$ for $j=1,\ldots,m-1$. At each of these points $F_n(x_j)$ is an average of bounded i.i.d.\ indicators of $\{X_i\le x_j\}$. For the inverse-CDF model these are monotone functions of the underlying uniforms, so the dyadic finite-digit approximation after Proposition~\ref{prop:inverse} in Chapter~5 extends Theorem~\ref{thm:sllnbound} to them. On that event, monotonicity keeps $F_n-F$ within $1/m$ everywhere: on each gap $F$ itself moves by only $1/m$, and outside the outer points both functions are within $1/m$ of $0$ or of $1$. Let $m\to\infty$.
+Fix an integer $m\ge2$. Continuity of $F$, the limits $0$ and $1$ at $\pm\infty$, and the intermediate-value theorem supply points $x_1<\cdots<x_{m-1}$ with $F(x_j)=j/m$. At each of these finitely many points, $F_n(x_j)$ is the average of the bounded indicators $\mathbf 1_{\{X_i\le x_j\}}$. In the inverse-distribution model each indicator is a bounded nondecreasing function of one uniform coordinate. The dyadic approximation after Proposition~\ref{prop:inverse} therefore places those averages under the bounded strong law, Theorem~\ref{thm:sllnbound}. There is one null set outside which
+\[
+ |F_n(x_j)-F(x_j)|\to0\qquad\text{for every }j=1,\ldots,m-1
+\]
+simultaneously, because a finite union of null sets is null.
+
+On that set, fix $x$ and compare it with the grid. If $x_j\le x<x_{j+1}$, monotonicity of both functions gives $F_n(x_j)\le F_n(x)\le F_n(x_{j+1})$ and $F(x_j)\le F(x)\le F(x_{j+1})$. Hence
+\begin{align*}
+F_n(x)-F(x)
+&\le F_n(x_{j+1})-F(x_j)
+= \bigl(F_n(x_{j+1})-F(x_{j+1})\bigr)+\bigl(F(x_{j+1})-F(x_j)\bigr)\\
+&\le |F_n(x_{j+1})-F(x_{j+1})|+\frac1m,
+\end{align*}
+and likewise $F(x)-F_n(x)\le |F_n(x_j)-F(x_j)|+1/m$. If $x<x_1$, then $0\le F(x)\le1/m$ and $0\le F_n(x)\le F_n(x_1)$, so both $F_n(x)-F(x)$ and $F(x)-F_n(x)$ are at most $|F_n(x_1)-F(x_1)|+1/m$. If $x\ge x_{m-1}$, then $F_n(x)-F(x)\le 1-F(x_{m-1})=1/m$, while
+\[
+ F(x)-F_n(x)\le 1-F_n(x_{m-1})=\frac1m+\bigl(F(x_{m-1})-F_n(x_{m-1})\bigr).
+\]
+Therefore
+\[
+ \sup_x|F_n(x)-F(x)|
+ \le\frac1m+\max_{1\le j\le m-1}|F_n(x_j)-F(x_j)|.
+\]
+The maximum tends to $0$, so the limsup of the supremum is at most $1/m$. This is one null set for this fixed $m$. The union of these null sets over $m=1,2,\ldots$ is still null. Outside it, the limsup is at most $1/m$ for every $m$, hence the supremum tends to $0$.
 \end{proof}
 
 \section{Characteristic functions}
@@ -269,7 +274,13 @@ Thus $e^{-30/7}<0.01882\cdot0.756<0.01423$. Also $2\pi>6.25$, so $1/\sqrt{2\pi}<
 \[
  \frac{\phi(x)}{x}<\frac{0.01423\cdot0.4}{2.9}<0.002.
 \]
-The normal approximation supplied by the corollary is this tail. The inequality is a bound one can check by hand. It is not a count of the $6^{100}$ outcomes.
+The inequality $\phi(x)/x<0.002$ bounds the standard normal tail. It is an estimate of the dice only in the sense that Corollary~\ref{cor:clt} says the centred and scaled sum converges in distribution to that normal law. Convergence in distribution does not supply a numerical error at $n=100$, so $0.002$ is not a proved upper bound on $P(S\ge 400)$.
+
+Hoeffding's inequality is a bound on the dice. Each summand lies in $[1,6]$, an interval of length $5$. Theorem~\ref{thm:hoeffding}, with $t=50$ and $\sum_i(b_i-a_i)^2=100\cdot25=2500$, gives
+\[
+ P(S\ge 400)=P(S-\mathbb E S\ge 50)\le\exp\Bigl(-\frac{2\cdot 50^2}{2500}\Bigr)=e^{-2}.
+\]
+Chapter~4 records $e^{-2}=0.1353\ldots$. The normal estimate is smaller than $0.002$. The proved bound is $e^{-2}$. They answer different questions, and the smaller number is not a substitute for the larger one.
 
 \section{The local theorem}
 
