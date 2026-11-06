@@ -28,7 +28,14 @@ The vector $\pi=(2/7,3/7,2/7)$ satisfies $\pi P=\pi$. The first coordinate of $\
 
 \section{Irreducibility and stationary laws}
 
-The chain is \emph{irreducible} if for every pair $x,y$ some $P^n(x,y)$ is positive. The \emph{period} of a state is the greatest common divisor of the return times. In an irreducible chain the period is the same for every state. The chain is \emph{aperiodic} when the period is $1$.
+The chain is \emph{irreducible} if for every pair $x,y$ some $P^n(x,y)$ is positive. The \emph{period} of a state is the greatest common divisor of the return times. The chain is \emph{aperiodic} when the period is $1$.
+
+\begin{lemma}[one period]\label{lem:period}
+In an irreducible chain every state has the same period.
+\end{lemma}
+\begin{proof}
+Let $d(x)$ be the period of $x$. Take a path of length $r$ from $x$ to $y$ and a path of length $s$ from $y$ to $x$. Then $d(x)$ divides $r+s$. Any return to $y$ of length $m$, inserted between those two paths, is a return to $x$ of length $r+m+s$. Thus $d(x)$ divides $r+m+s$ and $r+s$, so $d(x)$ divides $m$. Every return time to $y$ is a multiple of $d(x)$, and therefore $d(x)$ divides $d(y)$. The same argument with the states swapped gives $d(y)$ divides $d(x)$.
+\end{proof}
 
 \begin{theorem}[existence and uniqueness]\label{thm:stationary}
 Every finite transition matrix has a stationary distribution. An irreducible chain has exactly one.
@@ -88,6 +95,39 @@ Between block endpoints, advance both chains with the same transition mechanism;
 
 For random transpositions the sharp window sits near $\frac12 n\ln n$ and is proved in Volume~11. The bound above is only exponential convergence.
 
+The three-state chain of the example makes the distinction numerical. Every entry of $P^2$ is positive: the smallest is $P^2(1,3)=P^2(3,1)=1/6$, from the only route of length $2$ between those states, which passes through $2$. So $n_0=2$ and $\delta=1/6$ are legal, and $\epsilon=3\cdot(1/6)=1/2$. The coupling bound after $n$ steps is at most $(1/2)^{\lfloor n/2\rfloor}$. At $n=2$ that bound is $1/2$. The actual row is
+\[
+ P^2(1,\cdot)=\bigl(\tfrac{5}{12},\tfrac{5}{12},\tfrac16\bigr).
+\]
+Its absolute differences from $\pi=(2/7,3/7,2/7)$ are $11/84$, $1/84$ and $10/84$. Half the sum is $11/84$. The coupling theorem proves a distance of at most $1/2$. The distance itself is $11/84$. The smaller number is a computation for this matrix. The larger number is the general bound.
+
+\section{Before the distribution settles}
+
+The bound above says the chain approaches $\pi$. It does not say how long a named state takes to appear.
+
+\begin{proposition}[mean time to reach $3$]\label{prop:hit3}
+In the three-state chain, the mean time to reach $3$ is $7$ from state $1$ and $5$ from state $2$.
+\end{proposition}
+\begin{proof}
+Let $\tau$ be the first time the chain is at $3$. From $1$, the path $1\to2\to3$ has probability $(1/2)(1/3)=1/6$. From $2$, the step to $3$ has probability $1/3$. From either state other than $3$, the probability of being at $3$ within two steps is therefore at least $1/6$, and on the event that the chain has missed $3$ it is again in $\{1,2\}$. So $P(\tau>2k)\le(5/6)^k$. The expectation is $\sum_{n\ge0}P(\tau>n)$. Pair the terms: each pair $P(\tau>2k)+P(\tau>2k+1)$ is at most $2(5/6)^k$, and $\sum_k 2(5/6)^k=12$. The mean is finite.
+
+Let $e_i$ be that mean from state $i$. Then $e_3=0$. Condition on the first step. From $1$ the chain stays at $1$ or moves to $2$, each with probability $1/2$, so
+\[
+ e_1=1+\tfrac12 e_1+\tfrac12 e_2.
+\]
+From $2$ the first step is uniform on $\{1,2,3\}$, so
+\[
+ e_2=1+\tfrac13 e_1+\tfrac13 e_2.
+\]
+The first equation rearranges to $e_1=2+e_2$. Substitute:
+\[
+ e_2=1+\tfrac13(2+e_2)+\tfrac13 e_2=\tfrac53+\tfrac23 e_2.
+\]
+Hence $e_2=5$ and $e_1=7$. If $e_i'$ is another finite solution of the same equations with $e_3'=0$, the difference $d_i=e_i-e_i'$ satisfies $d_3=0$, $d_1=\frac12 d_1+\frac12 d_2$ and $d_2=\frac13 d_1+\frac13 d_2$. The same arithmetic forces $d_1=d_2=0$.
+\end{proof}
+
+These are means. Exercise~\ref{ex:hitbefore} asks for a different quantity on the same chain: the probability, starting from $2$, of seeing $1$ before $3$.
+
 \section{Reversibility}
 
 The chain is reversible for $\pi$ when $\pi(x)P(x,y)=\pi(y)P(y,x)$. Summing over $x$ shows that any such $\pi$ is stationary. The walk on an undirected graph that steps to a uniform neighbour is reversible for $\pi$ proportional to degree: both sides of the balance equal $1$ on an edge and $0$ off the edge, up to the common normalising constant.
@@ -96,7 +136,7 @@ The Ehrenfest chain is the same idea with unequal rates. Two urns share $d$ ball
 \[
  \pi(0)\cdot 1=\tfrac14=\pi(1)\cdot\tfrac12,\qquad \pi(1)\cdot\tfrac12=\tfrac14=\pi(2)\cdot 1.
 \]
-There is no other edge. Exercise~\ref{ex:ehrenfest} is the same check for a general $d$, with $\pi(k)=\binom{d}{k}2^{-d}$. For $d=2$ that formula is exactly $(1/4,1/2,1/4)$. The chain is periodic of period $2$, so Theorem~\ref{thm:ergodic} does not apply: from $0$ the chain is always at an even state after an even number of steps. The lazy chain $(P+I)/2$ is the version that the theorem does cover.
+There is no other edge. Exercise~\ref{ex:ehrenfest} is the same check for a general $d$, with $\pi(k)=\binom{d}{k}2^{-d}$. For $d=2$ that formula is exactly $(1/4,1/2,1/4)$. The chain is periodic of period $2$, so Theorem~\ref{thm:ergodic} does not apply. Start at $0$. Two steps return to $0$ or to $2$, each with probability $1/2$, and never to $1$. The absolute differences from $\pi=(1/4,1/2,1/4)$ are $1/4$, $1/2$ and $1/4$. Half the sum is $1/2$. The same row is the law after every later even time: from $(1/2,0,1/2)$ the next step is at $1$, and the step after that splits evenly between $0$ and $2$. The distance stays $1/2$. It does not tend to $0$. The lazy chain $(P+I)/2$ holds with probability $1/2$ at every state, so a return in one step is possible and the period is $1$. Theorem~\ref{thm:ergodic} applies to that chain.
 
 \section{Top to random}
 
@@ -149,6 +189,10 @@ Let $\pi>0$ and let $Q$ be symmetric and irreducible. Set $P(x,y)=Q(x,y)\min(1,\
 Move the top card of an $n$-card deck to a uniform random position. Let $\tau$ be the first time the original bottom card has been inserted. Using the stages in Theorem~\ref{thm:top}, check that $\mathbb E[\tau]=11/2$ when $n=3$. Then show, from the same stages, that the deck at time $\tau$ is uniform and independent of $\tau$, and that for every fixed real $c$ the total variation distance to uniform after $t=\lceil n\ln n+cn\rceil$ steps is at most $e^{-c}$ for all sufficiently large $n$.
 \end{exercise}
 
+\begin{exercise}[$\star$]\label{ex:hitbefore}
+In the three-state chain, let $h_i$ be the probability of visiting $1$ before $3$, starting from $i$. Find $h_2$.
+\end{exercise}
+
 \begin{exercise}[$\star$]\label{ex:period}
 Show that the cycle $1\to2\to\cdots\to n\to1$ is irreducible of period $n$, with unique stationary law the uniform law, and that $P^n$ does not converge to that law if $n>1$.
 \end{exercise}
@@ -176,6 +220,9 @@ $\pi(x)P(x,y)=Q(x,y)\min(\pi(x),\pi(y))$.
 \end{hint}
 \begin{hint}{ex:toptorandom}
 While $k$ cards lie below the original bottom card, the next insertion falls into one of the $k+1$ positions at or below it with probability $(k+1)/n$. Conditioned on this event, the insertion rank within the marked block is uniform and independent of the waiting time. Induct on the number of marked cards.
+\end{hint}
+\begin{hint}{ex:hitbefore}
+$h_1=1$, $h_3=0$, and the first step from $2$ is uniform.
 \end{hint}
 \begin{hint}{ex:period}
 $P^n=I$.
@@ -216,6 +263,10 @@ The uniform distribution is stationary for top-to-random: under a uniform deck, 
 P(\tau>t)=P(T>t)\le n(1-1/n)^t\le ne^{-t/n}\le e^{-c}
 \]
 when $t=\lceil n\ln n+cn\rceil$.
+\end{solution}
+
+\begin{solution}{ex:hitbefore}
+\writeup The boundary values are $h_1=1$ and $h_3=0$. From $2$ the first step is uniform, so $h_2=\frac13\cdot1+\frac13 h_2+\frac13\cdot0$. Thus $\frac23 h_2=\frac13$ and $h_2=\frac12$.
 \end{solution}
 
 \begin{solution}{ex:period}
