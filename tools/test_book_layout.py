@@ -257,6 +257,88 @@ The letter-pattern frieze $\textsf{VΛVΛ}$ keeps its upright Greek lambdas.
             check(Path(directory) / 'sample.log', Path(directory) / 'sample.oclayout')
             check_style(Path(directory) / 'sample.pdf')
 
+    def test_figure_lettering_matches_caption_and_spares_the_part_page(self):
+        import fitz
+        with tempfile.TemporaryDirectory() as directory:
+            result = self.compile(directory, r'''
+\part{The Language of Proof}
+\chapter{Language}
+\noindent Body $x^2$ stays in the text face.
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}
+  \node[font=\tiny] at (0,0) {ray};
+  \node[font=\scriptsize] at (2.2,0) {$x^2$};
+\end{tikzpicture}
+\caption{The inequality $x^2>1$ holds on the ray. The second line of this caption is long enough to keep the same leading across the narrowed measure.}
+\end{figure}
+\begin{table}[ht]
+\caption{A short list of values.}
+\end{table}
+After $y$.
+''', passes=2)
+            self.assertEqual(result.returncode, 0, result.stdout[-4000:])
+            doc = fitz.open(str(Path(directory) / 'sample.pdf'))
+            part = doc[0]
+            # The part lockup is Cormorant, not the diagram sans.
+            part_fonts = {(s['font'], round(s['size'], 1))
+                          for b in part.get_text('dict')['blocks'] if b.get('type') == 0
+                          for l in b['lines'] for s in l['spans']}
+            self.assertIn(('CormorantGaramond-Light', 149.4), part_fonts)
+            self.assertTrue(any(name.startswith('CormorantGaramond') and size > 30
+                                for name, size in part_fonts))
+            chapter = doc[1]
+            rows = []
+            for b in chapter.get_text('dict')['blocks']:
+                if b.get('type') != 0:
+                    continue
+                for l in b['lines']:
+                    for s in l['spans']:
+                        rows.append((s['text'].strip(), s['font'], round(s['size'], 2)))
+            def size_of(fragment, family):
+                hits = [size for text, font, size in rows
+                        if fragment in text and family in font]
+                self.assertTrue(hits, f'{fragment} / {family} missing in {rows}')
+                return hits[0]
+            self.assertAlmostEqual(size_of('Body', 'EBGaramond'), 11.45, delta=0.15)
+            self.assertAlmostEqual(size_of('Figure', 'FiraSans-SemiBold'), 8.75, delta=0.08)
+            self.assertAlmostEqual(size_of('inequality', 'FiraSans-Book'), 8.75, delta=0.08)
+            self.assertFalse(any(text == 'FIGURE' for text, _, _ in rows), rows)
+            caption_spans = []
+            body_x = None
+            for b in chapter.get_text('dict')['blocks']:
+                if b.get('type') != 0:
+                    continue
+                for line in b['lines']:
+                    text = ''.join(s['text'] for s in line['spans'])
+                    if text.startswith('Body'):
+                        body_x = line['spans'][0]['bbox'][0]
+                    if any('FiraSans' in s['font'] and abs(s['size'] - 8.72) < 0.2 for s in line['spans']):
+                        caption_spans.append(line)
+            self.assertIsNotNone(body_x)
+            self.assertGreaterEqual(len(caption_spans), 2, [''.join(s['text'] for s in l['spans']) for l in caption_spans])
+            inset = caption_spans[0]['spans'][0]['bbox'][0] - body_x
+            self.assertAlmostEqual(inset, 0.0375 * 381.6, delta=0.4)
+            gap = caption_spans[1]['spans'][0]['origin'][1] - caption_spans[0]['spans'][0]['origin'][1]
+            self.assertAlmostEqual(gap, 12.0, delta=0.05)
+            colours = {(s['text'].strip(), s['color']) for line in caption_spans for s in line['spans']}
+            self.assertIn(('Figure', 0x151516), colours)
+            self.assertTrue(any(text == '1.1' and colour == 0xA34232 for text, colour in colours), colours)
+            # Table captions stay on the shared full-width label, not the figure setting.
+            self.assertAlmostEqual(size_of('TABLE', 'FiraSans-Medium'), 9.96, delta=0.2)
+            self.assertNotIn('FiraSans-MediumItalic', ''.join(font for _, font, _ in rows))
+            # Text inside the picture is the original size, not the caption size.
+            ray = [size for text, font, size in rows if text.strip() == 'ray']
+            self.assertTrue(ray and all(abs(size - 6.3) < 0.25 for size in ray), ray)
+            self.assertTrue(all('Fira' not in font for text, font, size in rows if text.strip() == 'ray'))
+            math_sizes = sorted({size for text, font, size in rows
+                                 if 'Garamond-Math' in font and '𝑥' in text})
+            self.assertTrue(any(abs(size - 11.45) < 0.2 for size in math_sizes), math_sizes)
+            self.assertTrue(any(abs(size - 8.37) < 0.2 for size in math_sizes), math_sizes)
+            self.assertFalse(any(abs(size - 9.5) < 0.05 or abs(size - 10.46) < 0.05 for size in math_sizes), math_sizes)
+            after = [size for text, font, size in rows if text.strip() in {'𝑦', 'y'} and 'Garamond-Math' in font]
+            self.assertTrue(after and all(abs(size - 11.45) < 0.2 for size in after), after)
+
     def test_grayscale_override_is_rejected(self):
         with tempfile.TemporaryDirectory() as directory:
             result = self.compile(directory, r'''

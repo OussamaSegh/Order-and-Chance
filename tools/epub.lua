@@ -423,8 +423,10 @@ local function number_figure(b)
   end })
   local cap = b.caption.long[1]
   if cap and (cap.t == "Plain" or cap.t == "Para") then
-    -- Design 5e: the label FIGURE in Fira capitals with a coral number, as in the PDF.
-    cap.content:insert(1, pandoc.Span(label("Figure", n), pandoc.Attr("", { "oc-head" })))
+    -- "Figure 2." in Fira Sans SemiBold; the numeral is rust via .oc-num.
+    local lab = label("Figure", n)
+    lab:insert(pandoc.Str("."))
+    cap.content:insert(1, pandoc.Span(lab, pandoc.Attr("", { "oc-head" })))
     cap.content:insert(2, pandoc.Space())
   end
   return b

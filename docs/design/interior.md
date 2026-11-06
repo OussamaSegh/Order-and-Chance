@@ -29,7 +29,9 @@ The manuscripts (`volume*/chapters`) need no markup for any of it.
 | Body text, proofs, notes | EB Garamond (Regular, Italic, SemiBold, SemiBold Italic) | 11.5 pt on 14.75 pt (11 pt class size, `Scale=1.05`, `\linespread{1.085}`), lining figures |
 | Mathematics | Garamond-Math (stylistic sets 1, 2) | same scale as the text |
 | Headings, titles, the opener numeral | Cormorant Garamond SemiBold / SemiBold Italic / Light | chapter title 26/32 pt EB Garamond, black (unnumbered chapters 22/26 Cormorant), section 18/21, subsection 14/17; chapter label is small coral Fira capitals |
-| Labels, running heads, captions, folios | Fira Sans Book / Medium (+ italics) | labels 8.2 pt capitals, 8% tracking |
+| Labels, running heads, folios | Fira Sans Book / Medium (+ italics) | labels 8.2 pt capitals, 8% tracking |
+| Figure captions | Fira Sans SemiBold label, Book prose | 8.75 pt on a 12 pt baseline; “Figure 2.”, numeral in rust; prose on 92.5% of the text block |
+| Table captions | Fira Sans Medium label, Book prose | the shared `\small` caption, full text-block width |
 | Code | DejaVu Sans Mono | |
 
 The fonts are vendored under SIL OFL 1.1 in `common/fonts/`; the licences and sources
@@ -146,6 +148,8 @@ match):
 | teal, ocTeal | dark grey | 6E6A66 | dark grey |
 | Cyan, cyan, SkyBlue | light grey | C9BDB8 | light grey |
 | viridis colour map | charcoal → brown → rust → coral → cream | | |
+
+**Figure captions.** Only the caption under a figure changes. It is 8.75 pt on a 12 pt baseline. The label is sentence-case `Figure 2.`: Fira Sans SemiBold, no extra tracking, the word and the period in charcoal, the numeral in rust. One ordinary space, then the prose in Fira Sans Book, upright and not bold, left aligned. The caption measure is 92.5 percent of the text block, centred. Mathematics inside the caption is Garamond-Math at that text size times its 1.05 scale, about 9.19 pt. Words, ticks, and mathematics drawn inside the figure are unchanged, as are table captions, body type, and the figure geometry.
 
 Captions, and the few sentences that point at a figure's colours, use these words.
 Mathematical colourings keep their own names (Ramsey's red and blue edges, Pólya's

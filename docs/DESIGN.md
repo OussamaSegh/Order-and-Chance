@@ -1,3 +1,11 @@
+# Figure captions — 6 November 2026
+
+Only the caption under a figure changes. It is 8.75 pt on a 12 pt baseline, set in 92.5 percent of the text block. The label is `Figure 2.` in genuine Fira Sans SemiBold: the word and the period are charcoal, the numeral is rust, and the tracking is normal. The prose is Fira Sans Book, left aligned. Mathematics in that caption follows the 8.75 pt size. Text inside figures, table captions, body type, and figure geometry stay as they are on main. Details are in `docs/design/interior.md`.
+
+The Volume 3 whole-volume register hashes every `common/*.tex` file. That fingerprint moved only because `common/interior-fonts.tex` and `common/interior-style.tex` changed. `review/volume3-internal/concepts.json` records the hash-only refresh: snapshot `c740fd5dff041c2163c77075303edd560587bdd53e61a1418602e2be8560d1ad` became `6a41bebd367e458db40048de0f8f19993abcdb80c1dcdabc66f19dae9ad602a9`. Classifications, anchors, and later-use text are unchanged.
+
+---
+
 # KDP interior bleed correction — 5 November 2026
 
 KDP rejected Volume 1's trim-size interior for insufficient bleed at PDF page 13.
