@@ -45,6 +45,43 @@ class SharedMasterTest(unittest.TestCase):
         series={round(row['SERIES'], 6) for row in offsets.values()}
         self.assertEqual(len(series), 1)
 
+    def test_volume3_paley_plate_has_the_strongly_regular_parameters(self):
+        import math as maths
+        from series_cover import _front
+        p = 13
+        squares = {pow(i, 2, p) for i in range(1, p)}
+        self.assertEqual(squares, {1, 3, 4, 9, 10, 12})
+        self.assertIn(-1 % p, squares)
+
+        def adjacent(i, j):
+            return i != j and (i - j) % p in squares
+
+        edges = [(i, j) for i in range(p) for j in range(i + 1, p) if adjacent(i, j)]
+        self.assertEqual(len(edges), 39)
+        self.assertTrue(all(sum(adjacent(i, j) for j in range(p)) == 6 for i in range(p)))
+        for i, j in edges:
+            common = sum(adjacent(i, k) and adjacent(j, k) for k in range(p))
+            self.assertEqual(common, 2)
+        nonedges = [(i, j) for i in range(p) for j in range(i + 1, p) if not adjacent(i, j)]
+        for i, j in nonedges:
+            common = sum(adjacent(i, k) and adjacent(j, k) for k in range(p))
+            self.assertEqual(common, 3)
+        scene, mode = _front().arts.v3()
+        self.assertEqual(mode, 'bbox')
+        self.assertEqual(scene.fill_frac, 0.86)
+        lines = [item for item in scene.items if item[0] == 'line']
+        dots = [item for item in scene.items if item[0] == 'dot']
+        self.assertEqual(len(lines), 39)
+        self.assertEqual(len(dots), 13)
+        weights = {1: (0.78, 0.96, 0.75), 3: (0.40, 0.50, 0.20), 4: (0.30, 0.34, 0.0)}
+        for (i, j), item in zip(edges, lines):
+            step = min((i - j) % p, (j - i) % p)
+            self.assertEqual((item[2], item[3], item[5]), weights[step])
+        self.assertTrue(all(item[4] == 'ocCoverTitle' for item in dots))
+        # The vertices are the thirteenth roots of unity, residue 0 at the top.
+        angle = [maths.atan2(item[1][0, 1], item[1][0, 0]) for item in dots]
+        self.assertAlmostEqual(angle[0], maths.pi / 2)
+
     def test_title_must_be_cormorant_regular_at_42pt(self):
         class Font(dict):
             def get_object(self):return self

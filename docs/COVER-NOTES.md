@@ -11,15 +11,15 @@ The cover draws the Collatz tree. Take each integer from 2 up to 8,000. An even 
 
 ## Volume 2 — The Integers
 
-Cover illustration: the Ulam spiral of the primes up to the square of 71; see About the Cover.
+Cover illustration: prime circles for the sums of two squares, through 53; see About the Cover.
 
-The integers from 1 to the square of 71 are placed in a square spiral. Each prime inside the disc receives a coral dot. The pale central marker is 1, which is not prime. Stanislaw Ulam drew his prime spiral in 1963; Martin Gardner featured it in Scientific American in March 1964. Some diagonals carry many prime dots, while others carry few. The picture raises a question about those patterns rather than supplying a test for primality. It faces the chapter Primes, where divisibility, counting and proof turn a list of numbers into arithmetic questions. The drawing was computed by the book's own TikZ cover generator.
+A circle is drawn for every prime up to 53, with radius the square root of that prime. A coral dot marks integer coordinates whose squares add to the prime. Eight dots lie on a prime one more than a multiple of four. The prime 2 has four dots, one for each sign in both coordinates. A prime three more than a multiple of four has no dot, and its circle is pale. The pale centre is the origin. Sums of Squares proves that a prime is a sum of two squares exactly in the dotted cases. In Gaussian and Eisenstein Integers the pale circles remain prime, while the coral dots split or ramify. The drawing was computed by the book's own TikZ cover generator.
 
 ## Volume 3 — Symmetry
 
-Cover illustration: the icosahedron and its axes of symmetry; see About the Cover.
+Cover illustration: the Paley graph on the thirteen residues; see About the Cover.
 
-The cover shows a regular icosahedron: twelve vertices, thirty edges and twenty triangular faces. Three pale lines mark rotation axes through opposite vertices, faces and edges; the corresponding rotations have orders five, three and two. The faint circles are the intersections of its mirror planes with the surrounding sphere, projected into the picture. Euclid constructs the solid in Book XIII, Proposition 16 of the Elements. Here its sixty rotations lead to the alternating group on five letters, proved in the closing chapter, A Glimpse Beyond: Quaternions and Rotations. That group also appears in the obstruction to solving quintic equations by radicals; the connection requires the Galois theory developed earlier in this volume. The drawing was computed by the book's own TikZ cover generator.
+Thirteen points, the residues modulo 13, sit equally spaced on a circle. A chord joins two residues when their difference is a nonzero square modulo 13, one of 1, 3, 4, 9, 10 or 12. Minus 1 is a square modulo 13, so each chord is undirected. The graph has thirteen vertices, each of degree six, and thirty-nine edges. Adjacent vertices have two common neighbours, and vertices that are not adjacent have three. The three line weights mark the absolute differences 1, 3 and 4: heaviest for 1 and 12, middle for 3 and 10, lightest for 4 and 9. This is the Paley graph in the section Cayley graphs and the Paley graphs of the chapter Symmetry Diagonalises, the Cayley graph of addition modulo 13 on its nonzero squares. The drawing was computed by the book's own TikZ cover generator.
 
 ## Volume 4 — Chance
 
