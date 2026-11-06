@@ -129,6 +129,45 @@ class CheckEpubMedia(unittest.TestCase):
         errors = self._run(page=page)
         self.assertTrue(any("MathML" in error for error in errors), errors)
 
+    def test_svg_html_cover_and_unmarked_second_title_fail(self):
+        cover = """<?xml version="1.0" encoding="utf-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<body><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<image xlink:href="../media/cover.png"/>
+</svg></body></html>"""
+        opf = """<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://www.idpf.org/2007/opf" xmlns:dc="http://purl.org/dc/elements/1.1/" version="3.0">
+<metadata>
+<dc:title id="t">Order and Chance. Volume 1: First Principles</dc:title>
+<dc:title id="s">Proof, Problem Solving and Mathematical Thinking</dc:title>
+<meta refines="#s" property="title-type">subtitle</meta>
+</metadata>
+<manifest>
+<item id="cover_xhtml" href="text/cover.xhtml" media-type="application/xhtml+xml" properties="svg"/>
+<item id="cover_png" href="media/cover.png" media-type="image/png" properties="cover-image"/>
+</manifest>
+<spine><itemref idref="cover_xhtml"/></spine>
+<guide><reference type="cover" title="Cover" href="text/cover.xhtml"/></guide>
+</package>"""
+        errors = check_epub_media.kindle_structure_errors(
+            [("EPUB/text/cover.xhtml", cover)], opf.encode())
+        self.assertTrue(any("contains SVG" in error for error in errors), errors)
+        self.assertTrue(any("HTML cover page" in error for error in errors), errors)
+        self.assertTrue(any("title-type main" in error for error in errors), errors)
+        self.assertTrue(any("guide cover reference" in error for error in errors), errors)
+        fixed = opf.replace(
+            '<meta refines="#s" property="title-type">subtitle</meta>',
+            '<meta refines="#t" property="title-type">main</meta>'
+            '<meta refines="#s" property="title-type">subtitle</meta>')
+        fixed = fixed.replace(
+            '<guide><reference type="cover" title="Cover" href="text/cover.xhtml"/></guide>',
+            '<guide><reference type="toc" title="Contents" href="nav.xhtml"/></guide>')
+        chapter = """<?xml version="1.0" encoding="utf-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml"><body><p>A proof.</p></body></html>"""
+        self.assertEqual(
+            check_epub_media.kindle_structure_errors([("EPUB/text/ch001.xhtml", chapter)], fixed.encode()),
+            [])
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -79,7 +79,9 @@ The EPUB now writes each plate as a full-colour PNG 1800 pixels wide, with `widt
 
 Formula images are a 16-level black-and-alpha palette, then a lossless oxipng repack, rendered at 480 ppi. The book em is 11.5 pt, 48 device pixels on a 300 ppi Paperwhite; 480 ppi gives 77 pixels to that em. Plates stay full colour at 1800 px and are only repacked with oxipng, so the coral and other inks are unchanged. Identical formula pixels share one file. The check rejects a plate under 1600 pixels. Each EPUB has to stay under the 50 MB Send-to-Kindle mail limit.
 
-`tools/check_epub_media.py` rejects a plate under 1600 pixels, a fixed pixel width, an SVG plate, or inline math without an em shift. The print PDF, the reading PDF and the online reader are unchanged.
+`tools/check_epub_media.py` rejects a plate under 1600 pixels, a fixed pixel width, an SVG plate, or inline math without an em shift. It also rejects an SVG content document, an HTML cover page added beside a declared cover image, and a second `dc:title` that is not paired with `title-type` main. The print PDF, the reading PDF and the online reader are unchanged.
+
+Pandoc's `--epub-cover-image` was doing both of the things the Kindle cover rules warn about: it declared the cover image, then also put an HTML cover page in the spine with that image inside SVG. `tools/epub_fix.py` now drops that page and marks the series title `title-type` main, leaving the cover image and the subtitle in place. That is a packaging correction. It is not evidence that KDP has accepted a file.
 
 All fifteen EPUBs were built with this pipeline. Each passed `tools/check_epub_media.py` and EPUBCheck. `./build.sh` already supplies the publication date EPUBCheck requires.
 
