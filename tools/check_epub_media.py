@@ -147,6 +147,95 @@ def _math_errors(where: str, attrs: dict[str, str], inline: bool, pngs: dict[str
     return errors
 
 
+OPF = "http://www.idpf.org/2007/opf"
+DC = "http://purl.org/dc/elements/1.1/"
+SVG = "http://www.w3.org/2000/svg"
+
+
+def _local(tag: str) -> str:
+    return tag.rsplit("}", 1)[-1]
+
+
+def kindle_structure_errors(pages: list[tuple[str, str]], opf: bytes | None) -> list[str]:
+    """Reject EPUB packaging that Kindle's current guidelines say can fail conversion.
+
+    An HTML cover page on top of a declared cover image, an SVG content image,
+    and a second dc:title with no title-type main are the patterns named in
+    the Kindle cover, image and enhanced-typesetting pages. EPUBCheck does
+    not treat the first or the third as errors.
+    """
+    errors = []
+    parsed: dict[str, ET.Element] = {}
+    for name, text in pages:
+        try:
+            document = ET.fromstring(text)
+        except ET.ParseError:
+            continue
+        parsed[name] = document
+        if any(_local(node.tag) == "svg" or node.tag.startswith("{" + SVG + "}") for node in document.iter()):
+            errors.append(
+                f"{name} contains SVG. Kindle's reflowable image rules say SVG tags "
+                "can cause errors; use an HTML img instead")
+    if not opf:
+        return errors
+    try:
+        package = ET.fromstring(opf)
+    except ET.ParseError as error:
+        return errors + [f"package document is malformed: {error}"]
+    metadata = package.find(f"{{{OPF}}}metadata")
+    manifest = package.find(f"{{{OPF}}}manifest")
+    spine = package.find(f"{{{OPF}}}spine")
+    if metadata is not None:
+        titles = metadata.findall(f"{{{DC}}}title")
+        typed = {
+            (meta.get("refines"), (meta.text or "").strip())
+            for meta in metadata.findall(f"{{{OPF}}}meta")
+            if meta.get("property") == "title-type"
+        }
+        mains = [title for title in titles if (f"#{title.get('id')}", "main") in typed]
+        if len(titles) > 1 and len(mains) != 1:
+            errors.append(
+                "package has more than one dc:title and does not mark exactly one "
+                "title-type main. Kindle Previewer E2006 treats that as a conversion failure")
+    if manifest is None or spine is None:
+        return errors
+    items = {item.get("id"): item for item in manifest.findall(f"{{{OPF}}}item")}
+    cover_hrefs = {
+        unquote(item.get("href", ""))
+        for item in items.values()
+        if "cover-image" in item.get("properties", "").split()
+    }
+    for name, document in parsed.items():
+        # Pages are zip paths. Manifest hrefs are relative to the OPF, which
+        # lives in the same directory as nav.xhtml in this pipeline (EPUB/).
+        href = name.split("/", 1)[-1] if name.startswith("EPUB/") else name
+        if not cover_hrefs:
+            break
+        body = next((node for node in document.iter() if _local(node.tag) == "body"), None)
+        if body is None or re.sub(r"\s+", "", "".join(body.itertext())):
+            continue
+        for node in body.iter():
+            src = node.get("src") or node.get("href") or node.get("{http://www.w3.org/1999/xlink}href") or ""
+            if not src:
+                continue
+            resolved = posixpath.normpath(posixpath.join(posixpath.dirname(href), unquote(src.split("#", 1)[0])))
+            names = {posixpath.basename(item) for item in cover_hrefs}
+            if resolved in cover_hrefs or posixpath.basename(resolved) in names:
+                errors.append(
+                    f"{name} is an HTML cover page in addition to the declared cover "
+                    "image. Kindle's cover rules say that can fail conversion")
+                break
+    for ref in package.findall(f"{{{OPF}}}guide/{{{OPF}}}reference"):
+        if ref.get("type") != "cover" or not cover_hrefs:
+            continue
+        target = unquote(ref.get("href", ""))
+        if target.lower().endswith((".xhtml", ".html", ".htm")):
+            errors.append(
+                f"guide cover reference points at {target} while a cover image is "
+                "already declared. Kindle's cover rules say not to add that HTML page")
+    return errors
+
+
 def check(path: Path) -> list[str]:
     errors = []
     with zipfile.ZipFile(path) as archive:
@@ -160,6 +249,9 @@ def check(path: Path) -> list[str]:
             (name, archive.read(name).decode("utf-8"))
             for name in names if name.endswith((".xhtml", ".html"))
         ]
+        opf_name = next((name for name in names if name.endswith(".opf")), None)
+        opf = archive.read(opf_name) if opf_name else None
+        errors.extend(kindle_structure_errors(pages, opf))
     for name, text in pages:
         try:
             document = ET.fromstring(text)
@@ -210,7 +302,7 @@ def main(argv: list[str]) -> int:
     for error in errors:
         print(error, file=sys.stderr)
     if errors:
-        print(f"{len(errors)} EPUB figure/math problem(s)", file=sys.stderr)
+        print(f"{len(errors)} EPUB problem(s)", file=sys.stderr)
         return 1
     print("EPUB figures are full width and math carries an em baseline")
     return 0
