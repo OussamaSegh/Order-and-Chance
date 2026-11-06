@@ -142,8 +142,8 @@ An independent-review record must name the reviewer, the pushed commit that was 
 
 | Chapter | Writer self-check | Independent review |
 | --- | --- | --- |
-| 1 | Mathematical self-pass recorded at `b267c681` by the writing agent on 6 November 2026. Voice not done. The digit figure added later is not part of that pass. | **Pending.** No distinct reviewer. |
-| 2–14, preface, appendix | Not second-passed, except the named repair commits in the ledger above. | **Pending.** No distinct reviewer. |
+| 1 | Mathematical self-pass recorded at `b267c681` by the writing agent on 6 November 2026. Voice not done. The digit figure in `e76c6a8c` is not part of that pass. | **Pending.** No distinct reviewer. |
+| 2–14, preface, appendix | Not second-passed, except the named repair commits in the ledger above. Figure commits, still not a self-pass of the chapter: Chapter 2 `3661489e`, Chapter 6 photograph `020a41b3`, Chapter 8 reflection step `6bc1f755`. | **Pending.** No distinct reviewer. |
 
 No independent-review report exists. Nothing in this book has been accepted under t71u.
 
