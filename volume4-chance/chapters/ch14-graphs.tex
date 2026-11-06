@@ -53,6 +53,8 @@ There is no restriction $k\le n^{1/3}$. This completes the theorem. The earlier 
 
 The constant $A$ depends only on $c$, explicitly through $\rho=ce^{1-c}$. The proof uses both the expected number of isolated connected sets and an independent exploration bound that controls \emph{every} component size. It does not identify a giant component for $c>1$. Exercise~\ref{ex:giant} gives a positive lower bound on the probability that one vertex has a linear component, and stops there. The survival probability of Theorem~\ref{thm:extinction} is the candidate for the fraction of vertices in that component; the limit of the fraction is not proved.
 
+Two other quantities illuminate what the theorem does and does not say. The number of triangles is a sum of indicators, so its expectation is a finite count even when the triangles overlap. The size of the component of one vertex can be bounded by comparing successive layers of a breadth-first exploration with a branching process. These are useful first-moment calculations, but neither by itself identifies a giant component. Exercises~\ref{ex:trianglecount} and~\ref{ex:susceptibility} make the comparison precise.
+
 \section{Exercises}
 
 \begin{exercise}[$\star\star$]\label{ex:connectivity}
@@ -65,6 +67,39 @@ Let $p=c/n$ with $c>1$, and fix a vertex $v$. Show that there exist $\delta>0$ a
 \end{exercise}
 
 
+\begin{exercise}[$\star$]\label{ex:trianglecount}
+Let $T$ be the number of triangles in $G(n,p)$. Show that
+\[
+ \mathbb E[T]=\binom n3 p^3.
+\]
+Deduce that if $p=o(1/n)$, the graph contains no triangle with high probability. Explain why the same first-moment calculation, at $p=c/n$ for fixed $c>0$, does not prove that a triangle exists with high probability.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:susceptibility}
+In $G(n,c/n)$ with $0<c<1$, fix a vertex $v$. Prove $\mathbb E|C(v)|\le1/(1-c)$ by exposing its breadth-first layers. Deduce the weaker tail bound
+\[
+ P(|C(v)|\ge k)\le\frac{1}{(1-c)k},\qquad k\ge1.
+\]
+Why is this bound alone insufficient to establish Theorem~\ref{thm:subcrit} by a union bound over all $n$ vertices?
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:criticalisolated}
+Fix a real $t$ and take $p=(\ln n+t)/n$ for sufficiently large $n$. Let $I$ count isolated vertices. Show that
+\[
+ \mathbb E[I]\longrightarrow\lambda=e^{-t},
+ \qquad
+ \mathbb E[I(I-1)]\longrightarrow\lambda^2.
+\]
+Use Cauchy--Schwarz and Markov's inequality to deduce
+\[
+ \frac{\lambda}{1+\lambda}
+ \le\liminf_{n\to\infty}P(I>0)
+ \le\limsup_{n\to\infty}P(I>0)
+ \le\min(1,\lambda).
+\]
+Do not assert a limiting probability of $1-e^{-\lambda}$ without a further argument.
+\end{exercise}
+
 \section{Hints}
 
 \begin{hint}{ex:connectivity}
@@ -75,6 +110,16 @@ The expected number of isolated vertices is $n(1-p)^{n-1}$.
 While fewer than $\delta n$ vertices have been seen, each new vertex has a $\mathrm{Bin}(\lfloor n(1-\delta)\rfloor,p)$ number of fresh neighbours, which is a Galton--Watson offspring law of mean greater than $1$.
 \end{hint}
 
+
+\begin{hint}{ex:trianglecount}
+Indicate each three-element vertex set that spans all three edges; independence is needed for the three edges within one triangle, not between different triangles.
+\end{hint}
+\begin{hint}{ex:susceptibility}
+Let $L_j$ be the number of vertices at distance exactly $j$ from $v$. Conditional on the explored layers, each member of the next frontier reveals at most $n$ fresh edges, each of probability $c/n$.
+\end{hint}
+\begin{hint}{ex:criticalisolated}
+Two specified vertices are both isolated when $2n-3$ edges are absent. For any nonnegative variable $I$, $(\mathbb E I)^2\le \mathbb E[I^2]P(I>0)$.
+\end{hint}
 
 \section{Solutions}
 
@@ -103,6 +148,50 @@ so $f_n(s)\to f(s)=\exp(\mu(s-1))$, uniformly on $[0,1]$ because the convergence
 
 
 Volume~5, \emph{Calculation: From Formula to Insight}, takes the generating function of Chapter~3 and asks for a remainder you can write down. One infinite sequence of tosses, one Gaussian limit, one path, and one existence proof by expectation: those are the four shapes this book has. The primes are not yet these coins.
+
+\begin{solution}{ex:trianglecount}
+\idea Write the count as a sum of indicators and apply the first-moment inequality.
+\writeup For each three-element set $A$ of vertices, let $J_A$ indicate that all three edges within $A$ are present. The three edge decisions are independent, so $P(J_A=1)=p^3$. With $T=\sum_{|A|=3}J_A$, linearity gives $\mathbb E[T]=\binom n3p^3$; the indicators for two triangles need not be independent. If $np\to0$, then $\mathbb E[T]\le (np)^3/6\to0$. Markov's inequality for the nonnegative integer $T$ yields $P(T\ge1)\le\mathbb E[T]\to0$.
+
+At $p=c/n$, the expectation instead tends to $c^3/6>0$. A bounded, positive mean is not a lower bound on the probability that a count is positive: a count could, in principle, take very large values on very rare outcomes. Thus the expectation formula alone neither proves that a triangle exists with high probability nor determines the limiting probability of the event.
+\end{solution}
+
+\begin{solution}{ex:susceptibility}
+\idea In the subcritical regime the expected number of newly discovered vertices shrinks by a factor at most $c$ per breadth-first generation.
+\writeup Start with $L_0=1$. Explore all edges from the current layer into vertices not yet discovered, assigning each new vertex to the first edge that discovers it. Because fresh edge indicators in $G(n,c/n)$ are independent of the exploration history, the conditional expected number of successful edges from layer $j$ is at most $cL_j$: each of its vertices has at most $n$ such potential edges, each with probability $c/n$. The number of distinct newly discovered vertices is no larger than the number of successful edges. Therefore
+\[
+ \mathbb E[L_{j+1}\mid\hbox{history through layer }j]\le cL_j
+ \quad\text{and hence}\quad
+ \mathbb E[L_j]\le c^j.
+\]
+The layers partition $C(v)$, and there are at most $n$ nonempty layers. Linearity and the geometric series give
+\[
+ \mathbb E|C(v)|=\sum_{j\ge0}\mathbb E[L_j]
+ \le\sum_{j\ge0}c^j=\frac1{1-c}.
+\]
+Markov yields the stated tail bound. Applying a union bound to all $n$ vertices at $k=A\ln n$ would give only $n/((1-c)A\ln n)$, which does not tend to zero. The exponential tail in Theorem~\ref{thm:subcrit} is therefore a genuine strengthening, not cosmetic.
+\end{solution}
+
+\begin{solution}{ex:criticalisolated}
+\idea Compute the first two factorial moments, then bound the probability of a positive count without assuming any Poisson limit.
+\writeup A vertex is isolated when its $n-1$ incident edges are absent, so
+\[
+ \mathbb E[I]=n(1-p)^{n-1}.
+\]
+Since $p=(\ln n+t)/n$, the expansion $\ln(1-p)=-p+O(p^2)$ and $np^2\to0$ give
+\[
+ \ln\mathbb E[I]=\ln n-(n-1)p+O(np^2)=-t+o(1),
+\]
+and the first limit follows. For two distinct vertices, the forbidden edges are their common edge and the $2(n-2)$ edges from them to the other vertices, a total of $2n-3$. Thus
+\[
+ \mathbb E[I(I-1)]=n(n-1)(1-p)^{2n-3}\longrightarrow e^{-2t}=\lambda^2.
+\]
+Consequently $\mathbb E[I^2]=\mathbb E[I(I-1)]+\mathbb E[I]\to\lambda^2+\lambda$. Cauchy--Schwarz applied to $I\mathbf1_{\{I>0\}}$ gives
+\[
+ (\mathbb E I)^2\le\mathbb E[I^2]P(I>0),
+\]
+so $\liminf P(I>0)\ge\lambda^2/(\lambda^2+\lambda)=\lambda/(1+\lambda)$. Markov gives $P(I>0)\le\min(1,\mathbb E I)$, hence the upper bound. We have obtained two genuine bounds in the critical window, not the exact limiting law.
+\end{solution}
 
 \section*{Sources and further reading}
 
