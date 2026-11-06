@@ -1,5 +1,25 @@
 # Handoff: Volume 4 rewrite
 
+## Newest author-check checkpoint — 6 November 2026, Chapters 2–5 post-fix
+
+**Last pushed issue-log SHA before this handoff:** \`ecc1bc582b33b240b1a75107d52b7dc1844d8d31\`. The complete SHA of the present handoff commit will be the next branch HEAD; inspect PR #111. This paragraph supersedes the older “next Chapter 3” instruction below.
+
+**Further author-side mathematical work, all pushed:**
+
+- **Chapter 2:** First mathematical/exercise repair sequence \`01c85fbb\`, \`fe2136ce\`, then source reread with finite-\`N\` birthday expectation and rare-trial boundary probes, logged at \`0e3e99b4\`. No new source flaw identified on reread; two figures still await native PDF inspection.
+- **Chapter 3:** Post-fix full source read found endpoint continuity of the pgf unearned and a critical Galton–Watson hint suggesting singular implicit differentiation. Commit \`f13c8aeaedc3d3cc4a8094a8b1fa5f4fbc688a0a\` adds finite-tail continuity and correct Taylor-limit guidance. The issue log update \`6b884a01\` records C3-07 and a numeric fixed-point probe. Native family-tree figure not visually verified.
+- **Chapter 4:** Post-fix source/exercise read found the longest-run solution's \`floor\` lower bound did not cover the real-valued event threshold, and the Markov equality exercise conflated fixed-mean and equality constructions. Commit \`579a7438c8e9f90548e9bff6b6dcda8c4d2ef9c3\` uses a \`ceil\` lower threshold with disjoint windows and separates the two questions. Issue C4-07 logged at \`9b1c2b30\`. Native Chernoff diagram not visually verified.
+- **Chapter 5:** Post-fix reading corrected missing values of dyadic uniforms at the all-ones exceptional string and missing inverse-CDF value at \`U=0\`, despite each event having probability zero. Commit \`d59b95f6070c63f4d7a48f71d219f851181e6560\`, issue C5-08 logged at \`ecc1bc58\`. Earlier first-pass math and geometric exercises were inspected; **complete post-fix Chapter 5 mathematical/voice/native acceptance is not claimed**.
+
+**Latest inspected CI:** [#1813](https://github.com/OussamaSegh/Order-and-Chance/actions/runs/42245333771) (on prior checkpoint \`e1a6d934\`) completed **failure**. Exactly 528 unit tests ran OK (31 skipped); V3 examples passed, but its protected conceptual snapshot again failed with \`Whole-volume conceptual source/figure drift: C-GROUP\`. The pipeline skipped reading/print/EPUB/website/publish jobs. New manuscript/handoff commits may trigger later runs with the same blocker. **Do not silently update the accepted V3 conceptual review snapshot to fake a green CI**, and do not modify other volumes. The earlier single generated supporting-source digest update \`d9ff6659\` is not a review approval.
+
+**Exact next task:** Begin the **post-fix independent-from-previous-draft author critical mathematical/exercise/hint/solution pass of Chapter 6 \`ch06-clt.tex\`**, with special care for Lindeberg's Gaussian fourth-moment replacement and the explicit \`C^3\` cutoffs in \`cor:clt\`. Then continue in order through Chapters 7–14 and Appendix B. Recheck the Ch1 infinite-runs proof; Chapter 2 figure and Chapter 3/4/5 native visual checks remain open. Document every correction in \`docs/review/volume4-chapter-issue-log.md\` with a commit and exact recheck status. A separate actual second reviewer must still sign each chapter at its exact pushed SHA; **none is present**.
+
+**Still required before acceptance:** all full reader/voice/style, primary-source photo/figure licences and native illustration checks; preface, blurb, V5 transition; downstream citation map and prerequisite audits; resolve the V3 review-snapshot CI dependency with separately authorized review; run the book's real \`./build.sh volume4-chance\` plus reading PDF/print/KDP/EPUB/wrap, inspect all pages and record hashes; substantively reach the approved 400–500-page target without padding; distinct reviewer acceptance for all fourteen chapters; truthfully tick PR gates and obtain owner acceptance. **No native V4 publication/build/complete chapter certification has occurred**, and PR #111 stays draft/unmerged.
+
+---
+
+
 ## Latest checkpoint — 6 November 2026, after PR #111 CI runs #1807–#1810
 
 **Work branch:** \`cursor/volume4-rewrite-ee7f\`. Started this continuation from \`b8f98bc26885f59fd8061894093be970a11e42e2\`. The review-log update \`0e3e99b44239383105cdff4b6e513a5fbb1783df\` is the latest known pushed commit before writing this checkpoint. This handoff edit adds its own commit; use the PR HEAD shown by GitHub as the final complete SHA. PR remains **draft, open, unmerged**. No force-push or other-volume manuscript edit.
