@@ -77,6 +77,15 @@ class VolumeOneEdgeCases(unittest.TestCase):
                 self.assertLessEqual(lhs, rhs)
                 self.assertEqual(lhs == rhs, len(edges) == len(possible_edges))
 
+    def test_grandi_average_is_counted_and_inverse_uses_a_bounded_segment(self):
+        root = __import__('pathlib').Path(__file__).resolve().parents[1]
+        sequences = (root / 'volume1-first-principles/chapters/ch05-sequences-series.tex').read_text()
+        calculus = (root / 'volume1-first-principles/chapters/ch06-integrals-taylor.tex').read_text()
+        self.assertIn(r'If $n=2m$, the sum of the first $n$ of them is $m$', sequences)
+        self.assertNotIn("Ces\\`aro's theorem, applied to a sequence which itself refuses", sequences)
+        self.assertNotIn('one-sided limits', calculus)
+        self.assertIn(r'[a-\varepsilon,a+\varepsilon]', calculus)
+
 
 if __name__ == "__main__":
     unittest.main()
