@@ -1,6 +1,20 @@
 # Handoff: Volume 4 rewrite
 
-## Latest checkpoint — 6 November 2026, Chapter 2 mathematical review
+## Latest checkpoint — 6 November 2026, Chapter 2 voice at `7078dfe5`
+
+**Pushed voice commit.** `7078dfe5012f4188fa7b13eebb073806f602f01f`. It preserves `f43088ac`. `origin/main` is still `5c4840ccdbae22abfa8a28d01b8c5d1ab16355e6`.
+
+**Chapter 2 voice.** Independent subagent composer-2.5, agent `bc-d2380e3f-fe74-5ab0-ac81-fbe223bfd8e8`, read that SHA with `git show` and passed the Sound human test. It reported no mathematical regression in the coupon mean, the record probability, the Poisson quotient, or the birthday bound. It did not sign a PDF or chapter acceptance. The full exercise-by-exercise mathematical signoff remains the recheck of the file in `34307b91`. The independent-review checkbox stays open. Chapter 2 is not complete until the native PDF of `7078dfe5` has been inspected.
+
+**Chapter 3.** A different composer-2.5 agent, `bc-4b9198e8-92b4-5e68-9eaa-8562741b5bfc`, read `ch03-generating.tex` and `ch03-familytree.tex` at `7078dfe5`. No false statement. It asked for a plainer Dyck split and one independence sentence in the total-progeny solution. Those two sentences are committed locally on top of `7078dfe5` and are not pushed until Actions run `42270414089` finishes, so that build is not cancelled.
+
+**Native build.** GitHub Actions run `42270414089` is the `./build.sh volume4-chance` of `7078dfe5`. Record its page count only from that run's log. The 155-page figure at `658af447` is older. The Volume 3 `C-GROUP` gate is still the protected failure in `Build books` and is not to be edited.
+
+**Exact next step.** When run `42270414089` finishes, read the print page count and inspect the Chapter 2 figures in that PDF. Then push the two Chapter 3 sentences and have agent `bc-4b9198e8` re-read that pushed SHA. Do not tick Chapter 2 complete before the PDF inspection.
+
+---
+
+## Previous checkpoint — 6 November 2026, Chapter 2 mathematical review
 
 **Remote reference used before editing.** `origin/main` is `5c4840ccdbae22abfa8a28d01b8c5d1ab16355e6` (merge of PR #112, Kindle EPUB cover-page packaging). This branch was `511b694d8be1d3fb6af11324184c62c9ba20e701`. The two histories diverged at `28db77df`. Main's only new files are `docs/DESIGN.md`, `docs/reviews/volume1-kdp-epub-conversion-2026-11-06.md`, and the EPUB check/fix tests. A merge commit brought those in without touching the Volume 4 manuscript and without a conflict. Do not reset this branch to main.
 
