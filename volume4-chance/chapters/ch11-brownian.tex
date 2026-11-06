@@ -137,7 +137,7 @@ Let $X_t=B_t-tB_1$. Show that $\operatorname{Cov}(X_s,X_t)=\min(s,t)-st$ and tha
 \end{exercise}
 
 \begin{exercise}[$\star\star$]\label{ex:zeros}
-Let $\mathcal Z=\{t\in[0,1]:B_t=0\}$. Show that $\mathcal Z$ is closed, has Lebesgue measure $0$ almost surely, and that $0$ is not isolated in $\mathcal Z$. Deduce that $\mathcal Z$ is uncountable.
+Let $\mathcal Z=\{t\in[0,1]:B_t=0\}$. Show that $\mathcal Z$ is closed and has outer length $0$ almost surely. Prove that, almost surely, \emph{no point} of $\mathcal Z$ is isolated. Then deduce that $\mathcal Z$ is uncountable. Warning: knowing only that $0$ is not isolated would not suffice (the set $\{0\}\cup\{1/n:n\ge1\}$ is a counterexample).
 \end{exercise}
 
 \begin{exercise}[$\star$]\label{ex:hittingdensity}
@@ -149,7 +149,7 @@ Show that the sum of $p$th powers of dyadic increments on $[0,1]$ tends to $0$ a
 \end{exercise}
 
 \begin{exercise}[$\star$]\label{ex:putcall}
-Show that if a call and a put of the same strike $K$ and maturity $T$ are priced so that $C-P\ne S_0-Ke^{-rT}$, the four positions call, put, stock, and cash admit an arbitrage.
+At time $0$ a stock costs $S_0$, and a risk-free bank account grows by $e^{rT}$ by time $T$. A European call with strike $K$ pays $(S_T-K)^+$ at $T$ and costs $C$ today; a put pays $(K-S_T)^+$ and costs $P$. Assume both can be bought or sold at those prices, and the stock and bank account can be traded without fees. Show that $C-P\ne S_0-Ke^{-rT}$ produces an arbitrage using only these four assets.
 \end{exercise}
 
 \begin{exercise}[$\star$]\label{ex:onestep}
@@ -165,7 +165,7 @@ Reflect the path after it first hits $a$.
 Expand the covariance. The covariance with $B_1$ is zero.
 \end{hint}
 \begin{hint}{ex:zeros}
-$\int_0^1 P(|B_t|<\varepsilon)\,\dd t\to0$. A path that is both positive and negative has a zero between those times. A perfect compact set is uncountable.
+Cover each dyadic interval containing a zero by testing whether its left-end Brownian value is small. Use the Gaussian tail and the reflection bound to control oscillations within every small interval, and estimate the expected total length of the selected intervals. For non-isolation, restart at the first zero after a rational time.
 \end{hint}
 \begin{hint}{ex:hittingdensity}
 $\{T_a\le t\}=\{M_t\ge a\}$, and scaling gives $T_a=a^2 T_1$ in law.
@@ -191,7 +191,27 @@ The variance of $B_t$ is $t$.
 \end{solution}
 
 \begin{solution}{ex:zeros}
-\writeup Continuity makes $\mathcal Z$ closed. The expected Lebesgue measure of $\{|B_t|<\varepsilon\}$ equals $\int_0^1 P(|B_t|<\varepsilon)\,\dd t$, which is the integral of a bounded continuous function of $t$ against the normal law and tends to $0$ with $\varepsilon$ by the bound $P(|B_t|<\varepsilon)\le C\varepsilon t^{-1/2}$ and Theorem~\ref{thm:dct} on $[\delta,1]$, together with a direct estimate near $0$. Therefore $\mathbb E[\lambda(\mathcal Z)]=0$. This uses the integral of Chapter~5, not an external Tonelli theorem. Next, $P(M_\varepsilon>0)=P(\min_{s\le\varepsilon}B_s<0)=1$ by Theorem~\ref{thm:reflection} and symmetry. A continuous path that attains both signs has a zero strictly between those times, so $0$ is not isolated. A nonempty closed set with no isolated point contains a binary tree of distinct points, one for each infinite binary sequence, and is therefore uncountable.
+\idea Continuity makes the zero set closed. To show it has zero length without assuming Tonelli's theorem from Volume~7, cover zeros by a small collection of dyadic intervals and control the total length of those intervals. The strong Markov property rules out isolated zeros.
+\writeup Closedness follows because $t\mapsto B_t$ is continuous. Write $h=2^{-n}$ and $\delta_n=\sqrt{8nh}$, and partition $[0,1]$ into intervals $I_{j,n}=[jh,(j+1)h]$. Reflection and the Gaussian tail give, for each interval,
+\[
+ P\bigl(\sup_{s\in I_{j,n}}|B_s-B_{jh}|>\delta_n\bigr)
+ \le4P(B_h>\delta_n)\le4e^{-\delta_n^2/(2h)}=4e^{-4n}.
+\]
+There are $2^n$ intervals. The union bound is at most $4(2e^{-4})^n$, a summable sequence. By Borel--Cantelli, almost surely every such interval has oscillation at most $\delta_n$ for all sufficiently large $n$.
+
+On that event, if $I_{j,n}$ contains a zero, then $|B_{jh}|\le\delta_n$. Cover $\mathcal Z$ by the union of the dyadic intervals with this property. Their combined length is at most
+\[
+ L_n=h\sum_{j=0}^{2^n-1}\mathbf1_{\{|B_{jh}|\le\delta_n\}}.
+\]
+For $j\ge1$, $B_{jh}$ has density bounded by $1/\sqrt{2\pi jh}$, so $P(|B_{jh}|\le\delta_n)\le
+\min(1,\sqrt{2/\pi}\,\delta_n/\sqrt{jh})$. Since $\sum_{j=1}^{2^n}j^{-1/2}\le2\cdot2^{n/2}$,
+\[
+ \mathbb E L_n\le h+C h\,\frac{\delta_n}{\sqrt h}\,2^{n/2}
+ \le h+C\delta_n.
+\]
+Both $\sum_nh$ and $\sum_n\delta_n=\sum_n\sqrt{8n2^{-n}}$ converge. Markov's inequality and Borel--Cantelli therefore give $L_n\to0$ almost surely. The zero set is covered by these intervals eventually, with total length tending to zero. Its outer length is $0$, proved using only finite covers, Gaussian bounds and the earlier concentration theorem.
+
+Now reflection gives $P(\max_{0\le s\le\varepsilon}B_s>0)=1$ and, by symmetry, $P(\min_{0\le s\le\varepsilon}B_s<0)=1$ for each rational $\varepsilon>0$. By countable intersection and continuity, Brownian motion begun at $0$ has further zeros arbitrarily soon, almost surely. For each rational $q\in[0,1)$, let $T_q$ be its first zero at or after $q$. On $\{T_q<1\}$, the restart property of Proposition~\ref{prop:restart} applied at a first hitting time of zero (the same grid-stopping proof works at a fixed level $0$) makes the process oscillate immediately after $T_q$. Hence $T_q$ is not isolated to the right. If some zero $t<1$ were isolated, one could choose a rational $q<t$ with no zero on $(q,t)$, giving $T_q=t$, contradiction. Also $P(B_1=0)=0$, so the endpoint $1$ is not a zero almost surely. Thus every zero belongs to a closed set with no isolated points. Such a nonempty perfect compact set is uncountable: recursively choose two disjoint smaller closed intervals meeting the set inside each preceding interval, and map each infinite binary sequence to the unique point in the corresponding nested intervals. Completeness of the real line, taught in Volume~1, ensures those nested limits exist.
 \end{solution}
 
 \begin{solution}{ex:hittingdensity}
@@ -199,7 +219,7 @@ The variance of $B_t$ is $t$.
 \end{solution}
 
 \begin{solution}{ex:pvariation}
-\writeup The expected sum of $p$th powers is of order $2^{n(1-p/2)}$. It tends to $0$ for $p>2$ and to infinity for $p<2$. The relative variance tends to $0$, so the almost-sure statement follows from Theorem~\ref{thm:bc} as in Theorem~\ref{thm:qv}.
+\writeup Let $V_n=\sum |\Delta B|^2\to1$ almost surely by Theorem~\ref{thm:qv}, and let $m_n=\max|\Delta B|\to0$ almost surely by uniform continuity of a Brownian path on $[0,1]$. If $p>2$, then $\sum|\Delta B|^p\le m_n^{p-2}V_n\to0$. If $0<p<2$, then $\sum|\Delta B|^p\ge m_n^{p-2}V_n\to\infty$. This proves the pathwise assertion directly; divergence of expectations alone would not.
 \end{solution}
 
 \begin{solution}{ex:putcall}
