@@ -14,7 +14,7 @@ The citation corrections are `63f9c18d3c5e7d14f42d2867840dbd934b52bb04`. This ha
 
 Fresh grok-4.7 readings of the current text at `4e78153b` are in flight and must not be duplicated. They use `git show` of that SHA, so a later handoff commit does not change what they read:
 - Chapter 1: `bc-b675adc6` reported on `4e78153b`. The repairs are `5d9bc955`. A fresh reread of that SHA is `bc-2fb9bae5`. Do not edit Chapter 1 until that report returns.
-- Chapter 2: `bc-be7ce6be` reported on `4e78153b`. The repairs are `68d0328e`. A fresh reread of that SHA is `bc-889115c8`. Do not edit Chapter 2 until that report returns.
+- Chapter 2: closed for mathematics and voice at `68d0328e` by grok-4.7 `bc-889115c8`, who found no remaining defect. Not a production acceptance. Do not edit the chapter unless a later defect appears.
 - Chapter 3: `bc-2c51e89f` reported on `4e78153b`. The repairs are `12ac5f42`. A fresh reread of that SHA is `bc-afd75dad`. Do not edit Chapter 3 until that report returns.
 - Chapter 4: `bc-84438b18` reported on `4e78153b`. The repairs are `12ac5f42`. A fresh reread of that SHA is `bc-c5a0c389`. Do not edit Chapter 4 until that report returns.
 - Chapter 5: `bc-8ae8ffbb` reported on `4e78153b`. The repairs are `52f0b87f`. A fresh reread of that SHA is `bc-6b758979`. Do not edit Chapter 5 until that report returns.
