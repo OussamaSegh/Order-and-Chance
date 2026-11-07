@@ -15,7 +15,7 @@ Let $G(n,p)$ have $n$ labelled vertices and each edge present independently with
 If $p=c/n$ with $0<c<1$, then with high probability every component of $G(n,p)$ has at most $A\log n$ vertices, for a constant $A=A(c)$.
 \end{theorem}
 \begin{proof}
-A component on exactly $k$ vertices contains a spanning tree, and it has no edge leaving its vertex set. The Prüfer encoding puts the trees on a fixed labelled set of $k$ vertices in bijection with the words of length $k-2$ on that set: delete the smallest leaf and record its neighbour, and reverse the record by attaching the next unused label as a leaf. There are therefore $k^{k-2}$ such trees. To reverse a word, read it from the left: the smallest label that is not in the remainder of the word, and that has not yet been attached, becomes a leaf on the letter just read. Let $N_k$ be the number of vertex sets of size $k$ that span a connected subgraph and have no edge leaving the set. A union bound over those trees gives
+A component on exactly $k$ vertices contains a spanning tree, and it has no edge leaving its vertex set. The Prüfer encoding puts the trees on a fixed labelled set of $k$ vertices in bijection with the words of length $k-2$ on that set. To encode, delete the smallest leaf and record its neighbour, and repeat until two vertices remain. To reverse a word, read from the left. At each letter the unread suffix still includes that letter. The smallest label that does not occur in this suffix, and that has not yet been used as a leaf, is joined to the letter. The letter is then dropped from the suffix. The two labels never used as leaves are joined at the end. On the labels $\{1,2,3,4\}$, the word $(1,1)$ joins $2$ and then $3$ to $1$, and the last edge joins $1$ to $4$: the star centred at $1$. There are therefore $k^{k-2}$ such trees. Let $N_k$ be the number of vertex sets of size $k$ that span a connected subgraph and have no edge leaving the set. A union bound over those trees gives
 \[
  \mathbb E[N_k]\le\binom{n}{k}k^{k-2}p^{k-1}(1-p)^{k(n-k)}.
 \]
@@ -23,11 +23,11 @@ With $p=c/n$ and $\binom{n}{k}\le(en/k)^k$, and with $(1-p)^{k(n-k)}\le\exp(-ck(
 \[
  \mathbb E[N_k]\le\frac{n}{ck^2}\bigl(ce^{1-c}\bigr)^k\exp\bigl(ck^2/n\bigr).
 \]
-The function $\ln c+1-c$ has derivative $1/c-1$ and a maximum value $0$ at $c=1$, so $\rho=ce^{1-c}<1$ for $0<c<1$. For $k\le n^{1/3}$ the exponential factor is at most $2$ once $n$ is large. Thus $\mathbb E[N_k]\le(2n/(ck^2))\rho^k$. The sum of these bounds from $k=\lceil A\ln n\rceil$ to $n^{1/3}$ tends to $0$ when $A>1/\ln(1/\rho)$. This does \emph{not} yet rule out components larger than $n^{1/3}$. The following separate exploration argument handles every size.
+The function $\ln c+1-c$ has derivative $1/c-1$ and a maximum value $0$ at $c=1$, so $\rho=ce^{1-c}<1$ for $0<c<1$. For $k\le n^{1/3}$ the exponential factor is at most $2$ once $n$ is large. Thus $\mathbb E[N_k]\le(2n/(ck^2))\rho^k$. The sum of these bounds from $k=\lceil A\ln n\rceil$ to $n^{1/3}$ tends to $0$ when $A>1/\ln(1/\rho)$. Components larger than $n^{1/3}$ lie outside this estimate. The exploration below controls every size.
 
-Explore the component of a fixed vertex by breadth-first search. Let $x_i$ be the number of new vertices found when the $i$th vertex of the component is processed. Begin with one vertex in the queue. After $t$ vertices have been processed, the queue holds $1-t+\sum_{i=1}^t x_i$ vertices. The component has at least $k\ge2$ vertices exactly when this queue is still positive after every one of the first $k-1$ processings. In particular it holds at least one vertex after $k-1$ processings, so $\sum_{i=1}^{k-1}x_i\ge k-1$. Each $x_i$, on those steps, is the number of successes in at most $n$ independent trials of probability $c/n$. Add dummy failures to make exactly $n$ trials. The resulting variables $Y_i$ are i.i.d.\ $\operatorname{Bin}(n,c/n)$, and $Y_i\ge x_i$. Thus, on the event that the component has size at least $k$, $\sum_{i=1}^{k-1}Y_i\ge k-1$.
+Explore the component of a fixed vertex by breadth-first search. Let $x_i$ be the number of new vertices found when the $i$th vertex of the component is processed. Begin with one vertex in the queue. After $t$ vertices have been processed, the queue holds $1-t+\sum_{i=1}^t x_i$ vertices. The component has at least $k\ge2$ vertices exactly when this queue is still positive after every one of the first $k-1$ processings. In particular it holds at least one vertex after $k-1$ processings, so $\sum_{i=1}^{k-1}x_i\ge k-1$. On a step that occurs, $x_i$ counts the unseen vertices joined to the vertex being processed. At most $n-1$ vertices are unseen, and each remaining edge is present independently with probability $c/n$. If $m$ vertices are unseen, add $n-m$ further independent trials of probability $c/n$, and let $Z_i$ be the total number of successes. If the step is never reached, let $Z_i$ be a fresh copy of $\operatorname{Bin}(n,c/n)$. Conditionally on the history, each $Z_i$ has this binomial law, so the $Z_i$ are i.i.d. Whenever the step occurs, the extra trials contribute a nonnegative count and $Z_i\ge x_i$. On the event that the component has size at least $k$, the first $k-1$ steps occur, and $\sum_{i=1}^{k-1}Z_i\ge k-1$.
 
-For any $\theta>0$, independence and the elementary exponential Markov inequality give
+For any $\theta>0$, apply the exponential Markov inequality to this sum of independent binomial variables. The moment generating function of one $Z_i$ is $\bigl(1+(c/n)(e^\theta-1)\bigr)^n$, and $1+u\le e^u$, so
 \[
 \begin{aligned}
 P(|C(v)|\ge k)&\le e^{-\theta(k-1)}\Bigl(1+\frac cn(e^\theta-1)\Bigr)^{n(k-1)}\\
@@ -47,14 +47,14 @@ Taking $k=\lceil A\ln n\rceil$ with $A>1/a=1/(-\ln\rho)$ gives
  P(\exists\text{ component of size}\ge \lceil A\ln n\rceil)
  \le e^a n^{1-aA}\longrightarrow0.
 \]
-There is no restriction $k\le n^{1/3}$. This completes the theorem. The earlier spanning-tree argument separately provides a useful estimate for a fixed component size; its small-$k$ cutoff was not used to infer anything about larger sizes.
+The same bound holds for every integer $k\ge2$. The spanning-tree count is a separate estimate of the expected number of components of one size $k\le n^{1/3}$.
 \end{proof}
 
 
 \begin{figure}[ht]
 \centering
 \fig{ch14-exploration}
-\caption{Three layers of a possible breadth-first exploration, rooted at $v$. Rust marks the current frontier. Each new vertex is counted only once, even if several edges lead to it. The independent binomial variables used in the proof dominate the number of new discoveries; the picture is schematic, not a random sample.}
+\caption{Three layers of one breadth-first exploration, rooted at $v$. Charcoal marks vertices already processed. Rust marks the queue, which is the current frontier. Each new vertex is counted only once, even if several edges lead to it. The independent binomial variables in the proof dominate the number of new discoveries. The picture is schematic, not a random sample.}
 \label{fig:exploration}
 \end{figure}
 
@@ -108,7 +108,7 @@ If $np\to0$, then $\mathbb E[T]=\binom{n}{3}p^3\le(np)^3/6\to0$, and $P(T>0)\le\
 \[
  \operatorname{Var}(T)\le\mathbb E[T]+n^4 p^5,
 \]
-because $2\binom{n}{2}\binom{n-2}{2}\le n^4/2$ and $p^5(1-p)\le p^5$, up to replacing $n^4/2$ by $n^4$ for a convenient bound. Also $\binom{n}{3}\ge n^3/7$ for every $n\ge21$: the inequality $7(n-1)(n-2)\ge6n^2$ rearranges to $n^2-21n+14\ge0$, which holds at $n=21$ because $21\cdot20\cdot19/6=1330$ and $21^3/7=1323$. Thus $\mathbb E[T]\ge n^3 p^3/7$ for every such $n$. Then
+because $2\binom{n}{2}\binom{n-2}{2}\le n^4/2$ and $p^5(1-p)\le p^5$, up to replacing $n^4/2$ by $n^4$ for a convenient bound. Also $\binom{n}{3}\ge n^3/7$ for every integer $n\ge21$. The comparison $7(n-1)(n-2)\ge6n^2$ rearranges to $n^2-21n+14\ge0$, and $n(n-21)+14\ge14>0$ for every such $n$. At $n=21$ the same comparison is $21\cdot20\cdot19/6=1330\ge1323=21^3/7$. Thus $\mathbb E[T]\ge n^3 p^3/7$ for every such $n$. Then
 \[
  \frac{\operatorname{Var}(T)}{(\mathbb E[T])^2}
  \le\frac{7}{n^3 p^3}+\frac{7^2}{n^2 p}\to0,
@@ -144,7 +144,7 @@ Let $p=(\ln n+\omega(n))/n$ and assume $0\le p\le1$ for all sufficiently large $
 
 
 \begin{exercise}[$\star\star\star$]\label{ex:giant}
-Let $p=c/n$ with $c>1$, and fix a vertex $v$. Show that there exist $\delta>0$ and $\alpha>0$, depending only on $c$, such that $P(|C(v)|\ge\delta n)\ge\alpha$ for every large $n$. Do not claim that a linear component exists with probability tending to $1$: the argument below gives a positive lower bound, not a limit $1$.
+Let $p=c/n$ with $c>1$, and fix a vertex $v$. Show that there exist $\delta>0$ and $\alpha>0$, depending only on $c$, such that $P(|C(v)|\ge\delta n)\ge\alpha$ for every large $n$. The bound asked for is a positive lower bound for every large $n$. It is not the claim that a linear component exists with probability tending to $1$.
 \end{exercise}
 
 
@@ -192,7 +192,7 @@ The expected number of isolated vertices is $n(1-p)^{n-1}$.
 \end{hint}
 
 \begin{hint}{ex:giant}
-While fewer than $\delta n$ vertices have been seen, each new vertex has a $\mathrm{Bin}(\lfloor n(1-\delta)\rfloor,p)$ number of fresh neighbours, which is a Galton--Watson offspring law of mean greater than $1$.
+While fewer than $\delta n$ vertices have been seen, at least $\lfloor n(1-\delta)\rfloor$ vertices remain unexplored. Discarding any further trials leaves a $\mathrm{Bin}(\lfloor n(1-\delta)\rfloor,p)$ lower bound on the number of fresh neighbours. That law is a Galton--Watson offspring distribution whose mean exceeds $1$.
 \end{hint}
 
 
@@ -227,11 +227,9 @@ The right side equals $1+O(p+1/n)=1+O((\ln n)/n)$. Therefore $\mathrm{Var}(I)/\m
 \idea While the explored set is still a small fraction of the graph, breadth-first search dominates a supercritical Galton--Watson process.
 \writeup Fix $\delta>0$ with $\mu=c(1-\delta)>1$, and set $m=\lfloor n(1-\delta)\rfloor$. Breadth-first search from $v$ inspects, at the $i$th discovered vertex, the edges from that vertex into the yet unexplored set. Those edges have not been looked at before, and the edge indicators are independent, so the number of new neighbours is a binomial random variable. While fewer than $\delta n$ vertices have been discovered, at least $m$ vertices remain unexplored. Split those trials into a block of $m$ and a leftover block. The number of new neighbours is the sum of a $\operatorname{Bin}(m,c/n)$ count and an independent nonnegative count from the leftover. Discard the leftover. The retained counts are exactly the offspring of a Galton--Watson process $Z$ with that binomial law, and they are at most the true numbers of new neighbours. Therefore, up to the first time $\delta n$ vertices are seen, the component of $v$ is at least as large as the progeny of $Z$. If that progeny is at least $\delta n$, then $|C(v)|\ge\delta n$.
 
-The probability generating function of the offspring law is $f_n(s)=(1-c/n+(c/n)s)^m$. For $s\in[0,1]$,
-\[
- \ln f_n(s)=m\ln\bigl(1-\tfrac{c}{n}(1-s)\bigr)\to -\mu(1-s),
-\]
-so $f_n(s)\to f(s)=\exp(\mu(s-1))$, uniformly on $[0,1]$ because the convergence of $(1-a/m)^{m}$ type expansions is monotone in the error $O((c/n)^2 m)=O(1/n)$. Let $\eta_n$ be the extinction probability of $Z$, the smallest root of $s=f_n(s)$ in $[0,1]$, and let $\eta$ be the smallest root of $s=f(s)$. Theorem~\ref{thm:extinction} gives $\eta<1$ because the Poisson$(\mu)$ mean is $\mu>1$. Every limit point $L$ of $\eta_n$ satisfies $L=f(L)$. The value $1$ is a root, but it is not the limit: $f_n'(1)=mc/n\to\mu>1$, and $f_n''(s)=m(m-1)(c/n)^2(1-c(1-s)/n)^{m-2}$ is bounded uniformly for $s\in[0,1]$ and large $n$. Taylor's formula at $1$ therefore provides a fixed $\varepsilon>0$ such that $f_n(s)<s$ for $s\in(1-\varepsilon,1)$ for all large $n$. Since $f_n(0)>0$ and $f_n$ is continuous, its smallest fixed point must be at most $1-\varepsilon$. Thus $\eta_n\to\eta$. Let $W$ be the total progeny of $Z$, including the root. A process that survives has infinite progeny, so $P(W\ge\delta n)\ge P(W=\infty)=1-\eta_n$. Therefore $P(|C(v)|\ge\delta n)\ge1-\eta_n$, which is at least $(1-\eta)/2$ for every large $n$.
+The probability generating function of the offspring law is $f_n(s)=(1-c/n+(c/n)s)^m$. For $s\in[0,1]$ set $u=(c/n)(1-s)$, so $\ln f_n(s)=m\ln(1-u)$. For large $n$ one has $0\le u\le1/2$. The function $\ln(1-u)+u$ has derivative $-u/(1-u)\le0$ and value $0$ at $u=0$, so $\ln(1-u)\le -u$. The function $\ln(1-u)+u+u^2$ has derivative $u(1-2u)/(1-u)\ge0$ on this range and value $0$ at $u=0$, so $\ln(1-u)\ge -u-u^2$. Thus $m\ln(1-u)$ lies between $-mu-mu^2$ and $-mu$. Here $mu=(mc/n)(1-s)$ and $mc/n\to\mu$, while $mu^2\le c^2/n\to0$, both uniformly in $s$. Therefore $f_n(s)\to f(s)=\exp(\mu(s-1))$ uniformly on $[0,1]$. Let $\eta_n$ be the extinction probability of $Z$, the smallest root of $s=f_n(s)$ in $[0,1]$, and let $\eta$ be the smallest root of $s=f(s)$. Theorem~\ref{thm:extinction} gives $\eta<1$ because the Poisson$(\mu)$ mean is $\mu>1$. The value $1$ satisfies $f(1)=1$. It is not a limit of $\eta_n$. Indeed $f_n'(1)=mc/n\to\mu>1$, and $f_n''(s)=m(m-1)(c/n)^2(1-c(1-s)/n)^{m-2}$ is bounded uniformly for $s\in[0,1]$ and large $n$. Taylor's formula at $1$ therefore provides a fixed $\varepsilon>0$ such that $f_n(s)<s$ for $s\in(1-\varepsilon,1)$ and all large $n$. Since $f_n(0)>0$, the continuous function $f_n(s)-s$ is positive at $0$ and negative somewhere in $(1-\varepsilon,1)$, so its smallest zero $\eta_n$ is at most $1-\varepsilon$.
+
+The derivative of $\exp(\mu(s-1))-s$ is $\mu\exp(\mu(s-1))-1$. The series $e^\mu=1+\mu+\mu^2/2+\cdots$ gives $e^\mu>\mu$ for $\mu>0$, so $\mu e^{-\mu}<1$ and this derivative is negative at $s=0$. At $s=1$ it equals $\mu-1>0$. It is strictly increasing, so it has one zero in $[0,1]$. Thus $\exp(\mu(s-1))-s$ decreases and then increases, and it has at most two zeros in $[0,1]$. One zero is $s=1$. Theorem~\ref{thm:extinction} supplies a zero in $[0,1)$ and names the smallest one $\eta$, so that is the only root in $[0,1)$. Every limit point $L$ of $\eta_n$ satisfies $L=f(L)$, because $f_n$ converges to $f$ uniformly on $[0,1]$ and $\eta_n=f_n(\eta_n)$. The Taylor bound forces $L\le1-\varepsilon<1$, hence $L=\eta$. Therefore $\eta_n\to\eta$. Let $W$ be the total progeny of $Z$, including the root. A process that survives has infinite progeny, so $P(W\ge\delta n)\ge P(W=\infty)=1-\eta_n$. Therefore $P(|C(v)|\ge\delta n)\ge1-\eta_n$, which is at least $(1-\eta)/2$ for every large $n$.
 \end{solution}
 
 
@@ -255,7 +253,7 @@ The layers partition $C(v)$, and there are at most $n$ nonempty layers. Linearit
  \mathbb E|C(v)|=\sum_{j\ge0}\mathbb E[L_j]
  \le\sum_{j\ge0}c^j=\frac1{1-c}.
 \]
-Markov yields the stated tail bound. Applying a union bound to all $n$ vertices at $k=A\ln n$ would give only $n/((1-c)A\ln n)$, which does not tend to zero. The exponential tail in Theorem~\ref{thm:subcrit} is therefore a genuine strengthening, not cosmetic.
+Markov yields the stated tail bound. A union bound over all $n$ vertices, taken at $k=A\ln n$, is at most $n/((1-c)A\ln n)$. For any fixed $A$ this quantity tends to infinity, so the bound does not force the probability of a component that large to tend to $0$. The estimate $n e^{-a(k-1)}$ in the proof of Theorem~\ref{thm:subcrit} does tend to $0$.
 \end{solution}
 
 \begin{solution}{ex:criticalisolated}
@@ -290,7 +288,7 @@ so $\liminf P(I>0)\ge\alpha^2/(\alpha^2+\alpha)=\alpha/(1+\alpha)$. Markov gives
 \]
 \end{solution}
 
-Volume~5, \emph{Calculation: From Formula to Insight}, takes the generating function of Chapter~3 and asks for a remainder you can write down. One infinite sequence of tosses, one Gaussian limit, one path, and one existence proof by expectation: those are the four shapes this book has used. The primes are not among them yet.
+Volume~5 is \emph{Calculation}, and its subtitle is \emph{From Formula to Insight}. It takes the generating function of Chapter~3 and asks for a remainder you can write down. One infinite sequence of tosses, one Gaussian limit, one path, and one existence proof by expectation: those are the four shapes this book has used. The primes are not among them yet.
 
 \section*{Sources and further reading}
 
