@@ -5,9 +5,25 @@ On the line, a symmetric walk returns to the origin infinitely often.\\
 In dimension three or more, it leaves and the expected number of returns is finite.
 \end{center}
 
-Let $X_1,X_2,\ldots$ be independent fair signs, $P(X_i=\pm1)=1/2$, built on disjoint bits. The simple random walk is $S_n=X_1+\cdots+X_n$, with $S_0=0$. It is periodic of period $2$: after an even number of steps the position is even. Theorem~\ref{thm:local} gives $P(S_{2m}=0)\sim 1/\sqrt{\pi m}$.
+Start at $0$ on a number line. Toss a fair coin. For heads, move one step right; for tails, move one step left. Toss again, and keep walking. Where will you be after one hundred steps? Will you ever return to your starting point?
+
+Each step is simple. The combined path is not. It can wander a long way from the starting point, even though every step is fair. And the answer to the return question depends on where the walking happens: one or two dimensions allow almost-sure return, but from dimension three onward there is a positive chance of never coming back.
+
+Write $X_i=+1$ for the $i$th heads and $X_i=-1$ for tails. The signs are independent, with $P(X_i=\pm1)=1/2$, constructed from disjoint digit blocks as in Chapter~1. The \emph{simple symmetric random walk} is
+\[
+ S_0=0,\qquad S_n=X_1+\cdots+X_n.
+\]
+A \emph{path} is the entire sequence of locations, not only the last number. Because each step changes parity, $S_n$ has the same parity as $n$. Chapter~6's local theorem gives the chance of a return at a specific even time:
+\[
+ P(S_{2m}=0)=\binom{2m}{m}2^{-2m}\sim\frac1{\sqrt{\pi m}}.
+\]
+The chance of returning at one specified time is not the chance of \emph{ever} returning. We will use exact path counting to distinguish them.
 
 \section{Reflection and the maximum}
+
+Suppose a walk touches some positive height $a$ and then finishes at height $b\le a$. How can we count the paths that do this? Put a horizontal mirror at height $a$. Keep the path unchanged until it first reaches the mirror, then reverse \emph{every subsequent step}. A path that ended at $b$ now ends at $2a-b$.
+
+Reflecting the same continuation twice restores the original. That gives a one-to-one matching of paths, not an approximation based on symmetry.
 
 Let $M_n=\max_{0\le k\le n}S_k$.
 
@@ -18,17 +34,23 @@ Let $a$ be a positive integer and let $b\le a$ be an integer with the same parit
 \]
 \end{theorem}
 \begin{proof}
-Let $\tau$ be the first time a path visits $a$. Reflect the positions on $\{0,\ldots,\tau\}$ across the level $a$, and leave the rest of the path unchanged. The new path runs from $2a$ to $b$. Subtract $2a$ from every position: the steps are unchanged, and the path now runs from $0$ to $b-2a$. Flip every sign. The path runs from $0$ to $2a-b$, and the construction is reversible on the set of paths from $0$ to $2a-b$. When $b\le a$ one has $2a-b\ge a$, so every path from $0$ to $2a-b$ does visit $a$, and the inverse is defined. The two sets of paths are therefore in bijection. Divide by $2^n$.
+Let $\tau$ be the first time the original path visits $a$. Keep $S'_k=S_k$ for $0\le k\le\tau$, and for later times set
+\[
+ S'_k=2a-S_k,\qquad k\ge\tau.
+\]
+At $k=\tau$ both formulas give $a$, so they agree at the joining point. Every step after $\tau$ changes sign, and every step still has size one. The transformed endpoint is $S'_n=2a-b$.
+
+Conversely, every path from $0$ to $2a-b\ge a$ must visit $a$, because its steps have size one. Find its \emph{first} visit to $a$ and reflect all subsequent steps again. The path now ends at $b$, and applying the operation twice gives back the original path. We have constructed a bijection between the two sets of paths. Each length-$n$ fair-sign sequence has probability $2^{-n}$, so the corresponding probabilities are equal.
 \end{proof}
 
 \begin{figure}[ht]
 \centering
 \fig{ch08-reflectstep}
-\caption{Charcoal: a walk of length $8$ with heights $0,1,2,3,2,1,2,1,2$. It first reaches height $2$ at time $\tau=2$. Rust: the same walk with only the initial segment reflected across height $2$, so the heights are $4,3,2,3,2,1,2,1,2$. The two paths meet from time $\tau$ on. The later translation by $-2a$ and the sign flip are not drawn.}
+\caption{Reflection after the first hit of $a=2$ at time $\tau=2$. The original path (navy) has heights $0,1,2,1,0,1,0,-1,0$ and ends at $b=0$. The reflected path (rust) has heights $0,1,2,3,4,3,4,5,4$ and ends at $2a-b=4$. The first two steps coincide; every later increment changes sign, as in Theorem~\ref{thm:rwreflect}.}
 \label{fig:reflectstep}
 \end{figure}
 
-Figure~\ref{fig:reflectstep} is the first sentence of the proof, for $a=2$ and one path. It is not a plot of frequencies.
+Figure~\ref{fig:reflectstep} displays a single exactly matched pair, not a frequency plot or sample. Reflecting the part \emph{after} the first hit sends the endpoint from $b$ to $2a-b$ directly.
 
 Summing over $b\le a$ of the same parity,
 \[
