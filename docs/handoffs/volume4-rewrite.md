@@ -13,7 +13,7 @@ The citation corrections are `63f9c18d3c5e7d14f42d2867840dbd934b52bb04`. This ha
 **Next, then last.** Printed Chapter 13 was read in full by grok-4.7 `bc-90366bc7` at `5589acd7` and that review found no remaining defect. The mathematical and voice gate for Chapter 13 is closed at that SHA only. It is not production acceptance. The delivered PDF of `43d7d93b` does not contain that text. Composer-2.5 gates stay provisional.
 
 Fresh grok-4.7 readings of the current text at `4e78153b` are in flight and must not be duplicated. They use `git show` of that SHA, so a later handoff commit does not change what they read:
-- Chapter 1: `bc-2fb9bae5` reread `5d9bc955` and rejected the label GB, the two expansions of $0$, the all-ones endpoint, and the three-label question. Those four sentences are repaired in this commit. A fresh reread is required. Do not treat `5d9bc955` as the reviewed text of Chapter 1.
+- Chapter 1: `bc-2fb9bae5` reread `5d9bc955` and rejected the label GB, the two expansions of $0$, the all-ones endpoint, and the three-label question. Those four sentences are `cbbf5418`. A fresh reread of that SHA is `bc-eab8e6c6`. Do not edit Chapter 1 until that report returns.
 - Chapter 2: closed for mathematics and voice at `68d0328e` by grok-4.7 `bc-889115c8`, who found no remaining defect. Not a production acceptance. Do not edit the chapter unless a later defect appears.
 - Chapter 3: `bc-2c51e89f` reported on `4e78153b`. The repairs are `12ac5f42`. A fresh reread of that SHA is `bc-afd75dad`. Do not edit Chapter 3 until that report returns.
 - Chapter 4: `bc-84438b18` reported on `4e78153b`. The repairs are `12ac5f42`. A fresh reread of that SHA is `bc-c5a0c389`. Do not edit Chapter 4 until that report returns.
