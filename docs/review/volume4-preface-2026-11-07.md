@@ -28,6 +28,12 @@ Sources checked on 7 November 2026; quoted facts are elementary and independentl
 | PF-06 | `chapters/preface.tex` & `figures/preface-tails.tex` | Avoid unproved numerical/statistical/biographical claims, stock AI transitions, and confusing a schematic with observed data. | No historical attribution added; no simulation described as data. Specific examples precede subject names. The mathematical claims are bounded by their stated hypotheses. | Self voice pass completed; independent voice review pending. |
 | PF-07 | LaTeX integration, figure | Check syntax of new preface and diagram before triggering CI. | Both TeX sources separately compiled in a **minimal local XeLaTeX wrapper** with TikZ, xcolor and amsmath (`xelatex -halt-on-error -interaction=nonstopmode test-preface.tex`, `test-figure.tex`; exit 0). Three-page local proof-of-syntax PDF and one-page diagram were inspected; this is **not** `./build.sh volume4-chance`. | Native CI at `1c9c8fcb` and later is distinct; inspect actual workflow result. |
 
+## Second writer pass — qualifier fix
+
+**PF-08 (material assumption clarification).** The first draft said “eight equally likely strings” for repeated **fair** tosses before explicitly naming independence. Marginal fairness alone does not imply the joint probabilities are (1/8): for example, three perfectly correlated fair tosses yield only HHH and TTT, each with probability (1/2). The opening now states **independence** before enumerating the eight outcomes, and says that independence permits multiplying the single-toss probabilities. The final two-coin example likewise names **independent tosses**. Corrective source commit: `31141d8a9c536f33bfab0280e586446a3d986463`. The example and its counterexample were manually reconstructed and the updated standalone XeLaTeX preface again compiled with exit 0. This is a **writer self-recheck**, not a distinct second reviewer signoff.
+
+**Current exact preface source for further checks:** `31141d8a9c536f33bfab0280e586446a3d986463` (with figure still at `6a1c9388`). Older `1c9c8fcb` is the dedicated initial rewrite commit, not the final exact source for native PDF/independent review.
+
 ## Next actions in the owner's new order
 
 1. Verify native Volume 4 CI at the post-preface commit and inspect the actual preface pages/figure in the produced reading and print PDFs; check EPUB figure extraction at print/display resolution. CI and visual review cannot be inferred from the successful minimal wrapper.
