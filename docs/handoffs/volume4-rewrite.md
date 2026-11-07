@@ -17,11 +17,11 @@ Fresh grok-4.7 readings of the current text at `4e78153b` are in flight and must
 - Chapter 2: `bc-be7ce6be` reported on `4e78153b`. The repairs are `68d0328e`. A fresh reread of that SHA is `bc-889115c8`. Do not edit Chapter 2 until that report returns.
 - Chapter 3: `bc-2c51e89f` reported on `4e78153b`. The repairs are `12ac5f42`. A fresh reread of that SHA is `bc-afd75dad`. Do not edit Chapter 3 until that report returns.
 - Chapter 4: `bc-84438b18` reported on `4e78153b`. The repairs are `12ac5f42`. A fresh reread of that SHA is `bc-c5a0c389`. Do not edit Chapter 4 until that report returns.
-- Chapter 5: `bc-8ae8ffbb` reported on `4e78153b`. The annulus, Box--Muller rectangles, the density definition, and the Bertrand figure are repaired in this commit. A fresh reread is required.
+- Chapter 5: `bc-8ae8ffbb` reported on `4e78153b`. The repairs are `52f0b87f`. A fresh reread of that SHA is `bc-6b758979`. Do not edit Chapter 5 until that report returns.
 - Chapter 6: `bc-8849a1fc` reported on `4e78153b`. The repairs are `12ac5f42`. A fresh reread of that SHA is `bc-02ab36a2`. Do not edit Chapter 6 until that report returns.
 - Chapter 7: `bc-55b8b4fd`
-- Chapter 8: `bc-3a9c50c8` reported on `4e78153b`. The duration formula, the visit sum, and `ex:exittime` are repaired in this commit. A fresh reread is required.
-- Chapters 9 and 10: `bc-15929f25` reported on `4e78153b`. Total variation, the gcd step, the coupon tail, the queue invariance, and the emptiness expectation are repaired in this commit. A fresh reread is required.
+- Chapter 8: `bc-3a9c50c8` reported on `4e78153b`. The repairs are `52f0b87f`. A fresh reread of that SHA is `bc-3478b344`. Do not edit Chapter 8 until that report returns.
+- Chapters 9 and 10: `bc-15929f25` reported on `4e78153b`. The repairs are `52f0b87f`. A fresh reread of that SHA is `bc-bf8714af`. Do not edit Chapters 9 or 10 until that report returns.
 - Chapters 11 and 12: `bc-872cdf65`
 - Chapter 14: `bc-b81de9b6` reported on `4e78153b`. The repairs are `166034c8`. A fresh reread of that SHA is `bc-44a52b55`. Do not edit Chapter 14 until that report returns. The other readings below are still of `4e78153b`.
 - Appendix and front/back matter: `bc-84b5137e` reported on `4e78153b`. The preface, cover note, and blurb had no remaining defect at that SHA and were not edited. The appendix repairs are `68d0328e`. A fresh reread of the appendix at that SHA is `bc-8d96509e`. Do not edit the appendix until that report returns.
