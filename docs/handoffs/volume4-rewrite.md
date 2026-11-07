@@ -1,5 +1,14 @@
 # Handoff: Volume 4 rewrite
 
+## 7 November 2026 — Chapter 9 post-native accessibility correction (supersedes earlier pending/production notes)
+
+Native [V4 production #42422702181](https://github.com/OussamaSegh/Order-and-Chance/actions/runs/42422702181) **SUCCEEDED** at chapter/source checkpoint `06338def8e0032dcad9c262f11be3a34d3773111`: exact artifact `13595080027`, all five SHA-256 manifest hashes matched; Chapter 9 was 16 pages in both reading PDF pp. 176–191 and print pp. 175–190, and the EPUB had two 1800px responsive figure plates. The new coupling figure unexpectedly had generic EPUB `alt="Figure"`; **C9-11 accessibility FAIL** even though no assets were missing. Investigation of `tools/epub.lua` showed that a nested proof figure was not top-level numbered/alt-enriched. Applied the narrow manuscript-only fix of moving `fig:commonjump` immediately after its proof, with explanatory bridge, without altering the original TikZ figure or shared exporter. Revised Chapter 9 SHA-256 `0621131576b16b45db56103550f6758124ae9c82d24113484e01d76d3739564a`. Protected Volume 3 seam reviewed identically and source-identity data refreshed from `79442a7d943a085df1d9f70bd1d7909241dcf82efdc34f7706e902808af166a3` to `61e07a19ee5302d846ba9a7832c7fc5845f8e3dbdfe033fb6cd4caf3d7e7f47a`, retaining all 120 review statuses. Evidence and exact pending gates: [Chapter 9 issue log](../review/volume4-ch09-2026-11-07.md).
+
+**Do not call the old native run final acceptance**: the moved figure changes native PDF and EPUB source, so exact-new-HEAD native and full 15-book workflows plus new figure accessibility/layout inspection must pass. Independent mathematical/first-reader review and device-level EPUB testing remain open. PR #111 remains draft and unmerged. After this, Chapter 10 (Poisson Clock) is the next manuscript assignment.
+
+---
+
+
 ## 7 November 2026 — Chapter 9 writer rewrite and exact-source audit; full production/independent signoff OPEN
 
 **Current scope:** printed **Chapter 9 — Markov Chains and Mixing**, file `volume4-chance/chapters/ch08-markov.tex`, on existing [draft PR #111](https://github.com/OussamaSegh/Order-and-Chance/pull/111), branch `cursor/volume4-rewrite-ee7f`. The starting branch HEAD was `26ef67ad0d4617a634ac4324cf2f151f75505130`; before these edits, native V4 #42416803543 and all-books #42416803540 were SUCCESS at exactly that earlier HEAD. Chapters 7 and 8 remain untouched. The revised Chapter 9 source was committed and pushed through `48b4e1b31e57cca61a5322b7e17314cef9fe4272`, with SHA-256 `5008e214c00db64381736412b3dad3788611c1caed4aaec3dc37b6a394c6bbb9`.
