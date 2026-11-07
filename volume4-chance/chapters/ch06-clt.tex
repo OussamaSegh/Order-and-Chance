@@ -31,10 +31,10 @@ Let $X,X_1,X_2,\ldots$ be random variables built from the uniforms of Chapter~5.
 \end{definition}
 
 \begin{proposition}[comparisons]\label{prop:modes}
-Almost-sure convergence implies convergence in probability. Convergence in probability to a constant $c$ implies convergence in distribution to $c$. If $X_n\to c$ in distribution, then $X_n\to c$ in probability.
+Almost-sure convergence implies convergence in probability when, for every $\varepsilon>0$, each event $\{|X_n-X|>\varepsilon\}$ is a finite union of intervals. Every finite-digit variable has events of that form, and so does a threshold for a monotone function of one uniform. Convergence in probability to a constant $c$ implies convergence in distribution to $c$. If $X_n\to c$ in distribution, then $X_n\to c$ in probability.
 \end{proposition}
 \begin{proof}
-On the complement of a set of outer content $0$, $|X_n-X|$ is eventually smaller than $\varepsilon$, so $P(|X_n-X|>\varepsilon)\to0$.
+Let $N$ be the set where $X_n$ fails to converge to $X$, so $P^*(N)=0$, and fix $\varepsilon>0$. The event $A_n=\{|X_n-X|>\varepsilon\}$ is not contained in $N$. Let $W_M=\bigcup_{n\ge M}A_n$. These sets decrease, and their intersection is contained in $N$. By the hypothesis, each $W_M$ is a countable union of intervals. Dropping endpoints, which have outer content $0$, replaces it by a union of open intervals, and the total length of the disjoint decomposition equals the outer content. Cover the intersection by open intervals of total length less than any prescribed $\eta>0$. The remainders $F_M=[0,1]\cap W_M$ with that cover removed are closed and nested, and their intersection is empty. If every $F_M$ were nonempty, a point chosen from each would have a subsequence converging to a point in every $F_M$, by the Bolzano--Weierstrass theorem in Volume~1, Chapter~3. So some $F_M$ is empty, $W_M$ sits inside the cover, and $P^*(W_M)<\eta$. Thus $P^*(A_M)\le P^*(W_M)$ can be made arbitrarily small. When $A_M$ is a finite union of intervals, this outer content is the probability.
 
 If $X_n\to c$ in probability and $x>c$, then $\{|X_n-c|\le(x-c)/2\}$ is contained in $\{X_n\le x\}$ for the inequality of probabilities up to the event of equality, which does not affect the limit, and that probability tends to $1$. If $x<c$, the same argument gives $F_n(x)\to0$. The constant $c$ has a distribution function that jumps only at $c$.
 
@@ -68,31 +68,43 @@ for a constant $C$ that does not depend on $n$.
 
 \emph{The deviation event need not be finite-bit.} Each $Z_i$ may depend on infinitely many binary digits, so Borel--Cantelli cannot be quoted for $\{|T_n|\ge n\varepsilon\}$ until an outer-content bound is proved from finite-bit events.
 
-\emph{Clip, then replace the clip by a step function.} Let $Q(u)=F^{-1}(u)-\mu$ on $(0,1)$, so $Z_i=Q(U_i)$, and let $Q_M=\max(-M,\min(M,Q))$. The clipped function is bounded and monotone, so it extends continuously to the compact interval $[0,1]$: if $Q$ is unbounded it is eventually constant near each endpoint, and otherwise the monotone limit is finite. Uniform continuity supplies, for every $\eta>0$, a function $Y_{M,r}$ constant on each dyadic interval of length $2^{-r}$ with $\sup_u|Y_{M,r}(u)-Q_M(u)|<\eta$. The variables $Y_{M,r}(U_i)$ depend on finitely many digits and are independent.
+\emph{Clip, then bound the clip by finite-digit steps.} Let $Q(u)=F^{-1}(u)-\mu$ on $(0,1)$, so $Z_i=Q(U_i)$, and let $Q_M=\max(-M,\min(M,Q))$. A bounded nondecreasing function has finite one-sided limits at $0$ and at $1$. Define $Q_M(0)$ and $Q_M(1)$ to be those limits. The function on $[0,1]$ is still bounded by $M$. It need not extend continuously: a quantile may jump, and an unbounded quantile is not eventually constant near an endpoint. The dyadic bounds after Proposition~\ref{prop:inverse} still apply. On each interval $[j2^{-m},(j+1)2^{-m})$ set $L_m(u)=Q_M(j2^{-m})$ and $R_m(u)=Q_M((j+1)2^{-m})$. Then $L_m\le Q_M\le R_m$, both steps depend only on the first $m$ digits, and
+\[
+ \mathbb E[R_m(U)-L_m(U)]=2^{-m}\bigl(Q_M(1)-Q_M(0)\bigr)\le 2^{1-m}M.
+\]
 
-On the event that every $|Z_i|\le M$, the clipped sum $T_{n,M}=\sum_i Q_M(U_i)$ equals $T_n$. If in addition each step is within $\eta$ of the clip, the step sum differs from $T_{n,M}$ by less than $n\eta$. Hence, for $0<\eta<\varepsilon$,
+On the event that every $|Z_i|\le M$, the clipped sum $T_{n,M}=\sum_i Q_M(U_i)$ equals $T_n$. Write $D_i=Q_M(U_i)-L_m(U_i)$, so $0\le D_i\le 2M$ and $T_{n,M}=\sum_i L_m(U_i)+\sum_i D_i$. The same split, run from $R_m$, bounds the upper step. Therefore
 \[
  \{|T_n|\ge n\varepsilon\}
- \subseteq B_M\cup\Bigl\{\Bigl|\sum_{i=1}^n Y_{M,r}(U_i)\Bigr|\ge n(\varepsilon-\eta)\Bigr\},
+ \subseteq B_M\cup\Bigl\{\Bigl|\sum_{i=1}^n L_m(U_i)\Bigr|\ge n\varepsilon\Bigr\}
+ \cup\Bigl\{\Bigl|\sum_{i=1}^n R_m(U_i)\Bigr|\ge n\varepsilon\Bigr\},
 \]
-where $B_M=\{\max_{i\le n}|Z_i|>M\}$. The second event is finite-bit. The first is a union of $n$ events $\{|Q(U_i)|>M\}$. Since $Q$ is increasing, each of those is an initial interval of $[0,1)$ or a final interval, or a union of both. Such an interval can be covered by dyadic cylinders whose total length is arbitrarily close to its own length, so countable subadditivity gives $P^*(B_M)\le n P(|Z_1|>M)$.
+where $B_M=\{\max_{i\le n}|Z_i|>M\}$. The two sums are finite-bit. The event $B_M$ is a union of $n$ events $\{|Q(U_i)|>M\}$. Since $Q$ is increasing, each of those is an initial interval of $[0,1)$, a final interval, or a union of both. Countable subadditivity gives $P^*(B_M)\le n P(|Z_1|>M)$.
 
-\emph{Pass to the limit in the right order.} Markov's inequality on the finite-bit event, followed by the comparison just made, yields
+\emph{Pass to the limit in the right order.} Let $S^L=\sum_i L_m(U_i)$ and $S^D=\sum_i D_i$, so $S^L=T_{n,M}-S^D$. The bound $|a-b|^4\le8(|a|^4+|b|^4)$ gives $\mathbb E[(S^L)^4]\le8\mathbb E[T_{n,M}^4]+8\mathbb E[(S^D)^4]$. Each $D_i$ is at most $2M$, so $(S^D)^4\le(2Mn)^2(S^D)^2$ and
+\[
+ \mathbb E[(S^D)^2]=n\mathbb E[D_1^2]+n(n-1)(\mathbb E D_1)^2\le n(2M)\mathbb E[D_1]+n^2(\mathbb E D_1)^2.
+\]
+The expectation $\mathbb E[D_1]$ is at most $2^{1-m}M$, which tends to $0$ as $m\to\infty$. Choose $m$ large enough, for this fixed $n$ and $M$, that $\mathbb E[(S^D)^4]\le n^2$. The upper step $R_m$ has the same bound. Thus each of the two finite-bit fourth moments is at most $8\mathbb E[T_{n,M}^4]+8n^2$. Markov's inequality yields
 \[
  P^*(|T_n|\ge n\varepsilon)
  \le nP(|Z_1|>M)
- +\frac{\mathbb E\bigl[\bigl(\sum_i Y_{M,r}(U_i)\bigr)^4\bigr]}{n^4(\varepsilon-\eta)^4}.
+ +\frac{2\bigl(8\mathbb E[T_{n,M}^4]+8n^2\bigr)}{n^4\varepsilon^4}.
 \]
-Fix $M$ and $\eta$. As $r\to\infty$ the step sum converges uniformly to $T_{n,M}$, so the fourth moments converge: choose $r$ large enough that the numerator is at most $\mathbb E[T_{n,M}^4]+n^2$. The elementary bounds $|a+b|^4\le8(|a|^4+|b|^4)$ and $|\sum a_i|^4\le n^3\sum|a_i|^4$, applied to $T_{n,M}=T_n-(T_n-T_{n,M})$ and to the coordinates of the difference, give
+The elementary bound $|a+b|^4\le8(|a|^4+|b|^4)$, applied to $T_{n,M}=T_n-(T_n-T_{n,M})$, gives
 \[
  \mathbb E[T_{n,M}^4]
  \le8\mathbb E[T_n^4]+8n^4\mathbb E\bigl[|Z_1|^4\mathbf 1_{\{|Z_1|>M\}}\bigr],
 \]
-because $|Q-Q_M|\le|Q|$ on $\{|Q|>M\}$ and the difference vanishes elsewhere. Also $P(|Z_1|>M)\le\mathbb E[Z_1^4]/M^4$. Substitute $\mathbb E[T_n^4]\le Cn^2$. The resulting upper bound holds for every $M>0$ and every $\eta\in(0,\varepsilon)$. Send $M\to\infty$ first: both $n\mathbb E[Z_1^4]/M^4$ and the clipped fourth-moment tail tend to $0$. Then send $\eta\downarrow0$. What remains is
+because $|Q-Q_M|\le|Q|$ on $\{|Q|>M\}$ and the difference vanishes elsewhere. Also $P(|Z_1|>M)\le\mathbb E[Z_1^4]/M^4$. Substitute $\mathbb E[T_n^4]\le Cn^2$. Then $\mathbb E[T_{n,M}^4]\le 8Cn^2+8n^4\mathbb E[|Z_1|^4\mathbf 1_{\{|Z_1|>M\}}]$, and the displayed probability is at most
 \[
- P^*(|T_n|\ge n\varepsilon)\le\frac{8C+1}{n^2\varepsilon^4}.
+ \frac{n\mathbb E[Z_1^4]}{M^4}+\frac{128C+16}{n^2\varepsilon^4}+\frac{128}{\varepsilon^4}\mathbb E\bigl[|Z_1|^4\mathbf 1_{\{|Z_1|>M\}}\bigr].
 \]
-The extra $1$ is the room left for the dyadic error $n^2$ in the numerator.
+The bound holds for every $M>0$. Send $M\to\infty$: the first term and the clipped fourth-moment tail tend to $0$. What remains is
+\[
+ P^*(|T_n|\ge n\varepsilon)\le\frac{128C+16}{n^2\varepsilon^4}.
+\]
+The $16$ in the numerator is the room left for the two dyadic errors: each contributes a factor $8n^2$, and the two of them contribute $16n^2$ in the numerator before it is divided by $n^4$.
 
 \emph{Sum and let $\varepsilon$ tend to zero.} The right-hand side is summable in $n$. The outcomes for which $|T_n|\ge n\varepsilon$ for infinitely many $n$ sit in $\bigcup_{n\ge N}\{|T_n|\ge n\varepsilon\}$ for every $N$, so their outer content is at most the tail of the series, which tends to $0$. Thus the outer content is $0$ for each fixed $\varepsilon>0$. The countable union over $\varepsilon=1/m$ still has outer content $0$, by Proposition~\ref{prop:subadd}. Outside that union, $T_n/n\to0$, and therefore $S_n/n\to\mu$.
 \end{proof}
@@ -176,12 +188,12 @@ The general swap below hides its speed. Copies of one variable with a third mome
 \begin{figure}[ht]
 \centering
 \fig{ch06-lindeberg}
-\caption{Six summands, replaced one at a time. The top row is the original sum. Each lower row has turned one more summand into a normal of the same variance. The last row is a sum of normals. The picture is the indexing of the proof, not a sample of values.}
+\caption{Six summands, replaced from the left, one at a time. The top row is the original sum. The second row has replaced the first summand by a normal of the same variance, and each lower row has replaced one more. While the $k$th summand is swapped, the sum held fixed consists of the earlier normals and the later original summands. That is the indexing in the proof. The picture is not a sample of values.}
 \label{fig:lindeberg}
 \end{figure}
 
 \begin{examplex}[one swap]
-Let $Y_i$ be i.i.d., centred, with variance $\sigma^2>0$ and $\rho=\mathbb E|Y_1|^3<\infty$. Set $X_{n,k}=Y_k/(\sigma\sqrt n)$ and $S_n=\sum_{k=1}^n X_{n,k}$. Let $\xi_{n,k}$ be independent normals of variance $1/n$, independent of the $Y_i$. Their total variance is $1$, so Lemma~\ref{lem:normalsum} says their sum is standard normal. Let $W_k$ be the sum of $X_{n,1},\ldots,X_{n,k-1}$ and $\xi_{n,k+1},\ldots,\xi_{n,n}$. Then $W_k$ is independent of both $X_{n,k}$ and $\xi_{n,k}$. If $|f'''|\le M$, Taylor's formula with Lagrange remainder gives a remainder $R$ with $|R(x)|\le M|x|^3/6$. Write the expansion at $W_k+X_{n,k}$ and at $W_k+\xi_{n,k}$. The shared value $f(W_k)$ cancels in the difference. The linear terms have mean zero and the quadratic terms match, because the two summands share a mean and a variance and are independent of $W_k$. Each remainder is at most $M|x|^3/6$ at its own increment, so the triangle inequality bounds the difference of expectations by the sum of the two expected remainder bounds. One swap therefore changes $\mathbb E[f]$ by at most
+Let $Y_i$ be i.i.d., centred, with variance $\sigma^2>0$ and $\rho=\mathbb E|Y_1|^3<\infty$. Set $X_{n,k}=Y_k/(\sigma\sqrt n)$ and $S_n=\sum_{k=1}^n X_{n,k}$. Let $\xi_{n,k}$ be independent normals of variance $1/n$, independent of the $Y_i$. Their total variance is $1$, so Lemma~\ref{lem:normalsum} says their sum is standard normal. Let $W_k$ be the sum of $\xi_{n,1},\ldots,\xi_{n,k-1}$ and $X_{n,k+1},\ldots,X_{n,n}$. Then $W_k$ is independent of both $X_{n,k}$ and $\xi_{n,k}$. If $|f'''|\le M$, Taylor's formula with Lagrange remainder gives a remainder $R$ with $|R(x)|\le M|x|^3/6$. Write the expansion at $W_k+X_{n,k}$ and at $W_k+\xi_{n,k}$. The shared value $f(W_k)$ cancels in the difference. The linear terms have mean zero and the quadratic terms match, because the two summands share a mean and a variance and are independent of $W_k$. Each remainder is at most $M|x|^3/6$ at its own increment, so the triangle inequality bounds the difference of expectations by the sum of the two expected remainder bounds. One swap therefore changes $\mathbb E[f]$ by at most
 \[
  \frac M6\bigl(\mathbb E|X_{n,k}|^3+\mathbb E|\xi_{n,k}|^3\bigr).
 \]
@@ -210,7 +222,7 @@ For each $n$ let $X_{n,1},\ldots,X_{n,n}$ be independent, centred, and satisfy $
 Let $S_n=\sum_k X_{n,k}$ and let $Z$ be standard normal. Then $\mathbb E[f(S_n)]\to\mathbb E[f(Z)]$ whenever $f$, $f'$, $f''$ and $f'''$ exist, are continuous, and are bounded.
 \end{theorem}
 \begin{proof}
-Let $\sigma_{n,k}^2=\mathbb E[X_{n,k}^2]$, and let $\xi_{n,k}$ be independent normals of those variances, independent of the array. Lemma~\ref{lem:normalsum}, applied repeatedly, says that $\sum_k\xi_{n,k}$ is standard normal. Swap one coordinate at a time. Let $A_{n,k}$ be the sum of $X_{n,1},\ldots,X_{n,k-1}$ and $\xi_{n,k+1},\ldots,\xi_{n,n}$. Taylor's formula with Lagrange remainder gives
+Let $\sigma_{n,k}^2=\mathbb E[X_{n,k}^2]$, and let $\xi_{n,k}$ be independent normals of those variances, independent of the array. Lemma~\ref{lem:normalsum}, applied repeatedly, says that $\sum_k\xi_{n,k}$ is standard normal. Swap one coordinate at a time. Let $A_{n,k}$ be the sum of $\xi_{n,1},\ldots,\xi_{n,k-1}$ and $X_{n,k+1},\ldots,X_{n,n}$. Taylor's formula with Lagrange remainder gives
 \[
 f(A+x)=f(A)+f'(A)x+\tfrac12 f''(A)x^2+R(x),
 \]
@@ -218,17 +230,18 @@ where $|R(x)|\le M|x|^3/6$ if $|f'''|\le M$. If $|f''|\le B$, the expansion stop
 
 The linear terms have expectation $0$ and the quadratic terms have the same expectation, because $X_{n,k}$ and $\xi_{n,k}$ share a mean and a variance and are independent of $A_{n,k}$. The difference of the expectations of $f$ is at most the sum of the expected remainders. On $|x|\le\varepsilon$ the remainder is at most $(M\varepsilon/6)x^2$. On $|x|>\varepsilon$ it is at most $B x^2$. Summing on $k$, the pieces that carry a factor $\varepsilon$ contribute at most $M\varepsilon/3$, since both arrays have total variance $1$. The pieces that carry the indicator of $\{|X_{n,k}|\ge\varepsilon\}$ tend to $0$ by hypothesis.
 
-For the Gaussian pieces, $\max_k\sigma_{n,k}^2\to0$. Indeed
+For the Gaussian pieces, first let the largest variance tend to $0$. For every $\eta>0$,
 \[
-\sigma_{n,k}^2=\mathbb E[X^2\mathbf 1_{|X|\le\varepsilon}]+\mathbb E[X^2\mathbf 1_{|X|>\varepsilon}]\le\varepsilon^2+\mathbb E[X^2\mathbf 1_{|X|>\varepsilon}],
+\sigma_{n,k}^2=\mathbb E[X^2\mathbf 1_{|X|\le\eta}]+\mathbb E[X^2\mathbf 1_{|X|>\eta}]\le\eta^2+\mathbb E[X^2\mathbf 1_{|X|>\eta}],
 \]
-so the largest variance is at most $\varepsilon^2$ plus the Lindeberg sum. A normal of variance $\sigma^2$ has fourth moment $\mathbb E[\xi^4]=3\sigma^4$, by two integrations by parts using $\phi'(x)=-x\phi(x)$. Therefore
+so $\limsup_n\max_k\sigma_{n,k}^2\le\eta^2$, because the Lindeberg sum at height $\eta$ tends to $0$ and therefore so does its largest term. Since $\eta>0$ is arbitrary, $\max_k\sigma_{n,k}^2\to0$. A normal of variance $\sigma^2$ has fourth moment $\mathbb E[\xi^4]=3\sigma^4$, by two integrations by parts using $\phi'(x)=-x\phi(x)$. With the $\varepsilon>0$ of the remainder split held fixed,
 \[
 \sum_k\mathbb E[\xi_{n,k}^2\mathbf 1_{|\xi_{n,k}|>\varepsilon}]
 \le\frac1{\varepsilon^2}\sum_k\mathbb E[\xi_{n,k}^4]
 =\frac3{\varepsilon^2}\sum_k\sigma_{n,k}^4
-\le\frac3{\varepsilon^2}(\max_k\sigma_{n,k}^2)\sum_k\sigma_{n,k}^2\to0.
+\le\frac3{\varepsilon^2}(\max_k\sigma_{n,k}^2)\sum_k\sigma_{n,k}^2\to0,
 \]
+where the last step uses $\max_k\sigma_{n,k}^2\to0$ and $\sum_k\sigma_{n,k}^2=1$. The cap $\max\sigma^2\le\varepsilon^2$ would leave the constant $3$, which does not tend to $0$; the arbitrary height $\eta$ is what forces the maximum itself to vanish.
 The bound just proved uses the fourth moment. It does not claim that a truncated Gaussian second moment is at most the variance times a Gaussian tail probability.
 
 The limsup of the difference of expectations is therefore at most a constant times $\varepsilon$. Let $\varepsilon\downarrow0$.
@@ -406,7 +419,19 @@ Proposition~\ref{prop:cyclebern} and Theorem~\ref{thm:lindeberg}. The variance i
 
 \begin{solution}{ex:slutsky}
 \idea A uniformly continuous function barely moves when its argument moves a little, and the probability of a large move tends to zero.
-\writeup Let $f$ be bounded and uniformly continuous. Given $\varepsilon$, choose $\delta$ so that $|u-v|<\delta$ implies $|f(u)-f(v)|<\varepsilon$. Then the expectations of $f(X_n+Y_n)$ and $f(X_n+c)$ differ by at most $\varepsilon+2\|f\|_\infty P(|Y_n-c|\ge\delta)$. The second term tends to $0$, and $\mathbb E[f(X_n+c)]\to\mathbb E[f(X+c)]$ by Proposition~\ref{prop:cdf}. For the product, $X_n(Y_n-c)\to0$ in probability: the family $X_n$ is tight because it converges in distribution, so $P(|X_n|>A)$ is small uniformly in large $n$, and on $|X_n|\le A$ the product is at most $A|Y_n-c|$. Add this null term to $cX_n$ by the additive case.
+\writeup Let $f$ be bounded and uniformly continuous. Given $\varepsilon$, choose $\delta$ so that $|u-v|<\delta$ implies $|f(u)-f(v)|<\varepsilon$. Then the expectations of $f(X_n+Y_n)$ and $f(X_n+c)$ differ by at most $\varepsilon+2\|f\|_\infty P(|Y_n-c|\ge\delta)$. The second term tends to $0$, and $\mathbb E[f(X_n+c)]\to\mathbb E[f(X+c)]$ by Proposition~\ref{prop:cdf}.
+
+Test functions are not yet the definition. Definition~\ref{def:modes} asks for convergence of distribution functions. Let $G_n$ be the distribution function of $X_n+Y_n$, and let $G$ be the distribution function of $X+c$. Let $x$ be a continuity point of $G$, and let $\eta>0$. Build a piecewise-linear function $g$, hence bounded and uniformly continuous, with $\mathbf 1_{(-\infty,x]}\le g\le\mathbf 1_{(-\infty,x+\eta]}$. Then $G_n(x)\le\mathbb E[g(X_n+Y_n)]$, so the comparison of expectations gives $\limsup_n G_n(x)\le\mathbb E[g(X+c)]\le G(x+\eta)$. For the matching lower bound, build $h$ with $\mathbf 1_{(-\infty,x-\eta]}\le h\le\mathbf 1_{(-\infty,x]}$. Then $\mathbb E[h(X+c)]\le\liminf_n G_n(x)$, and $\mathbb E[h(X+c)]\ge G(x-\eta)$. Let $\eta\downarrow0$ and use continuity of $G$ at $x$. Thus $X_n+Y_n\to X+c$ in distribution.
+
+For the product, first choose continuity points $\pm A$ of the law of $X$ so that $P(|X|>A)$ is smaller than any prescribed $\eta$. There is no atom at those points, so $P(|X|>A)=1-F(A)+F(-A)$. Also $P(X_n<-A)\le F_n(-A)$, and $F_n(\pm A)\to F(\pm A)$, hence
+\[
+ \limsup_n P(|X_n|>A)\le 1-F(A)+F(-A)=P(|X|>A).
+\]
+On the event $|X_n|\le A$ one has $|X_n(Y_n-c)|\le A|Y_n-c|$, so
+\[
+ P\bigl(|X_n(Y_n-c)|>\varepsilon\bigr)\le P(|X_n|>A)+P(|Y_n-c|\ge\varepsilon/A).
+\]
+The limsup is at most $\eta$. Thus $X_n(Y_n-c)\to0$ in probability. Add this null term to $cX_n$ by the sum already proved.
 \end{solution}
 
 \begin{solution}{ex:confidence}
@@ -420,7 +445,7 @@ Proposition~\ref{prop:cyclebern} and Theorem~\ref{thm:lindeberg}. The variance i
 \[
  g(\bar Y_n)-g(\mu)=\bigl(g'(\mu)+\varepsilon_n\bigr)(\bar Y_n-\mu)
 \]
-with $\varepsilon_n\to0$ in probability. Multiply by $\sqrt n$. The main term converges in distribution to $N(0,g'(\mu)^2\sigma^2)$. The error is $\varepsilon_n$ times a tight sequence, so it tends to $0$ in probability. Exercise~\ref{ex:slutsky} adds the two pieces.
+with $\varepsilon_n\to0$ in probability. Multiply by $\sqrt n$. The main term converges in distribution to $N(0,g'(\mu)^2\sigma^2)$. The error is $\varepsilon_n$ times $\sqrt n(\bar Y_n-\mu)$. The second factor converges in distribution, so the tail bound in the solution of Exercise~\ref{ex:slutsky} shows that the product tends to $0$ in probability. That exercise adds the two pieces.
 \end{solution}
 
 \begin{solution}{ex:cauchyclt}
@@ -445,10 +470,7 @@ Independence multiplies characteristic functions, so $S_n/\sqrt n$ has transform
 
 \begin{solution}{ex:returns}
 \idea The middle binomial coefficient is Stirling's formula at its most symmetric point.
-\writeup Theorem~\ref{thm:local} with $n=2m$ and $k=m$ gives $P(S_{2m}=0)\sim 1/\sqrt{\pi m}$. The same conclusion is Stirling's formula alone:
-\[
- \binom{2m}{m}\sim\frac{4^m}{\sqrt{\pi m}}.
-\]
+\writeup Here $S_{2m}=2B-2m$ with $B$ binomial$(2m,1/2)$, so $S_{2m}=0$ if and only if $B=m$. Theorem~\ref{thm:local} with $n=2m$ and $k=m$ gives $P(B=m)\sim 1/\sqrt{\pi m}$, and that probability is $P(S_{2m}=0)$. Stirling's formula gives the central coefficient $\binom{2m}{m}\sim 4^m/\sqrt{\pi m}$. Dividing by the number of outcomes, $4^m$, recovers the same probability.
 \end{solution}
 
 \begin{solution}{ex:thirdmoment}

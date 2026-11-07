@@ -30,14 +30,22 @@ Since $a\le0\le b$ (otherwise the mean cannot be $0$), both weights below are no
 \[
  \mathbb E[e^{\lambda X}]\le\frac{b}{b-a}e^{\lambda a}-\frac{a}{b-a}e^{\lambda b}.
 \]
-The right-hand side is $\mathbb E[e^{\lambda Z}]$, where $Z$ equals $a$ with probability $b/(b-a)$ and $b$ with probability $-a/(b-a)$. Set $L(\lambda)=\ln\mathbb E[e^{\lambda Z}]$. Then $L(0)=\ln 1=0$. The derivative of a moment generating function at $0$ is the mean, so $L'(0)=\mathbb E Z=0$: the two-point mean is $(ab-ab)/(b-a)=0$. Differentiating again, $L''(\lambda)$ equals the variance of the exponentially tilted copy of $Z$. That copy still takes only the values $a$ and $b$, so it lies in an interval of length $b-a$. For any random variable $W$ in $[a,b]$,
+The right-hand side is $\mathbb E[e^{\lambda Z}]$, where $Z$ equals $a$ with probability $p_a=b/(b-a)$ and $b$ with probability $p_b=-a/(b-a)$. Set $M(\lambda)=\mathbb E[e^{\lambda Z}]=p_a e^{\lambda a}+p_b e^{\lambda b}$ and $L(\lambda)=\ln M(\lambda)$. Then $L(0)=\ln 1=0$. Differentiating the quotient $M'/M$ gives $L'(0)=\mathbb E Z=0$: the two-point mean is $(ab-ab)/(b-a)=0$. Write
 \[
- \operatorname{Var}W=\mathbb E[(W-\mathbb EW)^2]\le\mathbb E\Bigl[\Bigl(W-\frac{a+b}2\Bigr)^2\Bigr]\le\Bigl(\frac{b-a}2\Bigr)^2,
+ \theta(\lambda)=\frac{p_b e^{\lambda b}}{M(\lambda)},
 \]
-because the midpoint minimises the second moment among constant centres, and $|W-(a+b)/2|\le(b-a)/2$. Thus $L''(\lambda)\le(b-a)^2/4$. Taylor's formula with Lagrange remainder, Volume~1, Chapter~8, gives $L(\lambda)=L''(\xi)\lambda^2/2$ for some $\xi$ between $0$ and $\lambda$. Therefore $L(\lambda)\le\lambda^2(b-a)^2/8$.
+so $1-\theta(\lambda)=p_a e^{\lambda a}/M(\lambda)$. The second derivative of $M$ is $M''=a^2 p_a e^{\lambda a}+b^2 p_b e^{\lambda b}$. In the combination $M''M-(M')^2$ the pure squares $a^2 p_a^2 e^{2\lambda a}$ and $b^2 p_b^2 e^{2\lambda b}$ cancel, and the cross terms leave $p_a p_b(a-b)^2 e^{\lambda(a+b)}$. Therefore
+\[
+ L''(\lambda)=\frac{M''M-(M')^2}{M^2}=\theta(\lambda)\bigl(1-\theta(\lambda)\bigr)(b-a)^2.
+\]
+The product $\theta(1-\theta)$ is at most $1/4$, and it is nonnegative, so $0\le L''(\lambda)\le(b-a)^2/4$. Volume~1, Chapter~8, gives the inequality form of Taylor's theorem, which does not locate an intermediate point:
+\[
+ \bigl|L(\lambda)-L(0)-L'(0)\lambda\bigr|\le\sup|L''|\cdot\frac{\lambda^2}{2}.
+\]
+The value and the first derivative vanish at $0$, and $L''$ is nonnegative, so $L(\lambda)\le\lambda^2(b-a)^2/8$.
 \end{proof}
 
-The factor $1/8$ is what the quadratic maximum of $\theta(1-\theta)$ contributes. It is not claimed to be sharp for every law, only for this argument.
+The factor $1/8$ is what the bound $\theta(1-\theta)\le1/4$ contributes, with $\theta(\lambda)$ the weight defined above. It is not claimed to be sharp for every law, only for this argument.
 
 \begin{theorem}[Hoeffding's inequality]\label{thm:hoeffding}
 Let $X_1,\ldots,X_n$ be independent, with $a_i\le X_i\le b_i$. Set $S=X_1+\cdots+X_n$. Then for every $t>0$,
@@ -63,7 +71,7 @@ For a fair coin, each summand lies in $\{0,1\}$, so $b_i-a_i=1$ and $\sum(b_i-a_
 \[
  P(S\ge n/2+t)\le\exp(-2t^2/n).
 \]
-Take $n=1000$ and $t=100$. Then $600$ heads or more has probability at most $e^{-20}$. Since $e^{-1}<1/2.7<0.371$, one has $e^{-20}<(0.371)^{20}<2.07\times 10^{-9}$. A direct evaluation gives $e^{-20}=2.061\ldots\times 10^{-9}$. The exact binomial tail $\sum_{k=600}^{1000}\binom{1000}{k}2^{-1000}$ equals $1.364\ldots\times 10^{-10}$, computed by summing in logarithmic scale. Hoeffding is larger than the truth by about a factor of fifteen, and Chebyshev is useless: the variance of $S$ is $250$, so
+Take $n=1000$ and $t=100$. Then $600$ heads or more has probability at most $e^{-20}$. Since $e^{-1}<1/2.7<0.371$, one has $e^{-20}<(0.371)^{20}$. The power $(0.371)^{20}$ equals $2.440\ldots\times 10^{-9}$. A direct evaluation gives $e^{-20}=2.061\ldots\times 10^{-9}$. The exact binomial tail $\sum_{k=600}^{1000}\binom{1000}{k}2^{-1000}$ equals $1.364\ldots\times 10^{-10}$, computed by summing in logarithmic scale. Hoeffding is larger than the truth by about a factor of fifteen, and Chebyshev is useless: the variance of $S$ is $250$, so
 \[
  P(|S-500|\ge100)\le\frac{250}{10000}=\frac1{40}.
 \]
@@ -94,7 +102,7 @@ Write $\phi(\lambda)=\lambda a-\ln(1+e^{\lambda})$. Then $\phi'(\lambda)=a-e^{\l
 \[
  D(a\|\tfrac12)=a\ln(2a)+(1-a)\ln\bigl(2(1-a)\bigr).
 \]
-At $a=0.6$, $D=0.020135\ldots$. For $n=100$ the bound is $0.1335\ldots$. For $n=1000$ it is $1.800\ldots\times 10^{-9}$. The exact tail at $n=1000$ is $1.364\ldots\times 10^{-10}$.
+At $a=0.6$, $D=0.020135\ldots$. For $n=100$ the bound is $0.1335\ldots$. For $n=1000$ it is $1.799\ldots\times 10^{-9}$. The exact tail at $n=1000$ is $1.364\ldots\times 10^{-10}$.
 
 A nonnegative variable with a known mean is a job for Markov's inequality. A known variance is a job for Chebyshev's inequality. Independent variables in known intervals are a job for Hoeffding's inequality. Fair Bernoulli trials also have an exact moment, and that moment produces the exponent $D(a\|\tfrac12)$.
 \end{examplex}
@@ -130,7 +138,7 @@ Expand $T_n=T_k+(T_n-T_k)$ on $A_k$:
 because $|T_k|\ge t$ on $A_k$ and the squared increment has nonnegative expectation. Sum over $k$. The complementary event contributes a nonnegative piece of $\mathbb E[T_n^2]$, so $\mathbb E[T_n^2]\ge t^2 P(\max_k|T_k|\ge t)$. Independence of the centred blocks also gives $\mathbb E[T_n^2]=\sum_i\mathbb E[Y_i^2]$, since the cross terms $\mathbb E[Y_i Y_\ell]$ vanish for $i\ne\ell$.
 \end{proof}
 
-Three independent steps of size $\pm1$, each fair, check the constant. There are $8$ outcomes, equally likely. The first step always has absolute value $1$. The second step has absolute value $2$ precisely when the first two signs agree, which is $4$ of the $8$ outcomes. If they disagree, the second partial sum is $0$ and the third is $\pm1$, so the maximum absolute value is $1$. Thus $P(\max_{k\le3}|T_k|\ge2)=1/2$. The variance of $T_3$ is $3$, and the theorem bounds the probability by $3/4$. The inequality is in the right direction, and it is not an equality for this walk.
+Three independent steps of size $\pm1$, each fair, check the constant. There are $8$ outcomes, equally likely. The first step always has absolute value $1$. The second partial sum has absolute value $2$ precisely when the first two signs agree, which is $4$ of the $8$ outcomes. If they disagree, the second partial sum is $0$ and the third is $\pm1$, so the maximum absolute value is $1$. Thus $P(\max_{k\le3}|T_k|\ge2)=1/2$. The variance of $T_3$ is $3$, and the theorem bounds the probability by $3/4$. The inequality is in the right direction, and it is not an equality for this walk.
 
 \section{Borel--Cantelli}
 
@@ -149,16 +157,24 @@ Let $A_1,A_2,\ldots$ be events in the uniform-interval model of Chapter~1, each 
 \]
 The right-hand side tends to $0$ as $N\to\infty$.
 
-(b) Mutual independence means that every finite subcollection has probability equal to the product of the probabilities, as in Volume~1, Chapter~10. For $0\le x\le1$, $1-x\le e^{-x}$. Hence
+(b) Mutual independence means that every finite subcollection has probability equal to the product of the probabilities, as in Volume~1, Chapter~10. The complements obey the same product. Let $B$ be the intersection of $A_i$ over $i\ne j$. Then $P(B\cap A_j^c)=P(B)-P(B\cap A_j)$. Independence of the subcollection that omits $j$, and of the full collection, gives $P(B)=\prod_{i\ne j}P(A_i)$ and $P(B\cap A_j)=\prod_i P(A_i)$, so
 \[
- P\Bigl(\bigcap_{n=N}^{N+m}A_n^c\Bigr)=\prod_{n=N}^{N+m}(1-P(A_n))\le\exp\Bigl(-\sum_{n=N}^{N+m}P(A_n)\Bigr).
+ P(B\cap A_j^c)=\Bigl(\prod_{i\ne j}P(A_i)\Bigr)\bigl(1-P(A_j)\bigr).
+\]
+Repeating this replacement for each factor shows that $A_N^c,\ldots,A_{N+m}^c$ are mutually independent, so
+\[
+ P\Bigl(\bigcap_{n=N}^{N+m}A_n^c\Bigr)=\prod_{n=N}^{N+m}(1-P(A_n)).
+\]
+For $0\le x\le1$, $1-x\le e^{-x}$. Hence the product is at most
+\[
+ \exp\Bigl(-\sum_{n=N}^{N+m}P(A_n)\Bigr).
 \]
 If the series of probabilities diverges, the right-hand side tends to $0$ as $m\to\infty$. The set where none of $A_N,A_{N+1},\ldots$ occurs is contained in every one of those finite intersections, so its outer content is $0$. Call that set $Z_N=\bigcap_{n\ge N}A_n^c$. The event that only finitely many $A_n$ occur is $\bigcup_{N\ge1}Z_N$. Each $Z_N$ has outer content zero, so countable subadditivity (Proposition~\ref{prop:subadd}) gives $P^*(\bigcup_NZ_N)=0$. Thus almost every sequence lies in infinitely many $A_n$.
 \end{proof}
 
 Part (a) does not need independence. Part (b) does. Example~\ref{ex:run} is part (b) for the disjoint runs of three heads: $P(A_{3m})=1/8$ and the blocks use distinct digits, so they are independent, and the sum diverges.
 
-The same first digit, repeated, shows why the independence hypothesis cannot be dropped. Let $A_n$ be the event that the first binary digit is $1$, for every $n\ge1$. Then $P(A_n)=1/2$ and $\sum_n P(A_n)=\infty$, but the intersection of any finite subcollection is still that single event, so the events are not independent. The set $A_n\text{ i.o.}$ is exactly $\{b_1=1\}$, which has probability $1/2$, not outer content $0$ for its complement. Part (a) does not apply, because the series diverges. Part (b) does not apply, because the events are not independent. Both refusals are necessary.
+The same first digit, repeated, shows why the independence hypothesis cannot be dropped. Let $A_n$ be the event that the first binary digit is $1$, for every $n\ge1$. Then $P(A_n)=1/2$ and $\sum_n P(A_n)=\infty$, but the intersection of any finite subcollection is still that single event, so the events are not independent. The set $A_n\text{ i.o.}$ is exactly $\{b_1=1\}$, which has probability $1/2$. Its complement is $\{b_1=0\}$, which also has probability $1/2$, so the complement does not have outer content $0$. Part (a) does not apply, because the series diverges. Part (b) does not apply, because the events are not independent. Both refusals are necessary.
 
 \section{The strong law for bounded variables}
 
@@ -187,7 +203,7 @@ Fill the gaps. If $n_k\le n<n_{k+1}$, then $n_{k+1}-n_k=2k+1$ and
 The deterministic terms tend to $0$. Almost surely the middle term is eventually smaller than $\varepsilon$. So the limsup of $|S_n/n-\mu|$ is at most $\varepsilon$. Let $\varepsilon\downarrow0$ through the sequence $1/m$. A countable union of outer-content-zero sets still has outer content zero, by Proposition~\ref{prop:subadd}.
 \end{proof}
 
-For instance, fair coins use binary digits and fair dice use base-$6$ digits as in Chapter~2. More generally, any finite-alphabet law with rational masses has a common denominator $r$ and can be obtained by grouping the $r$ equiprobable base-$r$ digits. An arbitrary bounded law need not have a finite-digit realisation (a Bernoulli law with parameter $1/3$, for example, cannot be represented by a fixed finite block of fair bits). The theorem's digit-partition hypothesis is therefore essential. The extension to general bounded laws, including variables with densities, requires additional event-model work; no unproved general measure theorem is used here.
+For instance, fair coins use binary digits and fair dice use base-$6$ digits as in Chapter~2. More generally, any finite-alphabet law with rational masses has a common denominator $r$ and can be obtained by grouping the $r$ equiprobable base-$r$ digits. An arbitrary bounded law need not be a function of a finite digit block. A Bernoulli variable of parameter $1/\sqrt2$ has an irrational success probability, while every finite union of the digit cylinders has rational probability, so that law lies outside the hypothesis. A Bernoulli variable of parameter $1/3$ is one ternary digit, so it lies inside the hypothesis; what it cannot match is a fixed finite block of fair bits. The digit-partition hypothesis is therefore essential, and the choice of base is part of the hypothesis. The extension to general bounded laws, including variables with densities, requires additional event-model work; no unproved general measure theorem is used here.
 
 The hypothesis $|X_i|\le M$ is used to control the gaps between $k^2$ and $(k+1)^2$. A strong law with only $\mathbb E|X_1|<\infty$, and no bound, is proved in Volume~11. It is not a step in this volume.
 
