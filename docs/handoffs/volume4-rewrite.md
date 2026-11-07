@@ -1,5 +1,16 @@
 # Handoff: Volume 4 rewrite
 
+## 7 November 2026 — Chapter 9 actual PDF/EPUB verification and last clarity correction
+
+[Native Volume 4 QA #42423834537](https://github.com/OussamaSegh/Order-and-Chance/actions/runs/42423834537) **SUCCEEDED** at `b2e105be8be3bc0d09e18aa62f7a191f202a6106`; artifact `13594439020` was downloaded. Five source-manifest SHA-256 values verified; reading PDF 260 pages (printed Chapter 9 occupies physical pp. 176–191), print PDF 259 pages (Chapter 9 occupies pp. 175–190). All sixteen chapter pages in each PDF rasterized and inspected; Figure 9.2 common-jump coupling appears clearly on reading p.183/print p.182; main TeX log has no overfull boxes or unresolved references. Chapter 9 EPUB has 706 image occurrences, zero missing assets, two 1800px responsive original mathematical plates, and **both plates now have descriptive alternative text and correct figure numbering**. The original generic `alt="Figure"` defect **C9-11 is resolved at this exact tested source**.
+
+A final visual copy check found the coupling figure floated between the displayed `P^2(1,\cdot)` row and the next phrase “Its absolute differences”. Corrected **C9-12** in Chapter 9 text by naming that row and the stationary law explicitly. Source SHA-256 **`c6b10291d5f6382d29bed8d706c4cbc20c7f00ddc62b43f809e1d6235c23fde5`**. Protected V3 seam snapshot `61e07a19ee5302d846ba9a7832c7fc5845f8e3dbdfe033fb6cd4caf3d7e7f47a` to `8eda6c925a629a827b3a355f39ae367857ed21a00b8ac65099f39c9e52dc858b`, keeping all 120 review statuses, with V3 preface/afterword semantics unchanged. See [Chapter 9 math and layout log](../review/volume4-ch09-2026-11-07.md).
+
+**Important:** The source was changed after the successful run, so **fresh native V4 PDF/EPUB and full-books CI must pass at the new exact HEAD** before that final editorial checkpoint is accepted. Independent distinct review and physical Kindle/iOS/Android reading still open; PR #111 remains draft and unmerged.
+
+---
+
+
 ## 7 November 2026 — Chapter 9 post-native accessibility correction (supersedes earlier pending/production notes)
 
 Native [V4 production #42422702181](https://github.com/OussamaSegh/Order-and-Chance/actions/runs/42422702181) **SUCCEEDED** at chapter/source checkpoint `06338def8e0032dcad9c262f11be3a34d3773111`: exact artifact `13595080027`, all five SHA-256 manifest hashes matched; Chapter 9 was 16 pages in both reading PDF pp. 176–191 and print pp. 175–190, and the EPUB had two 1800px responsive figure plates. The new coupling figure unexpectedly had generic EPUB `alt="Figure"`; **C9-11 accessibility FAIL** even though no assets were missing. Investigation of `tools/epub.lua` showed that a nested proof figure was not top-level numbered/alt-enriched. Applied the narrow manuscript-only fix of moving `fig:commonjump` immediately after its proof, with explanatory bridge, without altering the original TikZ figure or shared exporter. Revised Chapter 9 SHA-256 `0621131576b16b45db56103550f6758124ae9c82d24113484e01d76d3739564a`. Protected Volume 3 seam reviewed identically and source-identity data refreshed from `79442a7d943a085df1d9f70bd1d7909241dcf82efdc34f7706e902808af166a3` to `61e07a19ee5302d846ba9a7832c7fc5845f8e3dbdfe033fb6cd4caf3d7e7f47a`, retaining all 120 review statuses. Evidence and exact pending gates: [Chapter 9 issue log](../review/volume4-ch09-2026-11-07.md).
