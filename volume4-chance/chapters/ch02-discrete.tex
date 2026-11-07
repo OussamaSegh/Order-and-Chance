@@ -220,7 +220,9 @@ Do not confuse $\mathbb E[X_k]=1/k$ with $P(X_k\ge1)=1/k$. For small $k$, one pe
 
 \section{The coupon collector}
 
-Each box contains one of $n$ coupons, uniformly and independently of the other boxes. Let $T$ be the number of boxes needed to see every coupon. Volume~1, Chapter~10, asks for $\mathbb E[T]=nH_n$ and notes that the law is a distribution on finite words.
+Imagine that every cereal box contains one of $n$ different cards. Every card is equally likely in each box, and the contents of different boxes are independent. How many boxes do we expect to open before we have all $n$ cards?
+
+The first box always gives a new type. Later, duplicates waste draws. When only one type is missing, a fresh draw succeeds with probability $1/n$, so that last wait alone has mean $n$. Let $T$ count the boxes opened up to and including the final new type. Volume~1, Chapter~10, posed this problem. We can now prove its answer by splitting $T$ into simpler waiting times.
 
 \begin{theorem}[coupon collector]\label{thm:coupon}
 For $n\ge1$, $\mathbb E[T]=nH_n$. Moreover $H_n/\ln n\to1$, so $\mathbb E[T]\sim n\ln n$.
@@ -228,9 +230,13 @@ For $n\ge1$, $\mathbb E[T]=nH_n$. Moreover $H_n/\ln n\to1$, so $\mathbb E[T]\sim
 \begin{proof}
 Let $T_0=0$ and, for $0\le i\le n-1$, let $T_{i+1}$ be the number of further boxes needed to obtain a new coupon after $i$ distinct coupons are already in hand. Then $T=T_1+\cdots+T_n$.
 
-Given the past, $T_i$ is a geometric waiting time with success probability $p_i=(n-i+1)/n$. That is the first success on independent trials, in the sense of Volume~1. The success probability depends only on how many coupons are already in hand, not on which ones. Every past with $i-1$ coupons produces the same conditional law, so the unconditional mean is $1/p_i$.
+At the start of stage $i$, we have $i-1$ distinct coupons. Exactly $n-i+1$ types are still missing. On each fresh independent draw the chance of a new type is therefore $p_i=(n-i+1)/n$. Until that new type appears, the set of missing types does not change. So, conditional on any past that reaches this stage,
+\[
+ P(T_i>m\mid\text{past})=(1-p_i)^m\qquad(m=0,1,2,\ldots).
+\]
+This is the tail of a geometric wait. Its mean, proved by the tail sum in Volume~1, is $1/p_i$, regardless of which types were found or how many boxes previous stages took.
 
-Stopped at time $T$, the experiment is a countable set of finite words. There are $n$ stages, and each stage is a word in an alphabet of $n$ letters. A countable union of finite sets is countable. Volume~1's tail sum gives $\mathbb E[T_i]=1/p_i=n/(n-i+1)$. Each of these $n$ expectations is finite, so linearity gives
+Every $p_i$ is positive, so the displayed tail tends to zero: each stage finishes with probability one. There are only $n$ stages, hence $T$ is finite with probability one. The stopping records of finite words form a countable set (a countable union of finite sets), even though Chapter~1's underlying digits continue forever. We may compute the finite expectations of stage lengths on this countable model. Each is $\mathbb E[T_i]=n/(n-i+1)$, and linearity gives
 \[
  \mathbb E[T]=\sum_{i=1}^n\frac{n}{n-i+1}=n\sum_{j=1}^n\frac1j=nH_n.
 \]
