@@ -14,7 +14,7 @@ The citation corrections are `63f9c18d3c5e7d14f42d2867840dbd934b52bb04`. This ha
 
 Fresh grok-4.7 readings of the current text at `4e78153b` are in flight and must not be duplicated. They use `git show` of that SHA, so a later handoff commit does not change what they read:
 - Chapter 1: `bc-b675adc6`
-- Chapter 2: `bc-be7ce6be` reported on `4e78153b`. The opening and the fixed-point variance sentence are repaired in this commit. Do not treat `4e78153b` as the reviewed text of Chapter 2. A fresh reread is required.
+- Chapter 2: `bc-be7ce6be` reported on `4e78153b`. The repairs are `68d0328e`. A fresh reread of that SHA is `bc-889115c8`. Do not edit Chapter 2 until that report returns.
 - Chapter 3: `bc-2c51e89f`
 - Chapter 4: `bc-84438b18`
 - Chapter 5: `bc-8ae8ffbb`
@@ -24,7 +24,7 @@ Fresh grok-4.7 readings of the current text at `4e78153b` are in flight and must
 - Chapters 9 and 10: `bc-15929f25`
 - Chapters 11 and 12: `bc-872cdf65`
 - Chapter 14: `bc-b81de9b6` reported on `4e78153b`. The repairs are `166034c8`. A fresh reread of that SHA is `bc-44a52b55`. Do not edit Chapter 14 until that report returns. The other readings below are still of `4e78153b`.
-- Appendix and front/back matter: `bc-84b5137e` reported on `4e78153b`. The preface, cover note, and blurb had no remaining defect at that SHA. The Ramsey, Erdős–Ko–Rado, and $T(n,2)$ arguments are repaired in this commit. A fresh reread of the appendix is required. The front and back matter were not edited.
+- Appendix and front/back matter: `bc-84b5137e` reported on `4e78153b`. The preface, cover note, and blurb had no remaining defect at that SHA and were not edited. The appendix repairs are `68d0328e`. A fresh reread of the appendix at that SHA is `bc-8d96509e`. Do not edit the appendix until that report returns.
 
 Reports have returned for Chapters 2 and 14 and for the appendix and front matter. The other readings above are still open. Do not edit those chapter files until the report is in. Then the whole-volume review, the citation review, the certified builds, and the every-page ledger. The removed-material audit follows those, and its findings go to the owner before any large restoration. The second full rewrite, matched to Volumes 1–3, is the final phase and has not started. Do not merge.
 
