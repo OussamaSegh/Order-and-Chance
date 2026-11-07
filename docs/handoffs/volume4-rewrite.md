@@ -10,7 +10,23 @@ The citation corrections are `63f9c18d3c5e7d14f42d2867840dbd934b52bb04`. This ha
 
 **PDFs already delivered.** A clean detached build of `43d7d93b`, not edited during the run, produced the files copied to `/opt/cursor/artifacts/volume4_chance_reading_43d7d93b.pdf` (208 pages, sha256 `9b492abc1304cf7659c33e14caff63966f3412e04384cb4ba830d8c469f8e717`) and `volume4_chance_print_43d7d93b.pdf` (207 pages, sha256 `2906444b419b72a4e3c23a750bfb92c666071e814a6efae25a7d293a46bbe6d7`). The citation commits do not change Volume 4 chapter sources. A detached build of `63f9c18d` was started and had not finished when this note was written. It is not certified, and no hash is recorded for it. The every-page ledger has not started.
 
-**Next, then last.** Printed Chapter 13, the alteration and the crossing-pair count, was read in full by grok-4.7 `bc-90366bc7` at `5589acd7`. That review found no remaining defect. The mathematical and voice gate for Chapter 13 is closed at that SHA only. It is not production acceptance, and the delivered PDF of `43d7d93b` does not contain the new text. The quality pass continues with the other chapters. Composer-2.5 gates stay provisional. Earlier composer-2.5 gates stay provisional. Then the remaining chapters, the whole-volume review, the citation review, the certified builds, and the every-page ledger. The removed-material audit follows those, and its findings go to the owner before any large restoration. The second full rewrite, matched to Volumes 1–3, is the final phase and has not started. Do not merge.
+**Next, then last.** Printed Chapter 13 was read in full by grok-4.7 `bc-90366bc7` at `5589acd7` and that review found no remaining defect. The mathematical and voice gate for Chapter 13 is closed at that SHA only. It is not production acceptance. The delivered PDF of `43d7d93b` does not contain that text. Composer-2.5 gates stay provisional.
+
+Fresh grok-4.7 readings of the current text at `4e78153b` are in flight and must not be duplicated. They use `git show` of that SHA, so a later handoff commit does not change what they read:
+- Chapter 1: `bc-b675adc6`
+- Chapter 2: `bc-be7ce6be`
+- Chapter 3: `bc-2c51e89f`
+- Chapter 4: `bc-84438b18`
+- Chapter 5: `bc-8ae8ffbb`
+- Chapter 6: `bc-8849a1fc`
+- Chapter 7: `bc-55b8b4fd`
+- Chapter 8: `bc-3a9c50c8`
+- Chapters 9 and 10: `bc-15929f25`
+- Chapters 11 and 12: `bc-872cdf65`
+- Chapter 14: `bc-b81de9b6`
+- Appendix and front/back matter: `bc-84b5137e`
+
+No report has returned. Do not edit those chapter files until the report is in. Then the whole-volume review, the citation review, the certified builds, and the every-page ledger. The removed-material audit follows those, and its findings go to the owner before any large restoration. The second full rewrite, matched to Volumes 1–3, is the final phase and has not started. Do not merge.
 
 **Reviewer model, owner correction.** Use grok-4.7, at its highest reasoning effort, for writing and for every reviewer and subagent. Do not use grok-4.6, composer-2.5, or any other model. Independence is a fresh session with no writer context, adversarial instructions, an exact SHA, and a traceable issue log. Every log entry names the reviewer model as grok-4.7. Earlier composer-2.5 gates are provisional only.
 
