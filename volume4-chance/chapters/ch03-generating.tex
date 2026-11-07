@@ -160,14 +160,22 @@ Condition on $N=n$. For $n=0$, $\mathbb E[s^S\mid N=0]=1$. For $n\ge1$, independ
 \[
  \mathbb E[s^S]=\sum_{n\ge0}P(N=n)f(s)^n=g\bigl(f(s)\bigr).
 \]
-Sample $N$ first, then draw its finite list of summands. The outcomes are a countable union of finite lists, so the calculation is a nonnegative sum on a countable space. No infinite product is required. The masses are $P(N=n)$ times the conditional list masses, and they add to $\sum_n P(N=n)=1$.
+We can construct the experiment by first sampling $N$ and then taking exactly $N$ draws. A record of the outcome is a finite-length list $(n,x_1,\ldots,x_n)$ of nonnegative integers. The possible records form a countable set: for each $n$ there are countably many lists of length $n$, and there are countably many possible $n$. Assign each record its conditional product mass multiplied by $P(N=n)$. The masses add to $\sum_n P(N=n)=1$, since every conditional law adds to $1$. Thus this is a nonnegative sum on a countable space, not an unproved infinite product.
+
+\begin{think}
+If $N=0$, what should the empty sum contribute to the generating function? It must contribute $s^0=1$, even at $s=0$. This is why the constant term of $g(f(s))$ includes the case of zero summands.
+\end{think}
 \end{proof}
 
 If $N$ is Poisson of parameter $\lambda$, then $g(u)=e^{\lambda(u-1)}$ and the sum has generating function $e^{\lambda(f(s)-1)}$. Exercise~\ref{ex:thinning} is the case in which each summand is a Bernoulli trial that decides whether a point is kept.
 
 \section{Galton--Watson extinction}
 
-Start with one individual. Each individual has a number of children distributed as $X$, independently of everyone else, with $P(X=k)=p_k$ and generating function $f$. Let $Z_n$ be the number of individuals in generation $n$, so $Z_0=1$ and, given $Z_n=m$, the next generation is a sum of $m$ independent copies of $X$. Let $\eta=P(Z_n=0\text{ for some }n)$ be the probability that the line dies out.
+Start with one individual, the founder. Each individual independently has $0$, $1$, $2$, or more children according to the same law $P(X=k)=p_k$, with generating function $f$. Children make up generation $1$, grandchildren generation $2$, and so on. Write $Z_n$ for the number of individuals in generation $n$, so $Z_0=1$. If $Z_n=m$, the next generation counts the children of those $m$ individuals; it is a sum of $m$ independent copies of $X$.
+
+Every individual has a finite number of children, because $X$ takes finite nonnegative integer values. By induction, every \emph{fixed} generation is finite. The entire family tree may nevertheless continue forever. Once a generation is empty, every later one is empty too. The \emph{extinction probability} $\eta$ is the chance that the population reaches zero in some finite generation.
+
+When the number of children is random, a large average generation does not guarantee that every branch survives. The distinction is the point of the next theorem.
 
 \begin{figure}[ht]
 \centering
@@ -199,7 +207,11 @@ The extinction probability $\eta$ is the smallest root of $s=f(s)$ in $[0,1]$. I
 \begin{proof}
 Let $\eta_n=P(Z_n=0)$. Then $\eta_0=0$ and $\eta_1=p_0=f(0)$. Conditioning on the first generation, $Z_n$ is the sum of $Z_1$ independent copies of a process with the same law, so $\eta_{n}=f(\eta_{n-1})$ for $n\ge1$. Since $f$ is increasing on $[0,1]$ and $\eta_1=f(0)\ge0=\eta_0$, induction gives $\eta_n\le\eta_{n+1}\le1$. The limit $L=\lim\eta_n$ satisfies $L=f(L)$ by continuity of $f$.
 
-Extinction by time $n$ depends only on the first $n$ finite generations, whose joint laws are determined by the offspring masses. Let $D_j$ be the event of \emph{first} extinction in generation $j$. These events are disjoint and $\eta_n=\sum_{j=1}^nP(D_j)$. The event of eventual extinction is their countable union, with probability defined by the nonnegative sum $\eta=\sum_{j\ge1}P(D_j)$. Hence $\eta=\lim_n\eta_n=L$. No conclusion about an increasing union is drawn from finite additivity alone.
+To justify that this limit is the chance of eventual extinction, do not invoke an unproved rule for arbitrary infinite events. Let $D_j$ mean that the population first becomes zero in generation $j$. The events $D_1,D_2,\ldots$ are disjoint and each is decided by a finite family tree. Thus $\eta_n=\sum_{j=1}^nP(D_j)$. We \emph{define} the probability of eventual extinction by the convergent nonnegative series
+\[
+ \eta=\sum_{j=1}^{\infty}P(D_j)=\lim_{n\to\infty}\eta_n.
+\]
+The sum converges because every partial sum is at most $1$. Its value is $L$. We have defined this particular countable event from disjoint first-extinction times, not assumed countable additivity for every subset of an infinite sample space.
 
 Now let $r\in[0,1]$ be any root of $s=f(s)$. Then $\eta_0=0\le r$, and if $\eta_{n-1}\le r$ then $\eta_n=f(\eta_{n-1})\le f(r)=r$. So $L\le r$. The limit is the smallest root.
 
@@ -217,7 +229,9 @@ If $m=1$ and $P(X=1)<1$, then for $s\in[0,1)$,
 \]
 Each inner sum is at most $k$, and it is strictly smaller than $k$ whenever $k\ge2$. The hypothesis $P(X=1)<1$ together with mean $1$ forces some $p_k>0$ for a $k\ne1$. The case of mass only at $0$ and $1$ with mean $1$ is $p_1=1$, which is excluded. So the displayed average is strictly less than $\sum k p_k=1$, hence $f(s)>s$ on $[0,1)$. There is no root in $[0,1)$, and $\eta=1$.
 
-If $P(X=1)=1$, then $f(s)=s$, every point is a root, the smallest root is $0$, and the population stays at $1$, so $\eta=0$. The hypothesis $P(X=1)<1$ excludes this case from the sentence $\eta=1$.
+The exception is worth checking. If every individual has exactly one child, then $P(X=1)=1$ and $f(s)=s$. Every $s\in[0,1]$ is a fixed point, but the \emph{smallest} is $0$. The population stays equal to $1$ forever, and $\eta=0$, even though the mean equals $1$. This is why the theorem explicitly excludes the deterministic one-child law from its critical-extinction conclusion.
+
+At the other boundary, if everyone has no children, then $f(s)=1$ and its only fixed point is $1$: the line dies immediately. If every individual has two children, then $f(s)=s^2$ and its smallest fixed point is $0$: the line never dies. The fixed-point rule handles both extremes without an approximation.
 \end{proof}
 
 When $m<1$ the generation means give a second proof that does not locate the root. Write $S_N=Z_0+\cdots+Z_N$, so $\mathbb E[S_N]=\sum_{n=0}^N m^n$ increases to $1/(1-m)$. The partial sums increase to the total progeny $T$, which may be infinite. Volume~1's tail sum gives $\mathbb E[S_N]=\sum_{k\ge0}P(S_N>k)$. For each fixed $k$, the events $\{S_N>k\}$ increase to $\{T>k\}$, so
@@ -267,7 +281,9 @@ On the right, $f(s)=\tfrac14+\tfrac14 s+\tfrac12 s^2$. The first three values ar
 
 \section{Catalan numbers}
 
-Let $C_0=1$ and, for $n\ge1$, let $C_n$ be the number of Dyck paths of semilength $n$, from Exercise~\ref{ex:catalan}. For semilength $3$ the five paths are
+A generating function is useful even when no probability appears. Its coefficients can count objects rather than carry probability masses. The method is the same: translate a combinatorial decomposition into an algebraic equation. Here is an example already familiar from the ballot problem of Chapter~1.
+
+Let $C_0=1$ and, for $n\ge1$, let $C_n$ be the number of \emph{Dyck paths} of semilength $n$ from Exercise~\ref{ex:catalan}. Write $X$ for an up-step and $Y$ for a down-step. A Dyck path has $n$ steps of each kind, never goes below its starting height, and returns to that height. The empty path is counted by $C_0=1$. For semilength $3$ there are exactly five paths:
 \[
  XXXYYY,\quad XXYXYY,\quad XXYYXY,\quad XYXXYY,\quad XYXYXY.
 \]
@@ -298,7 +314,9 @@ The right-hand side tends to $1$ as $x\to0$ from either side. The plus sign is $
 \]
 and $c(0)=1$. Exercise~\ref{ex:binseries} identifies the series of $(1-4x)^{-1/2}$ and recovers $C_n=\binom{2n}{n}/(n+1)$ from this formula, which matches the count in Chapter~1.
 
-The first-step split is the same idea as a random walk's first return. Chapter~8 counts those returns. The generating function here is only the enumeration.
+As a check, the recurrence gives $C_1=C_0C_0=1$, $C_2=C_0C_1+C_1C_0=2$, and $C_3=C_0C_2+C_1C_1+C_2C_0=5$. Those are the paths just listed. Exercise~\ref{ex:binseries} turns the generating function into the exact closed formula $C_n=\binom{2n}{n}/(n+1)$.
+
+This chapter used one idea three ways: coefficients hold a probability law, products count independent sums, and compositions describe families that reproduce at random. A generating function can also encode deterministic objects, as the Catalan paths show. The first-return decomposition will appear again in Chapter~8's random walks. Before studying random motion, Chapter~4 asks a different question: when many independent outcomes are added, how strongly can their sum depart from its expected value?
 
 \section{Exercises}
 
