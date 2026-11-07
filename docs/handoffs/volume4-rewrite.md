@@ -22,7 +22,7 @@ Fresh grok-4.7 readings of the current text at `4e78153b` are in flight and must
 - Chapter 7: `bc-55b8b4fd` reported on `4e78153b`. The repairs are `8ede890b`. A fresh reread of that SHA is `bc-02e567cc`. Do not edit Chapter 7 until that report returns.
 - Chapter 8: closed for mathematics and voice at `52f0b87f` by grok-4.7 `bc-3478b344`, who found no remaining defect. Not a production acceptance. Do not edit the chapter unless a later defect appears.
 - Chapters 9 and 10: `bc-15929f25` reported on `4e78153b`. The repairs are `52f0b87f`. A fresh reread of that SHA is `bc-bf8714af`. Do not edit Chapters 9 or 10 until that report returns.
-- Chapters 11 and 12: `bc-872cdf65` reported on `4e78153b`. The repairs are `8ede890b`. A fresh reread of that SHA is `bc-f6caadc7`. Do not edit Chapters 11 or 12 until that report returns.
+- Chapters 11 and 12: `bc-f6caadc7` reread `8ede890b` and rejected the sixteen-path count, the last-step upcrossing, the correlated Gaussian vector, the restart, the quadratic-variation Borel--Cantelli step, and the nested-interval lengths. Those are repaired after that SHA. A fresh reread is required. Do not treat `8ede890b` as the reviewed text.
 - Chapter 14: closed for mathematics and voice at `166034c8` by grok-4.7 `bc-44a52b55`, who found no remaining defect. Not a production acceptance. Do not edit the chapter unless a later defect appears.
 - Appendix and front/back matter: `bc-84b5137e` closed the front and back matter at `4e78153b`. `bc-8d96509e` reread the appendix at `68d0328e` and rejected the unchecked blue complement of the red $5$-cycle and the $K_6$ sentence in `ex:r33`. Those two checks are `88745d9b`. A fresh reread of that SHA is `bc-4614958c`. Do not edit the appendix until that report returns.
 
