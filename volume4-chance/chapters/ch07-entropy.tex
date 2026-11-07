@@ -5,15 +5,28 @@ A fair coin has entropy $1$ bit. A coin that lands heads with probability $0.1$\
 has entropy about $0.469$ bits. The typical sequences are the ones you actually see.
 \end{center}
 
-Concentration says a sum settles near its mean. Entropy says which messages are typical. The two laws answer different questions. One is about the size of a fluctuation. The other is about the size of the set of strings that carry the probability.
+Imagine sending a message made of heads and tails. If the coin is fair, there is no reason to expect one string of ten symbols more often than another. But if heads has probability $1/10$, a message such as TTTTTTTTTT is much more likely than HHHHHHHHHH. We should not spend the same number of bits describing events that occur at very different rates.
+
+How many bits of uncertainty does one symbol carry on average? How short can a code be if the receiver must decode a message without guessing where one symbol ends? And why do long random messages, although there are enormously many possibilities, concentrate most of their probability on a much smaller set?
+
+Chapter~4 told us when averages settle near their means. The same concentration principle answers these three questions. Here the variable being averaged is \emph{surprise}, measured by a logarithm. That average is called entropy.
 
 \section{Entropy of a finite alphabet}
 
-Let $X$ take finitely many values, with $P(X=a)=p_a>0$. The \emph{Shannon entropy} in bits is
+Suppose a symbol $a$ has probability $p_a>0$. Learning that $a$ occurred conveys
+\[
+ I(a)=\log_2\frac1{p_a}\quad\text{bits}.
+\]
+Why a logarithm? Independent events with probabilities $p$ and $q$ occur together with probability $pq$. Their combined surprise is
+\(\log_2(1/(pq))=\log_2(1/p)+\log_2(1/q)\): two independent messages add their information.
+
+The \emph{Shannon entropy} is the average surprise. If $X$ has a finite alphabet of positive-probability symbols, it is
 \[
  H(X)=\sum_a p_a\log_2\frac1{p_a}.
 \]
-The sum is finite. Changing the base of the logarithm multiplies $H$ by a constant; bits are the choice $\log_2$. A fair coin has $H=1$. A coin with $P(\mathrm{heads})=1/10$ has
+The sum is finite, nonnegative, and measured in bits because the base of the logarithm is $2$. A symbol that occurs with probability $1$ carries no uncertainty: $\log_2 1=0$. Symbols of probability $0$ are omitted from the support; they never occur. Changing the logarithm's base changes only the unit.
+
+For a fair coin each symbol has information $\log_2 2=1$ bit, so the entropy is $1$ bit. For a biased coin with $P(H)=1/10$, a head carries $\log_2 10\approx3.322$ bits of surprise, while a tail carries $\log_2(10/9)\approx0.152$ bits. The average is only about $0.469$ bits. An unusual head can be very surprising while the \emph{average} uncertainty remains small.$. A fair coin has $H=1$. A coin with $P(\mathrm{heads})=1/10$ has
 \[
  H=\frac1{10}\log_2 10+\frac9{10}\log_2\frac{10}9=\log_2 10-\frac95\log_2 3.
 \]
@@ -36,7 +49,7 @@ For i.i.d.\ copies $X_1,X_2,\ldots$ with the same finite law, the probability of
 \]
 The summands are i.i.d.\ and bounded, because every $p_a$ in the support is positive and the alphabet is finite. For rational masses, choose a common denominator $r$ and use one base-$r$ digit from each independent uniform block, as in Chapter~2; this is a finite-digit model of Chapter~4's bounded strong law. A rational probability such as $1/3$ would \emph{not} be represented exactly by finitely many binary digits, so the choice of base matters. For arbitrary positive finite-alphabet masses, list the symbols in order of \emph{decreasing} probability. Their information values $\log_2(1/p_a)$ are then nondecreasing. A uniform point $U$ selects a symbol through consecutive intervals of lengths $p_a$, so its information is a bounded nondecreasing step function of $U$. The dyadic lower-and-upper approximation after Proposition~\ref{prop:inverse} in Chapter~5 extends the bounded strong law to this function. Its i.i.d.\ block copies therefore have information averages converging almost surely to $H(X)$. The typical-set theorem below also proves convergence in probability directly by Chebyshev's inequality.
 
-The set can be written down for two tosses of this coin, with tolerance $\varepsilon=1/2$. The information per symbol of a string with probability $p$ is $-\frac12\log_2 p$. For TT one has $p=81/100$, so the rate equals $\log_2 10-2\log_2 3$. Subtracting from the entropy,
+The definition of typicality is easier to see in a very small case. For two tosses of the biased coin, take tolerance $\varepsilon=1/2$. The information per symbol of a string with probability $p$ is $-\frac12\log_2 p$. For TT one has $p=81/100$, so the rate equals $\log_2 10-2\log_2 3$. Subtracting from the entropy,
 \[
  H-\bigl(\log_2 10-2\log_2 3\bigr)=\frac15\log_2 3<\frac15\cdot\frac85=\frac8{25}<\frac12.
 \]
@@ -44,7 +57,7 @@ The rate lies below $H$ and within $1/2$ of it, so TT is typical. For HT, $p=9/1
 \[
  \bigl(\log_2 10-\log_2 3\bigr)-H=\frac45\log_2 3>\frac45\cdot\frac32=\frac65>\frac12.
 \]
-TH has the same probability as HT, so it has the same excess. For HH one has $p=1/100$ and rate $\log_2 10$, so the excess over $H$ is $\tfrac95\log_2 3>\tfrac95\cdot\tfrac32=\tfrac{27}{10}>\tfrac12$. All three of HT, TH and HH lie outside the window. The typical set is the single string TT, whose probability is $81/100$. That probability is exact. It is not close to $1$. The same bounds give $H<\tfrac{10}3-\tfrac95\cdot\tfrac32=\tfrac{19}{30}$, so $2(H-\tfrac12)<\tfrac4{15}$ and $\tfrac12\cdot 2^{2(H-1/2)}<1$, while $2^{2(H+1/2)}>1$. One string lies strictly between the two count bounds. The probability of the typical set tends to $1$. Separately, the number of strings in it grows at exponential rate $H$. Both claims use the same number $H(X)$.
+TH has the same probability as HT, so it has the same excess. For HH one has $p=1/100$ and rate $\log_2 10$, so the excess over $H$ is $\tfrac95\log_2 3>\tfrac95\cdot\tfrac32=\tfrac{27}{10}>\tfrac12$. All three of HT, TH and HH lie outside the window. The typical set is the single string TT, whose probability is $81/100$. That probability is exact. It is not close to $1$. The same bounds give $H<\tfrac{10}3-\tfrac95\cdot\tfrac32=\tfrac{19}{30}$, so $2(H-\tfrac12)<\tfrac4{15}$ and $\tfrac12\cdot 2^{2(H-1/2)}<1$, while $2^{2(H+1/2)}>1$. One string lies strictly between the two count bounds. The probability of the typical set tends to $1$. Separately, the number of strings in it has exponential upper and lower bounds that approach rate $H$. Both claims are controlled by the same number $H(X)$, with a margin $\varepsilon$ in the count$.
 
 \begin{theorem}[typical sequences]\label{thm:aep}
 Let $\varepsilon>0$. The set of strings of length $n$ whose probability $p$ satisfies
@@ -55,7 +68,7 @@ has probability tending to $1$. Denote this set by $T_n(\varepsilon)$. For all s
 \[
  \frac12\,2^{n(H(X)-\varepsilon)}<|T_n(\varepsilon)|\le2^{n(H(X)+\varepsilon)}.
 \]
-So nearly all the probability is carried by a set whose size grows exponentially at rate $H(X)$.
+For this fixed tolerance $\varepsilon$, the number of typical strings lies between exponential scales $2^{n(H-\varepsilon)}$ and $2^{n(H+\varepsilon)}$, up to a fixed factor. These bounds approach the exact entropy exponent \emph{as the tolerance decreases}; they do not assert an exact exponent $H$ for every fixed $\varepsilon$.
 \end{theorem}
 \begin{proof}
 Let $I=\log_2(1/p_X)$ and let $I_1,\ldots,I_n$ be independent copies, one for each symbol of the string. Then $\mathbb E[I]=H(X)$. The alphabet is finite and every mass in the support is positive, so $I$ is bounded: $0\le I\le M$ with $M=\max_a\log_2(1/p_a)<\infty$. Hence $\operatorname{Var} I\le\mathbb E[I^2]\le M^2$. A string of probability $p$ lies in $T_n(\varepsilon)$ if and only if $\bigl|-\frac1n\log_2 p-H(X)\bigr|\le\varepsilon$, and $-\frac1n\log_2 p$ is the average of the $I_j$. The typical set is the event $|\bar I_n-H(X)|\le\varepsilon$. Its complement is contained in the event $|\bar I_n-H(X)|\ge\varepsilon$. Chebyshev's inequality from Volume~1 gives
