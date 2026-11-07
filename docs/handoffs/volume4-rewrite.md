@@ -13,7 +13,7 @@ The citation corrections are `63f9c18d3c5e7d14f42d2867840dbd934b52bb04`. This ha
 **Next, then last.** Printed Chapter 13 was read in full by grok-4.7 `bc-90366bc7` at `5589acd7` and that review found no remaining defect. The mathematical and voice gate for Chapter 13 is closed at that SHA only. It is not production acceptance. The delivered PDF of `43d7d93b` does not contain that text. Composer-2.5 gates stay provisional.
 
 Fresh grok-4.7 readings of the current text at `4e78153b` are in flight and must not be duplicated. They use `git show` of that SHA, so a later handoff commit does not change what they read:
-- Chapter 1: `bc-b675adc6`
+- Chapter 1: `bc-b675adc6` reported on `4e78153b`. The run example, the outer-content sentence, and the boy-pointing calculation are repaired in this commit. A fresh reread is required. Do not treat `4e78153b` as the reviewed text of Chapter 1.
 - Chapter 2: `bc-be7ce6be` reported on `4e78153b`. The repairs are `68d0328e`. A fresh reread of that SHA is `bc-889115c8`. Do not edit Chapter 2 until that report returns.
 - Chapter 3: `bc-2c51e89f`
 - Chapter 4: `bc-84438b18`
