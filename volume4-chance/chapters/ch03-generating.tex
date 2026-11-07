@@ -5,21 +5,44 @@ A family name dies out, or it does not. The probability is the smallest root of 
 where $f$ is the generating function of the number of children.
 \end{center}
 
-Francis Galton posed the question in 1873, in the \emph{Educational Times}: why do aristocratic surnames disappear? Henry William Watson answered with the fixed-point equation $s=f(s)$ for the extinction probability. The same function packages a law on the nonnegative integers. For a sum of independent copies the functions multiply. That is the count the generating function is keeping.
+A random variable has a list of probabilities. In Chapter~2, we used that list to calculate an average. Suppose instead that we want the entire law of the sum of twenty independent variables. Writing out every possible outcome is possible, but it becomes a long multiplication problem. A clever way to organise that multiplication is to attach the probability of $X=k$ to the symbol $s^k$.
+
+This produces a function whose coefficients are probabilities. For independent sums, the functions multiply: the ordinary rule $s^i s^j=s^{i+j}$ keeps track of adding the two values. The function also helps when the number of summands is random. Then multiplication becomes composition.
+
+Francis Galton asked a related question in 1873: why can a family name disappear even when each generation may have many children? Henry William Watson studied the question using the same kind of function. We will build the tool with a tiny example first, then follow it all the way to extinction and to a familiar counting problem involving balanced paths.
 
 \section{The probability generating function}
 
-Let $X$ be a random variable with values in $\{0,1,2,\ldots\}$ and $P(X=k)=p_k$. The \emph{probability generating function} is
+Choose uniformly from four tickets marked $0$, $1$, $1$, and $2$. Let $X$ be the number written on the ticket. Its law is
 \[
- f(s)=\mathbb E[s^X]=\sum_{k\ge0}p_k s^k,\qquad s\in[0,1].
+ P(X=0)=\tfrac14,\qquad P(X=1)=\tfrac12,\qquad P(X=2)=\tfrac14.
 \]
-The series equals $1$ at $s=1$, and it converges absolutely on $[0,1)$.
+Attach a term $p_k s^k$ to each possible value $k$, then add. We obtain
+\[
+ f(s)=\tfrac14+\tfrac12s+\tfrac14s^2.
+\]
+This polynomial records all three probabilities. The constant term is the chance of $0$; the coefficient of $s^2$ is the chance of $2$. At $s=1$ the terms add to $1$, the total probability. Figure~\ref{fig:lawpoly} shows the correspondence.
 
-Continuity at $1$ is a tail estimate, not an informal swap of limits. Fix $K$. For $s\in[0,1]$,
+\begin{figure}[ht]
+\centering
+\fig{ch03-lawpoly}
+\caption{The three values of $X$ become three powers of $s$, with coefficients equal to their probabilities. This is an exact calculation for four tickets labelled $0,1,1,2$, not a fitted curve.}
+\label{fig:lawpoly}
+\end{figure}
+
+In general, let $X$ take values in $\{0,1,2,\ldots\}$, and write $p_k=P(X=k)$. Its \emph{probability generating function}, abbreviated \emph{PGF}, is
 \[
- |f(1)-f(s)|\le\sum_{k=0}^K p_k(1-s^k)+\sum_{k>K}p_k.
+ f(s)=\mathbb E[s^X]=\sum_{k\ge0}p_k s^k,\qquad 0\le s\le1.
 \]
-The finite sum tends to $0$ as $s\uparrow1$. The tail is small because $\sum_k p_k=1$. So $f$ is continuous on $[0,1]$. The derivatives are identified next. At $0$ each derivative is the right-hand derivative. On $(0,1)$ it is two-sided.
+At $s=0$, interpret $s^0=1$, including the term $0^0$ in this formal expression: thus $f(0)=p_0$. At $s=1$, $f(1)=\sum_kp_k=1$. For $0\le s<1$, every term satisfies $0\le p_ks^k\le p_k$, so the series converges, even when $X$ has infinitely many possible values. A PGF is an ordinary numerical function on $[0,1]$; we will justify every differentiation of an infinite series before using it.
+
+To use the endpoint $s=1$, we should first know that $f(s)$ approaches $1$ as $s$ approaches $1$. Choose $K$ so that the leftover probability $\sum_{k>K}p_k$ is small. Then, for $0\le s\le1$,
+\[
+ 0\le f(1)-f(s)\le\sum_{k=0}^Kp_k(1-s^k)+\sum_{k>K}p_k.
+\]
+There are only finitely many terms in the first sum; each tends to $0$ as $s\uparrow1$. The second sum stays small because the total mass equals $1$. Thus $f(s)\to1=f(1)$. The same comparison with powers proves continuity at every point of $[0,1)$, or one may use the uniformly convergent geometric tail on each $[0,r]$ with $r<1$. This is not an informal exchange of an infinite sum and a limit.
+
+Our next goal is to recover the probabilities from the function. Ordinary polynomials reveal their coefficients through derivatives at $0$. The same is true here, but we must justify differentiating the series. At $0$, derivatives mean right-hand derivatives; on $(0,1)$, they are ordinary two-sided derivatives.
 
 \begin{proposition}[the masses are the derivatives at $0$]\label{prop:pgfcoeff}
 For every integer $k\ge0$ and every $s\in[0,1)$,
