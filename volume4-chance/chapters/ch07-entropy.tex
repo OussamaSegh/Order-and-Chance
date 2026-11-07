@@ -1,0 +1,375 @@
+\chapter{Entropy, Codes and Typical Sequences}
+
+\begin{center}\itshape
+A fair coin has entropy $1$ bit. A coin that lands heads with probability $0.1$\\
+has entropy about $0.469$ bits. The typical sequences are the ones you actually see.
+\end{center}
+
+Concentration says a sum settles near its mean. Entropy says which messages are typical. The two laws answer different questions. One is about the size of a fluctuation. The other is about the size of the set of strings that carry the probability.
+
+\section{Entropy of a finite alphabet}
+
+Let $X$ take finitely many values, with $P(X=a)=p_a>0$. The \emph{Shannon entropy} in bits is
+\[
+ H(X)=\sum_a p_a\log_2\frac1{p_a}.
+\]
+The sum is finite. Changing the base of the logarithm multiplies $H$ by a constant; bits are the choice $\log_2$. A fair coin has $H=1$. A coin with $P(\mathrm{heads})=1/10$ has
+\[
+ H=\frac1{10}\log_2 10+\frac9{10}\log_2\frac{10}9=\log_2 10-\frac95\log_2 3.
+\]
+The decimal $0.46899\ldots$ is a numerical evaluation of this expression. No proof below uses that decimal. The comparisons use $3<\log_2 10<10/3$, from $8<10$ and from $2^{10}=1024>1000=10^3$, and $3/2<\log_2 3<8/5$, from $2^3=8<9=3^2$ and from $2^8=256>243=3^5$.
+
+\begin{proposition}[Gibbs]\label{prop:gibbs}
+For an integer $m\ge1$, if $X$ takes at most $m$ values, then $H(X)\le\log_2 m$, with equality if and only if $X$ is uniform on exactly $m$ values.
+\end{proposition}
+\begin{proof}
+Write $A=\{a:p_a>0\}$ and $k=|A|\le m$. Volume~1, Chapter~8, records $\ln(1+u)\le u$ for $u\ge0$ and $\ln(1-u)\le -u$ for $0\le u<1$. Together these say $\ln t\le t-1$ for every $t>0$, and that inequality gives
+\[
+\sum_{a\in A}p_a\ln\frac{1/m}{p_a}\le\sum_{a\in A}\bigl(\tfrac1m-p_a\bigr)=\frac{k}{m}-1\le0.
+\]
+The sum on the left equals $\sum_a p_a\ln(1/p_a)-\ln m$, because the probabilities on $A$ add to $1$. Dividing by $\ln 2$ gives $H(X)\le\log_2 m$. For the equality case, set $\psi(t)=t-1-\ln t$ on $t>0$. Then $\psi(1)=0$ and $\psi'(t)=1-1/t$. The derivative is negative on $(0,1)$ and positive on $(1,\infty)$, so $\psi(t)>0$ for every $t\ne1$, and $\ln t=t-1$ only at $t=1$. Each term with $p_a>0$ is therefore equal only when $(1/m)/p_a=1$, so every positive mass equals $1/m$. Those $k$ masses sum to $k/m$. They also sum to $1$, so $k/m=1$ and $k=m$. For comparison, the general Gibbs inequality $\sum p_a\log_2(1/p_a)\le\sum p_a\log_2(1/q_a)$ follows by the same calculation when $q_a>0$ on $\{p_a>0\}$ and $\sum_aq_a=1$: the sum of $q_a$ over $\{p_a>0\}$ may be strictly smaller than $1$, and the inequality uses that sum as it stands.
+\end{proof}
+
+For i.i.d.\ copies $X_1,X_2,\ldots$ with the same finite law, the probability of a particular string is the product of the symbol probabilities, so
+\[
+ -\frac1n\log_2 P(X_1=a_1,\ldots,X_n=a_n)=\frac1n\sum_{i=1}^n\log_2\frac1{p_{a_i}}.
+\]
+The summands are i.i.d.\ and bounded, because every $p_a$ in the support is positive and the alphabet is finite. For rational masses, choose a common denominator $r$ and use one base-$r$ digit from each independent uniform block, as in Chapter~2; this is a finite-digit model of Chapter~4's bounded strong law. A rational probability such as $1/3$ would \emph{not} be represented exactly by finitely many binary digits, so the choice of base matters. For arbitrary positive finite-alphabet masses, list the symbols in order of \emph{decreasing} probability. Their information values $\log_2(1/p_a)$ are then nondecreasing. A uniform point $U$ selects a symbol through consecutive intervals of lengths $p_a$, so its information is a bounded nondecreasing step function of $U$. The dyadic lower-and-upper approximation after Proposition~\ref{prop:inverse} in Chapter~5 extends the bounded strong law to this function. Its i.i.d.\ block copies therefore have information averages converging almost surely to $H(X)$. The typical-set theorem below also proves convergence in probability directly by Chebyshev's inequality.
+
+The set can be written down for two tosses of this coin, with tolerance $\varepsilon=1/2$. The information per symbol of a string with probability $p$ is $-\frac12\log_2 p$. For TT one has $p=81/100$, so the rate equals $\log_2 10-2\log_2 3$. Subtracting from the entropy,
+\[
+ H-\bigl(\log_2 10-2\log_2 3\bigr)=\frac15\log_2 3<\frac15\cdot\frac85=\frac8{25}<\frac12.
+\]
+The rate lies below $H$ and within $1/2$ of it, so TT is typical. For HT, $p=9/100$ and the rate equals $\log_2 10-\log_2 3$, and
+\[
+ \bigl(\log_2 10-\log_2 3\bigr)-H=\frac45\log_2 3>\frac45\cdot\frac32=\frac65>\frac12.
+\]
+TH has the same probability as HT, so it has the same excess. For HH one has $p=1/100$ and rate $\log_2 10$, so the excess over $H$ is $\tfrac95\log_2 3>\tfrac95\cdot\tfrac32=\tfrac{27}{10}>\tfrac12$. All three of HT, TH and HH lie outside the window. The typical set is the single string TT, whose probability is $81/100$. That probability is exact. It is not close to $1$. The same bounds give $H<\tfrac{10}3-\tfrac95\cdot\tfrac32=\tfrac{19}{30}$, so $2(H-\tfrac12)<\tfrac4{15}$ and $\tfrac12\cdot 2^{2(H-1/2)}<1$, while $2^{2(H+1/2)}>1$. One string lies strictly between the two count bounds. The probability of the typical set tends to $1$. Separately, the number of strings in it grows at exponential rate $H$. Both claims use the same number $H(X)$.
+
+\begin{theorem}[typical sequences]\label{thm:aep}
+Let $\varepsilon>0$. The set of strings of length $n$ whose probability $p$ satisfies
+\[
+ 2^{-n(H(X)+\varepsilon)}\le p\le 2^{-n(H(X)-\varepsilon)}
+\]
+has probability tending to $1$. Denote this set by $T_n(\varepsilon)$. For all sufficiently large $n$ its number of strings satisfies
+\[
+ \frac12\,2^{n(H(X)-\varepsilon)}<|T_n(\varepsilon)|\le2^{n(H(X)+\varepsilon)}.
+\]
+So nearly all the probability is carried by a set whose size grows exponentially at rate $H(X)$.
+\end{theorem}
+\begin{proof}
+Let $I=\log_2(1/p_X)$ and let $I_1,\ldots,I_n$ be independent copies, one for each symbol of the string. Then $\mathbb E[I]=H(X)$. The alphabet is finite and every mass in the support is positive, so $I$ is bounded: $0\le I\le M$ with $M=\max_a\log_2(1/p_a)<\infty$. Hence $\operatorname{Var} I\le\mathbb E[I^2]\le M^2$. A string of probability $p$ lies in $T_n(\varepsilon)$ if and only if $\bigl|-\frac1n\log_2 p-H(X)\bigr|\le\varepsilon$, and $-\frac1n\log_2 p$ is the average of the $I_j$. The typical set is the event $|\bar I_n-H(X)|\le\varepsilon$. Its complement is contained in the event $|\bar I_n-H(X)|\ge\varepsilon$. Chebyshev's inequality from Volume~1 gives
+\[
+ P\bigl(|\bar I_n-H(X)|\ge\varepsilon\bigr)\le\frac{M^2}{n\varepsilon^2}.
+\]
+The right-hand side tends to $0$, so $P(T_n(\varepsilon))\to1$. This is a finite-$n$ bound, not only a limit: once $n>2M^2/\varepsilon^2$ the probability of the typical set exceeds $1/2$.
+
+Each string in $T_n(\varepsilon)$ has mass at least $2^{-n(H+\varepsilon)}$, and the total mass of any set of strings is at most $1$, so $|T_n(\varepsilon)|\le 2^{n(H+\varepsilon)}$. In the other direction, once the total mass of $T_n(\varepsilon)$ exceeds $1/2$, and each of its strings has mass at most $2^{-n(H-\varepsilon)}$, the number of them exceeds $(1/2)$ divided by that mass, which is $\tfrac12\,2^{n(H-\varepsilon)}$. The threshold $n>2M^2/\varepsilon^2$ is a sufficient condition for that mass, read off from Chebyshev. It is not claimed to be the smallest such $n$.
+\end{proof}
+
+For the coin with heads probability $1/10$, the larger information is $\log_2 10<10/3$, so $M^2<100/9$. At tolerance $\varepsilon=1/2$,
+\[
+ \frac{2M^2}{\varepsilon^2}<\frac{2\cdot 100/9}{1/4}=\frac{800}9<89.
+\]
+Chebyshev therefore guarantees $P(T_n(1/2))>1/2$ for every $n\ge 89$, and the two count bounds of the theorem are in force from that $n$ on. The two-toss set above has probability $81/100$, which is already larger than $1/2$, but $n=2$ is far below $89$: the guarantee is sufficient, and this particular coin crosses $1/2$ earlier than the estimate sees. The decimal evaluation of $H$ is not an input to the guarantee.
+
+For a fair coin, every one of the $2^n$ binary strings has mass $2^{-n}$: the typical set can be the whole space. For the coin of heads probability $1/10$, the bound already computed gives $H<\tfrac{19}{30}<1$. Once $0<\varepsilon<\tfrac{11}{30}$, one has $H+\varepsilon<1$, so $|T_n(\varepsilon)|\le 2^{n(H+\varepsilon)}$ is a vanishing fraction of the $2^n$ strings. The probability of that small set tends to $1$. The two-toss picture is the same phenomenon at $n=2$: one string out of four carries the typical mass. The theorem supplies both an upper and a lower exponential bound. It does not give the exact count of any one finite sample.
+
+\section{Prefix codes}
+
+A binary code assigns to each symbol $a$ a word $c(a)$ in the alphabet $\{0,1\}$. It is a \emph{prefix code} when no codeword is a prefix of another. A receiver can then stop at the end of each word without a separating mark.
+
+\begin{theorem}[Kraft]\label{thm:kraft}
+If $c$ is a finite binary prefix code, allowing the empty word only for a one-symbol alphabet, and has word lengths $\ell(a)$, then $\sum_a 2^{-\ell(a)}\le 1$. Conversely, any nonnegative integers $\ell(a)$ with that sum at most $1$ are the lengths of some prefix code. Length $0$ (the empty word) is possible only when there is a single symbol.
+\end{theorem}
+\begin{proof}
+In the full binary tree, the codeword of length $\ell$ blocks $2^{-\ell}$ of the leaves at every deeper level. Prefix-freeness means the blocked sets are disjoint, so the sum is at most $1$. Conversely, sort the requested lengths as $\ell_1\le\cdots\le\ell_m$. Suppose the first $i-1$ codewords have been assigned, with none the prefix of another. Among the $2^{\ell_i}$ binary words of length $\ell_i$, the earlier words block exactly $\sum_{j<i}2^{\ell_i-\ell_j}$ descendants. Since
+\[
+\sum_{j\le i}2^{-\ell_j}\le\sum_{j\le m}2^{-\ell_j}\le1,
+\]
+there are at most $2^{\ell_i}-1$ blocked words, so an unblocked word exists. Choose the first one in lexicographic order. Because every earlier word has length at most $\ell_i$ and we avoided its descendants, the new word creates no prefix conflict. Continue through all $m$ symbols.
+\end{proof}
+
+\begin{theorem}[Shannon's code]\label{thm:shannon}
+Let $\ell(a)=\lceil\log_2(1/p_a)\rceil$. Then $\sum 2^{-\ell(a)}\le 1$, so a prefix code of these lengths exists, and its expected length $L$ satisfies $H(X)\le L<H(X)+1$. If $X$ has just one possible value, this means the empty word of length $0$: no bit is required to tell the receiver which symbol occurred.
+\end{theorem}
+\begin{proof}
+$\ell(a)\ge\log_2(1/p_a)$, so $2^{-\ell(a)}\le p_a$ and the sum is at most $1$. Also $\ell(a)<\log_2(1/p_a)+1$, so $L=\sum p_a\ell(a)<\sum p_a\log_2(1/p_a)+1=H(X)+1$. The lower bound here follows term by term from $\log_2(1/p_a)\le\ell(a)$. More generally, \emph{every} binary prefix code has $L\ge H(X)$, even if its lengths were not chosen by rounding. Indeed, let $Z=\sum_a2^{-\ell(a)}\le1$ by Kraft, and set $q_a=2^{-\ell(a)}/Z$. Gibbs' inequality yields
+\[
+ H(X)\le\sum_a p_a\log_2(1/q_a)
+ =\sum_a p_a\ell(a)+\log_2 Z\le L.
+\]
+\end{proof}
+
+The tree shows a prefix code that attains the entropy exactly.
+
+\begin{figure}[ht]
+\centering
+\fig{ch07-prefixtree}
+\caption{A complete binary prefix code. The four symbols have probabilities $1/2$, $1/4$, $1/8$, $1/8$ and words $0$, $10$, $110$, $111$. None of the four marked leaves is an ancestor of another. Kraft's sum is $1$, and the average length equals the entropy $7/4$ bits.}
+\label{fig:prefix}
+\end{figure}
+
+For example, a message consisting of $a$, $b$, $c$, $d$ is transmitted as $0\,10\,110\,111$. A decoder reads the tree from its root, emits a symbol at a leaf, and starts again. The expected length per symbol is
+\[
+L=\tfrac12\cdot1+\tfrac14\cdot2+\tfrac18\cdot3+\tfrac18\cdot3=\tfrac74.
+\]
+The entropy has exactly the same value. This is the special case where each mass is a negative power of $2$.
+
+\begin{examplex}[a law that is not dyadic]
+Take probabilities $1/2$, $1/3$ and $1/6$. Shannon's lengths are $\lceil\log_2 2\rceil=1$, $\lceil\log_2 3\rceil=2$ and $\lceil\log_2 6\rceil=3$. Kraft's sum is $1/2+1/4+1/8=7/8\le 1$, so the words $0$, $10$, $110$ form a prefix code. The expected length is
+\[
+ L_S=\tfrac12\cdot 1+\tfrac13\cdot 2+\tfrac16\cdot 3=\tfrac53.
+\]
+The entropy is $H=\tfrac12\log_2 2+\tfrac13\log_2 3+\tfrac16\log_2 6=\tfrac23+\tfrac12\log_2 3$. The gap is
+\[
+ L_S-H=\tfrac53-\tfrac23-\tfrac12\log_2 3=1-\tfrac12\log_2 3.
+\]
+The bounds $\tfrac32<\log_2 3<\tfrac85$ give $\tfrac34<\tfrac12\log_2 3<\tfrac45$, so $\tfrac15<L_S-H<\tfrac14$. The gap is positive and strictly less than one bit.
+
+Merging the two smaller masses first produces a shorter code. Combine $1/3$ and $1/6$ into a node of mass $1/2$, then join that node to the remaining mass $1/2$. The resulting lengths are $1$, $2$ and $2$, with words $0$, $10$ and $11$. The expected length is
+\[
+ L_H=\tfrac12\cdot 1+\tfrac13\cdot 2+\tfrac16\cdot 2=\tfrac32.
+\]
+The saving against Shannon's lengths is $1/6$ of a bit. Theorem~\ref{thm:huffman} says no prefix code beats this merge.
+\end{examplex}
+
+\begin{proposition}[chain rule]\label{prop:chain}
+For finite-alphabet variables $X$ and $Y$, write $H(Y\mid X)=\sum_x P(X=x)\,H(Y\mid X=x)$, omitting outcomes of probability zero. Then $H(X,Y)=H(X)+H(Y\mid X)$.
+\end{proposition}
+\begin{proof}
+On every pair with positive probability, $P(X=x,Y=y)=P(X=x)P(Y=y\mid X=x)$. Split the logarithm:
+\[
+ -\log_2 P(X=x,Y=y)=-\log_2 P(X=x)-\log_2 P(Y=y\mid X=x).
+\]
+Average over the joint law. Summing out $y$ in the first sum recovers $P(X=x)$, so that sum is $H(X)$. The inner sum over $y$ in the second term is the conditional entropy of $Y$ given $X=x$, and the outer average is $H(Y\mid X)$.
+\end{proof}
+
+If $X$ is a fair bit and $Y=X$, then $H(Y\mid X)=0$ and $H(X,Y)=H(X)=1$. The pair does not carry two bits. If instead $X$ and $Y$ are independent, the conditional law of $Y$ does not depend on $X$, so $H(Y\mid X)=H(Y)$ and the joint entropy is the sum of the marginals. Iterating gives $H(X_1,\ldots,X_n)=nH(X)$ for i.i.d.\ copies, which is the count used for block codes below. The direct expansion of $\log_2$ of a product, written in that section, is the same identity without naming the conditional entropy.
+
+\begin{theorem}[relative entropy]\label{thm:kl}
+Let $p$ and $q$ be probability masses on a finite set. If $q_a=0$ for some $a$ with $p_a>0$, set $D(p\|q)=+\infty$. Otherwise
+\[
+ D(p\|q)=\sum_{a:p_a>0}p_a\log_2\frac{p_a}{q_a}.
+\]
+Then $D(p\|q)\ge0$, with equality if and only if $p=q$.
+\end{theorem}
+\begin{proof}
+The infinite case is immediate. Otherwise the inequality $\ln t\le t-1$, with equality only at $t=1$, applied to $t=q_a/p_a$ gives
+\[
+ \sum_{a:p_a>0}p_a\ln\frac{q_a}{p_a}\le\sum_{a:p_a>0}p_a\Bigl(\frac{q_a}{p_a}-1\Bigr)=\sum_{a:p_a>0}q_a-1\le0.
+\]
+Dividing by $\ln 2$ yields $-D(p\|q)\le0$. Equality requires $q_a/p_a=1$ whenever $p_a>0$, and also $\sum_{p_a>0}q_a=1$, so $q$ has no mass off the support of $p$. Thus $p=q$.
+\end{proof}
+
+Gibbs' comparison is this statement with $q$ the uniform mass $1/m$, up to the change from $\log_2$ to the bound $\log_2 m$. The same quantity measures dependence.
+
+\begin{theorem}[mutual information]\label{thm:mutual}
+For finite-alphabet $X$ and $Y$,
+\[
+ I(X;Y)=H(X)+H(Y)-H(X,Y)
+\]
+equals $D(p_{X,Y}\|p_Xp_Y)$, the relative entropy of the joint law against the product of the marginals. In particular $I(X;Y)\ge0$, with equality if and only if $X$ and $Y$ are independent. The chain rule rewrites the same number as $H(X)-H(X\mid Y)$.
+\end{theorem}
+\begin{proof}
+Expand the relative entropy:
+\[
+ \sum_{x,y}p(x,y)\log_2\frac{p(x,y)}{p_X(x)p_Y(y)}
+ = -H(X,Y)+H(X)+H(Y),
+\]
+where a pair of probability zero is omitted. Theorem~\ref{thm:kl} gives the sign and the equality case. For the chain-rule form, $H(X,Y)=H(Y)+H(X\mid Y)$, so $I(X;Y)=H(X)-H(X\mid Y)$.
+\end{proof}
+
+Take $X$ fair, and given $X$ let $Y$ equal $X$ with probability $2/3$ and equal $1-X$ with probability $1/3$. The conditional law is Bernoulli with masses $2/3$ and $1/3$, so
+\[
+ H(Y\mid X)=-\tfrac23\log_2\tfrac23-\tfrac13\log_2\tfrac13=\log_2 3-\tfrac23.
+\]
+Proposition~\ref{prop:chain} gives $H(X,Y)=1+\log_2 3-\tfrac23=\log_2 3+\tfrac13$. The marginal of $Y$ is
+\[
+ P(Y=1)=\tfrac12\cdot\tfrac23+\tfrac12\cdot\tfrac13=\tfrac12,
+\]
+so $Y$ is fair, $H(Y)=1$, and
+\[
+ I(X;Y)=\tfrac53-\log_2 3.
+\]
+The bounds $3/2<\log_2 3<8/5$ put this between $1/15$ and $1/6$. A sharper comparison gives the twelfth. Since $3^4=81$ and $3^8=6561$, one has $3^{12}=6561\cdot81=531441$, while $2^{19}=524288$. Thus $3^{12}>2^{19}$, so $\log_2 3>19/12$ and
+\[
+ I(X;Y)<\tfrac53-\tfrac{19}{12}=\tfrac1{12}.
+\]
+Knowing $X$ reduces the uncertainty about $Y$ by less than a twelfth of a bit. The variables are not independent, and the mutual information says how far the joint law sits from the product law.
+
+\begin{theorem}[Huffman merge]\label{thm:huffman}
+For a finite alphabet of at least two symbols, repeatedly merging two nodes of smallest probability, and giving the two children one extra bit, produces a binary prefix code of minimal expected length.
+\end{theorem}
+\begin{proof}
+Proceed by induction on the number $m$ of symbols. For $m=2$ the words $0$ and $1$ have expected length $1$. The empty word is a prefix of every word, so neither symbol of a two-symbol prefix code can be assigned the empty word. Both lengths are at least $1$, and the expected length is at least $1$.
+
+Suppose $m\ge 3$, and that the claim is known for alphabets of size $m-1$. Among prefix codes, one of minimal length may be taken to be a full tree: a node with only one child can be deleted, and every word below it shortens by one bit. In a full tree every deepest leaf has a sibling. Let $p\le q$ be the two smallest probabilities, carried by symbols $x$ and $y$, and start from an optimal full tree. Every symbol has probability at least $p$. If $x$ is already at maximum depth, leave the tree as it is. If it is not, a deepest leaf has probability $r\ge p$. The expected length changes by $(p-r)$ times the positive difference of depths. A strict inequality $r>p$ would shorten an optimal code, so that case does not occur. The remaining case is $r=p$, the swap leaves the length unchanged, and a lightest symbol now sits at maximum depth. Call that symbol $x$ still, and let its sibling have probability $s$. Every symbol other than $x$ has probability at least $q$, so $s\ge q$. If $y$ is already the sibling, stop. If not, swapping $y$ into the sibling slot changes the length by $(q-s)$ times the difference of depths. Equal depths make that factor $0$, so the length does not change even when $s>q$. A positive depth gap and $s>q$ would shorten an optimal code, so that case does not occur. The case $s=q$ leaves the length unchanged whether or not the depths agree. Thus there is an optimal code in which the two lightest symbols are siblings at maximum depth.
+
+Delete those two sibling leaves and give their parent their combined probability. The code that remains is a prefix code for an alphabet of $m-1$ symbols, and the original expected length is the reduced length plus the combined probability. By induction the reduced code may be replaced by a Huffman code for the reduced alphabet without increasing its length. Putting the two light symbols back as children of the merged node is exactly one run of the merge procedure, and it is optimal.
+\end{proof}
+
+\section{Coding long blocks}
+
+Coding one symbol at a time wastes up to one bit per symbol because lengths must be integers. Coding a block of $n$ independent symbols reduces that overhead to less than one bit per \emph{block}. A block is one symbol from the finite alphabet $A^n$. Its entropy is
+\[
+H(X_1,\ldots,X_n)=-\sum_{a_1,\ldots,a_n}\prod_{i=1}^np_{a_i}
+  \log_2\Bigl(\prod_{i=1}^np_{a_i}\Bigr)
+=nH(X),
+\]
+by expanding the logarithm and summing the other coordinates to $1$. Apply Shannon's code to the block law. There is a prefix code with average length $L_n$ satisfying
+\[
+nH(X)\le L_n<nH(X)+1,
+\qquad H(X)\le\frac{L_n}{n}<H(X)+\frac1n.
+\]
+So the entropy is the best achievable average number of bits per original symbol, in the limit of coding long independent blocks with prefix codes. This statement is a source-coding theorem. It makes no claim about dependence or communication through a noisy channel.
+
+The bound $L_n/n<H+1/n$ does not say that the first block length already beats a one-symbol code. Take the masses $1/2$, $1/3$, $1/6$ again, and code independent pairs. The nine blocks and Shannon's lengths $\lceil\log_2(1/p)\rceil$ are
+\begin{center}
+\begin{tabular}{crr}
+block & probability & length\\
+$aa$ & $1/4$ & $2$\\
+$ab$, $ba$ & $1/6$ & $3$\\
+$bb$ & $1/9$ & $4$\\
+$ac$, $ca$ & $1/12$ & $4$\\
+$bc$, $cb$ & $1/18$ & $5$\\
+$cc$ & $1/36$ & $6$.
+\end{tabular}
+\end{center}
+The expected length is
+\[
+ L_2=\tfrac14\cdot2+2\cdot\tfrac16\cdot3+\tfrac19\cdot4+2\cdot\tfrac1{12}\cdot4+2\cdot\tfrac1{18}\cdot5+\tfrac1{36}\cdot6=\tfrac{10}3.
+\]
+Per original symbol this is $5/3$, the same as Shannon's one-symbol code for this law. The overhead has not yet fallen. Huffman merging does better. Join lightest nodes in this order, breaking ties by using the node formed earlier: $cc$ with $bc$ (mass $1/12$); $cb$ with $ac$ (mass $5/36$); $ca$ with the first node (mass $1/6$); $bb$ with the second node (mass $1/4$); $ab$ with $ba$ (mass $1/3$); the third node with $aa$ (mass $5/12$); the fourth with the fifth (mass $7/12$); those two with each other. The resulting lengths are $2$ for $aa$, $3$ for $ab$, $ba$, $bb$ and $ca$, and $4$ for $ac$, $bc$, $cb$ and $cc$. The expected length is
+\[
+ \tfrac14\cdot2+3\Bigl(\tfrac16+\tfrac16+\tfrac19+\tfrac1{12}\Bigr)+4\Bigl(\tfrac1{12}+\tfrac1{18}+\tfrac1{18}+\tfrac1{36}\Bigr)=\tfrac{107}{36}.
+\]
+Per original symbol this is $107/72$. Since $107<108$, one has $107/72<108/72=3/2$, and $3/2<5/3$. The block code is shorter than both the one-symbol Huffman length $3/2$ and Shannon's one-symbol length $5/3$. Two symbols are already enough for the merge to beat both one-symbol codes. The Shannon bound promised only that some larger $n$ would push the overhead under any fixed positive number.
+
+The typical-set theorem tells us what the code is exploiting. Most of the probability is carried by roughly $2^{nH}$ likely blocks, rather than by all $|A|^n$ possible blocks. The integer-length argument shows how that saving becomes a real code.
+
+Random walks, in the next chapter, ask a different question about repeated randomness: not how many typical strings there are, but whether a running sum will ever return.
+
+\section{Exercises}
+
+\begin{exercise}[$\star\star$]\label{ex:entropymax}
+For a Bernoulli$(p)$ variable, $0<p<1$, show that $H(p)=-p\log_2 p-(1-p)\log_2(1-p)$ has a maximum at $p=1/2$, and that the maximum value is $1$.
+\end{exercise}
+
+
+\begin{exercise}[$\star$]\label{ex:prefixoptimal}
+Let $P(a)=1/2$, $P(b)=1/4$ and $P(c)=P(d)=1/8$. Check that the words $0$, $10$, $110$, $111$ form a prefix code, calculate its expected length, and prove that no binary prefix code has smaller expected length.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:entropychain}
+Proposition~\ref{prop:chain} is the chain rule. Let $X$ be a fair bit. Given $X$, let $Y$ equal $X$ with probability $2/3$ and equal $1-X$ with probability $1/3$. Compute $H(Y\mid X)$ and $H(X,Y)$. Check that $Y$ is still a fair bit, and compare $H(X,Y)$ with $H(X)+H(Y)$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:entropyproduct}
+Show that if $X$ and $Y$ are independent finite-alphabet variables, then $H(X,Y)=H(X)+H(Y)$. Explain why the independence hypothesis cannot be dropped, using $Y=X$ with $X$ a fair bit.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:ambiguouscode}
+The three codewords $0$, $01$, $10$ are not prefix-free. Show that the bit string $010$ can be decoded as two different pairs of source symbols. Compare with Figure~\ref{fig:prefix}.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:typicalcount}
+Let $X$ be Bernoulli$(1/4)$ and let $T_n(\varepsilon)$ be the typical set from Theorem~\ref{thm:aep}. Verify that $P(T_n(\varepsilon))\to1$ by Chebyshev, identify $H(X)$ explicitly, and use the two bounds in the theorem to bound $\log_2|T_n(\varepsilon)|/n$ for large $n$. State what happens as $\varepsilon\downarrow0$.
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{ex:entropymax}
+Differentiate. The second derivative of $-p\ln p-(1-p)\ln(1-p)$ is negative.
+\end{hint}
+
+
+\begin{hint}{ex:prefixoptimal}
+No selected codeword is the beginning of another. Compare its average length with entropy, then use Kraft and Gibbs for any competitor.
+\end{hint}
+\begin{hint}{ex:entropychain}
+Given $X$, the conditional law of $Y$ is Bernoulli$(1/3)$ up to swapping the labels. The chain rule adds that conditional entropy to $H(X)$.
+\end{hint}
+\begin{hint}{ex:entropyproduct}
+For independent coordinates, $P(Y=y\mid X=x)=P(Y=y)$. The copying case has only two joint outcomes rather than four.
+\end{hint}
+\begin{hint}{ex:ambiguouscode}
+Compare the split $0\,|\,10$ with another split using the codeword $01$.
+\end{hint}
+\begin{hint}{ex:typicalcount}
+The information of one head is $\log_2 4$ and of one tail is $\log_2(4/3)$. The variance of the sum grows like $n$. Chebyshev is applied to the average.
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:entropymax}
+\idea The binary entropy is concave, and its derivative vanishes only at $1/2$.
+\writeup Work in natural units and convert at the end. Let $h(p)=-p\ln p-(1-p)\ln(1-p)$. Then
+\[
+ h'(p)=-\ln p+\ln(1-p)=\ln\frac{1-p}{p},\qquad h''(p)=-\frac1p-\frac1{1-p}<0.
+\]
+So $h'$ vanishes only at $p=1/2$, and $h$ has a maximum there. Now $h(1/2)=\ln 2$, and dividing by $\ln 2$ converts to bits, giving $H(1/2)=1$. For every other $p\in(0,1)$, $H(p)<1$.
+\end{solution}
+
+
+\begin{solution}{ex:prefixoptimal}
+\idea Draw the leaves in the binary tree, then compare length with the entropy lower bound.
+\writeup No word in $\{0,10,110,111\}$ begins another word in that set, so decoding stops unambiguously at each leaf. The mean length is $L=(1/2)1+(1/4)2+(1/8)3+(1/8)3=7/4$. The entropy is $H=(1/2)\cdot1+(1/4)\cdot2+2(1/8)\cdot3=7/4$, so this code meets the entropy. For any other prefix code, write $M$ for its mean length and $\ell_i$ for its lengths. Kraft gives $Z=\sum_i2^{-\ell_i}\le1$. Set $q_i=2^{-\ell_i}/Z$. Gibbs' inequality, in the form used for Shannon's code, yields
+\[
+ H\le\sum_i p_i\log_2(1/q_i)=\sum_i p_i\ell_i+\log_2 Z=M+\log_2 Z\le M.
+\]
+Thus $M\ge H=L$, and no prefix code has smaller mean.
+\end{solution}
+
+\begin{solution}{ex:entropychain}
+\idea After $X$ is known, $Y$ is a biased coin. The chain rule adds that bias to one bit.
+\writeup Given either value of $X$, the conditional distribution of $Y$ is a Bernoulli law with masses $2/3$ and $1/3$. Its entropy is
+\[
+ H(Y\mid X)=-\tfrac23\log_2\tfrac23-\tfrac13\log_2\tfrac13
+ =\log_2 3-\tfrac23.
+\]
+Proposition~\ref{prop:chain} gives $H(X,Y)=1+H(Y\mid X)=\log_2 3+\tfrac13$. Also
+\[
+ P(Y=1)=\tfrac12\cdot\tfrac23+\tfrac12\cdot\tfrac13=\tfrac12,
+\]
+so $Y$ is fair, $H(Y)=1$, and $H(X)+H(Y)=2$. The difference is $\tfrac53-\log_2 3$. The bound $\log_2 3<8/5$, from $2^8=256>243=3^5$, gives
+\[
+ \tfrac53-\log_2 3>\tfrac53-\tfrac85=\tfrac1{15}>0.
+\]
+The joint entropy is strictly smaller than the sum of the marginal entropies.
+\end{solution}
+
+\begin{solution}{ex:entropyproduct}
+\idea Independence says that knowing $X$ does not change the law of $Y$.
+\writeup If $X$ and $Y$ are independent, then for every $x$ of positive probability the conditional masses $p_{y\mid x}=p_y$, hence $H(Y\mid X)=H(Y)$. Proposition~\ref{prop:chain} gives $H(X,Y)=H(X)+H(Y)$. If $Y=X$ and $X$ is fair, both marginal entropies are $1$ bit but the joint entropy is only $1$ bit. The extra bit of marginal entropy is not new information.
+\end{solution}
+
+\begin{solution}{ex:ambiguouscode}
+\idea A prefix conflict can create a second parsing of the same transmitted bits.
+\writeup The bit string $010$ is either $0\,|\,10$ (the first and third symbols) or $01\,|\,0$ (the second and first symbols). Both concatenations produce the same bits. In contrast, no codeword in Figure~\ref{fig:prefix} is a prefix of another, and the decoder knows when each word ends.
+\end{solution}
+
+\begin{solution}{ex:typicalcount}
+\idea Information per symbol is a bounded random variable; apply Chebyshev and then count the total mass of the typical set.
+\writeup Put $I_i=\log_2(1/p_{X_i})$, so $I_i$ equals $2$ with probability $1/4$ and $\log_2(4/3)$ with probability $3/4$. Its mean is
+\[
+H(X)=\frac14\cdot2+\frac34\log_2(4/3)
+= -\frac14\log_2(1/4)-\frac34\log_2(3/4).
+\]
+Its variance is finite. Since the $I_i$ are independent, Chebyshev gives
+$P(|n^{-1}\sum_{i=1}^n I_i-H(X)|>\varepsilon)\le
+\operatorname{Var}(I_1)/(n\varepsilon^2)\to0$.
+Therefore $P(T_n(\varepsilon))\to1$. For all sufficiently large $n$ the typical-set count gives
+\[
+H(X)-\varepsilon-\frac1n
+<\frac{\log_2|T_n(\varepsilon)|}{n}
+\le H(X)+\varepsilon,
+\]
+where $\frac12=2^{-1}$ supplies the $1/n$. First let $n\to\infty$ and then $\varepsilon\downarrow0$: the exponential growth rate is $H(X)$.
+\end{solution}
+
+\section*{Sources and further reading}
+
+\begin{enumerate}
+\item C.~E.~Shannon, A mathematical theory of communication, \emph{Bell System Tech.\ J.} \textbf{27} (1948), 379--423 and 623--656. The entropy, the source-coding bound, and typical sequences for a finite alphabet.
+\end{enumerate}

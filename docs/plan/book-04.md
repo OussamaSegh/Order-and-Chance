@@ -2,252 +2,207 @@
 
 *The Logic of Uncertainty.*
 
-**Element.** The load of uncertainty. Chance looks like weather. It has a building code.
+**Element.** A probability is a model you choose before you compute. Once the model is written, the load of a sum, a wait, or a path is a theorem.
 
-**Source.** `volume4-chance` (this directory name becomes valid once step 2 in [PROGRESS.md](PROGRESS.md) merges). Twelve chapters and two appendices. About 251 pages in the 7×10 table. The October review scored it 8. The admitted facts are labelled: Lebesgue measure on \(\mathbb R^d\), infinite products, and Fubini–Tonelli, proved in Book 7.
+**Source.** `volume4-chance`. Fourteen chapters in four parts, and Appendix B (extremal problems). Owner approval of 6 November 2026. The citation migration is `docs/plan/volume4-citation-migration.md`. The sections after the chapter list below are the earlier twelve-chapter notes; where they disagree with this list, this list wins.
+
+## Architecture
+
+| Part | Question | Chapters |
+| --- | --- | --- |
+| I. The Language of Chance | How do we describe a random experiment? | 1 From Games to Probability Spaces; 2 Random Variables and Their Laws; 3 Generating Functions and Random Families |
+| II. The Laws of Uncertainty | Why does randomness become predictable? | 4 Concentration and the Laws of Large Numbers; 5 Continuous Chance; 6 Why the Bell Curve Appears; 7 Entropy, Codes and Typical Sequences |
+| III. Chance in Motion | What changes when randomness evolves in time? | 8 Random Walks; 9 Markov Chains and Mixing; 10 The Poisson Clock; 11 Martingales and Fair Games; 12 Brownian Motion |
+| IV. Chance Reveals Structure | Can chance prove a deterministic theorem? | 13 The Probabilistic Method; 14 Random Graphs and the Search for Structure |
+
+Bertrand's paradox and Buffon's needle are in Chapter 5. Entropy is Chapter 7, not a section of Chapter 4. The Volume 5 handoff is at the end of Chapter 14. Lindeberg remains Theorem 6.10. Colouring is Lemma 10.5. Brownian existence is Theorem 12.4 and reflection is Theorem 12.12. Crossing is Exercise 13.4.
+
+## Page budget
+
+Owner clarification, 6 November 2026, for the whole series: an ideal book is between 300 and 600 pages, and 600 is a maximum. Three hundred is not a minimum that a book must reach. Do not add filler in order to enter the range, and do not cut a needed proof in order to stay under 600. This replaces the 400–500 planning range below. What goes into a book is a complete argument, a point the reader needs, the approved subject, or clearer teaching. A page count is a measurement. The ideal range is context for that measurement, not a test the book passes or fails. Published Volumes 1–3 stay as they are; this note does not reopen them.
+
+The next paragraph is the earlier Volume 4 planning note. It stays as history.
+
+Owner decision of 6 November 2026 (t67u, t68u): the planning range is **400–500 pages** in the approved series typography. This replaces every earlier 260–290 figure for Volume 4. The range is a check against the native 7×10 book, not a quota. Do not add filler, shrink the type, or delete a proof or a solution to land inside it. If a finished native build falls outside 400–500, report the count and the tradeoff. A one-pass XeLaTeX file of an unfinished manuscript is not that measurement.
 
 ## Promise
 
-A few lines of counting settle a puzzle, and the same subject climbs to the law of large numbers, the central limit theorem, Markov chains, martingales, and a first Brownian motion. The Gaussian, planted in Book 1 as an integral, becomes the law of a sum of many small independent loads. The probabilistic method shows that a load calculation can prove an object exists without building it. That idea returns in Book 14 and Book 15 as the way one talks about the primes.
+Counting settles a question only after the experiment is named. The same rules produce the law of large numbers, the central limit theorem, the convergence of a finite Markov chain, a martingale stopped at a bounded time, and a Brownian path built from explicit Gaussians. The Gaussian integral of Volume 1 becomes the law of one coordinate, and then the shape of a sum of many small independent pieces. The probabilistic method turns an expectation into a proof that an object exists. That move is the one Volumes 14 and 15 use when they talk about the primes.
 
 ## Prerequisites
 
-Book 1: counting, series, Stirling, the Gaussian integral, inequalities. Book 3: characters of \(S_n\), for the walk on the symmetric group, and Jordan form for Markov chains. Measure theory is not a prerequisite. Two facts are admitted and labelled, and Book 7 discharges them.
+Volume 1, as proved there: counting and inclusion–exclusion, sequences and series, one-variable calculus, Stirling’s formula, the Gaussian integral, Jensen and Cauchy–Schwarz, finite and countable probability, Markov, Chebyshev, the weak law, and the spectral theorem for real symmetric matrices. Volumes 2 and 3 are not a step on the main path. Measure theory is not a prerequisite and is not an unproved lemma. What this book needs beyond Volume 1 is built in the chapter that uses it. The register lists every row.
 
-## How the subtitle is delivered
+## Earlier twelve-chapter notes
 
-The parts keep their catalog names. *The Logic of Uncertainty* is what they do.
+The part names and chapter blurbs below this heading are the previous contract. They are kept so the old-to-new notes remain readable. They are not the contents of `main.tex`.
 
-Discrete Probability is the logic: paradoxes, axioms, random variables, generating functions, and the inequalities that turn "likely" into a proof. Limit Theorems is the uncertainty made precise, through the central limit theorem. Random Structures carries the same logic forward in time. Walks, Markov chains, Poisson processes, martingales, and Brownian motion stay in this part, because they follow the walks. The probabilistic method, and the extremal appendix, are uncertainty used as a proof. No part is renamed.
-
-**Move.** Appendix A, Orders (`chapters/orders.tex`), is Dilworth, Sperner, and partial orders. It does not serve this title. MOVE it to Book 1, inside Algebra, Limits and Functions, beside the monotone-subsequence ideas already there. Appendix B stays in Random Structures. The broken "Theorem L.2" pointer is still repaired.
-
-## Parts
+## Parts (superseded)
 
 | Part | Name | Chapters |
 | --- | --- | --- |
 | I | Discrete Probability | 1–4 |
 | II | Limit Theorems | 5–6 |
-| III | Random Structures | 7–12 and Appendix B. Appendix A moves. |
+| III | Random Structures | 7–12 and the extremal appendix |
 
----
+### Chapter 1. Counting and Paradoxes
 
-### Part I. Discrete Probability
+**Question.** When is a uniform count the right model, and what does one uniform number on \([0,1]\) already contain?
 
-#### Chapter 1. Counting and Paradoxes
+**Uses.** Volume 1 finite probability, inclusion–exclusion, one-variable integration.
 
-**Status.** KEEP — `volume4-chance/chapters/ch01-counting.tex` (616 lines).
+**Introduces.** Binary digits as fair bits; outer content; almost sure as outer content zero. Bertrand’s three experiments. The ballot theorem. Buffon’s needle for \(\ell\le d\).
 
-**Hook.** Three doors, one car. The host opens a door with a goat. Should you switch? The host's rule is part of the problem. A different rule gives \(\tfrac12\).
+**Practice.** Own birthday, two children, repeated tests, Penney’s game, the \(n\)-door host, pairwise versus mutual independence, Dyck paths from the ballot theorem (Exercise 1.7).
 
-**Synopsis.** Probability spaces, conditioning, birthdays, Monty Hall, Bertrand's three chord models \(\tfrac13,\tfrac12,\tfrac14\), the ballot theorem, and Buffon's needle. The needle is the first integral-geometric fact. Book 9's Crofton formula is the return. Bertrand's paradox is the warning that "at random" is a measure, which is why Book 7 has to be built.
+**Why here.** Infinite sequences of trials are the one object Volume 1 explicitly postponed. Everything later that says “almost surely” points back to this section.
 
-**Proved.** The ballot theorem \(\frac{a-b}{a+b}\). Buffon's probability \(\frac{2\ell}{\pi d}\) for \(\ell\le d\). The three Bertrand models, as three different measures.
+### Chapter 2. Discrete Random Variables
 
-**Examples.** Monty Hall under two host rules. A birthday calculation with the numbers the review recomputed.
+**Question.** How do you compute an average without listing the law?
 
-**Figures.** Four.
+**Uses.** Chapter 1 and Volume 1’s linearity, classical finite laws, geometric and Poisson masses.
 
-#### Chapter 2. Discrete Random Variables
+**Introduces.** The Poisson limit of the binomial. The harmonic mean of the number of cycles. The coupon collector as a theorem.
 
-**Status.** KEEP — `chapters/ch02-discrete.tex` (522 lines).
+**Practice.** Exercise 2.6 keeps the long-cycle probability \(H_{2n}-H_n\to\ln 2\) and the hundred prisoners.
 
-**Hook.** Shuffle 52 cards and follow the cycle of 1. How many cycles do you expect?
+**Why here.** Generating functions need a law to transform. Tails need a mean and a variance.
 
-**Synopsis.** Laws, expectation, variance, the classical families, cycles and fixed points, and the coupon collector. The expected number of cycles is the harmonic number. Book 11's Poisson–Dirichlet law is what this count becomes for the large cycles. The chapter owns the expectation.
+### Chapter 3. Generating Functions
 
-**Proved.** Linearity, including the case of dependence. The cycle and fixed-point expectations. The coupon-collector expectation.
+**Question.** What does the function \(\mathbb E[s^X]\) know about a sum, and about a family name that may die out?
 
-**Examples.** The harmonic number \(H_{52}\). A coupon-collector numerical value.
+**Uses.** Power series and the intermediate-value theorem from Volume 1. Independence from Chapter 2.
 
-**Figures.** Three.
+**Introduces.** Probability generating functions, random sums, the extinction probability of a Galton–Watson process, the Catalan generating function.
 
-#### Chapter 3. Generating Functions
+**Practice.** Exercise 3.7 is the series for \((1-4x)^{-1/2}\).
 
-**Status.** KEEP — `chapters/ch03-generating.tex` (430 lines). The Kesten–Stigum remark already matches what Chapter 10 proves. Leave it.
+**Why here.** The walk’s first-step equation in Chapter 7 is the same functional equation in another set of clothes.
 
-**Hook.** Galton, in 1873, asking why aristocratic surnames were dying out.
+### Chapter 4. Inequalities, Large Numbers and Entropy
 
-**Synopsis.** Probability generating functions, random sums, Galton–Watson processes, and Catalan numbers. Extinction probabilities are the theorem. The generating function is the same clothesline as Book 5, used here for a law rather than a formula.
+**Question.** How small is a deviation, and does the average settle on almost every sequence?
 
-**Proved.** The extinction probability is the smallest non-negative root of \(s=f(s)\). The Catalan generating function, if the chapter derives the path count.
+**Uses.** Volume 1’s Markov, Chebyshev, weak law, and Jensen. The coin space of Chapter 1.
 
-**Examples.** A Galton–Watson process with a named offspring law and a computed extinction probability. One Catalan path.
+**Introduces.** Chernoff and Hoeffding. Both Borel–Cantelli lemmas. The strong law for bounded variables. Bernstein’s proof of Weierstrass’s theorem. Entropy of a finite alphabet and typical sequences.
 
-**Figures.** Three.
+**Practice.** A numerical tail for \(\mathrm{Bin}(1000,\tfrac12)\) beside the exact value. One independent Borel–Cantelli example.
 
-#### Chapter 4. Inequalities, Large Numbers and Entropy
+**Why here.** The central limit theorem explains the shape. These inequalities do not need the shape, and the strong law needs Borel–Cantelli before Chapter 6.
 
-**Status.** KEEP — `chapters/ch04-inequalities.tex` (780 lines).
+### Chapter 5. Continuous Probability Done Properly
 
-**Hook.** Bernoulli, twenty years on the fact that the proportion of white balls settles.
+**Question.** A uniform point of \([0,1]\) equals \(\tfrac12\) with probability 0. What is an expectation, if it is no longer a sum?
 
-**Synopsis.** Markov, Chebyshev, the weak law, Bernstein polynomials, Chernoff and Hoeffding, Borel–Cantelli, Jensen, and entropy with the asymptotic equipartition property. Borel–Cantelli is the tool Book 15's Cramér model uses for almost-sure gaps. Entropy is the tool the Crossroads Journey on Shearer may need; if that Journey uses only this chapter and Book 1, it lives at the end of Part I.
+**Uses.** Volume 1’s Riemann integral and Gaussian integral. The bit construction of Chapter 1.
 
-**Proved.** Chernoff and Hoeffding. Both Borel–Cantelli lemmas. The weak law under the chapter's hypotheses. Shannon's source-coding bound or the AEP, at the strength the file proves.
+**Introduces.** Distribution functions and densities. Iterated integrals of continuous functions. The changes of variables used for polar coordinates and for ordered arrival times. Independent normals from inverse distribution functions. Dominated convergence for continuous integrands. Box–Muller.
 
-**Examples.** A Chernoff bound on \(\mathrm{Bin}(1000,\tfrac12)\) at 600, next to the exact tail. One Borel–Cantelli application with independent events.
+**Practice.** Exercise 5.7 is the Cantor distribution: continuous, singular, supported on a set of length zero.
 
-**Figures.** Three.
+**Why here.** Chapter 6’s bell curve is this density. The title stays, because “Chapter 5” in later volumes means this material. The chapter does not call a Riemann theorem Lebesgue’s.
 
-### Part II. Limit Theorems
+### Chapter 6. Convergence and the Central Limit Theorem
 
-#### Chapter 5. Continuous Probability Done Properly
+**Question.** A hundred dice have mean 350. What is a usable estimate for the probability that the sum exceeds 400, given that \(6^{100}\) outcomes will not be listed?
 
-**Status.** KEEP — `chapters/ch05-continuous.tex` (727 lines). The two admitted facts stay labelled. REVISE nothing that would smuggle in a proof of Fubini.
+**Uses.** Stirling and Taylor from Volume 1. Chapters 4 and 5. The spectral theorem, cited, for Gaussian vectors.
 
-**Hook.** A uniform number in \([0,1]\) equals \(\tfrac12\) with probability 0, and so does every other number, and yet it lands somewhere.
+**Introduces.** Convergence in probability, almost surely, and in distribution. The fourth-moment strong law. Glivenko–Cantelli. Characteristic functions, in the direction later volumes quote. Lindeberg’s swapping theorem, as formal environment 6.10. The local de Moivre–Laplace theorem.
 
-**Synopsis.** Why not every set is an event, random variables, the integral the chapter builds, densities, change of variables, independence, and Box–Muller. The Gaussian integral of Book 1 returns as the density of a normal law. The chapter is honest about Lebesgue measure on \(\mathbb R^d\).
+**Practice.** Exercise 6.1 is Slutsky. Exercise 6.7 is the Gaussian limit for the number of cycles.
 
-**Proved.** The integral's main theorems in the setting the chapter constructs. Box–Muller. The change-of-variables formula for the maps the chapter uses.
+**Why here.** This is the shape the cover draws. Random walks in the next chapter are sums of this kind.
 
-**Examples.** Box–Muller on a pair of uniforms. A density whose improper integral is computed both as a Riemann integral and as the chapter's integral.
+### Chapter 7. Random Walks
 
-**Figures.** Three.
+**Question.** On the line, a walk returns. In space, it may leave and never come back. Which dimension is the change?
 
-#### Chapter 6. Convergence and the Central Limit Theorem
+**Uses.** The ballot theorem, Stirling’s local estimate, Chapter 6.
 
-**Status.** REVISE — `chapters/ch06-clt.tex` (575 lines). The Lindeberg limsup at the lines the review named is still the one place to expand, so both error terms are on the page. Delete or prove the sentence that Glivenko–Cantelli holds at a jump "with a little more care". The preface should say the strong law is proved for bounded variables and under a fourth-moment bound, and that the first-moment theorem is Book 11.
+**Introduces.** Reflection and the maximum. The discrete arcsine law. Gambler’s ruin. Pólya’s theorem. Harmonic functions on a finite graph.
 
-**Hook.** A hundred dice sum to 350 on average. What is the chance the sum exceeds 400? There are \(6^{100}\) outcomes. Nobody lists them.
+**Practice.** Exercise 7.8 is the electrical network of the walk.
 
-**Synopsis.** Modes of convergence, the strong law in the cases proved, characteristic functions, Lindeberg's central limit theorem by swapping, the local theorem, Stirling's constant from the Poisson(\(n\)) central limit theorem, and Gaussian vectors. This is the climax of the floor. The bell curve is no longer an integral one admires. It is the shape of a sum.
+**Why here.** Markov chains are walks on a finite graph with unequal rates. Brownian motion is what the scaled walk is trying to become.
 
-**Proved.** Lindeberg's theorem for the test functions of the chapter. Stirling's constant in this probabilistic form. The strong law under the hypotheses the preface will name.
+### Chapter 8. Markov Chains
 
-**Examples.** The hundred dice, exact value against the Gaussian approximation. One Lindeberg array that fails Lyapunov and still satisfies Lindeberg, or the converse warning if the chapter has it.
+**Question.** When does repeating a shuffle wash out the starting order, and how do you prove it without listing the group?
 
-**Figures.** Three.
+**Uses.** Finite matrices from Volume 1. Bolzano–Weierstrass in \(\mathbb R\), extended in this chapter to the simplex. Coupling. Chapter 2’s coupon collector.
 
-### Part III. Random Processes
+**Introduces.** Irreducibility, period, stationary distributions, total variation, convergence of a finite irreducible aperiodic chain.
 
-#### Chapter 7. Random Walks
+**Practice.** Exercise 8.6 is top-to-random. Exercise 8.8 is the mean and variance of the number of rising sequences.
 
-**Status.** KEEP — `chapters/ch07-walks.tex` (684 lines).
+**Why here.** The Poisson process is the continuous-time cousin. The chain is still finite, so no general ergodic theorem is required.
 
-**Hook.** A drunk man finds his way home. A drunk bird may be lost forever.
+### Chapter 9. Poisson Processes
 
-**Synopsis.** The simple random walk, reflection, the arcsine law, gambler's ruin, Pólya's theorem, harmonic functions, and a walk that solves 2-SAT. Recurrence in dimensions 1 and 2, transience in dimension 3 and higher, is the theorem. Book 12 will prove the same dichotomy for Brownian motion. The citation should run forward from here and backward from there.
+**Question.** Buses arrive at rate \(\lambda\). Why is the expected wait \(1/\lambda\), not half of that?
 
-**Proved.** The reflection principle. Pólya's theorem. The gambler's-ruin probabilities. The arcsine law in the form the chapter states.
+**Uses.** Chapter 5’s exponential density and the triangular change of variables. Chapter 2’s Poisson limit.
 
-**Examples.** Ruin probabilities for a small capital. One arcsine numerical value.
+**Introduces.** Memorylessness. The Poisson process as exponential gaps. The colouring lemma, as formal environment 9.5. Thinning, superposition, the inspection paradox, Le Cam’s bound, the stationary mean of M/M/1 when the load is less than 1.
 
-**Figures.** Four.
+**Why here.** Martingales need a process that runs in time. The bus is the simplest one with a continuous clock.
 
-#### Chapter 8. Markov Chains
+### Chapter 10. Conditional Expectation and Martingales
 
-**Status.** KEEP — `chapters/ch08-markov.tex` (775 lines). The sharp cutoff for random transpositions is deferred to Abstraction, and the text says so.
+**Question.** You have watched the tosses up to today. What is your estimate of tomorrow’s fortune, and when may you stop?
 
-**Hook.** After five riffle shuffles a deck of 52 cards is far from random. After seven it is close.
+**Uses.** Finite partitions, Chapter 1’s sequences, orthogonal projection in \(\mathbb R^n\) from Volume 1.
 
-**Synopsis.** Transition matrices, irreducibility, periodicity, stationary distributions, coupling, the ergodic theorem for finite chains, reversibility, and shuffling by random transpositions. The seven-shuffle story is an announcement. The Bayer–Diaconis profile is Book 15's workshop. This chapter owns convergence of a finite chain, by coupling.
+**Introduces.** Conditional expectation given a finite partition. Martingales. Optional stopping under three stated conditions, and the walk that hits \(+1\) and breaks a careless use. Doob’s inequality. \(L^2\) convergence. Upcrossings. Azuma’s inequality.
 
-**Proved.** The convergence theorem for a finite irreducible aperiodic chain. Existence and uniqueness of the stationary distribution. The cutoff is not claimed.
+**Practice.** The waiting time for ABRACADABRA.
 
-**Examples.** A three-state chain with stationary law \(\bigl(\tfrac4{11},\tfrac4{11},\tfrac3{11}\bigr)\). The total-variation numbers for riffle shuffles, presented as a computation, not as the profile theorem.
+**Why here.** Brownian motion is a continuous martingale. The optional-stopping habit has to be in the reader’s hands first, with a counter-example.
 
-**Figures.** Four.
+### Chapter 11. Brownian Motion
 
-#### Chapter 9. Poisson Processes
+**Question.** Lévy’s broken line uses one normal random variable at each dyadic point. Does the uniform limit exist, and is the limit a Brownian motion?
 
-**Status.** KEEP — `chapters/ch09-poisson.tex` (457 lines).
+**Uses.** Chapters 5, 6, and 10. Borel–Cantelli from Chapter 4.
 
-**Hook.** Buses arrive every ten minutes on average, at random. The expected wait is ten minutes, not five.
+**Introduces.** The definition by continuous paths and Gaussian increments. Lévy’s construction, as formal environment 11.4. Quadratic variation along dyadic partitions. The reflection principle, as formal environment 11.12. A dyadic Itô expansion. The binomial approximation of one Black–Scholes price, computed on a stated contract.
 
-**Synopsis.** The exponential law, the Poisson process, thinning, superposition, the inspection paradox, Poisson approximation, and the M/M/1 queue. The inspection paradox is the first bias: a length-biased sample is not the model a naive average suggests. Book 15's Chebyshev bias is a distant cousin. A sentence is enough, or none.
+**Practice.** Exercise 11.3 is the zero set.
 
-**Proved.** The lack-of-memory characterisation. Thinning. The inspection paradox. M/M/1's stationary mean in the form the chapter computes.
+**Why here.** Volume 12 owns the integral. This chapter owes the path.
 
-**Examples.** The bus wait. One M/M/1 numerical mean.
+### Chapter 12. The Probabilistic Method
 
-**Figures.** Three.
+**Question.** How do you prove that a colouring or a graph exists when you cannot draw one?
 
-#### Chapter 10. Conditional Expectation and Martingales
+**Uses.** Linearity, Chebyshev or the second moment, and the union bound. Euler’s formula, proved before the crossing lemma.
 
-**Status.** KEEP — `chapters/ch10-martingales.tex` (787 lines). Optional stopping's three sufficient conditions, and the counter-example of the first hit of \(+1\), stay. The tower property in the generality Books 11 and 12 need is Book 7's job, once the exercise there is promoted. This chapter owns the discrete theory.
+**Introduces.** The first and second moment methods, alteration, the symmetric Lovász local lemma, and the subcritical random graph. “With high probability”, defined in the chapter. Erdős’s bound \(R(k,k)>2^{k/2}\).
 
-**Hook.** A monkey types capital letters at one a second. The expected time to ABRACADABRA is \(26^{11}+26^4+26\) seconds.
+**Practice.** Exercise 12.4 is the crossing lemma.
 
-**Synopsis.** Conditioning on a partition, the \(L^2\) projection, martingales, stopping, Doob's inequality, \(L^2\) convergence, upcrossings, and almost-sure convergence. The monkey is optional stopping on a carefully chosen martingale. Book 11 returns to martingales for uniform integrability, de Finetti, and Kakutani.
+**Why here.** The series returns to this move when a deterministic object is compared with a random model. The last pages name Volume 5, *Calculation: From Formula to Insight*, and one concrete object that book owns: a generating function used as a series, with a remainder.
 
-**Proved.** Optional stopping under the three conditions. Doob's maximal inequality. \(L^2\) convergence. Almost-sure convergence via upcrossings.
+### Appendix. Extremal Problems and Ramsey Theory
 
-**Examples.** ABRACADABRA. The martingale that hits \(+1\) and makes optional stopping fail.
+**Question.** Which patterns are forced once a graph or a colouring is large enough?
 
-**Figures.** Three.
+**Uses.** Double counting, the probabilistic method’s Ramsey bound, and nothing from Volumes 5–15.
 
-#### Chapter 11. Brownian Motion
+**Introduces.** Turán’s theorem, Ramsey’s theorem, Schur, the sunflower lemma, and Katona’s proof of the Erdős–Ko–Rado theorem. Van der Waerden only with a complete proof.
 
-**Status.** KEEP — `chapters/ch11-brownian.tex` (602 lines). "A first look at Itô's formula" stays a look. Book 12 owns the integral. Lévy's midpoint construction is the existence proof this floor is responsible for.
+**Why here.** It is the combinatorial wing of Chapter 12, not a second book on the primes.
 
-**Hook.** Brown's pollen, 1827. Einstein's explanation, 1905. Wiener's mathematical path.
+## Owns, and what is left to later books
 
-**Synopsis.** From random walks to Brownian motion, Lévy's construction, scaling and the Markov property, quadratic variation, the reflection principle, a first Itô formula, and the binomial model for Black–Scholes. The path is continuous and nowhere differentiable: the "typical" object of Book 7's Baire theorem, now random. Quadratic variation is the clock Book 12 will use.
+**Owns.** The bit model of repeated trials, conditioning as used above, the classical discrete laws and their Poisson limit, Galton–Watson extinction, Chernoff and Hoeffding, Borel–Cantelli, the strong law for bounded variables and under a fourth moment, densities and the continuous dominated-convergence theorem of Chapter 5, Lindeberg’s swapping theorem, Pólya’s theorem, finite Markov chains, the Poisson process, discrete martingales at the stated scope, Lévy’s Brownian motion, the probabilistic method, and the extremal appendix.
 
-**Proved.** Lévy's construction gives a continuous process with the right finite-dimensional laws, modulo the measure-theoretic facts labelled as admitted. Quadratic variation along the dyadic partitions. The reflection principle. The Black–Scholes price as a binomial limit, on the numerical example the chapter uses.
+**Leaves to later books.** The first-moment strong law, Lévy’s continuity theorem, Berry–Esseen, Donsker’s theorem (Volume 11). Itô’s integral (Volume 12). The transposition cutoff and the riffle profile (Volumes 10, 11, and 15). General measure, general Fubini, and products of arbitrary probability spaces (Volume 7).
 
-**Examples.** \(S_0=K=100\), \(r=0.05\), \(\sigma=0.2\), \(T=1\), with \(d_\pm\) and the binomial prices. One quadratic-variation computation on a dyadic grid.
+## Reading order
 
-**Figures.** Four.
-
-### Part IV. Random Structures
-
-#### Chapter 12. The Probabilistic Method
-
-**Status.** KEEP — `chapters/ch12-method.tex` (492 lines). The giant-component remark stays a remark. The exercise proves a component of linear size, not the constant \(\rho\).
-
-**Hook.** To show a haystack contains a needle, show that a random straw is a needle with positive probability.
-
-**Synopsis.** First and second moments, alteration, the symmetric local lemma, and the subcritical random graph. "With high probability" is defined before it is used. This is chance as a method of proof, which is the mood of Book 15's dictionary: a random model can certify a deterministic fact, and it can also fail to match the object.
-
-**Proved.** The first and second moment methods in the forms stated. The symmetric Lovász local lemma. The subcritical random graph's component structure at the precision the chapter claims. Erdős's lower bound \(R(k,k)>2^{k/2}\).
-
-**Examples.** A tournament or a Ramsey lower bound with the alteration. One local-lemma application with the numbers checked.
-
-**Figures.** Two.
-
-#### Appendix A. Orders
-
-**Status.** MOVE — `chapters/orders.tex` (636 lines), to Book 1, Mathematical Thinking. Dilworth, Sperner, and partial orders do not deliver the logic of uncertainty.
-
-**Hook.** Every sequence of \(n^2+1\) distinct numbers has a monotone subsequence of length \(n+1\).
-
-**Synopsis.** Partial orders, lattices, well-founded orders, Dilworth, Sperner, and the Boolean lattice. Dilworth in the Perles form is the theorem. Well-founded orders include the short closure-rule and infinite-tree prerequisites the series structure asked this volume to keep.
-
-**Proved.** Erdős–Szekeres in the monotone-subsequence form. Dilworth. Sperner's theorem.
-
-**Examples.** A sequence of length \(n^2\) with no longer monotone subsequence. One antichain in the Boolean lattice of the Sperner size.
-
-**Figures.** Three.
-
-#### Appendix B. Extremal Problems and Ramsey Theory
-
-**Status.** REVISE — `chapters/extremal.tex` (685 lines). The cross-reference "Theorem L.2" does not land. Point it at the Erdős bound in Chapter 12.
-
-**Hook.** Complete disorder is impossible.
-
-**Synopsis.** Turán's theorem, forbidding a square, Ramsey numbers, Ramsey's theorem, Schur, van der Waerden, and the sunflower lemma. The small Ramsey numbers, including the Clebsch colouring and \(R_3(3)=17\), stay. This appendix is the combinatorial wing of the probabilistic method, not a second Book 14.
-
-**Proved.** Turán. Ramsey's theorem for graphs and for finite colourings of \(k\)-sets, at the depth the file reaches. Schur. The sunflower lemma. The Erdős–Ko–Rado theorem by Katona's proof.
-
-**Examples.** \(R(3,3)=6\). One Turán graph \(T(n,r)\).
-
-**Figures.** Three.
-
-## The old problem book
-
-Book 6 is Crossroads, the analytic volume. The old P1 problem book is removed by the renumbering branch, which appends its problems to Books 1–6. This plan does not place them again. A problem that cites a chapter moved here follows that chapter.
-
-## Owns, defers, hands forward
-
-**Owns.** Conditioning, the classical laws, Galton–Watson, Chernoff, Borel–Cantelli, Lindeberg, Pólya, finite Markov chains, Poisson processes, discrete martingales, Lévy's Brownian motion, the probabilistic method, Dilworth, Sperner, Ramsey.
-
-**Defers.** Fubini–Tonelli and Lebesgue measure on \(\mathbb R^d\) (Book 7). The strong law from a first moment, Lévy's continuity theorem, Berry–Esseen, Donsker (Book 11). Itô's integral (Book 12). The transposition cutoff (Abstraction).
-
-**Hands forward.** The bell curve as a theorem, a path that becomes Brownian motion, martingales, and the method of proving existence by a random straw.
-
-## Pages and effort
-
-Baseline 251 pages. Target 260–290. Effort: light to moderate. Expand the Lindeberg limsup, repair the Glivenko–Cantelli sentence and the "Theorem L.2" pointer, name the strong-law hypotheses in the preface, and split the part titles.
+The order in `volume4-chance/main.tex` is the order of proof. An exercise may use the chapter it sits in and earlier chapters. It may not use a later chapter. A forward pointer inside an exercise is a sentence about where the idea returns, not a missing step.
