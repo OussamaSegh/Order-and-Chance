@@ -16,7 +16,7 @@ Fresh grok-4.7 readings of the current text at `4e78153b` are in flight and must
 - Chapter 1: `bc-2fb9bae5` reread `5d9bc955` and rejected the label GB, the two expansions of $0$, the all-ones endpoint, and the three-label question. Those four sentences are `cbbf5418`. A fresh reread of that SHA is `bc-eab8e6c6`. Do not edit Chapter 1 until that report returns.
 - Chapter 2: closed for mathematics and voice at `68d0328e` by grok-4.7 `bc-889115c8`, who found no remaining defect. Not a production acceptance. Do not edit the chapter unless a later defect appears.
 - Chapter 3: `bc-2c51e89f` reported on `4e78153b`. The repairs are `12ac5f42`. A fresh reread of that SHA is `bc-afd75dad`. Do not edit Chapter 3 until that report returns.
-- Chapter 4: `bc-84438b18` reported on `4e78153b`. The repairs are `12ac5f42`. A fresh reread of that SHA is `bc-c5a0c389`. Do not edit Chapter 4 until that report returns.
+- Chapter 4: closed for mathematics and voice at `12ac5f42` by grok-4.7 `bc-c5a0c389`, who found no remaining defect. Not a production acceptance. Do not edit the chapter unless a later defect appears.
 - Chapter 5: `bc-8ae8ffbb` reported on `4e78153b`. The repairs are `52f0b87f`. A fresh reread of that SHA is `bc-6b758979`. Do not edit Chapter 5 until that report returns.
 - Chapter 6: `bc-8849a1fc` reported on `4e78153b`. The repairs are `12ac5f42`. A fresh reread of that SHA is `bc-02ab36a2`. Do not edit Chapter 6 until that report returns.
 - Chapter 7: `bc-55b8b4fd` reported on `4e78153b`. The repairs are `8ede890b`. A fresh reread of that SHA is `bc-02e567cc`. Do not edit Chapter 7 until that report returns.
