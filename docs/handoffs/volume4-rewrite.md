@@ -23,7 +23,7 @@ Fresh grok-4.7 readings of the current text at `4e78153b` are in flight and must
 - Chapter 8: `bc-3a9c50c8`
 - Chapters 9 and 10: `bc-15929f25`
 - Chapters 11 and 12: `bc-872cdf65`
-- Chapter 14: `bc-b81de9b6` has reported. The defects are repaired in the chapter file after this note. Do not treat `4e78153b` as the reviewed text of Chapter 14. A fresh reread of the repaired file is required. The other readings below are still of `4e78153b`.
+- Chapter 14: `bc-b81de9b6` reported on `4e78153b`. The repairs are `166034c8`. A fresh reread of that SHA is `bc-44a52b55`. Do not edit Chapter 14 until that report returns. The other readings below are still of `4e78153b`.
 - Appendix and front/back matter: `bc-84b5137e`
 
 No report has returned. Do not edit those chapter files until the report is in. Then the whole-volume review, the citation review, the certified builds, and the every-page ledger. The removed-material audit follows those, and its findings go to the owner before any large restoration. The second full rewrite, matched to Volumes 1–3, is the final phase and has not started. Do not merge.
