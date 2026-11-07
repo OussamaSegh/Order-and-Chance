@@ -574,16 +574,50 @@ The outer members tend to $F(x/c-\delta)$ and $F(x/c)$. Let $\delta\downarrow0$ 
 
 \begin{solution}{ex:confidence}
 \idea Slutsky's lemma replaces the unknown standard deviation by the sample one.
-\writeup Corollary~\ref{cor:clt} gives the limit $N(0,1)$ for the standardised mean, with the known $\sigma$ in the denominator. Finite fourth moment implies that $Y_1^2$ has finite variance, so the weak law yields $n^{-1}\sum Y_i^2\to\mathbb E[Y_1^2]$ in probability. Also $\bar Y_n\to\mu$ in probability, so $\hat\sigma_n^2\to\sigma^2$ and $\hat\sigma_n\to\sigma$ in probability. Exercise~\ref{ex:slutsky} replaces $\sigma$ by $\hat\sigma_n$. The limit distribution function is continuous, so the probability of $[-1.96,1.96]$ tends to $2\Phi(1.96)-1$.
+\writeup First define the standardised sample mean with the \emph{true} $\sigma$:
+\[
+ Z_n=\frac{\sqrt n(\bar Y_n-\mu)}{\sigma}.
+\]
+Corollary~\ref{cor:clt} says $Z_n$ converges in distribution to $N(0,1)$. We want to replace the unknown $\sigma$ by the sample standard deviation. Expand its square:
+\[
+ \hat\sigma_n^2=\frac1n\sum_{i=1}^n Y_i^2-\bar Y_n^2.
+\]
+The fourth-moment assumption makes $Y_i^2$ a finite-variance variable, so Volume~1's weak law gives $n^{-1}\sum_iY_i^2\to\mathbb E[Y_1^2]$ in probability. The same law gives $\bar Y_n\to\mu$. Squaring the mean (using continuity and the elementary bound on products) shows $\bar Y_n^2\to\mu^2$. Thus
+\[
+ \hat\sigma_n^2\longrightarrow\mathbb E[Y_1^2]-\mu^2=\sigma^2>0
+ \quad\text{in probability,}
+\]
+and taking square roots gives $\hat\sigma_n\to\sigma$. In particular $P(\hat\sigma_n=0)\to0$.
+
+On $\{\hat\sigma_n>0\}$ write
+\[
+ \frac{\sqrt n(\bar Y_n-\mu)}{\hat\sigma_n}
+ =Z_n\,\frac{\sigma}{\hat\sigma_n}.
+\]
+Exercise~\ref{ex:slutsky} makes this converge in distribution to the standard normal. On the exceptional event $\hat\sigma_n=0$, define the fraction arbitrarily, say as $0$; its probability vanishes and the limit is unchanged. The original event in the exercise is equivalent, away from that exceptional event, to the ratio lying in $[-1.96,1.96]$. Since both endpoints are continuity points of the normal distribution,
+\[
+ P\bigl(|\bar Y_n-\mu|\le1.96\,\hat\sigma_n/\sqrt n\bigr)
+ \longrightarrow \Phi(1.96)-\Phi(-1.96)=2\Phi(1.96)-1.
+\]
+This is an \emph{asymptotic} coverage result, not an exact $95\%$ guarantee at a finite sample size.
 \end{solution}
 
 \begin{solution}{ex:delta}
 \idea Differentiability writes the increment as the derivative times the increment of the mean, plus a smaller term.
-\writeup Continuity of $g'$ at $\mu$ and $\bar Y_n\to\mu$ in probability give
+\writeup The weak law gives $\bar Y_n\to\mu$ in probability. On an interval around $\mu$ where $g$ is continuously differentiable, the mean value theorem writes
 \[
- g(\bar Y_n)-g(\mu)=\bigl(g'(\mu)+\varepsilon_n\bigr)(\bar Y_n-\mu)
+ g(\bar Y_n)-g(\mu)
+ =g'(\xi_n)(\bar Y_n-\mu),
 \]
-with $\varepsilon_n\to0$ in probability. Multiply by $\sqrt n$. The main term converges in distribution to $N(0,g'(\mu)^2\sigma^2)$. The error is $\varepsilon_n$ times $\sqrt n(\bar Y_n-\mu)$. The second factor converges in distribution, so the tail bound in the solution of Exercise~\ref{ex:slutsky} shows that the product tends to $0$ in probability. That exercise adds the two pieces.
+where $\xi_n$ lies between $\bar Y_n$ and $\mu$. On the event that $\bar Y_n$ stays in this interval, $|\xi_n-\mu|\le|\bar Y_n-\mu|$. Continuity of $g'$ therefore implies $\varepsilon_n=g'(\xi_n)-g'(\mu)\to0$ in probability. We may define $\varepsilon_n=0$ on the vanishing-probability event where the mean falls outside this interval.
+
+Multiply by $\sqrt n$ and separate
+\[
+ \sqrt n\bigl(g(\bar Y_n)-g(\mu)\bigr)
+ =g'(\mu)\sqrt n(\bar Y_n-\mu)
+ +\varepsilon_n\sqrt n(\bar Y_n-\mu).
+\]
+The classical CLT says the first term converges in distribution to $N(0,g'(\mu)^2\sigma^2)$. The second factor of the error is bounded in probability, because it converges in distribution; the tightness estimate in Exercise~\ref{ex:slutsky} establishes this without a new theorem. The product of a variable tending to $0$ in probability and one bounded in probability tends to $0$ in probability. Slutsky's addition statement completes the result.
 \end{solution}
 
 \begin{solution}{ex:cauchyclt}
@@ -638,7 +672,26 @@ The same number is obtained if each centred toss is replaced by $c$ times itself
 
 \begin{solution}{ex:cyclesclt}
 \idea Independent Bernoulli summands of mean $1/k$ have variance $\ln n$, and none of them is large compared with that standard deviation.
-\writeup Proposition~\ref{prop:cyclebern} gives $C_n\stackrel{d}=\sum_{k=1}^n B_k$. Then $\mathbb E[C_n]=H_n$ and $\operatorname{Var}C_n=H_n-\sum_{k\le n}k^{-2}\sim\ln n$, by Theorem~\ref{thm:coupon} and the convergence of $\sum k^{-2}$. Each centred summand is at most $1$ in absolute value, so the normalised summand is at most $1/\sqrt{\operatorname{Var}C_n}$. Once $\sqrt{\operatorname{Var}C_n}>1/\varepsilon$, every indicator $\{|X_{n,k}|>\varepsilon\}$ is empty and the Lindeberg sum is $0$. Theorem~\ref{thm:lindeberg} and the passage in Corollary~\ref{cor:clt} give convergence after centring at $H_n$ and scaling by the standard deviation. Exercise~\ref{ex:slutsky} replaces both $H_n$ and the variance by $\ln n$, since their ratio tends to $1$ and their difference is bounded.
+\writeup Proposition~\ref{prop:cyclebern} represents the number of cycles, in distribution, as a sum of \emph{independent} Bernoulli variables with $P(B_k=1)=1/k$. Thus
+\[
+ \mathbb E[C_n]=\sum_{k=1}^n\frac1k=H_n,\qquad
+ v_n:=\operatorname{Var}(C_n)=\sum_{k=1}^n\frac1k\left(1-\frac1k\right)
+ =H_n-\sum_{k=1}^n\frac1{k^2}.
+\]
+Volume~1's comparison of harmonic sums with integrals yields $H_n=\ln n+O(1)$, and $\sum k^{-2}$ converges. Hence $v_n=\ln n+O(1)$ and $v_n/\ln n\to1$; in particular $v_n\to\infty$. The deterministic variable $B_1=1$ contributes variance zero and causes no difficulty.
+
+For $n\ge2$, define the centred triangular array $X_{n,k}=(B_k-1/k)/\sqrt{v_n}$. Its row has independent terms, mean zero, and total variance $1$. Moreover $|X_{n,k}|\le1/\sqrt{v_n}$, so for every fixed $\varepsilon>0$ and all sufficiently large $n$, \emph{none} of the events $\{|X_{n,k}|>\varepsilon\}$ can occur. The Lindeberg sum is then exactly $0$. Theorem~\ref{thm:lindeberg} and the smooth-cutoff argument in Corollary~\ref{cor:clt} give
+\[
+ \frac{C_n-H_n}{\sqrt{v_n}}\ \longrightarrow N(0,1)
+ \qquad\text{in distribution.}
+\]
+Finally
+\[
+ \frac{C_n-\ln n}{\sqrt{\ln n}}
+ =\frac{C_n-H_n}{\sqrt{v_n}}\sqrt{\frac{v_n}{\ln n}}
+   +\frac{H_n-\ln n}{\sqrt{\ln n}}.
+\]
+The deterministic multiplier tends to $1$ and the shift tends to $0$, since $H_n-\ln n=O(1)$. Exercise~\ref{ex:slutsky} gives the stated limit. The random variable $C_n$ is the same law as the Bernoulli sum, so the distributional conclusion transfers back to permutations.
 \end{solution}
 
 \section*{Sources and further reading}
