@@ -20,7 +20,7 @@ Fresh grok-4.7 readings of the current text at `4e78153b` are in flight and must
 - Chapter 5: `bc-8ae8ffbb` reported on `4e78153b`. The repairs are `52f0b87f`. A fresh reread of that SHA is `bc-6b758979`. Do not edit Chapter 5 until that report returns.
 - Chapter 6: `bc-8849a1fc` reported on `4e78153b`. The repairs are `12ac5f42`. A fresh reread of that SHA is `bc-02ab36a2`. Do not edit Chapter 6 until that report returns.
 - Chapter 7: `bc-55b8b4fd` reported on `4e78153b`. The repairs are `8ede890b`. A fresh reread of that SHA is `bc-02e567cc`. Do not edit Chapter 7 until that report returns.
-- Chapter 8: `bc-3a9c50c8` reported on `4e78153b`. The repairs are `52f0b87f`. A fresh reread of that SHA is `bc-3478b344`. Do not edit Chapter 8 until that report returns.
+- Chapter 8: closed for mathematics and voice at `52f0b87f` by grok-4.7 `bc-3478b344`, who found no remaining defect. Not a production acceptance. Do not edit the chapter unless a later defect appears.
 - Chapters 9 and 10: `bc-15929f25` reported on `4e78153b`. The repairs are `52f0b87f`. A fresh reread of that SHA is `bc-bf8714af`. Do not edit Chapters 9 or 10 until that report returns.
 - Chapters 11 and 12: `bc-872cdf65` reported on `4e78153b`. The repairs are `8ede890b`. A fresh reread of that SHA is `bc-f6caadc7`. Do not edit Chapters 11 or 12 until that report returns.
 - Chapter 14: closed for mathematics and voice at `166034c8` by grok-4.7 `bc-44a52b55`, who found no remaining defect. Not a production acceptance. Do not edit the chapter unless a later defect appears.
