@@ -15,10 +15,10 @@ The citation corrections are `63f9c18d3c5e7d14f42d2867840dbd934b52bb04`. This ha
 Fresh grok-4.7 readings of the current text at `4e78153b` are in flight and must not be duplicated. They use `git show` of that SHA, so a later handoff commit does not change what they read:
 - Chapter 1: `bc-b675adc6` reported on `4e78153b`. The repairs are `5d9bc955`. A fresh reread of that SHA is `bc-2fb9bae5`. Do not edit Chapter 1 until that report returns.
 - Chapter 2: `bc-be7ce6be` reported on `4e78153b`. The repairs are `68d0328e`. A fresh reread of that SHA is `bc-889115c8`. Do not edit Chapter 2 until that report returns.
-- Chapter 3: `bc-2c51e89f` reported on `4e78153b`. The coefficient quotient, the variance derivative, the Catalan branch, the contour split, and `ex:binseries` are repaired in this commit. A fresh reread is required.
-- Chapter 4: `bc-84438b18` reported on `4e78153b`. Hoeffding's lemma, the power $(0.371)^{20}$, the complement product, and the Bernoulli example are repaired in this commit. A fresh reread is required.
+- Chapter 3: `bc-2c51e89f` reported on `4e78153b`. The repairs are `12ac5f42`. A fresh reread of that SHA is `bc-afd75dad`. Do not edit Chapter 3 until that report returns.
+- Chapter 4: `bc-84438b18` reported on `4e78153b`. The repairs are `12ac5f42`. A fresh reread of that SHA is `bc-c5a0c389`. Do not edit Chapter 4 until that report returns.
 - Chapter 5: `bc-8ae8ffbb`
-- Chapter 6: `bc-8849a1fc` reported on `4e78153b`. The Lindeberg maximum, the clipped quantile, the mode comparison, and `ex:slutsky` and `ex:returns` are repaired in this commit. A fresh reread is required.
+- Chapter 6: `bc-8849a1fc` reported on `4e78153b`. The repairs are `12ac5f42`. A fresh reread of that SHA is `bc-02ab36a2`. Do not edit Chapter 6 until that report returns.
 - Chapter 7: `bc-55b8b4fd`
 - Chapter 8: `bc-3a9c50c8`
 - Chapters 9 and 10: `bc-15929f25`
