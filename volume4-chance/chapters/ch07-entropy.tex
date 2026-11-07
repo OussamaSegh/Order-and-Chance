@@ -87,6 +87,8 @@ The right-hand side tends to $0$, so $P(T_n(\varepsilon))\to1$. This is a finite
 Each string in $T_n(\varepsilon)$ has mass at least $2^{-n(H+\varepsilon)}$, and the total mass of any set of strings is at most $1$, so $|T_n(\varepsilon)|\le 2^{n(H+\varepsilon)}$. In the other direction, once the total mass of $T_n(\varepsilon)$ exceeds $1/2$, and each of its strings has mass at most $2^{-n(H-\varepsilon)}$, the number of them exceeds $(1/2)$ divided by that mass, which is $\tfrac12\,2^{n(H-\varepsilon)}$. The threshold $n>2M^2/\varepsilon^2$ is a sufficient condition for that mass, read off from Chebyshev. It is not claimed to be the smallest such $n$.
 \end{proof}
 
+The quantifiers matter. First fix $\varepsilon>0$ and let $n$ grow. Only then make $\varepsilon$ small to identify the entropy rate. For a strongly biased coin, choose $\varepsilon$ so large that it exceeds the difference between $H$ and the information of every possible symbol. Every length-$n$ string is then typical, and the typical set contains $2^n$ elements even though $H<1$. Therefore a fixed-tolerance typical set need not have exact exponential growth rate $H$. What the theorem proves is the useful two-sided bound, with rates $H-\varepsilon$ and $H+\varepsilon$.
+
 For the coin with heads probability $1/10$, the larger information is $\log_2 10<10/3$, so $M^2<100/9$. At tolerance $\varepsilon=1/2$,
 \[
  \frac{2M^2}{\varepsilon^2}<\frac{2\cdot 100/9}{1/4}=\frac{800}9<89.
@@ -97,13 +99,17 @@ For a fair coin, every one of the $2^n$ binary strings has mass $2^{-n}$: the ty
 
 \section{Prefix codes}
 
-A binary code assigns to each symbol $a$ a word $c(a)$ in the alphabet $\{0,1\}$. It is a \emph{prefix code} when no codeword is a prefix of another. A receiver can then stop at the end of each word without a separating mark.
+Suppose a sender and receiver agree to encode $a$ as $0$ and $b$ as $01$. A string beginning with $01$ can cause trouble: the first bit might already be the whole first symbol. Without extra information, the receiver does not know when to stop.
+
+A \emph{binary code} assigns each source symbol $a$ a finite word $c(a)$ of zeros and ones. It is a \emph{prefix code} if no codeword is the beginning (prefix) of another. Imagine decoding by walking down a binary tree: read one bit per edge, emit a symbol upon reaching a marked leaf, and return to the root for the next symbol. No separator is required.
+
+We would like common symbols to have short words, leaving longer words for rare symbols. Yet not every list of lengths fits in a prefix tree. The next theorem gives an exact test.
 
 \begin{theorem}[Kraft]\label{thm:kraft}
 If $c$ is a finite binary prefix code, allowing the empty word only for a one-symbol alphabet, and has word lengths $\ell(a)$, then $\sum_a 2^{-\ell(a)}\le 1$. Conversely, any nonnegative integers $\ell(a)$ with that sum at most $1$ are the lengths of some prefix code. Length $0$ (the empty word) is possible only when there is a single symbol.
 \end{theorem}
 \begin{proof}
-In the full binary tree, the codeword of length $\ell$ blocks $2^{-\ell}$ of the leaves at every deeper level. Prefix-freeness means the blocked sets are disjoint, so the sum is at most $1$. Conversely, sort the requested lengths as $\ell_1\le\cdots\le\ell_m$. Suppose the first $i-1$ codewords have been assigned, with none the prefix of another. Among the $2^{\ell_i}$ binary words of length $\ell_i$, the earlier words block exactly $\sum_{j<i}2^{\ell_i-\ell_j}$ descendants. Since
+In a full binary tree, take any depth $L$ at least as large as every codeword length. There are $2^L$ words of that depth. A codeword of length $\ell\le L$ blocks its $2^{L-\ell}$ descendants, since none of those longer words can be another codeword. This uses the fraction $2^{L-\ell}/2^L=2^{-\ell}$ of the possible words at depth $L$. Prefix-freeness means the blocked sets are disjoint, so the sum is at most $1$. Conversely, sort the requested lengths as $\ell_1\le\cdots\le\ell_m$. Suppose the first $i-1$ codewords have been assigned, with none the prefix of another. Among the $2^{\ell_i}$ binary words of length $\ell_i$, the earlier words block exactly $\sum_{j<i}2^{\ell_i-\ell_j}$ descendants. Since
 \[
 \sum_{j\le i}2^{-\ell_j}\le\sum_{j\le m}2^{-\ell_j}\le1,
 \]
@@ -218,6 +224,12 @@ The bounds $3/2<\log_2 3<8/5$ put this between $1/15$ and $1/6$. A sharper compa
 \]
 Knowing $X$ reduces the uncertainty about $Y$ by less than a twelfth of a bit. The variables are not independent, and the mutual information says how far the joint law sits from the product law.
 
+Shannon's code rounds the information of each symbol up to an integer. It is always within one bit per symbol of the entropy lower bound, but our example with probabilities $1/2,1/3,1/6$ shows it need not be optimal.
+
+Huffman's better method repeatedly joins the \emph{two least likely} symbols, treating their joined node as one new symbol of probability equal to the sum. Continue until one tree remains. On the way back, assign the two children of every node bits $0$ and $1$. The rare symbols tend to lie deeper because they have participated in more merges.
+
+Why does choosing the two smallest work? The proof shows that some optimal tree has its two least likely symbols as deepest siblings. Replacing those two leaves by one parent turns the coding problem into a smaller one with the same structure.
+
 \begin{theorem}[Huffman merge]\label{thm:huffman}
 For a finite alphabet of at least two symbols, repeatedly merging two nodes of smallest probability, and giving the two children one extra bit, produces a binary prefix code of minimal expected length.
 \end{theorem}
@@ -230,6 +242,10 @@ Delete those two sibling leaves and give their parent their combined probability
 \end{proof}
 
 \section{Coding long blocks}
+
+A codeword cannot have a fractional number of bits. For example, a coin may have entropy about $0.469$ bits, but a one-toss, two-symbol lossless prefix code still needs different words for heads and tails.
+
+The trick is to encode an entire block of $n$ tosses as one symbol from a much larger alphabet. Then the rounding overhead is less than \emph{one bit per block}, not one bit per original toss. Spread over $n$ tosses, it is less than $1/n$ per symbol.
 
 Coding one symbol at a time wastes up to one bit per symbol because lengths must be integers. Coding a block of $n$ independent symbols reduces that overhead to less than one bit per \emph{block}. A block is one symbol from the finite alphabet $A^n$. Its entropy is
 \[
@@ -268,7 +284,7 @@ Per original symbol this is $107/72$. Since $107<108$, one has $107/72<108/72=3/
 
 The typical-set theorem tells us what the code is exploiting. Most of the probability is carried by roughly $2^{nH}$ likely blocks, rather than by all $|A|^n$ possible blocks. The integer-length argument shows how that saving becomes a real code.
 
-Random walks, in the next chapter, ask a different question about repeated randomness: not how many typical strings there are, but whether a running sum will ever return.
+Entropy counted the likely outcomes of a long independent experiment; coding turned those probabilities into shorter descriptions. The same fair coin flips can instead be read as movements: write $+1$ for heads and $-1$ for tails and add the signs in order. Chapter~8 asks how far the resulting random walk wanders, whether it returns, and why the dimension of space matters.
 
 \section{Exercises}
 
@@ -391,5 +407,6 @@ where $\frac12=2^{-1}$ supplies the $1/n$. First let $n\to\infty$ and then $\var
 \section*{Sources and further reading}
 
 \begin{enumerate}
-\item C.~E.~Shannon, A mathematical theory of communication, \emph{Bell System Tech.\ J.} \textbf{27} (1948), 379--423 and 623--656. The entropy, the source-coding bound, and typical sequences for a finite alphabet.
+\item C.~E.~Shannon, A Mathematical Theory of Communication, \emph{Bell System Technical Journal} \textbf{27} (1948), 379--423 and 623--656. Original entropy and source-coding framework.
+\item D.~A.~Huffman, A Method for the Construction of Minimum-Redundancy Codes, \emph{Proceedings of the IRE} \textbf{40} (1952), 1098--1101. Original optimal merge rule for finite-alphabet prefix codes.
 \end{enumerate}
