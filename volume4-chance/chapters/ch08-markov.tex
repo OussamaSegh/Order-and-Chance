@@ -5,18 +5,42 @@ Move the top card of a deck to a random position, over and over.\\
 Once the original bottom card has been moved, the deck is uniform.
 \end{center}
 
-A random walk on a graph steps to a neighbour. A Markov chain on a finite set may favour some edges. The question is whether the distribution forgets its start.
+A random walk from Chapter~8 uses the same rule at every visit to a given vertex. A Markov chain keeps that idea but allows the chances of taking different routes to vary from state to state.
+
+Imagine a shuttle with three stops. From stop $1$, it stays with probability $1/2$ and visits stop $2$ with probability $1/2$. From stop $2$, it chooses any of the three stops equally. From stop $3$, it stays or returns to stop $2$, each with probability $1/2$. Once you know its present stop, its earlier route tells you nothing more about the next move. Yet the stops visited over time are not independent.
+
+Two questions now matter. How do we calculate where the shuttle will be after several trips? And will the probabilities eventually forget where it started?
 
 \section{Transition matrices}
 
-Let $\mathcal X$ be a finite set. A transition matrix satisfies $P(x,y)\ge0$ and $\sum_y P(x,y)=1$. A chain with initial law $\mu$ is built by drawing each next state from the current row, using fresh independent uniform coordinates of the kind constructed in Chapter~5 (finite base-$r$ digits suffice when all probabilities are rational). The law of $X_n$ is $\mu P^n$.
+Let $\mathcal X$ be a nonempty finite set of states. A \emph{transition matrix} $P$ contains one number for each ordered pair of states, with
+\[
+ P(x,y)\ge0,\qquad \sum_{y\in\mathcal X}P(x,y)=1.
+\]
+We read $P(x,y)$ as the probability of moving \emph{from} $x$ \emph{to} $y$ in one step. A row sums to $1$ because the next state must be somewhere, possibly back at the current state.
+
+A \emph{Markov chain} $(X_0,X_1,\ldots)$ with matrix $P$ obeys a precise rule: whenever the history has positive probability,
+\[
+ P(X_{n+1}=y\mid X_0=x_0,\ldots,X_n=x)=P(x,y).
+\]
+Knowing the present state is enough to calculate the next step. We can construct a chain with this rule by choosing $X_0$ and using a fresh independent uniform number from Chapter~5 at each step to choose a state according to its current row. The \emph{choices of random numbers} are independent; the \emph{successive states} generally are not.
+
+If the initial law is the probability row $\mu$, then $\mu(x)=P(X_0=x)$. We multiply probability rows on the left. The law after one step is $\mu P$, because the event $X_1=y$ can happen through each possible starting state:
+\[
+ P(X_1=y)=\sum_x\mu(x)P(x,y).
+\]
+Two steps need a possible middle state $z$:
+\[
+ P^2(x,y)=\sum_{z\in\mathcal X}P(x,z)P(z,y).
+\]
+Repeat the argument to see that the law at time $n$ is $\mu P^n$, with $P^0=I$. The random state $X_n$ and its law $\mu P^n$ are different things. A chain has one actual state at each time, but its law lists the probabilities of \emph{all} the possible states.
 
 \begin{examplex}[three states]
 On $\{1,2,3\}$, let
 \[
  P=\begin{pmatrix}1/2&1/2&0\\1/3&1/3&1/3\\0&1/2&1/2\end{pmatrix}.
 \]
-The vector $\pi=(2/7,3/7,2/7)$ satisfies $\pi P=\pi$. The first coordinate of $\pi P$ is $(2/7)(1/2)+(3/7)(1/3)=2/7$, and the other two match by the same arithmetic. There is no arrow from $1$ to $3$ or from $3$ to $1$. Every state can still reach every other state: $1$ reaches $3$ through $2$, and $3$ reaches $1$ through $2$. The next section calls a chain with this property irreducible.
+There is only one two-step route from $1$ to $3$, through $2$. Its probability is $(1/2)(1/3)=1/6$, so $P^2(1,3)=1/6$. The vector $\pi=(2/7,3/7,2/7)$ satisfies $\pi P=\pi$. The first coordinate of $\pi P$ is $(2/7)(1/2)+(3/7)(1/3)=2/7$, and the other two match by the same arithmetic. There is no arrow from $1$ to $3$ or from $3$ to $1$. Every state can still reach every other state: $1$ reaches $3$ through $2$, and $3$ reaches $1$ through $2$. The next section calls a chain with this property irreducible.
 \end{examplex}
 
 \begin{figure}[ht]
@@ -28,7 +52,11 @@ The vector $\pi=(2/7,3/7,2/7)$ satisfies $\pi P=\pi$. The first coordinate of $\
 
 \section{Irreducibility and stationary laws}
 
-The chain is \emph{irreducible} if for every pair $x,y$ some $P^n(x,y)$ is positive. A \emph{return time} of a state $x$ is an integer $m\ge1$ with $P^m(x,x)>0$. The \emph{period} of $x$ is the greatest common divisor of its return times. A probability $\pi$ is \emph{stationary} when $\pi P=\pi$: one step leaves the row unchanged.
+A chain is \emph{irreducible} when every state can reach every other state: for each $x,y$ there is some $n\ge0$ with $P^n(x,y)>0$. The shuttle is irreducible even though it cannot go directly from $1$ to $3$.
+
+A chain can reach every state and still alternate forever. Consider $0\to1\to0\to1\to\cdots$. Starting from $0$, a return is possible in $2,4,6,\ldots$ steps, but never after an odd number. In general, a \emph{return time} of a state $x$ is an integer $m\ge1$ such that $P^m(x,x)>0$. The \emph{period} of $x$ is the greatest common divisor of all its return times. The alternating chain has period $2$. A self-loop, $P(x,x)>0$, gives a return of length $1$, hence period $1$.
+
+A probability row $\pi$ is \emph{stationary} when $\pi P=\pi$. Once the chain has law $\pi$, one step leaves that law unchanged, and so does every later step. Stationary does not mean that a chain started from another distribution has already settled.
 
 \begin{lemma}[one period]\label{lem:period}
 In an irreducible chain every state has the same period.
