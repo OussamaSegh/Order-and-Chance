@@ -5,15 +5,28 @@ In $1000$ tosses of a fair coin, Chebyshev's bound on $600$ heads is only $1/40$
 Hoeffding's bound puts the same event below $2.1\times 10^{-9}$.
 \end{center}
 
-Volume~1, Chapter~10, proves Markov's inequality, Chebyshev's inequality, and the weak law: if $X_1,\ldots,X_n$ are pairwise independent with the same mean $\mu$ and the same finite variance $\sigma^2$, then
+Toss a fair coin ten times. Five heads is the average we expect. Getting six does not look surprising. Now toss it a thousand times. We expect five hundred heads, but how plausible is six hundred? The proportion of heads is still $0.6$ in both experiments. The length of the experiment changes how surprising it is.
+
+We need inequalities that turn this intuition into a reliable statement. Volume~1, Chapter~10, proved Markov's inequality, Chebyshev's inequality and a \emph{weak law of large numbers}. For pairwise independent variables with common mean $\mu$ and variance $\sigma^2$, it gives
 \[
- P\bigl(|\overline X_n-\mu|\ge\varepsilon\bigr)\le\frac{\sigma^2}{n\varepsilon^2}.
+ P\bigl(|\overline X_n-\mu|\ge\varepsilon\bigr)
+ \le\frac{\sigma^2}{n\varepsilon^2},
+ \qquad \overline X_n=\frac{X_1+\cdots+X_n}{n}.
 \]
-The bound tends to $0$, so the average converges to $\mu$ in probability. It says nothing about one infinite sequence. This chapter sharpens the tail for bounded variables, proves both Borel--Cantelli lemmas on the coin space of Chapter~1, and deduces a strong law for bounded independent copies. Bernstein's polynomials then turn the weak law into Weierstrass's theorem. Entropy waits until Chapter~7, after the bell curve has a shape.
+For every fixed $\varepsilon>0$, this probability tends to zero as $n$ grows. That is called \emph{convergence in probability}. It does not yet say what happens along one particular infinite sequence of coin tosses.
+
+We will first find a much stronger bound when each variable is bounded. Then we will ask when rare exceptions can happen infinitely often. That leads to a \emph{strong law}, stating that almost every infinite sequence has averages approaching their expected value. Finally we will use the same probability ideas to prove a result about ordinary continuous functions: every such function on a closed interval can be approximated uniformly by polynomials.
 
 \section{Chernoff and Hoeffding}
 
-Chebyshev uses only the variance. If the variables are bounded, the exponential moment is finite and gives a much smaller tail.
+Chebyshev uses only the variance, so two very different distributions can receive the same bound. Bounded independent summands give us more information. The useful trick is to apply the familiar Markov inequality not to a sum $S$, but to the nonnegative variable $e^{\lambda S}$. Exponentials turn addition into multiplication:
+\[
+ e^{\lambda(X_1+\cdots+X_n)}
+   =e^{\lambda X_1}\cdots e^{\lambda X_n}.
+\]
+For independent variables, the expectation of that product factors. This is why an exponential tail estimate can be much smaller than a variance estimate.
+
+First we prove a one-variable estimate, called Hoeffding's lemma. The \emph{exponential moment} $\mathbb E[e^{\lambda X}]$ exists automatically when $X$ is bounded, because $e^{\lambda X}$ is then bounded too. We use finite or countable probability laws from the earlier chapters; no later theory of continuous probability is assumed.
 
 \begin{lemma}[Hoeffding's lemma]\label{lem:hoeffding}
 Let $X$ satisfy $a\le X\le b$ and $\mathbb E X=0$. Then for every real $\lambda$,
@@ -48,7 +61,7 @@ The value and the first derivative vanish at $0$, and $L''$ is nonnegative, so $
 The factor $1/8$ is what the bound $\theta(1-\theta)\le1/4$ contributes, with $\theta(\lambda)$ the weight defined above. It is not claimed to be sharp for every law, only for this argument.
 
 \begin{theorem}[Hoeffding's inequality]\label{thm:hoeffding}
-Let $X_1,\ldots,X_n$ be independent, with $a_i\le X_i\le b_i$. Set $S=X_1+\cdots+X_n$. Then for every $t>0$,
+Let $X_1,\ldots,X_n$ be independent bounded random variables in a finite or countable probability model as constructed in the earlier chapters (including finite-digit cylinder experiments), with $a_i\le X_i\le b_i$. Set $S=X_1+\cdots+X_n$. Then for every $t>0$,
 \[
  P(S-\mathbb E S\ge t)\le\exp\Bigl(-\frac{2t^2}{\sum_{i=1}^n(b_i-a_i)^2}\Bigr),
 \]
@@ -75,7 +88,7 @@ Take $n=1000$ and $t=100$. Then $600$ heads or more has probability at most $e^{
 \[
  P(|S-500|\ge100)\le\frac{250}{10000}=\frac1{40}.
 \]
-One fortieth is a true sentence and a bad estimate.
+One fortieth is a true sentence and a bad estimate. Notice the events carefully. Chebyshev bounds the \emph{two-sided} event of at least one hundred heads above or below the mean. That automatically bounds the one-sided event of at least six hundred heads. Hoeffding here bounds that one-sided event directly. We have not multiplied its bound by two.
 
 \begin{examplex}[Markov and Chebyshev on one coin]
 Let $S$ be the number of heads in $n$ fair tosses, and let $A$ be the event $S\ge 0.6n$. Markov uses only that $S\ge0$ and $\mathbb ES=n/2$. Volume~1 gives $P(A)\le(n/2)/(0.6n)=5/6$. The same fraction would hold for any nonnegative variable with that mean.
@@ -116,7 +129,9 @@ A nonnegative variable with a known mean is a job for Markov's inequality. A kno
 
 The fair-coin calculation is the case $p=1/2$ of a bound that keeps the success probability. Exercise~\ref{ex:chernoffbin} asks for that extension. The derivative test is the same one written out above.
 
-Hoeffding controls one sum. The next inequality controls the largest partial sum along the way.
+Hoeffding answers a question about the \emph{final} sum. Sometimes we care about every partial sum along the way. Imagine watching a fair game after each move, not merely at the last move. A final score near zero does not rule out a large swing earlier. Kolmogorov's inequality bounds the probability that any partial sum crosses a given threshold. Its proof uses a particularly useful idea: separate the outcomes according to the \emph{first} time the threshold is crossed.
+
+The theorem is stated on the finite-digit model already constructed in Chapter~1. That lets us perform every conditioning calculation with finite sums and independent blocks.
 
 \begin{theorem}[Kolmogorov's inequality]\label{thm:kolmogorov}
 Let $Y_1,\ldots,Y_n$ be independent, each a function of its own finite block of digits in the model of Chapter~1, with $\mathbb E Y_i=0$ and $|Y_i|\le M$. Write $T_k=Y_1+\cdots+Y_k$. Then for every $t>0$,
@@ -125,7 +140,7 @@ Let $Y_1,\ldots,Y_n$ be independent, each a function of its own finite block of 
 \]
 \end{theorem}
 \begin{proof}
-Let $A_k$ be the event that $k$ is the smallest index with $|T_k|\ge t$. These events are disjoint, and their union is the event that the maximum is at least $t$. The blocks are disjoint, so a bounded function of $Y_1,\ldots,Y_k$ is independent of $Y_j$ for every $j>k$, and the expectation of the product factors. In particular $\mathbb E[T_k\mathbf 1_{A_k}Y_j]=\mathbb E[T_k\mathbf 1_{A_k}]\,\mathbb E[Y_j]=0$. Therefore
+Let $A_k$ mean that the first crossing of the threshold occurs at time $k$: $|T_1|<t,\ldots,|T_{k-1}|<t$, but $|T_k|\ge t$. The $A_k$ are disjoint, because one path has only one first crossing. Their union is exactly the event $\max_{1\le j\le n}|T_j|\ge t$. The blocks are disjoint, so a bounded function of $Y_1,\ldots,Y_k$ is independent of $Y_j$ for every $j>k$, and the expectation of the product factors. In particular $\mathbb E[T_k\mathbf 1_{A_k}Y_j]=\mathbb E[T_k\mathbf 1_{A_k}]\,\mathbb E[Y_j]=0$. Therefore
 \[
  \mathbb E[T_k\mathbf 1_{A_k}(T_n-T_k)]=\sum_{j=k+1}^n\mathbb E[T_k\mathbf 1_{A_k}Y_j]=0.
 \]
