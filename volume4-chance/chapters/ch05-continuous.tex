@@ -5,11 +5,30 @@ A uniform point of $[0,1]$ equals $\frac12$ with probability $0$, and it equals 
 single number with probability $0$. The average is an integral, not a sum.
 \end{center}
 
-Chapters~1 to~4 added probabilities of intervals and of finite-bit events. A single point inside $[0,1)$ has length $0$. If a measurement can fall anywhere on a line, its expectation cannot be a sum over values. This chapter builds that expectation from the Riemann integral of Volume~1, proves the repeated integral of a continuous function on a rectangle, and constructs as many independent normal variables as a later proof asks for. It does not assign a length to every subset of the line. Vitali showed in 1905 that countable additivity, translation invariance, and a length for every subset cannot hold together, if one grants the axiom of choice. The sets used below are intervals and finite unions of intervals, together with certain limits of such events whose probabilities are established by explicit approximations. We do not assume a general length or probability for every zero set of a continuous function.
+Imagine choosing a point by closing your eyes and pointing to a ruler one metre long. The chance of landing in its first quarter is $\tfrac14$. The chance of landing at \emph{exactly} the mark $\tfrac12$ is zero. That does not mean the ruler contains no points! It means probabilities here live on \emph{intervals}, not on individual numbers.
+
+In Chapters~1--4, outcomes such as dice faces and counts came with a list of probabilities. Now a measurement can be any real number in an interval. A list with one probability for every real value is not useful: every single value of a uniform measurement has probability zero, yet some intervals have positive probability. To describe this kind of chance we use a \emph{density}, a function whose area over an interval gives its probability. An average then becomes an integral rather than a sum.
+
+The foundations are familiar. Volume~1 built the Riemann integral, the Gaussian integral, and elementary calculus. Chapter~1 of this volume built independent fair bits and the uniform point they encode. We will use those tools to define continuous expectations, change coordinates, construct independent normal variables, and prove a careful, limited version of passing a limit through an integral. A later chapter will use these normals to explain why bell curves appear.
+
+There is a boundary to our method. We calculate probabilities for intervals, finite unions of intervals and some explicitly controlled limiting events. We do \emph{not} pretend to assign a well-behaved length to every set of real numbers. In 1905, Giuseppe Vitali gave a reason why that is impossible if one requires translation invariance and countable additivity and accepts the axiom of choice. Nothing in our positive proofs relies on that negative construction.
 
 \section{Distribution functions and densities}
 
-Let $X$ be a random variable, in the sense that $\{X\le x\}$ is an event whose probability we can compute, for every real $x$. The \emph{distribution function} is $F(x)=P(X\le x)$. It is increasing, $F(x)\to0$ as $x\to-\infty$ and $F(x)\to1$ as $x\to\infty$ whenever the model is a probability, and it is right-continuous when the events $\{X\le x+1/n\}$ shrink to $\{X\le x\}$ with probabilities tending to $F(x)$. For the variables in this chapter that limit is part of the construction.
+Before densities, one simple function can describe \emph{any} law for which its interval events have been defined. For every real $x$, ask how likely $X$ is to lie at or to the left of $x$. The answer is its \emph{cumulative distribution function} (CDF):
+\[
+ F(x)=P(X\le x).
+\]
+As $x$ moves right, the event $\{X\le x\}$ only grows, so $F$ cannot decrease. For a fair die, $F$ is a staircase: the probability jumps by $1/6$ at each integer from $1$ through $6$. For a uniform point $U$ in $[0,1]$, it is
+\[
+ F_U(x)=
+ \begin{cases}
+ 0,&x\le0,\\
+ x,&0<x<1,\\
+ 1,&x\ge1.
+ \end{cases}
+\]
+Here there are no jumps, because no point has positive probability. In the models we construct below, $F(x)\to0$ as $x\to-\infty$, $F(x)\to1$ as $x\to\infty$, and $F$ is right-continuous. We verify these facts from interval formulas instead of borrowing a theorem about probabilities of arbitrary infinite events.
 
 \begin{definition}[density]\label{def:density}
 A nonnegative function $f$ that is continuous except at finitely many points is a \emph{density} of $X$ when
@@ -19,7 +38,27 @@ A nonnegative function $f$ that is continuous except at finitely many points is 
 for all $a<b$, and $\int_{-\infty}^{\infty}f=1$. The integral is the improper Riemann integral of Volume~1 when a limit of integration is infinite, and also when $f$ is unbounded at a finite exceptional point, provided the limit of the integrals on the bounded pieces exists. A finite one-sided limit is the usual case. An integrable blow-up is allowed: the chord-length density below blows up at length $2$, and $1/(2\sqrt y)$ blows up at $0$.
 \end{definition}
 
-If two functions in this class both satisfy the identity, they agree at every point where both are continuous. A change on a finite set does not alter the Riemann integral, so the identity does not pin down the values at the finitely many jumps. At a continuity point the fundamental theorem says that the derivative of $\int_0^x f$ is $f(x)$.
+The density is \emph{not} the probability of one exact value. A density can even be greater than $1$ at some points; what must stay between $0$ and $1$ is its area over each interval. The total area under the density must be $1$.
+
+If two functions in the class of Definition~\ref{def:density} both satisfy the interval identity, they agree wherever both are continuous. Indeed, their integrals over every interval agree, and the fundamental theorem of calculus recovers the value of a continuous integrand from sufficiently short intervals. Changing a density at finitely many isolated points does not alter its Riemann integrals. At a continuity point of $f$, the derivative of $\int_0^x f(t)\,\dd t$ is $f(x)$; that connects a density with the slope of its cumulative distribution function.
+
+For a worked example, choose $U$ uniformly from $[0,1]$, and set $Y=\sqrt U$. For $0\le y\le1$, the inequalities $Y\le y$ and $U\le y^2$ are equivalent, so
+\[
+ F_Y(y)=P(Y\le y)=y^2.
+\]
+For an interval $0\le a<b\le1$, the probability is $b^2-a^2=\int_a^b 2y\,\dd y$. Thus $Y$ has density $f_Y(y)=2y$ on $(0,1)$ and zero outside. It rises above $1$ for $y>\frac12$, and this is perfectly legitimate. In Figure~\ref{fig:densityarea}, the shaded probability between $\frac14$ and $\frac34$ is
+\[
+ P\bigl(\tfrac14<Y\le\tfrac34\bigr)
+ =\int_{1/4}^{3/4}2y\,\dd y
+ =\frac9{16}-\frac1{16}=\frac12.
+\]
+
+\begin{figure}[ht]
+\centering
+\fig{ch05-densityarea}
+\caption{For $Y=\sqrt U$, with $U$ uniform on $[0,1]$, the density is $2y$. Probability is \emph{area}: the shaded interval $(1/4,3/4]$ has probability exactly $1/2$, although a single point has probability zero and the density reaches the value $2$.}
+\label{fig:densityarea}
+\end{figure}
 
 The uniform law on $[0,1]$ has density $1$ on that interval and $0$ outside. An exponential random variable of rate $\lambda>0$ has density $\lambda e^{-\lambda x}$ for $x>0$, and that function integrates to $1$. The mean is computed after the expectation has been defined. The \emph{standard normal} density is
 \[
@@ -31,7 +70,9 @@ Volume~1, Chapter~8, gives $\int_0^{\infty}e^{-u^2}\,\dd u=\sqrt{\pi}/2$. The in
 Expectation has so far been a finite or countable sum. If $X$ has density $f$ and $\int |x|f(x)\,\dd x<\infty$, define $\mathbb E[X]=\int_{-\infty}^{\infty} x f(x)\,\dd x$. If $g$ is continuous and $\int |g|f<\infty$, define $\mathbb E[g(X)]=\int g(x)f(x)\,\dd x$. When $g$ is a step function, this integral equals the finite sum of value times probability.
 \end{proposition}
 \begin{proof}
-The integral is the definition for a continuous $g$. What has to be checked is that it agrees with the sum already used when $g$ is a step.
+For discrete random variables we learned to compute $\mathbb E[g(X)]$ by multiplying each value $g(x)$ by the probability of that value, then adding. For a density, we divide the line into many short intervals. On an interval of width $\Delta x$, its probability is approximately $f(x)\Delta x$. The corresponding contribution to the average is approximately $g(x)f(x)\Delta x$. As the intervals become short, the Riemann sum approaches $\int g(x)f(x)\,\dd x$.
+
+Here that integral is the \emph{definition} when $g$ is continuous and the absolute integral is finite. What we need to check is that it agrees with the finite sum when $g$ is a step function, and that ordinary continuous $g$ can be approximated by such steps.
 
 Let $g$ be constant on finitely many intervals and zero outside them, and put every discontinuity of $f$ among the partition points. On each piece the probability is the integral of $f$, so the sum of value times probability equals $\int g f$.
 
@@ -43,6 +84,12 @@ and the step integral is a finite sum of values times probabilities. So the inte
 
 For a general continuous $g$ with $\int|g|f<\infty$, choose $A$ so that $\int_{|x|>A}|g|f<\varepsilon$. On $[-A,A]$ approximate $g$ by a step function $s$ that is zero outside $[-A,A]$, with the finitely many jumps of $f$ used as partition points. Then $\int s f$ is a finite sum of values times probabilities, and it lies within $\varepsilon$ of the integral of $g f$ over $[-A,A]$. The integral of $|g|f$ over the two tails is less than $\varepsilon$. The integral over the line is therefore within $2\varepsilon$ of that finite sum. There is no earlier sum that defines $\mathbb E[g(X)]$ for a continuous $g$. The integral is the definition, and the step comparison is the check that it extends the finite sum. If $f$ is unbounded at a finite point, the same comparison is applied on the intervals where $f$ is bounded, and the improper integral is the limit.
 \end{proof}
+
+Return to the density $f_Y(y)=2y$ of the ruler example. Its average is
+\[
+ \mathbb E[Y]=\int_0^1 y(2y)\,\dd y=\frac23.
+\]
+That makes sense: values near $1$ are more likely than values near $0$. By comparison, the uniform point $U$ had mean $1/2$; the transformation $Y=\sqrt U$ pushes every value in $(0,1)$ to the right. Both results come from the same integral rule.
 
 For the exponential density, integrate by parts with $u=x$ and $\mathrm dv=\lambda e^{-\lambda x}\,\dd x$. The boundary term $[-x e^{-\lambda x}]_0^{\infty}$ vanishes: at $0$ it is $0$, and at infinity $x e^{-\lambda x}\to0$ by the same series comparison used below for the Gaussian moment. The remaining integral is $\int_0^{\infty}e^{-\lambda x}\,\dd x=1/\lambda$. Thus $\mathbb E[X]=1/\lambda$.
 
