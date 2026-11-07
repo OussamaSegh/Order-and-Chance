@@ -60,7 +60,11 @@ because $\{S_n\ge a\}$ is already contained in $\{M_n\ge a\}$, and the reflected
 
 \section{Gambler's ruin}
 
-Two players share $N$ units. The walk starts at $k\in\{0,\ldots,N\}$ and stops at $0$ or at $N$. Let $h_k$ be the probability of hitting $N$ before $0$.
+Imagine two players sharing $N$ counters. One player has $k$, the other has $N-k$. At each round one counter moves from one player to the other. The first player's fortune is a random walk on $0,1,\ldots,N$; the game ends at $0$ (ruin) or $N$ (winning every counter).
+
+If the rounds are fair, is the chance of winning everything equal to $k/N$? It is, and a one-step equation proves it. But a player who wins each round with probability $p>1/2$ has a different chance, often much better even from a small fortune.
+
+Let $h_k$ be the probability of reaching $N$ before $0$, from initial fortune $k$. Both endpoints are absorbing: at $0$ and $N$ the game has already ended.
 
 \begin{theorem}[ruin]\label{thm:ruin}
 For a fair walk, $h_k=k/N$. If each step is $+1$ with probability $p\in(0,1)\setminus\{1/2\}$ and $-1$ with probability $q=1-p$, then
@@ -69,10 +73,21 @@ For a fair walk, $h_k=k/N$. If each step is $+1$ with probability $p\in(0,1)\set
 \]
 \end{theorem}
 \begin{proof}
-Condition on the first step. Then $h_0=0$, $h_N=1$, and $h_k=p h_{k+1}+q h_{k-1}$ for $0<k<N$. For $p=1/2$ the second difference vanishes, so $h_k$ is linear, and the boundary values give $h_k=k/N$. For $p\ne1/2$ the characteristic equation $p r^2-r+q=0$ has roots $1$ and $q/p$. The general solution is $A+B(q/p)^k$. The boundary values fix $A$ and $B$.
+We should first know that the game ends. Starting from any interior fortune, $N$ consecutive rightward moves are more than enough to reach $N$ before the block finishes. Such a run has probability $p^N>0$, independently of the current fortune. Divide future coin flips into disjoint blocks of $N$ steps. The chance that the game survives the first $r$ blocks is at most $(1-p^N)^r\to0$, by independence of fresh blocks. Thus one endpoint is reached almost surely.
+
+Condition on the first step. Then $h_0=0, $h_N=1$, and $h_k=p h_{k+1}+q h_{k-1}$ for $0<k<N$. For $p=1/2$ the second difference vanishes, so $h_k$ is linear, and the boundary values give $h_k=k/N$. For $p\ne1/2$ the characteristic equation $p r^2-r+q=0$ has roots $1$ and $q/p$. The general solution is $A+B(q/p)^k$. The boundary values fix $A$ and $B$.
 \end{proof}
 
-The same conditioning gives the expected duration, once one knows the game ends.
+The fair and biased winning probabilities make a useful picture.
+
+\begin{figure}[ht]
+\centering
+\fig{ch08-ruinprob}
+\caption{Exact chance of reaching fortune $5$ before fortune $0$, starting at $k$. The fair walk has $h_k=k/5$ (navy). For steps with $p=2/3$ to the right and $q=1/3$ to the left, $h_k=(1-2^{-k})/(1-2^{-5})$ (rust). For $k=1$ these probabilities are $1/5$ and $16/31$. All plotted points follow the recurrence exactly; they are not simulated outcomes.}
+\label{fig:ruincompare}
+\end{figure}
+
+A small edge in each round can therefore make a large difference over a whole game. The same conditioning also gives the expected duration, once we know the game ends.
 
 \begin{proposition}[duration of the game]\label{prop:duration}
 Let $\tau$ be the first time the walk is at $0$ or at $N$, and let $e_k=\mathbb E[\tau]$ from the start $k$. For a fair walk, $e_k=k(N-k)$. If the step is $+1$ with probability $p\in(0,1)\setminus\{1/2\}$ and $-1$ with probability $q=1-p$, then
@@ -81,6 +96,8 @@ Let $\tau$ be the first time the walk is at $0$ or at $N$, and let $e_k=\mathbb 
 \]
 \end{proposition}
 \begin{proof}
+Each round adds one unit of time. That is why the expected-duration equation has a term $1$ that the winning-probability equation does not have. We will find a function satisfying the equation, then prove that it really equals the expected duration; one cannot simply assume that expectation is finite.
+
 First let $g$ be any function on $\{0,\ldots,N\}$ with $g(0)=g(N)=0$ and
 \[
  g(k)=1+p\,g(k+1)+q\,g(k-1),\qquad 0<k<N.
