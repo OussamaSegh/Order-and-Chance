@@ -197,7 +197,26 @@ The maximum tends to $0$, so the limsup of the supremum is at most $1/m$. This i
 
 \section{Characteristic functions}
 
-Write $\varphi_X(t)=\mathbb E[\cos(tX)]+i\,\mathbb E[\sin(tX)]$.
+The generating function in Chapter~3 turned addition of independent counts into multiplication of functions. Can we do the same for negative or continuous random variables? The complex exponential obeys
+\[
+ e^{it(x+y)}=e^{itx}e^{ity},\qquad
+ e^{itx}=\cos(tx)+i\sin(tx).
+\]
+The number $e^{itx}$ lies on the unit circle, so its absolute value is always $1$. Even if $X$ has a very long tail, $\mathbb E[e^{itX}]$ is a bounded average of sine and cosine.
+
+The \emph{characteristic function} of $X$ is
+\[
+ \varphi_X(t)=\mathbb E[e^{itX}]
+ =\mathbb E[\cos(tX)]+i\,\mathbb E[\sin(tX)],
+ \qquad t\in\R.
+\]
+In particular, $\varphi_X(0)=1$ and $|\varphi_X(t)|\le1$. For independent $X$ and $Y$, their characteristic functions multiply under addition:
+\[
+ \varphi_{X+Y}(t)=\varphi_X(t)\varphi_Y(t).
+\]
+For finite or countable laws, this follows from the same product calculation as PGFs. For the independent continuous laws constructed in Chapter~5, it follows first for products of step approximations and then by their bounded integral limits. The rest of the chapter uses this identity only for explicitly constructed independent laws.
+
+We will need a theorem about convergence of these functions, but take care: pointwise convergence of characteristic functions \emph{to} a proposed limit does not, by itself, supply a convergence-in-distribution theorem. That converse requires the additional continuity theorem proved in Volume~11.
 
 \begin{lemma}[differentiation under the integral]\label{lem:diffint}
 If $X$ has a continuous density $f$ and $\int|x|f<\infty$, then $\varphi_X$ is differentiable for every real $t$, with $\varphi'_X(t)=i\mathbb E[Xe^{itX}]$ and $\varphi'_X(0)=i\mathbb E[X]$.
@@ -213,6 +232,16 @@ A constant $c$ has transform $e^{itc}$. A fair sign $\pm1$ has transform $\cos t
 The first two are finite sums. For the normal, the sine integral vanishes by oddness. Differentiate $\int\cos(tx)\phi(x)\,\dd x$ by Lemma~\ref{lem:diffint}. Integrate by parts, using $\phi'(x)=-x\phi(x)$, to obtain $\varphi'(t)=-t\varphi(t)$. The solution with $\varphi(0)=1$ is $e^{-t^2/2}$.
 \end{proof}
 
+For a concrete prediction, let $B_1,\ldots,B_n$ be independent fair signs. Their standardised sum $S_n=(B_1+\cdots+B_n)/\sqrt n$ has characteristic function
+\[
+ \varphi_{S_n}(t)=\left(\cos\frac{t}{\sqrt n}\right)^n.
+\]
+For fixed $t$, the Taylor expansion $\ln\cos u=-u^2/2+O(u^4)$ near $u=0$ yields
+\[
+ n\ln\cos(t/\sqrt n)=-\frac12t^2+O(t^4/n).
+\]
+So the characteristic functions approach $e^{-t^2/2}$, the standard normal one. This points to the bell curve, but is not yet a proof that the \emph{distribution functions} approach it. We will prove the central limit theorem directly by comparing smooth averages, rather than invoke the unavailable converse.
+
 \begin{theorem}[convergence in distribution passes to characteristic functions]\label{thm:cfconv}
 If $X_n\to X$ in distribution, then $\varphi_{X_n}(t)\to\varphi_X(t)$ for every fixed $t$.
 \end{theorem}
@@ -223,6 +252,12 @@ The maps $x\mapsto\cos(tx)$ and $x\mapsto\sin(tx)$ are bounded and uniformly con
 The converse implication is L\'evy's continuity theorem, proved in Volume~11. It is not a step here.
 
 \section{Lindeberg's theorem}
+
+Why should a sum of non-normal random variables look like a sum of normals? Imagine changing the ingredients one at a time: replace the first summand by a normal with the same mean and variance, then the second, then the third. If every replacement changes the average of a smooth function only a little, the total difference is small.
+
+Taylor's formula explains why that could work. Matching means cancel the linear terms, and matching variances cancel the quadratic terms. The remaining error involves the third-order term. This is the heart of Lindeberg's \emph{replacement method}.
+
+First we need a simple fact: a sum of independent normals is itself normal. Then we will be able to recognise the law at the end of the replacements.
 
 \begin{lemma}[sums of normals]\label{lem:normalsum}
 The sum of independent $N(0,\sigma^2)$ and $N(0,\tau^2)$ variables is $N(0,\sigma^2+\tau^2)$, for $\sigma,\tau\ge0$, interpreting variance zero as a constant.
@@ -266,6 +301,10 @@ Replacing every $Y_i$ by $cY_i$ for $c>0$ multiplies $\rho$ by $c^3$ and $\sigma
 \end{examplex}
 
 Let $H$ be the number of heads in one hundred fair tosses, so $\mathbb EH=50$ and the standard deviation is $5$. Then $P(H\ge 60)=0.02844\ldots$. The normal tail beyond two standard deviations is $1-\Phi(2)=0.02275\ldots$. The continuity correction, at $59.5$, is the tail beyond $1.9$ standard deviations, $0.02872\ldots$. Hoeffding's bound on the same event is $e^{-2}=0.1353\ldots$. The normal number is an approximation. Hoeffding's number is a proved upper bound. The rate above controls smooth test functions of the centred sum $(H-50)/5$. It does not by itself replace either of those two sentences.
+
+The preceding smooth-test estimate needed a finite third moment. Lindeberg's condition achieves a more general theorem using only second moments: it requires the total variance carried by summands larger than a fixed size to become negligible. It is a condition on the \emph{influence} of large summands, not merely on their number.
+
+For example, let each row of a triangular array have $X_{n,1}$ equal to a fair sign $\pm1$ and $X_{n,2}=\cdots=X_{n,n}=0$. Each row has total variance $1$, but its sum is always one fair sign, never approximately normal. For any $0<\varepsilon<1$ the Lindeberg expression below equals $1$ in every row. We need an assumption that rules this out.
 
 \begin{theorem}[Lindeberg]\label{thm:lindeberg}
 For each $n$ let $X_{n,1},\ldots,X_{n,n}$ be independent, centred, and satisfy $\sum_k\mathbb E[X_{n,k}^2]=1$. Suppose that for every $\varepsilon>0$,
