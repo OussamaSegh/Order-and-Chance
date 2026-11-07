@@ -11,7 +11,7 @@
 - EPUB: SHA-256 `a307ab9546f8999db7ca42a6ed3abd2b9e61c3bce753d5c786914297cec293b0`; cover wrap: `8f8113012937b2237d848d4c9749ffe95e6844d8d64a546105ed08df66f5cb6c`.
 - PDF geometric inspection used PyMuPDF on **every** physical page: zero extracted words outside page bounds in either document; print interior has no live link annotations; reading PDF has 604 link annotations. Reading blank pages 7 and 131 correspond to print pages 6 and 130 (intentional-looking blank versos before divisions).
 - Print page 198 has no selectable text because the KDP export rasterized it into a 4200 × 6000 RGB bitmap, **600 dpi** at the underlying 7 × 10 trim extent; this agrees with the native workflow's one-page flattening report. Its visible mathematical text and graph were manually sampled; the final press proof is still required.
-- 33 paired print/reading pages have different normalized *extracted* text streams. A representative discrepancy is the extractor's `ShufÒe` on print page 27 versus `Shuffle` in reading. Font ligature/text-extraction behavior is one possible explanation, but complete character-level and semantic reconciliation has **not** been done.
+- **All 33 paired extracted-text discrepancies were categorized** by `difflib.SequenceMatcher` on whitespace-normalized page text: 45 glyph-encoding replacements `Ï`→`fi`, 4 `Ò`→`fl`, and the expected missing extracted stream from the one rasterized print page 198. No other differences in the paired extracted characters were found. This establishes an extraction/font-encoding explanation for the text-layer discrepancies, **not** a manual proofreading pass of the press PDF.
 - The EPUB converter logged a warning for the total-variation expression in Chapter 9, but `EPUB/text/ch014.xhtml` contains a referenced PNG and the extracted formula image visibly contains the inequality. Do not classify it as broken merely from the warning; a device/reader rendering check remains required.
 
 ## Visual overview performed (not a production acceptance)
@@ -253,11 +253,22 @@ Legend: **G** = automated geometry and word-bounds pass; **O** = included in the
 | 223 | 224 | G,O | P |
 | 224 | 225 | G,O | P |
 | 225 | 226 | G,O,S | P |
+## All-page 200-dpi automated print raster pass — follow-up, 7 November 2026
+
+Rendered **all 225 print interior pages** with PyMuPDF at **200 dpi** in grayscale (`1425 × 2050` pixels each), analysed per-page nonwhite-pixel regions with threshold 230/255, and wrote a local tabular measurement report. This is a machine raster/margin analysis, not human per-page 200dpi inspection. All 225 raster operations succeeded.
+
+- Exactly **two completely blank pages**, print 6 and 130, consistent with the two reading blanks noted above. No unexpected completely white page was detected.
+- Four intentionally full-charcoal division pages, print **11, 59, 131, 195**, extend dark ink to all four PDF boundaries as expected from the bleed requirement. No other nonblank page had nonwhite ink closer than 0.1 inch to any physical edge under the scan threshold.
+- Low ink-coverage pages 1, 3, 26, 73, 129, 144, 194, 216 and 225 are sparse front matter, chapter-ending material or final colophon in the thumbnail overview; density alone is not evidence of dropped text. This step does **not** validate paragraph completeness.
+- The print 225-page dimensions remain 513×738pt; no off-page extracted word boxes in either PDF. All 33 text-layer mismatches are now categorized above; visual verification of representative ligatures remains open.
+
+The final high-DPI **visual** every-page ledger and print/reading human comparison are still **PENDING**. This machine pass must not be re-labelled as page-by-page accepted.
+
 ## Known remaining steps / no false signoffs
 
 1. Obtain an authorised fresh **grok-4.7 highest-effort**, separate-session adversarial reread of the Chapter 9 repair at `238c169d`; record precise item-level findings and rechecks. Do not change that chapter until this reread is available. Also resolve rereads at Chapter 1 `26cb0760`, Chapter 6 `09481761` and Chapter 12 `ddbf813a`.
 2. Inspect every **print** page individually at 200 dpi or greater against the reading interior, including both edge-bleed orientations, baselines, small figure labels, contrast, photo provenance, captions, clipping and endmatter. Add findings, fixes and reviewed SHA to this ledger. The index above deliberately does not say PASS for that step.
-3. Reconcile 33 extraction discrepancies, and check the Chapter 9 EPUB math equation on the target e-reader; resolve issues only on proved defects and with the chapter-review dependency respected.
+3. The 33 extraction discrepancies are categorized above (49 `fi`/`fl` replacements plus the 600dpi rasterized page). Visually confirm representative ligature glyphs and check the Chapter 9 EPUB math equation on the target e-reader; resolve issues only on proved defects and with the chapter-review dependency respected.
 4. Finish the independent full-volume mathematical/voice/citation reviews and the substantive page-depth decision, then certify fresh builds of the *final* source SHA; this artefact's green native build does not certify future edits.
 5. The full-books CI [run #42336817012](https://github.com/OussamaSegh/Order-and-Chance/actions/runs/42336817012) **failed** at the preexisting Volume 3 `C-GROUP` whole-volume conceptual source/figure drift guard. Do not edit Volumes 1–3, shared layout, or `.github/workflows/build.yml` to silence it; record as independent blocker and seek owner authorisation if repair is truly needed.
 
