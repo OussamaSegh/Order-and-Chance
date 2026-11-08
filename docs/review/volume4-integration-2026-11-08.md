@@ -1,0 +1,22 @@
+# Volume 4 integration review — 8 November 2026
+
+**Branch / scope:** [stacked draft PR #113](https://github.com/OussamaSegh/Order-and-Chance/pull/113), based on Volume 4 draft [PR #111](https://github.com/OussamaSegh/Order-and-Chance/pull/111) at `8789fa613109fe1ea61150434074165856496051`. Only downstream Volumes 11, 12, 14 and 15 and this review record are in this integration PR. The original Volume 4 draft remains unchanged and unmerged. This is an **author/editor corrective pass, not independent second acceptance** of these new changes.
+
+## Corrected dependency classes
+
+1. **Wrong printed numbers, with the meaning checked:** Brownian reflection is Volume 4 Theorem 12.12; Azuma is 11.10; electrical-network exercise 8.8; rising sequences exercise 9.8; Pólya's finite last-visit formula is 8.6; the general arcsine limit is proved in Volume 11, Chapter 3. Volume 4 Theorem 6.8 is not a Fourier inversion theorem.
+2. **Missing statements rebuilt in later-volume proofs:** An inverse $a$-shuffle is a stable sort by i.i.d. uniform labels, giving $a^{-n}\binom{a+n-r}n$ for an output deck with $r$ rising sequences (after inversion); independent $a$- and $b$-shuffles compose into an $ab$-shuffle. These counts appear locally in the Volume 11 riffle section and the Volume 15 shuffling chapter. No longer credited to nonexistent Volume 4 8.22–8.24.
+3. **Random transpositions:** Volume 11's cutoff corollary now proves its untouched-card lower bound directly, from an exact mean and a nonpositive-covariance second moment; no longer cites nonexistent Volume 4 Proposition 8.21. The total-variation contraction used in riffle cutoff is proved/referred to correctly.
+4. **Martingales:** Volume 11's general-theory chapter now supplies a bounded-$L^1$ upcrossing convergence argument, bounded-$L^2$ convergence by orthogonal differences and completeness, and the strong $L^2$ Doob maximal inequality via a finite first-crossing layer-cake calculation. The later proofs in Volumes 12 and 15 explicitly depend on those results rather than absent Volume 4 Theorems 10.15, 10.18, 10.20 and 10.25. General conditional expectations are attributed to Volume 7; Volume 4 only constructs the finite-partition version.
+5. **Probability theory and number theory:** Volume 11's Donsker chapter now derives the needed nonnegative-walk count and arcsine Riemann sum from Volume 4's actual local-return estimate; it no longer claims Volume 4 proved the integral limit. It gives the Gaussian Fourier-transform identity instead of an imaginary general inversion theorem. Volume 15's Bohr–Jessen chapter now proves integrable-characteristic-function inversion by Gaussian smoothing. Volume 14's Roth chapter explicitly distinguishes general van der Waerden from the 2-colour, 3-term case actually proved in Appendix B.
+6. **Concentration:** The weaker bounded-differences inequality is now obtained explicitly from finite-step Azuma and conditional expectations; its proof precedes the stronger McDiarmid inequality.
+
+## Checks still required for this integration branch
+
+- **GitHub Actions Build books, all 15 volumes and protected Volume 3 snapshot:** must be successful at the final integration SHA. Earlier CI on PR #111 is not evidence for changed later-volume sources.
+- **Independent mathematical and first-reader review** of all newly introduced proofs in this PR, with the reviewer identity, exact commit, and issue dispositions. The editor who wrote a fix cannot attest to an independent review of that fix.
+- **Cross-volume semantic audit beyond the listed references,** including hypotheses for all citations. Old documentation maps contain superseded numbers and must not be applied mechanically.
+- **Rendered downstream PDF inspection** for paragraph / align environments introduced in Volumes 11, 12 and 15. CI success is only compilation/automated publishing validation.
+- PR #111 has separate unchanged manuscript/physical production/EPUB and owner-approval gates. Draft PR #114 proposes a minimal remedy for the Chapter 6 bibliography orphan in the exact-head print PDF; that production fix needs its own native visual verification.
+
+**No merge or production signoff is claimed in this record.**
