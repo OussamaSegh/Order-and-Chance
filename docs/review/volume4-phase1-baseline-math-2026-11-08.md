@@ -110,7 +110,25 @@ The earlier argument said \(G(1)=1\Rightarrow G(n)=1\Rightarrow T\) is infinite.
 
 The argument splits the Taylor remainder into a small-increment term on `|x|≤ε` and a large-increment term on `|x|>ε`, correctly matching the theorem's strict Lindeberg condition. Its prose instead said the contributions with `|X|≥ε` tend to zero “by hypothesis.” At a fixed threshold the strict and non-strict indicators can differ (e.g. a fair sign with magnitude exactly `ε`), so that citation was imprecise. Commit `5e7b8c5403c55ae40a51268f8d4ba3fe252f2292` changes the sentence to `|X|>ε` and explicitly assigns equality to the small-increment term. The strict/no-strict endpoint example is protected by a new test, but an independent full proof reread remains pending.
 
-### Regression coverage
+### V4-P1-005 — Old numbered-prerequisite map did not match the printed book
+
+**Where:** `docs/plan/volume4-prerequisites.md`, “Taught in Volume 4 before use” and the exercise-number contract.  
+**Severity:** P1 dependency/citation documentation (the manuscript's printed order is already correct).
+
+The register used the older twelve-chapter mapping for several results, e.g. walks and effective resistance in Chapter 7, top-to-random in Chapter 8, colouring in Chapter 9, Brownian construction in Chapter 11, and crossing in Chapter 12. The *current* approved printed order is walks **8**, Markov **9**, Poisson **10**, martingales **11**, Brownian **12**, probabilistic method **13**, random graphs **14**. Geometry (Bertrand/Buffon) is in printed Chapter **5**, entropy in **7**.
+
+The correction at `1418147a32a19dae88a67c6a24841e282d6c7659` updates the proof/prerequisite table to the actual inclusion route, distinguishing Chapter 6 Theorems 6.8/6.10, Chapter 10 Lemma 10.5, Chapter 12 Theorems 12.4/12.12, Appendix B, and the following protected exercise labels: 6.8 `ex:cyclesclt`, 8.8 `ex:electric`, 9.6 `ex:toptorandom`, 9.8 `ex:risingmean`, 12.3 `ex:zeros`, and 13.4 `ex:crossing`. The updated table is an internal citation map **not proof that every citation in Volumes 5–15 is already correct**; separate downstream audit remains necessary.
+
+`tools/test_volume4_route.py` adds a regression that calculates each named exercise's actual printed slot from its order in the current fourteen chapter source files and compares it with the documented number. It also guards all local references, 107 exercise/hint/solution pairs, 41 cited figure sources, and Appendix B.
+
+### V4-P1-006 — Match Volume 1's actual Taylor proof strength
+
+**Where:** `ch06-clt.tex` (Lindeberg swap example and theorem) and the prerequisite register.  
+**Severity:** P1 citation/premise precision, not a false remainder estimate.
+
+Volume 1, calculus chapter 8, Theorem `thm:taylor`, **proves the integral remainder and the Taylor–Lagrange bound**, and mentions the located-point form of Lagrange's remainder separately. The Chapter 6 prose called its working inequality “Taylor's formula with Lagrange remainder,” a phrase that could be read as relying on the unproved located-point theorem. Commits `b144f43c7b9ffb62b522282293d9a11f2289edc4` and `23c55347bdeff2861146fe87c4fa6946ac775b44` now explicitly use the **proved Volume 1 bound**, \(|R(x)|\le M|x|^3/6\), without importing the point-form statement. The remainder estimate, theorem claim, and numerical results are unchanged.
+
+### Regression coverage (first-phase)
 
 `tools/test_volume4_math_audit.py` (commit `ac36e0b7bad91212add3eccc7cc5e732317930e8`) adds three standard-library regression tests:
 
@@ -120,7 +138,7 @@ The argument splits the Taylor remainder into a small-increment term on `|x|≤�
 
 The **three original mathematics regression tests passed** in GitHub's full test step on `5bbca61229075359a358ac079c1faa1e074ff7ed` (532 tests, 32 skipped in that revision). Since then a fourth Lindeberg endpoint test was added; this new head still needs its own test run. Tests supplement, not replace, mathematical review.
 
-`tools/test_volume4_route.py` (added at `f0bfd68964bc972b520115978f9bf6ce3cf02994`) is a second suite: it resolves actual nested chapter `\\input` files, preserves the approved four parts and 14 chapters plus Appendix B, checks every label and local reference, enforces one hint and solution per exercise, and checks every included figure source. The suite adds four test methods. Its source-level checks cannot replace TeX compilation, independent proof review, or a human figure inspection.
+`tools/test_volume4_route.py` (added at `f0bfd68964bc972b520115978f9bf6ce3cf02994`) is a second suite: it resolves actual nested chapter `\\input` files, preserves the approved four parts and 14 chapters plus Appendix B, checks every label and local reference, enforces one hint and solution per exercise, and checks every included figure source. The route suite now adds **five** test methods, including the printed exercise-slot check. Its source-level checks cannot replace TeX compilation, independent proof review, or a human figure inspection.
 
 ## 3. Existing-review reconciliation (source of truth, not a reset)
 
@@ -138,7 +156,7 @@ The **three original mathematics regression tests passed** in GitHub's full test
 
 ## 4. Coverage vs remaining work
 
-**This pass is a reproducible structural check of all 14 chapters and a focused mathematical inspection/repair of four proof or precision sites. It is NOT a complete hostile line-by-line reread of every theorem and solution.** In particular:
+**This pass is a reproducible structural check of all 14 chapters and a focused mathematical inspection/repair of six focused mathematical, citation or prerequisite sites. It is NOT a complete hostile line-by-line reread of every theorem and solution.** In particular:
 
 | Area | Current disposition | Required next evidence |
 | --- | --- | --- |
@@ -152,12 +170,12 @@ The **three original mathematics regression tests passed** in GitHub's full test
 
 ### Next step after this PR
 
-An integrator should **first obtain independent reviews of V4-P1-001 through V4-P1-004**, then work chapter by chapter against `docs/plan/book-04.md` and the current historical issue log. For every review pass, record its input SHA, file identity, checked exercises, figure inspection scope, findings and rechecks. Keep later teaching changes and production fixes in separate PRs; do not conflate this first proof hotfix with a 10/10 verdict.
+An integrator should **first obtain independent reviews of V4-P1-001 through V4-P1-006**, then work chapter by chapter against `docs/plan/book-04.md` and the current historical issue log. For every review pass, record its input SHA, file identity, checked exercises, figure inspection scope, findings and rechecks. Keep later teaching changes and production fixes in separate PRs; do not conflate this first proof hotfix with a 10/10 verdict.
 
 ## 5. Validation report for this PR
 
 - **Checked:** exact `main` SHA, `main.tex` order and nested Chapter 5 inclusion; syntax labels/references, matching exercise-hint-solution IDs and inclusion of 41 existing figure sources; symbolic cutoff/event proof and survival-function gap; exact integer Eulerian computations for all ten riffle distances.
-- **Changed:** `ch06-clt.tex`, `ch08-markov.tex`, `ch09-poisson.tex`, new `tools/test_volume4_math_audit.py`, new `tools/test_volume4_route.py`, and this note.
+- **Changed:** `ch06-clt.tex`, `ch08-markov.tex`, `ch09-poisson.tex`, new `tools/test_volume4_math_audit.py`, new `tools/test_volume4_route.py`, the updated prerequisite register, and this note.
 - **Proven workflow evidence on old PR SHA `5bbca61229075359a358ac079c1faa1e074ff7ed`:** [V4 native run 42515128377](https://github.com/OussamaSegh/Order-and-Chance/actions/runs/42515128377) **passed**: 14 EPUB tests, all native formats, 269 layout boxes without detected overflow or unresolved references, both print preflights, **283 print-interior pages**, page dimensions 513×738 pt. [Exact artifact 13631049521](https://github.com/OussamaSegh/Order-and-Chance/actions/runs/42515128377/artifacts/13631049521), ZIP SHA-256 `9a983a90c749223d4614f610d675e858484425f4422cee45ff29d6158194d2a5`. **These metrics apply only to that source SHA, not to subsequent modifications.**
 - **Full workflow evidence on the same old SHA:** [Build books run 42515128385](https://github.com/OussamaSegh/Order-and-Chance/actions/runs/42515128385) ran **532 tests (32 skipped), all passed**, including the three initial V4 mathematics tests, before failing the protected Volume 3 conceptual-source/figure gate: `ValueError: Whole-volume conceptual source/figure drift: C-GROUP`. Build/site/publish jobs were skipped. This is an authentic blocker, not a publication pass; **do not weaken the guard or self-approve its review snapshot**.
 - **Not yet performed:** tests and native build on the updated final PR head, all-page high-resolution print/reading comparison, actual Kindle/device check, KDP vendor feedback, distinct mathematical referee or complete chapter-by-chapter proof re-review.
