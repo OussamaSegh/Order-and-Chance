@@ -108,5 +108,54 @@ class TestVolume4MathAudit(unittest.TestCase):
         self.assertIn(r"Multiplicativity then gives $G(t)=1$", proof)
 
 
+    def test_exponential_quantile_satisfies_fourth_moment_strong_law(self):
+        """A positive-support exponential is not excluded by SLLN4."""
+        from math import exp, log
+
+        source = (CHAPTERS / "ch09-poisson.tex").read_text(encoding="utf-8")
+        self.assertIn("does apply to these exponential gaps", source)
+        self.assertIn(r"E=-\ln(1-U)/\lambda", source)
+        self.assertNotIn(
+            "asks for a distribution function that is strictly increasing on the whole line",
+            source,
+        )
+        # The inverse-CDF construction works although F is flat for x <= 0.
+        for rate in (0.5, 1.0, 2.0):
+            for u in (0.01, 0.25, 0.7, 0.99):
+                sample = -log(1 - u) / rate
+                self.assertGreater(sample, 0)
+                self.assertAlmostEqual(1 - exp(-rate * sample), u)
+            # Integration by parts gives E[E^4] = 4! / rate^4.
+            self.assertTrue(24 / rate**4 < float("inf"))
+
+    def test_aperiodic_lengths_have_self_contained_gcd_bridge(self):
+        """Include a gcd-one return-length set with no coprime pair."""
+        from math import gcd
+
+        source = (CHAPTERS / "ch08-markov.tex").read_text(encoding="utf-8")
+        proof = source.split(r"\label{thm:ergodic}", 1)[1].split(
+            r"\end{proof}", 1
+        )[0]
+        self.assertIn("Divide any return length $m$ by $D$", proof)
+        self.assertIn("Minimality of $D$ forces $r=0$", proof)
+        self.assertNotIn("Volume~2 writes the gcd", proof)
+
+        lengths = (6, 10, 15)
+        self.assertEqual(gcd(*lengths), 1)
+        self.assertTrue(all(gcd(lengths[i], lengths[j]) > 1
+                            for i in range(3) for j in range(i + 1, 3)))
+        # The signed integer combination 6 + 10 - 15 = 1
+        # produces nonnegative return lengths B=15 and B+1=16.
+        A, B = 6 + 10, 15
+        self.assertEqual(A - B, 1)
+        for M in range(B * B, B * B + 150):
+            q, r = divmod(M, B)
+            self.assertGreaterEqual(q - r, 0)
+            self.assertEqual(M, (q - r) * B + r * (B + 1))
+            self.assertEqual(
+                M, (q - r) * 15 + r * 6 + r * 10,
+            )
+
+
 if __name__ == "__main__":
     unittest.main()
