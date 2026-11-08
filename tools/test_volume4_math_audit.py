@@ -207,9 +207,12 @@ class TestVolume4MathAudit(unittest.TestCase):
         # Var(X_t-X_s)=t-s, Cov(X_s,X_t)=min(s,t), but E[X_t]=ct.
         for drift in (-1.0, 0.5, 3.0):
             for s, t in ((0.0, 0.5), (1.0, 2.5), (3.0, 4.0)):
-                self.assertEqual((t - s), t - s)
-                self.assertEqual(min(s, t), s)
-                self.assertNotEqual(drift * t, 0.0)
+                mean_s, mean_t = drift * s, drift * t
+                second_moment = min(s, t) + mean_s * mean_t
+                covariance = second_moment - mean_s * mean_t
+                self.assertAlmostEqual(covariance, min(s, t))
+                self.assertEqual(t - s, max(0.0, t - s))
+                self.assertNotEqual(drift * (t - s), 0.0)
 
     def test_brownian_blocks_distinguish_copy_independence_from_increment_independence(self):
         """Disjoint increments inside the same unit copy must be justified."""
