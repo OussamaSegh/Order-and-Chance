@@ -61,11 +61,11 @@ class TestVolume4MathAudit(unittest.TestCase):
 
     def test_lindeberg_split_uses_the_strict_hypothesis(self):
         source = (CHAPTERS / "ch06-clt.tex").read_text(encoding="utf-8")
-        proof = source.split(r"\\label{thm:lindeberg}", 1)[1].split(
-            r"\\end{proof}", 1
+        proof = source.split(r"\label{thm:lindeberg}", 1)[1].split(
+            r"\end{proof}", 1
         )[0]
-        self.assertIn(r"|X_{n,k}|>\\varepsilon", proof)
-        self.assertNotIn(r"|X_{n,k}|\\ge\\varepsilon", proof)
+        self.assertIn(r"|X_{n,k}|>\varepsilon", proof)
+        self.assertNotIn(r"|X_{n,k}|\ge\varepsilon", proof)
         # An atom at the threshold belongs to the small-increment part.
         epsilon = 0.5
         outcomes = (-epsilon, epsilon)
