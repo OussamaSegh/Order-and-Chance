@@ -1,6 +1,6 @@
 # Volume 4 — Phase 1 baseline and first mathematical audit (8 November 2026)
 
-**Status:** FIRST PASS / NOT ACCEPTED. Mathematical fixes were made, but no independent second reviewer, complete hostile proof reread, native build, device check or press proof is claimed.
+**Status:** FIRST PASS / NOT ACCEPTED. The first native build succeeded at an earlier source commit of this same PR; newer source/test changes need exact-head reruns. No independent second reviewer, complete hostile proof reread, all-page human inspection, device check or press proof is claimed.
 
 **Implementation branch:** `audit/volume4-phase1-baseline-math-2026-11-08`  
 **Starting revision:** `main` at `e120d10a1a1466d5dfc5b6ea4229a83ba8d83cfe`.  
@@ -101,7 +101,14 @@ For \(k=4\), \(d_4=0.9999995334313746494\ldots<1\). For \(k=5,6,7\), respectivel
 
 The earlier argument said \(G(1)=1\Rightarrow G(n)=1\Rightarrow T\) is infinite. The statement about all real times also needs monotonicity and multiplicativity. `b5023a600dee1aac25c84d9b850d9bc86f42ac03` inserts: \(G(0)=G(1)=1\) and monotonicity give \(G(t)=1\) for \(0\le t\le1\); the functional equation extends that to all \(t\ge0\), contradicting non-infinity of \(T\). The theorem and model are unchanged.
 
-**Still needed:** independent referee read of the full proof and its assumptions, plus native TeX QA.
+**Still needed:** independent referee read of the full proof and its assumptions; a native build of the updated exact final SHA.
+
+### V4-P1-004 — Strict Lindeberg threshold in the proof text
+
+**Where:** Printed Chapter 6, `ch06-clt.tex`, proof of `thm:lindeberg`.  
+**Severity:** P1 logical/notation precision (the theorem itself remains unchanged).
+
+The argument splits the Taylor remainder into a small-increment term on `|x|≤ε` and a large-increment term on `|x|>ε`, correctly matching the theorem's strict Lindeberg condition. Its prose instead said the contributions with `|X|≥ε` tend to zero “by hypothesis.” At a fixed threshold the strict and non-strict indicators can differ (e.g. a fair sign with magnitude exactly `ε`), so that citation was imprecise. Commit `5e7b8c5403c55ae40a51268f8d4ba3fe252f2292` changes the sentence to `|X|>ε` and explicitly assigns equality to the small-increment term. The strict/no-strict endpoint example is protected by a new test, but an independent full proof reread remains pending.
 
 ### Regression coverage
 
@@ -111,7 +118,9 @@ The earlier argument said \(G(1)=1\Rightarrow G(n)=1\Rightarrow T\) is infinite.
 2. Recomputes **all ten** published riffle distances from Eulerian integers and the exact rational total-variation formula; verifies exact \(0<d_k<1\), rounding and corrected caption wording.
 3. Guards the now-explicit monotonicity step in Chapter 10.
 
-**Do not label these tests “passed in GitHub CI” until an actual workflow run at this PR SHA shows success.** They supplement, not replace, mathematical review. They are intentionally focused; they do not assert that Chapter 6, 9 or 10 is otherwise fully correct.
+The **three original mathematics regression tests passed** in GitHub's full test step on `5bbca61229075359a358ac079c1faa1e074ff7ed` (532 tests, 32 skipped in that revision). Since then a fourth Lindeberg endpoint test was added; this new head still needs its own test run. Tests supplement, not replace, mathematical review.
+
+`tools/test_volume4_route.py` (added at `f0bfd68964bc972b520115978f9bf6ce3cf02994`) is a second suite: it resolves actual nested chapter `\\input` files, preserves the approved four parts and 14 chapters plus Appendix B, checks every label and local reference, enforces one hint and solution per exercise, and checks every included figure source. The suite adds four test methods. Its source-level checks cannot replace TeX compilation, independent proof review, or a human figure inspection.
 
 ## 3. Existing-review reconciliation (source of truth, not a reset)
 
@@ -125,11 +134,11 @@ The earlier argument said \(G(1)=1\Rightarrow G(n)=1\Rightarrow T\) is infinite.
 | `docs/review/volume4-preface-pf10-2026-11-08.md` | Source-side repair to preface figure caption/alternative text. | It explicitly requires regenerated EPUB, reading PDF and print PDF verification. |
 | `docs/plan/book-04.md`, `volume4-prerequisites.md` | Owner-approved structure and prerequisite map, newer page policy: ideal 300–600, maximum 600, 300 **not a minimum**. | Preface wording (“Volumes 1–3”) vs Volume 1-only main proof route still warrants the prerequisite/reader-promise audit. |
 
-**Protected invariants checked:** No modification of Volumes 1–3, Appendix B numbering, the four-part structure, cover asset files or publisher scripts. The three math source changes preserve existing labels and theorem numbering.
+**Protected invariants checked:** No modification of Volumes 1–3, Appendix B numbering, the four-part structure, cover asset files or publisher scripts. The three corrected chapter files preserve existing labels and theorem numbering; the Chapter 6 strict-threshold fix is an additional sentence correction in one of those files.
 
 ## 4. Coverage vs remaining work
 
-**This pass is a reproducible structural check of all 14 chapters and a focused mathematical inspection/repair of three proof or precision sites. It is NOT a complete hostile line-by-line reread of every theorem and solution.** In particular:
+**This pass is a reproducible structural check of all 14 chapters and a focused mathematical inspection/repair of four proof or precision sites. It is NOT a complete hostile line-by-line reread of every theorem and solution.** In particular:
 
 | Area | Current disposition | Required next evidence |
 | --- | --- | --- |
@@ -138,15 +147,17 @@ The earlier argument said \(G(1)=1\Rightarrow G(n)=1\Rightarrow T\) is infinite.
 | Printed 9 | Riffle numerical repair with exact recomputation, pending referee. | Whole Markov and shuffled-deck proof reread, caption check, card-count independent recomputation. |
 | Printed 10 | Memorylessness proof clarification, pending referee. | Whole Poisson process/inspection/queue proof reread. |
 | Cross-volume | No exported references rewritten; published V1–V3 untouched. | Full labels and prerequisite read of Volumes 5–15 and Volume 1-source dependency map. |
-| Native artifacts | No current SHA PDF/EPUB build performed in this runtime. | GitHub native V4 and protected full workflow; inspect actual artifacts at pinned SHA. |
+| Native artifacts | Native V4 build passed at PR commit `5bbca612...`; **283 print pages**. Newer head changes require reruns. Full protected workflow failed at Volume 3 C-GROUP despite its passing Python tests. | Inspect new artifacts at the exact final SHA; resolve protected gate via legitimate review, not bypass. |
 | Audience and completion | No independent beginner reader or independent final referee. | Separate named reviewers; log issue dispositions by SHA, don't self-sign. |
 
 ### Next step after this PR
 
-An integrator should **first obtain independent reviews of V4-P1-001 through V4-P1-003**, then work chapter by chapter against `docs/plan/book-04.md` and the current historical issue log. For every review pass, record its input SHA, file identity, checked exercises, figure inspection scope, findings and rechecks. Keep later teaching changes and production fixes in separate PRs; do not conflate this first proof hotfix with a 10/10 verdict.
+An integrator should **first obtain independent reviews of V4-P1-001 through V4-P1-004**, then work chapter by chapter against `docs/plan/book-04.md` and the current historical issue log. For every review pass, record its input SHA, file identity, checked exercises, figure inspection scope, findings and rechecks. Keep later teaching changes and production fixes in separate PRs; do not conflate this first proof hotfix with a 10/10 verdict.
 
 ## 5. Validation report for this PR
 
 - **Checked:** exact `main` SHA, `main.tex` order and nested Chapter 5 inclusion; syntax labels/references, matching exercise-hint-solution IDs and inclusion of 41 existing figure sources; symbolic cutoff/event proof and survival-function gap; exact integer Eulerian computations for all ten riffle distances.
-- **Changed:** `ch06-clt.tex`, `ch08-markov.tex`, `ch09-poisson.tex`, new `tools/test_volume4_math_audit.py`, and this note.
-- **Not run here:** full repository test suite, real XeLaTeX native PDF/print/EPUB build, visual page-by-page/device check, protected Volume 3 CI, third-party referee. A successful future CI run must identify **the pushed PR head SHA**; do not copy an older green status.
+- **Changed:** `ch06-clt.tex`, `ch08-markov.tex`, `ch09-poisson.tex`, new `tools/test_volume4_math_audit.py`, new `tools/test_volume4_route.py`, and this note.
+- **Proven workflow evidence on old PR SHA `5bbca61229075359a358ac079c1faa1e074ff7ed`:** [V4 native run 42515128377](https://github.com/OussamaSegh/Order-and-Chance/actions/runs/42515128377) **passed**: 14 EPUB tests, all native formats, 269 layout boxes without detected overflow or unresolved references, both print preflights, **283 print-interior pages**, page dimensions 513×738 pt. [Exact artifact 13631049521](https://github.com/OussamaSegh/Order-and-Chance/actions/runs/42515128377/artifacts/13631049521), ZIP SHA-256 `9a983a90c749223d4614f610d675e858484425f4422cee45ff29d6158194d2a5`. **These metrics apply only to that source SHA, not to subsequent modifications.**
+- **Full workflow evidence on the same old SHA:** [Build books run 42515128385](https://github.com/OussamaSegh/Order-and-Chance/actions/runs/42515128385) ran **532 tests (32 skipped), all passed**, including the three initial V4 mathematics tests, before failing the protected Volume 3 conceptual-source/figure gate: `ValueError: Whole-volume conceptual source/figure drift: C-GROUP`. Build/site/publish jobs were skipped. This is an authentic blocker, not a publication pass; **do not weaken the guard or self-approve its review snapshot**.
+- **Not yet performed:** tests and native build on the updated final PR head, all-page high-resolution print/reading comparison, actual Kindle/device check, KDP vendor feedback, distinct mathematical referee or complete chapter-by-chapter proof re-review.
