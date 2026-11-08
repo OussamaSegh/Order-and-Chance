@@ -43,6 +43,22 @@ These were **targeted checks**, and some readings used the pre-fix `main` blob r
 
 Selected TikZ source/caption comparisons included Brownian reflection, Pólya urn simulations, subcritical exploration, and Ramsey colouring. Source-level inspection does **not** replace page-by-page PDF and EPUB image inspection; no all-41-figures visual signoff is asserted.
 
+## Historical independent-review source-identity check
+
+The older `docs/review/volume4-chapter-issue-log.md` records separate Grok-4.7 mathematical rereads at prior commits, but the exact chapter bytes may have changed since then. On the current branch, a GitHub blob-SHA comparison against the historical reviewed refs gave:
+
+| Historical printed location | Prior reviewed ref | Historical source blob | Current source blob | Exact identity? |
+| --- | --- | --- | --- | --- |
+| Ch. 3, generating | `12ac5f42` | `dd9635c3b8e62709bdd8b2bf2aa66637814f7619` | `10c1ebdc486ca82ec335654bbacc8cfa6ad0ae76` | No |
+| Ch. 5, continuous | `3558c741` | `8d56ff5bd132854ed7e4ed19eca3745be26edf26` | `4d2221df7adeb926d46c7526faa7829a77645db9` | No |
+| Ch. 5, geometric include | `3558c741` | `dfdec38d92a38231d1725723b85964f895d2809f` | `2bc6858a1cb598473be2f233ae5ed6b05ff0e93e` | No |
+| Ch. 7, entropy | `26cb0760` | `19001aeab88b64ce0c169700f91288aa94a05e85` | `25330e7046f0b585bef9ebffb1408bc907c109df` | No |
+| Ch. 8, walks | `52f0b87f` | `5207c3054ab613cab740118f083b4076f6d5a1ea` | `8b64abc66f79ccbc792906fbfa9ba50e9ab3e890` | No |
+| Ch. 10, Poisson | `52f0b87f` | `c127a763657c7ff9989d8325aecbaa7e859134a2` | `6de4e7e1fd5c6369d553e45190e54807c553a743` | No |
+| Ch. 11, martingales | `541f0273` | `771a9686c9ed876c333e78c76e92b60b54f4fb96` | `200c6c79d56493bde6e1433719181df94f96b66b` | No |
+
+These are comparisons of **actual GitHub file blobs**, not of approximate dates or chapter titles. A changed blob does not prove the old mathematics is now wrong; it means an old exact-source signoff cannot simply be transferred to the current PR without reviewing the intervening diff and checking premise dependencies. This is one reason the independent Phase 2 exit remains genuinely unresolved.
+
 ## Merge/release gates and scope
 
 - Preserve published Volumes 1–3, unchanged part/chapter/Appendix B ordering, stable labels, the cover and native styling.
