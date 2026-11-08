@@ -81,3 +81,14 @@ These are comparisons of **actual GitHub file blobs**, not of approximate dates 
 ## Release decision
 
 **Phase 2 mathematical acceptance: BLOCKED / AWAITING INDEPENDENT REVIEW.** There is no evidence to promote any unreviewed whole-book chapter or all-exercise/figure gate to `PASS`. The new false theorem has been repaired in source; the corrected theorem itself still needs external independent signoff on its final blob.
+
+
+## Integration and additional exact-source audit (8 November 2026)
+
+PR #118 was merged into `main` using the repository merge method at commit `5dbcb7d1ef26a95b79febce95893d7d7f3f6d640` from the verified expected head `f01eb4915fe66643cc6b7eb072f6534796e83dc6`. Both exact-head workflow runs completed successfully: native QA `42529223645`, Build books `42529223697` (all non-publish jobs succeeded; publish was skipped). This is **source integration**, not mathematical acceptance.
+
+In the follow-up evidence branch, the author additionally reread the current Chapter 10 Poisson count/colouring/thinning passages, Chapter 11 finite-partition optional stopping and upcrossings, Chapter 12 Brownian dyadic construction, Chapter 14 subcritical exploration and six exercise solutions, and Appendix B's Turán, Ramsey, Schur, EKR and progression induction passages. No further source defect was conclusively established in those targeted passages. Their unsampled steps and independent exact-blob referee checks are explicitly still pending.
+
+Two new independently executable exhaustive finite tests in `tools/test_volume4_finite_cases.py` enumerate all `2^15=32768` edge colourings of `K6`, all `2^10=1024` of `K5`, all `2^9=512` colourings of `[9]`, and all `2^8=256` colourings of `[8]`. They confirm Appendix B's exact `R(3,3)=6`, `W(3,2)=9` values and the existence of respective 5-vertex and 8-number avoiding colourings. The exhaustive code checks these finite conclusions, not the general Ramsey/van der Waerden proofs. This branch imports and updates the previously unmerged PR #115 acceptance register; no independently reviewed mathematical acceptance is claimed.
+
+**Dispositions:** V4-P2-001..007 remain **SOURCE-FIXED / AWAITING INDEPENDENT REVIEW**. Whole-volume Phase 2 remains **BLOCKED** on the explicitly listed acceptance gates.
