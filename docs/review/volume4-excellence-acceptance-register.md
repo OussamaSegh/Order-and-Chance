@@ -20,13 +20,13 @@
 
 | Work item | Owner | Status | Exact SHA / evidence / blocker |
 | --- | --- | --- | --- |
-| A-01 Baseline manifest and native artifacts | INT | IN_PROGRESS | Phase 1 PR #116 baseline, PR #117 and PR #118 source inventory; both exact-head PR #118 workflows succeeded at `f01eb4915fe66643cc6b7eb072f6534796e83dc6` (runs 42529223645 and 42529223697). No pinned final release candidate. |
+| A-01 Baseline manifest and native artifacts | INT | IN_PROGRESS | Current pre-repair baseline: merged main `0c097e7a1041cfc647cf79b7dd3e3000a93aeec4` (PR #119); exact-head native QA 42532424809 and Build books 42532424808 succeeded. The new proof PR is not yet a final release candidate. |
 | A-02 Reconcile historical issue logs | INT + MATH | IN_PROGRESS | Source-fixed findings V4-P2-001..007 documented in `volume4-phase2-proof-audit-2026-11-08.md` and `volume4-phase2-continuation-2026-11-08.md`. Historical Grok chapter review blobs do not match current sources; see continuation ledger identity table. |
 | A-03 Lock numbering/prerequisite/figure semantics | INT | IN_PROGRESS | Four parts, 14 printed chapters, Appendix B; 107 exercise/hint/solution ID triples and 41 figure source paths verified structurally at PR #118. No new route or protected V1–V3 modifications. |
 | B-01 Fourier uniqueness cutoff | MATH + PROOF | AWAITING_REVIEW | Ch. 6 `thm:inversion` repair recorded in Phase 1 PR #116 and regression suite. Independent exact-current-blob reproof pending. |
 | B-02 Riffle-shuffle rounding + numeric claim audit | MATH | IN_PROGRESS | 52-card rounded-distance ambiguity corrected in Phase 1 PR #116. Whole-book numerical audit and external recheck remain incomplete. |
-| B-03 Full mathematical audit | MATH | BLOCKED | 127 theorem/lemma/proposition proof-environment adjacency checks and 107 exercise ID triples are structural only; not every proof, all 107 complete solutions, or all 41 figures independently evaluated. See both Phase 2 ledgers. |
-| B-04 Fix/review all correctness findings | PROOF + MATH | BLOCKED | Seven new Phase 2 findings source-fixed: #117 V4-P2-001..004; #118 V4-P2-005..007 (including P0 drift counterexample). Required separate mathematical referee has not signed off repaired source; absence of other P0s unproven. |
+| B-03 Full mathematical audit | MATH | BLOCKED | Structural checks count 127 proof-bearing statements and 107 ID triples, not proof correctness. Focused math audit continues: V4-P2-008 (joint Gaussian inference) and V4-P2-009 (Pólya CDF identification) source-fixed in the follow-up PR, independent rereview pending. 14 chapters, Appendix B and all exercises not yet independently completed. |
+| B-04 Fix/review all correctness findings | PROOF + MATH | BLOCKED | Prior V4-P2-001..007 integrated through #117/#118; new V4-P2-008/009 proof omissions fixed in source, pending exact-head CI and distinct mathematical referee. No claim that all other P0s have been excluded. |
 | B-05 Prerequisite + downstream citation graph | DEP | IN_PROGRESS | Targeted V1/Markov/Taylor dependency repairs in #117; entire printed-order graph and downstream Volumes 5–15 references require independent verification. Volumes 1–3 untouched. |
 | C-01 Teaching architecture and concrete examples | TEACH | UNASSESSED | No artificial padding. |
 | C-02 Chapter 6 main/deeper route | TEACH + MATH | UNASSESSED | Reader test and independent math audit required. |
@@ -37,7 +37,7 @@
 | E-02 Final V5 handoff and whole-book ending | TEACH | UNASSESSED | No added 15th chapter. |
 | E-03 Grading and solutions audit | TEACH + READ | UNASSESSED | Exact problem-to-solution alignment. |
 | E-04 Figure/alt/caption checks | FIG | IN_PROGRESS | Three source-data tests: 2,920 urn samples, nine reflection pairs, 10-edge K5 colouring. All-41 native visual, captions and alternate EPUB rendering review outstanding. |
-| F-01 Reproducible final build and workflows | PUB | IN_PROGRESS | Exact PR #118 head `f01eb4915fe66643cc6b7eb072f6534796e83dc6`: native production QA run 42529223645 SUCCESS; protected Build books run 42529223697 SUCCESS (549 passed, 32 skipped; site succeeded, publish skipped). Integrated by merge `5dbcb7d1ef26a95b79febce95893d7d7f3f6d640`. Not final-release-SHA acceptance. |
+| F-01 Reproducible final build and workflows | PUB | IN_PROGRESS | PR #119 exact head `44bb31c6dc43247723339c0cacc3a051e210abe5`: Build books 42532424808 SUCCESS (551 tests passed, 32 skipped; site success, publish skipped), native QA 42532424809 SUCCESS (285-page interior; print/EPUB/reader QA; preflights passed), merged to `0c097e7a1041cfc647cf79b7dd3e3000a93aeec4`. New proof PR final-head runs and final release candidate still outstanding. |
 | F-02 All-page PDF/EPUB/device/print QA | PUB + FIG | BLOCKED | Automated 285-page interior, layout and preflights passed at PR #118 exact head; no every-page print/PDF/EPUB independent inspection, physical device proof or KDP signoff. |
 | F-03 Volumes 5–15 regression | DEP | UNASSESSED | Downstream citation and dependency audit still required; no published V1–V3 source changes. |
 | F-04 Final independent + author acceptance | INT | BLOCKED | No distinct named mathematical referee at the current exact source blobs; author/release signoffs absent. Corrected source and green CI cannot satisfy this gate. |
@@ -57,11 +57,11 @@
 | 8 — Random walks | `ch07-walks.tex` | UNASSESSED | UNASSESSED | UNASSESSED | — |
 | 9 — Markov/mixing | `ch08-markov.tex` | UNASSESSED | UNASSESSED | UNASSESSED | B-02 check first. |
 | 10 — Poisson clock | `ch09-poisson.tex` | AWAITING_REVIEW | UNASSESSED | IN_PROGRESS | V4-P2-001 (#117) and V4-P2-007 (#118) repaired; current blob must be independently rechecked. |
-| 11 — Martingales | `ch10-martingales.tex` | UNASSESSED | UNASSESSED | UNASSESSED | — |
-| 12 — Brownian motion | `ch11-brownian.tex` | AWAITING_REVIEW | UNASSESSED | IN_PROGRESS | V4-P2-005 and V4-P2-006 repaired in #118; current blob must be independently rechecked. |
+| 11 — Martingales | `ch10-martingales.tex` | AWAITING_REVIEW | UNASSESSED | IN_PROGRESS | V4-P2-009: continuous test-function identity did not explicitly yield Pólya uniform CDF; trapezoidal cutoff proof added. Distinct exact-blob mathematical referee pending. |
+| 12 — Brownian motion | `ch11-brownian.tex` | AWAITING_REVIEW | UNASSESSED | IN_PROGRESS | V4-P2-005/006 integrated in #118; V4-P2-008 adds converse joint-Gaussian and common-grid proof. Recheck changed exact blob and dependencies independently. |
 | 13 — Probabilistic method | `ch12-method.tex` | UNASSESSED | UNASSESSED | UNASSESSED | — |
 | 14 — Random graphs | `ch14-graphs.tex` | UNASSESSED | UNASSESSED | UNASSESSED | — |
-| Appendix **B** — Extremal problems | `extremal.tex` | UNASSESSED | UNASSESSED | IN_PROGRESS | Two new exhaustive finite enumerations check `R(3,3)=6` and `W(3,2)=9` (new test file; new PR CI must pass). Does not certify appendix proofs or five solutions. |
+| Appendix **B** — Extremal problems | `extremal.tex` | UNASSESSED | UNASSESSED | IN_PROGRESS | Two exhaustive finite tests merged in #119 (K5=12/K6=0 avoiding colourings; [8]=6/[9]=0); both #119 exact-head workflows passed. Appendix proofs and five exercises not independently certified. |
 
 All chapter paths above are relative to `volume4-chance/chapters/` unless written otherwise. Neither `UNASSESSED` nor em dash means “not reviewed historically”; each means **no evidence has yet been transferred and revalidated for this initiative**.
 
@@ -125,3 +125,12 @@ The grade is **diagnostic, not an automatic “10/10.”** Two independent reade
 **Historical source identity:** the continuation ledger compares seven historic Grok-reviewed source blobs with the current files, finding no exact matches for those checked samples. A historical signoff is not transferable merely because the chapter title is unchanged.
 
 **Blocked acceptance:** complete adversarial reproof of all 14 printed chapters and Appendix B at actual blobs; independent signoff on changed P0/P1 passages; all 107 exercises, hints and solutions checked mathematically; 41 figures visually and semantically inspected in PDF/EPUB; remaining prerequisite and Volumes 5–15 dependency audit; beginner/voice assessments; physical-device/all-page production and author approval. Do not convert any of these to `PASS` from CI or a structural test.
+
+
+## Phase 2 continuation — 9 November 2026
+
+**Verified working baseline:** main merge `0c097e7a1041cfc647cf79b7dd3e3000a93aeec4` from PR #119. Build books [42532424808](https://github.com/OussamaSegh/Order-and-Chance/actions/runs/42532424808) and Volume 4 native QA [42532424809](https://github.com/OussamaSegh/Order-and-Chance/actions/runs/42532424809) both completed successfully at head `44bb31c6dc43247723339c0cacc3a051e210abe5`; 551 tests passed with 32 skips. A merge-only commit does not alter their tree when the compare endpoint reports no changed files.
+
+**New, not independently approved:** V4-P2-008 `prop:bmgauss` had not explicitly derived joint Gaussianity of all observations in the converse and did not clearly reduce arbitrary disjoint intervals to a common Gaussian endpoint grid. V4-P2-009 `thm:polyaurn` inferred the limit distribution function from continuous test expectations without giving the needed continuous indicator cutoff argument in the book's interval framework. Both have minimal source fixes plus two regression tests, documented in [volume4-phase2-proof-completion-2026-11-09.md](volume4-phase2-proof-completion-2026-11-09.md). Distinct reviewer signoff and exact new-PR CI must be checked; these items are **SOURCE-FIXED / AWAITING_REVIEW**, not `PASS`.
+
+**Acceptance remains blocked:** A mathematical author/self-audit and green builds cannot stand in for a different mathematical referee. The 14-chapter plus Appendix B proof review, 107 full exercises, 41 rendered figures, dependency checks, reading/physical publication and author approval gates remain open. The current PR does not change Volumes 1–3.
