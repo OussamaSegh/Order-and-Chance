@@ -33,9 +33,9 @@ The following table was generated from GitHub's exact-file contents at the start
 | \`chapters/extremal.tex\` (Appendix B) | 240 | 15 | 6 | 2 | 5 |
 | \`about-the-cover.tex\` | 7 | 0 | 0 | 0 | 0 |
 | \`blurb.tex\` (jacket) | 2 | 0 | 0 | 0 | 0 |
-| **Total** | **6,?** | **291** | **314** | **41** | **107** |
+| **Total** | **6,775** | **291** | **314** | **41** | **107** |
 
-The deliberately nonnumeric total-lines cell must **not** be used as a measured page count: source lines are not typeset pages. All the other total cells count exact syntactic occurrences. (For a total source-line count, sum the rows.)
+Source lines are **not** typeset pages. Every total counts syntactic occurrences, not mathematical acceptance.
 
 Additional static source checks on that SHA:
 
