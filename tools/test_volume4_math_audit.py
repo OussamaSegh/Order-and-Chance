@@ -189,5 +189,50 @@ class TestVolume4MathAudit(unittest.TestCase):
 
 
 
+    def test_brownian_covariance_equivalence_requires_zero_mean(self):
+        """Gaussian increments with the right variance can still have drift."""
+        source = (CHAPTERS / "ch11-brownian.tex").read_text(encoding="utf-8")
+        proposition = source.split(r"\\label{prop:bmgauss}", 1)[1].split(
+            r"\\end{proposition}", 1
+        )[0]
+        self.assertIn(r"independent \\emph{centred} normal increments", proposition)
+        self.assertIn(r"B_t-B_s\\sim N(0,t-s)", proposition)
+        self.assertIn("drifted process", source)
+        self.assertNotIn(
+            "independent normal increments of variance $t-s$ are equivalent",
+            proposition,
+        )
+
+        # Counterexample: X_t=W_t+c*t for c != 0.
+        # Var(X_t-X_s)=t-s, Cov(X_s,X_t)=min(s,t), but E[X_t]=ct.
+        for drift in (-1.0, 0.5, 3.0):
+            for s, t in ((0.0, 0.5), (1.0, 2.5), (3.0, 4.0)):
+                self.assertEqual((t - s), t - s)
+                self.assertEqual(min(s, t), s)
+                self.assertNotEqual(drift * t, 0.0)
+
+    def test_brownian_blocks_distinguish_copy_independence_from_increment_independence(self):
+        """Disjoint increments inside the same unit copy must be justified."""
+        source = (CHAPTERS / "ch11-brownian.tex").read_text(encoding="utf-8")
+        construction = source.split("For all later times", 1)[1].split(
+            r"\\section{Scaling, variation, reflection}", 1
+        )[0]
+        self.assertIn("two disjoint intervals can lie in the same unit block", construction)
+        self.assertIn("Within each copy, disjoint component increments are independent", construction)
+        self.assertIn("Across distinct copies they are independent", construction)
+        self.assertNotIn("Increments over disjoint time intervals use disjoint blocks", construction)
+
+    def test_poisson_no_explosion_uses_one_countable_probability_one_event(self):
+        """Finite counts at each fixed time require a countable intersection."""
+        source = (CHAPTERS / "ch09-poisson.tex").read_text(encoding="utf-8")
+        excerpt = source.split(r"\\label{def:pp}", 1)[1].split(
+            r"\\begin{theorem}[counts and conditional uniformity]", 1
+        )[0]
+        self.assertIn("t=1,2,3,\\ldots", excerpt)
+        self.assertIn("Intersect these probability-one statements", excerpt)
+        self.assertIn(r"T_n\\to\\infty", excerpt)
+
+
+
 if __name__ == "__main__":
     unittest.main()
