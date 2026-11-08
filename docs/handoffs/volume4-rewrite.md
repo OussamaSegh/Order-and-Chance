@@ -1,5 +1,13 @@
 # Handoff: Volume 4 rewrite
 
+## 8 November 2026 — missing cross-volume results restored inside Volume 4
+
+The results Volumes 11, 12, 14 and 15 were still citing, and which this rewrite had dropped, are proved again in Volume 4. Inversion is Theorem 6.8 (the older continuity statement is unnumbered, so Lindeberg stays Theorem 6.10). The arcsine limit on an interval away from the endpoints is Theorem 8.8. Riffle shuffles are Definition 9.8, Theorem 9.9 and Proposition 9.10. Random-transposition untouched cards are Proposition 9.11. Finite-partition \(L^2\) convergence is Theorem 11.12, Pólya’s urn is Theorem 11.13, and \(L^1\)-bounded almost-sure convergence is Theorem 11.14. Brownian reflection, now including the hitting density, stays Theorem 12.12. General van der Waerden is Theorem B.7; the two-colour length-three case stays Theorem B.6. Citation phrases in later volumes were changed only where the old number was false. Volumes 1–3 were not edited. The Volume 3 seam hash of the Markov chapter was refreshed; the coupling passage itself was not rewritten.
+
+A local XeLaTeX build of the Volume 4 interior completed with no undefined references and no overfull boxes (281 pages). The layout checker reported 269 whole boxes and no overflow. This is a writer self-check, not an independent second review, and not a device test. The lazy-cycle mixing bound formerly numbered 8.17 was not restored as a numbered theorem; the one later sentence that cited it now points at Volume 3’s character diagonalisation. Draft PR #113 still rewrites later volumes instead of using these restored theorems; it should not be merged on top of this branch without a rebase.
+
+
+
 ## 8 November 2026 — Chapters 11–14 and Appendix B writer pass, PF-10 source fix, V3 seam reconciled; final native QA pending
 
 **Branch:** `cursor/volume4-rewrite-ee7f`; **PR:** [#111](https://github.com/OussamaSegh/Order-and-Chance/pull/111), **open/draft/unmerged**. Previous Chapter 10 native acceptance is preserved at manuscript `edba58257d17051bffdff9b121deda86bdd35d33`, native #42431219406, with exact PDF/EPUB QA recorded below. Nothing in published Volumes 1–3 or other volumes was edited; no PR merge.

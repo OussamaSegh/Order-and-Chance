@@ -32,6 +32,7 @@ Let $a$ be a positive integer and let $b\le a$ be an integer with the same parit
 \[
  P(M_n\ge a,\,S_n=b)=P(S_n=2a-b).
 \]
+Summing over the admissible endpoints gives $P(M_n\ge a)=P(S_n\ge a)+P(S_n>a)$.
 \end{theorem}
 \begin{proof}
 Let $\tau$ be the first time the original path visits $a$. Keep $S'_k=S_k$ for $0\le k\le\tau$, and for later times set
@@ -41,6 +42,8 @@ Let $\tau$ be the first time the original path visits $a$. Keep $S'_k=S_k$ for $
 At $k=\tau$ both formulas give $a$, so they agree at the joining point. Every step after $\tau$ changes sign, and every step still has size one. The transformed endpoint is $S'_n=2a-b$.
 
 Conversely, every path from $0$ to $2a-b\ge a$ must visit $a$, because its steps have size one. Find its \emph{first} visit to $a$ and reflect all subsequent steps again. The path now ends at $b$, and applying the operation twice gives back the original path. We have constructed a bijection between the two sets of paths. Each length-$n$ fair-sign sequence has probability $2^{-n}$, so the corresponding probabilities are equal.
+
+If $S_n>a$, then $M_n\ge S_n>a$ automatically. If $S_n\le a$, the paths that do touch $a$ are paired with every path that ends at $2a-S_n\ge a$. Adding these two pieces gives $P(M_n\ge a)=P(S_n\ge a)+P(S_n>a)$.
 \end{proof}
 
 \begin{figure}[ht]
@@ -254,7 +257,15 @@ A one-dimensional fair walk eventually returns to the origin with probability $1
 Another striking question is the time of the \emph{last} visit to zero before a fixed deadline $2n$. One might guess that it is most likely near the middle. The exact answer has more mass near the beginning and near the end. This is a discrete form of the arcsine law; the following counting identity explains it.
 
 \begin{theorem}[last visit]\label{thm:arcsine}
-Let $S$ be simple symmetric random walk on $\Z$, and let $u_{2m}=P(S_{2m}=0)$. The probability of a first return to $0$ at time $2m$ is $f_{2m}=u_{2m-2}-u_{2m}=u_{2m}/(2m-1)$. If $L_{2n}$ is the last $t\in\{0,2,\ldots,2n\}$ with $S_t=0$, then
+Let $S$ be simple symmetric random walk on $\Z$, and let $u_{2m}=P(S_{2m}=0)$. The probability of a first return to $0$ at time $2m$ is $f_{2m}=u_{2m-2}-u_{2m}=u_{2m}/(2m-1)$. These probabilities rebuild every later return:
+\[
+ \sum_{r=1}^{m}f_{2r}\,u_{2m-2r}=u_{2m}.
+\]
+The walk stays nonnegative through time $2m$ with probability $u_{2m}$:
+\[
+ P(S_1\ge0,\ldots,S_{2m}\ge0)=u_{2m}.
+\]
+If $L_{2n}$ is the last $t\in\{0,2,\ldots,2n\}$ with $S_t=0$, then
 \[
  P(L_{2n}=2k)=u_{2k}\,u_{2n-2k},\qquad k=0,\ldots,n.
 \]
@@ -269,9 +280,17 @@ The identity $2\binom{2m-1}{m}=\binom{2m}{m}$ converts this into $f_{2m}=u_{2m}/
  \sum_{j=1}^{m}f_{2j}=u_0-u_{2m}=1-u_{2m}.
 \]
 Hence the probability of no return to $0$ through time $2m$ is $u_{2m}$. The steps after time $2k$ are an independent copy of the walk, because they are a fresh block of fair bits. The event $\{L_{2n}=2k\}$ is $\{S_{2k}=0\}$ together with no return on $(2k,2n]$, so its probability is $u_{2k}u_{2n-2k}$.
+
+The same restart gives the convolution. A path with $S_{2m}=0$ has a first return at some even time $2r$ with $1\le r\le m$. That return is a finite record of signs, and the unused signs are a fresh walk, which must itself be at $0$ after the remaining $2m-2r$ steps. Summing the disjoint records produces $\sum_{r=1}^m f_{2r}u_{2m-2r}=u_{2m}$.
+
+For the nonnegative paths, apply Theorem~\ref{thm:rwreflect} with barrier $a=1$. If $S_n>1$, then the maximum is automatically at least $1$. If $S_n\le 1$, the paths that do touch $1$ are paired with all paths that end at $2-S_n\ge 1$. Adding these two pieces gives
+\[
+ P(M_n\ge 1)=P(S_n\ge 1)+P(S_n>1).
+\]
+Take $n=2m$. The position $S_{2m}$ is even, so $P(S_{2m}\ge 1)=P(S_{2m}>1)=P(S_{2m}>0)$. Thus $P(M_{2m}\ge 1)=2P(S_{2m}>0)$. Symmetry and $P(S_{2m}=0)=u_{2m}$ give $P(S_{2m}>0)=(1-u_{2m})/2$, hence $P(M_{2m}\ge 1)=1-u_{2m}$. The reflected walk $-S$ therefore satisfies $P(\min_{k\le 2m}S_k\le -1)=1-u_{2m}$. The complementary event is $S_1,\ldots,S_{2m}\ge 0$, because a step of size $1$ that becomes negative must hit $-1$. Its probability is $u_{2m}$.
 \end{proof}
 
-By Theorem~\ref{thm:local}, $u_{2m}\sim 1/\sqrt{\pi m}$, so $f_{2m}\sim (2\sqrt\pi)^{-1}m^{-3/2}$ and $\sum m\,f_{2m}$ diverges. The symbol $\sim$ is an asymptotic estimate from the local theorem, not a bound on the partial sums of $m f_{2m}$. The divergence itself follows from the exact formula $f_{2m}=u_{2m}/(2m-1)$ together with $u_{2m}\ge c m^{-1/2}$ for a positive $c$ and all large $m$, which is the content of $u_{2m}\sim 1/\sqrt{\pi m}$. The fair duration in Proposition~\ref{prop:duration} is exactly $k(N-k)$, so from the middle of the board it has order $N^2$. That formula is the solution of the one-step equation. It is not a consequence of $f_{2m}\sim c\,m^{-3/2}$. The exact last-visit identity is the arcsine law in finite form. The integral $\int_0^x(\pi\sqrt{t(1-t)})^{-1}\,\mathrm dt=(2/\pi)\arcsin\sqrt x$ is the Riemann-sum shape of that identity under the same asymptotic, but the error in Theorem~\ref{thm:local} is not proved uniform down to $m$ as small as $\log n$, so the integral limit is not claimed as a theorem of this chapter.
+By Theorem~\ref{thm:local}, $u_{2m}\sim 1/\sqrt{\pi m}$, so $f_{2m}\sim (2\sqrt\pi)^{-1}m^{-3/2}$ and $\sum m\,f_{2m}$ diverges. The symbol $\sim$ is an asymptotic estimate from the local theorem, not a bound on the partial sums of $m f_{2m}$. The divergence itself follows from the exact formula $f_{2m}=u_{2m}/(2m-1)$ together with $u_{2m}\ge c m^{-1/2}$ for a positive $c$ and all large $m$, which is the content of $u_{2m}\sim 1/\sqrt{\pi m}$. The fair duration in Proposition~\ref{prop:duration} is exactly $k(N-k)$, so from the middle of the board it has order $N^2$. That formula is the solution of the one-step equation. It is not a consequence of $f_{2m}\sim c\,m^{-3/2}$. The exact last-visit identity is the arcsine law in finite form. Theorem~\ref{thm:arcsinelimit} turns that identity into the integral $(2/\pi)(\arcsin\sqrt b-\arcsin\sqrt a)$ on every interval bounded away from $0$ and $1$. The local theorem is not required to be uniform down at times as small as $\log n$: those times are excluded by keeping the endpoints fixed and positive.
 
 The identity is exact at $n=2$, where every path can be listed. There are $2^4=16$ walks of length $4$. Here $u_2=P(S_2=0)=1/2$ and $u_4=\binom{4}{2}2^{-4}=3/8$. The formula gives $P(L_4=0)=u_4=3/8$, $P(L_4=2)=u_2^2=1/4$, and $P(L_4=4)=u_4=3/8$. These three numbers sum to $1$. The event $\{L_4=4\}$ is exactly $\{S_4=0\}$, because time $4$ is then a visit and no later even time exists, and $6$ of the $16$ paths end at $0$. The event $\{L_4=2\}$ is $\{S_2=0\}\cap\{S_4\ne0\}$. Given $S_2=0$, the next two steps miss $0$ with probability $1/2$, so the probability is $(1/2)\cdot(1/2)=1/4$. The remainder $3/8$ is $\{L_4=0\}$. The asymptotic symbol $\sim$ is not used in this count.
 
@@ -291,6 +310,47 @@ The boundary values are the definition of absorption. At any other $x$, the firs
 \end{proof}
 
 Exercise~\ref{ex:electric} reads $h$ as a voltage.
+
+\begin{theorem}[arcsine limit]\label{thm:arcsinelimit}
+Let $0<a<b<1$. For the simple symmetric walk, the last-visit weights and the occupation weights agree,
+\[
+ P(L_{2n}=2k)=b_{2k,2n}=u_{2k}u_{2n-2k},
+\]
+where $b_{2k,2n}$ is the probability that exactly $2k$ of the first $2n$ edges lie above the axis: the edge from $S_{j-1}$ to $S_j$ lies above when $S_{j-1}+S_j>0$. Consequently
+\[
+ \sum_{an\le k\le bn}u_{2k}u_{2n-2k}\longrightarrow\frac2\pi\bigl(\arcsin\sqrt b-\arcsin\sqrt a\bigr).
+\]
+\end{theorem}
+\begin{proof}
+The last-visit formula is Theorem~\ref{thm:arcsine}. The occupation count is even, because the walk changes sign only by returning to $0$, and returns occur at even times. Proceed by induction on $n$. If $k=n$, every edge lies above exactly when $S_1,\ldots,S_{2n}\ge 0$, which has probability $u_{2n}$ by the same theorem, and $u_{2n}u_0=u_{2n}$. The case $k=0$ is the reflection $S\mapsto -S$. This starts the induction at $n=1$.
+
+For $1\le k\le n-1$ the path uses both sides, so it returns to $0$. Let $2r$ be the first return. It is equally likely to be the upper or the lower excursion, and the walk then restarts. An upper first excursion contributes $2r$ edges above and forces $r\le k$; a lower one contributes none and forces $r\le n-k$. Therefore
+\[
+ b_{2k,2n}=\frac12\sum_{r=1}^k f_{2r}b_{2k-2r,2n-2r}+\frac12\sum_{r=1}^{n-k}f_{2r}b_{2k,2n-2r}.
+\]
+The inductive hypothesis replaces each $b$ by a product of two return probabilities. Theorem~\ref{thm:arcsine} turns $\sum_{r\le k}f_{2r}u_{2k-2r}$ into $u_{2k}$, and the companion sum into $u_{2n-2k}$. Each half becomes $\frac12 u_{2k}u_{2n-2k}$.
+
+For the integral, set $\rho_m=u_{2m}\sqrt{\pi m}$ for $m\ge 1$, and recall $\rho_m\to 1$ by Theorem~\ref{thm:local}. On $an\le k\le bn$ both $k$ and $n-k$ tend to infinity, so for large $n$ every factor $\rho_k$ and $\rho_{n-k}$ lies between $1-\varepsilon$ and $1+\varepsilon$. The corresponding summand is
+\[
+ u_{2k}u_{2n-2k}=\rho_k\rho_{n-k}\cdot\frac1{\pi n}\cdot\frac1{\sqrt{(k/n)(1-k/n)}}.
+\]
+The sum is a Riemann sum for the continuous function $1/(\pi\sqrt{t(1-t)})$ on the compact interval $[a,b]\subset(0,1)$, multiplied by a factor that tends to $1$ uniformly in the sum. The integral of that function is $(2/\pi)(\arcsin\sqrt b-\arcsin\sqrt a)$, by the substitution $t=\sin^2\theta$.
+\end{proof}
+
+\begin{lemma}[central binomial lower bound]\label{lem:centralbin}
+For every integer $m\ge 1$,
+\[
+ u_{2m}=P(S_{2m}=0)=\binom{2m}{m}2^{-2m}\ge\frac1{2\sqrt m}.
+\]
+Equivalently, for even $n=2m$, $u_n\ge 1/\sqrt{2n}$.
+\end{lemma}
+\begin{proof}
+The case $m=1$ is $u_2=1/2$. The ratio of successive central binomial probabilities is $u_{2m}=u_{2m-2}\cdot(2m-1)/(2m)$, because $\binom{2m}{m}/\binom{2m-2}{m-1}=(2m)(2m-1)/m^2$ and the powers of $4$ contribute one more factor $1/4$. Assume $u_{2m-2}\ge 1/(2\sqrt{m-1})$. Then
+\[
+ u_{2m}^2\ge\frac1{4(m-1)}\cdot\frac{(2m-1)^2}{4m^2}=\frac{(2m-1)^2}{16 m^2(m-1)}.
+\]
+The inequality $(2m-1)^2\ge 4m(m-1)$ is $(4m^2-4m+1)\ge 4m^2-4m$, which is $1\ge 0$. Therefore $u_{2m}^2\ge 1/(4m)$.
+\end{proof}
 
 The walk on the line is free. It is not the walk absorbed at $0$ and at $N$. Theorem~\ref{thm:ruin} is that absorbed game, and its fair hitting probability is $k/N$. The next chapter allows the step law to depend on the current state, as long as the state space is finite.
 

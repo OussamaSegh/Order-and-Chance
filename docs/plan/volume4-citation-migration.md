@@ -1,5 +1,28 @@
 # Volume 4 citation migration (fourteen-chapter contract)
 
+## 8 November 2026 — missing results restored inside Volume 4
+
+The results later volumes were citing, and which the rewrite had not proved, are now theorems of this manuscript. Printed numbers that later books already matched were left in place. The characteristic-function continuity statement remains in the chapter, unnumbered, so that inversion can occupy Theorem 6.8 without moving Lindeberg off Theorem 6.10. Citation phrases in Volumes 6 and 8–15 were retargeted only where the old number named a different statement or a missing one. Volumes 1–3 were not edited.
+
+| Restored statement | Printed number |
+| --- | --- |
+| Uniqueness and inversion, including the Cauchy transform $e^{-\lvert t\rvert}$ | Theorem 6.8 |
+| Gaussian vectors, including the positive-semidefinite characterisation | Theorem 6.14 |
+| Last visit, first-return convolution, and nonnegative paths | Theorem 8.6 |
+| Arcsine limit on $0<a<b<1$, including the occupation law | Theorem 8.8 |
+| Central-binomial lower bound | Lemma 8.9 |
+| Total-variation contraction | Lemma 9.7 |
+| $a$-shuffle, Bayer–Diaconis formula, composition | Definition 9.8, Theorem 9.9, Proposition 9.10 |
+| Untouched cards under random transpositions | Proposition 9.11 |
+| $L^2$ convergence on finite partitions | Theorem 11.12 |
+| Pólya’s urn | Theorem 11.13 |
+| Almost-sure convergence from a bounded $L^1$ norm | Theorem 11.14 |
+| Brownian maximum, hitting-time distribution and density | Theorem 12.12 |
+| $B_t^2-t$ as a finite-observation martingale | Proposition 12.13 |
+| General van der Waerden | Theorem B.7 |
+
+Doob’s inequality remains Theorem 11.9 and now includes the nonnegative-submartingale form, the square-maximal form, and Ville’s bound for a nonnegative supermartingale. Azuma remains Theorem 11.10. The two-colour three-term case remains Theorem B.6. The lazy-cycle eigenvalue bound that used to be Theorem 8.17 was not copied back as a numbered theorem; the one later sentence that cited it now points at the character diagonalisation in Volume 3.
+
 Owner approval of 6 November 2026 replaces the twelve-chapter numbering. Other
 volumes were not edited. Each row is a live citation in `volume5`–`volume15`
 (or a shared note). Historical review JSON is not a live citation and is omitted.
