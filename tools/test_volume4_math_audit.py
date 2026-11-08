@@ -178,5 +178,16 @@ class TestVolume4MathAudit(unittest.TestCase):
             )
 
 
+    def test_delta_method_function_is_defined_on_sample_means(self):
+        """An exercise cannot evaluate g(Ybar) outside g's domain."""
+        source = (CHAPTERS / "ch06-clt.tex").read_text(encoding="utf-8")
+        exercise = source.split(r"\label{ex:delta}", 1)[1].split(
+            r"\end{exercise}", 1
+        )[0]
+        self.assertIn(r"$g:\R\to\R$", exercise)
+        self.assertIn("differentiability is needed only near", exercise)
+
+
+
 if __name__ == "__main__":
     unittest.main()
