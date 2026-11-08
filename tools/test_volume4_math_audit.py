@@ -59,6 +59,21 @@ class TestVolume4MathAudit(unittest.TestCase):
             if abs(x + z) > A:
                 self.assertTrue(abs(x) > A / 2 or abs(z) > A / 2)
 
+    def test_lindeberg_split_uses_the_strict_hypothesis(self):
+        source = (CHAPTERS / "ch06-clt.tex").read_text(encoding="utf-8")
+        proof = source.split(r"\\label{thm:lindeberg}", 1)[1].split(
+            r"\\end{proof}", 1
+        )[0]
+        self.assertIn(r"|X_{n,k}|>\\varepsilon", proof)
+        self.assertNotIn(r"|X_{n,k}|\\ge\\varepsilon", proof)
+        # An atom at the threshold belongs to the small-increment part.
+        epsilon = 0.5
+        outcomes = (-epsilon, epsilon)
+        gt = sum(x * x for x in outcomes if abs(x) > epsilon) / 2
+        ge = sum(x * x for x in outcomes if abs(x) >= epsilon) / 2
+        self.assertEqual(gt, 0)
+        self.assertEqual(ge, epsilon * epsilon)
+
     def test_52_card_riffle_values_are_rounded_not_equal_to_one(self):
         descents = eulerian_descent_counts(52)
         self.assertEqual(sum(descents), factorial(52))
