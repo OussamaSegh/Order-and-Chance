@@ -12,21 +12,52 @@ Toss two independent fair coins and let $X$ count the heads. Before either toss,
 A \emph{partition} cuts the outcomes into disjoint events, called \emph{atoms}, whose union is the whole sample space. After the first toss, the two atoms are \emph{first H} and \emph{first T}. We know which atom happened but not which outcome inside it. Let $\mathcal P=\{A_1,\ldots,A_m\}$ be any finite partition whose atoms all have positive probability. We assume $X$ is integrable, meaning $\mathbb E|X|<\infty$ so that its positive and negative expected values are both finite.
 
 \begin{definition}[conditional expectation]\label{def:condexp}
-$\mathbb E[X\mid\mathcal P]$ equals $\mathbb E[X\mathbf 1_{A_j}]/P(A_j)$ on the atom $A_j$.
+On each atom $A_j$ of $\mathcal P$, set
+\[
+ \mathbb E[X\mid\mathcal P]
+ =\frac{\mathbb E[X\mathbf1_{A_j}]}{P(A_j)}.
+\]
+The right side is one number. The whole conditional expectation is a random variable, constant on each atom.
 \end{definition}
 
-It is constant on atoms, and $\mathbb E[\mathbb E[X\mid\mathcal P]]=\mathbb E[X]$. If $\mathcal Q$ refines $\mathcal P$, the tower property $\mathbb E[\mathbb E[X\mid\mathcal Q]\mid\mathcal P]=\mathbb E[X\mid\mathcal P]$ is a finite sum: each coarse atom is a union of fine atoms. For square-integrable $X$, it is the orthogonal projection onto the finite-dimensional subspace of variables constant on the atoms, using the inner product $\mathbb E[UV]$ from Volume~1, Chapter~7: the residual has zero mean on each atom, hence is orthogonal to every such step variable.
+Multiply the average on each atom by its probability and add:
+\[
+ \mathbb E[\mathbb E[X\mid\mathcal P]]
+ =\sum_j P(A_j)\frac{\mathbb E[X\mathbf1_{A_j}]}{P(A_j)}
+ =\mathbb E[X].
+\]
+Every outcome appears in exactly one summand. The two-toss example checks this: $(1/2)(3/2)+(1/2)(1/2)=1$.
+
+A partition $\mathcal Q$ \emph{refines} $\mathcal P$ if every atom of $\mathcal Q$ lies inside an atom of $\mathcal P$. It gives us more information. Suppose a coarse atom $A$ is the union of fine atoms $B_1,\ldots,B_r$. Averaging the finer conditional means within $A$ gives
+\[
+ \frac1{P(A)}\sum_{i=1}^r P(B_i)
+ \frac{\mathbb E[X\mathbf1_{B_i}]}{P(B_i)}
+ =\frac{\mathbb E[X\mathbf1_A]}{P(A)}.
+\]
+Thus $\mathbb E[\mathbb E[X\mid\mathcal Q]\mid\mathcal P]
+=\mathbb E[X\mid\mathcal P]$. This \emph{tower property} says that receiving fine information and then forgetting it leaves the coarse average. Here it is nothing more than a finite sum.
+
+For $X$ with finite second moment, there is a geometric interpretation. Any variable $Z$ constant on the atoms satisfies $\mathbb E[(X-\mathbb E[X\mid\mathcal P])Z]=0$, by the same calculation atom by atom. In the inner product $\mathbb E[UV]$ from Volume~1, the conditional average is therefore the orthogonal projection onto the finite-dimensional space of variables constant on these atoms. We use the elementary averaging rule rather than the geometry in the stopping proofs.
 
 \section{Martingales and stopping}
 
 \begin{definition}[martingale]\label{def:mart}
-A sequence of integrable random variables $X_n$, adapted to an increasing sequence of finite partitions, is a martingale when $\mathbb E[X_{n+1}\mid\mathcal P_n]=X_n$. Integrable means $\mathbb E|X_n|<\infty$ for every $n$. The conditional expectation above was defined only for a variable with finite expectation.
+Let $\mathcal P_0,\mathcal P_1,\ldots$ be finite partitions, each refining the previous one. A random variable $X_n$ is \emph{adapted} when it is constant on each atom of $\mathcal P_n$: its value is known from the information at time $n$. An adapted sequence is a \emph{martingale} when every $X_n$ has $\mathbb E|X_n|<\infty$ and
+\[
+ \mathbb E[X_{n+1}\mid\mathcal P_n]=X_n
+\]
+for each $n$. Knowing the present information does not change the expected fortune on the next step.
 \end{definition}
 
-A fair random walk is a martingale. Bounded predictable multiples of its steps remain martingale differences.
+For example, let $\xi_1,\xi_2,\ldots$ be independent fair signs, each equally likely to be $1$ or $-1$, and put $S_0=0$ and $S_n=\xi_1+\cdots+\xi_n$. At time $n$ our partition records the first $n$ signs. The new sign has conditional mean zero, so
+\[
+ \mathbb E[S_{n+1}\mid\mathcal P_n]
+ =S_n+\mathbb E[\xi_{n+1}\mid\mathcal P_n]=S_n.
+\]
+The fair walk is a martingale. More generally, suppose a gambler chooses a bounded stake $H_{n+1}$ after seeing the first $n$ signs but \emph{before} seeing sign $n+1$. Then $H_{n+1}\xi_{n+1}$ still has conditional mean zero. Such a stake is called \emph{predictable}. Choosing the stake after seeing the next sign would break the argument.
 
 \begin{definition}[stopping time]\label{def:stopping}
-An integer-valued random variable $\tau$, possibly infinite, is a \emph{stopping time} for the partitions $\mathcal P_n$ when, for every integer $k\ge0$, the event $\{\tau\le k\}$ belongs to $\mathcal P_k$. Then $\{\tau\ge k\}=\{\tau\le k-1\}^c$ belongs to $\mathcal P_{k-1}$. A bound $\tau\le N$ does not give this by itself. The clock that equals $N$ on $\{X_N>0\}$ and equals $0$ otherwise is at most $N$, but $\{\tau\ge1\}=\{X_N>0\}$ need not belong to $\mathcal P_0$.
+An integer-valued random variable $\tau$, possibly infinite, is a \emph{stopping time} for the partitions $\mathcal P_n$ when, for every integer $k\ge0$, the event $\{\tau\le k\}$ belongs to $\mathcal P_k$. Then $\{\tau\ge k\}=\{\tau\le k-1\}^c$ belongs to $\mathcal P_{k-1}$. A bound $\tau\le N$ does not give this by itself. For example, declare the stopping time to be $N$ if $X_N>0$, and $0$ otherwise. This random clock is at most $N$, but $\{\tau\ge1\}=\{X_N>0\}$ generally cannot be decided at time $0$. It uses tomorrow's information to decide whether to play today, so it is not a stopping time.
 \end{definition}
 
 \begin{theorem}[optional stopping]\label{thm:os}
