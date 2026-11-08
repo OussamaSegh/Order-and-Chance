@@ -14,14 +14,14 @@ Volume 1 chapter numbers below are the printed numbers: Language is Chapter 0 be
 | Catalan paths as a count | Ch. 1, Exercise 1.7, proved again from the ballot theorem | Vol. 1 counting exercise on paths that stay under the diagonal | A count, not the probability form | Ballot theorem is proved in Vol. 4 before the exercise |
 | Sequences, limits, \(e^x\), \(\ln\), comparison, absolute convergence, rearrangements of nonnegative series | Ch. 1 onward | Vol. 1, *Sequences, Series and Limits* | Those theorems, including Bolzano–Weierstrass in \(\mathbb R\) and the intermediate-value theorem | Bolzano–Weierstrass in the simplex \(\mathbb R^d\) is proved in Vol. 4, Ch. 8, from the one-dimensional case |
 | \(1-x\le e^{-x}\), Jensen, Cauchy–Schwarz, Hölder | Ch. 1, Ch. 4 | Vol. 1, `prop:convex`, `thm:jensen`, `thm:cs` | Proved for the stated domains | None |
-| One-variable derivative and Riemann integral, fundamental theorem, substitution, integration by parts, improper integrals, Taylor with Lagrange remainder | Ch. 1 (Buffon), Ch. 5 | Vol. 1, *Differential and Integral Calculus* | One-variable theory. The Gaussian integral is proved there **without** polar coordinates | Iterated integrals on rectangles, and the two changes of variables Vol. 4 needs, are proved in Ch. 5 |
+| One-variable derivative and Riemann integral, fundamental theorem, substitution, integration by parts, improper integrals, Taylor with Lagrange remainder | Ch. 5 (Buffon and continuous calculus) | Vol. 1, *Differential and Integral Calculus* | One-variable theory. The Gaussian integral is proved there **without** polar coordinates | Iterated integrals on rectangles, and the two changes of variables Vol. 4 needs, are proved in Ch. 5 |
 | Stirling \(n!\sim\sqrt{2\pi n}(n/e)^n\) | Ch. 6 local theorem | Vol. 1, `thm:stirling` | The limit with the constant | None |
 | \(\int_{-\infty}^{\infty}e^{-x^2/2}\,\mathrm dx=\sqrt{2\pi}\) | Ch. 5, normal density | Vol. 1, `prop:gaussianintegral`, scaled | The value | The normal **density** is defined in Vol. 4 |
 | Finite probability, conditional probability, Bayes, mutual vs pairwise independence, expectation, linearity, indicators, variance, covariance | Ch. 1, as a reminder with citations, then used | Vol. 1, *First Probability*, `prop:proba` | Finite spaces | Countable spaces are in the same chapter; infinite sequences of trials are not. Vol. 4 builds them |
 | Bernoulli, binomial, hypergeometric, uniform on \(\{1,\ldots,n\}\) | Ch. 2 | Vol. 1, `prop:laws` | Masses, means, variances | Poisson **limit** of the binomial is not in Vol. 1. The Poisson **masses** are an example there. The limit is proved in Vol. 4 |
 | Markov, Chebyshev, weak law for pairwise i.i.d. with finite variance | Ch. 4, cited, then sharpened | Vol. 1, `thm:chebyshev`, `thm:wlln` | The finite-\(n\) inequalities | Chernoff, Hoeffding, Borel–Cantelli, and a strong law are new |
 | Geometric waiting, tail sum \(\mathbb E T=\sum_{j\ge0}P(T>j)\), Poisson mean and variance | Ch. 2 | Vol. 1, *Waiting times* | Countable spaces with an absolutely convergent series of masses. Explicitly **not** an infinite sequence of trials | Coupon collector is an exercise in Vol. 1. Vol. 4 proves it in the text |
-| Spectral theorem for real symmetric matrices, orthogonal projection | Ch. 6, Gaussian vectors; Ch. 8 only if a quadratic form appears | Vol. 1, `thm:spectral`, `thm:gramschmidt` | Proved. The linear-algebra chapter says later exercises that need the spectral theorem should say so. Vol. 4 says so at the first use | None |
+| Spectral theorem for real symmetric matrices, orthogonal projection | Ch. 6, Gaussian vectors | Vol. 1, `thm:spectral`, `thm:gramschmidt` | Proved. The linear-algebra chapter says later exercises that need the spectral theorem should say so. Vol. 4 says so at the first use | None |
 | Complex numbers and roots of unity | Only if a walk on roots of unity is stated | Vol. 1, *Complex Numbers and Roots of Unity* | The algebra | The old workshop problem `pb:rootwalk` is off the logical path, so this row is unused by the main text |
 | Orders, Dilworth, Sperner | Not used | Vol. 1, *Orders* | Already moved out of Volume 4 | Do not bring the appendix back |
 
@@ -33,41 +33,40 @@ The main path does not need a theorem of Volume 2. Primes and congruences are no
 
 Permutations are treated as bijections of a finite set, which Volume 1 already counts. The character theory of \(S_n\), Jordan form, and Perron’s theorem for positive matrices are **not** used. Finite Markov convergence is proved by coupling. The riffle-shuffle cutoff of Bayer–Diaconis is not claimed as a theorem. Rising sequences of a random permutation are counted directly.
 
-## Taught in Volume 4 before use
+## Taught in Volume 4 before use — current fourteen-chapter edition
 
-| Tool | Taught in | Used from | Notes |
+This table uses **printed chapter numbers**, not historical source filenames. The source chapter file `ch07-walks.tex` prints as Chapter 8, `ch08-markov.tex` as Chapter 9, `ch09-poisson.tex` as Chapter 10, and so forth. Where later volumes carry older references, audit the actual citation separately; a planning table does not fix published text.
+
+| Tool | Proved/taught in current V4 | Used later | Required limit of the claim |
 | --- | --- | --- | --- |
-| Binary digits of one uniform; finite-bit events; outer content; almost sure as outer content zero | Ch. 1 | Ch. 4 Borel–Cantelli, Ch. 5 independent sequences, Ch. 6 strong law, Ch. 11 Lévy’s construction | This replaces the old “admitted infinite product” |
-| Ballot theorem | Ch. 1 | Ch. 1 Exercise 1.7, Ch. 7 reflection for the walk | |
-| Buffon’s probability for \(\ell\le d\) | Ch. 1 | Cited by Vol. 9 as the needle case | The model (independent uniform position and angle) is stated as the experiment |
-| Absolute convergence of expectations on countable spaces, beyond Vol. 1’s reminder | Ch. 2, short | Generating functions, Poisson limit | |
-| Poisson limit of binomial laws | Ch. 2 | Ch. 9 | |
-| Expected number of cycles \(H_n\), coupon collector \(nH_n\) | Ch. 2 | Ch. 8 top-to-random | |
-| Probability generating functions, extinction of a Galton–Watson process | Ch. 3 | Ch. 3 exercises, Ch. 12 giant-component remark only as a pointer | The fixed-point argument uses the intermediate-value theorem and continuity of power series from Vol. 1 |
-| Binomial series for \((1-4x)^{-1/2}\) | Ch. 3, Exercise 3.7 | Vol. 5 cites Exercise 3.7 | |
-| Chernoff and Hoeffding | Ch. 4 | Vol. 5 and Vol. 6 cite Chapter 4 | |
-| Borel–Cantelli, both lemmas, at the strength of finite-bit events | Ch. 4 | Strong law, Lévy construction, random graphs | |
-| Strong law for bounded i.i.d. variables, and the fourth-moment strong law | Ch. 4 (bounded), Ch. 6 (fourth moment) | Vol. 7 cites a strong law in Chapters 4 and 6 | The first-moment strong law is not claimed. Volume 11 owns it |
-| Bernstein polynomials and Weierstrass on a segment | Ch. 4 | Vol. 6 cites Weierstrass in Chapter 4 | |
-| Shannon entropy for a finite alphabet, Gibbs’ inequality | Ch. 4 | Gilmer section if restored; otherwise the source-coding bound for a fair coin is the application | |
-| Distribution functions, densities, expectation as an improper integral | Ch. 5 | Ch. 6–11 | |
-| Iterated integrals of continuous functions on a rectangle, and Fubini in that class | Ch. 5 | Joint densities, Box–Muller, gaps of a Poisson process | Not a general Tonelli theorem |
-| Inverse distribution function; countably many independent uniforms and normals | Ch. 5 | Ch. 9, Ch. 11 | |
-| Dominated convergence for continuous integrands with a continuous integrable dominant | Ch. 5 | Differentiation under the integral in Ch. 6 | Not the Lebesgue theorem |
-| Modes of convergence; Slutsky | Ch. 6, Exercise 6.1 is Slutsky | Vol. 8 and Vol. 15 cite Exercise 6.1 | |
-| Lindeberg’s theorem for \(C^3\) test functions by swapping | Ch. 6, environment 6.10 | Vol. 11 cites Theorem 6.10 | Convergence of distribution functions is deduced by mollification, proved in the chapter |
-| Characteristic functions, and the easy implication “convergence in distribution implies pointwise convergence of characteristic functions” | Ch. 6 | Vol. 11 cites that direction | Lévy’s continuity theorem is not claimed |
-| Local de Moivre–Laplace; Stirling’s constant read back from the local theorem only as a check, not as a new proof of Stirling | Ch. 6 | Vol. 5 cites de Moivre–Laplace | Stirling itself stays Volume 1’s theorem |
-| Gaussian vectors with a given covariance | Ch. 6 | Ch. 11 | Uses `thm:spectral` |
-| Reflection, gambler’s ruin, discrete arcsine law, Pólya’s theorem | Ch. 7 | Vol. 12 cites Pólya in Chapter 7 | Dimension 2 uses the local binomial estimate from Ch. 6 |
-| Dirichlet’s principle for a finite graph, as Exercise 7.8 | Ch. 7 | Vol. 12 cites Exercise 7.8 | Linear equations, Vol. 1 |
-| Finite irreducible aperiodic chains: stationary law, total variation, coupling | Ch. 8 | Vol. 11 shuffling chapters cite Chapter 8 | |
-| Top-to-random stationary time, Exercise 8.6; rising-sequence mean \((n+1)/2\) and variance \((n+1)/12\), Exercise 8.8 | Ch. 8 | Vol. 15 and Vol. 11 | |
-| Exponential law, Poisson process, colouring lemma (environment 9.5), thinning, inspection paradox, M/M/1 | Ch. 9 | Vol. 12 cites Lemma 9.5 | |
-| Conditional expectation given a finite partition; optional stopping under stated bounds; Doob’s inequality; Azuma | Ch. 10 | Vol. 11 cites discrete martingales; Vol. 15 cites \(L^2\) convergence for a bounded example | Uniform integrability and the general tower property over an arbitrary \(\sigma\)-algebra are Volume 7 / Volume 11 |
-| Brownian motion by Lévy’s interpolation, environments 11.4 and 11.12 | Ch. 11 | Vol. 11 and Vol. 12 | Existence uses the Gaussians of Ch. 5 and Borel–Cantelli from Ch. 4. Itô’s integral as a process is Volume 12. A first dyadic Itô expansion is proved here and labelled as that |
-| First and second moment methods, symmetric Lovász local lemma, Erdős’s Ramsey bound | Ch. 12 | The method is the handover to later probabilistic number theory | “With high probability” is defined before it is used |
-| Euler’s formula for a connected plane graph, Turán, Ramsey, Schur | Appendix, and Euler before Exercise 12.4 | Exercise 12.4 is the crossing lemma, cited by Vol. 14 and Vol. 15 | Euler is proved in the appendix or in Ch. 12 before the exercise, not assumed |
+| Infinite fair-bit stream, finite cylinders and outer content | Ch. 1 | Ch. 4 Borel–Cantelli; Ch. 5 countable uniforms; Ch. 6 strong law; Ch. 12 Brownian construction | Does not assume a general measure-extension theorem |
+| Ballot theorem | Ch. 1 | Ch. 1, Exercise 1.7; Ch. 8 walk reflection | Finite path counting |
+| Bertrand models and Buffon's needle for \(\ell\le d\) | **Ch. 5** (nested `ch05-geometric.tex`) | Later geometric probability references | Not in Ch. 1; models distinguish three ways to select a chord |
+| Absolute convergence of countable expectations | Ch. 2 | PGFs, Poisson limit | Nonnegative vs absolutely summable assumptions matter |
+| Poisson limit of binomial laws | Ch. 2 | **Ch. 10** Poisson process | Poisson masses were already introduced in V1 |
+| Cycle counts \(H_n\), coupon collector \(nH_n\) | Ch. 2 | **Ch. 9** top-to-random | Don't confuse cycle mean with record indicators |
+| Probability generating functions, Galton–Watson extinction | Ch. 3 | Ch. 3 exercises; Ch. 14 graph comparison | Extinction root and its degeneracies proved |
+| Binomial series \((1-4x)^{-1/2}\) | Ch. 3, Exercise 3.7 | Volume 5 | Coefficient identity proved in solution |
+| Chernoff/Hoeffding, Borel–Cantelli, strong law for bounded independent variables | Ch. 4 | Ch. 6; Ch. 12 dyadic construction; later volumes | Distinguish bound, limit and a.s. statement |
+| Bernstein-polynomial Weierstrass proof | Ch. 4 | Volume 6 | Main theorem on a compact interval |
+| Distribution functions/densities, quantiles, integral bounds, finite rectangle Fubini, Box–Muller | Ch. 5 | Ch. 6 Gaussian; Ch. 10 continuous gaps; Ch. 12 independent normal increments | No imported general Fubini–Tonelli theorem |
+| Modes of convergence, Slutsky and fourth-moment strong law | Ch. 6, Exercise 6.1 for Slutsky | Later analysis/probability | The fourth-moment theorem does not imply the general first-moment SLLN |
+| Fourier uniqueness/inversion, characteristic functions | Ch. 6, Theorem 6.8 (`thm:inversion`) | Later probability | No Lévy continuity theorem assumed |
+| Lindeberg CLT and classical finite-variance CLT | Ch. 6, Theorem 6.10 (`thm:lindeberg`) | Volume 11 | C³ smooth-test form and explicit distribution-function sandwich |
+| Local de Moivre–Laplace, Gaussian vectors | Ch. 6 | Ch. 12 Brownian; later approximations | Stirling and spectral theorem are V1 results |
+| Entropy, Gibbs/KL, Kraft, Huffman, typical sequences, block codes | **Ch. 7** | Later coding/information sections | Shannon entropy no longer belongs to Ch. 4 |
+| Walk reflection, gambler's ruin, recurrence/Pólya, discrete arcsine, finite resistor networks | **Ch. 8** | Later walks; Ch. 9 chains | The main-walk chapter is not Ch. 7 |
+| Dirichlet's principle / effective resistance problem | Ch. 8, Exercise **8.8** (`ex:electric`) | Later electrical-network references | Former “Exercise 7.8” contract was superseded |
+| Finite Markov mixing via coupling, stationary law, TV; top-to-random stationary time | **Ch. 9** | Later chains/shuffling | Top-to-random Exercise **9.6**, not 8.6 |
+| Bayer–Diaconis exact riffle-shuffle formula | Ch. 9, `thm:bayerdiaconis` | Historical seven-shuffle explanation | Finite exact formula and three-decimal values; do not claim literal \(d_k=1\) |
+| Rising-sequence mean and variance | Ch. 9, Exercise **9.8** (`ex:risingmean`) | Later permutation examples | Former “Exercise 8.8” contract was superseded |
+| Exponential clock, Poisson counts, thinning, inspection paradox and M/M/1 | **Ch. 10** | Later stochastic-process work | One-sided and stationary two-sided clocks must be distinguished |
+| Poisson independent colouring | Ch. **10**, Lemma **10.5** (`lem:colouring`) | Later volumes | Former “Lemma 9.5” numbering is stale |
+| Finite-partition martingales, bounded stopping, Doob, Azuma, convergence | **Ch. 11** | Later general martingale theory | General sigma-algebra/continuous-filtration results not imported |
+| Brownian motion via dyadic Lévy construction and reflection | **Ch. 12**, Theorems **12.4** and **12.12** (`thm:levy`, `thm:reflection`) | Later continuous martingales | Independent Gaussian increments, not a general Itô integral |
+| First/second moment methods, local lemma, Euler/crossing lemma | **Ch. 13**, Exercise **13.4** (`ex:crossing`) | Volumes 14–15 | Euler is established before the crossing exercise |
+| \(G(n,c/n)\), subcritical component upper bound and triangle thresholds | **Ch. 14** | Final Volume 5 handoff | Does not claim the complete supercritical giant-component theorem |
+| Turán, Ramsey, Schur, EKR and finite van der Waerden | **Appendix B** | Later-extremal references | Appendix stays **B**, not A |
 
 ## Explicitly off the logical path
 
@@ -82,20 +81,23 @@ Permutations are treated as bijections of a finite set, which Volume 1 already c
 | The old `pb:*` workshop list | See the old-to-new map |
 | Any theorem of Volumes 5–15 | A forward sentence may name the next question. It may not fill a gap |
 
-## Exercise-number contract
+## Current exercise-number contract (verified against `main.tex` order)
 
-These printed numbers are cited from later volumes. The new exercises in these slots must still prove the stated fact.
+Later-volume citations must use the **current printed numbering** (not historical chapter filenames or the old twelve-chapter plan) and stable `\label` anchors. This register records current positions; it does not attest that Volumes 5–15 have already been migrated.
 
-| Number | Fact the later books use |
-| --- | --- |
-| 1.7 | Catalan number \(C_n=\frac1{n+1}\binom{2n}n\) counts Dyck paths |
-| 2.6 | A uniform permutation of \(2n\) elements has a cycle longer than \(n\) with probability \(H_{2n}-H_n\to\ln 2\). The hundred-prisoners strategy may stay in the same exercise |
-| 3.7 | \(\binom{-1/2}{j}(-4)^j=\binom{2j}{j}\) and the series for \((1-4x)^{-1/2}\) |
-| 5.7 | The Cantor distribution: continuous distribution function, singular, supported on the middle-thirds set |
-| 6.1 | Slutsky’s lemma |
-| 6.7 | Cycle count of a random permutation, centred by \(\ln n\) and scaled by \(\sqrt{\ln n}\), converges in law to \(N(0,1)\) |
-| 7.8 | Voltages and effective resistance for the simple random walk on a finite connected graph |
-| 8.6 | Top-to-random shuffle: a strong stationary time with the coupon-collector law, and the total-variation bound \(d(n\ln n+cn)\le e^{-c}\) |
-| 8.8 | A uniform permutation has mean \((n+1)/2\) and variance \((n+1)/12\) rising sequences |
-| 11.3 | Zeros of a Brownian path on \([0,1]\): closed, Lebesgue measure zero almost surely, \(0\) not isolated, hence uncountable |
-| 12.4 | Crossing lemma: \(\operatorname{cr}(G)\ge m-3n\), and \(\operatorname{cr}(G)\ge m^3/(64n^2)\) when \(m\ge 4n\) |
+| Printed exercise / lemma | Stable label | Fact or use |
+| --- | --- | --- |
+| 1.7 | `ex:catalan` | Catalan number counts Dyck paths |
+| 2.6 | `ex:prisoners` | Long-cycle probability \(H_{2n}-H_n\to\ln 2\); hundred-prisoners application |
+| 3.7 | `ex:binseries` | \((1-4x)^{-1/2}\) coefficient identity |
+| 5.7 | `ex:cantor` | Continuous singular Cantor law on middle-thirds set |
+| 6.1 | `ex:slutsky` | Slutsky's lemma |
+| **6.8** | `ex:cyclesclt` | Normal limit for centred/scaled permutation cycle count |
+| **8.8** | `ex:electric` | Finite-graph effective resistance and harmonic voltages |
+| **9.6** | `ex:toptorandom` | Top-to-random strong stationary time / coupon collector |
+| **9.8** | `ex:risingmean` | Mean \((n+1)/2\), variance \((n+1)/12\), rising sequences |
+| **10.5** (lemma) | `lem:colouring` | Independent Poisson colouring lemma |
+| **12.3** | `ex:zeros` | Brownian zero set: closed, a.s. null, uncountable |
+| **13.4** | `ex:crossing` | Crossing lemma \(\mathrm{cr}(G)\ge m-3n\), and \(\mathrm{cr}(G)\ge m^3/(64n^2)\) for \(m\ge4n\) |
+
+**Unchanged protected theorem slots:** Theorem 6.8 (`thm:inversion`), Theorem 6.10 (`thm:lindeberg`), Theorem 11.9 (`thm:doob`), Theorem 11.10 (`thm:azuma`), Theorem 12.4 (`thm:levy`), Theorem 12.12 (`thm:reflection`), Appendix B. Update downstream citations through reviewed independent PRs; do not edit published Volumes 1–3.
