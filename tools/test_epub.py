@@ -56,10 +56,14 @@ class Tags(HTMLParser):
 @unittest.skipUnless(shutil.which("pandoc"), "Pandoc is required")
 class EpubRegression(unittest.TestCase):
     def convert(self, target, *arguments, cwd=None):
+        # Pandoc 3.1.3, the Ubuntu 24.04 package used in CI, drops an
+        # includegraphics alt and writes the placeholder "image". The same
+        # ocimagealt carrier used for photographs keeps the explicit text.
+        source = epub_prep.preserve_graphics_alt(SAMPLE)
         return subprocess.run(
             ["pandoc", "-f", "latex", "-t", target, "--mathml",
              "--lua-filter", str(TOOLS / "epub.lua"), *arguments],
-            input=SAMPLE, text=True, capture_output=True, check=True, cwd=cwd)
+            input=source, text=True, capture_output=True, check=True, cwd=cwd)
 
     def test_online_anchors(self):
         output = self.convert("html5").stdout
@@ -259,8 +263,10 @@ Text.
             destination = Path(directory) / "epub.tex"
             source.write_text(r"\portrait{fermat}{Pierre de Fermat (1601--1665). Historical portrait.}" + "\n")
             epub_prep.main(str(source), str(destination), directory)
-            result = subprocess.run(["pandoc", "-f", "latex", "-t", "html5", str(destination)],
-                                    capture_output=True, text=True, check=True)
+            result = subprocess.run(
+                ["pandoc", "-f", "latex", "-t", "html5",
+                 "--lua-filter", str(TOOLS / "epub.lua"), str(destination)],
+                capture_output=True, text=True, check=True)
             tags = Tags()
             tags.feed(result.stdout)
             alternatives = [attrs.get("alt") for tag, attrs in tags.attributes if tag == "img"]
@@ -272,8 +278,10 @@ Text.
             destination = Path(directory) / "epub.tex"
             source.write_text(r"\photograph{rocket}{Rocket rising above the launch pad.}{SpaceX Photos, public domain.}" + "\n")
             epub_prep.main(str(source), str(destination), directory)
-            result = subprocess.run(["pandoc", "-f", "latex", "-t", "html5", str(destination)],
-                                    capture_output=True, text=True, check=True)
+            result = subprocess.run(
+                ["pandoc", "-f", "latex", "-t", "html5",
+                 "--lua-filter", str(TOOLS / "epub.lua"), str(destination)],
+                capture_output=True, text=True, check=True)
             tags = Tags()
             tags.feed(result.stdout)
             alternatives = [attrs.get("alt") for tag, attrs in tags.attributes if tag == "img"]

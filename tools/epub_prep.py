@@ -103,6 +103,31 @@ def opener_markers(text: str, main_tex: Path, figdir: Path) -> str:
     return parts(text)
 
 
+def preserve_graphics_alt(text: str) -> str:
+    """Carry an includegraphics alt through Pandoc 3.1.3.
+
+    That reader drops the alt key and writes the placeholder caption
+    ``image``. The EPUB filter already copies an ocimagealt description
+    onto the picture, which is how photographs keep their text.
+    """
+    parts = re.split(r'(\\begin\{ocimagealt\}.*?\\end\{ocimagealt\})', text, flags=re.S)
+
+    def wrap(match):
+        alt = match.group(1)
+        return ('\\begin{ocimagealt}' + alt + '\n\n' + match.group(0)
+                + '\n\\end{ocimagealt}\n')
+
+    out = []
+    for index, part in enumerate(parts):
+        if index % 2 == 1:
+            out.append(part)
+        else:
+            out.append(re.sub(
+                r'\\includegraphics\[[^\]]*alt=\{([^}]*)\}[^\]]*\]\{[^}]*\}',
+                wrap, part))
+    return ''.join(out)
+
+
 def main(src: str, dst: str, figdir: str) -> None:
     text = inline(Path(src))
     # PDF-only problem styling (\renewtcolorbox) is not for pandoc. The exname
@@ -182,6 +207,7 @@ def main(src: str, dst: str, figdir: str) -> None:
     text = re.sub(r"\\(begin|end)\{psmallmatrix\}", r"\\\1{pmatrix}", text)
     # enumitem labels -> enumerate-package style, which pandoc understands
     text = text.replace(r"[label=(\alph*)]", "[(a)]").replace(r"[label=(\roman*)]", "[(i)]")
+    text = preserve_graphics_alt(text)
     Path(dst).write_text(text, encoding="utf-8")
 
 
