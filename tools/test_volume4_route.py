@@ -116,6 +116,34 @@ class TestVolume4Route(unittest.TestCase):
         self.assertEqual(len(all_exercises), len(set(all_exercises)))
         self.assertGreaterEqual(len(all_exercises), 107)
 
+    def test_dependency_register_uses_current_printed_exercise_numbers(self):
+        """Catch stale citation slots when a historical source filename is misleading."""
+        register = (ROOT / "docs/plan/volume4-prerequisites.md").read_text(
+            encoding="utf-8"
+        )
+        actual = {}
+        for chapter_number, name in enumerate(APPROVED_CHAPTERS, start=1):
+            source = (CHAPTERS / (name + ".tex")).read_text(encoding="utf-8")
+            for exercise_number, label in enumerate(EXERCISE.findall(source), start=1):
+                actual[label] = f"{chapter_number}.{exercise_number}"
+        documented = dict(
+            (label, slot)
+            for slot, label in re.findall(
+                r"^\|\s*(?:\*\*)?(\d+\.\d+)(?:\*\*)?\s*\|\s*\x60(ex:[^\x60]+)\x60",
+                register,
+                flags=re.MULTILINE,
+            )
+        )
+        expected = {
+            "ex:catalan", "ex:prisoners", "ex:binseries", "ex:cantor",
+            "ex:slutsky", "ex:cyclesclt", "ex:electric", "ex:toptorandom",
+            "ex:risingmean", "ex:zeros", "ex:crossing",
+        }
+        self.assertTrue(expected.issubset(documented.keys()))
+        for label, slot in documented.items():
+            with self.subTest(exercise=label):
+                self.assertEqual(actual.get(label), slot)
+
     def test_every_referenced_figure_source_exists(self):
         _, files = manuscript()
         names = set()
