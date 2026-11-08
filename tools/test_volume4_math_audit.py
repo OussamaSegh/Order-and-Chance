@@ -192,11 +192,11 @@ class TestVolume4MathAudit(unittest.TestCase):
     def test_brownian_covariance_equivalence_requires_zero_mean(self):
         """Gaussian increments with the right variance can still have drift."""
         source = (CHAPTERS / "ch11-brownian.tex").read_text(encoding="utf-8")
-        proposition = source.split(r"\\label{prop:bmgauss}", 1)[1].split(
-            r"\\end{proposition}", 1
+        proposition = source.split(r"\label{prop:bmgauss}", 1)[1].split(
+            r"\end{proposition}", 1
         )[0]
-        self.assertIn(r"independent \\emph{centred} normal increments", proposition)
-        self.assertIn(r"B_t-B_s\\sim N(0,t-s)", proposition)
+        self.assertIn(r"independent \emph{centred} normal increments", proposition)
+        self.assertIn(r"B_t-B_s\sim N(0,t-s)", proposition)
         self.assertIn("drifted process", source)
         self.assertNotIn(
             "independent normal increments of variance $t-s$ are equivalent",
@@ -215,7 +215,7 @@ class TestVolume4MathAudit(unittest.TestCase):
         """Disjoint increments inside the same unit copy must be justified."""
         source = (CHAPTERS / "ch11-brownian.tex").read_text(encoding="utf-8")
         construction = source.split("For all later times", 1)[1].split(
-            r"\\section{Scaling, variation, reflection}", 1
+            r"\section{Scaling, variation, reflection}", 1
         )[0]
         self.assertIn("two disjoint intervals can lie in the same unit block", construction)
         self.assertIn("Within each copy, disjoint component increments are independent", construction)
@@ -225,12 +225,12 @@ class TestVolume4MathAudit(unittest.TestCase):
     def test_poisson_no_explosion_uses_one_countable_probability_one_event(self):
         """Finite counts at each fixed time require a countable intersection."""
         source = (CHAPTERS / "ch09-poisson.tex").read_text(encoding="utf-8")
-        excerpt = source.split(r"\\label{def:pp}", 1)[1].split(
-            r"\\begin{theorem}[counts and conditional uniformity]", 1
+        excerpt = source.split(r"\label{def:pp}", 1)[1].split(
+            r"\begin{theorem}[counts and conditional uniformity]", 1
         )[0]
-        self.assertIn("t=1,2,3,\\ldots", excerpt)
+        self.assertIn(r"t=1,2,3,\ldots", excerpt)
         self.assertIn("Intersect these probability-one statements", excerpt)
-        self.assertIn(r"T_n\\to\\infty", excerpt)
+        self.assertIn(r"T_n\to\infty", excerpt)
 
 
 
