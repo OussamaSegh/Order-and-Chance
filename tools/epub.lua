@@ -58,6 +58,10 @@ local function number_pass(doc)
       chapter = assert(tonumber(pandoc.utils.stringify(b.content)), "Invalid chapter counter")
       chapter_label = chapter
       manual_chapters = true
+      -- LaTeX increments the counter at the next \chapter. After \appendix,
+      -- \setcounter{chapter}{1} therefore prints B. Seed the letter here so
+      -- the following header's increment matches the PDF.
+      if appendix then appendix_chapter = chapter end
     elseif b.t == "Header" and b.level == 1 and not b.classes:includes("unnumbered") then
       b.classes:insert("oc-chapter")
       if appendix then b.classes:insert("oc-appendix") end

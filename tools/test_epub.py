@@ -106,6 +106,26 @@ Appendix~\ref{ch:support}, Section~\ref{sec:support}.
         self.assertRegex(result.stdout, r'href="#ch:support"[^>]*>A</a>')
         self.assertNotIn("ocappendices", result.stdout)
 
+    def test_appendix_counter_matches_pdf_letter(self):
+        source = r"""\documentclass{book}
+\begin{document}
+\chapter{Main}
+\appendix
+\setcounter{chapter}{1}
+\chapter{Extremal}
+\end{document}"""
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / "main.tex").write_text(source)
+            epub_prep.main(str(root / "main.tex"), str(root / "epub.tex"), directory)
+            result = subprocess.run(
+                ["pandoc", str(root / "epub.tex"), "-f", "latex", "-t", "html5",
+                 "--number-sections", "--lua-filter", str(TOOLS / "epub.lua")],
+                capture_output=True, text=True, check=True)
+        text = visible_text(result.stdout)
+        self.assertIn("Appendix B: Extremal", text)
+        self.assertNotIn("Appendix A", text)
+
     def test_zero_based_chapters_keep_pdf_references_and_exercise_links(self):
         source = r"""\documentclass{book}
 \newtheorem{theorem}{Theorem}[chapter]
