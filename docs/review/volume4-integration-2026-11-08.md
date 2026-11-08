@@ -1,6 +1,6 @@
 # Volume 4 integration review — 8 November 2026
 
-**Branch / scope:** [stacked draft PR #113](https://github.com/OussamaSegh/Order-and-Chance/pull/113), based on Volume 4 draft [PR #111](https://github.com/OussamaSegh/Order-and-Chance/pull/111) at `8789fa613109fe1ea61150434074165856496051`. Only downstream Volumes 11, 12, 14 and 15 and this review record are in this integration PR. The original Volume 4 draft remains unchanged and unmerged. This is an **author/editor corrective pass, not independent second acceptance** of these new changes.
+**Branch / scope:** [stacked draft PR #113](https://github.com/OussamaSegh/Order-and-Chance/pull/113), based on Volume 4 draft [PR #111](https://github.com/OussamaSegh/Order-and-Chance/pull/111) at `8789fa613109fe1ea61150434074165856496051`. The content edits are limited to downstream Volumes 11, 12, 14 and 15 and this review record; two publishing CI workflow files are also changed solely to retry the pinned \`oxipng\` download and fall back to \`cargo install oxipng --version 9.1.5 --locked\` if the GitHub release asset returns HTTP 504. The mathematical and PDF/EPUB validation tests are unchanged. The original Volume 4 draft remains unchanged and unmerged. This is an **author/editor corrective pass, not independent second acceptance** of these new changes.
 
 ## Corrected dependency classes
 
@@ -19,4 +19,4 @@
 - **Rendered downstream PDF inspection** for paragraph / align environments introduced in Volumes 11, 12 and 15. CI success is only compilation/automated publishing validation.
 - PR #111 has separate unchanged manuscript/physical production/EPUB and owner-approval gates. Draft PR #114 proposes a minimal remedy for the Chapter 6 bibliography orphan in the exact-head print PDF; that production fix needs its own native visual verification.
 
-**No merge or production signoff is claimed in this record.**
+**No merge or production signoff is claimed in this record.** Exact-head CI on the edited integration branch is a new and independent gate; older successful runs belong to earlier manuscript inputs and cannot be substituted.
