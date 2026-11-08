@@ -22,7 +22,7 @@ The Gaussian counterexample can be independently checked with finite-dimensional
 2. The full-time Brownian extension explicitly distinguishes increments inside one unit copy from increments in distinct independent copies.
 3. Poisson nonexplosion invokes the countable intersection over positive integer observation times.
 
-The earlier eight focused Phase 1/Phase 2 regression methods remain. `tools/test_volume4_route.py` still checks the four parts, fourteen printed chapters, Appendix B, labels/references, 107 exercise-hint-solution triples and 41 figure source paths. Those are **structural checks**, not proofs that the individual solutions or drawn figures are mathematically correct.
+The earlier eight focused Phase 1/Phase 2 regression methods remain, and `tools/test_volume4_proof_structure.py` now checks that all **127 previously indexed proof-bearing statements** across the sixteen included chapter/Appendix TeX sources have an adjacent nonempty `proof` environment before the next statement or section. This is a **structural-only** assertion and cannot identify missing logical steps, incorrect examples or false conclusions. `tools/test_volume4_route.py` still checks the four parts, fourteen printed chapters, Appendix B, labels/references, 107 exercise-hint-solution triples and 41 figure source paths. Those are **structural checks**, not proofs that the individual solutions or drawn figures are mathematically correct.
 
 ## Focused additional source rereads, not falsely marked complete
 
