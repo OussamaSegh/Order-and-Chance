@@ -14,6 +14,9 @@
 
 **Final writer hypothesis correction:** the M/M/1 theorem now explicitly assumes i.i.d. service times independent of the Poisson arrival stream, and Exercise 10.8 says `t>0`. This mathematical source correction is commit `b85a60c93377497267c143146b01329b2dae795a` (review issue C10-13). All previously started native/fullbooks workflows for earlier source commits are superseded; only a completed run at this latest source may validate it.
 
+
+**Native-artifact check and source follow-up:** [native workflow #42430069990](https://github.com/OussamaSegh/Order-and-Chance/actions/runs/42430069990) succeeded for the **immediately preceding** source checkpoint `ee74ef01dd8cca6fa3f3765f9cdcfb8c23661611`. Artifact `13596939657` downloaded, all five digests verified; reading 264 pages, Chapter 10 physical pp. 192–207 (16); print 263 pages, chapter pp. 191–206 (16). All 32 chapter pages examined; the three EPUB plates are 1800px, responsive, have descriptive alt, 609 image refs in chapter with no broken/generic alt; log clean. **But** reading p.207/print p.206 contained only Feller's bibliography item. New issue **C10-14**: the Exercise 10.8 solution was tightened without removing its complete method, source commit `b7f35481000ff273df4a4e0c11fd7fe4108c2a3e`. **Fresh native CI, actual new PDF last-page/layout inspection, EPUB and full-books QA required on this revised source.** The earlier native success must not be relabelled as accepting this new manuscript. Full details in the Chapter 10 review log.
+
 ---
 
 
