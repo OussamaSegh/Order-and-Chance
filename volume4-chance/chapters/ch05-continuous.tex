@@ -1,953 +1,534 @@
-\chapter{Continuous Probability Done Properly}
+\chapter{Continuous Chance}
 
 \begin{center}\itshape
-Pick a real number uniformly at random in $[0,1]$. It equals $\frac12$ with probability $0$, and so does every\\
-other number; yet it lands somewhere. Probabilities can no longer be added point by point. What replaces\\
-the sum, and is there still a probability for \emph{every} set of numbers?
+A uniform point of $[0,1]$ equals $\frac12$ with probability $0$, and it equals every other\\
+single number with probability $0$. The average is an integral, not a sum.
 \end{center}
 
-In 1893 Charles Hermite wrote to Stieltjes that he turned away ``with fright and horror from this lamentable plague of continuous functions which
-do not have derivatives''. Analysis was full of monsters, and the integral of Riemann could not tame them. Nine years later a young French
-mathematician, Henri Lebesgue, proposed in his thesis a new way of integrating: instead of slicing the domain into intervals, slice the range of
-values, and measure the set where the function takes each slice. The idea was so well suited to probability that, thirty years later, Kolmogorov
-built the whole subject on it. There was a price, discovered by Giuseppe Vitali in 1905: some sets of numbers cannot be given a length at all.
+Imagine choosing a point by closing your eyes and pointing to a ruler one metre long. The chance of landing in its first quarter is $\tfrac14$. The chance of landing at \emph{exactly} the mark $\tfrac12$ is zero. That does not mean the ruler contains no points! It means probabilities here live on \emph{intervals}, not on individual numbers.
 
-Chapters~1 to~4 lived on countable sets, where an expectation is a sum. A uniform point of $[0,1]$, a Gaussian
-measurement or the time until a radioactive atom decays do not: each single value has probability $0$, and an
-expectation must become an integral. This chapter builds that integral, Lebesgue's, from the axioms of Chapter~1
-and proves the three theorems that make it powerful: monotone convergence, Fatou's lemma and dominated convergence.
-With them, densities, changes of variables, independence and the Gaussian law fit into one framework, and the
-proofs of the rest of the book become honest.
+In Chapters~1--4, outcomes such as dice faces and counts came with a list of probabilities. Now a measurement can be any real number in an interval. A list with one probability for every real value is not useful: every single value of a uniform measurement has probability zero, yet some intervals have positive probability. To describe this kind of chance we use a \emph{density}, a function whose area over an interval gives its probability. An average then becomes an integral rather than a sum.
 
-The first section explains why a probability cannot be defined on all subsets of $[0,1]$, which is why the axioms
-name a $\sigma$-algebra. The second gives the one tool that decides when two probabilities are equal: Dynkin's
-$\pi$-$\lambda$ theorem. Then come random variables and their laws, the integral, Lebesgue measure and densities,
-changes of variables, independence, and finally polar coordinates, which give the Gaussian integral again and the
-Box--Muller method that computers use to draw Gaussian numbers.
+The foundations are familiar. Volume~1 built the Riemann integral, the Gaussian integral, and elementary calculus. Chapter~1 of this volume built independent fair bits and the uniform point they encode. We will use those tools to define continuous expectations, change coordinates, construct independent normal variables, and prove a careful, limited version of passing a limit through an integral. A later chapter will use these normals to explain why bell curves appear.
 
-\section{Why not every set?}
+There is a boundary to our method. We calculate probabilities for intervals, finite unions of intervals and some explicitly controlled limiting events. We do \emph{not} pretend to assign a well-behaved length to every set of real numbers. In 1905, Giuseppe Vitali gave a reason why that is impossible if one requires translation invariance and countable additivity and accepts the axiom of choice. Nothing in our positive proofs relies on that negative construction.
 
-A uniform random point of $[0,1[$ should give each interval its length, and should not care if everything is
-shifted by $t$, wrapping around: write $x\oplus t$ for the fractional part of $x+t$ and $A\oplus t=\{a\oplus t:a\in A\}$.
+\section{Distribution functions and densities}
 
-\begin{theorem}[Vitali, 1905]\label{thm:vitali}
-There is no map $\mu:\mathcal P([0,1[)\to[0,1]$ that is countably additive, satisfies $\mu([0,1[)=1$, and is invariant under
-shifts: $\mu(A\oplus t)=\mu(A)$ for all $A\subseteq[0,1[$ and $t\in[0,1[$.
-\end{theorem}
-\begin{proof}
-Call $x,y\in[0,1[$ equivalent if $x-y\in\Q$. This is an equivalence relation; by the axiom of choice, let $V$ contain exactly
-one point of each class. For each rational $r\in[0,1[$, the sets $V\oplus r$ are pairwise disjoint: if $v\oplus r=v'\oplus r'$ with
-$v,v'\in V$, then $v-v'\in\Q$, so $v=v'$ and then $r=r'$. And they cover $[0,1[$: any $x$ is equivalent to some $v\in V$, and
-$x=v\oplus r$ with $r=(x-v)\oplus0$, the fractional part of $x-v$, a rational in $[0,1[$. So, by countable additivity and invariance,
-$1=\sum_r\mu(V\oplus r)=\sum_r\mu(V)$, a sum of countably many equal terms, which is $0$ or $+\infty$. Contradiction.
-\end{proof}
+Before densities, one simple function can describe \emph{any} law for which its interval events have been defined. For every real $x$, ask how likely $X$ is to lie at or to the left of $x$. The answer is its \emph{cumulative distribution function} (CDF):
+\[
+ F(x)=P(X\le x).
+\]
+As $x$ moves right, the event $\{X\le x\}$ only grows, so $F$ cannot decrease. For a fair die, $F$ is a staircase: the probability jumps by $1/6$ at each integer from $1$ through $6$. For a uniform point $U$ in $[0,1]$, it is
+\[
+ F_U(x)=
+ \begin{cases}
+ 0,&x\le0,\\
+ x,&0<x<1,\\
+ 1,&x\ge1.
+ \end{cases}
+\]
+Here there are no jumps, because no point has positive probability. In the models we construct below, $F(x)\to0$ as $x\to-\infty$, $F(x)\to1$ as $x\to\infty$, and $F$ is right-continuous. We verify these facts from interval formulas instead of borrowing a theorem about probabilities of arbitrary infinite events.
 
-So something must give, and it is ``all subsets''. Lebesgue's solution is to define the uniform probability only
-on a $\sigma$-algebra of reasonable sets, the Borel sets below, which contains every set that one can describe
-without the axiom of choice. In dimension three the situation is even stranger: Banach and Tarski (1924) cut a ball
-into five pieces that can be moved rigidly to form two balls of the same size; the pieces are, necessarily,
-not Borel sets.
-
-\section{\texorpdfstring{$\sigma$}{Sigma}-algebras, measures and Dynkin's theorem}
-
-\begin{definition}
-A \emph{measurable space} is a set $E$ with a $\sigma$-algebra $\mathcal E$ (Chapter~1). A \emph{measure} on it is a map
-$\mu:\mathcal E\to[0,+\infty]$ with $\mu(\varnothing)=0$ that is countably additive. It is \emph{finite} if $\mu(E)<\infty$, a probability if $\mu(E)=1$, and
-\emph{$\sigma$-finite} if $E=\bigcup_nE_n$ with $E_n\in\mathcal E$ and $\mu(E_n)<\infty$.
+\begin{definition}[density]\label{def:density}
+A nonnegative function $f$ that is continuous except at finitely many points is a \emph{density} of $X$ when
+\[
+ P(a<X\le b)=\int_a^b f(t)\,\dd t
+\]
+for all $a<b$, and $\int_{-\infty}^{\infty}f=1$. The integral is the improper Riemann integral of Volume~1 when a limit of integration is infinite, and also when $f$ is unbounded at a finite exceptional point, provided the limit of the integrals on the bounded pieces exists. A finite one-sided limit is the usual case. An integrable blow-up is allowed: the chord-length density below blows up at length $2$, and $1/(2\sqrt y)$ blows up at $0$.
 \end{definition}
 
-The rules of Proposition~\ref{prop:rules} hold for any measure, with the same proofs, except that $P(A^c)=1-P(A)$
-needs $\mu(E)<\infty$, and continuity along a decreasing sequence $A_1\supseteq A_2\supseteq\cdots$ needs $\mu(A_1)<\infty$.
+The density is \emph{not} the probability of one exact value. A density can even be greater than $1$ at some points; what must stay between $0$ and $1$ is its area over each interval. The total area under the density must be $1$.
 
-An intersection of $\sigma$-algebras on $E$ is a $\sigma$-algebra (each axiom passes to intersections). So for any family
-$\mathcal C$ of subsets there is a smallest $\sigma$-algebra containing it, the intersection of all of them: the $\sigma$-algebra
-\emph{generated} by $\mathcal C$, written $\sigma(\mathcal C)$. The \emph{Borel} $\sigma$-algebra $\mathcal B(\R)$ is generated by the half-lines
-$]-\infty,t]$, $t\in\R$; it contains all intervals, since for instance $]a,b]=\,]-\infty,b]\setminus\,]-\infty,a]$ and
-$]a,b[\,=\bigcup_n\,]a,b-\frac1n]$, hence all open sets, each of which is a countable union of open intervals with
-rational endpoints. Likewise $\mathcal B(\R^d)$ is generated by the boxes $\prod_i\,]-\infty,t_i]$, and contains all open sets of
-$\R^d$ (countable unions of open boxes with rational corners).
+If two functions in the class of Definition~\ref{def:density} both satisfy the interval identity, they agree wherever both are continuous. Indeed, their integrals over every interval agree, and the fundamental theorem of calculus recovers the value of a continuous integrand from sufficiently short intervals. Changing a density at finitely many isolated points does not alter its Riemann integrals. At a continuity point of $f$, the derivative of $\int_0^x f(t)\,\dd t$ is $f(x)$; that connects a density with the slope of its cumulative distribution function.
 
-To prove that two probabilities coincide on a $\sigma$-algebra, it is enough to check it on a well-chosen family.
-
-\begin{definition}
-A family $\mathcal C$ of subsets of $E$ is a \emph{$\pi$-system} if $A\cap B\in\mathcal C$ for $A,B\in\mathcal C$. It is a \emph{$\lambda$-system} if $E\in\mathcal C$,
-$B\setminus A\in\mathcal C$ whenever $A\subseteq B$ are in $\mathcal C$, and $\bigcup_nA_n\in\mathcal C$ whenever $A_1\subseteq A_2\subseteq\cdots$ are in $\mathcal C$.
-\end{definition}
-
-\begin{theorem}[Dynkin's $\pi$-$\lambda$ theorem]\label{thm:dynkin}
-If a $\lambda$-system $\mathcal L$ contains a $\pi$-system $\mathcal C$, then it contains $\sigma(\mathcal C)$.
-\end{theorem}
-\begin{proof}
-An intersection of $\lambda$-systems is a $\lambda$-system, so there is a smallest $\lambda$-system $\mathcal D$ containing $\mathcal C$, and $\mathcal D\subseteq\mathcal L$.
-We show that $\mathcal D$ is a $\pi$-system; then it is a $\sigma$-algebra (complements are differences $E\setminus A$, finite unions
-are complements of intersections of complements, and a countable union is the increasing union of finite ones),
-so $\sigma(\mathcal C)\subseteq\mathcal D\subseteq\mathcal L$.
-
-Let $\mathcal D_1=\{A\in\mathcal D:A\cap C\in\mathcal D\text{ for all }C\in\mathcal C\}$. It contains $\mathcal C$, and it is a $\lambda$-system: $E\cap C=C$; if $A\subseteq B$ are in
-$\mathcal D_1$ then $(B\setminus A)\cap C=(B\cap C)\setminus(A\cap C)$ with $A\cap C\subseteq B\cap C$; and $(\bigcup A_n)\cap C=\bigcup(A_n\cap C)$, an increasing union. So
-$\mathcal D_1=\mathcal D$. Now let $\mathcal D_2=\{A\in\mathcal D:A\cap B\in\mathcal D\text{ for all }B\in\mathcal D\}$. Since $\mathcal D_1=\mathcal D$, $\mathcal D_2$ contains $\mathcal C$, and it is a
-$\lambda$-system by the same three computations. So $\mathcal D_2=\mathcal D$, which says that $\mathcal D$ is a $\pi$-system.
-\end{proof}
-
-\begin{theorem}[uniqueness of measures]\label{thm:uniqueness}
-Let $\mu$, $\nu$ be measures on $\sigma(\mathcal C)$, where $\mathcal C$ is a $\pi$-system, that agree on $\mathcal C$. Suppose that $E=\bigcup_nE_n$ for an
-increasing sequence $E_n\in\mathcal C$ with $\mu(E_n)<\infty$. Then $\mu=\nu$. In particular, two probabilities that agree on $\mathcal C$ agree
-on $\sigma(\mathcal C)$, if $E\in\mathcal C$.
-\end{theorem}
-\begin{proof}
-Fix $n$. The family $\mathcal L_n$ of sets $A\in\sigma(\mathcal C)$ with $\mu(A\cap E_n)=\nu(A\cap E_n)$ is a $\lambda$-system: it contains $E$; for $A\subseteq B$ in $\mathcal L_n$,
-$\mu((B\setminus A)\cap E_n)=\mu(B\cap E_n)-\mu(A\cap E_n)$, a difference of finite numbers, and the same for $\nu$; and increasing unions pass
-to the limit by continuity. It contains $\mathcal C$, since $C\cap E_n\in\mathcal C$. By Dynkin, $\mathcal L_n=\sigma(\mathcal C)$. Let $n\to\infty$: by continuity,
-$\mu(A)=\lim\mu(A\cap E_n)=\lim\nu(A\cap E_n)=\nu(A)$.
-\end{proof}
-
-Note that the half-lines $]-\infty,t]$ form a $\pi$-system, as do the boxes $\prod_i\,]-\infty,t_i]$. Here are the facts that
-this volume admits.
-
-\begin{reminder}[Admitted (proved in Volume~7)]
-\begin{enumerate}[label=(A\arabic*)]
-\item \emph{Existence.} There is a measure $\lambda_d$ on $\mathcal B(\R^d)$, \emph{Lebesgue measure}, giving each box $\prod_i\,]a_i,b_i]$ its volume $\prod_i(b_i-a_i)$;
-we write $\lambda=\lambda_1$. For probabilities $\mu_1,\mu_2,\ldots$ on $\mathcal B(\R)$ there is a probability space carrying independent
-random variables $X_1,X_2,\ldots$ (Section~\ref{sec:independence}) with laws $\mu_1,\mu_2,\ldots$.
-\item \emph{Tonelli and Fubini.} For $\sigma$-finite measures $\mu$ on $(E,\mathcal E)$ and $\nu$ on $(F,\mathcal F)$ there is a measure $\mu\otimes\nu$ on the
-$\sigma$-algebra generated by the sets $A\times B$, with $(\mu\otimes\nu)(A\times B)=\mu(A)\nu(B)$, and $\lambda_2=\lambda\otimes\lambda$ on $\mathcal B(\R^2)$. If
-$h\ge0$ is measurable on $E\times F$, then $x\mapsto\int h(x,y)\dd\nu(y)$ is measurable and
+For a worked example, choose $U$ uniformly from $[0,1]$, and set $Y=\sqrt U$. For $0\le y\le1$, the inequalities $Y\le y$ and $U\le y^2$ are equivalent, so
 \[
-\begin{aligned}\int h\dd(\mu\otimes\nu)&=\int\Bigl(\int h\dd\nu\Bigr)\dd\mu\eqbr=\int\Bigl(\int h\dd\mu\Bigr)\dd\nu,\end{aligned}
+ F_Y(y)=P(Y\le y)=y^2.
 \]
-where the inner integrals are in $y$ and in $x$ respectively.
-The same holds for $h$ integrable with respect to $\mu\otimes\nu$ (Fubini).
-\end{enumerate}
-\end{reminder}
-
-The integrals in (A2) are defined in Section~\ref{sec:integral}. By Theorem~\ref{thm:uniqueness}, $\lambda_d$ is unique (the boxes $\prod]-n,n]$
-exhaust $\R^d$), and so is the law of the sequence in (A1) on the events that involve finitely many terms.
-
-\section{Random variables and their laws}
-
-\begin{definition}
-A map $f:(E,\mathcal E)\to(F,\mathcal F)$ is \emph{measurable} if $f^{-1}(B)\in\mathcal E$ for every $B\in\mathcal F$. A \emph{random variable} is a measurable map
-$X:(\Omega,\mathcal F)\to(\R,\mathcal B(\R))$ (or $\R^d$). Its \emph{law} is the probability $\mu_X(B)=P(X\in B)$ on $\mathcal B(\R)$, and its
-\emph{distribution function} is $F_X(t)=P(X\le t)$.
-\end{definition}
-
-\begin{proposition}\label{prop:measurable}
-\begin{enumerate}[label=(\alph*)]
-\item If $\mathcal F=\sigma(\mathcal C)$, then $f$ is measurable as soon as $f^{-1}(C)\in\mathcal E$ for all $C\in\mathcal C$. So $X:\Omega\to\R$ is a random variable iff
-$\{X\le t\}$ is an event for every $t$, and $X=(X_1,\dots,X_d)$ is a random vector iff each $X_i$ is a random variable.
-\item Continuous maps $\R^d\to\R^k$ are measurable (``Borel''). Hence sums, products and continuous functions of random
-variables are random variables.
-\item If $X_1,X_2,\ldots$ are random variables, so are $\sup_nX_n$, $\inf_nX_n$, $\limsup_nX_n$ and $\liminf_nX_n$ (where finite), and the set
-where $(X_n)$ converges is an event.
-\item The law of $X$ is determined by $F_X$, which is non-decreasing, right-continuous, with limits $0$ at $-\infty$ and $1$ at $+\infty$.
-\end{enumerate}
-\end{proposition}
-\begin{proof}
-(a) The sets $B\subseteq F$ with $f^{-1}(B)\in\mathcal E$ form a $\sigma$-algebra, since preimages commute with complements and countable
-unions; it contains $\mathcal C$, hence $\sigma(\mathcal C)$. For a vector, $\{X\in\prod_i]-\infty,t_i]\}=\bigcap_i\{X_i\le t_i\}$.
-(b) The preimage of an open set by a continuous map is open, so by (a) it suffices that the open sets generate
-$\mathcal B(\R^k)$: they belong to it, and each generating box $\prod_i\,]-\infty,t_i]$ is the complement of an open set. If $X$ and $Y$ are random variables, $(X,Y)$ is a random
-vector by (a), and $X+Y$, $XY$ are continuous functions of it; a composition of measurable maps is measurable.
-(c) $\{\sup_nX_n\le t\}=\bigcap_n\{X_n\le t\}$, and $\inf_nX_n=-\sup_n(-X_n)$; then $\limsup_n X_n=\inf_n\sup_{k\ge n}X_k$. The set of convergence is
-$\{\limsup X_n=\liminf X_n\}$, where both are finite.
-(d) The half-lines form a $\pi$-system generating $\mathcal B(\R)$, and $]-\infty,n]$ increases to $\R$, so Theorem~\ref{thm:uniqueness} applies to two
-laws with the same distribution function. Monotonicity is clear; right-continuity and the limits follow from continuity of $P$ along
-$]-\infty,t+\frac1n]\downarrow\,]-\infty,t]$, $]-\infty,-n]\downarrow\varnothing$ and $]-\infty,n]\uparrow\R$.
-\end{proof}
-
-A random variable of Chapter~2 is one of these: if $X$ takes countably many values, $\{X\le t\}$ is a countable union of the
-events $\{X=x\}$, $x\le t$.
-
-\section{The integral}\label{sec:integral}
-
-Fix a measure space $(E,\mathcal E,\mu)$; the case to keep in mind is a probability space, where the integral will be the
-expectation. Functions take values in $[0,+\infty]$ or in $\R$, and are measurable.
-
-\paragraph{Simple functions.} A \emph{simple} function is $s=\sum_{i=1}^ma_i\mathbf 1_{A_i}$ with $a_i\ge0$ and $A_i\in\mathcal E$. Its integral is
-$\int s\dd\mu=\sum_ia_i\mu(A_i)$ (with $0\cdot\infty=0$). This does not depend on the way $s$ is written: the sets $A_i$ cut $E$ into at
-most $2^m$ disjoint \emph{atoms} $C_j$ (intersections of $A_i$ or $A_i^c$ for each $i$), each contained in or disjoint from each $A_i$, and
-by additivity
+For an interval $0\le a<b\le1$, the probability is $b^2-a^2=\int_a^b 2y\,\dd y$. Thus $Y$ has density $f_Y(y)=2y$ on $(0,1)$ and zero outside. It rises above $1$ for $y>\frac12$, and this is perfectly legitimate. In Figure~\ref{fig:densityarea}, the shaded probability between $\frac14$ and $\frac34$ is
 \[
-\begin{aligned}\sum_ia_i\mu(A_i)&=\sum_ia_i\sum_{j:\,C_j\subseteq A_i}\mu(C_j)\eqbr=\sum_j\Bigl(\sum_{i:\,C_j\subseteq A_i}a_i\Bigr)\mu(C_j)\eqbr=\sum_js(C_j)\,\mu(C_j),\end{aligned}
+ P\bigl(\tfrac14<Y\le\tfrac34\bigr)
+ =\int_{1/4}^{3/4}2y\,\dd y
+ =\frac9{16}-\frac1{16}=\frac12.
 \]
-where $s(C_j)$ is the constant value of $s$ on $C_j$; the right-hand side only depends on $s$ (merge the atoms on which $s$ takes the
-same value). Writing two simple functions over common atoms shows that $\int(as+bt)=a\int s+b\int t$ for $a,b\ge0$, and that
-$s\le t$ implies $\int s\le\int t$.
-
-\begin{definition}
-For measurable $f:E\to[0,+\infty]$, $\displaystyle\int f\dd\mu=\sup\Bigl\{\int s\dd\mu:s\text{ simple},\ 0\le s\le f\Bigr\}\in[0,+\infty]$.
-\end{definition}
-
-For simple $f$ this agrees with the previous definition, by monotonicity, and $0\le f\le g$ implies $\int f\le\int g$.
-
-\begin{theorem}[monotone convergence]\label{thm:mct}
-If $0\le f_1\le f_2\le\cdots$ are measurable and $f_n\to f$ pointwise, then $\int f_n\dd\mu\to\int f\dd\mu$.
-\end{theorem}
-\begin{proof}
-The sequence $\int f_n$ is non-decreasing and bounded by $\int f$, so its limit $\ell$ satisfies $\ell\le\int f$. Conversely, let
-$s=\sum_ia_i\mathbf 1_{B_i}\le f$ be simple, written over disjoint $B_i$, and $0<c<1$. The sets $A_n=\{f_n\ge cs\}$ are measurable and increase
-to $E$: if $s(x)=0$ then $x\in A_1$, and otherwise $f_n(x)\to f(x)\ge s(x)>cs(x)$. Then $f_n\ge cs\mathbf 1_{A_n}$, so
-\[
-\begin{aligned}\int f_n\dd\mu&\ge c\sum_ia_i\mu(B_i\cap A_n)\eqbr\xrightarrow[n\to\infty]{}c\sum_ia_i\mu(B_i)=c\int s\dd\mu\end{aligned}
-\]
-by continuity of $\mu$ along $B_i\cap A_n\uparrow B_i$. So $\ell\ge c\int s$ for all $c<1$ and all such $s$: $\ell\ge\int f$.
-\end{proof}
-
-Every measurable $f\ge0$ is the increasing limit of the simple functions
-\[
-\varphi_n(f)=\min\Bigl(n,\;2^{-n}\lfloor2^nf\rfloor\Bigr),
-\]
-which take finitely many values on measurable sets ($\varphi_n(f)$ increases with $n$ because $2^{-n}\lfloor2^nx\rfloor\le2^{-n-1}\lfloor2^{n+1}x\rfloor$). With
-monotone convergence this transfers the properties of simple functions to all non-negative ones.
 
 \begin{figure}[ht]
 \centering
-\fig{ch05-simple}
-\caption{The simple functions $\varphi_1(f)$ (coral) and $\varphi_3(f)$ (charcoal) below a function $f$ (black). Lebesgue cuts the \emph{values} into
-slices of height $2^{-n}$, where Riemann cuts the \emph{axis} into intervals; the sets where $f$ lies in a slice may be complicated, but
-they only need to have a measure.}
-\label{fig:simple}
+\fig{ch05-densityarea}
+\caption{For $Y=\sqrt U$, with $U$ uniform on $[0,1]$, the density is $2y$. Probability is \emph{area}: the shaded interval $(1/4,3/4]$ has probability exactly $1/2$, although a single point has probability zero and the density reaches the value $2$.}
+\label{fig:densityarea}
 \end{figure}
 
-\begin{corollary}\label{cor:linearity}
-For measurable $f,g,f_n\ge0$ and $a,b\ge0$: $\int(af+bg)=a\int f+b\int g$, and $\int\sum_nf_n=\sum_n\int f_n$.
-\end{corollary}
-\begin{proof}
-$a\varphi_n(f)+b\varphi_n(g)$ is simple and increases to $af+bg$; apply monotone convergence to both sides of the identity for simple
-functions. For the series, apply this to the partial sums, which increase to $\sum_nf_n$, and use monotone convergence again.
-\end{proof}
-
-\begin{theorem}[Fatou's lemma]\label{thm:fatou}
-For measurable $f_n\ge0$, $\displaystyle\int\liminf_nf_n\dd\mu\le\liminf_n\int f_n\dd\mu$.
-\end{theorem}
-\begin{proof}
-$g_n=\inf_{k\ge n}f_k$ increases to $\liminf f_n$, and $g_n\le f_k$ for $k\ge n$, so $\int g_n\le\inf_{k\ge n}\int f_k$. Let $n\to\infty$ and apply monotone
-convergence on the left.
-\end{proof}
-
-\begin{definition}
-A measurable $f:E\to\R$ is \emph{integrable} if $\int|f|\dd\mu<\infty$; then $\int f\dd\mu=\int f^+\dd\mu-\int f^-\dd\mu$, where $f^+=\max(f,0)$ and
-$f^-=\max(-f,0)$. On a probability space, $\mathbb E[X]=\int X\dd P$.
-\end{definition}
-
-The integral is linear and monotone on integrable functions, and $|\int f|\le\int|f|$. For linearity, if $h=f+g$ then
-$h^+-h^-=f^+-f^-+g^+-g^-$, so $h^++f^-+g^-=h^-+f^++g^+$; integrate both sides with Corollary~\ref{cor:linearity} and rearrange the finite
-numbers. Multiplication by a constant is direct, and $\int f\le\int g$ for $f\le g$ follows from $\int(g-f)\ge0$.
-
-\begin{theorem}[dominated convergence]\label{thm:dct}
-Let $f_n\to f$ pointwise, with $|f_n|\le g$ for all $n$ and $g$ integrable. Then $f$ is integrable and $\int f_n\dd\mu\to\int f\dd\mu$; in fact
-$\int|f_n-f|\dd\mu\to0$.
-\end{theorem}
-\begin{proof}
-$|f|\le g$, so $f$ is integrable. The functions $2g-|f_n-f|$ are non-negative and tend to $2g$. By Fatou,
-$\int2g\le\liminf_n\int(2g-|f_n-f|)=\int2g-\limsup_n\int|f_n-f|$. Since $\int2g<\infty$, $\limsup\int|f_n-f|\le0$. Finally
-$|\int f_n-\int f|\le\int|f_n-f|$.
-\end{proof}
-
-\begin{think}
-Let $f_n=n\,\mathbf 1_{]0,1/n[}$ on $\R$ with Lebesgue measure. Where do the functions converge, and what are their integrals? Which
-hypothesis of each of the three theorems fails?
-\end{think}
-
-A property holds \emph{almost everywhere} (a.e.) if it fails only on a set of measure $0$. Changing $f$ on a null set does
-not change its integral (a non-negative function that vanishes a.e.\ has integral $0$, since every simple function
-below it does; apply this to $f-\min(f,g)$ and $g-\min(f,g)$ when $f=g$ a.e.), so the convergence theorems
-hold with ``a.e.'' hypotheses. Markov's inequality, $\mu(f\ge a)\le\frac1a\int f$, holds with the proof of Chapter~4; in particular
-$\int f=0$ for $f\ge0$ implies $\mu(f\ge\frac1k)=0$ for all $k$, so $f=0$ a.e.
-
-\begin{proposition}\label{prop:consistency}
-\begin{enumerate}[label=(\alph*)]
-\item If $X\ge0$ takes countably many values, $\mathbb E[X]=\sum_xx\,P(X=x)$, as in Chapter~2.
-\item \emph{Transfer}: for a random variable $X$ and a Borel $g\ge0$, $\mathbb E[g(X)]=\int g\dd\mu_X$; the same holds for $g(X)$ integrable.
-\end{enumerate}
-\end{proposition}
-\begin{proof}
-(a) $X=\sum_xx\mathbf 1_{\{X=x\}}$, a countable sum of non-negative functions; apply Corollary~\ref{cor:linearity}. (b) For $g=\mathbf 1_B$, both sides are
-$P(X\in B)$, by the definition of the law. By linearity it holds for simple $g$, by monotone convergence with $\varphi_n(g)$ for
-$g\ge0$, and by splitting $g=g^+-g^-$ in the integrable case.
-\end{proof}
-
-All the results of Chapters~2 and~4 that only used linearity and positivity, such as Cauchy--Schwarz, the
-variance of a sum, Markov, Chebyshev, Jensen and Hoeffding's lemma, now hold for all random variables, with the same
-proofs. The product formula $\mathbb E[XY]=\mathbb E[X]\mathbb E[Y]$ for independent variables needs a new proof, given in
-Section~\ref{sec:independence}; with it, the weak law, Chernoff and Hoeffding hold in general too.
-
-\section{Lebesgue measure and densities}
-
-We write $\int_Bf(x)\dd x$ for $\int f\mathbf 1_B\dd\lambda$. The first task is to check that this is the integral of Volume~1 when both make sense.
-
-\begin{proposition}\label{prop:riemann}
-\begin{enumerate}[label=(\alph*)]
-\item If $f\ge0$ is continuous on $[a,b]$, then $\int_{[a,b]}f\dd\lambda=\int_a^bf$, the integral of Volume~1.
-\item If $f\ge0$ is continuous on an open interval $]a,b[$ ($-\infty\le a<b\le+\infty$), then $\int_{]a,b[}f\dd\lambda=\lim\int_{a_n}^{b_n}f$ for any $a_n\downarrow a$,
-$b_n\uparrow b$; in particular the improper integral of Volume~1 is a Lebesgue integral.
-\end{enumerate}
-\end{proposition}
-\begin{proof}
-(a) Cut $[a,b]$ into $2^n$ intervals $I_{n,k}$ of length $\frac{b-a}{2^n}$, half-open except the last, and let $m_{n,k}=\min_{I_{n,k}}f$ (minimum over the
-closed interval). The step function $s_n=\sum_km_{n,k}\mathbf 1_{I_{n,k}}$ is simple, with $\int s_n\dd\lambda=\sum_km_{n,k}\frac{b-a}{2^n}=:L_n$, and $s_n$ increases with $n$
-(the minimum over a sub-interval is at least the minimum over the interval). Given $\varepsilon>0$, Heine's Lemma~\ref{lem:heine} (after
-the affine change $[0,1]\to[a,b]$) gives $\delta$ with $|f(x)-f(y)|<\varepsilon$ for $|x-y|<\delta$, so $0\le f-s_n\le\varepsilon$ on $[a,b]$ as soon as
-$\frac{b-a}{2^n}<\delta$: $s_n\to f$. By monotone convergence, $\int_{[a,b]}f\dd\lambda=\lim L_n$. On the other side, the monotonicity and additivity of the
-integral of Volume~1 give $L_n\le\int_a^bf\le L_n+\varepsilon(b-a)$ for such $n$. So both are equal to $\lim L_n$.
-
-(b) $f\mathbf 1_{[a_n,b_n]}$ increases to $f\mathbf 1_{]a,b[}$; apply (a) and monotone convergence.
-\end{proof}
-
-With Volume~1, Exercise~8.7 and the change $x=\frac u{\sqrt2}$,
+The uniform law on $[0,1]$ has density $1$ on that interval and $0$ outside. An exponential random variable of rate $\lambda>0$ has density $\lambda e^{-\lambda x}$ for $x>0$, and that function integrates to $1$. The mean is computed after the expectation has been defined. The \emph{standard normal} density is
 \[
-\int_\R e^{-u^2/2}\dd u=2\sqrt2\int_0^\infty e^{-x^2}\dd x=\sqrt{2\pi}.
+ \phi(x)=\frac{1}{\sqrt{2\pi}}e^{-x^2/2}.
 \]
+Volume~1, Chapter~8, gives $\int_0^{\infty}e^{-u^2}\,\dd u=\sqrt{\pi}/2$. The integrand is even, so the integral over the whole line is $\sqrt{\pi}$. The substitution $u=x/\sqrt{2}$ turns that into $\int_{-\infty}^{\infty}e^{-x^2/2}\,\dd x=\sqrt{2\pi}$, so $\phi$ integrates to $1$.
 
-\begin{think}
-A dart lands uniformly at random in $[0,1]$. What is the probability that it hits a rational number? That the decimal
-expansion of the point contains no digit $7$? Both sets are infinite, and the second is uncountable.
-\end{think}
-
-\begin{definition}
-A Borel function $f\ge0$ on $\R$ with $\int_\R f\dd\lambda=1$ is a \emph{probability density}. A random variable $X$ \emph{has density} $f$ if
-$P(X\in B)=\int_Bf(x)\dd x$ for every Borel set $B$.
-\end{definition}
-
-By the uniqueness theorem it is enough that $P(X\le t)=\int_{-\infty}^tf(x)\dd x$ for all $t$. So if $F_X$ is continuous, and of class $C^1$ outside
-finitely many points, then $F_X'$ (defined anywhere at those points) is a density of $X$, by the fundamental theorem of
-calculus on each interval between the exceptional points. A density is unique up to a null set (Exercise~\ref{ex:densityunique}),
-and by transfer (Proposition~\ref{prop:consistency}(b), then simple functions and monotone convergence),
-\[
-\mathbb E[g(X)]=\int_\R g(x)f(x)\dd x
-\]
-for Borel $g\ge0$, and for Borel $g$ with $g(X)$ integrable.
-
-Back to the dart: a single point has $\lambda$-measure $0$, since it lies in intervals of arbitrarily small length, so by countable
-additivity every countable set, such as $\Q\cap[0,1]$, has measure $0$, and the dart never hits a rational. The points of $[0,1[$
-with no $7$ among their first $n$ decimals form $9^n$ intervals of length $10^{-n}$, so the probability of never seeing a $7$ is at most
-$0.9^n$ for every $n$: it is $0$, although the set is uncountable.
-
-\begin{example}\label{ex:laws}
-\begin{itemize}
-\item \emph{Uniform} on $[a,b]$: density $\frac1{b-a}\mathbf 1_{[a,b]}$. Mean $\frac{a+b}2$.
-\item \emph{Exponential}$(\theta)$, $\theta>0$: density $\theta e^{-\theta x}$ on $]0,\infty[$, $P(X>t)=e^{-\theta t}$, mean $\frac1\theta$, variance $\frac1{\theta^2}$.
-\item \emph{Normal} $N(m,\sigma^2)$, with $\sigma>0$: the density is $\frac1{\sigma\sqrt{2\pi}}e^{-(x-m)^2/(2\sigma^2)}$, the mean $m$, the variance $\sigma^2$. For $N(0,1)$, integrating $x\cdot xe^{-x^2/2}$ by parts
-gives $\mathbb E[X^2]=1$.
-\item \emph{Gamma}$(a)$, $a>0$: density $\frac1{\Gamma(a)}x^{a-1}e^{-x}$ on $]0,\infty[$, where $\Gamma(a)=\int_0^\infty x^{a-1}e^{-x}\dd x$ (finite: compare with
-$x^{a-1}$ near $0$ and with $e^{-x/2}$ near $\infty$). Exponential$(1)$ is Gamma$(1)$.
-\item \emph{Cauchy}: density $\frac1{\pi(1+x^2)}$, which integrates to $\frac1\pi[\arctan x]_{-\infty}^{+\infty}=1$.
-\end{itemize}
-\end{example}
-
-\begin{proposition}[inverse transform]\label{prop:inverse}
-Let $F$ be non-decreasing and right-continuous, with limits $0$ and $1$ at $\mp\infty$, and $G(u)=\inf\{x:F(x)\ge u\}$ for $u\in\,]0,1[$. If $U$ is
-uniform on $]0,1[$, then $G(U)$ has distribution function $F$. So every such $F$ is a distribution function.
+\begin{proposition}[expectation from a density]\label{prop:densitymean}
+Expectation has so far been a finite or countable sum. If $X$ has density $f$ and $\int |x|f(x)\,\dd x<\infty$, define $\mathbb E[X]=\int_{-\infty}^{\infty} x f(x)\,\dd x$. If $g$ is continuous and $\int |g|f<\infty$, define $\mathbb E[g(X)]=\int g(x)f(x)\,\dd x$. When $g$ is a step function, this integral equals the finite sum of value times probability.
 \end{proposition}
 \begin{proof}
-For $u\in\,]0,1[$ the set $\{x:F(x)\ge u\}$ is non-empty (limit $1$), bounded below (limit $0$), and closed on the left by right-continuity:
-it is $[G(u),+\infty[$. So $G(u)\le x$ iff $F(x)\ge u$. Then $G$ is non-decreasing, hence Borel ($\{G\le x\}$ is an interval), and
-$P(G(U)\le x)=P(U\le F(x))=F(x)$.
+For discrete random variables we learned to compute $\mathbb E[g(X)]$ by multiplying each value $g(x)$ by the probability of that value, then adding. For a density, we divide the line into many short intervals. On an interval of width $\Delta x$, its probability is approximately $f(x)\Delta x$. The corresponding contribution to the average is approximately $g(x)f(x)\Delta x$. As the intervals become short, the Riemann sum approaches $\int g(x)f(x)\,\dd x$.
+
+Here that integral is the \emph{definition} when $g$ is continuous and the absolute integral is finite. What we need to check is that it agrees with the finite sum when $g$ is a step function, and that ordinary continuous $g$ can be approximated by such steps.
+
+Let $g$ be constant on finitely many intervals and zero outside them, and put every discontinuity of $f$ among the partition points. On each piece the probability is the integral of $f$, so the sum of value times probability equals $\int g f$.
+
+Now let $g$ be continuous on a compact interval $[A,B]$, zero outside, and let $f$ be bounded there. Uniform continuity gives a step function $s$, constant between the jumps of $f$, with $|g-s|<\varepsilon$ on $[A,B]$. Then
+\[
+ \Bigl|\int g f-\int s f\Bigr|\le\varepsilon\int_A^B f\le\varepsilon,
+\]
+and the step integral is a finite sum of values times probabilities. So the integral of $g f$ is a limit of expectations of explicit finite experiments.
+
+For a general continuous $g$ with $\int|g|f<\infty$, choose $A$ so that $\int_{|x|>A}|g|f<\varepsilon$. On $[-A,A]$ approximate $g$ by a step function $s$ that is zero outside $[-A,A]$, with the finitely many jumps of $f$ used as partition points. Then $\int s f$ is a finite sum of values times probabilities, and it lies within $\varepsilon$ of the integral of $g f$ over $[-A,A]$. The integral of $|g|f$ over the two tails is less than $\varepsilon$. The integral over the line is therefore within $2\varepsilon$ of that finite sum. There is no earlier sum that defines $\mathbb E[g(X)]$ for a continuous $g$. The integral is the definition, and the step comparison is the check that it extends the finite sum. If $f$ is unbounded at a finite point, the same comparison is applied on the intervals where $f$ is bounded, and the improper integral is the limit.
 \end{proof}
 
-For instance $-\frac1\theta\ln U$ is exponential$(\theta)$, and $\tan(\pi(U-\frac12))$ is Cauchy. This is how computers turn uniform random numbers
-into any law whose $G$ is computable; for the Gaussian law, $G$ has no closed form and Section~\ref{sec:polar} does better.
-
-\section{Changing variables}
-
-\begin{proposition}\label{prop:cov}
-Let $I$, $J$ be open intervals and $\varphi:J\to I$ a bijection of class $C^1$ with $\varphi'\ne0$. For every Borel $h\ge0$ on $I$,
+Return to the density $f_Y(y)=2y$ of the ruler example. Its average is
 \[
-\int_Ih(x)\dd x=\int_Jh(\varphi(u))\,|\varphi'(u)|\dd u.
+ \mathbb E[Y]=\int_0^1 y(2y)\,\dd y=\frac23.
+\]
+That makes sense: values near $1$ are more likely than values near $0$. By comparison, the uniform point $U$ had mean $1/2$; the transformation $Y=\sqrt U$ pushes every value in $(0,1)$ to the right. Both results come from the same integral rule.
+
+For the exponential density, integrate by parts with $u=x$ and $\mathrm dv=\lambda e^{-\lambda x}\,\dd x$. The boundary term $[-x e^{-\lambda x}]_0^{\infty}$ vanishes: at $0$ it is $0$, and at infinity $x e^{-\lambda x}\to0$ by the same series comparison used below for the Gaussian moment. The remaining integral is $\int_0^{\infty}e^{-\lambda x}\,\dd x=1/\lambda$. Thus $\mathbb E[X]=1/\lambda$.
+
+\begin{proposition}[Gaussian tail]\label{prop:gausstail}
+For $x>0$,
+\[
+ \int_x^{\infty}e^{-t^2/2}\,\dd t\le\frac1x e^{-x^2/2}.
 \]
 \end{proposition}
 \begin{proof}
-For a Borel set $B\subseteq I$, let
-\[
-\nu(B)=\int_J\mathbf 1_B(\varphi(u))\,|\varphi'(u)|\dd u;
-\]
-the integrand is Borel, since $\varphi$ is continuous. By
-Corollary~\ref{cor:linearity}, $\nu$ is countably additive: a measure on $I$. Since $\varphi'$ is continuous and does not vanish, it has
-constant sign and $\varphi$ is strictly monotone. For $[c,d]\subseteq I$, $\varphi^{-1}([c,d])$ is a segment $[\alpha,\beta]\subseteq J$, and by
-Proposition~\ref{prop:riemann} and the fundamental theorem,
-\[
-\begin{aligned}\nu(]c,d])&=\int_\alpha^\beta|\varphi'|=|\varphi(\beta)-\varphi(\alpha)|\eqbr=d-c=\lambda(]c,d])\end{aligned}
-\]
-(single points have measure $0$ for both: $\nu(\{c\})=\int\mathbf 1_{\{\varphi^{-1}(c)\}}|\varphi'|=0$). The intervals $]c,d]$ with $[c,d]\subseteq I$, together with $\varnothing$, form a
-$\pi$-system that generates the Borel sets of $I$, and an increasing sequence of them exhausts $I$. By Theorem~\ref{thm:uniqueness},
-$\nu=\lambda$ on $I$: the formula holds for indicators. By linearity it holds for simple $h$, and by monotone convergence
-with $\varphi_n(h)$ for all $h\ge0$.
+On $[x,\infty)$ one has $1\le t/x$, so the integrand is at most $(t/x)e^{-t^2/2}$. The antiderivative of $t e^{-t^2/2}$ is $-e^{-t^2/2}$.
 \end{proof}
 
-\begin{corollary}[density of $g(X)$]\label{cor:densityg}
-Let $X$ have a density $f$ with $P(X\in I)=1$ for an open interval $I$, and let $g:I\to J$ be a bijection of class $C^1$ with $g'\ne0$
-onto an open interval $J$. Then $Y=g(X)$ has the density
+The same integration gives the mean and the variance. Let $Z$ have density $\phi$. The integrand $x\phi(x)$ is odd. It is absolutely integrable, because
 \[
-f_Y(y)=f\bigl(g^{-1}(y)\bigr)\,\bigl|(g^{-1})'(y)\bigr|
+ \int_0^{\infty} x e^{-x^2/2}\,\dd x=\bigl[-e^{-x^2/2}\bigr]_0^{\infty}=1,
 \]
-for $y\in J$, and $f_Y=0$ outside $J$.
-\end{corollary}
-\begin{proof}
-$g^{-1}:J\to I$ is $C^1$ with non-zero derivative $\frac1{g'\circ g^{-1}}$. For Borel $B$, by transfer and the proposition with $\varphi=g^{-1}$,
+so $\mathbb E|Z|=2/\sqrt{2\pi}=\sqrt{2/\pi}$ and the signed integral is $0$. Thus $\mathbb E[Z]=0$. For the second moment integrate by parts on $[0,A]$, with $u=x$ and $\mathrm dv=x e^{-x^2/2}\,\dd x$:
 \[
-\begin{aligned}P(Y\in B)&=\int_I\mathbf 1_B(g(x))f(x)\dd x\eqbr=\int_J\mathbf 1_B(y)\,f(g^{-1}(y))\,|(g^{-1})'(y)|\dd y.\end{aligned}
+ \int_0^A x^2 e^{-x^2/2}\,\dd x=\bigl[-x e^{-x^2/2}\bigr]_0^A+\int_0^A e^{-x^2/2}\,\dd x.
 \]
-\end{proof}
+The boundary term is $A e^{-A^2/2}$. It tends to $0$: the series for $e^y$ gives $e^{A^2/4}\ge (A^2/4)^2/2=A^4/32$ for every $A>0$, so $A e^{-A^2/2}=A e^{-A^2/4}/e^{A^2/4}\le 32/A^3$. The remaining integral tends to $\sqrt{2\pi}/2$. Doubling and dividing by $\sqrt{2\pi}$ leaves
+\[
+ \mathbb E[Z^2]=\frac{2}{\sqrt{2\pi}}\cdot\frac{\sqrt{2\pi}}{2}=1.
+\]
+Since the mean is $0$, the variance is $1$. The shape also tells us how to read this distribution: the height $\phi(0)=1/\sqrt{2\pi}\approx0.399$ is \emph{not} a probability. To find the chance of a standard normal number falling between $-1$ and $1$, we calculate an area:
+\[
+ P(-1<Z\le1)=\frac1{\sqrt{2\pi}}\int_{-1}^{1}e^{-x^2/2}\,\dd x
+ \approx0.682689.
+\]
+The exact answer is the displayed integral; the decimal is a numerical approximation. Chapter~6 uses the mean and variance when it scales sums toward this bell-shaped density.
 
-For example, if $X$ is $N(0,1)$ then $m+\sigma X$ is $N(m,\sigma^2)$ for $\sigma>0$. And $|X|$ has density $2\varphi$ on $]0,\infty[$, where
-$\varphi(x)=\frac1{\sqrt{2\pi}}e^{-x^2/2}$, so $X^2=g(|X|)$ with $g(x)=x^2$ has density $2\varphi(\sqrt y)\frac1{2\sqrt y}=\frac1{\sqrt{2\pi y}}e^{-y/2}$ on $]0,\infty[$. Comparing
-with the Gamma density after the change $y=2z$ gives, as a bonus, $\Gamma(\frac12)=\sqrt\pi$ (Exercise~\ref{ex:gamma}).
+\section{Changing the variable}
 
-\section{Independence}\label{sec:independence}
+A density is a recipe for interval probabilities. A smooth function of the variable pushes those intervals forward, and the fundamental theorem brings the density back.
 
-\begin{definition}
-Random variables (or vectors) $X_1,\dots,X_n$ are \emph{independent} if $P(X_1\in B_1,\dots,X_n\in B_n)=\prod_iP(X_i\in B_i)$ for all Borel sets
-$B_i$; an infinite family is independent if every finite subfamily is.
-\end{definition}
+\begin{examplex}[an exponential from one uniform]
+Let $U$ be uniform on $(0,1)$ and set $X=-\ln U$. For $x>0$,
+\[
+ P(X>x)=P(U<e^{-x})=e^{-x},
+\]
+because $U$ has no atom at the endpoint. The distribution function on $(0,\infty)$ is $F(x)=1-e^{-x}$. Differentiating by the fundamental theorem gives the density $e^{-x}$. Integration by parts, Volume~1, Chapter~8, gives the mean:
+\[
+ \mathbb E[X]=\int_0^{\infty} x e^{-x}\,\dd x=\bigl[-xe^{-x}\bigr]_0^{\infty}+\int_0^{\infty}e^{-x}\,\dd x=1.
+\]
+The boundary term at infinity vanishes because $x e^{-x}\to0$, which is the standard limit from Volume~1. Scaling gives the rate. If $Y=X/\lambda$ for $\lambda>0$, then $P(Y>y)=e^{-\lambda y}$ and the density is $\lambda e^{-\lambda y}$, with mean $1/\lambda$. Chapter~10 starts from this tail.
+\end{examplex}
 
-\begin{proposition}\label{prop:indepcdf}
-\begin{enumerate}[label=(\alph*)]
-\item Real random variables $X_1,\dots,X_n$ are independent as soon as $P(X_1\le t_1,\dots,X_n\le t_n)=\prod_iP(X_i\le t_i)$ for all $t_i\in\R$.
-\item If $X_1,\dots,X_n$ are independent, so are $g_1(X_1),\dots,g_n(X_n)$ for Borel $g_i$; and so are functions of disjoint groups.
-\item If $X$, $Y$ are independent and integrable, then $XY$ is integrable and $\mathbb E[XY]=\mathbb E[X]\,\mathbb E[Y]$.
-\end{enumerate}
+\begin{examplex}[the mean as an integral of the tail]
+Suppose $X\ge0$ has a density $f$ and $\int_0^{\infty} x f(x)\,\dd x<\infty$. Then
+\[
+ \mathbb E[X]=\int_0^{\infty} P(X>t)\,\dd t.
+\]
+Let $F(t)=\int_0^t f$. For $0\le t\le A$,
+\[
+ P(X>t)=\int_t^A f+\int_A^{\infty} f=F(A)-F(t)+P(X>A).
+\]
+Integrate in $t$ from $0$ to $A$. The constant terms contribute $A P(X>A)$. Integration by parts gives
+\[
+ \int_0^A\bigl(F(A)-F(t)\bigr)\,\dd t=A F(A)-\Bigl[t F(t)\Bigr]_0^A+\int_0^A t f(t)\,\dd t=\int_0^A t f(t)\,\dd t.
+\]
+The remainder $A P(X>A)$ is at most $\int_A^{\infty} x f(x)\,\dd x$, which tends to $0$ as $A\to\infty$ because the mean integral converges. Therefore the tail integral equals the mean.
+
+Check it on the exponential of rate $1$: $\int_0^{\infty} e^{-t}\,\dd t=1$, which is the mean just computed.
+\end{examplex}
+
+\section{Repeated integrals}
+
+Volume~1 integrates functions of one real variable. But consider throwing two independent darts at a square. Each point has two coordinates. If we want the probability of a rectangle, we first average in one coordinate and then in the other. Is the result the same if we reverse the order?
+
+For continuous functions on a \emph{bounded rectangle}, we can prove this directly with Riemann sums. It is a special case of what is often called Fubini's theorem. We do not need the more general measure-theoretic theorem for arbitrary sets or functions.
+
+\begin{proposition}[continuous Fubini on a rectangle]\label{prop:fubini}
+Let $f$ be continuous on the rectangle $[a,b]\times[c,d]$. Then
+\[
+ \int_a^b\Bigl(\int_c^d f(x,y)\,\dd y\Bigr)\dd x
+ =\int_c^d\Bigl(\int_a^b f(x,y)\,\dd x\Bigr)\dd y.
+\]
+Both inner integrals are continuous in the outer variable.
 \end{proposition}
 \begin{proof}
-(a) Letting some $t_i\to+\infty$ (continuity), the product formula also holds when some of the half-lines are replaced by $\R$.
-Fix half-lines $B_2,\dots,B_n$ (or $\R$). Both sides of the product formula, as functions of $B_1$, are finite measures that agree on
-the $\pi$-system of half-lines and on $\R$; by Theorem~\ref{thm:uniqueness} they agree for every Borel $B_1$. Now fix a Borel $B_1$ and
-half-lines $B_3,\dots,B_n$, and repeat with $B_2$; after $n$ steps all the $B_i$ are arbitrary Borel sets.
-(b) $\{g_i(X_i)\in B_i\}=\{X_i\in g_i^{-1}(B_i)\}$. For two groups, let $V=(X_1,\dots,X_k)$ and $W=(X_{k+1},\dots,X_n)$. If $A$ and $B$ are
-products of Borel sets, $P(V\in A,W\in B)=P(V\in A)P(W\in B)$ is the definition of independence. Fix such a $B$: both sides are
-finite measures in $A$ that agree on the boxes $\prod_i\,]-\infty,t_i]$, a $\pi$-system generating $\mathcal B(\R^k)$ and exhausting $\R^k$, so they agree
-for all Borel $A$. Then fix a Borel $A$ and do the same in $B$. So $V$ and $W$ are independent, and so are functions of them;
-more groups are handled in the same way.
-(c) For simple $X=\sum a_i\mathbf 1_{\{X=a_i\}}$ and $Y=\sum b_j\mathbf 1_{\{Y=b_j\}}$ (with $a_i,b_j\ge0$),
-$\mathbb E[XY]=\sum_{i,j}a_ib_jP(X=a_i,Y=b_j)=\mathbb E[X]\,\mathbb E[Y]$. For $X,Y\ge0$, $\varphi_n(X)$ and $\varphi_n(Y)$ are independent by (b), simple, and their
-product increases to $XY$; monotone convergence gives the formula in $[0,\infty]$. Applied to $|X|,|Y|$ it gives integrability, and
-in general expand $XY=(X^+-X^-)(Y^+-Y^-)$, where $X^\pm$ and $Y^\pm$ are independent by (b).
+A continuous function on a compact rectangle is uniformly continuous. Divide $[a,b]$ and $[c,d]$ into intervals of lengths at most $\delta$. Pick one point $(x_i,y_j)$ in each small rectangle, with side lengths $\Delta x_i,\Delta y_j$. Form the finite sum
+\[
+ R_\delta=\sum_i\sum_j f(x_i,y_j)\,\Delta x_i\Delta y_j.
+\]
+If $|f(x,y)-f(x',y')|<\varepsilon$ whenever the points are within the same small rectangle, replacing any sampled value by another value in its cell changes $R_\delta$ by at most $\varepsilon(b-a)(d-c)$. Thus the sums have a common limit as the mesh tends to zero.
+
+For the integral in $y$ first, apply the one-variable Riemann-sum definition on each $y$-interval. The same uniform error estimate holds for every fixed $x_i$, so
+\[
+ \int_a^b\Bigl(\int_c^d f(x,y)\,\dd y\Bigr)\,\dd x
+ =\lim_{\delta\to0}R_\delta.
+\]
+Reversing $x$ and $y$ gives exactly the same finite sum and hence the same limit. To check continuity of the inner integral, note that
+\[
+ \left|\int_c^d f(x,y)\,\dd y-\int_c^d f(x',y)\,\dd y\right|
+ \le(d-c)\sup_{y\in[c,d]}|f(x,y)-f(x',y)|.
+\]
+The right-hand side tends to zero as $x'\to x$ by uniform continuity. The other inner integral is handled in the same way.
 \end{proof}
 
-The binary digits of a uniform number are the coins of Chapter~1, and conversely: this is the equivalence announced
-there.
+This is the rectangle version of Fubini used in this volume. It is not the theorem for arbitrary nonnegative measurable functions, which Volume~7 proves. For an improper integral we use it on compact rectangles first and pass to a limit only when the tails are controlled, for example by the explicit Gaussian decay proved above. The existence of two iterated improper integrals alone would not justify exchanging their order.
 
-\begin{proposition}\label{prop:digits}
-Let $U$ be uniform on $[0,1[$ and $D_k=\lfloor2^kU\rfloor-2\lfloor2^{k-1}U\rfloor$ its $k$-th binary digit. Then $D_1,D_2,\ldots$ are independent fair bits.
-Conversely, if $B_1,B_2,\ldots$ are independent fair bits, $\sum_kB_k2^{-k}$ is uniform on $[0,1]$.
+\begin{proposition}[polar rectangles]\label{prop:polar}
+Let $h$ be continuous and bounded on $\R^2$. For a fixed radius $a>0$,
+\[
+ \int\!\!\int_{x^2+y^2\le a^2} h(x,y)\,\dd x\,\dd y
+ =\int_0^{2\pi}\int_0^a h(r\cos\theta,r\sin\theta)\,r\,\dd r\,\dd\theta,
+\]
+The left-hand side is defined by continuous \emph{bounded cutoffs}. For $0<\eta<a$, choose a radial continuous function $\chi_\eta$ that equals $1$ when the radius is at most $a-\eta$, equals $0$ when it is at least $a+\eta$, and stays between $0$ and $1$ (linear interpolation in between is enough). Integrate $h\chi_\eta$ on the square $[-a-\eta,a+\eta]^2$, using Proposition~\ref{prop:fubini}, and let $\eta\downarrow0$. Two such cutoffs can differ only in the annulus between radii $a-\eta$ and $a+\eta$, whose area is $\pi((a+\eta)^2-(a-\eta)^2)=4\pi a\eta$. Their integrals therefore differ by at most $4\pi a\eta\|h\|_\infty$. So this defines the disk integral unambiguously. Without the requirement $0\le\chi_\eta\le1$, a cutoff could contain arbitrarily high spikes, and that conclusion would not follow. The error in replacing the disk by polar rectangles tends to zero with the mesh, as shown in the proof. The letter $a$ denotes a fixed radius, not a random variable.
 \end{proposition}
 \begin{proof}
-$D_k$ is a Borel function of $U$, with values in $\{0,1\}$. For bits $b_1,\dots,b_n$, the event $\{D_1=b_1,\dots,D_n=b_n\}$ is $\{U\in[x,x+2^{-n}[\}$
-with $x=\sum_{k\le n}b_k2^{-k}$, of probability $2^{-n}$. So the first $n$ digits have the joint law of $n$ independent fair bits, for every $n$; the
-product formula for any finite subfamily follows by summing over the digits not in the subfamily.
-
-Conversely let $V=\sum_kB_k2^{-k}$ and $t=j2^{-n}$ with $0\le j\le2^n$. If $M=\sum_{k\le n}B_k2^{n-k}$, then $M2^{-n}\le V\le M2^{-n}+2^{-n}$. So $\{M<j\}\subseteq\{V\le t\}\subseteq\{M<j\}\cup\{V=t\}$,
-and $P(V=t)\le P(M=j-1,\ B_k=1\text{ for }n<k\le m)+P(M=j,\ B_k=0\text{ for }n<k\le m)\le2\cdot2^{-(m-n)}$ for every $m>n$, so $P(V=t)=0$.
-Hence $P(V\le t)=P(M<j)=j2^{-n}=t$, since $M$ is uniform on $\{0,\dots,2^n-1\}$. A distribution function is right-continuous and the dyadic numbers
-are dense, so $P(V\le t)=t$ for all $t\in[0,1]$: $V$ has the law of $U$.
+Cut $0\le r\le a$ and $0\le\theta\le 2\pi$ into small pieces of lengths $\Delta r$ and $\Delta\theta$. The region $r_i\le r\le r_i+\Delta r$, $\theta_j\le\theta\le\theta_j+\Delta\theta$ is a polar rectangle. Its area is
+\[
+ \tfrac12\bigl((r_i+\Delta r)^2-r_i^2\bigr)\Delta\theta=(r_i\Delta r+\tfrac12(\Delta r)^2)\Delta\theta.
+\]
+Summing the second terms over a partition gives at most $\pi a\cdot\Delta r$, which tends to $0$ with the mesh. On each polar rectangle, $h$ varies by less than a prescribed $\varepsilon$ once the mesh is small, by uniform continuity on the disk. The Riemann sum with weights $r_i\Delta r\Delta\theta$ therefore differs from the Cartesian integral of $h$ by at most $\varepsilon$ times the area $\pi a^2$, plus a constant times the area of the symmetric difference, plus the $(\Delta r)^2$ contribution. All three can be made small.
 \end{proof}
 
-So (A1) for coin flips is equivalent to the existence of the uniform law on $[0,1]$. With Corollary~\ref{cor:slln}, almost every number
-in $[0,1]$ has asymptotically as many $0$s as $1$s in its binary expansion (Borel, 1909).
-
-\begin{proposition}[joint densities]\label{prop:joint}
-Let $X$, $Y$ have densities $f$, $g$. They are independent iff $(X,Y)$ has the density $f(x)g(y)$ on $\R^2$, that is,
-$P((X,Y)\in B)=\iint_Bf(x)g(y)\dd x\dd y$ for all Borel $B\subseteq\R^2$. If $(X,Y)$ has a density $h$, then $X$ has density $\int_\R h(x,y)\dd y$.
-\end{proposition}
-\begin{proof}
-If $(X,Y)$ has density $fg$, then by Tonelli $P(X\le s,Y\le t)=\int_{-\infty}^sf\int_{-\infty}^tg=P(X\le s)P(Y\le t)$, and Proposition~\ref{prop:indepcdf}(a)
-gives independence. Conversely, if they are independent, the probabilities $B\mapsto P((X,Y)\in B)$ and $B\mapsto\iint_Bfg$ agree on the
-boxes $]-\infty,s]\times]-\infty,t]$ (by the same Tonelli computation), which form a $\pi$-system generating $\mathcal B(\R^2)$; so they are equal.
-For the marginal, $P(X\le s)=\iint\mathbf 1_{x\le s}h=\int_{-\infty}^s\bigl(\int h(x,y)\dd y\bigr)\dd x$ by Tonelli.
-\end{proof}
-
-\begin{proposition}[sums of independent Gaussians]\label{prop:gausssum}
-If $X$, $Y$ are independent with densities $f$, $g$, then $X+Y$ has the density $(f*g)(z)=\int_\R f(z-y)g(y)\dd y$. If $X$ is
-$N(m,\sigma^2)$ and $Y$ is $N(m',\tau^2)$, then $X+Y$ is $N(m+m',\sigma^2+\tau^2)$.
-\end{proposition}
-\begin{proof}
-By the previous proposition and Tonelli, then the change of variables $x=z-y$ in the inner integral (Proposition~\ref{prop:cov} with a
-translation), then Tonelli again,
-\[
-\begin{aligned}
-P(X+Y\le t)&=\int_\R g(y)\Bigl(\int_\R\mathbf 1_{x\le t-y}f(x)\dd x\Bigr)\dd y\eqbr=\int_\R g(y)\Bigl(\int_{-\infty}^tf(z-y)\dd z\Bigr)\dd y\\
-&=\int_{-\infty}^t(f*g)(z)\dd z.
-\end{aligned}
-\]
-For the Gaussian case, subtracting the means we may take $m=m'=0$. Let $s=\sigma^2+\tau^2$. Completing the square in $y$,
-\[
-\frac{(z-y)^2}{\sigma^2}+\frac{y^2}{\tau^2}=\frac s{\sigma^2\tau^2}\Bigl(y-\frac{\tau^2z}s\Bigr)^2+\frac{z^2}s.
-\]
-The integral over $y$ of $e^{-\frac s{2\sigma^2\tau^2}(y-c)^2}$ is $\sqrt{2\pi\sigma^2\tau^2/s}$ (translation and scaling of $\int e^{-u^2/2}=\sqrt{2\pi}$). So
-$(f*g)(z)=\frac1{2\pi\sigma\tau}\sqrt{\frac{2\pi\sigma^2\tau^2}s}\,e^{-z^2/(2s)}=\frac1{\sqrt{2\pi s}}e^{-z^2/(2s)}$.
-\end{proof}
-
-\section{Polar coordinates and Box--Muller}\label{sec:polar}
-
-\begin{proposition}[polar coordinates]\label{prop:polar}
-For every Borel $h\ge0$ on $\R^2$,
-\[
-\begin{aligned}\iint_{\R^2}h(x,y)\dd x\dd y&=\eqbr\int_0^\infty\!\!\int_0^{2\pi}h(r\cos\theta,r\sin\theta)r\dd\theta\dd r\end{aligned}
-\]
-in $[0,+\infty]$.
-\end{proposition}
-\begin{proof}
-By Tonelli, $\lambda_2(\R\times\{0\})=\int_\R\lambda(\{0\})\dd x=0$, so we may integrate over the half-planes $y>0$ and $y<0$ separately. On $y>0$ we change variables
-three times, each time in a one-dimensional inner integral, using Tonelli in between. For fixed $y>0$, $x=yt$ ($t\in\R$) gives
-\[
-\begin{aligned}\iint_{y>0}h&=\int_0^\infty\Bigl(\int_\R h(yt,y)\,y\dd t\Bigr)\dd y\eqbr=\int_\R\Bigl(\int_0^\infty h(yt,y)\,y\dd y\Bigr)\dd t.\end{aligned}
-\]
-For fixed $t$, let $c_t=(1+t^2)^{-1/2}$; the change $y=c_tr$ ($r>0$) turns the inner integral into $\int_0^\infty h(c_trt,c_tr)\,c_t^2r\dd r$. Exchanging again,
-\[
-\iint_{y>0}h=\int_0^\infty\Bigl(\int_\R h(c_trt,c_tr)\,c_t^2\dd t\Bigr)r\dd r.
-\]
-Finally $t=\cot\theta$ is a decreasing $C^1$ bijection from $]0,\pi[$ onto $\R$ with $|\frac{\dd t}{\dd\theta}|=\frac1{\sin^2\theta}=1+t^2$, and $\frac t{\sqrt{1+t^2}}=\cos\theta$,
-$c_t=\frac1{\sqrt{1+t^2}}=\sin\theta$ (as $\sin\theta>0$), so $c_t^2\,|\frac{\dd t}{\dd\theta}|=1$. So the inner integral is $\int_0^\pi h(r\cos\theta,r\sin\theta)\dd\theta$. On $y<0$, apply this to
-$(x,y)\mapsto h(x,-y)$ and substitute $\theta\mapsto2\pi-\theta$, which gives the integral over $]\pi,2\pi[$. Add the two halves.
-\end{proof}
+The factor $r$ is the area of a thin ring, divided by its thickness and by the angle. It is not an extra assumption.
 
 \begin{figure}[ht]
 \centering
 \fig{ch05-polar}
-\caption{Polar coordinates. The cell $r\le\rho\le r+\Delta r$, $\theta\le\phi\le\theta+\Delta\theta$ has area $\frac{(r+\Delta r)^2-r^2}2\Delta\theta\approx r\,\Delta r\,\Delta\theta$: cells far
-from the origin are larger, which is the factor $r$ in Proposition~\ref{prop:polar}.}
+\caption{One polar cell, from radius $r$ to $r+\Delta r$ and through an angle $\Delta\theta$. The outer arc has length $(r+\Delta r)\Delta\theta$. The area of the cell is $(r\Delta r+\tfrac12(\Delta r)^2)\Delta\theta$. The Riemann sum in the proof uses the weights $r\Delta r\Delta\theta$, and the extra $\tfrac12(\Delta r)^2$ term is shown to vanish with the mesh. The shaded cell is a schematic of that region.}
 \label{fig:polar}
 \end{figure}
 
-With $h(x,y)=e^{-(x^2+y^2)/2}$, Tonelli and the proposition give $\bigl(\int_\R e^{-x^2/2}\dd x\bigr)^2=2\pi\int_0^\infty re^{-r^2/2}\dd r=2\pi$: Poisson's
-proof of the Gaussian integral, which Volume~1 avoided, is now complete.
+\section{Independent copies from digits}
 
-\begin{theorem}[Box--Muller, 1958]\label{thm:boxmuller}
-Let $U_1,U_2$ be independent and uniform on $]0,1[$, and
-\[
-\begin{gathered}R=\sqrt{-2\ln U_1},\qquad\Theta=2\pi U_2,\qq X=R\cos\Theta,\qquad Y=R\sin\Theta.\end{gathered}
-\]
-Then $X$ and $Y$ are independent $N(0,1)$ variables.
-\end{theorem}
+Chapter~1 built one uniform $U=\sum_{m\ge1}b_m 2^{-m}$ from infinitely many independent fair bits. Can we obtain not merely two independent uniform numbers, but an entire sequence of them, from that \emph{same} infinite string?
+
+Yes. Give the first uniform the digits in odd positions $1,3,5,\ldots$. Give the second uniform the positions $2,6,10,\ldots$. Give the third positions $4,12,20,\ldots$, and so on. No bit is reused, since every positive integer is a unique power of $2$ times an odd integer. Every uniform gets infinitely many fair digits. The formula below makes the allocation precise.
+
+\begin{proposition}[independent uniforms]\label{prop:manyuniforms}
+Enumerate the bit positions as $2^{k-1}(2m-1)$ for integers $k\ge1$ and $m\ge1$. Let $U_k$ be the number whose binary digits are the bits in the $k$th block, in order of $m$. On the exceptional sequence where all digits of a block are $1$, set that $U_k=0$ rather than $1$; the exception has outer content $0$, because it lies in the cylinder of the first $N$ ones for every $N$. Then each $U_k$ takes values in $[0,1)$ and is uniform on that interval, and every finite subcollection is independent: the joint probability of finitely many interval conditions is the product of the lengths.
+\end{proposition}
 \begin{proof}
-By Proposition~\ref{prop:joint}, $(U_1,U_2)$ has density $\mathbf 1_{]0,1[^2}$. For a Borel $B\subseteq\R^2$, by Tonelli,
-with $T(u,v)=\bigl(\sqrt{-2\ln u}\cos2\pi v,\sqrt{-2\ln u}\sin2\pi v\bigr)$,
-\[
-P((X,Y)\in B)=\int_0^1\!\!\int_0^1\mathbf 1_B\bigl(T(u,v)\bigr)\dd u\dd v.
-\]
-In the inner integral put $u=e^{-r^2/2}$, a decreasing $C^1$ bijection from $]0,\infty[$ onto $]0,1[$ with $|\frac{\dd u}{\dd r}|=re^{-r^2/2}$; in the outer one put
-$v=\frac\theta{2\pi}$. Then exchange the integrals and use Proposition~\ref{prop:polar} with $h(x,y)=\mathbf 1_B(x,y)\,\varphi(x)\varphi(y)$, where
-$\varphi(x)=\frac1{\sqrt{2\pi}}e^{-x^2/2}$, so that $h(r\cos\theta,r\sin\theta)=\mathbf 1_B(r\cos\theta,r\sin\theta)\frac{e^{-r^2/2}}{2\pi}$:
-\[
-\begin{aligned}P((X,Y)\in B)&=\int_0^\infty\!\!\int_0^{2\pi}h(r\cos\theta,r\sin\theta)\,r\dd\theta\dd r\eqbr=\iint_B\varphi(x)\varphi(y)\dd x\dd y.\end{aligned}
-\]
-By Proposition~\ref{prop:joint}, $X$ and $Y$ are independent and $N(0,1)$.
+Each block is an infinite set of distinct bit positions, and distinct blocks are disjoint. A condition on the first $N$ digits of each of $U_{k_1},\ldots,U_{k_r}$ specifies exactly $rN$ independent fair bits, so one particular joint digit string has probability $2^{-rN}$. This is precisely the product of the lengths of the corresponding dyadic intervals.
+
+For an arbitrary interval $I=(a,b]$ in $[0,1]$, cut $[0,1]$ into $2^N$ dyadic cells of length $2^{-N}$. Take the union $I_N^-$ of all cells lying entirely inside $I$, and the union $I_N^+$ of all cells that meet $I$. These are \emph{finite unions of dyadic intervals}, not necessarily single dyadic intervals. We have $I_N^-\subseteq I\subseteq I_N^+$ except possibly at dyadic endpoints, and their total lengths differ from $b-a$ by at most $2^{1-N}$. An individual endpoint has outer content zero, since it is contained in dyadic intervals of arbitrarily small length.
+
+Apply this construction independently to each of finitely many coordinate intervals $I_1,\ldots,I_r$. Events specified by the resulting finite unions depend on finitely many distinct bits, so their joint probabilities are the products of their individual total lengths: expand the finite unions into disjoint dyadic cells and sum the independent cylinder probabilities. The desired rectangle event is squeezed between the inner and outer products. As $N\to\infty$ these products both approach $\prod_{i=1}^r |I_i|$. This proves the exact product probability for general interval conditions. The finite-union step is essential: a \emph{single} dyadic interval cannot approximate every interval from within to arbitrarily small length error.
 \end{proof}
+
+\begin{examplex}[the smaller and the larger of two uniforms]
+Let $U$ and $V$ be the first two of these independent uniforms, and write $M=\max(U,V)$ and $L=\min(U,V)$. For $t\in[0,1]$,
+\[
+ P(M\le t)=P(U\le t)P(V\le t)=t^2,
+\]
+because the event is a product of intervals. Differentiating gives the density $2t$ of the larger value. Likewise $P(L>s)=(1-s)^2$ for $s\in[0,1]$, so the smaller value has density $2(1-s)$. The means are
+\[
+ \mathbb E[M]=\int_0^1 2t\cdot t\,\dd t=\frac23,\qquad
+ \mathbb E[L]=\int_0^1 2(1-s)s\,\dd s=\frac13.
+\]
+Exercise~\ref{ex:order} asks for the density of the $k$th among $n$ uniforms. Before that, we can find the \emph{joint} law of the smaller and larger numbers. It has twice the density of the original uniform square on the triangle where the smaller number comes first. Why twice? A pair with two different values can arrive in either order, $(u,v)$ or $(v,u)$, and both outcomes give the same sorted pair. The next proof counts those two possibilities exactly.
+\end{examplex}
+
+\begin{proposition}[the ordered pair]\label{prop:orderpair}
+Let $U$ and $V$ be independent and uniform on $[0,1]$, and set $L=\min(U,V)$, $M=\max(U,V)$. The joint density of $(L,M)$ is $2$ on the triangle $0<s<t<1$ and $0$ elsewhere. The gap $M-L$ has density $2(1-u)$ on $(0,1)$ and mean $1/3$.
+\end{proposition}
+\begin{proof}
+Take $0\le s<s+\Delta s\le t<t+\Delta t\le 1$, so the rectangle in the $(s,t)$ plane does not meet the diagonal. It has two preimages in the $(u,v)$ square: $u$ in the $s$-slot and $v$ in the $t$-slot, or the swap. Each preimage is a rectangle of area $\Delta s\,\Delta t$, and the two are disjoint. Independence gives each the probability $\Delta s\,\Delta t$. The joint probability is therefore $2\Delta s\,\Delta t$, which is the density $2$.
+
+The gap exceeds $u\in(0,1)$ when $0<s<t<1$ and $t-s>u$. Integrate the density:
+\[
+ P(M-L>u)=\int_0^{1-u} 2\bigl(1-(s+u)\bigr)\,\dd s=(1-u)^2.
+\]
+The survival function $(1-u)^2$ has derivative $-2(1-u)$. The density is the negative of that derivative, hence $2(1-u)$. The tail formula already checked for a nonnegative variable gives
+\[
+ \mathbb E[M-L]=\int_0^1(1-u)^2\,\dd u=\frac13,
+\]
+which is also $\mathbb E[M]-\mathbb E[L]=\tfrac23-\tfrac13$.
+\end{proof}
+
+\begin{proposition}[inverse distribution function]\label{prop:inverse}
+Let $F$ be continuous and strictly increasing, with limits $0$ and $1$ at $\pm\infty$, and set $F^{-1}(u)=\inf\{x:F(x)\ge u\}$ for $u\in(0,1)$. If $U$ is uniform on $[0,1)$, define $F^{-1}(U)$ arbitrarily, say as $0$, on the event $\{U=0\}$ of probability $0$. With that harmless endpoint convention it is a random variable on the whole sample space and $P(F^{-1}(U)\le x)=F(x)$.
+\end{proposition}
+\begin{proof}
+For $u\in(0,1)$, strict increase and continuity give $F(F^{-1}(u))=u$ and $F^{-1}(F(x))=x$. The inequality $F^{-1}(u)\le x$ is equivalent to $u\le F(x)$. A uniform number falls in $(0,F(x)]$ with probability $F(x)$, and the separately defined event $\{U=0\}$ has probability zero.
+\end{proof}
+
+The inverse rule is easier to see with an exponential example. Let
+\[
+ F(x)=
+ \begin{cases}
+  0,&x\le0,\\
+  1-e^{-x},&x>0.
+ \end{cases}
+\]
+It is not strictly increasing on the whole real line, so it is covered by the generalised inverse described below, not by the strict hypothesis of Proposition~\ref{prop:inverse}. For $0<u<1$, solve $u=1-e^{-x}$ to get
+\[
+ Q(u)=-\ln(1-u).
+\]
+Thus a uniform $U$ becomes an exponential random variable $Q(U)$. For instance, $U=\frac12$ becomes $Q(U)=\ln2$: the halfway point on the vertical probability axis meets the curve at $x=\ln2$. Figure~\ref{fig:inversecdf} shows the two directions of this conversion.
 
 \begin{figure}[ht]
 \centering
-\fig{ch05-boxmuller}
-\caption{Box--Muller. Left: $400$ uniform points in the square, coloured by $U_2$. Right: their images $(X,Y)$, a cloud of independent
-Gaussian pairs. The horizontal coordinate $U_1$ becomes the radius (small $U_1$, far out) and $U_2$ the angle.}
-\label{fig:boxmuller}
+\fig{ch05-inversecdf}
+\caption{Inverting the exponential distribution function $F(x)=1-e^{-x}$ converts a uniform probability level $u$ into a measurement $x$. At $u=1/2$, the result is $x=\ln2$. The drawn curve is the exact formula; $U$ itself is random, not the illustrated fixed midpoint.}
+\label{fig:inversecdf}
 \end{figure}
 
-\begin{beauty}
-The Gaussian law has no elementary inverse distribution function, so the inverse transform does not apply directly.
-Box and Muller noticed that a \emph{pair} of Gaussians is easy: its law is invariant under rotation, so the angle is
-uniform, and its squared radius is exponential. The difficult one-dimensional problem becomes easy in two
-dimensions, and Poisson's trick for the Gaussian integral is the same idea, read as a computation rather than as an
-algorithm.
-\end{beauty}
+For a strictly increasing distribution function the inverse is ordinary. For a nondecreasing distribution function with plateaus, use the first $x$ at which $F(x)\ge u$; this is the \emph{generalised inverse}. With the stated right-continuity hypotheses it still satisfies the crucial event identity $Q(U)\le x$ exactly when $U\le F(x)$, apart from the null endpoints.
+
+Apply the strict-inverse construction to the standard normal distribution function $\Phi(x)=\int_{-\infty}^x\phi$. It is continuous and strictly increasing from $0$ to $1$. The variables $Z_k=\Phi^{-1}(U_k)$ are independent standard normals: every finite subcollection has the product distribution function, because the $U_k$ are independent and each coordinate transforms by $\Phi^{-1}$.
+
+There is a subtle boundary between these constructions and the strong law. Theorem~\ref{thm:sllnbound} from Chapter~4 does \emph{not} apply directly to $X_k=F^{-1}(U_k)$: one such variable can depend on infinitely many digits, whereas that theorem assumes each summand depends on a finite block. We must not silently widen a theorem's hypothesis.
+
+We can nevertheless extend it for bounded laws using elementary step approximations. Here is the additional step for a bounded nondecreasing transformation $Q$ of a uniform point, with finite endpoint values $Q(0)$ and $Q(1)$. (For a bounded law with a right-continuous distribution function $F$, the generalised inverse $Q(u)=\inf\{x:F(x)\ge u\}$ is such a transformation, after defining its endpoints by one-sided limits. Right-continuity gives $Q(u)\le x$ exactly when $u\le F(x)$, so it has law $F$.) Partition $[0,1)$ into intervals $I_{j,m}=[j2^{-m},(j+1)2^{-m})$ and, on each interval, define the step bounds $L_m(u)=Q(j2^{-m})$ and $R_m(u)=Q((j+1)2^{-m})$. Then $L_m(U_k)\le Q(U_k)\le R_m(U_k)$, and both bounds depend only on the first $m$ digits of $U_k$. Moreover their expected gap is exactly
+\[
+\mathbb E[R_m(U_k)-L_m(U_k)]=2^{-m}\sum_{j=0}^{2^m-1}\bigl(Q((j+1)2^{-m})-Q(j2^{-m})\bigr)=2^{-m}(Q(1)-Q(0)).
+\]
+Since $Q$ is nondecreasing, $L_m\le Q\le R_m$ on each dyadic interval, so $\mathbb E[L_m]\le\int_0^1 Q\le\mathbb E[R_m]$. The two expectations differ by at most $2^{-m}(Q(1)-Q(0))$, hence both tend to the integral. For each fixed $m$, Chapter~4's strong law applies to the independent copies of $L_m(U_k)$ and $R_m(U_k)$. Intersecting the probability-one conclusions over all integers $m$ and squeezing the averages of $Q(U_k)$ between the two step averages gives convergence to $\int_0^1 Q$. Thus the finite-digit hypothesis can be removed for this bounded quantile model by an explicit approximation, without borrowing a general product-measure theorem.
+
+\section{Passing a limit under the integral}
+
+An integral is a limit of finite sums. Sometimes a sequence of functions also approaches a limiting function, and we would like to exchange those two limits:
+\[
+ \lim_{n\to\infty}\int f_n(x)\,\dd x
+ \stackrel{?}{=}\int\lim_{n\to\infty} f_n(x)\,\dd x.
+\]
+The equality is \emph{not} automatic. A very tall and narrow triangle can keep area $1$ while shrinking to one point. Exercise~\ref{ex:counter} makes exactly such a triangle. We need to prevent area from escaping to infinity or piling into a spike.
+
+A useful sufficient condition is to control all the functions by a single integrable upper envelope and require ordinary uniform convergence on every bounded interval. This is a narrower, completely Riemann-integral version of dominated convergence; it is all the next chapter needs.
+
+\begin{theorem}[dominated convergence for continuous integrands]\label{thm:dct}
+Let $f_n$ and $f$ be continuous on $\R$, with $f_n\to f$ uniformly on every bounded interval, and suppose $|f_n(x)|\le g(x)$ for a continuous $g$ with $\int_{-\infty}^{\infty}g<\infty$. Then $\int f_n\to\int f$.
+\end{theorem}
+\begin{proof}
+The bound $|f|\le g$ passes to the limit, so the improper integral of $f$ exists absolutely. Fix $\varepsilon>0$ and choose $A$ so that $\int_{|x|>A}g<\varepsilon$. On $[-A,A]$ the convergence is uniform, so for large $n$ the integral of $|f_n-f|$ over that segment is less than $\varepsilon$. The two tails together contribute at most $2\varepsilon$, giving $|\int f_n-\int f|<3\varepsilon$. Since $\varepsilon$ is arbitrary, the difference tends to zero.
+\end{proof}
+
+Differentiation under the integral sign in Chapter~6 requires more than this theorem by itself: the relevant difference quotients must converge locally uniformly and admit one integrable continuous bound. When those hypotheses are verified, the theorem applies to the quotients and justifies taking their integrals to the derivative.
+
+\section{Box--Muller}
+
+The inverse distribution function constructs one normal number from one uniform number, but its formula $\Phi^{-1}$ is not elementary. Box and Muller found a different route: use \emph{two} independent uniform numbers to choose a random radius and angle, then take Cartesian coordinates. The surprising result is that those two coordinates are themselves independent normal variables.
+
+Think of drawing a point in the plane. One number tells us how far it is from the origin, and another tells us the direction. In polar coordinates a thin ring farther from the centre has more area, because it has a longer circumference. This accounts for the factor $r$ in the next calculation; without it the distribution would be wrong.
+
+\begin{theorem}[Box--Muller]\label{thm:boxmuller}
+Let $U$ and $V$ be independent uniforms on $(0,1)$. Set $R=\sqrt{-2\ln U}$ and $\Theta=2\pi V$, and set $X=R\cos\Theta$, $Y=R\sin\Theta$. Then $X$ and $Y$ are independent standard normals.
+\end{theorem}
+\begin{proof}
+The distribution function of $R$ is $P(\sqrt{-2\ln U}\le r)=P(U\ge e^{-r^2/2})=1-e^{-r^2/2}$ for $r>0$, so $R$ has density $r e^{-r^2/2}$ on $(0,\infty)$. The angle $\Theta$ is independent of $U$, hence of $R$, and uniform on $(0,2\pi)$. For a bounded continuous function $q$ on $\R^2$, Proposition~\ref{prop:polar} and the product density of $(R,\Theta)$ give
+\begin{align*}
+\mathbb E[q(X,Y)]
+&=\int_0^{2\pi}\int_0^{\infty} q(r\cos\theta,r\sin\theta)\,\frac{1}{2\pi}e^{-r^2/2}\,r\,\dd r\,\dd\theta\\
+&=\int\!\!\int_{\R^2} q(x,y)\,\frac{1}{2\pi}e^{-(x^2+y^2)/2}\,\dd x\,\dd y.
+\end{align*}
+The identity is first the polar formula on the disk of radius $T$, then the limit $T\to\infty$. Here $T$ is a cutoff, not the random radius $R$. The integral of the product density outside that disk is at most the Gaussian tail $\int_{r>T} r e^{-r^2/2}\,\dd r=e^{-T^2/2}$, which tends to $0$. The Jacobian factor $r$ cancels the $r$ in the density of $R$. The remaining function of $(x,y)$ is the product $\phi(x)\phi(y)$.
+
+A bounded continuous test function is not yet a rectangle probability. The pair $(R,\Theta)$ has a known product density on $(0,\infty)\times(0,2\pi)$, namely $(1/(2\pi))e^{-r^2/2}\,r$, because $R$ and $\Theta$ are independent and each density was computed above. Let $E$ be the set of $(r,\theta)$ with $a<r\cos\theta\le b$ and $c<r\sin\theta\le d$. Then $P(a<X\le b,\,c<Y\le d)=P((R,\Theta)\in E)$. The boundary of $E$ is a finite union of smooth curves, so it can be covered by $(r,\theta)$-rectangles of total area less than any prescribed $\eta$. The product construction of Chapter~5 gives the probability of a union of such rectangles as the integral of the product density. The function $r e^{-r^2/2}$ has derivative $e^{-r^2/2}(1-r^2)$, so its maximum on $[0,\infty)$ is $e^{-1/2}$, at $r=1$. The integral of the product density over a cover of area less than $\eta$ is therefore at most $e^{-1/2}\eta/(2\pi)$. The same cover argument in the $(x,y)$ plane, using the polar change already proved for continuous integrands, shows that the integral of $\phi(x)\phi(y)$ over the rectangle differs from the integral of the $(r,\theta)$ density over $E$ by an arbitrarily small amount. Therefore
+\[
+ P(a<X\le b,\; c<Y\le d)=\int_a^b\int_c^d\phi(x)\phi(y)\,\dd y\,\dd x.
+\]
+Letting $c\to-\infty$ and $d\to\infty$, the tail bound gives $P(a<X\le b)=\int_a^b\phi(x)\,\dd x$, since $\int\phi=1$. The same holds with the coordinates swapped. The joint density is $\phi(x)\phi(y)$, in the sense of the rectangle probabilities of this chapter, and $X$ and $Y$ are independent standard normals.
+\end{proof}
+
+One uniform would have been enough to construct one normal, by Proposition~\ref{prop:inverse}. Box--Muller instead produces \emph{two} normals at once. The result is not merely that each coordinate has the familiar bell-curve density: the factorisation $\phi(x)\phi(y)$ of the full rectangle probability proves the coordinates are independent.
+
+When using the uniform variables $U_k$ from the preceding digit construction, we may change the values of $U$ or $V$ on their zero-probability endpoint events to any fixed value in $(0,1)$, such as $1/2$, so that $\ln U$ is always defined. This changes no interval probability. The radius is not uniform; it has the density $r e^{-r^2/2}$, which weights the longer rings correctly.
+
+The radius $R$ has tail $P(R>r)=e^{-r^2/2}$ for $r>0$, from the distribution function in the proof. The tail formula above therefore gives
+\[
+ \mathbb E[R]=\int_0^{\infty}e^{-r^2/2}\,\dd r=\sqrt{\frac{\pi}{2}},
+\]
+the half-line integral of Volume~1, Chapter~8, after the substitution $u=r/\sqrt{2}$ in $\int_0^{\infty}e^{-u^2}\,\dd u=\sqrt{\pi}/2$.
+
+Sums of independent copies of a normal are again normal, by Lemma~\ref{lem:normalsum} in the next chapter. The shape of a general sum is that chapter's theorem.
+
+\input{chapters/ch05-geometric}
 
 \section{Exercises}
 
 \begin{exercise}[$\star$]\label{ex:counter}
-Let $f_n=n\mathbf 1_{]0,1/n[}$ on $\R$. Show that $f_n\to0$ everywhere while $\int f_n\dd\lambda=1$. Which hypothesis fails in monotone and in
-dominated convergence? Show that Fatou's inequality is strict here.
+For $n\ge2$ let $f_n$ be the tent of height $n$ and width $2/n$ centred at $0$: $f_n(0)=n$, $f_n$ is linear from $(-1/n,0)$ to $(0,n)$ and from $(0,n)$ to $(1/n,0)$, and $f_n=0$ outside. Show that $\int f_n=1$ for every $n$, while $f_n(x)\to0$ for every $x\ne0$. Why does Theorem~\ref{thm:dct} not apply?
 \end{exercise}
 
 \begin{exercise}[$\star$]\label{ex:densityunique}
-Show that if $f$ and $g$ are densities of $X$, then $f=g$ almost everywhere.
+Suppose $f$ and $g$ are continuous and $\int_a^b f=\int_a^b g$ for every $a<b$. Show that $f=g$.
 \end{exercise}
 
 \begin{exercise}[$\star\star$]\label{ex:tail}
-Let $X\ge0$ be a random variable. Show that $\mathbb E[X]=\int_0^\infty P(X>t)\dd t$, and that $\mathbb E[X^2]=\int_0^\infty2tP(X>t)\dd t$. Compare with
-Theorem~\ref{thm:linearity}(d).
+Prove Proposition~\ref{prop:gausstail}, and deduce $P(Z>x)\le e^{-x^2/2}/(x\sqrt{2\pi})$ for a standard normal $Z$ and $x>0$.
 \end{exercise}
 
 \begin{exercise}[$\star\star$]\label{ex:cauchy}
-Let $X$, $Y$ be independent $N(0,1)$ variables. (a) Show that $Y/X$ (defined when $X\ne0$, an event of probability $1$) is Cauchy. (b) Show that a
-Cauchy variable is not integrable. (c) Show that $(X/R,Y/R)$, with $R=\sqrt{X^2+Y^2}$, is uniform on the unit circle (its angle is
-uniform on $[0,2\pi[$) and independent of $R$, and that $R^2$ is exponential with mean $2$.
+Show that $f(x)=1/(\pi(1+x^2))$ is a density. Show that $\int |x|f(x)\,\dd x=\infty$, so the recipe in Proposition~\ref{prop:densitymean} does not define a mean.
 \end{exercise}
 
 \begin{exercise}[$\star\star$]\label{ex:gamma}
-(a) Show that $\Gamma(a+1)=a\Gamma(a)$ for $a>0$, $\Gamma(n)=(n-1)!$ and $\Gamma(\frac12)=\sqrt\pi$. (b) Show that the sum of $n$ independent
-exponential$(1)$ variables is Gamma$(n)$.
+For each integer $n\ge1$, set $I_n=\int_0^{\infty}x^{n-1}e^{-x}\,\dd x$. Show that $I_1=1$ and $I_{n+1}=n I_n$, hence $I_n=(n-1)!$.
 \end{exercise}
 
 \begin{exercise}[$\star\star$]\label{ex:order}
-Let $U_1,\dots,U_n$ be independent uniform on $[0,1]$ and $U_{(k)}$ the $k$-th smallest. Show that $U_{(k)}$ has density
-$n\binom{n-1}{k-1}t^{k-1}(1-t)^{n-k}$ on $[0,1]$, and that $\mathbb E[U_{(k)}]=\frac k{n+1}$.
-\end{exercise}
-
-\begin{exercise}[$\star\star$]\label{ex:cantor}
-Let $B_1,B_2,\ldots$ be independent fair bits and $X=\sum_k2B_k3^{-k}$. Let $C$ be the Cantor set, the numbers of $[0,1]$ that have a
-ternary expansion with digits in $\{0,2\}$. Show that $\lambda(C)=0$, that $P(X\in C)=1$ and that $F_X$ is continuous. Deduce that $X$ has no
-density, although no single value has positive probability.
-\end{exercise}
-
-\begin{exercise}[$\star\star\star$]\label{ex:betagamma}
-\emph{The beta--gamma algebra.} Let $X$, $Y$ be independent, Gamma$(a)$ and Gamma$(b)$. Show that $S=X+Y$ and $V=\frac X{X+Y}$ are independent,
-that $S$ is Gamma$(a+b)$ and that $V$ has density $\frac{\Gamma(a+b)}{\Gamma(a)\Gamma(b)}v^{a-1}(1-v)^{b-1}$ on $]0,1[$ (the \emph{Beta}$(a,b)$ law). Deduce
-$\int_0^1v^{a-1}(1-v)^{b-1}\dd v=\frac{\Gamma(a)\Gamma(b)}{\Gamma(a+b)}$.
-\end{exercise}
-
-\begin{exercise}[$\star\star$]\label{pb:laplace}
-(Laplace, 1812.) A floor is tiled with squares of side $a$. A needle of length $\ell$ is thrown on it at random: its centre
-is uniform, and its direction is uniform and independent of the centre.
-\begin{enumerate}[label=(\alph*)]
-\item For $\ell\le a$, show that the needle meets at least one line of the tiling with probability $\dfrac{4a\ell-\ell^2}{\pi a^2}$.
-\item Show that for every $\ell>0$ the expected number of lines met is $\frac{4\ell}{\pi a}$, and deduce, for $\ell\le a$, the
-probability that the needle meets two lines.
-\end{enumerate}
-\end{exercise}
-
-\begin{exercise}[$\star$]\label{pb:passone}
-\emph{Waiting to pass $1$.} Let $U_1,U_2,\dots$ be independent and uniform on $[0,1]$.
-\begin{enumerate}[label=(\alph*)]
-\item Let $N$ be the least $n$ with $U_1+\cdots+U_n>1$. Show that $P(N>n)=\frac1{n!}$, $\mathbb E[N]=e$ and $\operatorname{Var}N=3e-e^2$.
-\item Let $L$ be the least $n$ with $U_{n+1}<U_n$, the length of the first increasing run. Show that $L+1$ has the same law as $N$.
-\item Find a volume-preserving linear bijection that explains (b) without computation.
-\end{enumerate}
-\end{exercise}
-
-\begin{exercise}[$\star\star\star$]\label{pb:irwinhall}
-\emph{Sums of uniforms and Eulerian numbers.} Let $S_n=U_1+\cdots+U_n$ with independent uniform $U_i$ on $[0,1[$, and let $A(n,k)$
-be the number of permutations of $[n]$ with exactly $k$ descents (positions $i$ with $\sigma(i)>\sigma(i+1)$).
-\begin{enumerate}[label=(\alph*)]
-\item Show that $\displaystyle P(S_n\le x)=\frac1{n!}\sum_{j\ge0}(-1)^j\binom nj(x-j)_+^n$, where $t_+=\max(t,0)$.
-\item Let $V_0=0$ and $V_i=\{S_i\}$. Show that $V_1,\dots,V_n$ are independent and uniform on $[0,1[$, and that $\lfloor S_n\rfloor$ is the
-number of $i\in\{1,\dots,n-1\}$ with $V_{i+1}<V_i$.
-\item Deduce that $P\bigl(\lfloor S_n\rfloor=k\bigr)=\frac{A(n,k)}{n!}$ and $\displaystyle A(n,k)=\sum_{j=0}^k(-1)^j\binom{n+1}j(k+1-j)^n$.
-\end{enumerate}
-\end{exercise}
-
-\begin{exercise}[$\star\star\star$]\label{pb:borwein}
-\emph{The Borwein integrals.} Write $\operatorname{sinc}x=\frac{\sin x}x$. Let $a_0,a_1,\dots,a_m>0$ with $m\ge1$.
-\begin{enumerate}[label=(\alph*)]
-\item Let $V_1,\dots,V_m$ be independent and uniform on $[-1,1]$, and $Y=\sum_{k=1}^ma_kV_k$. Show that
+Let $U_1,\ldots,U_n$ be independent uniforms on $[0,1]$, and let $U_{(k)}$ be the $k$th smallest. Show that $U_{(k)}$ has density
 \[
-\int_0^\infty\prod_{k=0}^m\operatorname{sinc}(a_kx)\dd x=\frac\pi{2a_0}\,P\bigl(|Y|<a_0\bigr).
+ n\binom{n-1}{k-1}t^{k-1}(1-t)^{n-k}\qquad\text{on }[0,1],
 \]
-\item Deduce that $\displaystyle\int_0^\infty\prod_{k=0}^m\operatorname{sinc}\Bigl(\frac x{2k+1}\Bigr)\dd x=\frac\pi2$ for $m=0,1,\dots,6$, but not for $m=7$.
-\item For $m=7$, let $\delta=\frac13+\frac15+\cdots+\frac1{15}-1$. Show that the integral equals
-\[
-\frac\pi2-\frac{\pi\,\delta^7\cdot3\cdot5\cdot7\cdots15}{2^7\cdot7!}=\frac\pi2-2.31\ldots\cdot10^{-11}.
-\]
-\end{enumerate}
-\end{exercise}
-
-\begin{exercise}[$\star$]\label{pb:stick}
-\emph{Breaking a stick.} A stick of length $1$ is broken at $n-1$ independent uniform points, $n\ge3$.
-\begin{enumerate}[label=(\alph*)]
-\item Show that every piece is shorter than $\frac12$ with probability $1-\frac n{2^{n-1}}$. (This is the probability that the pieces
-are the sides of an $n$-gon: $\frac14$ for a triangle.)
-\item A point $T$ is chosen uniformly on the stick, independently. Show that the piece containing $T$ has expected length $\frac2{n+1}$,
-nearly twice the average length $\frac1n$.
-\end{enumerate}
+and that $\mathbb E[U_{(k)}]=k/(n+1)$. The beta integral is evaluated by parts in the solution. Exercise~\ref{ex:gamma} is the gamma integral on $(0,\infty)$, which is a different integral.
 \end{exercise}
 
 \begin{figure}[ht]
 \centering
-\fig{ch09-irwinhall}
-\caption{The densities of $U_1+U_2$, $U_1+U_2+U_3$ and $U_1+\cdots+U_4$. The areas under the last one over $[k,k+1[$ are
-$\frac1{24},\frac{11}{24},\frac{11}{24},\frac1{24}$: the Eulerian numbers $1,11,11,1$ count the permutations of $4$ elements with $0,1,2,3$
-descents (Problem~\ref{pb:irwinhall}).}
-\label{fig:irwinhall}
+\fig{ch05-cantor}
+\caption{The first two stages of the middle-thirds construction. Each stage removes the open middle third of every remaining interval. The total length left after $n$ stages is $(2/3)^n$, so the intersection can be covered by intervals of arbitrarily small total length. The next exercise puts a random series on what remains.}
+\label{fig:cantor}
 \end{figure}
+
+\begin{exercise}[$\star\star$]\label{ex:cantor}
+Let $B_1,B_2,\ldots$ be independent fair bits and $X=\sum_{k\ge1}2B_k 3^{-k}$. Let $C$ be the set of numbers in $[0,1]$ that have a ternary expansion using only the digits $0$ and $2$.
+\begin{enumerate}[label=(\alph*)]
+\item Show that the total length of the intervals that remain at stage $n$ of the middle-thirds construction is $(2/3)^n$, so $C$ can be covered by intervals of arbitrarily small total length.
+\item Show that $P(X\in C)=1$ and that $P(X=x)=0$ for every single $x$.
+\item Show that the distribution function of $X$ is continuous, and that $X$ has no continuous density.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:usquare}
+Let $U$ be uniform on $(0,1)$ and set $Y=U^2$. Find the distribution function and the density of $Y$ on $(0,1)$, and check that $\mathbb E[Y]=\int_0^1 u^2\,\dd u$.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:radius}
+In the Box--Muller construction, show that $R^2=X^2+Y^2$ has density $\tfrac12 e^{-r/2}$ on $(0,\infty)$, the exponential law of rate $1/2$.
+\end{exercise}
 
 \section{Hints}
 
 \begin{hint}{ex:counter}
-No integrable function dominates all the $f_n$: $\sup_nf_n(x)$ is about $\frac1x$.
+The area of a triangle is half base times height. For $n=2^m$ the intervals $[2^{-m-1},2^{-m})$ are disjoint, and the tent of that index has integral $1/8$ on each of them. An integrable dominant would then have infinite integral. The height $1/(4|x|)$ is the maximum of $n(1-n|x|)$ at the real number $n=1/(2|x|)$. It is not the height of an integer-indexed tent unless that number is an integer.
 \end{hint}
 \begin{hint}{ex:densityunique}
-Integrate over $B=\{f>g\}$.
+Differentiate $\int_0^x(f-g)$ by the fundamental theorem.
 \end{hint}
 \begin{hint}{ex:tail}
-Write $X=\int_0^\infty\mathbf 1_{t<X}\dd t$ and use Tonelli on $\Omega\times[0,\infty[$.
+Compare the integrand with $(t/x)e^{-t^2/2}$.
 \end{hint}
 \begin{hint}{ex:cauchy}
-Use the representation of Theorem~\ref{thm:boxmuller}: $Y/X=\tan\Theta$.
+The arctangent is an antiderivative. Compare $|x|/(1+x^2)$ with $1/(2|x|)$ for large $|x|$.
 \end{hint}
 \begin{hint}{ex:gamma}
-(a) Integrate by parts; for $\Gamma(\frac12)$ substitute $x=\frac{u^2}2$. (b) Induction with Proposition~\ref{prop:gausssum}'s convolution formula.
+Integrate by parts with $u=x^n$ and $\mathrm dv=e^{-x}\,\mathrm dx$.
 \end{hint}
 \begin{hint}{ex:order}
-$U_{(k)}\le t$ iff at least $k$ of the $U_i$ are $\le t$. Differentiate the binomial sum; it telescopes.
+The probability that exactly $k-1$ samples fall below $t$, one falls in a small interval at $t$, and the rest fall above, is a multinomial count. Two or more samples in the small interval contribute an error of order $(\Delta t)^2$. For the mean, integrate by parts.
 \end{hint}
 \begin{hint}{ex:cantor}
-$C\subseteq C_n$, the union of $2^n$ intervals of length $3^{-n}$. For continuity, show $P(X=x)\le2^{-n}$ for every $n$.
+The ternary expansion of $X$ is $0.(2B_1)(2B_2)\ldots$ in base $3$. A continuous density would vanish on every removed middle third, and those intervals meet every subinterval of $[0,1]$.
 \end{hint}
-\begin{hint}{ex:betagamma}
-Compute $\mathbb E[\psi(S)\chi(V)]$ for Borel $\psi,\chi\ge0$ as a double integral and change variables in two one-dimensional steps:
-$x=\frac{yv}{1-v}$ for fixed $y$, then $y=s(1-v)$ for fixed $v$.
+\begin{hint}{ex:usquare}
+$P(Y\le y)=P(U\le\sqrt y)$ for $y\in(0,1)$. Differentiate, then integrate $y$ times the density.
 \end{hint}
-
-\begin{hint}{pb:laplace}
-Condition on the direction $\theta$: the projections of the needle on the axes are $\ell|\cos\theta|$ and $\ell|\sin\theta|$,
-and the two coordinates of the centre are independent. For (b), use linearity and Buffon's needle.
-\end{hint}
-
-\begin{hint}{pb:passone}
-(a) $P(N>n)=P(U_1+\cdots+U_n\le1)$, and $\mathbb E[N^2]=\sum_{n\ge0}(2n+1)P(N>n)$. (c) Partial sums.
-\end{hint}
-
-\begin{hint}{pb:irwinhall}
-(a) Inclusion--exclusion on the set of coordinates that exceed $1$. (b) Given $V_1,\dots,V_{i-1}$, the map $u\mapsto\{V_{i-1}+u\}$ is a
-rotation of $[0,1[$. (c) The relative order of $V_1,\dots,V_n$ is a uniform random permutation.
-\end{hint}
-
-\begin{hint}{pb:borwein}
-(a) $\prod_{k\ge1}\operatorname{sinc}(a_kx)=\mathbb E[e^{ixY}]$, and $\int_{-R}^R\operatorname{sinc}(a_0x)\cos(xy)\dd x$ is a difference of two values of
-$\int_0^z\frac{\sin u}u\dd u$. (c) $Y>1$ is a small corner of the cube, a simplex.
-\end{hint}
-
-\begin{hint}{pb:stick}
-(a) Put the stick on a circle, with one more uniform point as the place of the break. (b) $\mathbb E\bigl[\sum_iL_i^2\bigr]$.
+\begin{hint}{ex:radius}
+$U=e^{-R^2/2}$, and $U$ is uniform.
 \end{hint}
 
 \section{Solutions}
 
 \begin{solution}{ex:counter}
-\idea Mass that escapes to a point is invisible to pointwise limits; the theorems forbid exactly this.
-\writeup For $x\le0$, $f_n(x)=0$; for $x>0$, $f_n(x)=0$ once $n>\frac1x$. And $\int f_n=n\cdot\frac1n=1$. The sequence is not monotone ($f_n(x)$ goes
-up then drops to $0$), and any $g\ge f_n$ for all $n$ satisfies $g(x)\ge\lfloor\frac1x\rfloor$ on $]0,1[$, which is not integrable since
-$\int_{1/(k+1)}^{1/k}\lfloor\frac1x\rfloor\dd x=\frac1{k+1}$ and the harmonic series diverges. Fatou gives $\int\liminf f_n=0<1=\liminf\int f_n$.
+\idea A tall thin tent has area $1$ and disappears at each fixed $x\ne0$. No single integrable function sits above all of them.
+\writeup The graph consists of two right triangles of base $1/n$ and height $n$, or one triangle of base $2/n$ and height $n$. Its area is $\tfrac12\cdot(2/n)\cdot n=1$. For $x\ne0$, eventually $1/n<|x|$, so $f_n(x)=0$. At $0$, $f_n(0)=n$ does not converge to $0$, but a single point does not affect the integral of the limit if one sets the limit equal to $0$ everywhere. If a continuous $g$ dominated every tent, it would satisfy $g(0)\ge f_n(0)=n$ for every $n$, which is impossible for a real-valued continuous function. Moreover, $f_n$ does not converge to a finite value at $0$ and does not converge uniformly on any interval containing $0$. Thus neither the local-uniform-convergence hypothesis nor the continuous-dominant hypothesis of Theorem~\ref{thm:dct} holds. No integrable dominant exists either. For $n=2^m$ with $m\ge1$, the half-open interval $I_m=[2^{-m-1},2^{-m})$ runs from $1/(2n)$ to $1/n$. On it the tent falls linearly from height $n/2$ to height $0$, so its integral over $I_m$ is the triangular area $\tfrac12\cdot(1/(2n))\cdot(n/2)=1/8$. These intervals are pairwise disjoint: the right endpoint of $I_{m+1}$ is the left endpoint of $I_m$, and that point belongs only to $I_m$. Any function sitting above every tent therefore has integral at least $\sum_{m\ge1}1/8=\infty$. Pointwise convergence away from a single point is not enough for the stated theorem.
 \end{solution}
 
 \begin{solution}{ex:densityunique}
-\idea Two densities give the same mass to every set, in particular to the set where one beats the other.
-\writeup Let $B=\{f>g\}$, a Borel set. Then $\int_Bf=P(X\in B)=\int_Bg$, and both are finite, so $\int(f-g)\mathbf 1_B=0$ with $(f-g)\mathbf 1_B\ge0$. Hence
-$(f-g)\mathbf 1_B=0$ a.e., i.e.\ $\lambda(B)=0$. By symmetry $\lambda(\{g>f\})=0$.
+\idea The fundamental theorem recovers a continuous integrand from its integrals.
+\writeup Let $H(x)=\int_0^x(f-g)$. Then $H$ is identically $0$, and $H'=f-g$ by Volume~1, Chapter~8. So $f=g$.
 \end{solution}
 
 \begin{solution}{ex:tail}
-\idea A number is the length of the interval below it; integrate this over $\Omega$ and exchange the order.
-\writeup For every $\omega$, $X(\omega)=\int_0^\infty\mathbf 1_{t<X(\omega)}\dd t$. The function $(\omega,t)\mapsto\mathbf 1_{t<X(\omega)}$ is measurable on $\Omega\times[0,\infty[$ (the set
-$\{(\omega,t):t<X(\omega)\}$ is the preimage of an open set by the measurable map $(\omega,t)\mapsto X(\omega)-t$). By Tonelli,
-$\mathbb E[X]=\int_\Omega\int_0^\infty\mathbf 1_{t<X}\dd t\dd P=\int_0^\infty P(X>t)\dd t$. Likewise $X^2=\int_0^\infty2t\mathbf 1_{t<X}\dd t$. For $X$ with values in $\N$,
-$P(X>t)=P(X\ge k)$ for $t\in[k-1,k[$, and the formula is $\sum_{k\ge1}P(X\ge k)$, Theorem~\ref{thm:linearity}(d).
+\idea The Gaussian decay beats any polynomial, and the comparison $t\ge x$ turns the integral into an exact derivative.
+\writeup For $t\ge x>0$, $e^{-t^2/2}\le (t/x)e^{-t^2/2}$. Integrate both sides from $x$ to $\infty$. The right-hand side equals $e^{-x^2/2}/x$. Divide by $\sqrt{2\pi}$ to pass from the integrand of $\phi$ to the probability.
 \end{solution}
 
 \begin{solution}{ex:cauchy}
-\idea In the Box--Muller representation the angle is uniform and independent of the radius; all three claims are about
-the angle.
-\writeup By Theorem~\ref{thm:boxmuller}, $(X,Y)$ has the law of $(R\cos\Theta,R\sin\Theta)$ with $R=\sqrt{-2\ln U_1}$ and $\Theta=2\pi U_2$ independent, and every
-claim is about the law of $(X,Y)$, so we may use this representation. (a) $Y/X=\tan\Theta$, and $\tan(2\pi U_2)$ has the law of $\tan(\pi U)$ for
-$U$ uniform ($\tan$ has period $\pi$, and $2U_2$ mod $1$ is uniform), which is $\tan(\pi(U'-\frac12))$ for the uniform variable $U'=U+\frac12$ mod $1$ (period $\pi$ again), Cauchy by the remark after
-Proposition~\ref{prop:inverse}. (b) $\mathbb E|C|=\int_\R\frac{|x|}{\pi(1+x^2)}\dd x=\frac2\pi\lim_{A\to\infty}\frac12\ln(1+A^2)=\infty$. (c) $(X/R,Y/R)=(\cos\Theta,\sin\Theta)$ with $\Theta$ uniform,
-independent of $R$, which is a function of $U_1$; and $R^2=-2\ln U_1$ is exponential$(\frac12)$, of mean $2$, by the inverse transform.
+\idea The antiderivative is an arctangent. The tails of $|x|f(x)$ are at least a constant times $1/|x|$.
+\writeup $\int \mathrm dx/(1+x^2)=\arctan x$, so $\int_{-\infty}^{\infty}\mathrm dx/(\pi(1+x^2))=(1/\pi)(\pi/2-(-\pi/2))=1$. For $|x|\ge1$, $|x|/(1+x^2)\ge |x|/(x^2+x^2)=1/(2|x|)$. The integral of $1/|x|$ from $1$ to $\infty$ diverges, so $\int |x|f=\infty$.
 \end{solution}
 
 \begin{solution}{ex:gamma}
-\idea Integration by parts lowers the exponent; the half-integer case is the Gaussian integral in disguise.
-\writeup (a) By parts on $[\varepsilon,A]$ and limits, $\Gamma(a+1)=[-x^ae^{-x}]_0^\infty+a\int_0^\infty x^{a-1}e^{-x}\dd x=a\Gamma(a)$. With $\Gamma(1)=1$, induction gives
-$\Gamma(n)=(n-1)!$. With $x=\frac{u^2}2$ (Proposition~\ref{prop:cov}), $\Gamma(\frac12)=\int_0^\infty x^{-1/2}e^{-x}\dd x=\int_0^\infty\frac{\sqrt2}ue^{-u^2/2}u\dd u=\sqrt2\cdot\frac{\sqrt{2\pi}}2=\sqrt\pi$.
-(b) If $S$ is Gamma$(n)$ and $E$ exponential$(1)$, independent, then $S+E$ has density, for $z>0$,
-$\int_0^z\frac{(z-y)^{n-1}}{(n-1)!}e^{-(z-y)}e^{-y}\dd y=e^{-z}\frac{z^n}{n!}$, the Gamma$(n+1)$ density. Induct from Gamma$(1)$, the exponential law.
+\idea Each integration by parts lowers the power by one and produces a factor $n$.
+\writeup $I_1=\int_0^{\infty}e^{-x}\,\dd x=1$. For $n\ge1$, integrate $I_{n+1}=\int_0^{\infty}x^n e^{-x}\,\dd x$ by parts: $u=x^n$, $\mathrm dv=e^{-x}\,\dd x$, so $\mathrm du=nx^{n-1}\,\dd x$ and $v=-e^{-x}$. The boundary term $[-x^n e^{-x}]_0^{\infty}$ is $0$, because $x^n e^{-x}\to0$ at infinity by comparing with the series for $e^{x}$. Thus $I_{n+1}=n I_n$, and $I_n=(n-1)!$.
 \end{solution}
 
 \begin{solution}{ex:order}
-\idea The event $U_{(k)}\le t$ is a binomial event; its derivative in $t$ collapses to one term.
-\writeup The number $N_t$ of $U_i\le t$ is binomial$(n,t)$, and $U_{(k)}\le t$ iff $N_t\ge k$. So $F(t)=\sum_{j\ge k}\binom njt^j(1-t)^{n-j}$, a polynomial. Using
-$j\binom nj=n\binom{n-1}{j-1}$ and $(n-j)\binom nj=n\binom{n-1}j$,
+\idea One sample sits in a small bin at $t$, $k-1$ sit below, and the rest sit above. The mean is a ratio of factorials, from one integration by parts at a time.
+\writeup Choose which one of the $n$ samples falls in $(t,t+\Delta t)$, which $k-1$ of the others fall in $[0,t]$, and put the rest in $(t+\Delta t,1]$. For $0<t<t+\Delta t<1$ that probability is
 \[
-\begin{aligned}F'(t)&=n\sum_{j\ge k}\binom{n-1}{j-1}t^{j-1}(1-t)^{n-j}\eqbr-n\sum_{j\ge k}\binom{n-1}jt^j(1-t)^{n-1-j},\end{aligned}
+ n\binom{n-1}{k-1}\,(\Delta t)\,t^{k-1}(1-t-\Delta t)^{n-k}.
 \]
-and the second sum is the first without its $j=k$ term (shift $j\to j+1$). So $F'(t)=n\binom{n-1}{k-1}t^{k-1}(1-t)^{n-k}$, a density of $U_{(k)}$ since $F$ is a polynomial on $[0,1]$, $0$ before and $1$ after. Then $\mathbb E[U_{(k)}]=n\binom{n-1}{k-1}\int_0^1t^k(1-t)^{n-k}\dd t$. By Exercise~\ref{ex:betagamma} (or $n-k$ integrations by parts) the integral is
-$\frac{k!\,(n-k)!}{(n+1)!}$, and the product simplifies to $\frac k{n+1}$. The $n$ points cut $[0,1]$ into $n+1$ gaps of the same mean length.
+The factor $(1-t-\Delta t)^{n-k}=(1-t)^{n-k}+O(\Delta t)$. The probability that two or more samples fall in the small interval is at most $\binom{n}{2}(\Delta t)^2$. Dividing the whole probability by $\Delta t$ and sending $\Delta t\to0$ gives the density $n\binom{n-1}{k-1}t^{k-1}(1-t)^{n-k}$ on $(0,1)$.
+
+Set $I(k,m)=\int_0^1 t^k(1-t)^m\,\dd t$ for integers $k,m\ge0$. For $k\ge1$, integrate by parts with $u=t^k$ and $\mathrm dv=(1-t)^m\,\dd t$. Then $\mathrm du=kt^{k-1}\,\dd t$ and $v=-(1-t)^{m+1}/(m+1)$. The boundary term vanishes at both ends, and
+\[
+ I(k,m)=\frac{k}{m+1}I(k-1,m+1).
+\]
+Iterate until the power of $t$ is gone:
+\[
+ I(k,m)=\frac{k!}{(m+1)\cdots(m+k)}I(0,m+k)=\frac{k!\,m!}{(m+k+1)!},
+\]
+because $I(0,r)=\int_0^1(1-t)^r\,\dd t=1/(r+1)$. Therefore
+\[
+ \int_0^1 t^{k}(1-t)^{n-k}\,\dd t=I(k,n-k)=\frac{k!(n-k)!}{(n+1)!}.
+\]
+The mean is
+\[
+ n\binom{n-1}{k-1}\cdot\frac{k!(n-k)!}{(n+1)!}
+ =n\cdot\frac{(n-1)!}{(k-1)!(n-k)!}\cdot\frac{k!(n-k)!}{(n+1)!}
+ =\frac{k}{n+1}.
+\]
 \end{solution}
 
 \begin{solution}{ex:cantor}
-\idea The Cantor set is tiny for length, but it is all that the digits $0$, $2$ can reach.
-\writeup $C\subseteq C_n$, the set of numbers whose first $n$ ternary digits can be taken in $\{0,2\}$, a union of $2^n$ closed intervals of length
-$3^{-n}$; so $\lambda(C)\le(\frac23)^n\to0$. Every value of $X$ has a ternary expansion with digits $2B_k\in\{0,2\}$, so $X\in C$ always. For a
-point $x$, $X=x$ forces the first $n$ digits $2B_1,\dots,2B_n$ to be determined by $x$ (two expansions of $X$ with digits in $\{0,2\}$ that
-differ first at place $k$ differ by at least $2\cdot3^{-k}-\sum_{j>k}2\cdot3^{-j}=3^{-k}>0$), so $P(X=x)\le2^{-n}$ for all $n$: $F_X$ has no jumps. If
-$X$ had a density $f$, then $1=P(X\in C)=\int_Cf\dd\lambda=0$, since $\lambda(C)=0$. So $F_X$, the \emph{Cantor staircase}, is continuous,
-non-decreasing, constant on each removed interval, and still climbs from $0$ to $1$.
+\idea The series for $X$ is a ternary expansion that never uses the digit $1$. The removed middle thirds are exactly the numbers that are forced to use the digit $1$.
+\writeup (a) Stage $0$ is $[0,1]$, length $1$. Each stage removes the open middle third of every remaining closed interval, and leaves two closed intervals of one third the length. After $n$ stages, $2^n$ intervals of length $3^{-n}$ remain, with total length $(2/3)^n\to0$. The set $C$ is contained in the remaining set at every stage.
+
+(b) The number $X$ has ternary expansion $0.(2B_1)(2B_2)(2B_3)\ldots$, because $2B_k\in\{0,2\}$. So $X\in C$ for every outcome. A single value $x$ specifies every ternary digit, except on the countable set of endpoints, which have two expansions. Either way only one sequence of bits, or two, realises $x$. A single infinite bit string has probability $0$, being contained in cylinders of length $2^{-N}$ for every $N$.
+
+(c) We can check continuity without assuming an unproved general continuity theorem for probabilities. Fix $x$ and $\varepsilon>0$. At stage $n$ of the construction, each retained interval carries probability $2^{-n}$, and at most two such intervals can meet a sufficiently short interval around $x$ (their distinct interiors have a positive gap unless they share an endpoint). Choose $n$ with $2^{1-n}<\varepsilon$, then choose the neighbourhood small enough to meet at most two stage-$n$ intervals. Its probability is at most $2^{1-n}<\varepsilon$, proving continuity of $P(X\le x)$. Suppose a continuous $f$ were a density. On each removed middle-third interval the probability is $0$, so $\int f=0$ there, and continuity forces $f=0$ on that interval. Every subinterval of $[0,1]$ meets a removed middle third. An interval already inside an earlier removal, such as $(0.4,0.5)$ inside $(1/3,2/3)$, contains no later removal, but it meets the removal that contains it. The union of the removed intervals is therefore dense. A continuous function that vanishes on a dense set vanishes throughout $[0,1]$. In fact our argument proves something stronger than the exercise asks: a density continuous \emph{except at finitely many points}, as in Definition~\ref{def:density}, would be zero at every continuity point in $[0,1]$ for the same reason. The finite exceptional set does not change its integral. The putative density must also vanish at every continuity point outside $[0,1]$, since every interval wholly outside has probability zero. Thus its integral would be $0$, contradicting the required total probability $1$. This law has a continuous distribution function but no density of the kind allowed in this chapter.
 \end{solution}
 
-\begin{solution}{ex:betagamma}
-\idea A pair of independent Gammas, written in ``total and proportion'' coordinates, has a product density; the
-Jacobian of $(s,v)\mapsto(sv,s(1-v))$ is $s$, and two one-dimensional changes reproduce it.
-\writeup Let $c=\frac1{\Gamma(a)\Gamma(b)}$ and $\psi,\chi\ge0$ Borel on $]0,\infty[$ and $]0,1[$. By Proposition~\ref{prop:joint} and Tonelli,
+\begin{solution}{ex:usquare}
+\idea Squaring folds nothing on $(0,1)$, because the square root is the inverse there.
+\writeup For $y\in(0,1)$, $P(Y\le y)=P(U\le\sqrt y)=\sqrt y$, since $U$ is uniform on $(0,1)$. The distribution function is $0$ for $y\le0$ and $1$ for $y\ge1$. Differentiating on $(0,1)$ gives $1/(2\sqrt y)$. The limit at $0$ is infinite, and the integral from $\varepsilon$ to $1$ tends to $1$ as $\varepsilon\downarrow0$, so this is a density under the improper-integral clause of the definition. Then
 \[
-\begin{aligned}\mathbb E[\psi(S)\chi(V)]&=c\int_0^\infty\!\!\int_0^\infty\psi(x+y)\chi\Bigl(\frac x{x+y}\Bigr)\eqbr\times x^{a-1}y^{b-1}e^{-x-y}\dd x\dd y.\end{aligned}
+ \mathbb E[Y]=\lim_{\varepsilon\downarrow0}\int_\varepsilon^1 y\cdot\frac{1}{2\sqrt y}\,\dd y=\int_0^1\frac12 y^{1/2}\,\dd y=\frac13.
 \]
-For fixed $y$, put $x=\frac{yv}{1-v}$, a $C^1$ increasing bijection $]0,1[\to\,]0,\infty[$ with $\frac{\dd x}{\dd v}=\frac y{(1-v)^2}$; then $x+y=\frac y{1-v}$ and $\frac x{x+y}=v$. Exchange the
-integrals and, for fixed $v$, put $y=s(1-v)$, so that $x=sv$, $x+y=s$, and the two factors $\frac y{(1-v)^2}$ and $\frac{\dd y}{\dd s}=1-v$ multiply to $s$:
-\[
-\begin{aligned}\mathbb E[\psi(S)\chi(V)]&=c\int_0^1\!\!\int_0^\infty\psi(s)\chi(v)\eqbr\times(sv)^{a-1}(s-sv)^{b-1}e^{-s}\,s\dd s\dd v\\
-&=\int_0^\infty\psi(s)g(s)\dd s\eqbr\times\int_0^1\chi(v)\beta(v)\dd v,\end{aligned}
-\]
-where
-\[
-\begin{gathered}g(s)=\frac{s^{a+b-1}e^{-s}}{\Gamma(a+b)},\qq\beta(v)=\frac{\Gamma(a+b)}{\Gamma(a)\Gamma(b)}v^{a-1}(1-v)^{b-1}.\end{gathered}
-\]
-The function $g$ integrates to $1$ by definition of $\Gamma(a+b)$. With $\psi=\chi=1$ the left side
-is $1$, so $\int_0^1\beta=1$: this is the Beta integral, and $\beta$ is a density. Now take $\psi=\mathbf 1_{]0,s]}$ and $\chi=\mathbf 1_{]0,w]}$:
-$P(S\le s,V\le w)=\int_0^sg\cdot\int_0^w\beta$. Letting $w\to1$ and then $s\to\infty$ shows that $S$ and $V$ have the densities $g$ and $\beta$, and then
-the product form gives their independence (Proposition~\ref{prop:indepcdf}(a)).
+The same number is $\mathbb E[U^2]=\int_0^1 u^2\,\dd u=1/3$, which is the definition of the expectation for this bounded continuous function of $U$.
 \end{solution}
 
-\begin{solution}{pb:laplace}
-\idea Fix the direction first. The needle then occupies a rectangle of sides $\ell|\cos\theta|$ and $\ell|\sin\theta|$, and it
-avoids the vertical lines iff the horizontal coordinate of its centre stays far enough from them; the two coordinates are
-independent, so the probability of avoiding everything is a product. Averaging over $\theta$ is an elementary integral. For
-the expected number of crossings, linearity reduces everything to Buffon's single family of lines.
-
-\writeup (a) By periodicity we may take the centre $(x,y)$ uniform in $[0,a]^2$, and the angle $\theta$ with the horizontal
-uniform in $[0,\pi[$, all independent (Volume~4, Chapter~5). Given $\theta$, the needle meets no vertical line iff
-$\frac\ell2|\cos\theta|\le x\le a-\frac\ell2|\cos\theta|$, which has probability $1-\frac\ell a|\cos\theta|$ since $\ell\le a$;
-and likewise for horizontal lines with $\sin\theta$. By independence of $x$ and $y$,
-\[
-P(\text{no line}\mid\theta)=\Bigl(1-\frac\ell a|\cos\theta|\Bigr)\Bigl(1-\frac\ell a|\sin\theta|\Bigr).
-\]
-By symmetry we may average over $[0,\frac\pi2]$, where $\int\cos=\int\sin=1$ and $\int\sin\theta\cos\theta\dd\theta=\frac12$:
-\[
-P(\text{no line})=\frac2\pi\Bigl(\frac\pi2-\frac{2\ell}a+\frac{\ell^2}{2a^2}\Bigr)=1-\frac{4\ell}{\pi a}+\frac{\ell^2}{\pi a^2},
-\]
-so the needle meets a line with probability $\frac{4a\ell-\ell^2}{\pi a^2}$.
-
-(b) Let $N_v$ and $N_h$ be the numbers of vertical and horizontal lines met. For the family of vertical lines alone, Buffon's
-computation gives $\mathbb E[N_v]=\frac{2\ell}{\pi a}$ for every $\ell$ (Volume~4, Chapter~1: given $\theta$, the expected number of
-crossings is $\frac{\ell|\cos\theta|}a$, whose mean is $\frac{2\ell}{\pi a}$). The same holds for $N_h$, so $\mathbb E[N]=
-\frac{4\ell}{\pi a}$. For $\ell\le a$, $N_v,N_h\le1$, so $N\in\{0,1,2\}$ and $\mathbb E[N]=P(N\ge1)+P(N=2)$. Hence
-\[
-P(N=2)=\frac{4\ell}{\pi a}-\frac{4a\ell-\ell^2}{\pi a^2}=\frac{\ell^2}{\pi a^2}.
-\]
-\tools Volume~4, Chapter~1 (Buffon's needle) and Chapter~5 (uniform laws, independence); Volume~1, Chapter~8 (integrals).
-\leads Note that $P(N=2)=\frac{\ell^2}{\pi a^2}$ differs from $P(N_v=1)P(N_h=1)=\bigl(\frac{2\ell}{\pi a}\bigr)^2$: the two
-crossings are dependent, through the common angle $\theta$. Integral geometry (Santaló, \emph{Integral Geometry and Geometric Probability}, 1976)
-computes such probabilities for any shapes.
-\end{solution}
-
-\begin{solution}{pb:passone}
-\idea $N>n$ means $U_1+\cdots+U_n\le1$, whose probability is the volume of a simplex; and $L\ge n$ means $U_1<\cdots<U_n$, one of $n!$ equally
-likely orderings. Both are $\frac1{n!}$, and the partial-sum map shows that this is the same fact.
-
-\writeup (c) first. The linear map
-\[
-\Phi(u_1,\dots,u_n)=(u_1,\,u_1+u_2,\,\dots,\,u_1+\cdots+u_n)
-\]
-has a triangular matrix with ones on the diagonal, so it
-preserves volume, and it maps $\{u\in[0,1]^n:u_1+\cdots+u_n\le1\}$ bijectively onto $\{0\le s_1\le s_2\le\cdots\le s_n\le1\}$ (the inverse takes
-differences, which are non-negative and at most $1$).
-
-(a) Hence $P(N>n)=P(U_1+\cdots+U_n\le1)=\operatorname{vol}\{0\le s_1\le\cdots\le s_n\le1\}$. The $n!$ regions $\{s_{\sigma(1)}\le\cdots\le s_{\sigma(n)}\}$ cover the cube,
-overlap in volume $0$ and have the same volume by symmetry, so each has volume $\frac1{n!}$. Then $\mathbb E[N]=\sum_{n\ge0}P(N>n)=\sum\frac1{n!}=e$, and
-$\mathbb E[N^2]=\sum_{n\ge0}(2n+1)P(N>n)=2\sum_{n\ge1}\frac1{(n-1)!}+e=3e$, so $\operatorname{Var}N=3e-e^2=0.7657\ldots$
-
-(b) $L\ge n$ if and only if $U_1<\cdots<U_n$, of probability $\frac1{n!}$ (the same symmetry argument). So $P(L+1>n)=P(L\ge n)=\frac1{n!}=P(N>n)$ for
-every $n$.
-
-\tools{Volume~4, Chapter~5 (uniform variables, $\mathbb E[X]=\sum P(X>n)$); Volume~1, Chapter~2.}
-\leads Bijections like $\Phi$, which turn simplices into ordered tuples, are behind Stanley's proof in the next problem and behind the
-volume computations of polytopes in combinatorics (Ehrhart theory).
-\end{solution}
-
-\begin{solution}{pb:irwinhall}
-\idea Reading $S_i$ modulo $1$ turns the walk $S_0,S_1,\dots$ into a sequence of independent uniform points on a circle, and $\lfloor S_n\rfloor$
-counts the times the walk crosses an integer, that is, the times the point on the circle wraps around: the descents.
-
-\writeup (a) $P(S_n\le x)$ is the volume of $Q(x)=\{u\in[0,1]^n:\sum u_i\le x\}$. For $J\subseteq[n]$, the set $\{u\in[0,\infty[^n:\sum u_i\le x,\ u_i\ge1\text{ for }i\in J\}$ is a
-translate of $\{v\ge0:\sum v_i\le x-|J|\}$, of volume $\frac{(x-|J|)_+^n}{n!}$ by Problem~\ref{pb:passone}. By inclusion--exclusion on the set of coordinates
-exceeding $1$,
-\[
-\operatorname{vol}Q(x)=\sum_{J\subseteq[n]}(-1)^{|J|}\frac{(x-|J|)_+^n}{n!}=\frac1{n!}\sum_j(-1)^j\binom nj(x-j)_+^n.
-\]
-
-(b) $V_i=\{V_{i-1}+U_i\}$. Given $V_1,\dots,V_{i-1}$, the variable $U_i$ is still uniform and independent of them, and $u\mapsto\{v+u\}$ maps the
-uniform law on $[0,1[$ to itself (a rotation of the circle $\R/\Z$). So $V_i$ is uniform and independent of $(V_1,\dots,V_{i-1})$: the $V_i$
-are independent uniform. As $0\le U_i<1$, $\lfloor S_i\rfloor-\lfloor S_{i-1}\rfloor\in\{0,1\}$, and it equals $1$ exactly when $V_i<V_{i-1}$. Since $V_1=U_1\ge V_0=0$,
-$\lfloor S_n\rfloor$ is the number of $i\in\{1,\dots,n-1\}$ with $V_{i+1}<V_i$.
-
-(c) The $V_i$ are almost surely distinct, and their relative order is a uniform random permutation $\sigma$ (Volume~4, Chapter~5). By (b),
-$\lfloor S_n\rfloor$ is the number of descents of $\sigma$, so $P(\lfloor S_n\rfloor=k)=\frac{A(n,k)}{n!}$. With $F(x)=n!\,P(S_n\le x)$ from (a),
-\[
-A(n,k)=F(k+1)-F(k)=\sum_j(-1)^j\binom nj(k+1-j)^n_+-\sum_j(-1)^j\binom nj(k-j)_+^n.
-\]
-Shift $j$ to $j-1$ in the second sum and use $\binom nj+\binom n{j-1}=\binom{n+1}j$: $A(n,k)=\sum_{j=0}^k(-1)^j\binom{n+1}j(k+1-j)^n$. For $n=4$ this gives
-$1,11,11,1$ (Figure~\ref{fig:irwinhall}).
-
-\tools{Problem~\ref{pb:passone}; Volume~1, Chapter~2 (inclusion--exclusion); Volume~4, Chapter~5.}
-\leads Richard Stanley found (b) in 1977. Eulerian numbers already appeared in Volume~4, Chapter~8, counting rising sequences in the
-analysis of riffle shuffles, where the Bayer--Diaconis formula has exactly this flavour. Since $S_n$ is approximately normal, so is the
-number of descents of a random permutation: mean $\frac{n-1}2$, variance $\frac{n+1}{12}$.
-\end{solution}
-
-\begin{solution}{pb:borwein}
-\idea The product of the sinc factors with $k\ge1$ is the characteristic function of $Y$. The remaining factor $\operatorname{sinc}(a_0x)$ is the
-Fourier transform of the indicator of $[-a_0,a_0]$, so the integral asks how often $|Y|<a_0$. As long as $\sum_{k\ge1}a_k\le a_0$, the answer
-is always.
-
-\writeup (a) Let $\operatorname{Si}(z)=\int_0^z\frac{\sin u}u\dd u$; it is bounded on $\R$ and tends to $\pm\frac\pi2$ as $z\to\pm\infty$ (Volume~5, Theorem~6.11). For real $y$
-and $R>0$,
-\[
-\begin{aligned}\int_{-R}^R\operatorname{sinc}(a_0x)\cos(xy)\dd x&=\frac1{a_0}\int_0^R\frac{\sin((a_0+y)x)+\sin((a_0-y)x)}x\dd x\\&=\frac{\operatorname{Si}((a_0+y)R)+\operatorname{Si}((a_0-y)R)}{a_0},\end{aligned}
-\]
-which is bounded uniformly in $R$ and $y$, and tends to $\frac\pi{a_0}$ if $|y|<a_0$ and to $0$ if $|y|>a_0$. Since $\mathbb E[e^{ixY}]=\prod_{k\ge1}\operatorname{sinc}(a_kx)$
-is real and even, Fubini on the bounded set $[-R,R]$ gives
-\[
-\int_{-R}^R\prod_{k=0}^m\operatorname{sinc}(a_kx)\dd x=\mathbb E\Bigl[\int_{-R}^R\operatorname{sinc}(a_0x)\cos(xY)\dd x\Bigr].
-\]
-Let $R\to\infty$. On the left, the integrand is $O(x^{-2})$ (as $m\ge1$), so the integral converges to $2\int_0^\infty$. On the right,
-bounded convergence (Volume~4, Chapter~5) gives $\frac\pi{a_0}P(|Y|<a_0)$, as $Y$ has a density and $P(|Y|=a_0)=0$.
-
-(b) With $a_k=\frac1{2k+1}$, $|Y|\le\sum_{k=1}^ma_k$, and $\frac13+\frac15+\cdots+\frac1{13}=0.955\ldots<1$, so $P(|Y|<1)=1$ for $m\le6$ (and $m=0$ is
-Dirichlet's integral itself). For $m=7$, $\sum_{k=1}^7a_k=1+\delta$ with $\delta=\frac{982}{45045}>0$, and $Y$ exceeds $1$ with positive probability: all
-$V_k$ close to $1$.
-
-(c) By symmetry $P(|Y|\ge1)=2P(Y>1)$. Put $w_k=1-V_k\in[0,2]$: $Y>1$ means $\sum_ka_kw_k<\delta$. As $\delta<2a_k$ for every $k$, this set of
-$w$ is the full simplex $\{w\ge0,\sum a_kw_k<\delta\}$, of volume $\frac{\delta^7}{7!\,a_1\cdots a_7}$, and the density of $(w_k)$ is $2^{-7}$. Hence
-\[
-\frac\pi2-\int_0^\infty\prod_{k=0}^7\operatorname{sinc}\frac x{2k+1}\dd x=\frac\pi2\cdot\frac{2\delta^7}{2^7\,7!\,a_1\cdots a_7}=\frac{\pi\,\delta^7\cdot3\cdot5\cdots15}{2^7\cdot7!}=2.310\ldots\cdot10^{-11}.
-\]
-
-\tools{Volume~5, Theorem~6.11 (Dirichlet's integral); Volume~4, Chapter~5 (bounded convergence) and Chapter~6 (characteristic functions).}
-\leads D.~Borwein and J.~M.~Borwein (2001) found the pattern and its failure; the argument of (a) explains every integral of this
-family at once. Baillie, Borwein and Borwein (2008) showed that in many such cases the sum $\sum_{n\ge1}\prod_k\operatorname{sinc}(a_kn)$ equals the
-integral minus $\frac12$, a case of Poisson summation (Volume~5, Theorem~10.9): the Fourier transform of the product vanishes outside
-$[-\sum a_k,\sum a_k]$.
-\end{solution}
-
-\begin{solution}{pb:stick}
-\idea On a circle, $n$ independent uniform points are all alike, so the $n$ arcs are exchangeable; and an arc of length at least $\frac12$
-is rare and unique. For (b), a random point falls into a piece with probability equal to its length: long pieces are favoured.
-
-\writeup (a) Take $n$ independent uniform points $P_1,\dots,P_n$ on a circle of length $1$, and cut the circle at $P_1$: the other points become
-$n-1$ independent uniform points on a stick, and the arcs become the pieces. Let $A_j$ be the arc from $P_j$ clockwise to the next point.
-Two arcs cannot both have length $\ge\frac12$ except on a null event, and $A_j\ge\frac12$ means that the $n-1$ other points avoid the half circle
-following $P_j$, of probability $2^{-(n-1)}$. So $P(\max_jA_j\ge\frac12)=n2^{-(n-1)}$. (Pieces $\ell_1,\dots,\ell_n$ bound an $n$-gon if and only if the
-largest is less than the sum of the others, that is, less than $\frac12$.)
-
-(b) Given the pieces, $T$ falls in the $i$-th one with probability $L_i$, so the expected length is $\mathbb E[\sum_iL_i^2]=n\mathbb E[L_1^2]$. Now
-$P(L_1>t)=(1-t)^{n-1}$ (all cuts after $t$), so $\mathbb E[L_1^2]=\int_0^12t(1-t)^{n-1}\dd t=\frac2{n(n+1)}$. Hence $\frac2{n+1}$.
-
-\tools{Volume~4, Chapter~5 (uniform variables, $\mathbb E[X^2]=\int2tP(X>t)\dd t$).}
-\leads (b) is the inspection paradox, the reason why the bus you wait for seems to come from a long gap (Volume~4, Chapter~9). Its cousin for
-the Poisson process says that the gap containing a fixed time has twice the mean length.
+\begin{solution}{ex:radius}
+\idea Box--Muller sets $U=e^{-R^2/2}$, and $U$ is uniform, so $R^2$ is a transformation of a uniform.
+\writeup $P(R^2>t)=P(-2\ln U>t)=P(U<e^{-t/2})=e^{-t/2}$ for $t>0$, because $U$ is uniform on $(0,1)$ and $-2\ln u$ is decreasing in $u$. The survival function $e^{-t/2}$ is the exponential law of rate $1/2$, whose density is $\tfrac12 e^{-t/2}$.
 \end{solution}
 
 \section*{Sources and further reading}
 
-\begin{itemize}
-\item D.~Williams, \emph{Probability with Martingales}, Cambridge University Press, 1991, Chapters~1--6 and~A. Measure
-theory for probabilists in a hundred pages, with the $\pi$-$\lambda$ theorem and monotone convergence as the two pillars.
-\item H.~Lebesgue, \emph{Sur une g\'en\'eralisation de l'int\'egrale d\'efinie}, Comptes Rendus 132 (1901), 1025--1028. Six pages
-that changed analysis.
-\item G.~Vitali, \emph{Sul problema della misura dei gruppi di punti di una retta}, Bologna, 1905; S.~Wagon, \emph{The
-Banach--Tarski Paradox}, Cambridge University Press, 1985, for the three-dimensional story.
-\item A.~N.~Kolmogorov, \emph{Grundbegriffe der Wahrscheinlichkeitsrechnung}, Springer, 1933 (English: \emph{Foundations of
-the Theory of Probability}, Chelsea, 1956). Probability as measure theory, in sixty pages.
-\item G.~E.~P.~Box and M.~E.~Muller, \emph{A note on the generation of random normal deviates}, Annals of
-Mathematical Statistics 29 (1958), 610--611.
-\item L.~Devroye, \emph{Non-Uniform Random Variate Generation}, Springer, 1986 (free online). Everything about turning
-uniform numbers into other laws.
-\item E.~B.~Dynkin, \emph{Foundations of the Theory of Markov Processes}, Pergamon, 1960, where the $\pi$-$\lambda$ argument
-became a standard tool.
-\item Hermite's letter to Stieltjes of 20 May 1893, in \emph{Correspondance d'Hermite et de Stieltjes}, vol.~2, Gauthier-Villars, 1905; H.~Lebesgue, \emph{Int\'egrale, longueur, aire}, thesis, Annali di Matematica 7 (1902), 231--359.
-\end{itemize}
+\begin{enumerate}
+\item G.~Vitali, Sul problema della misura dei gruppi di punti di una retta, Bologna, 1905. The obstruction to a length for every subset, under countable additivity and translation invariance.
+\item Volume~1, Chapter~8, for the Riemann integral, the fundamental theorem, and $\int_0^{\infty}e^{-u^2}\,\dd u=\sqrt{\pi}/2$.
+\item G.~E.~P.~Box and M.~E.~Muller, A note on the generation of random normal deviates, \emph{Ann.\ Math.\ Statist.} \textbf{29} (1958), 610--611. Theorem~\ref{thm:boxmuller}.
+\end{enumerate}

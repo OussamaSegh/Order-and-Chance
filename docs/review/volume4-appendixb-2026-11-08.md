@@ -1,0 +1,15 @@
+# Volume 4 — Appendix B, Extremal Problems and Ramsey Theory: writer audit
+
+**8 November 2026; PR #111 draft/unmerged.** Source `volume4-chance/chapters/extremal.tex`, last edit commit `256f52d7abe52f72e950488a520362395ab5c227`, Git blob `dc81e67c6807263f518faa5bff2ca76118067d60`. New original mathematically exact TikZ figure `volume4-chance/figures/appb-turan-balance.tex`, commit `d3c29d7e`. GPT-6 writer mathematical self-review, **not** an authorized distinct referee.
+
+**B-N01, Turán:** Added explicit integer hypotheses $n,r\ge1$ and definition of complete multipartite graph, allowing empty classes when $r>n$. Expanded definition of twins as equal neighbour sets (which forces nonadjacency), so the twin-class symmetrisation step makes an equivalence relation and does not introduce a forbidden clique. Diagram compares complete bipartite $2+4$ = **8** cross-group edges with balanced $3+3$ = **9** on the same six vertices, no internal edges. Figure is formally captioned and top-level for EPUB accessibility. **Writer-corrected**.
+
+**B-N02, Ramsey and Schur:** Proofs retained, including recursion $R(s,t)\le R(s-1,t)+R(s,t-1)$, $R(3,3)=6$ and Schur's edge-difference colouring. Independent exhaustive 2-colouring enumeration: on $K_5$, **12** edge-colourings have no monochromatic triangle; on $K_6$, **0** do. For integer equation $x+y=z$ allowing $x=y$, [1,4] has **2** avoiding 2-colourings, [1,5] has **0**. **Independent arithmetic program self-check**.
+
+**B-N03, sunflower and EKR:** Retained $s!(k-1)^s$ sunflower induction and the directed-cycle pairing proof of EKR for $n\ge2k$, including case $n=2k$ complement pairs. Five exercise statements, hints and complete solutions align, including EKR nonuniqueness when $n=2k$.
+
+**B-N04, three-term van der Waerden special case:** Previous text said that the remaining progressions in RRBBRRBB “are checked the same way” without actually listing them. Listed **all twelve** length-three progressions in 1–8: six of step 1, four of step 2, two of step 3, with red/blue patterns showing no monochromatic triple. Exhaustively enumerated all $2^8$ and $2^9$ binary colourings: **6** avoid on eight points, **0** on nine. The proved result is **only** two colours, length three. **General van der Waerden** is NOT proved or validly cited as if proved in Appendix B. Source edit `4be15cf2`. Later-volume old citation B.15 remains a separate migration problem; documented, not silently “fixed.”
+
+**B-N05, structure and numbering:** Six numbered statements B.1 Turán, B.2 Ramsey, B.3 Schur, B.4 sunflower, B.5 EKR, B.6 restricted arithmetic-progression theorem. The appendix heading and letter B remain. All 5/5/5 exercises/hints/solutions match. LaTeX source structural scan has balanced environments, no duplicate labels and even math delimiters.
+
+**Pending:** independent mathematical/novice reader review of the exact source and figure, actual full native reading/KDP/EPUB figure and page-level QA, all-books CI, physical device test, and whole-book acceptance. This is self-review evidence only.

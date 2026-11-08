@@ -1,0 +1,116 @@
+# Volume 4 citation migration (fourteen-chapter contract)
+
+## 8 November 2026 — missing results restored inside Volume 4
+
+The results later volumes were citing, and which the rewrite had not proved, are now theorems of this manuscript. Printed numbers that later books already matched were left in place. The characteristic-function continuity statement remains in the chapter, unnumbered, so that inversion can occupy Theorem 6.8 without moving Lindeberg off Theorem 6.10. Citation phrases in Volumes 6 and 8–15 were retargeted only where the old number named a different statement or a missing one. Volumes 1–3 were not edited.
+
+| Restored statement | Printed number |
+| --- | --- |
+| Uniqueness and inversion, including the Cauchy transform $e^{-\lvert t\rvert}$ | Theorem 6.8 |
+| Gaussian vectors, including the positive-semidefinite characterisation | Theorem 6.14 |
+| Last visit, first-return convolution, and nonnegative paths | Theorem 8.6 |
+| Arcsine limit on $0<a<b<1$, including the occupation law | Theorem 8.8 |
+| Central-binomial lower bound | Lemma 8.9 |
+| Total-variation contraction | Lemma 9.7 |
+| $a$-shuffle, Bayer–Diaconis formula, composition | Definition 9.8, Theorem 9.9, Proposition 9.10 |
+| Untouched cards under random transpositions | Proposition 9.11 |
+| $L^2$ convergence on finite partitions | Theorem 11.12 |
+| Pólya’s urn | Theorem 11.13 |
+| Almost-sure convergence from a bounded $L^1$ norm | Theorem 11.14 |
+| Brownian maximum, hitting-time distribution and density | Theorem 12.12 |
+| $B_t^2-t$ as a finite-observation martingale | Proposition 12.13 |
+| General van der Waerden | Theorem B.7 |
+
+Doob’s inequality remains Theorem 11.9 and now includes the nonnegative-submartingale form, the square-maximal form, and Ville’s bound for a nonnegative supermartingale. Azuma remains Theorem 11.10. The two-colour three-term case remains Theorem B.6. The lazy-cycle eigenvalue bound that used to be Theorem 8.17 was not copied back as a numbered theorem; the one later sentence that cited it now points at the character diagonalisation in Volume 3.
+
+Owner approval of 6 November 2026 replaces the twelve-chapter numbering. Other
+volumes were not edited. Each row is a live citation in `volume5`–`volume15`
+(or a shared note). Historical review JSON is not a live citation and is omitted.
+
+Printed numbers below were counted from the numbered environments
+`theorem`, `proposition`, `lemma`, `corollary`, `definition` in the new
+`main.tex` order, and from exercise order. `examplex` and `definitionx` are
+unnumbered and were not counted.
+
+## Chapter map
+
+| Old draft chapter (12) | New chapter |
+| --- | --- |
+| 1 Counting and Paradoxes | 1 From Games to Probability Spaces (Bertrand and Buffon moved to 5) |
+| 2 Discrete Random Variables | 2 Random Variables and Their Laws |
+| 3 Generating Functions | 3 Generating Functions and Random Families |
+| 4 Inequalities, Large Numbers and Entropy | 4 Concentration (entropy removed) |
+| 5 Continuous Probability | 5 Continuous Chance (Bertrand, Buffon inserted; no new numbered theorem before the old list except the two moved theorems, which sit after Box–Muller and before the exercises) |
+| 6 Convergence and the CLT | 6 Why the Bell Curve Appears |
+| 7 Random Walks | 8 Random Walks |
+| 8 Markov Chains | 9 Markov Chains and Mixing |
+| 9 Poisson Processes | 10 The Poisson Clock |
+| 10 Martingales | 11 Martingales and Fair Games |
+| 11 Brownian Motion | 12 Brownian Motion |
+| 12 The Probabilistic Method | 13 The Probabilistic Method, and 14 Random Graphs |
+| Appendix B Extremal | Appendix B Extremal (counter still set to 1) |
+
+## Numbers that stay honest
+
+- Exercise 6.1 is still Slutsky (`ex:slutsky`), first exercise of Chapter 6.
+- Theorem 6.10 is still Lindeberg. No numbered environment was inserted before it.
+- Theorem 4.5 is still Weierstrass via Bernstein.
+- Exercise 13.4 is the crossing lemma (`ex:crossing`), fourth exercise of Chapter 13. The live citation says Exercise 12.4.
+- Appendix letter remains B.
+
+## Numbers that moved, and the live lines that still use the old ones
+
+These files were not changed. The new number is what a later edit of that line would have to say.
+
+| Live citation | File:line | New number |
+| --- | --- | --- |
+| Theorem 4.11, Borel–Cantelli | `volume15-order-and-chance/chapters/ra-randommult.tex:15` | Theorem 4.3 (`thm:bc`). The label 4.11 was already the pre-rewrite book, not the twelve-chapter draft. |
+| Chapter 4, Borel–Cantelli (no number) | `volume15-order-and-chance/chapters/ra-additive.tex:19` | Still Chapter 4. |
+| Chapter 4, Chebyshev | `volume15-order-and-chance/chapters/ch01-research.tex:28` | Chebyshev is recalled, not restated as a numbered theorem. The inequality used is Volume 1. |
+| Theorem 6.8, inversion | `volume15-order-and-chance/chapters/ra-bohrjessen.tex:20` and `:162` | No inversion theorem is numbered 6.8. Characteristic-function inversion is not a theorem of this manuscript. Repair needs a statement in Volume 4 or a different citation. Not invented here. |
+| Theorem 6.10, Lindeberg | `volume15-order-and-chance/chapters/ch03-shuffling.tex:165` and `:396` | Still Theorem 6.10. |
+| Theorem 6.15, Gaussian vectors | `volume12-random-motion/chapters/ch01-gaussian.tex:39` and `:85`; `volume12-random-motion/chapters/ch03-martingales.tex:556`; `volume8-analysis/chapters/ch11-harder.tex:1139` | Theorem 6.14 (`thm:gaussvec`). |
+| Exercise 6.1, Slutsky | `volume15-order-and-chance/chapters/ra-selberg.tex:26`; `ra-additive.tex:170`; `volume8-analysis/chapters/ch11-cue.tex:32` | Still Exercise 6.1. |
+| Theorem 7.7, arcsine | `volume15-order-and-chance/chapters/ra-anatomy.tex:174` and `:238` | Theorem 8.5 (`thm:arcsine`) is the exact last-visit identity $P(L_{2n}=2k)=u_{2k}u_{2n-2k}$. The integral density is not claimed. |
+| Theorem 7.9, gambler's ruin | `volume12-random-motion/chapters/ch03-martingales.tex:451` and `:538` | Theorem 8.2 (`thm:ruin`). |
+| Theorem 7.12, returns | `volume12-random-motion/chapters/ch08-networks.tex:24` | Pólya is Theorem 8.4 (`thm:polya`). The visit criterion is Proposition `prop:visits` in the same chapter; its printed number is the third numbered environment of Chapter 8, so Proposition 8.3. |
+| Chapter 7, walks / cone | `volume12-random-motion/chapters/ch05-analysis.tex:25` and `:268` | Chapter 8. |
+| Exercise 7.8, electrical networks | `volume12-random-motion/chapters/ch08-networks.tex:12` | Exercise 8.8 (`ex:electric`), eighth exercise of the walk chapter. |
+| Exercise 8.6, top-to-random | `volume15-order-and-chance/chapters/ch03-shuffling.tex:300` and `:384`; `ch12-projects.tex:28` | Exercise 9.6 (`ex:toptorandom`). |
+| Exercise 8.8, rising-sequence variance | `volume15-order-and-chance/chapters/ch03-shuffling.tex:167` | Exercise 9.8 (`ex:risingmean`). Variance `(n+1)/12` is unchanged. |
+| Lemma 8.10, Definition 8.22, Theorem 8.23, Proposition 8.24 | `volume15-order-and-chance/chapters/ch03-shuffling.tex:234`, `:395`, `:396`, `:397` | The Markov chapter has two numbered theorems. Those four labels are the pre-rewrite shuffle chapter. They are not in this manuscript. Bayer–Diaconis profile analysis was deliberately not copied. |
+| Chapter 8, total variation | `volume15-order-and-chance/chapters/ch03-shuffling.tex:396` | Chapter 9, and only for the coupling proof that is actually written. |
+| Lemma 9.5, colouring | `volume12-random-motion/chapters/ch07-levy.tex:25` | Lemma 10.5 (`lem:colouring`). |
+| Chapter 9, Poisson processes | `volume12-random-motion/chapters/ch07-levy.tex:25` | Chapter 10. |
+| Chapter 10, martingale $L^2$ | `volume15-order-and-chance/chapters/ch11-values.tex:115` | Chapter 11. The maximal inequality is now Theorem 11.9 (`thm:doob`); it does not itself state $L^2$ convergence. The cited $L^2$ assertion must be checked separately against Proposition 11.8 (`prop:l2cauchy`) and the later volume's own hypotheses. |
+| Theorem 10.15, Doob maximal | `volume12-random-motion/chapters/ch03-martingales.tex:30` and `:129`; `ch04-ito.tex:322` | **Theorem 11.9** (`thm:doob`), a finite-partition maximal probability inequality. Check the downstream hypothesis before migrating. |
+| Theorem 10.18, $L^2$ convergence | `volume12-random-motion/chapters/ch03-martingales.tex:31` and `:166` | **No matching $L^2$ convergence theorem is proved here.** Proposition **11.8** (`prop:l2cauchy`) proves the square-mean Cauchy criterion under **summable increment variances**, not merely bounded $L^2$ norms. Owner-owned downstream migration or a new proof is needed; do not cite the maximal inequality as a convergence theorem. |
+| Theorem 10.24, Azuma | `volume12-random-motion/chapters/ch04-ito.tex:259` | Theorem **11.10** (`thm:azuma`). |
+| Theorem 11.4, existence of Brownian motion | `volume12-random-motion/chapters/ch01-gaussian.tex:42` | Theorem 12.4 (`thm:levy`). |
+| Proposition 11.5 and 11.7 | `volume12-random-motion/chapters/ch02-paths.tex:32` | Scaling is the fifth numbered environment of Chapter 12, so Proposition 12.5 if the label is `prop:scaling`. The second citation must be re-read against the chapter before a number is assigned. |
+| Theorem 11.8, quadratic variation | `volume12-random-motion/chapters/ch03-martingales.tex:34` and `:302` | Theorem 12.7 (`thm:qv`). |
+| Theorem 11.12, reflection | `volume12-random-motion/chapters/ch01-gaussian.tex:42`; `ch02-paths.tex:32`, `:162`, `:359`; `ch03-martingales.tex:414` | Theorem 12.12 (`thm:reflection`). |
+| Exercise 11.3, zero set | `volume12-random-motion/chapters/ch02-paths.tex:170`, `:183`, `:378` | Exercise 12.3 (`ex:zeros`). The solution uses the integral of Chapter 5, not Tonelli. The Volume 12 sentence that says "by Tonelli" overstates the tool. |
+| Chapter 11, Brownian motion and Itô | `volume8-analysis/chapters/ch04-spectral.tex:197`, `:328`, `:392`, `:467`; `volume12-random-motion/chapters/ch04-ito.tex:21` and `:211` | Chapter 12. The Itô formula in Volume 4 is a dyadic expansion, marked as such, and is not the general integral. |
+| Exercise 12.4, crossing lemma | `volume14-primes/chapters/ch11-additive.tex:15`; `volume15-order-and-chance/chapters/conjectures-ch08-geometric.tex:101` | Exercise 13.4. |
+| Theorem B.15, van der Waerden | `volume14-primes/chapters/ch12-roth.tex:15` | Appendix B has **six** numbered theorems. Theorem **B.6** (`thm:vdw3`) proves only **two colours, three-term progressions on 1–9**. It does **not** prove general van der Waerden. The downstream reference cannot be fixed by replacing B.15 with B.6 without narrowing its claim. |
+| Buffon, Chapter 1 | `volume9-shapes/chapters/ch10-integral.tex:124` | Chapter 5 (`thm:buffon`). |
+| Chapter 6, Gaussian law | `volume8-analysis/chapters/ch02-hilbert.tex:276` | Still Chapter 6. |
+| Theorem 4.5, Weierstrass | `volume8-analysis/chapters/ch10-semicircle.tex:103` | Still Theorem 4.5. |
+
+## What was not done
+
+No file under `volume5`–`volume15` was edited. Compatibility is not green.
+The minimal repairs are the rows above whose "New number" differs from the
+printed citation, plus the four rows marked as absent (inversion 6.8, arcsine
+7.7, shuffle labels 8.10/8.22/8.23/8.24, van der Waerden B.15). Those four
+need an owner decision: add a proved statement, or retarget the later book.
+
+
+## 8 November 2026 source-counter reconciliation (PR #111)
+
+The printed number is determined by `common/interior-boxes.tex`: theorem, proposition, lemma, corollary and definition **share** one chapter counter, while `examplex`, `definitionx` and `corollaryx` do not increment it. Direct enumeration of the current Chapter 11 `ch10-martingales.tex` gives `prop:l2cauchy` = **Proposition 11.8**, `thm:doob` = **Theorem 11.9**, `thm:azuma` = **Theorem 11.10** and `thm:monkey` = **Theorem 11.11**. Earlier values 11.4 and 11.5 in this migration file were stale and are now corrected above.
+
+The Chapter 12 manuscript was reconciled to the downstream numbering contract **without removing the Gaussian fourth-moment calculation**: `thm:levy` = **12.4**, `prop:scaling` = **12.5**, `lem:squares` = **12.6**, `thm:qv` = **12.7**, `thm:reflection` = **12.12**. The finite-variation consequence formerly labelled `cor:variation` is still proved and displayed, but as an unnumbered `corollaryx` in order not to move the later externally cited reflection theorem. The previous local `cor:variation` numbered label was removed; search of the indexed repository's code found no external reference to that label. Check the exact final source against native production before considering these numbers accepted.
+
+Appendix B includes **B.6**, the limited two-colour/three-term progression result. General van der Waerden is not proved. These clarifications are a migration ledger, not authorization to edit Volumes 5–15 or mark their stale references repaired.

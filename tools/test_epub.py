@@ -56,10 +56,14 @@ class Tags(HTMLParser):
 @unittest.skipUnless(shutil.which("pandoc"), "Pandoc is required")
 class EpubRegression(unittest.TestCase):
     def convert(self, target, *arguments, cwd=None):
+        # Pandoc 3.1.3, the Ubuntu 24.04 package used in CI, drops an
+        # includegraphics alt and writes the placeholder "image". The same
+        # ocimagealt carrier used for photographs keeps the explicit text.
+        source = epub_prep.preserve_graphics_alt(SAMPLE)
         return subprocess.run(
             ["pandoc", "-f", "latex", "-t", target, "--mathml",
              "--lua-filter", str(TOOLS / "epub.lua"), *arguments],
-            input=SAMPLE, text=True, capture_output=True, check=True, cwd=cwd)
+            input=source, text=True, capture_output=True, check=True, cwd=cwd)
 
     def test_online_anchors(self):
         output = self.convert("html5").stdout
@@ -105,6 +109,26 @@ Appendix~\ref{ch:support}, Section~\ref{sec:support}.
         self.assertRegex(result.stdout, r'href="#thm:support"[^>]*>A\.1</a>')
         self.assertRegex(result.stdout, r'href="#ch:support"[^>]*>A</a>')
         self.assertNotIn("ocappendices", result.stdout)
+
+    def test_appendix_counter_matches_pdf_letter(self):
+        source = r"""\documentclass{book}
+\begin{document}
+\chapter{Main}
+\appendix
+\setcounter{chapter}{1}
+\chapter{Extremal}
+\end{document}"""
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / "main.tex").write_text(source)
+            epub_prep.main(str(root / "main.tex"), str(root / "epub.tex"), directory)
+            result = subprocess.run(
+                ["pandoc", str(root / "epub.tex"), "-f", "latex", "-t", "html5",
+                 "--number-sections", "--lua-filter", str(TOOLS / "epub.lua")],
+                capture_output=True, text=True, check=True)
+        text = visible_text(result.stdout)
+        self.assertIn("Appendix B: Extremal", text)
+        self.assertNotIn("Appendix A", text)
 
     def test_zero_based_chapters_keep_pdf_references_and_exercise_links(self):
         source = r"""\documentclass{book}
@@ -239,8 +263,10 @@ Text.
             destination = Path(directory) / "epub.tex"
             source.write_text(r"\portrait{fermat}{Pierre de Fermat (1601--1665). Historical portrait.}" + "\n")
             epub_prep.main(str(source), str(destination), directory)
-            result = subprocess.run(["pandoc", "-f", "latex", "-t", "html5", str(destination)],
-                                    capture_output=True, text=True, check=True)
+            result = subprocess.run(
+                ["pandoc", "-f", "latex", "-t", "html5",
+                 "--lua-filter", str(TOOLS / "epub.lua"), str(destination)],
+                capture_output=True, text=True, check=True)
             tags = Tags()
             tags.feed(result.stdout)
             alternatives = [attrs.get("alt") for tag, attrs in tags.attributes if tag == "img"]
@@ -252,8 +278,10 @@ Text.
             destination = Path(directory) / "epub.tex"
             source.write_text(r"\photograph{rocket}{Rocket rising above the launch pad.}{SpaceX Photos, public domain.}" + "\n")
             epub_prep.main(str(source), str(destination), directory)
-            result = subprocess.run(["pandoc", "-f", "latex", "-t", "html5", str(destination)],
-                                    capture_output=True, text=True, check=True)
+            result = subprocess.run(
+                ["pandoc", "-f", "latex", "-t", "html5",
+                 "--lua-filter", str(TOOLS / "epub.lua"), str(destination)],
+                capture_output=True, text=True, check=True)
             tags = Tags()
             tags.feed(result.stdout)
             alternatives = [attrs.get("alt") for tag, attrs in tags.attributes if tag == "img"]
