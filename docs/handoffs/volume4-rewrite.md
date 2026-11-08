@@ -1,6 +1,22 @@
 # Handoff: Volume 4 rewrite
 
 
+## 8 November 2026 — Chapter 10 final exact-source native QA passed; full-books CI and distinct review pending
+
+**Chapter 10: The Poisson Clock** (printed chapter, source `volume4-chance/chapters/ch09-poisson.tex`) manuscript was last changed at `edba58257d17051bffdff9b121deda86bdd35d33`, Git blob `47526f435cc0641c7213b82e2784d39eb79f7728`. Original original queue-rate figure `figures/ch10-queue-rates.tex` is integrated. The tested branch HEAD was its documentation-only descendant `cf84a76e6f64905161136a8bc8a06a16f492c6d9`. At that **exact source**, [native Volume 4 QA #42431219406](https://github.com/OussamaSegh/Order-and-Chance/actions/runs/42431219406) **completed SUCCESS**; native artifact **13598231327** downloaded and five packaged SHA-256 file digests matched independent checks.
+
+**Real final visual/EPUB QA:** reading PDF **262 physical pages**, Chapter 10 **192–206** (15); KDP print **261**, Chapter 10 **191–205** (15). **All 30** actual Chapter 10 reading and print pages rasterized and visually inspected, enlarged checks of queue-rate figure and final solved-exercise/bibliography page. Both versions have the complete three-reference source list on the same last chapter page; **orphan citation C10-14 is resolved**. The Exercise 10.8 two-line `aligned` calculation fits; **width issue C10-15 is resolved**. No visible clipping/collisions. Native `main.log`: zero LaTeX errors, overfull boxes, missing characters, undefined references or citations. EPUB `ch015.xhtml`: 603 images with zero missing/broken targets or empty/generic alternative descriptions; three mathematical plates are original, 1800px, responsive and meaningfully described: thinning 1800×580, inspection 1800×298, queue rates 1800×452. See the [exact Chapter 10 review log](../review/volume4-ch10-2026-11-08.md) for all digests and evidence.
+
+**Math self-review:** repaired model assumptions (independent service/arrival process), memoryless clock arguments, independent colouring/thinning boundary, Poisson n=0, Le Cam coupling, and countable-queue stationary proof. Exercise structure remains eight exact exercise/hint/solution slots; the required `lem:colouring` remains **Lemma 10.5**. No edits to other volumes or protected Volume 3 fingerprints. Distinct second reviewer has **not** supplied acceptance; GPT-6 mathematical self-audit is not an independent gate.
+
+**Open gates:** [full-books workflow #42431219318](https://github.com/OussamaSegh/Order-and-Chance/actions/runs/42431219318) on the **same native-tested checkpoint** was **in progress** at the time of this record. It is not yet a PASS. New documentation-only commits must be checked at their own HEAD. Physical Kindle/iOS device reading, distinct independent Chapter 10 reviewer, earlier preface PF-10 and final whole-volume editorial/visual acceptance are not complete. PR #111 remains **draft, open, unmerged**, checkboxes unchanged.
+
+**Next precise action:** verify latest HEAD all-15-books CI including protected C-GROUP, repair genuine failures without weakening tests; secure a distinct second reviewer for this exact Chapter 10 source. After that, begin sequential printed **Chapter 11, Martingales and Fair Games**, in `volume4-chance/chapters/ch10-martingales.tex`. Do not re-rewrite Chapter 10 unless a real new issue is found.
+
+---
+
+
+
 ## 8 November 2026 — Chapter 10, The Poisson Clock: writer pass committed; native gates not yet certified
 
 **Printed Chapter 10** is `volume4-chance/chapters/ch09-poisson.tex` (not Chapter 9 despite the filename). Following the already verified Chapter 9 manuscript source `193d203f4bf4315d22702d7f2400e4c696d3c511`, the GPT-6 writer edited Chapter 10 on the **existing** branch `cursor/volume4-rewrite-ee7f`, without touching Volumes 1–3 or shared publishing files. The final revised *source* commit for this pass is **`b85a60c93377497267c143146b01329b2dae795a`**, Chapter 10 Git blob `236fd536b31a79b864da170197913385a18964b5`. A dedicated source-and-mathematics review log is at [`docs/review/volume4-ch10-2026-11-08.md`](../review/volume4-ch10-2026-11-08.md), committed at `6a176d56243662f64a5b4201186cf9197fe4d80c`.
