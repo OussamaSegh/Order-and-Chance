@@ -43,6 +43,16 @@ These were **targeted checks**, and some readings used the pre-fix `main` blob r
 
 Selected TikZ source/caption comparisons included Brownian reflection, Pólya urn simulations, subcritical exploration, and Ramsey colouring. Source-level inspection does **not** replace page-by-page PDF and EPUB image inspection; no all-41-figures visual signoff is asserted.
 
+## Reproducible selected figure-source checks
+
+The actual TikZ sources were parsed for mechanical mathematical invariants; the findings below are about **source coordinates**, not rendered appearance or provenance of pseudorandom generators.
+
+- `ch10-polya.tex`: inspected **20 stored urn paths** with **146 samples each = 2,920 plotted samples**. At each sample `(n,M_n)`, rounding `M_n(n+2)` gives an integer red-ball count within the 4-decimal coordinate precision. Each inferred count is nondecreasing, grows by at most the number of new draws between the two plotted time points, remains between 1 and `n+1`, and starts at one red ball. The final point of each path is at 1,000 draws. **No impossible sampled urn count was found**. This does not prove the 20 paths arose from a valid random-number generator or that all intermediate unplotted draws were reproduced.
+- `ch12-reflection.tex`: verified the nine matched post-barrier coordinate pairs at `t>=4` have identical horizontal positions and heights summing to `2a=2`. The first reflected point is the first hit `(4,1)`. **No mismatch was found**.
+- `ch12-ramsey.tex`: parsed the left-hand coloured `K_5` and checked all 10 distinct edges, five of each colour, and all ten vertex triples: **none is monochromatic**. The later right-hand illustration is not certified by this particular test.
+
+The checks now live in `tools/test_volume4_math_figures.py`; there are **three** new executable tests. These give real independent arithmetic checks on selected stored data but **not a visual or complete 41-figure acceptance**. The book's alternate PDF/EPUB renderings, text contrast, clipping and alt text need separate inspection.
+
 ## Historical independent-review source-identity check
 
 The older `docs/review/volume4-chapter-issue-log.md` records separate Grok-4.7 mathematical rereads at prior commits, but the exact chapter bytes may have changed since then. On the current branch, a GitHub blob-SHA comparison against the historical reviewed refs gave:
