@@ -1,6 +1,20 @@
 # Handoff: Volume 4 rewrite
 
 
+## 8 November 2026 — Chapter 10, The Poisson Clock: writer pass committed; native gates not yet certified
+
+**Printed Chapter 10** is `volume4-chance/chapters/ch09-poisson.tex` (not Chapter 9 despite the filename). Following the already verified Chapter 9 manuscript source `193d203f4bf4315d22702d7f2400e4c696d3c511`, the GPT-6 writer edited Chapter 10 on the **existing** branch `cursor/volume4-rewrite-ee7f`, without touching Volumes 1–3 or shared publishing files. The final revised *source* commit for this pass is **`7c04cde72ccf543bfb5098879c56d37e723620ca`**, Chapter 10 Git blob `fa5afbe2a31858959c6e0288d662d9155d511930`. A dedicated source-and-mathematics review log is at [`docs/review/volume4-ch10-2026-11-08.md`](../review/volume4-ch10-2026-11-08.md), committed at `6a176d56243662f64a5b4201186cf9197fe4d80c`.
+
+**Pedagogy and mathematics:** clarified that rate alone does not imply exponential bus waits; explicit n=0 Poisson count boundary; independent colouring and degenerate thinning endpoints; independent restart proof for superposition without a proof by forward reference; exact competing-clock winner/time independence; finite Bernoulli Le Cam coupling with explicit total-variation notation; an illustrated countable-state M/M/1 queue with a direct coordinate `πK=π` check and independent Poisson-clock mixture, not an unstated finite-to-countable theorem. Added original mathematical **birth/death rates** TikZ diagram `figures/ch10-queue-rates.tex`, top-level `fig:queue-rates`; existing arrival/thinning and inspection diagrams preserved. New method-teaching Exercise 10.8, first arrival conditional on a fixed count, has a matching hint and complete solution. All **eight exercises/eight hints/eight solutions** match; labels preserved. The downstream-required `lem:colouring` remains the **fifth numbered statement**, **Lemma 10.5**.
+
+**Independent calculations and source gate (writer self-review):** exact TV distance between Binomial(20,0.02) and Poisson(0.4) is approximately **0.0043650313**, below the proven bound **0.008**; finite-time inspection interval mean `(2−e^(−λt))/λ` verified by direct integration; M/M/1 stationary balance and means 1/9/99 for loads 1/2, 9/10, 99/100 checked in exact fractions; queue-to-empty stopped expectation checked for multiple finite barriers. LaTeX environments balanced, no duplicated labels, eight exact matching problems/hints/solutions. Added figure separately compiled and raster-inspected at source level. These are **GPT-6 writer self-checks**, not the separate independent review.
+
+**Still open and required:** latest branch HEAD exact native Volume 4 production QA and 15-book CI (including protected Volume 3 conceptual guard), actual PDF/print page-by-page and EPUB-figure/alt artifact inspection, physical Kindle/iOS reading, distinct second mathematical/first-reader reviewer, earlier preface PF-10, and final whole-volume acceptance. At this entry these checks must not be called passed merely because the preceding Chapter 9 checkpoint was successful. No protected fingerprint change is needed for this Chapter 10 source (not tracked by the three inspected manifests). **PR remains draft/unmerged and owner-owned approval boxes unchanged.** Next action: verify current HEAD CI, download and inspect its exact native artifact, record issues/results in the Chapter 10 log and PR; then proceed sequentially to Chapter 11.
+
+---
+
+
+
 ## 8 November 2026 — Chapter 9 final production/CI verification (supersedes the prior pending checkpoints)
 
 **Latest verified *manuscript* source:** `193d203f4bf4315d22702d7f2400e4c696d3c511` on PR #111's `cursor/volume4-rewrite-ee7f` branch; printed Chapter 9 file `volume4-chance/chapters/ch08-markov.tex` has source SHA-256 `c6b10291d5f6382d29bed8d706c4cbc20c7f00ddc62b43f809e1d6235c23fde5`. The recent changes clarify the two-step total-variation comparison after a floating figure. All theorem/exercise labels remain preserved; rising-sequence mean and variance is printed Exercise **9.8**.
