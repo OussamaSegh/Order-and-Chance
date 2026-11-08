@@ -1,5 +1,19 @@
 # Handoff: Volume 4 rewrite
 
+
+## 8 November 2026 — Chapter 9 final production/CI verification (supersedes the prior pending checkpoints)
+
+**Latest verified *manuscript* source:** \`193d203f4bf4315d22702d7f2400e4c696d3c511\` on PR #111's \`cursor/volume4-rewrite-ee7f\` branch; printed Chapter 9 file \`volume4-chance/chapters/ch08-markov.tex\` has source SHA-256 \`c6b10291d5f6382d29bed8d706c4cbc20c7f00ddc62b43f809e1d6235c23fde5\`. The recent changes clarify the two-step total-variation comparison after a floating figure. All theorem/exercise labels remain preserved; rising-sequence mean and variance is printed Exercise **9.8**.
+
+**Both exact-source workflows COMPLETED SUCCESS**: [native V4 #42424916450](https://github.com/OussamaSegh/Order-and-Chance/actions/runs/42424916450), [full-books #42424916468](https://github.com/OussamaSegh/Order-and-Chance/actions/runs/42424916468). Full-books' protected conceptual guard, all 15 book builds and site validation succeeded; deployment **skipped**. Native artifact **13594468647** downloaded and verified: **five of five** packaged file SHA-256 checks match. Reading PDF has **260** physical pages, Chapter 9 **176–191**; KDP print has **259**, Chapter 9 **175–190**. Rendered and visually inspected all **32** Chapter 9 pages, with magnified Figure 9.2 reading p.183/print p.182: diagram, caption, formula and the explicit \`P^2(1,\cdot)\` bridge are legible without clipping/overlap. Native TeX log has no overfull boxes or unresolved reference/compilation warnings.
+
+**EPUB inspected on same artifact:** Chapter 9 \`EPUB/text/ch014.xhtml\`, 707 image occurrences with **zero** broken paths, missing/empty/generic alt descriptions; both original figures are 1800 px wide, responsive and descriptively labelled (chain 1800×1901, coupling 1800×1542). This closes the **C9-11** EPUB alternative-text defect and **C9-12** figure/paragraph flow recheck at the exact source. Details and digests are in [the chapter-specific review log](../review/volume4-ch09-2026-11-07.md), updated in the documentation-only commit \`33521aad9f2359d564a580362a820d96dbdf81af\`. The additional documentation commit made after those successful runs is **not the exact tested SHA**; record its own CI separately.
+
+**Open gates:** no distinct independent Chapter 9 mathematical/first-reader reviewer has signed off; GPT-6 writer self-review cannot satisfy that gate. No physical Kindle/iOS EPUB test. Prior preface PF-10 and whole-book acceptance are open. All owner-controlled PR checklist boxes remain unchanged. PR stays **open, draft, unmerged**. **Next manuscript stage:** printed Chapter 10, *The Poisson Clock*, source \`volume4-chance/chapters/ch09-poisson.tex\`. First inspect the current branch, source, relevant Chapter 9 transitions and downstream numbering/citation contracts; do not rewrite Chapter 9 again without a named defect.
+
+---
+
+
 ## 7 November 2026 — Chapter 9 actual PDF/EPUB verification and last clarity correction
 
 [Native Volume 4 QA #42423834537](https://github.com/OussamaSegh/Order-and-Chance/actions/runs/42423834537) **SUCCEEDED** at `b2e105be8be3bc0d09e18aa62f7a191f202a6106`; artifact `13594439020` was downloaded. Five source-manifest SHA-256 values verified; reading PDF 260 pages (printed Chapter 9 occupies physical pp. 176–191), print PDF 259 pages (Chapter 9 occupies pp. 175–190). All sixteen chapter pages in each PDF rasterized and inspected; Figure 9.2 common-jump coupling appears clearly on reading p.183/print p.182; main TeX log has no overfull boxes or unresolved references. Chapter 9 EPUB has 706 image occurrences, zero missing assets, two 1800px responsive original mathematical plates, and **both plates now have descriptive alternative text and correct figure numbering**. The original generic `alt="Figure"` defect **C9-11 is resolved at this exact tested source**.
