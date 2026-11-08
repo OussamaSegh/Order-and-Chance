@@ -59,10 +59,10 @@ These files were not changed. The new number is what a later edit of that line w
 | Chapter 8, total variation | `volume15-order-and-chance/chapters/ch03-shuffling.tex:396` | Chapter 9, and only for the coupling proof that is actually written. |
 | Lemma 9.5, colouring | `volume12-random-motion/chapters/ch07-levy.tex:25` | Lemma 10.5 (`lem:colouring`). |
 | Chapter 9, Poisson processes | `volume12-random-motion/chapters/ch07-levy.tex:25` | Chapter 10. |
-| Chapter 10, martingale $L^2$ | `volume15-order-and-chance/chapters/ch11-values.tex:115` | Chapter 11. The $L^2$ sentence in that line is Doob's theorem, now Theorem 11.4 (`thm:doob`), not a numbered 10.15. |
-| Theorem 10.15, Doob maximal | `volume12-random-motion/chapters/ch03-martingales.tex:30` and `:129`; `ch04-ito.tex:322` | Theorem 11.4. |
-| Theorem 10.18, $L^2$ convergence | `volume12-random-motion/chapters/ch03-martingales.tex:31` and `:166` | Theorem 11.4 states $L^2$ convergence for a martingale bounded in $L^2$. Confirm the exact sentence before changing the citation; the old 10.18 is not a separate environment. |
-| Theorem 10.24, Azuma | `volume12-random-motion/chapters/ch04-ito.tex:259` | Theorem 11.5 (`thm:azuma`). |
+| Chapter 10, martingale $L^2$ | `volume15-order-and-chance/chapters/ch11-values.tex:115` | Chapter 11. The maximal inequality is now Theorem 11.9 (`thm:doob`); it does not itself state $L^2$ convergence. The cited $L^2$ assertion must be checked separately against Proposition 11.8 (`prop:l2cauchy`) and the later volume's own hypotheses. |
+| Theorem 10.15, Doob maximal | `volume12-random-motion/chapters/ch03-martingales.tex:30` and `:129`; `ch04-ito.tex:322` | **Theorem 11.9** (`thm:doob`), a finite-partition maximal probability inequality. Check the downstream hypothesis before migrating. |
+| Theorem 10.18, $L^2$ convergence | `volume12-random-motion/chapters/ch03-martingales.tex:31` and `:166` | **No matching $L^2$ convergence theorem is proved here.** Proposition **11.8** (`prop:l2cauchy`) proves the square-mean Cauchy criterion under **summable increment variances**, not merely bounded $L^2$ norms. Owner-owned downstream migration or a new proof is needed; do not cite the maximal inequality as a convergence theorem. |
+| Theorem 10.24, Azuma | `volume12-random-motion/chapters/ch04-ito.tex:259` | Theorem **11.10** (`thm:azuma`). |
 | Theorem 11.4, existence of Brownian motion | `volume12-random-motion/chapters/ch01-gaussian.tex:42` | Theorem 12.4 (`thm:levy`). |
 | Proposition 11.5 and 11.7 | `volume12-random-motion/chapters/ch02-paths.tex:32` | Scaling is the fifth numbered environment of Chapter 12, so Proposition 12.5 if the label is `prop:scaling`. The second citation must be re-read against the chapter before a number is assigned. |
 | Theorem 11.8, quadratic variation | `volume12-random-motion/chapters/ch03-martingales.tex:34` and `:302` | Theorem 12.7 (`thm:qv`). |
@@ -70,7 +70,7 @@ These files were not changed. The new number is what a later edit of that line w
 | Exercise 11.3, zero set | `volume12-random-motion/chapters/ch02-paths.tex:170`, `:183`, `:378` | Exercise 12.3 (`ex:zeros`). The solution uses the integral of Chapter 5, not Tonelli. The Volume 12 sentence that says "by Tonelli" overstates the tool. |
 | Chapter 11, Brownian motion and Itô | `volume8-analysis/chapters/ch04-spectral.tex:197`, `:328`, `:392`, `:467`; `volume12-random-motion/chapters/ch04-ito.tex:21` and `:211` | Chapter 12. The Itô formula in Volume 4 is a dyadic expansion, marked as such, and is not the general integral. |
 | Exercise 12.4, crossing lemma | `volume14-primes/chapters/ch11-additive.tex:15`; `volume15-order-and-chance/chapters/conjectures-ch08-geometric.tex:101` | Exercise 13.4. |
-| Theorem B.15, van der Waerden | `volume14-primes/chapters/ch12-roth.tex:15` | Appendix B has five numbered theorems (Turán, Ramsey, Schur, sunflower, EKR). Van der Waerden is not among them. |
+| Theorem B.15, van der Waerden | `volume14-primes/chapters/ch12-roth.tex:15` | Appendix B has **six** numbered theorems. Theorem **B.6** (`thm:vdw3`) proves only **two colours, three-term progressions on 1–9**. It does **not** prove general van der Waerden. The downstream reference cannot be fixed by replacing B.15 with B.6 without narrowing its claim. |
 | Buffon, Chapter 1 | `volume9-shapes/chapters/ch10-integral.tex:124` | Chapter 5 (`thm:buffon`). |
 | Chapter 6, Gaussian law | `volume8-analysis/chapters/ch02-hilbert.tex:276` | Still Chapter 6. |
 | Theorem 4.5, Weierstrass | `volume8-analysis/chapters/ch10-semicircle.tex:103` | Still Theorem 4.5. |
@@ -82,3 +82,12 @@ The minimal repairs are the rows above whose "New number" differs from the
 printed citation, plus the four rows marked as absent (inversion 6.8, arcsine
 7.7, shuffle labels 8.10/8.22/8.23/8.24, van der Waerden B.15). Those four
 need an owner decision: add a proved statement, or retarget the later book.
+
+
+## 8 November 2026 source-counter reconciliation (PR #111)
+
+The printed number is determined by `common/interior-boxes.tex`: theorem, proposition, lemma, corollary and definition **share** one chapter counter, while `examplex`, `definitionx` and `corollaryx` do not increment it. Direct enumeration of the current Chapter 11 `ch10-martingales.tex` gives `prop:l2cauchy` = **Proposition 11.8**, `thm:doob` = **Theorem 11.9**, `thm:azuma` = **Theorem 11.10** and `thm:monkey` = **Theorem 11.11**. Earlier values 11.4 and 11.5 in this migration file were stale and are now corrected above.
+
+The Chapter 12 manuscript was reconciled to the downstream numbering contract **without removing the Gaussian fourth-moment calculation**: `thm:levy` = **12.4**, `prop:scaling` = **12.5**, `lem:squares` = **12.6**, `thm:qv` = **12.7**, `thm:reflection` = **12.12**. The finite-variation consequence formerly labelled `cor:variation` is still proved and displayed, but as an unnumbered `corollaryx` in order not to move the later externally cited reflection theorem. The previous local `cor:variation` numbered label was removed; search of the indexed repository's code found no external reference to that label. Check the exact final source against native production before considering these numbers accepted.
+
+Appendix B includes **B.6**, the limited two-colour/three-term progression result. General van der Waerden is not proved. These clarifications are a migration ledger, not authorization to edit Volumes 5–15 or mark their stale references repaired.
