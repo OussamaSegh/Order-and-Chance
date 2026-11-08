@@ -157,5 +157,26 @@ class TestVolume4MathAudit(unittest.TestCase):
             )
 
 
+    def test_polya_uses_proved_taylor_remainder_bound(self):
+        """The recurrence proof must not silently use a located-point theorem."""
+        from math import cos
+
+        source = (CHAPTERS / "ch07-walks.tex").read_text(encoding="utf-8")
+        proof = source.split(r"\label{thm:polya}", 1)[1].split(
+            r"\end{proof}", 1
+        )[0]
+        self.assertIn("Taylor--Lagrange inequality proved in Volume~1", proof)
+        self.assertIn(r"|r(u)|\le |u|^4/24", proof)
+        self.assertNotIn(r"\cos\xi", proof)
+
+        # The actual inequality, not merely its phrasing, is checked
+        # on both sides of zero and at the near-origin boundary.
+        for u in (-2.0, -1.5, -1.0, -0.5, -0.01, 0.0,
+                   0.01, 0.5, 1.0, 1.5, 2.0):
+            self.assertLessEqual(
+                abs(cos(u) - 1 + u * u / 2), abs(u) ** 4 / 24 + 1e-15
+            )
+
+
 if __name__ == "__main__":
     unittest.main()
