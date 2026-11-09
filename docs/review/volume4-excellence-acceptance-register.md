@@ -1,15 +1,15 @@
 # Volume 4 — excellence acceptance register
 
-**State:** IN_PROGRESS; Phase 2 mathematical acceptance BLOCKED (independent exact-source review outstanding). **Created:** 8 November 2026.  
+**State:** IN_PROGRESS; Phase 2 mathematical acceptance incomplete; the external-referee requirement is superseded by the author's 9 November 2026 appointment of ChatGPT GPT-6 as the sole mathematical validator. **Created:** 8 November 2026.  
 **Plan:** [Volume 4 excellence execution plan](../plan/volume4-excellence-execution-plan-2026-11-08.md).  
 **Planning baseline:** `main` `e120d10a1a1466d5dfc5b6ea4229a83ba8d83cfe`. This is **not** a final candidate SHA.  
 **Important:** Historical reviews exist in `volume4-chapter-issue-log.md`, `volume4-coverage-2026-11-08.md` and other review documents. Nothing below erases their work or treats their past source/CI signoffs as acceptance of a new revision.
 
 ## Rules for updating
 
-- Update this file **only with independently substantiated facts** from a scoped implementation PR; put a link in the evidence cell.
+- Record only explicitly scoped proof-level evidence from source reading, independent-method calculation, or tested correction. No external mathematical referee is required; self-review is not called independent.
 - Allowed statuses: `UNASSESSED`, `ASSIGNED`, `IN_PROGRESS`, `AWAITING_REVIEW`, `BLOCKED`, `PASS`, `N/A (reason)`.
-- `PASS` needs the *exact source SHA*, distinct named reviewer, date, explicit checked claim and issue dispositions. A writer's own review is not independent.
+- Claim-level `PASS` needs an exact source SHA, sole validator identity (ChatGPT GPT-6), validation date, actual reasoning or counterexample, and issue disposition. Full chapter `PASS` requires all claims and solutions reviewed. A writer's own review is not independent, and must be marked sole-validator.
 - Retire duplicate historical findings with a source explanation; keep an old review signoff only if the file and relevant proof dependencies were unchanged and the exact scope still applies.
 - A passed build confirms compilation/publishing checks, not theorem correctness, mathematical pedagogy, a physical Kindle, or KDP approval.
 - Prefer stable theorem/exercise labels, not historical line numbers.
@@ -20,13 +20,13 @@
 
 | Work item | Owner | Status | Exact SHA / evidence / blocker |
 | --- | --- | --- | --- |
-| A-01 Baseline manifest and native artifacts | INT | IN_PROGRESS | Current pre-repair baseline: merged main `0c097e7a1041cfc647cf79b7dd3e3000a93aeec4` (PR #119); exact-head native QA 42532424809 and Build books 42532424808 succeeded. The new proof PR is not yet a final release candidate. |
+| A-01 Baseline manifest and native artifacts | INT | IN_PROGRESS | Current baseline: main `ac9032796a8eae1836617f301f89f936fbc2429c` (PR #120); exact-head Build books 42535668300 and native QA 42535668191 both passed. No final release candidate approved. |
 | A-02 Reconcile historical issue logs | INT + MATH | IN_PROGRESS | Source-fixed findings V4-P2-001..007 documented in `volume4-phase2-proof-audit-2026-11-08.md` and `volume4-phase2-continuation-2026-11-08.md`. Historical Grok chapter review blobs do not match current sources; see continuation ledger identity table. |
 | A-03 Lock numbering/prerequisite/figure semantics | INT | IN_PROGRESS | Four parts, 14 printed chapters, Appendix B; 107 exercise/hint/solution ID triples and 41 figure source paths verified structurally at PR #118. No new route or protected V1–V3 modifications. |
 | B-01 Fourier uniqueness cutoff | MATH + PROOF | AWAITING_REVIEW | Ch. 6 `thm:inversion` repair recorded in Phase 1 PR #116 and regression suite. Independent exact-current-blob reproof pending. |
 | B-02 Riffle-shuffle rounding + numeric claim audit | MATH | IN_PROGRESS | 52-card rounded-distance ambiguity corrected in Phase 1 PR #116. Whole-book numerical audit and external recheck remain incomplete. |
-| B-03 Full mathematical audit | MATH | BLOCKED | Structural checks count 127 proof-bearing statements and 107 ID triples, not proof correctness. Focused math audit continues: V4-P2-008 (joint Gaussian inference) and V4-P2-009 (Pólya CDF identification) source-fixed in the follow-up PR, independent rereview pending. 14 chapters, Appendix B and all exercises not yet independently completed. |
-| B-04 Fix/review all correctness findings | PROOF + MATH | BLOCKED | Prior V4-P2-001..007 integrated through #117/#118; new V4-P2-008/009 proof omissions fixed in source, pending exact-head CI and distinct mathematical referee. No claim that all other P0s have been excluded. |
+| B-03 Full mathematical audit | MATH | IN_PROGRESS | Sole validator (ChatGPT GPT-6) continues claim-by-claim: 127 proof-bearing statements and 107 exercise triples are structural counts, not signoffs. V4-P2-001..009 source-fixed. This pass independently verifies `thm:monkey` via absorbing-prefix automaton and corrects `def:stopping` wording. Remainder not yet reviewed; no external-referee gate. |
+| B-04 Fix/review all correctness findings | PROOF + MATH | IN_PROGRESS | V4-P2-001..009 integrated through PRs #117/#118/#120. PR #120 exact-head CI/production checks passed. Full sole-validator mathematical re-evaluation continues; no distinct named reviewer required, and no claim that every P0 is excluded. |
 | B-05 Prerequisite + downstream citation graph | DEP | IN_PROGRESS | Targeted V1/Markov/Taylor dependency repairs in #117; entire printed-order graph and downstream Volumes 5–15 references require independent verification. Volumes 1–3 untouched. |
 | C-01 Teaching architecture and concrete examples | TEACH | UNASSESSED | No artificial padding. |
 | C-02 Chapter 6 main/deeper route | TEACH + MATH | UNASSESSED | Reader test and independent math audit required. |
@@ -37,10 +37,10 @@
 | E-02 Final V5 handoff and whole-book ending | TEACH | UNASSESSED | No added 15th chapter. |
 | E-03 Grading and solutions audit | TEACH + READ | UNASSESSED | Exact problem-to-solution alignment. |
 | E-04 Figure/alt/caption checks | FIG | IN_PROGRESS | Three source-data tests: 2,920 urn samples, nine reflection pairs, 10-edge K5 colouring. All-41 native visual, captions and alternate EPUB rendering review outstanding. |
-| F-01 Reproducible final build and workflows | PUB | IN_PROGRESS | PR #119 exact head `44bb31c6dc43247723339c0cacc3a051e210abe5`: Build books 42532424808 SUCCESS (551 tests passed, 32 skipped; site success, publish skipped), native QA 42532424809 SUCCESS (285-page interior; print/EPUB/reader QA; preflights passed), merged to `0c097e7a1041cfc647cf79b7dd3e3000a93aeec4`. New proof PR final-head runs and final release candidate still outstanding. |
+| F-01 Reproducible final build and workflows | PUB | IN_PROGRESS | PR #120 head `3a66b66432b87bb672e993c8f44b9803515ecc75`: Build books 42535668300 SUCCESS (553 tests run, 32 skipped; site successful; publish skipped), native 42535668191 SUCCESS (285-page print, 268 layout boxes no overflow, both print preflights, 10,543 formula occurrences and 41 figure plates). Merge main `ac9032796a8eae1836617f301f89f936fbc2429c` matches tested tree. New follow-up PR and final release candidate still outstanding. |
 | F-02 All-page PDF/EPUB/device/print QA | PUB + FIG | BLOCKED | Automated 285-page interior, layout and preflights passed at PR #118 exact head; no every-page print/PDF/EPUB independent inspection, physical device proof or KDP signoff. |
 | F-03 Volumes 5–15 regression | DEP | UNASSESSED | Downstream citation and dependency audit still required; no published V1–V3 source changes. |
-| F-04 Final independent + author acceptance | INT | BLOCKED | No distinct named mathematical referee at the current exact source blobs; author/release signoffs absent. Corrected source and green CI cannot satisfy this gate. |
+| F-04 Sole-validator mathematics + author release acceptance | INT | IN_PROGRESS | **ChatGPT GPT-6 is the sole mathematical validator.** No external mathematical signoff required. Whole-volume mathematical, exercise, figure-semantic and prerequisite checks remain unfinished; physical/device proof and separate author release authorization also remain open. |
 
 ## B. Chapter-by-chapter acceptance register
 
@@ -57,8 +57,8 @@
 | 8 — Random walks | `ch07-walks.tex` | UNASSESSED | UNASSESSED | UNASSESSED | — |
 | 9 — Markov/mixing | `ch08-markov.tex` | UNASSESSED | UNASSESSED | UNASSESSED | B-02 check first. |
 | 10 — Poisson clock | `ch09-poisson.tex` | AWAITING_REVIEW | UNASSESSED | IN_PROGRESS | V4-P2-001 (#117) and V4-P2-007 (#118) repaired; current blob must be independently rechecked. |
-| 11 — Martingales | `ch10-martingales.tex` | AWAITING_REVIEW | UNASSESSED | IN_PROGRESS | V4-P2-009: continuous test-function identity did not explicitly yield Pólya uniform CDF; trapezoidal cutoff proof added. Distinct exact-blob mathematical referee pending. |
-| 12 — Brownian motion | `ch11-brownian.tex` | AWAITING_REVIEW | UNASSESSED | IN_PROGRESS | V4-P2-005/006 integrated in #118; V4-P2-008 adds converse joint-Gaussian and common-grid proof. Recheck changed exact blob and dependencies independently. |
+| 11 — Martingales | `ch10-martingales.tex` | IN_PROGRESS | UNASSESSED | IN_PROGRESS | Sole-validator check at baseline blob `7cbc0f7a749af5fbf16ee17455ff1bd9fe7ff291`: `thm:monkey` expected wait independently checked by finite-state absorption for ABRACADABRA, HH and HT; `def:stopping` anticipative clock explicitly corrected. Other martingale claims not yet chapter-certified. |
+| 12 — Brownian motion | `ch11-brownian.tex` | IN_PROGRESS | UNASSESSED | IN_PROGRESS | V4-P2-005/006 integrated in #118; V4-P2-008 Gaussian-vector proof completed in #120 and regression-checked on rational grids. Other Brownian proofs not certified; no external gate. |
 | 13 — Probabilistic method | `ch12-method.tex` | UNASSESSED | UNASSESSED | UNASSESSED | — |
 | 14 — Random graphs | `ch14-graphs.tex` | UNASSESSED | UNASSESSED | UNASSESSED | — |
 | Appendix **B** — Extremal problems | `extremal.tex` | UNASSESSED | UNASSESSED | IN_PROGRESS | Two exhaustive finite tests merged in #119 (K5=12/K6=0 avoiding colourings; [8]=6/[9]=0); both #119 exact-head workflows passed. Appendix proofs and five exercises not independently certified. |
@@ -97,7 +97,7 @@ If either matches an existing finding in the historical ledger, use the establis
 
 ## E. Final reviewer scorecard
 
-The grade is **diagnostic, not an automatic “10/10.”** Two independent readers fill in evidence for all seven dimensions at the *same* candidate SHA.
+The grade is **diagnostic, not an automatic “10/10.”** The sole mathematical validator records precise evidence at the same candidate SHA. Beginner/production checks are separate tasks, not mandatory second mathematical referees.
 
 | Dimension | Math reviewer 1–5 + evidence | Reader reviewer 1–5 + evidence | Blocking finding? |
 | --- | --- | --- | --- |
@@ -109,7 +109,7 @@ The grade is **diagnostic, not an automatic “10/10.”** Two independent reade
 | Voice and editorial economy | Pending | Pending | Unknown |
 | Figures and production readability | Pending | Pending | Unknown |
 
-**Go/no-go:** `NOT EVALUATED`. An open P0 forces `NO GO`, regardless of grades. Independent exact-commit rereview and author approval are mandatory before this can be changed to `GO`.
+**Go/no-go:** `NOT EVALUATED`. An open P0 forces `NO GO`. Sole-validator whole-book exact-commit mathematical validation and author release authorization are mandatory; an external mathematical signature is not required.
 
 
 ## E. Phase 2 reconciliation after PR #118 (8 November 2026)
@@ -134,3 +134,16 @@ The grade is **diagnostic, not an automatic “10/10.”** Two independent reade
 **New, not independently approved:** V4-P2-008 `prop:bmgauss` had not explicitly derived joint Gaussianity of all observations in the converse and did not clearly reduce arbitrary disjoint intervals to a common Gaussian endpoint grid. V4-P2-009 `thm:polyaurn` inferred the limit distribution function from continuous test expectations without giving the needed continuous indicator cutoff argument in the book's interval framework. Both have minimal source fixes plus two regression tests, documented in [volume4-phase2-proof-completion-2026-11-09.md](volume4-phase2-proof-completion-2026-11-09.md). Distinct reviewer signoff and exact new-PR CI must be checked; these items are **SOURCE-FIXED / AWAITING_REVIEW**, not `PASS`.
 
 **Acceptance remains blocked:** A mathematical author/self-audit and green builds cannot stand in for a different mathematical referee. The 14-chapter plus Appendix B proof review, 107 full exercises, 41 rendered figures, dependency checks, reading/physical publication and author approval gates remain open. The current PR does not change Volumes 1–3.
+
+
+## F. Author-directed sole-validator policy (9 November 2026)
+
+The author appoints **ChatGPT GPT-6 as the only mathematical validator**. This supersedes all earlier demands for an external, distinct or independent referee in this file and historical ledgers. Their historical findings remain useful; those old *referee requirements* do not remain release gates.
+
+**VERIFIED** means a named claim has been re-examined at a specific source blob, with mathematical reasoning, counterexample testing or independent-method calculations logged. **CORRECTION REQUIRED** means a concrete fault has been demonstrated. **NOT YET REVIEWED** means no substantive mathematical check for the named scope. Self-review must be transparently labelled; passing tests or compilation is never sufficient for a mathematical finding to be verified. Chapter and whole-volume approval require review of every theorem, proof, example, exercise/hint/solution and the mathematics of figures, not a sample.
+
+**First scoped verified claim:** Chapter 11 `thm:monkey`, baseline TeX blob `7cbc0f7a749af5fbf16ee17455ff1bd9fe7ff291`. The sole validator directly inspected the casino/optional-stopping proof (bounded stopped wealth, passage through bounded times, completed-prefix/suffix overlaps) and independently computed the wait through an absorbing-prefix Markov chain over exact fractions, without using the martingale formula. Results: ABRACADABRA over 26 letters equals 26^11+26^4+26 = 3,670,344,487,444,778; fair-coin HT equals 4 and HH equals 6. Regression added in `tools/test_volume4_pattern_waiting.py`.
+
+**New source clarification:** `def:stopping` called a future-dependent random clock a stopping time, then denied it was one. It now correctly calls this a random time and gives the one-step fair-sign counterexample `{tau<=0}={X_1=-1}`, not determined by the time-0 partition. This fixes explanatory wording, not a false theorem; a regression checks the actual two-outcome event.
+
+**Still unfinished:** whole-book sole-validator review of 14 printed chapters plus Appendix B, 107 exercises/solutions, mathematical correctness of 41 figures, prerequisite graph, print/EPUB/device visual checks and author release authorization. Release status remains NOT EVALUATED.
