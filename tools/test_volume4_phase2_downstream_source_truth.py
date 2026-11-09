@@ -71,5 +71,20 @@ class TestDownstreamSourceTruth(unittest.TestCase):
                 self.assertLessEqual(float(actual), bound + 1e-13)
 
 
+    def test_additional_downstream_number_and_scope_reconciliations(self):
+        modular = source("volume6-crossroads/chapters/ch12-modular.tex")
+        spectral = source("volume12-random-motion/chapters/spectral.tex")
+        euler = source("volume15-order-and-chance/chapters/ch11-values.tex")
+        logcorr = source("volume12-random-motion/chapters/ch12-logcorrelated.tex")
+        self.assertNotIn("Volume~4, Theorems~4.11 and~6.10", modular)
+        self.assertIn("Volume~4, Theorems~4.4 and~6.10", modular)
+        self.assertNotIn("Cayley's formula again (Volume~4, Chapter~12)", spectral)
+        self.assertIn("Cayley's formula, now recovered", spectral)
+        self.assertIn("general-filtration martingale convergence theorem of Volume~11", euler)
+        self.assertIn("finite interval partitions", euler)
+        self.assertIn("Volume~11, Theorem~9.2", logcorr)
+        self.assertIn("restricted finite-interval-partition case", logcorr)
+
+
 if __name__ == "__main__":
     unittest.main()
