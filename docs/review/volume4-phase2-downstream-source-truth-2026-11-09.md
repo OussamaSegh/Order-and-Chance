@@ -22,6 +22,16 @@
 | DEP-19 | `volume15-order-and-chance/chapters/ch11-values.tex` | A complex random-Euler-product martingale uses the *general* probability-filtration `L²` theorem and credited Volume 4, Chapter 11 (where the theorem is proved only on finite half-open interval partitions). | Cite the general-filtration Volume 11 martingale theorem and the orthogonal-increment `L²` Cauchy criterion. |
 | DEP-20 | `volume12-random-motion/chapters/ch12-logcorrelated.tex` | Another general `L²`-bounded martingale convergence claim is attributed directly to restricted V4 Theorem 11.12. | Cite Volume 11 Theorem 9.2 for a.s. general-filtration convergence and explain the `L²` upgrade from orthogonality. |
 
+
+## Additional independent-series proof repair
+
+| ID | Live downstream source | Defect | Correct mathematics |
+| --- | --- | --- | --- |
+| DEP-21 | `volume11-randomness/chapters/ch01-zero-one.tex`, `prop:l2series` | The proof simply invoked Volume 4 Theorem 11.12 for arbitrary independent mean-zero finite-variance summands, despite that V4 theorem being restricted to finite interval partitions. The reminder also cited obsolete Theorem 10.18. | Prove the full result directly: let `v_N=Σ_(k>N)E X_k²→0`; choose `N_j` with `v_(N_j)≤2^(-4j)`. The finite-tail Kolmogorov maximal inequality yields `P(sup_(m>N_j)|S_m-S_(N_j)|≥2^(-j))≤2^(-2j)` by probability continuity from below. Borel–Cantelli implies pathwise Cauchy convergence; exact increment orthogonality makes the partial sums `L²`-Cauchy and identifies the limit. This does not import the general-filtration L² theorem from Volume 4. |
+| DEP-22 | `volume11-randomness/chapters/ch09-martingales.tex` | Two later Gaussian-series proof/hint uses of V4 Theorem 11.12 were similarly out of scope; introduction omitted the finite-partition qualification. | Use newly self-contained Chapter 1 `prop:l2series` for the independent centred Gaussian series with square-summable coefficients; qualify the V4 chapter-level introduction. |
+
+Finite independent-sign maximal-event enumeration is included in the downstream regression file, supplementing the mathematical Kolmogorov/Borel–Cantelli proof and not substituting for it.
+
 ## Verification and invariants
 
 - Tests: `tools/test_volume4_phase2_downstream_source_truth.py` pins each concrete correction, verifies the cited general-filtration theorem actually exists in Volume 11, and independently enumerates small weighted-bit sums to check the bounded-differences tail against an Azuma upper bound. Finite tests are arithmetic corroboration, not unrestricted mathematical proof verification.
