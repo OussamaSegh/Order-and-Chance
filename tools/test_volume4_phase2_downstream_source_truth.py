@@ -86,5 +86,35 @@ class TestDownstreamSourceTruth(unittest.TestCase):
         self.assertIn("restricted finite-interval-partition case", logcorr)
 
 
+    def test_general_independent_series_has_real_maximal_inequality_proof(self):
+        ch1 = source("volume11-randomness/chapters/ch01-zero-one.tex")
+        ch9 = source("volume11-randomness/chapters/ch09-martingales.tex")
+        self.assertIn(r"\label{prop:l2series}", ch1)
+        block = ch1.split(r"\label{prop:l2series}", 1)[1].split(r"\end{proof}", 1)[0]
+        self.assertNotIn("Volume~4, Theorem~11.12 applies", block)
+        self.assertIn("Kolmogorov's maximal inequality", block)
+        self.assertIn("Borel--Cantelli", block)
+        self.assertIn("Cauchy in $L^2$", block)
+        self.assertIn(r"Proposition~\ref{prop:l2series}", ch9)
+        self.assertNotIn("by Volume~4, Theorem~11.12", ch9)
+        self.assertNotIn("Theorem~10.18", ch1)
+
+    def test_exact_finite_tail_maximal_inequality(self):
+        # Independent centred fair signs: check Kolmogorov's bound exactly.
+        for weights in [(1, 1, 1), (1, 2, 1, 2), (1, 2, 3, 1, 1)]:
+            variance = Fraction(sum(w * w for w in weights))
+            for a in (1, 2, 3, 4, 5):
+                violations = 0
+                for signs in product((-1, 1), repeat=len(weights)):
+                    partial = 0
+                    maximal = 0
+                    for w, s in zip(weights, signs):
+                        partial += w * s
+                        maximal = max(maximal, abs(partial))
+                    violations += maximal >= a
+                prob = Fraction(violations, 2 ** len(weights))
+                self.assertLessEqual(prob, variance / (a * a))
+
+
 if __name__ == "__main__":
     unittest.main()
