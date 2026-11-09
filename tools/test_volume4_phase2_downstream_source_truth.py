@@ -126,5 +126,41 @@ class TestDownstreamSourceTruth(unittest.TestCase):
         self.assertIn("Jensen's inequality and harmonic numbers (Volume~1)", dependent)
 
 
+    def test_printed_v4_number_contract_in_live_v11(self):
+        lln = source("volume11-randomness/chapters/ch02-lln.tex")
+        donsker = source("volume11-randomness/chapters/ch03-donsker.tex")
+        mart = source("volume11-randomness/chapters/ch09-martingales.tex")
+        zeros = source("volume11-randomness/chapters/ch01-zero-one.tex")
+        stein = source("volume11-randomness/chapters/ch06-stein.tex")
+        large = source("volume11-randomness/chapters/ch07-ldp.tex")
+        for doc in (lln, donsker, mart):
+            self.assertNotIn("Volume~4, Theorem~11.3", doc)
+        self.assertIn("Volume~4, Theorem~11.4", lln)
+        self.assertIn("Volume~4, Theorem~11.4", donsker)
+        self.assertIn(r"\mathbf1_{\{J\ge j\}}", donsker)
+        self.assertIn("conditional mean zero", donsker)
+        self.assertIn("Volume~4, Theorem~11.5", mart)
+        self.assertNotIn("case~(c)", mart)
+        self.assertNotIn("Theorem~10.21", zeros)
+        self.assertIn("Theorem~11.13", zeros)
+        self.assertNotIn("Volume~4, Proposition~1.8", stein)
+        self.assertIn("Volume~4, Exercise~1.1", stein)
+        self.assertNotIn("Volume~4, Theorem~4.7", large)
+        self.assertIn(r"\theta_x=\ln\frac{x(1-p)}{p(1-x)}", large)
+        self.assertIn("matching lower bound follows", large)
+
+    def test_bernoulli_rate_upper_bound_exact_finite_cases(self):
+        from math import comb, log
+        for p, a in ((Fraction(1,4), Fraction(1,2)),
+                     (Fraction(1,3), Fraction(2,3)),
+                     (Fraction(1,2), Fraction(3,4))):
+            x, y = float(p), float(a)
+            I = y*log(y/x) + (1-y)*log((1-y)/(1-x))
+            for n in (6, 12, 18):
+                tail = sum((Fraction(comb(n,k))*p**k*(1-p)**(n-k)
+                           for k in range((n*a).__ceil__(), n+1)), Fraction())
+                self.assertLessEqual(float(tail), exp(-n*I) + 1e-13)
+
+
 if __name__ == "__main__":
     unittest.main()
