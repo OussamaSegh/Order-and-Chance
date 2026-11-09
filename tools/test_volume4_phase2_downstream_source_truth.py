@@ -116,5 +116,15 @@ class TestDownstreamSourceTruth(unittest.TestCase):
                 self.assertLessEqual(prob, variance / (a * a))
 
 
+    def test_finite_conditional_expectation_and_jensen_citation(self):
+        original = source("volume4-chance/chapters/ch10-martingales.tex")
+        dependent = source("volume6-crossroads/chapters/ch10-random.tex")
+        self.assertIn(r"\begin{definition}", original)
+        self.assertIn(r"\label{def:condexp}", original)
+        self.assertNotIn("Volume~4, Theorem~4.14", dependent)
+        self.assertIn("Volume~4, Definition~11.1", dependent)
+        self.assertIn("Jensen's inequality and harmonic numbers (Volume~1)", dependent)
+
+
 if __name__ == "__main__":
     unittest.main()
