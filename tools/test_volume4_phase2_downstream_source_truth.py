@@ -93,6 +93,9 @@ class TestDownstreamSourceTruth(unittest.TestCase):
         block = ch1.split(r"\label{prop:l2series}", 1)[1].split(r"\end{proof}", 1)[0]
         self.assertNotIn("Volume~4, Theorem~11.12 applies", block)
         self.assertIn("Kolmogorov's maximal inequality", block)
+        self.assertIn(r"\sup_{m>N_j}|S_m-S_{N_j}|>2^{-j}", block)
+        self.assertIn("even if the supremum is never attained", block)
+        self.assertIn(r"|S_m-S_n|\le2^{1-j}", block)
         self.assertIn("Borel--Cantelli", block)
         self.assertIn("Cauchy in $L^2$", block)
         self.assertIn(r"Proposition~\ref{prop:l2series}", ch9)
