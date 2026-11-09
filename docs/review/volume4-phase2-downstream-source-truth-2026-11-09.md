@@ -32,6 +32,12 @@
 
 Finite independent-sign maximal-event enumeration is included in the downstream regression file, supplementing the mathematical Kolmogorov/Borel–Cantelli proof and not substituting for it.
 
+## Further exact-number correction
+
+| ID | Live downstream source | Defect | Resolution |
+| --- | --- | --- | --- |
+| DEP-23 | `volume6-crossroads/chapters/ch10-random.tex`, Hawkins-sieve exercise tools | Invokes **Volume 4 Theorem 4.14** for conditional expectation and Jensen, but printed Volume 4 Chapter 4 has only six numbered proof statements (4.1–4.6). Jensen is proved earlier in Volume 1; finite-history conditional expectation is defined in Volume 4 Definition 11.1. | Correct the reading path to V4 Definition 11.1 for finite-history conditional expectation and Volume 1 for Jensen and harmonic numbers; add regression guarding the actual source and forbidding the imaginary theorem. |
+
 ## Verification and invariants
 
 - Tests: `tools/test_volume4_phase2_downstream_source_truth.py` pins each concrete correction, verifies the cited general-filtration theorem actually exists in Volume 11, and independently enumerates small weighted-bit sums to check the bounded-differences tail against an Azuma upper bound. Finite tests are arithmetic corroboration, not unrestricted mathematical proof verification.
