@@ -24,9 +24,9 @@
 | A-02 Reconcile historical issue logs | INT + MATH | IN_PROGRESS | Source-fixed findings V4-P2-001..007 documented in `volume4-phase2-proof-audit-2026-11-08.md` and `volume4-phase2-continuation-2026-11-08.md`. Historical Grok chapter review blobs do not match current sources; see continuation ledger identity table. |
 | A-03 Lock numbering/prerequisite/figure semantics | INT | IN_PROGRESS | Four parts, 14 printed chapters, Appendix B; 107 exercise/hint/solution ID triples and 41 figure source paths verified structurally at PR #118. No new route or protected V1–V3 modifications. |
 | B-01 Fourier uniqueness cutoff | MATH + PROOF | AWAITING_REVIEW | Ch. 6 `thm:inversion` repair recorded in Phase 1 PR #116 and regression suite. Independent exact-current-blob reproof pending. |
-| B-02 Riffle-shuffle rounding + numeric claim audit | MATH | IN_PROGRESS | 52-card rounded-distance ambiguity corrected in Phase 1 PR #116. Whole-book numerical audit and external recheck remain incomplete. |
-| B-03 Full mathematical audit | MATH | IN_PROGRESS | Sole validator (ChatGPT GPT-6) continues claim-by-claim: 127 proof-bearing statements and 107 exercise triples are structural counts, not signoffs. V4-P2-001..009 source-fixed. This pass independently verifies `thm:monkey` via absorbing-prefix automaton and corrects `def:stopping` wording. Remainder not yet reviewed; no external-referee gate. |
-| B-04 Fix/review all correctness findings | PROOF + MATH | IN_PROGRESS | V4-P2-001..009 integrated through PRs #117/#118/#120. PR #120 exact-head CI/production checks passed. Full sole-validator mathematical re-evaluation continues; no distinct named reviewer required, and no claim that every P0 is excluded. |
+| B-02 Riffle-shuffle rounding + numeric claim audit | MATH | IN_PROGRESS | Exact 52-card distances corrected in #116. Additional independently reproduced 1,000-coin tail, Ramsey alteration, crossing count and Huffman block code in new Phase 2 finite-exercise ledger. Still not a full numerical audit. |
+| B-03 Full mathematical audit | MATH | IN_PROGRESS | Sole mathematical validator ChatGPT GPT-6: 127 proof-bearing assertions and 107 exercise/hint/solution triples remain the comprehensive target. V4-P2-001..010 source-fixed in #117–#121. Independent finite cross-checks in 9 new tests cover ballot/Catalan, arcsine/ruin, permutations/Quicksort/coupon collector, Huffman, Markov, random graphs and numeric bounds. This is not a full theorem-by-theorem proof approval. External referee not required. |
+| B-04 Fix/review all correctness findings | PROOF + MATH | IN_PROGRESS | Source defects V4-P2-001..010 corrected and merged through PR #121; sole-validator audit of all current claims incomplete. In this follow-up no new definite mathematical defect established; exact finite tests and rendered artifact inspection added. Do not equate no counterexample with proof or call Phase 2 complete. |
 | B-05 Prerequisite + downstream citation graph | DEP | IN_PROGRESS | Targeted V1/Markov/Taylor dependency repairs in #117; entire printed-order graph and downstream Volumes 5–15 references require independent verification. Volumes 1–3 untouched. |
 | C-01 Teaching architecture and concrete examples | TEACH | UNASSESSED | No artificial padding. |
 | C-02 Chapter 6 main/deeper route | TEACH + MATH | UNASSESSED | Reader test and independent math audit required. |
@@ -35,10 +35,10 @@
 | C-05 Two reader-comprehension tests | READ | UNASSESSED | Include source location and retest result. |
 | E-01 Four part transitions/syntheses | TEACH | UNASSESSED | Mathematics-specific rather than templates. |
 | E-02 Final V5 handoff and whole-book ending | TEACH | UNASSESSED | No added 15th chapter. |
-| E-03 Grading and solutions audit | TEACH + READ | UNASSESSED | Exact problem-to-solution alignment. |
-| E-04 Figure/alt/caption checks | FIG | IN_PROGRESS | Three source-data tests: 2,920 urn samples, nine reflection pairs, 10-edge K5 colouring. All-41 native visual, captions and alternate EPUB rendering review outstanding. |
-| F-01 Reproducible final build and workflows | PUB | IN_PROGRESS | PR #120 head `3a66b66432b87bb672e993c8f44b9803515ecc75`: Build books 42535668300 SUCCESS (553 tests run, 32 skipped; site successful; publish skipped), native 42535668191 SUCCESS (285-page print, 268 layout boxes no overflow, both print preflights, 10,543 formula occurrences and 41 figure plates). Merge main `ac9032796a8eae1836617f301f89f936fbc2429c` matches tested tree. New follow-up PR and final release candidate still outstanding. |
-| F-02 All-page PDF/EPUB/device/print QA | PUB + FIG | BLOCKED | Automated 285-page interior, layout and preflights passed at PR #118 exact head; no every-page print/PDF/EPUB independent inspection, physical device proof or KDP signoff. |
+| E-03 Grading and solutions audit | TEACH + READ | IN_PROGRESS | Nine independent exact/exhaustive verification groups implemented in tools/test_volume4_phase2_independent_finite_exercises.py, covering specific examples and exercises from Chapters 1, 2, 3, 4, 6, 7, 8, 9, 13, 14. Full 107-triple mathematical verification and reader grading pending. |
+| E-04 Figure/alt/caption checks | FIG | IN_PROGRESS | Inspected PR #121 actual native EPUB: 41 embedded plates at 1800px, 41 HTML references with descriptive nonempty alt; reviewed 41-plate visual contact sheet and selected plates at full resolution. In actual print PDF 40 captions searchable plus Figure 13.1 visibly present on rasterized page 254. Detailed mathematical figure-by-figure semantics and real reader/device audits still open. |
+| F-01 Reproducible final build and workflows | PUB | IN_PROGRESS | PR #121 exact head 65fe77578dd8bca97f07207dd8e3651c99383aae: Build books 42584550745 SUCCESS (556 tests run, 32 skipped, 0 failures; site passed, publish skipped); native QA 42584550749 SUCCESS (285 interior pages, 268 whole boxes, both print preflights, EPUB and 41 plates). Merged main aed472c74eeb8a97361d6743a5c60f64179ea3cf has same tree. New math/figure follow-up PR has its own exact-head checks pending. |
+| F-02 All-page PDF/EPUB/device/print QA | PUB + FIG | BLOCKED | Actual PR #121 print PDF inspected programmatically on all 285 pages: no text blocks out of page; 40 searchable captions plus rasterized Figure 13.1 visually verified on page 254, and actual 41 EPUB plates reviewed in contact sheet. Still no *individual every-page high-resolution* visual signoff, real-device EPUB/print proof or KDP vendor approval. |
 | F-03 Volumes 5–15 regression | DEP | UNASSESSED | Downstream citation and dependency audit still required; no published V1–V3 source changes. |
 | F-04 Sole-validator mathematics + author release acceptance | INT | IN_PROGRESS | **ChatGPT GPT-6 is the sole mathematical validator.** No external mathematical signoff required. Whole-volume mathematical, exercise, figure-semantic and prerequisite checks remain unfinished; physical/device proof and separate author release authorization also remain open. |
 
@@ -47,20 +47,20 @@
 | Printed chapter | Source path | Math referee | Beginner/voice reviewer | Figure, exercise and solution audit | Exact checked SHA / evidence |
 | --- | --- | --- | --- | --- | --- |
 | Preface / bookends | `volume4-chance/chapters/preface.tex`, `blurb.tex`, `about-the-cover.tex` | UNASSESSED | UNASSESSED | UNASSESSED | Reconcile prior PF-10 and historical logs. |
-| 1 — Games to spaces | `ch01-counting.tex` | UNASSESSED | UNASSESSED | UNASSESSED | — |
-| 2 — Random variables | `ch02-discrete.tex` | UNASSESSED | UNASSESSED | UNASSESSED | — |
-| 3 — Generating functions | `ch03-generating.tex` | UNASSESSED | UNASSESSED | UNASSESSED | — |
-| 4 — Concentration | `ch04-inequalities.tex` | UNASSESSED | UNASSESSED | UNASSESSED | — |
+| 1 — Games to spaces | `ch01-counting.tex` | UNASSESSED | UNASSESSED | IN_PROGRESS | Finite examples/claims checked by independent exact test suite; full chapter and 107-solution acceptance pending. |
+| 2 — Random variables | `ch02-discrete.tex` | UNASSESSED | UNASSESSED | IN_PROGRESS | Finite examples/claims checked by independent exact test suite; full chapter and 107-solution acceptance pending. |
+| 3 — Generating functions | `ch03-generating.tex` | UNASSESSED | UNASSESSED | IN_PROGRESS | Finite examples/claims checked by independent exact test suite; full chapter and 107-solution acceptance pending. |
+| 4 — Concentration | `ch04-inequalities.tex` | UNASSESSED | UNASSESSED | IN_PROGRESS | Finite examples/claims checked by independent exact test suite; full chapter and 107-solution acceptance pending. |
 | 5 — Continuous chance | `ch05-continuous.tex`, included `ch05-geometric.tex` | UNASSESSED | UNASSESSED | UNASSESSED | — |
-| 6 — Bell curve | `ch06-clt.tex` | UNASSESSED | UNASSESSED | UNASSESSED | B-01 check first. |
-| 7 — Entropy/codes | `ch07-entropy.tex` | UNASSESSED | UNASSESSED | UNASSESSED | — |
-| 8 — Random walks | `ch07-walks.tex` | UNASSESSED | UNASSESSED | UNASSESSED | — |
-| 9 — Markov/mixing | `ch08-markov.tex` | UNASSESSED | UNASSESSED | UNASSESSED | B-02 check first. |
+| 6 — Bell curve | `ch06-clt.tex` | UNASSESSED | UNASSESSED | IN_PROGRESS | B-01 check first.; additional finite examples checked; full chapter still pending. |
+| 7 — Entropy/codes | `ch07-entropy.tex` | UNASSESSED | UNASSESSED | IN_PROGRESS | Finite examples/claims checked by independent exact test suite; full chapter and 107-solution acceptance pending. |
+| 8 — Random walks | `ch07-walks.tex` | UNASSESSED | UNASSESSED | IN_PROGRESS | Finite examples/claims checked by independent exact test suite; full chapter and 107-solution acceptance pending. |
+| 9 — Markov/mixing | `ch08-markov.tex` | UNASSESSED | UNASSESSED | IN_PROGRESS | B-02 check first.; additional finite examples checked; full chapter still pending. |
 | 10 — Poisson clock | `ch09-poisson.tex` | AWAITING_REVIEW | UNASSESSED | IN_PROGRESS | V4-P2-001 (#117) and V4-P2-007 (#118) repaired; current blob must be independently rechecked. |
 | 11 — Martingales | `ch10-martingales.tex` | IN_PROGRESS | UNASSESSED | IN_PROGRESS | Sole-validator check at baseline blob `7cbc0f7a749af5fbf16ee17455ff1bd9fe7ff291`: `thm:monkey` expected wait independently checked by finite-state absorption for ABRACADABRA, HH and HT; `def:stopping` anticipative clock explicitly corrected. Other martingale claims not yet chapter-certified. |
 | 12 — Brownian motion | `ch11-brownian.tex` | IN_PROGRESS | UNASSESSED | IN_PROGRESS | V4-P2-005/006 integrated in #118; V4-P2-008 Gaussian-vector proof completed in #120 and regression-checked on rational grids. Other Brownian proofs not certified; no external gate. |
-| 13 — Probabilistic method | `ch12-method.tex` | UNASSESSED | UNASSESSED | UNASSESSED | — |
-| 14 — Random graphs | `ch14-graphs.tex` | UNASSESSED | UNASSESSED | UNASSESSED | — |
+| 13 — Probabilistic method | `ch12-method.tex` | UNASSESSED | UNASSESSED | IN_PROGRESS | Finite examples/claims checked by independent exact test suite; full chapter and 107-solution acceptance pending. |
+| 14 — Random graphs | `ch14-graphs.tex` | UNASSESSED | UNASSESSED | IN_PROGRESS | Finite examples/claims checked by independent exact test suite; full chapter and 107-solution acceptance pending. |
 | Appendix **B** — Extremal problems | `extremal.tex` | UNASSESSED | UNASSESSED | IN_PROGRESS | Two exhaustive finite tests merged in #119 (K5=12/K6=0 avoiding colourings; [8]=6/[9]=0); both #119 exact-head workflows passed. Appendix proofs and five exercises not independently certified. |
 
 All chapter paths above are relative to `volume4-chance/chapters/` unless written otherwise. Neither `UNASSESSED` nor em dash means “not reviewed historically”; each means **no evidence has yet been transferred and revalidated for this initiative**.
@@ -147,3 +147,12 @@ The author appoints **ChatGPT GPT-6 as the only mathematical validator**. This s
 **New source clarification:** `def:stopping` called a future-dependent random clock a stopping time, then denied it was one. It now correctly calls this a random time and gives the one-step fair-sign counterexample `{tau<=0}={X_1=-1}`, not determined by the time-0 partition. This fixes explanatory wording, not a false theorem; a regression checks the actual two-outcome event.
 
 **Still unfinished:** whole-book sole-validator review of 14 printed chapters plus Appendix B, 107 exercises/solutions, mathematical correctness of 41 figures, prerequisite graph, print/EPUB/device visual checks and author release authorization. Release status remains NOT EVALUATED.
+
+
+## Phase 2 independent finite mathematics and native figure audit — 9 November 2026
+
+**Sole-validator status remains IN_PROGRESS.** Targeted mathematical evidence: nine new exhaustive/independent exact-arithmetic tests at tools/test_volume4_phase2_independent_finite_exercises.py; local run 9/9 passed. Detailed conditions, exact results and deliberately limited signoff scope recorded at [volume4-phase2-finite-math-and-artifact-audit-2026-11-09.md](volume4-phase2-finite-math-and-artifact-audit-2026-11-09.md).
+
+**Evidence not inferred from green CI:** Downloaded production ZIP artifact 13658514107 from native QA run 42584550749, visually inspected a contact sheet of all 41 actual EPUB plates and detailed selected originals; all 41 EPUB HTML image references have nonempty descriptive alt. Read the 285-page actual print PDF's text blocks and detected no outside-page blocks. Printed Figure 13.1 is present, visibly, on a *rasterized* page 254; PDF text search alone misleadingly finds only 40 figure captions. This reconciles 41 figures without a source correction.
+
+**Not certified:** mathematical validity of all 127 proof-bearing assertions and all 107 exercise/hint/solution triples; full high-resolution semantic figure review; cross-volume downstream dependencies and complete prerequisite graph. The nine new unit tests provide finite independent evidence, not a formal theorem verifier. External mathematical refereeing is no longer required; the author's separate publication authorization remains distinct.
