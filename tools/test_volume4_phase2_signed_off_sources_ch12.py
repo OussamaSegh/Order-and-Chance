@@ -34,7 +34,7 @@ class TestChapter12SoleValidatorSourceLock(unittest.TestCase):
         src = data.decode("utf-8")
         proof_pattern = r"\\begin\{(?:theorem|lemma|proposition)\}(?:\[[^\]]*\])?\\label\{([^}]+)\}"
         self.assertEqual(re.findall(proof_pattern, src), PROOFS)
-        self.assertEqual(src.count(r"\begin{corollaryx}"), 1,
+        self.assertEqual(src.count(r"\begin{corollaryx}[variation]"), 1,
                          "Re-review the unlabeled variation corollary as well")
         self.assertEqual(src.count(r"\end{corollaryx}"), 1)
         for kind in ("exercise", "hint", "solution"):
