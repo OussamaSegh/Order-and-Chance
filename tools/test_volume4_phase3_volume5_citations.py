@@ -17,6 +17,8 @@ class TestVolume5RitelliCitation(unittest.TestCase):
         self.assertNotIn("monotone convergence (Volume~4, Chapter~5)", text)
         self.assertIn(r"\int_0^1 s_N\to\frac{\pi^2}8", text)
         self.assertIn(r"2\delta-\delta^2\ge\delta", text)
+        self.assertIn("Volume~7, Theorem~9.5", text)
+        self.assertNotIn("By Tonelli,", text)
 
 
 if __name__ == "__main__":
