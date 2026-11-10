@@ -13,7 +13,7 @@ import re
 import unittest
 
 SOURCE=Path(__file__).resolve().parents[1]/"volume4-chance"/"chapters"/"ch08-markov.tex"
-SHA="ddfc2e52756052755a0d26437b782f104c069a3f"
+SHA="314b2565a1d3b0a4caae303a7e7c0a464dac2829"
 PROOFS="lem:period thm:stationary lem:coupling thm:ergodic prop:hit3 thm:top lem:tvcontract thm:bayerdiaconis prop:rifflecompose prop:untouched".split()
 EX="ex:lazy ex:twostate ex:ehrenfest ex:pagerank ex:metropolis ex:toptorandom ex:hitbefore ex:risingmean ex:period".split()
 

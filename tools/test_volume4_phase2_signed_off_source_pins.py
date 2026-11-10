@@ -12,7 +12,7 @@ import unittest
 ROOT = Path(__file__).resolve().parents[1] / "volume4-chance" / "chapters"
 PINS = {
     "ch02-discrete.tex": {
-        "sha": "921ea590d21af564a636dbcce53a73f7ee6cc61b",
+        "sha": "ef8e076f50f4785421e6ee6dee2fe4f288300b08",
         "claims": "thm:poissonlimit prop:fixedpoisson prop:cycles thm:coupon lem:geovar prop:couponvar prop:empty".split(),
         "exercises": "ex:records ex:fixedvar ex:quicksort ex:factorial ex:reservoir ex:prisoners ex:birthdaywait ex:twopoisson".split(),
     },

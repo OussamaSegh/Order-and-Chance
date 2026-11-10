@@ -14,14 +14,14 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1] / "volume4-chance" / "chapters"
 SPECS = {
  "ch07-walks.tex": {
-   "sha": "8b64abc66f79ccbc792906fbfa9ba50e9ab3e890",
+   "sha": "79fba127ab7b7ce6c9064bedfc40345f32e91e04",
    "proofs": "thm:rwreflect thm:ruin prop:duration prop:visits thm:polya thm:arcsine prop:harmonic thm:arcsinelimit lem:centralbin".split(),
    "ex": "ex:ballotwalk ex:maxlaw ex:timepositive ex:unfair ex:meet ex:escape ex:exittime ex:electric".split(),
  },
  "ch09-poisson.tex": {
    # Caption ink word only ("blue" -> "charcoal"). Proofs and exercises
    # are unchanged from 6de4e7e1fd5c6369d553e45190e54807c553a743.
-   "sha": "b9bd5518df0bcc2f73ac45637bd5c5804a0c626f",
+   "sha": "5a6b467d0db684dcd9d3deeca3db7f856bb9a7fc",
    "proofs": "prop:memoryless lem:gamma thm:uniform lem:colouring thm:increments thm:thinning thm:superpose prop:residual prop:onesidedgap prop:race thm:lecam thm:mm1 prop:emptiness".split(),
    "ex": "ex:twoexp ex:minexp ex:bus ex:lecamnum ex:mm1mean ex:emptycheck ex:superpose ex:firstarrival".split(),
  },

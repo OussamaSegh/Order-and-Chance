@@ -12,7 +12,7 @@ import unittest
 ROOT = Path(__file__).resolve().parents[1] / "volume4-chance" / "chapters"
 SCOPE = {
     "ch01-counting.tex": {
-        "sha": "ef5b5ac00bb5f137f4f8cb9934a41c3422984a01",
+        "sha": "12f06afabe11582b9c8c0824b27959a6a03e26ed",
         "claims": "prop:bits prop:subadd prop:infdigits thm:ballot".split(),
         "exercises": "ex:mybirthday ex:twochildren ex:penney ex:montyn ex:pairwise ex:aces ex:catalan ex:smallballot".split(),
     },
@@ -22,7 +22,7 @@ SCOPE = {
         "exercises": "ex:thinning ex:golden ex:lotka ex:randomsumvar ex:progeny ex:firstpassage ex:binseries ex:poissongw".split(),
     },
     "ch04-inequalities.tex": {
-        "sha": "9501619f8494005eb2c50d0d689541332ea04289",
+        "sha": "d93243f41ca3d6c7f3e5985b5b6a518254dfd091",
         "claims": "lem:hoeffding thm:hoeffding thm:kolmogorov thm:bc thm:sllnbound thm:weierstrass".split(),
         "exercises": "ex:markovsharp ex:chernoffbin ex:bcfinite ex:bernstein2 ex:gapfill ex:runs".split(),
     },
