@@ -13,7 +13,7 @@ from pathlib import Path
 SOURCE = Path(__file__).resolve().parents[1] / "volume4-chance" / "chapters" / "ch11-brownian.tex"
 # Caption ink words only. The reviewed mathematics is the predecessor blob
 # 7c576031edc38e04019336de0a0a1a1bfefeb2b1; the diff is the reflection caption.
-BLOB = "49d3e5a2722768f4e70ac59991920da2de5e7db9"
+BLOB = "baaa9239e95d63a6deb7a59106b4981951466b60"
 PROOFS = """prop:bmgauss lem:levylevel thm:levy prop:scaling lem:squares
 thm:qv thm:dyadicito thm:pwz prop:bmmart prop:restart
 thm:reflection prop:bmsquare""".split()

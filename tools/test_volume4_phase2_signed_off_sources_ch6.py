@@ -11,7 +11,7 @@ from math import comb, factorial, sqrt
 from pathlib import Path
 
 SOURCE=Path(__file__).resolve().parents[1]/"volume4-chance"/"chapters"/"ch06-clt.tex"
-SHA="8b1863f270060898cb28eaa9eb3672b18fdd8847"
+SHA="dfb96d61f45539d7ef334278c9c34ff29f4dd536"
 PROOFS="prop:modes prop:cdf thm:slln4 thm:gc lem:diffint prop:cfexamples thm:cfconv thm:inversion lem:normalsum thm:lindeberg cor:clt thm:local prop:cyclebern thm:gaussvec".split()
 EX="ex:slutsky ex:confidence ex:delta ex:cauchyclt ex:poissonhalf ex:returns ex:thirdmoment ex:cyclesclt".split()
 
