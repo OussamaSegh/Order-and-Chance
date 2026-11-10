@@ -19,6 +19,14 @@
 
 `git diff 5d12f8e1fdc423dae9e8ccf2f1325a848817007b 2655cf5ac02c0a1c510c0da13f8c6b223c4d9c5f -- volume4-chance common` was empty. PR #137 changed only the acceptance register.
 
+## After publication — 10 November 2026
+
+Author authorization, 11:37 Europe/Paris: “Yes you merge and publish, then go to next phase, dont wait for me.”
+
+Published source `22e9d49410eb95dad6d505c1e568a21b7fd4d828`. Release https://github.com/OussamaSegh/Order-and-Chance/releases/tag/books from Build books [42806203843](https://github.com/OussamaSegh/Order-and-Chance/actions/runs/42806203843). Downloaded Volume 4 asset hashes match the release digests. Site https://oussamasegh.github.io/Order-and-Chance/ lists Volume 4.
+
+No next numbered phase is defined. The excellence plan stops at Phase F. The series plan’s next floor is Book 5, and `docs/plan/PROGRESS.md` is a Volume 1 tracker. Do not invent a phase. KDP upload of the print PDF and paperback cover remains the author’s account.
+
 ## Gate status after the #140 merge
 
 | Gate | Status | Why |

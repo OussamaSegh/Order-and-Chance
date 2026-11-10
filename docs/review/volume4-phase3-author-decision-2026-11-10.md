@@ -2,9 +2,20 @@
 
 **Date:** 10 November 2026.
 **From:** the designated validator (an AI reviewer).
-**This is not publication approval.** Nothing here tags a release, uploads a file to KDP or any store, or speaks for the author.
 
-## Decision asked of the author
+## Author approval
+
+At 11:37 Europe/Paris the author wrote: “Yes you merge and publish, then go to next phase, dont wait for me.”
+
+The published source is `22e9d49410eb95dad6d505c1e568a21b7fd4d828`. The release is https://github.com/OussamaSegh/Order-and-Chance/releases/tag/books , tag `books`, title “Books (latest build)”, from Build books run 42806203843. The site https://oussamasegh.github.io/Order-and-Chance/ lists Volume 4: Chance. Downloaded Volume 4 asset SHA-256 values match the release digests; they are in `docs/review/volume4-phase3-release-candidate.json`.
+
+KDP still needs the author’s account. Upload `Volume 4 - Chance - Print.pdf` (`b7ff97461a4afe2838aeccf2a84ce9bf7cd6cd82dfd2b4a5d93847485e57ae50`) and `Volume 4 - Chance - Paperback Cover.pdf` (`10ed0d4d4c3f6c05e65dac9a72828cee9156774cd6b209de2b81cac264ff07ab`).
+
+No numbered phase follows Phase F of `docs/plan/volume4-excellence-execution-plan-2026-11-08.md`. The series content plan’s next floor is Book 5 (`docs/plan/book-05.md`). `docs/plan/PROGRESS.md` tracks Volume 1 only. None of those documents opens a phase, so none was started.
+
+## Earlier candidate note
+
+The text below was written before the approval, when the book was still a candidate.
 
 Volume 4 can be treated as a **release candidate**, not as a finished publication.
 
