@@ -19,34 +19,29 @@
 
 `git diff 5d12f8e1fdc423dae9e8ccf2f1325a848817007b 2655cf5ac02c0a1c510c0da13f8c6b223c4d9c5f -- volume4-chance common` was empty. PR #137 changed only the acceptance register.
 
-## Gate status (do not upgrade without new evidence)
+## Gate status after the #140 merge
 
 | Gate | Status | Why |
 | --- | --- | --- |
-| 3A | IN_PROGRESS | Build books [42736422791](https://github.com/OussamaSegh/Order-and-Chance/actions/runs/42736422791) on exact `2655cf5a`: list job `Ran 616 tests` `OK (skipped=32)`; `changed: []`; cache restored from `library-v9-070b9e00…42727299179`; site job validated print preflight for Volumes 1–15 and uploaded Pages artifact `sha256:a30a2b83de26a3beca8bc28d5509ea14d96b2a7871309f43a157a9e58c754152` (557 MB). `publish` job 129571188268 was skipped with zero steps. That did not publish a new release. Native QA [42723990578](https://github.com/OussamaSegh/Order-and-Chance/actions/runs/42723990578) succeeded on `5d12f8e1`, whose `volume4-chance` and `common` trees match this baseline. `gh workflow run` of native QA on `main` returned HTTP 403. A pull request that touches `volume4-chance/**` or `tools/**` is what starts a fresh native run. |
-| 3B | IN_PROGRESS | Source audit written. Three charcoal-called-blue defects corrected on this branch. Rendered recheck of those plates is the next figure action. |
-| 3C | UNASSESSED | Chapter reading for teaching defects has not been written up. |
-| 3D | IN_PROGRESS | Eighteen repairs intact. Volumes 1–3 frozen. Four critical downstream citations are demonstrated and not yet patched. See the dependency audit. |
-| 3E | UNASSESSED | No inspection yet of a PDF built from the colour-word repair. No physical device. |
-| 3F | UNASSESSED | No release-candidate manifest. |
+| 3A | PASS on the merged tree | #140 head `cfe5d152a8aa2bc74b7b96f5824369a86e175b92` merged as `3cc07e8673490b9922db9d9d29fee0551e2d8a12`. The two commits have an empty diff. Build books [42783238606](https://github.com/OussamaSegh/Order-and-Chance/actions/runs/42783238606) and native QA [42783238907](https://github.com/OussamaSegh/Order-and-Chance/actions/runs/42783238907) both succeeded on that head before the SHA-guarded squash. The PR `publish` job was skipped. The merge push started Build books [42786721619](https://github.com/OussamaSegh/Order-and-Chance/actions/runs/42786721619) on `main`. |
+| 3B | PASS | Source audit plus rendered captions on reading pages 205, 211, 249 and the matching print pages. |
+| 3C | PASS | `docs/review/volume4-phase3-pedagogy-2026-11-10.md`. No critical defect, so no further chapter edit. |
+| 3D | PASS for Volume 4 and DEP-12..29 | Proposals #141, #142, #143 stay open. Tonelli in Volume 5 was not edited. |
+| 3E | PASS for opened files | `docs/review/volume4-phase3-production-qa-2026-11-10.md`. No device. |
+| 3F | CANDIDATE | `docs/review/volume4-phase3-release-candidate.json`. Not author approval. |
 
-## This branch
+## Merged and left open
 
-`cursor/volume4-phase3-qa-5cfc`
+- Merged: #140, squash `3cc07e8673490b9922db9d9d29fee0551e2d8a12`.
+- Open for the author: #141 Volume 6, #142 Volume 5, #143 Volume 11. Do not merge them in this phase.
+- Drafts #113 and #114 were not touched.
 
-- Ink-word repairs in the Poisson clock, the queue legend, and the Brownian reflection caption.
-- Route test pins the 41 names. Figure test pins the corrected words.
-- Audits: `docs/review/volume4-phase3-figure-audit-2026-11-10.md`, `docs/review/volume4-phase3-dependency-audit-2026-11-10.md`.
-- Register section “Phase 3 book-wide QA”.
+## If this run stops
 
-## Next executable actions
+1. Read the conclusion of Build books [42786721619](https://github.com/OussamaSegh/Order-and-Chance/actions/runs/42786721619) on `3cc07e86`. If it failed, the failure is the next defect. If it succeeded, the candidate tree has a `main` integration build.
+2. Do not edit issue #139. Updates return HTTP 403. Use this file and the pull-request body.
+3. Do not tag a release and do not upload to KDP.
 
-1. Open the pull request for this branch. Required checks: Build books, and Volume 4 native QA (the path filter includes `volume4-chance` and `tools`). Do not merge until both are green on the exact head.
-2. Download that native artifact and inspect the three corrected plates in the print PDF and the EPUB. Record page geometry, font embedding, and checksums. Do not claim a Kindle or a paper proof.
-3. Read Volume 4 chapter by chapter for teaching defects. Patch only a demonstrated critical defect in Volume 4. Leave subjective voice notes in the pedagogy report.
-4. Open separate unmerged proposal branches for the four critical downstream citations (Volume 6 Theorem 2.11 and the Hoeffding repair of `ex:shortmodel`; Volume 5 `ex:ritelli`; Volume 11 Theorem 10.21). Do not edit Volumes 1–3. Do not merge Volumes 5–15 source changes.
-5. After the final `main` commit, record artifact checksums in a release-candidate manifest. Do not tag a release, do not upload to KDP, and do not mark author approval.
+## Permission limits
 
-## Permission limit already hit
-
-Workflow dispatch is forbidden for this token (`HTTP 403`, `Resource not accessible by integration`). Pull-request events still start the workflows. Do not treat a skipped `publish` job as a failed book build, and do not force a publish.
+Workflow dispatch on `main` returned HTTP 403. Issue edit and issue comment on #139 returned HTTP 403. The issue body is still the placeholder created at open.
