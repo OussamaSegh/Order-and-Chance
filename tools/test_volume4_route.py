@@ -149,7 +149,54 @@ class TestVolume4Route(unittest.TestCase):
         names = set()
         for _, text in files:
             names.update(FIG.findall(text))
-        self.assertGreaterEqual(len(names), 41)
+        # Phase 3 inventory: exactly these plates are called by \fig. Unused
+        # files in figures/ are not part of the book.
+        self.assertEqual(
+            names,
+            {
+                "appb-turan-balance",
+                "ch01-ballot",
+                "ch01-bertrand",
+                "ch01-buffon",
+                "ch01-digits",
+                "ch01-tuesday",
+                "ch02-couponstages",
+                "ch02-cycles",
+                "ch02-lawmap",
+                "ch02-poissonbars",
+                "ch03-cobweb",
+                "ch03-contour",
+                "ch03-familytree",
+                "ch03-lawpoly",
+                "ch04-bernstein",
+                "ch04-chernoff",
+                "ch04-squaregaps",
+                "ch05-cantor",
+                "ch05-densityarea",
+                "ch05-inversecdf",
+                "ch05-polar",
+                "ch06-dice-zscore",
+                "ch06-lindeberg",
+                "ch06-sums",
+                "ch07-prefixtree",
+                "ch07-typicalcoin",
+                "ch08-chain",
+                "ch08-reflectstep",
+                "ch08-riffle",
+                "ch08-ruinprob",
+                "ch09-commonjump",
+                "ch09-inspection",
+                "ch10-poissonclock",
+                "ch10-polya",
+                "ch10-queue-rates",
+                "ch10-upcross",
+                "ch12-ramsey",
+                "ch12-reflection",
+                "ch14-exploration",
+                "extremal-ch08-focusing",
+                "preface-tails",
+            },
+        )
         for name in names:
             with self.subTest(figure=name):
                 self.assertTrue(
