@@ -18,7 +18,24 @@ def points(text):
     return [(float(x), float(y)) for x, y in POINT.findall(text)]
 
 
+CHAPTERS = Path(__file__).resolve().parents[1] / "volume4-chance" / "chapters"
+
+
 class TestVolume4MathFigures(unittest.TestCase):
+    def test_charcoal_ink_is_not_called_blue(self):
+        """MidnightBlue is remapped to charcoal. Reader-facing ink words must say so."""
+        clock = (FIGURES / "ch10-poissonclock.tex").read_text(encoding="utf-8")
+        queue = (FIGURES / "ch10-queue-rates.tex").read_text(encoding="utf-8")
+        self.assertIn("charcoal: an original arrival", clock)
+        self.assertIn("charcoal: completed service", queue)
+        self.assertNotIn("blue:", clock)
+        self.assertNotIn("blue:", queue)
+        thinning = (CHAPTERS / "ch09-poisson.tex").read_text(encoding="utf-8")
+        self.assertIn("original arrival points (charcoal)", thinning)
+        self.assertNotIn("original arrival points (blue)", thinning)
+        reflection = (CHAPTERS / "ch11-brownian.tex").read_text(encoding="utf-8")
+        self.assertIn("The charcoal continuation and the rust continuation", reflection)
+        self.assertNotIn("blue continuation", reflection)
     def test_polya_urn_simulations_have_possible_red_counts(self):
         """20 stored paths should be compatible with one added ball per draw."""
         src = (FIGURES / "ch10-polya.tex").read_text(encoding="utf-8")
