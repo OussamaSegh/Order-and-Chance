@@ -12,7 +12,7 @@ from itertools import product
 from pathlib import Path
 
 SOURCE=Path(__file__).resolve().parents[1]/"volume4-chance"/"chapters"/"ch10-martingales.tex"
-SHA="f0d34f41295b1967652d58f099523760b87b202c"
+SHA="e983dfeef83407836d59b43fd6ed301117a4a7d4"
 PROOFS="thm:os thm:os2 thm:upcross prop:orthinc prop:l2cauchy thm:doob thm:azuma thm:monkey thm:L2conv thm:polyaurn thm:asconv".split()
 EX="ex:tower ex:barrier ex:stopmean ex:azumacoin ex:pattern".split()
 

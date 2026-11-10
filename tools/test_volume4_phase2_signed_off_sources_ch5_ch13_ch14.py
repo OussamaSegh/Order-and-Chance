@@ -12,7 +12,7 @@ import unittest
 ROOT = Path(__file__).resolve().parents[1] / "volume4-chance" / "chapters"
 SOURCES = {
     "ch05-continuous.tex": (
-        "4d2221df7adeb926d46c7526faa7829a77645db9",
+        "0740a8ac6a230353cbb1847e704b5f222f54d6a2",
         "prop:densitymean prop:gausstail prop:fubini prop:polar prop:manyuniforms prop:orderpair prop:inverse thm:dct thm:boxmuller",
         "ex:counter ex:densityunique ex:tail ex:cauchy ex:gamma ex:order ex:cantor ex:usquare ex:radius",
     ),
