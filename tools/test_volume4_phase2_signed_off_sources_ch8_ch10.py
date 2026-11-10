@@ -19,7 +19,9 @@ SPECS = {
    "ex": "ex:ballotwalk ex:maxlaw ex:timepositive ex:unfair ex:meet ex:escape ex:exittime ex:electric".split(),
  },
  "ch09-poisson.tex": {
-   "sha": "6de4e7e1fd5c6369d553e45190e54807c553a743",
+   # Caption ink word only ("blue" -> "charcoal"). Proofs and exercises
+   # are unchanged from 6de4e7e1fd5c6369d553e45190e54807c553a743.
+   "sha": "94576b65f92540eb47c9b4db66c785e5119e9ecc",
    "proofs": "prop:memoryless lem:gamma thm:uniform lem:colouring thm:increments thm:thinning thm:superpose prop:residual prop:onesidedgap prop:race thm:lecam thm:mm1 prop:emptiness".split(),
    "ex": "ex:twoexp ex:minexp ex:bus ex:lecamnum ex:mm1mean ex:emptycheck ex:superpose ex:firstarrival".split(),
  },
