@@ -27,6 +27,41 @@ Published source `22e9d49410eb95dad6d505c1e568a21b7fd4d828`. Release https://git
 
 No next numbered phase is defined. The excellence plan stops at Phase F. The series plan’s next floor is Book 5, and `docs/plan/PROGRESS.md` is a Volume 1 tracker. Do not invent a phase. KDP upload of the print PDF and paperback cover remains the author’s account.
 
+## Open drafts #113 and #114 — closed as superseded, 10 November 2026
+
+Author instruction, 17:11 Europe/Paris: finish the open Volume 4 pull requests before any next phase. The only open pull requests were the two drafts below. Both still target `cursor/volume4-rewrite-ee7f`, the branch of merged #111, and both conflict with current `main`. No replacement pull request was opened, because neither draft still changes the published tree correctly.
+
+### #113, head `f6960dd6ed70fa3dd5696cd9e7158399df1da150`
+
+The manuscript commits restore proofs in Volumes 11, 12, 14 and 15 on the assumption that the Volume 4 rewrite had deleted them, and they retarget citations to that deleted numbering. The published Volume 4 still contains the results. Numbered on current `main` by walking `theorem`, `proposition`, `lemma`, `corollary`, `definition` and `example` in `main.tex` order (`theoremx` does not step the counter; exercises have their own counter; the appendix is letter B):
+
+| Cited now | Label | What it states |
+| --- | --- | --- |
+| Theorem 6.8 | `thm:inversion` | Uniqueness, and the density formula when the characteristic function is integrable |
+| Theorem 6.10 | `thm:lindeberg` | Lindeberg |
+| Theorem 8.6 | `thm:arcsine` | First-return convolution, the nonnegative-path identity \(P(S_1\ge0,\ldots,S_{2m}\ge0)=u_{2m}\), and \(P(L_{2n}=2k)=u_{2k}u_{2n-2k}\) |
+| Theorem 8.8 | `thm:arcsinelimit` | The arcsine limit of those weights |
+| Lemma 9.7 | `lem:tvcontract` | Total variation does not increase |
+| Definition 9.8, Theorem 9.9, Proposition 9.10 | `def:ashuffle`, `thm:bayerdiaconis`, `prop:rifflecompose` | The \(a\)-shuffle, the exact mass, and composition |
+| Proposition 9.11 | `prop:untouched` | The untouched-card lower bound \(1-6e^{1-2c}\) |
+| Exercise 9.8 | `ex:risingmean` | Mean \((n+1)/2\) and variance \((n+1)/12\), which is \(\mathbb E[h^2]\) for \(h=r-(n+1)/2\) |
+| Theorem 11.9 | `thm:doob` | The probability bound and \(\mathbb E[(Y_n^*)^2]\le 4\mathbb E[Y_n^2]\), on finite partitions |
+| Theorem 11.10 | `thm:azuma` | Azuma |
+| Theorem 11.12 | `thm:L2conv` | \(L^2\) convergence on interval partitions |
+| Theorem 11.14 | `thm:asconv` | Almost-sure convergence on interval partitions |
+| Theorem 12.12 | `thm:reflection` | The maximum has the law of \(\lvert B_t\rvert\) |
+| Exercise 12.3 | `ex:zeros` | The zero set has outer length 0 and is uncountable |
+| Exercise 8.8 | `ex:electric` | Hitting probabilities as voltages |
+| Theorem B.7 | `thm:vdw` | Van der Waerden for every length and every finite number of colours |
+
+The current sentences in the files #113 edited already use these numbers. Volumes 11 and 12 already say that Theorems 11.12 and 11.14 are the interval-partition cases, and they send the general filtration to Volume 11. Copying #113 onto `main` would replace those citations with new local proofs and, for van der Waerden, would delete a citation of Theorem B.7 that is the theorem the sentence describes. The oxipng retry in that branch is already on `main`; the Cargo fallback was a workaround for a download that the current workflow retries. The draft’s own body says its mathematical review was not finished.
+
+### #114, head `3191fa4646f1c12707fe6df46ed54cdf17dc9357`
+
+The draft folds a one-line Stirling note into the de Moivre item so that note will not sit alone on a print page. On current `main` that note is already inside the de Moivre item, and item 4 is Lévy’s *Calcul des probabilités*, which the draft’s diff would delete. The published print interior is `Volume 4 - Chance - Print.pdf`, 289 pages, 513×738 pt, SHA-256 `b7ff97461a4afe2838aeccf2a84ce9bf7cd6cd82dfd2b4a5d93847485e57ae50`. Print page 143 carries the end of the Chapter 6 cycle solution and all four source items. Print page 144 is the opening of Chapter 7. There is no bibliography orphan. Volume 4 was not rebuilt.
+
+No other Volume 4 pull request is open. The other `volume4` branches on the remote are tips of pull requests already merged or, for #115, closed. Their commits are not ancestors of `main` only because those pulls were squash-merged. Nothing on them was ported. The `books` release was not replaced.
+
 ## Gate status after the #140 merge
 
 | Gate | Status | Why |
