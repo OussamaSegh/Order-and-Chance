@@ -323,3 +323,41 @@ These are not findings of this report. I am recording them so the coverage is au
 ## Bottom line for the author
 
 Repair M1–M5 in Volume 4, without new numbers. Correct R1–R3 in the volumes that own those sentences. Add the half-page covariance argument Volume 1 already promised. Leave Gilmer out, leave Appendix B lettered B, and leave the giant-component theorem unproved until you want that theorem for itself. The book can stay the published successor while those repairs are made. I am not claiming that the list above is a proof that nothing else is wrong.
+
+## Second pass after the repairs
+
+This pass reads the repairs. Heads at the time of the reading:
+
+| Pull request | Head | What it carries |
+| --- | --- | --- |
+| #152 | `789b09b512eb7d01b45dcb2f8617ed0a13b5562b` | M1, M2, M3, M5 |
+| #155, stacked on #152 | `03f1c9c472a38a08ffbb72173030ce1cdef32de1` | M4, m1–m13, the Theorem 6.14 shift |
+| #153 | `94157806` | R1, R2 only |
+| #154 | `2cf9d56e` | R3, m14 |
+
+`python3 -m unittest discover -s tools -p 'test_volume4*.py'` passed, 94 tests, on the wording head. Source-identity pins were recomputed from the new blobs, and the label inventories in those tests were unchanged. A numerical check is not a proof. The two-point check and the exponential integral below only test algebra the proofs quote.
+
+| ID | Location of the repair | What the second reading found | Residual doubt |
+| --- | --- | --- | --- |
+| M1 | `ch06-clt.tex`, unnumbered `prop:indepproduct`, used in Theorems 6.4 and 6.10 | Bounded monotone factors of at most four distinct blocks factor by dyadic steps and the independent-uniforms proposition. A finite-bit function against a monotone factor factors by the cylinder table. Clips remove the bound using \(\lvert Q-Q^{(M)}\rvert\le Q^2/M\) and the tail of a convergent improper integral. The strong law expands the centred clip \(Y=Q^{(M)}-\mathbb E[Q^{(M)}]\), whose mean is 0, so there is no \(n^4\) term. The deviation event is reduced to a finite-bit step of \(Y\) plus a mesh error whose fourth moment is made at most \(n^2\). Lindeberg replaces \(f'(A)\) by its average on the other blocks' first \(m\) digits and uses the same product. | The average is an integral of a bounded function of the remaining bits. The text points at the rectangle Fubini after clipping the coordinates of \(A\), and says the tails can be made small. It does not write a separate \(\varepsilon\) line for that tail. The constant \(C\) in \(\mathbb E[(\sum Y_i)^4]\le Cn^2\) is existential. For the fair sign \(Y=\pm 1\), \(\mathbb E[(Y_1+Y_2)^4]=8\), and \(n\mathbb E[Y^4]+3n(n-1)(\mathbb E[Y^2])^2\) is also 8. That checks the pattern. It is not a proof of the expansion. |
+| M2 | `ch10-martingales.tex`, Theorem 11.12 | Almost-sure convergence is still the outer-content argument, and it still names the continuity-from-below theorem it refuses to use. The square limit is \(\mathbb E[\min(Y^2,M)]\le r_{n_j}\), then \(M\to\infty\). The \(L^1\) bound uses Volume 1's finite Cauchy–Schwarz on \(\min(\lvert Y_m\rvert,M)\). | The comparison of the bounded sequence with its limit is shorter than the write-up of Theorem 11.14. The exceptional set is covered by an extra length \(\varepsilon\). I did not re-sum every disjoint interval by hand. |
+| M3 | `ch11-brownian.tex`, Proposition 12.11 and Theorem 12.12 | The limit from \(\tau_n\) to \(\tau\) uses a compact box and Gaussian tails. Reflection reads the symmetry at each fixed dyadic \(s\le t\), where \(B_t-B_s\) is independent of \(\{\tau_n=s\}\) and symmetric, then sends \(B_s\to a\). | The normal-tail scale is \(c=\sqrt{v}\) for a positive increment length. I did not rebuild the continuous approximation of the tail indicator line by line. The text says the indicator is squeezed between two continuous tests. |
+| M5 | `ch09-poisson.tex`, Theorem 10.8 | \(\lambda e^{-(\lambda+\mu)t}\,\mathrm dt\) times \(e^{-\mu r}\) is the joint event that the \(\lambda\)-clock rings at \(t\) and the other residual exceeds \(r\). A Simpson rule on \([0,30]\) with \(3\cdot 10^5\) panels gave \(0.122620\) against \(\lambda/(\lambda+\mu)\,e^{-\mu r}=0.122626\) at \(\lambda=1\), \(\mu=2\), \(r=1/2\). The difference is quadrature. | The displayed line is the improper density. The bound \(e^{-\lambda A}+e^{-\mu A}\) for the corner of the square is written. |
+| M4 | `ch08-markov.tex`, Theorem 9.9 | The box says each arrangement. For \(n=3\), \(a=2\), \(r=2\), \(Q_2=1/8\), and four permutations carry that mass, so the event has probability \(1/2\). | None on the wording. |
+| m1 | `ch07-walks.tex`, Theorem 8.5 | \(\pi>2\), then \((2\sqrt3)^2=12>8\). | None. |
+| m2 | `ch07-walks.tex`, Proposition 8.3 and Exercise 8.7 | The tail-sum identity is cited by chapter, not by a cross-book label. | A label in Volume 1 would not resolve in this book. |
+| m3 | `ch05-continuous.tex`, Exercise 5.7 | One \(0\)-\(2\) expansion. | None. |
+| m4 | `ch04-inequalities.tex`, Theorem 4.4(b) | Complement product by induction from finite additivity. | One paragraph, not a displayed induction. |
+| m5 | `ch06-clt.tex`, Theorem 6.8 | Points at Chapter 5's substitution. | None. |
+| m6 | `ch06-clt.tex`, Theorem 6.14(b) | The quadratic form is a centred variance. | None. |
+| m7 | `ch10-martingales.tex`, before Theorem 11.9 | Jensen is Volume 1's finite convex combination, with no cross-book `\ref`. | The printed number of that theorem was not recomputed. The chapter is the inequalities chapter. |
+| m8 | `ch02-discrete.tex`, after the covariance definition | The product of increments of two increasing functions is nonnegative. | The four-term expansion is the one in Volume 1 and is not rewritten in full. |
+| m9 | `blurb.tex` | Names Volume 1. | Jacket copy, not an interior page. |
+| m10 | `ch01-counting.tex`, `ch08-markov.tex` | Both cite Volume 1, Chapter 10, for \(1-x\le e^{-x}\). | None. |
+| m11 | `ch02-discrete.tex`, Theorem 2.1 | Chapter 3 defines the derivative. Chapter 8 gives \(\ln'(1)=1\). | None. |
+| m12 | `ch09-poisson.tex`, Theorem 10.4 | Theorem 6.4 is not applied. Finiteness is proved after the Poisson masses, and \(T_n\to\infty\) uses one intersection over the positive integers. | The old string \(t=1,2,3,\ldots\) was replaced. The test that pinned it was updated. |
+| m13 | `ch10-martingales.tex`, Theorem 11.14 | The sandwich holds off a cover of the exceptional set. The gap gains \(M\varepsilon\), which tends to 0. | None beyond that \(\varepsilon\). |
+| R1, R2 | two sentences in Volume 3 | Chapter 9. No other line in those files. | Volumes 1 and 2 are absent from the diff. |
+| m14, R3 | `volume12-random-motion/chapters/ch01-gaussian.tex` | Theorem 12.9, and the reminder quotes centred \(AZ\), the translate \(AZ+b\), positive-semidefiniteness, and block independence. | Merge #155 before #154. |
+
+Nothing in this pass needs an author decision. Gilmer stays out. Appendix B stays B. The giant-component statement stays an exercise.
