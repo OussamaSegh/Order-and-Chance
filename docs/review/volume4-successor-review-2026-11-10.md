@@ -328,12 +328,12 @@ Repair M1–M5 in Volume 4, without new numbers. Correct R1–R3 in the volumes 
 
 This pass reads the repairs. Heads at the time of the reading:
 
-| Pull request | Head | What it carries |
-| --- | --- | --- |
-| #152 | `789b09b512eb7d01b45dcb2f8617ed0a13b5562b` | M1, M2, M3, M5 |
-| #155, stacked on #152 | `569b2a9580bc9bce29a59369e340193d498747ec` | M4, m1–m13, the Theorem 6.14 shift, and the Volume 3 seam-snapshot refresh |
-| #153 | `94157806` | R1, R2 only |
-| #154 | `2cf9d56e` | R3, m14 |
+| Pull request | Reviewed head | Squash on `main` | What it carries |
+| --- | --- | --- | --- |
+| #152 | `789b09b512eb7d01b45dcb2f8617ed0a13b5562b` | `1c6222a4df8a61836ac07b9dd7ed35af354e354b` | M1, M2, M3, M5 |
+| #155 | `97d8fb71d974c6f5ff0410598f165b355299c3c6` | `d9b3c742d757b967b0fa5b17efd4b4c74b282170` | M4, m1–m13, the Theorem 6.14 shift, and the Volume 3 seam-snapshot refresh |
+| #153 | `4c1bf8ddb745f660f07d4f575c563577179b04c5` | `364647dea3074e4069eff024ddc468a58e1c4ebd` | R1, R2, and the ledger identity of those two sentences |
+| #154 | `2cf9d56e0f136b223290b5fa4c8a50dd549b3041` | `b61dae522dd9ce700b0a47f099bbd67e4bbb3e86` | R3, m14 |
 
 `python3 -m unittest discover -s tools -p 'test_volume4*.py'` passed, 94 tests, on the wording head. Source-identity pins were recomputed from the new blobs, and the label inventories in those tests were unchanged. A numerical check is not a proof. The two-point check and the exponential integral below only test algebra the proofs quote.
 
@@ -358,6 +358,6 @@ This pass reads the repairs. Heads at the time of the reading:
 | m12 | `ch09-poisson.tex`, Theorem 10.4 | Theorem 6.4 is not applied. Finiteness is proved after the Poisson masses, and \(T_n\to\infty\) uses one intersection over the positive integers. | The old string \(t=1,2,3,\ldots\) was replaced. The test that pinned it was updated. |
 | m13 | `ch10-martingales.tex`, Theorem 11.14 | The sandwich holds off a cover of the exceptional set. The gap gains \(M\varepsilon\), which tends to 0. | None beyond that \(\varepsilon\). |
 | R1, R2 | two sentences in Volume 3 | Chapter 9. No other line in those files. | Volumes 1 and 2 are absent from the diff. |
-| m14, R3 | `volume12-random-motion/chapters/ch01-gaussian.tex` | Theorem 12.9, and the reminder quotes centred \(AZ\), the translate \(AZ+b\), positive-semidefiniteness, and block independence. | Merge #155 before #154. |
+| m14, R3 | `volume12-random-motion/chapters/ch01-gaussian.tex` | Theorem 12.9, and the reminder quotes centred \(AZ\), the translate \(AZ+b\), positive-semidefiniteness, and block independence. | #155 was merged before #154, so the translation sentence was already on `main`. |
 
 Nothing in this pass needs an author decision. Gilmer stays out. Appendix B stays B. The giant-component statement stays an exercise.
