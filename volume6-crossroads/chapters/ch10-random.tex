@@ -376,7 +376,7 @@ Problem~\ref{pb:digitpairs} with $q=\frac{2.5}{\log p}$ (coral). Both make a rep
 The pairs $\{a,N-a\}$ with $a<\frac N2$ are disjoint. Bound $P(r(N)=0)$ and use Borel--Cantelli.
 \end{hint}
 \begin{hint}{ex:shortmodel}
-Chernoff bounds (Volume~4, Chapter~4) for integer $x$, and Borel--Cantelli. Where is $\lambda>2$ used?
+Use the exponential Markov inequality on the window sum. For a Bernoulli variable, $1-p+pe^{\theta}\le\exp(p(e^{\theta}-1))$. Check that $(1+\delta)\ln(1+\delta)-\delta\ge\delta^2/3$ for $\delta\in(0,1]$. Where is $\lambda>2$ used?
 \end{hint}
 \begin{hint}{ex:modelpoisson}
 Write $P(S_N=k)$ as $\prod_n(1-p_n)$ times a sum over $k$-element sets of products of $\frac{p_n}{1-p_n}$, and compare that sum with $\frac1{k!}\bigl(\sum\frac{p_n}{1-p_n}\bigr)^k$.
@@ -431,10 +431,32 @@ sums of two primes. The model is wrong because it ignores parity. For even $N$, 
 \end{solution}
 
 \begin{solution}{ex:shortmodel}
-\idea The expected count $\mu$ tends to infinity faster than $\log x$, so Chernoff's exponential bound $e^{-\delta^2\mu/3}$ beats any power of $x$, and Borel--Cantelli applies over all integers $x$.
-\writeup Fix $\delta\in\left]0,1\right]$. For an integer $N\ge3$ let $h_N=\lfloor(\log N)^\lambda\rfloor$, $S_N=\sum_{N<n\le N+h_N}X_n$ and $\mu_N=\mathbb ES_N=\sum_{N<n\le N+h_N}\frac1{\log n}$. Since
-$\log(N+h_N)=\log N+o(1)$, $\mu_N\sim(\log N)^{\lambda-1}$. By Chernoff's bounds (Volume~4, Chapter~4), $P(|S_N-\mu_N|\ge\delta\mu_N)\le2e^{-\delta^2\mu_N/3}$. As $\lambda-1>1$, $\mu_N\ge\frac{6}{\delta^2}\log N$
-for $N$ large, so this is at most $\frac2{N^2}$, summable. By Borel--Cantelli, almost surely $|S_N-\mu_N|<\delta\mu_N$ for all large $N$. Taking $\delta=\frac1j$ for every $j$, almost surely $S_N\sim\mu_N$.
+\idea Once $\lambda>2$, the window mean $\mu$ grows faster than $\log x$. An exponential Markov bound of order $e^{-\delta^2\mu/3}$ then beats any power of $x$, and Borel--Cantelli applies over all integers $x$.
+\writeup Fix $\delta\in\left]0,1\right]$. For an integer $N\ge3$ let $h_N=\lfloor(\log N)^\lambda\rfloor$, $S_N=\sum_{N<n\le N+h_N}X_n$ and $\mu_N=\mathbb ES_N=\sum_{N<n\le N+h_N}\frac1{\log n}$. The summands are independent Bernoulli random variables. For $\theta>0$,
+\[
+\mathbb E[e^{\theta X_n}]=1-p_n+p_ne^{\theta}=1+p_n(e^{\theta}-1)\le\exp\bigl(p_n(e^{\theta}-1)\bigr),
+\]
+so $\mathbb E[e^{\theta S_N}]\le\exp(\mu_N(e^{\theta}-1))$. Markov's inequality, the same step as in the proof of Volume~4, Theorem~4.2, gives
+\[
+P(S_N\ge(1+\delta)\mu_N)\le\exp\bigl(-\mu_N\bigl((1+\delta)\ln(1+\delta)-\delta\bigr)\bigr)
+\]
+on taking $\theta=\ln(1+\delta)$. The function $\psi(\delta)=(1+\delta)\ln(1+\delta)-\delta-\delta^2/3$ satisfies $\psi(0)=\psi'(0)=0$ and $\psi''(\delta)=1/(1+\delta)-2/3$. Thus $\psi''\ge0$ on $[0,1/2]$, so $\psi'\ge0$ and $\psi\ge0$ there. On $[1/2,1]$, $\psi'$ is decreasing, but $\psi'(1)=\ln2-2/3>0$, so $\psi'\ge0$ and $\psi\ge0$ on the whole of $[0,1]$. The upper tail is therefore at most $e^{-\mu_N\delta^2/3}$.
+
+For the lower tail, the same estimate with $-\theta$ and $\theta=-\ln(1-\delta)$ gives
+\[
+P(S_N\le(1-\delta)\mu_N)\le\exp\bigl(-\mu_N\bigl(\delta+(1-\delta)\ln(1-\delta)\bigr)\bigr).
+\]
+The exponent coefficient $\eta(\delta)=\delta+(1-\delta)\ln(1-\delta)-\delta^2/2$ has $\eta(0)=\eta'(0)=0$ and $\eta''(\delta)=1/(1-\delta)-1\ge0$ for $\delta\in[0,1)$, so $\eta\ge0$. The lower tail is at most $e^{-\mu_N\delta^2/2}$, hence at most $e^{-\mu_N\delta^2/3}$. At $\delta=1$ the lower tail is $P(S_N=0)=\prod(1-p_n)\le e^{-\mu_N}$. Together,
+\[
+P(|S_N-\mu_N|\ge\delta\mu_N)\le 2e^{-\delta^2\mu_N/3}.
+\]
+This factor $1/3$ is proved here. It is not Hoeffding's inequality, and Volume~4, Chapter~4 does not contain it.
+
+Since $\lambda>2$, $\mu_N/(\log N)\to\infty$. For large $N$ one has $h_N<N$, so $\log(N+h_N)\le\log N+1$ and $h_N\ge(\log N)^\lambda-1$, hence
+\[
+\frac{\mu_N}{\log N}\ge\frac{(\log N)^\lambda-1}{\log N\,(\log N+1)},
+\]
+and the right-hand side tends to infinity. Thus $\mu_N\ge\frac{6}{\delta^2}\log N$ for large $N$, and the probability is at most $2/N^2$, which is summable. By Borel--Cantelli, almost surely $|S_N-\mu_N|<\delta\mu_N$ for all large $N$. Taking $\delta=\frac1j$ for every $j$, almost surely $S_N\sim\mu_N$.
 
 For real $x$, with $N=\lfloor x\rfloor$, the intervals $]x,x+(\log x)^\lambda]$ and $]N,N+h_N]$ differ in at most $3$ integers at each end, since $(\log x)^\lambda-(\log N)^\lambda\to0$. So the two counts differ by at most
 $6$, which is $o(\mu_N)$.
@@ -444,7 +466,7 @@ Theorem~\ref{thm:cramergaps} in place of a union over all $N$.)
 \end{solution}
 
 \begin{solution}{ex:modelpoisson}
-\idea A sum of many independent rare events is Poisson: Volume~4 proved it for equal probabilities (Theorem~2.11); here the probabilities differ slightly, and we redo the computation with symmetric functions.
+\idea A sum of many independent rare events is Poisson: Volume~4 proved it for equal probabilities (Theorem~2.1); here the probabilities differ slightly, and we redo the computation with symmetric functions.
 \writeup Let $p_n=\frac1{\log n}$ for $N<n\le N+h_N$, and $q_n=\frac{p_n}{1-p_n}$. Then
 \[
 P(S_N=k)=\prod_n(1-p_n)\cdot e_k,\qq e_k=\sum_{|I|=k}\prod_{n\in I}q_n,
