@@ -1,5 +1,7 @@
 # Volume 5–15: expert review and proposed redesign
 
+**Independent supplement (10 November 2026):** The accompanying [V5–V15 execution charter](SERIES-V5-V15-EXECUTION-CHARTER.md) defines proof-verification, prerequisite, editorial, and release gates. Subsequent source inspection also established two Volume 5 forward-premise problems (not just a hypothetical risk): `hardy-ramanujan.tex` uses Volume 6's eta transformation in the proof of `lem:ptrans`, while `waring.tex` uses Volume 6's sums-of-minima bound in the proof of `thm:weylk` and cites later Volume 5 Fourier inversion. These must be resolved before Volume 5 can be accepted as a sequentially readable book. The original assessment and provenance are otherwise preserved below.
+
 Planning document only. It does not change a manuscript, a catalog entry, a cover, or a build file. It does not replace `docs/plan/SERIES-CONTENT-PLAN.md`. Volumes 1–4 stay as they are on `main` at `b5543de`.
 
 The series question, kept:
@@ -44,7 +46,7 @@ Iwaniec–Kowalski was not opened. No chapter of that book is cited below.
 
 The plan’s story is the right story. Volume 6 puts a law (the explicit formula) and a Gaussian (Erdős–Kac) on the same primes, marks Maier’s theorem as the crack, and leaves Volume 15 to prove the crack and Selberg’s central limit theorem for \(\log|\zeta|\). That is a serious answer to the series question, and the manuscripts already contain those proofs.
 
-The plan is no longer an accurate map of the files, and it is not yet a realistic curriculum. Several gaps it schedules are already closed. Several chapters it calls openings are already written. The page table is the October baseline and does not count the chapters that have since moved. The one structural mistake that did get executed is the move of the sine-kernel chapter into Volume 8: `volume8-analysis/chapters/ch11-cue.tex` uses Weyl’s formula from Volume 9 and Lyapunov’s theorem from Volume 11 as premises. A reader who starts at Volume 1 cannot read that chapter when the book offers it. Volume 13, at 11,459 included lines, is two graduate books in one cover. Volume 14’s bound \(p_{n+1}-p_n\le 600\) is correctly labelled as resting on a witness that is not in the book, and it should not be sold as a theorem of the volume.
+The plan is no longer an accurate map of the files, and it is not yet a realistic curriculum. Several gaps it schedules are already closed. Several chapters it calls openings are already written. The page table is the October baseline and does not count the chapters that have since moved. One particularly serious executed structural mistake is the move of the sine-kernel chapter into Volume 8: `volume8-analysis/chapters/ch11-cue.tex` uses Weyl’s formula from Volume 9 and Lyapunov’s theorem from Volume 11 as premises. A reader who starts at Volume 1 cannot read that chapter when the book offers it. Volume 13, at 11,459 included lines, is two graduate books in one cover. Volume 14’s bound \(p_{n+1}-p_n\le 600\) is correctly labelled as resting on a witness that is not in the book, and it should not be sold as a theorem of the volume.
 
 Titles can stay. The repair is a reordering and a cut inside Volumes 8, 12, and 13, an audit of the short flagship proofs in Volume 6, and a decision to stop growing Volume 15.
 
@@ -429,8 +431,8 @@ Unchanged title.
 | --- | --- | --- | --- |
 | `ch01-finite.tex` | Summation by parts, power sums in Bernoulli numbers, at the strength the file states | | Volume 1, `prop:induction` |
 | `ch02-generating.tex` | Rational generating functions of linear recurrences | The Hardy–Ramanujan asymptotic, until the next row | Volume 1 series |
-| `hardy-ramanujan.tex` | The circle-method asymptotic for \(p(n)\), at the error the file proves | Rademacher’s exact formula, if the file quotes it | `ch02-generating.tex`; Volume 6’s \(\eta\) only as a citation, not as a prerequisite cycle. If the proof needs Volume 6, the chapter states that and is not used before Volume 6. This review did not open the proof. |
-| `waring.tex` | Waring for \(s\ge 2^k+1\), if that is the file’s theorem | | Volume 5 Fourier. Not an input to Volume 6. |
+| `hardy-ramanujan.tex` | The circle-method asymptotic for \(p(n)\), at the error the file proves | Rademacher’s exact formula, if the file quotes it | `ch02-generating.tex`; **verified after this review:** `lem:ptrans` relies on Volume 6's eta transformation inside its proof. A future premise must be removed, proved locally, or the chapter must be deferred. See the execution charter. |
+| `waring.tex` | Waring for \(s\ge 2^k+1\), if that is the file’s theorem | | **Verified after this review:** the proof of `thm:weylk` invokes Volume 6's sums-of-minima bound, and the chapter references Fourier inversion from later in Volume 5. Resolve both prerequisites before release. |
 | `ch03-series.tex` | The sine product, \(\zeta(2k)\) | | |
 | `ch04-integrals.tex` | Differentiation under the integral sign on compact intervals; Fubini for continuous functions on rectangles | General Fubini–Tonelli, labelled, discharged in Volume 7 | Volume 1 calculus |
 | `ch05-gamma.tex` | Bohr–Mollerup, reflection, Stirling for \(\Gamma\) | | |
@@ -692,7 +694,7 @@ The prerequisite path is on the order of 2,500–3,200 pages for Volumes 5–15,
 
 ### Dependency graph
 
-An arrow means the later volume uses a theorem the earlier volume is responsible for proving, as a premise. Reading order is still 1 through 15. The backwards arrows of the current plan (Volume 9 into Volume 8, Volume 11 into Volume 8, Volume 13’s \(\mathbb Q_p\) into Volume 8) are gone.
+An arrow means the later volume uses a theorem the earlier volume is responsible for proving, as a premise. Reading order is still 1 through 15. The backwards **proved-premise** arrows of the current plan (Volume 9 into Volume 8, Volume 11 into Volume 8, Volume 13’s \(\mathbb Q_p\) into Volume 8) are removed in this recommended reading-order graph. Deferred promises are tracked separately, not represented as proof prerequisites.
 
 ```mermaid
 flowchart TD
@@ -752,13 +754,12 @@ flowchart TD
   B11 --> B15
   B12 --> B14
   B12 --> B15
-  B13 --> B6
   B13 --> B14
   B13 --> B15
   B14 --> B15
 ```
 
-The arrow from Volume 13 back to Volume 6 is only `cor:dirichletFE` discharging `prop:biasidentity`. It is not a permission to use Tate’s thesis inside Volume 6. A reader of Volume 6 is told the bias identity waits.
+There is deliberately **no** Volume 13 → Volume 6 proved-premise arrow here. Volume 6's `prop:biasidentity` is a **deferred claim** whose missing input `cor:dirichletFE` is discharged in Volume 13; it may not be used as an established theorem in Volume 6. The deferred obligation belongs in a separate promise ledger, not in the acyclic prerequisite graph.
 
 ### Where each theorem lives
 
@@ -814,7 +815,7 @@ The bound \(p_{n+1}-p_n\le 600\), Green–Tao, Artin reciprocity, modularity, na
 
 ### Rework order
 
-Volume 5 is next, because it is the next unpublished volume and Volume 6 stands on `thm:functional`, `thm:gausssign`, and Euler–Maclaurin. The job is an audit and a notation pass, not a new climax.
+Volume 5 is next, because it is the next unpublished volume and Volume 6 stands on `thm:functional`, `thm:gausssign`, and Euler–Maclaurin. In addition to the audit and notation pass, the Hardy–Ramanujan and Waring chapters now have confirmed future dependencies that require explicit resolution before publication; see the execution charter.
 
 1. **Leave Volumes 1–4 alone.** Their theorems are the list above.
 2. **Volume 5, then Volume 6, as an audit.** Walk `thm:functional`, `thm:hadamard`, `thm:explicit`, `thm:zerofree`, and `thm:pnt`. Keep `prop:biasidentity` labelled. Do not add Bombieri–Vinogradov to Volume 6.
@@ -840,7 +841,7 @@ If the author prefers this alternative, the cue chapter has to be a second-pass 
 
 ## Risks, ranked
 
-1. **Forward premises in Volume 8.** `ch11-cue.tex` uses Volume 9 and Volume 11. `ch08-haar.tex` uses \(\mathbb Q_p\) from Volume 13. A reader in order cannot check the proofs. Mitigation: the moves in step 3 of the rework. Until then, those theorems are not available to Volumes 9 and 10.
+1. **Forward premises in Volumes 5 and 8.** The Volume 5 Hardy–Ramanujan proof uses the eta transformation of Volume 6; Waring's proof uses Volume 6 estimates and a later Volume 5 transform. `ch11-cue.tex` in Volume 8 uses Volume 9 and Volume 11, while `ch08-haar.tex` uses \(\mathbb Q_p\) from Volume 13. A reader in order cannot independently check these arguments. Mitigation: resolve Volume 5's future inputs before its publication, and make the proposed chapter/section moves before accepting Volume 8.
 
 2. **Volume 6’s short flagship proofs.** `thm:hadamard`, `thm:explicit`, `thm:zerofree`, and `thm:pnt` are the beams under Volumes 8, 14, and 15. Their `proof` environments are short. Mitigation: a line-by-line audit before Volume 14 cites them as settled. Newman’s proof being classical does not certify this write-up.
 
@@ -883,3 +884,5 @@ If the author prefers this alternative, the cue chapter has to be a second-pass 
 7. **Volume 15’s orphan files.** Leave them unreached, or mine the few theorems that have no other home (the riffle limit profile, Mason–Stothers, the BBP series) into Volumes 11, 13, and 5. The recommendation is to leave them out of Volume 15 either way. Putting them back would rebuild the workshop the current `main.tex` has already closed.
 
 8. **Whether Volume 6’s four short proofs survive an audit.** If `thm:hadamard` or `thm:explicit` is a sketch, the later volumes that cite them have to be relabelled before any further climax is added. That audit is the next mathematical act. It is not a license to edit Volumes 1–4.
+
+9. **Volume 5's circle-method chapters (independent addendum).** Keep them only with local proofs of the required eta and exponential-sum inputs and a placement after the Fourier material, or defer them to an optional later reading path. Leaving them as Volume 5's complete, sequential proofs while citing the not-yet-read Volume 6 is not recommended.
