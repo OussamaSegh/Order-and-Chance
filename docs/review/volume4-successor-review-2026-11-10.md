@@ -331,7 +331,7 @@ This pass reads the repairs. Heads at the time of the reading:
 | Pull request | Head | What it carries |
 | --- | --- | --- |
 | #152 | `789b09b512eb7d01b45dcb2f8617ed0a13b5562b` | M1, M2, M3, M5 |
-| #155, stacked on #152 | `03f1c9c472a38a08ffbb72173030ce1cdef32de1` | M4, m1–m13, the Theorem 6.14 shift |
+| #155, stacked on #152 | `569b2a9580bc9bce29a59369e340193d498747ec` | M4, m1–m13, the Theorem 6.14 shift, and the Volume 3 seam-snapshot refresh |
 | #153 | `94157806` | R1, R2 only |
 | #154 | `2cf9d56e` | R3, m14 |
 
