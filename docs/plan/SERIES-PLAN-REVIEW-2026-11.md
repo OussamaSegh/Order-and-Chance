@@ -1,5 +1,7 @@
 # Volume 5–15: expert review and proposed redesign
 
+> **Historical record. Not the plan.** This document is kept as it was written, for the record of how the plan was reached. It is superseded by the [definitive master plan for Volumes 5–15](MASTER-PLAN-V5-V15.md), which rules on every question raised here. Section 2 of the master plan lists which of this document's recommendations were accepted and which were rejected. Do not act on a recommendation below without checking it there.
+
 **Independent supplement (10 November 2026):** The accompanying [V5–V15 execution charter](SERIES-V5-V15-EXECUTION-CHARTER.md) defines proof-verification, prerequisite, editorial, and release gates. Subsequent source inspection also established two Volume 5 forward-premise problems (not just a hypothetical risk): `hardy-ramanujan.tex` uses Volume 6's eta transformation in the proof of `lem:ptrans`, while `waring.tex` uses Volume 6's sums-of-minima bound in the proof of `thm:weylk` and cites later Volume 5 Fourier inversion. These must be resolved before Volume 5 can be accepted as a sequentially readable book. The original assessment and provenance are otherwise preserved below.
 
 Planning document only. It does not change a manuscript, a catalog entry, a cover, or a build file. It does not replace `docs/plan/SERIES-CONTENT-PLAN.md`. Volumes 1–4 stay as they are on `main` at `b5543de`.

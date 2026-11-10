@@ -218,6 +218,8 @@ The final PDF review #73 is squash-merged at `4aa4e3f3d42334f1c165e622ca8a67f6b3
 
 ## Archive: Edition 1 plan (complete)
 
+**Note, 2026-11-10.** The steps below are a record of work already done. For Volumes 5–15 the plan now in force is [MASTER-PLAN-V5-V15.md](MASTER-PLAN-V5-V15.md). It revises three of these steps: step 6 (the construction of \(\mathbb Q_p\) is Volume 7's and its Haar measure stays in Volume 8), step 8 (the semicircle and the sine kernel return to Volume 12; the graph spectra stay in Volume 8), and step 11 (Waring's problem goes to Volume 14; Hardy–Ramanujan stays in Volume 5). Steps 15–19 on Volume 15 are replaced by decisions D-29 to D-31.
+
 Complete. Not the resume target. Edition 1 steps 0–21 below are finished. Their statuses are the historical record. Resume from the Volume 1 voice rewrite at the top of this file.
 
 ### Implementation tracker

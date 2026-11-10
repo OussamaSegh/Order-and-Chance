@@ -1,259 +1,153 @@
-# Book 13 — Arithmetic
+# Volume 13 — Arithmetic
 
 *From Equations to Hidden Worlds.*
 
-**Element.** The concealed storeys. When unique factorisation fails, the rooms that were already inside the integers.
+**Status of this file.** Blueprint of Volume 13 under the [master plan](MASTER-PLAN-V5-V15.md), 2026-11-10. It replaces the earlier specification, which described fourteen chapters; the manuscript prints eighteen. Chapter numbers below are the numbers after decision D-24 is applied; Chapters 1–17 keep the numbers they have today. No proof named here has been verified.
 
-**Source.** `volume13-arithmetic` (this directory name becomes valid once step 2 in [PROGRESS.md](PROGRESS.md) merges). Fourteen chapters, about 248 pages. The October review scored it 8. The three-squares test now requires \(n=4^am\) with \(4\nmid m\), in `ch07-hasse.tex`. The preface already narrows "every result is proved" to exclude the remarks: Mazur, modularity, Sato–Tate, Weil for a general curve, and the second case of regular Fermat. The functional equation of \(\zeta_K\) for a general field is a sketch. Artin reciprocity and the existence theorem are admitted in their headings.
+**Series part.** V. Number. **Directory.** `volume13-arithmetic`.
 
-## Promise
+## Central question
 
-In \(\mathbb Z[\sqrt{-5}]\) the number 6 factors in two ways. Book 2 repaired that one ring. This floor opens the wing: number fields, the geometry of numbers, units, cyclotomic fields and the first case of Fermat for regular primes, local fields, the Hasse–Minkowski theorem, zeta functions of number fields, Tate's thesis for \(\mathbb Q\), class field theory with Kronecker–Weber proved and Artin reciprocity admitted, algebraic curves, elliptic curves through Mordell–Weil, curves over finite fields through Hasse's bound, and modular forms. Tate's thesis is the third construction of the functional equation, from Poisson summation on the adèles. The statistical questions, whether a class group is random and whether the average rank is \(\tfrac12\), are handed to Book 15 unproved.
+What arithmetic was hidden inside the integers? An equation that cannot be solved in \(\mathbb Z\) opens a larger world: a number field, a completion, the adèles, a curve. Each chapter starts from one equation.
 
 ## Prerequisites
 
-Book 2's quadratic examples, as examples, not as the general theorems. Book 3's Galois theory and Dedekind's language. Abstraction's axioms for Dedekind domains; this book proves the number-field case itself and does not quote the unfinished cubic class-group sentence. Book 8's Haar measure and adèles. Book 6's large sieve, Theorem 8.8, and the value of \(L(1,\chi)\). Book 9's picture of a cubic, not its unfinished group law.
+| From | What is used |
+| --- | --- |
+| Volume 2 | Quadratic reciprocity, sums of squares, continued fractions and Pell, Gaussian integers |
+| Volume 3 | Galois theory, finite fields, modules over a principal ideal domain, characters |
+| Volume 5 | Poisson summation, the Gamma function, the functional equation of \(\zeta\), residues |
+| Volume 6 | Dirichlet \(L\)-functions and \(L(1,\chi)\ne0\), partial summation, the fundamental domain and the first modular forms |
+| Volume 7 | \(\mathbb Q_p\) as a complete, locally compact field (Chapter 2); measure and Fubini |
+| Volume 8 | Haar measure, self-duality and Fourier inversion on \(\mathbb Q_p\) (Chapter 13); Fourier analysis on finite abelian groups |
+| Volume 10 | Unique factorisation of ideals in a Dedekind domain; integral closure; the fundamental identity; Hilbert 90 |
 
-## How the subtitle is delivered
+No statement of Volumes 14–15 is used.
 
-The subtitle is a motion: from equations to hidden worlds. Every chapter starts with an equation and opens a room that was not visible in \(\mathbb Z\).
+## Structure
 
-| Chapter | Equation | Hidden world |
+| Ch. | Title | File | Action |
+| --- | --- | --- | --- |
+| | **Part I. Number Fields** | | |
+| 1 | Quadratic Fields and Their Integers | `ch11-algebraic.tex` | Keep |
+| 2 | Ideals, Prime Splitting and Class Groups | `ch12-ideals-quadratic.tex` | Keep. Title gains "in Quadratic Fields". Its factorisation proof is headed a second proof |
+| 3 | Number Fields and Their Integers | `ch01-number-fields.tex` | Keep |
+| 4 | Ideals and the Splitting of Primes | `ch02-ideals.tex` | Consolidate: cite Volume 10 (D-22) |
+| 5 | The Geometry of Numbers | `ch03-geometry.tex` | Keep |
+| 6 | Units | `ch04-units.tex` | Keep |
+| 7 | Cyclotomic Fields and Fermat | `ch05-cyclotomic.tex`, with `polyfermat.tex` as its last section | Absorbs the short chapter |
+| | **Part II. Local and Global** | | |
+| 8 | The \(p\)-adic Numbers | `ch12-padic.tex` | Keep. Cites Volume 7 for the construction |
+| 9 | Local Fields | `ch06-local.tex` | Keep |
+| 10 | Quadratic Forms and the Local–Global Principle | `ch07-hasse.tex` | Keep |
+| 11 | Zeta Functions and Densities | `ch08-zeta.tex` | Keep; one heading |
+| | **Part III. Adèles and Tate's Thesis** | | |
+| 12 | Adèles, Idèles and Tate's Thesis | `ch09-tate.tex` | Consolidate: cite Volume 8 (D-23) |
+| 13 | Class Field Theory | `ch10-cft.tex` | Keep |
+| | **Part IV. Elliptic Curves and Modular Forms** | | |
+| 14 | Algebraic Curves | `ch11-curves.tex` | Keep; Goppa codes become an exercise |
+| 15 | Elliptic Curves | `ch12-elliptic.tex` | Keep |
+| 16 | Curves over Finite Fields | `ch13-finite.tex` | Keep |
+| 17 | Modular Forms and \(L\)-functions | `ch14-modular.tex` | Keep; cites Volume 6 for the fundamental domain |
+
+**Why two quadratic chapters stay.** They are the worked case: every idea of Part I appears first where it can be computed by hand. Merging them into the general chapters would save pages and lose the volume's opening.
+
+## Flagship theorems, proved in this volume
+
+| Theorem | Label | Chapter |
 | --- | --- | --- |
-| 1–2 | A polynomial | The integers of a field, and the ideals that factor uniquely |
-| 3–4 | A convex body, Pell's equation | The class group and the unit lattice |
-| 5 | \(x^n+y^n=z^n\) | Cyclotomic fields |
-| 6–7 | A quadratic form | The \(p\)-adic fields, and the local-global principle |
-| 8–10 | A zeta function, an \(L\)-function | Densities, the adèles, and class field theory |
-| 11–14 | A cubic, a modular form | Curves, ranks, and the form that counts their points |
+| Integers of a quadratic field; ideals factor uniquely in a quadratic field, by Hurwitz's norm lemma (second proof); splitting of primes; finiteness of the class group | `thm:dedekind`, `thm:split`, `thm:classfinite` | 1–2 |
+| Integral bases; discriminant; Stickelberger | | 3 |
+| \(\mathcal O_K\) is Noetherian; unique factorisation of ideals, deduced from Volume 10; the Kummer–Dedekind theorem; splitting in cyclotomic fields | `prop:noeth`, `thm:ufi`, `thm:kd` | 4 |
+| Minkowski's convex body theorem and bound; Hermite's finiteness theorem | | 5 |
+| Dirichlet's unit theorem | | 6 |
+| Kummer's lemma; the first case of Fermat for regular primes; Mason–Stothers and Fermat for polynomials | | 7 |
+| Hensel's lemma; squares in \(\mathbb Q_p\); Ostrowski | | 8 |
+| The product formula; unramified and Eisenstein extensions | | 9 |
+| Hilbert reciprocity; Hasse–Minkowski; Legendre's theorem; sums of three squares | `thm:hm`, `thm:threesq` | 10 |
+| The analytic class number formula; Kummer's criterion; Dirichlet's theorem over a number field; Chebotarev in Dirichlet density | `thm:cnf`, `thm:kummercrit`, `thm:dirichletF`, `thm:chebotarev` | 11 |
+| Adelic Poisson summation; Tate's thesis for \(\mathbb Q\); the functional equation of primitive Dirichlet \(L\)-functions; Fujisaki's lemma, and from it second proofs of class number finiteness and the unit theorem | `thm:adelicpoisson`, `thm:tate`, `cor:dirichletFE`, `thm:fujisaki` | 12 |
+| Kronecker–Weber; class field theory over \(\mathbb Q\); cubic reciprocity | `thm:kw` | 13 |
+| Bézout; Noether's \(AF+BG\); Riemann–Roch for smooth plane curves | `thm:bezout`, `thm:rr` | 14 |
+| The group law; Nagell–Lutz; Mordell's theorem | `thm:grouplaw`, `thm:mordell` | 15 |
+| Rationality and functional equation of the zeta function of a curve; Stepanov–Bombieri; Hasse's bound | `thm:bombieri`, `cor:hasse` | 16 |
+| The valence formula; Hecke operators; Hecke's functional equation for the \(L\)-function of a cusp form | | 17 |
 
-The four catalog parts are that motion. Number Fields opens the polynomial. Local and Global opens the places. Adèles and Tate's Thesis opens the functional equation a third time. Elliptic Curves and Modular Forms opens the curve and the form that counts its points. No part is renamed.
+## Stated without proof
 
-**Receives.** Book 2's chapters on quadratic fields, ideals, and the \(p\)-adic numbers. Book 8's construction of the adèles, beyond the Haar measure Book 8 keeps. No chapter of this book fails the subtitle. Artin reciprocity stays admitted inside class field theory. It is part of the hidden world, and the heading says it is not proved.
+The list is fixed by decision D-25. Each item's heading carries the word shown.
 
-## Parts
+| Statement | Heading must say |
+| --- | --- |
+| Artin reciprocity; the existence theorem; the Hilbert class field (`thm:artin`, `thm:cftexistence`, `thm:hcf`) | Admitted, not proved in this series |
+| Primes of the form \(x^2+ny^2\) in general (`thm:xnyy`) | Assuming the Hilbert class field |
+| Functional equation of \(\zeta_K\) for a general number field | Sketch |
+| Chebotarev in natural density | Not proved. Dirichlet density is proved |
+| Weil's bound for a general curve; modularity; Mazur's torsion theorem; Sato–Tate | Quoted |
+| The second case of Fermat for regular primes | Quoted |
+| Canonical heights as a quadratic form; general Selmer groups | Named, not developed |
+| The three-cubes heuristic | Heuristic |
 
-| Part | Name | Chapters |
-| --- | --- | --- |
-| I | Number Fields | 1–5 |
-| II | Local and Global | 6–8 |
-| III | Adèles and Tate's Thesis | 9–10 |
-| IV | Elliptic Curves and Modular Forms | 11–14 |
+## Climax
 
----
+Chapter 12. Riemann proved the functional equation by Poisson summation on the line. Tate proves it by Poisson summation on the adèles, and the same proof gives every Dirichlet \(L\)-function, which pays the debt Volume 6 left. Part IV has its own summit in Mordell's theorem.
 
-### Part I. Number Fields
+## Motivation and history
 
-#### Chapter 1. Number Fields and Their Integers
+Fermat and Euler on \(x^2+ny^2\), Kummer's ideal numbers and Lamé's failed proof, Dedekind, Minkowski, Hensel, Hasse, Tate's 1950 thesis, Kronecker's Jugendtraum, Mordell and Weil, Hasse's 1933 theorem, Hecke, Ramanujan. Each sourced.
 
-**Status.** KEEP — `volume13-arithmetic/chapters/ch01-number-fields.tex` (793 lines). The discriminant of \(\mathbb Q(\sqrt 2)\) is a figure in this chapter, not Theorem 2.15. Book 14's citation, if it still says Theorem 2.15 for the value 8, points here.
+## Examples and exercises
 
-**Hook.** Is \(\mathbb Z[\sqrt 2]\) the full ring of integers of \(\mathbb Q(\sqrt 2)\)? Is \(\mathbb Z[\sqrt{10}]\) the full ring of \(\mathbb Q(\sqrt{10})\)? One answer is yes and the other is no.
+\(6=2\cdot3=(1+\sqrt{-5})(1-\sqrt{-5})\) carried from Chapter 1 to Chapter 13. Class groups computed for small discriminants. \(x^2-61y^2=1\). The seven quadratic extensions of \(\mathbb Q_2\). \(2x^2+7y^2=3z^2\). \(p=x^2+27y^2\). Two complete 2-descents. Point counts on \(y^2+y=x^3-x^2\) against the coefficients of \(\eta(\tau)^2\eta(11\tau)^2\).
 
-**Synopsis.** Embeddings, algebraic integers, norm, trace, discriminant, integral bases, and Stickelberger's theorem. Book 2 computed \(\mathcal O_K\) for quadratic fields. This chapter is the general construction. The quadratic case returns as the first example, named as a return.
+Seven to twelve exercises per chapter at three levels. Chapter 8 receives from Volume 8 the exercise on the Haar measure of the squares in \(\mathbb Z_p\).
 
-**Proved.** The ring of integers is a free \(\mathbb Z\)-module of rank \(n\). The discriminant of a basis, and the relation between bases. Stickelberger's congruence, if the file proves it.
+## Figures and experiments
 
-**Examples.** \(\mathbb Q(\sqrt 2)\) and \(\mathbb Q(\sqrt{10})\). One integral basis computed from a polynomial.
+Lattices of rings of integers; the tree of \(\mathbb Z_p\); real points of cubics; point counts against Hasse's interval. Class number tables and point counts are produced by scripts in the repository and listed in the ledger.
 
-**Figures.** Two.
+## Changes from the current manuscript
 
-#### Chapter 2. Ideals and the Splitting of Primes
+**Preserve.** All chapters except the short last one, in their order.
 
-**Status.** KEEP — `chapters/ch02-ideals.tex` (878 lines).
+**Consolidate.** Chapter 4: `thm:ufi` is deduced in a few lines from Volume 10, `thm:dedekind` and `thm:intclosure`, with `prop:noeth` kept. Its present long proof is removed after the equivalence table is filed. Chapter 12: the construction of Haar measure on \(\mathbb Q_p\) (`prop:haarQp`) and the local self-duality are replaced by citations of Volume 8, unless the comparison finds a different normalisation, in which case one normalising lemma stays.
 
-**Hook.** In \(\mathbb Z[\zeta_7]\), the prime 7 becomes a sixth power, 29 breaks into six prime ideals, and 2 into two.
+**Relocate.** `polyfermat.tex` into Chapter 7 as its closing section.
 
-**Synopsis.** Unique factorisation of ideals in \(\mathcal O_K\), the norm of an ideal, Kummer–Dedekind, ramification and the discriminant, and decomposition, inertia, and Frobenius in a Galois extension. Abstraction axiomatised Dedekind domains. This chapter proves that \(\mathcal O_K\) is one. The splitting law is the concealed storey's floor plan: a polynomial modulo \(p\) shows how \(p\) breaks.
+**Rewrite.** Chapter 17's fundamental-domain theorem cites Volume 6. Chapter 8 opens by citing Volume 7 for the construction and goes straight to Hensel.
 
-**Proved.** Unique factorisation of nonzero ideals. Kummer–Dedekind. \(p\) ramifies if and only if \(p\) divides the discriminant. The Frobenius element, and Dedekind's theorem on factoring the Galois group from a polynomial.
+**Remove.** Goppa codes as a numbered theorem (kept as an exercise). Any attribution of the bound \(\lvert c_p\rvert\le2\sqrt p\) for a modular form to the curve's Riemann hypothesis without the modularity statement beside it.
 
-**Examples.** The three primes in the hook. \(\mathbb Q(\sqrt 2)\), discriminant 8, as a figure of this chapter or of Chapter 1, not as Theorem 2.15.
+**Missing.** In the heading of Mordell's theorem, which half is proved in general and which under a hypothesis on 2-torsion, after inspection. One paragraph in the preface linking the end of Volume 12 to this volume.
 
-**Figures.** Two.
+## Links
 
-#### Chapter 3. The Geometry of Numbers
+**From Volume 12.** The zeros of \(\zeta\) were set beside a random spectrum. This volume shows \(\zeta\) is one of a family.
+**From Volumes 7, 8, 10.** Completion, local harmonic analysis, Dedekind domains: cited, not rebuilt.
+**To Volume 14.** Class numbers and \(L(1,\chi)\) for Siegel's theorem; Chebotarev; the functional equation of \(L(s,\chi)\).
+**To Volume 15.** Class groups, one 2-descent, the class number formula, point counts: the arithmetic whose statistics Volume 15 studies.
+**Back to Volume 6.** `cor:dirichletFE` discharges the admitted functional equation.
 
-**Status.** KEEP — `chapters/ch03-geometry.tex` (548 lines). Minkowski's theorem returns from Book 9's lattice appendix. The citation says so. This chapter owns the embedding of \(\mathcal O_K\) and the finiteness of the class group.
+## Size
 
-**Hook.** A convex body in the plane, symmetric about the origin, of area greater than 4, contains a nonzero lattice point.
+About 11,440 source lines today; about 11,000 after consolidation. **Estimate, not measured:** 320–350 printed pages. The earlier target of 250–270 pages described a shorter manuscript and is withdrawn.
 
-**Synopsis.** Lattices, Minkowski's theorem, the Minkowski embedding, the finiteness of the class group, and the Minkowski bound. The class group Book 2 computed for one quadratic field is finite for every number field. That is the theorem.
+## Mathematical risks
 
-**Proved.** Minkowski's convex-body theorem. Finiteness of the class group. The Minkowski bound of the strength the file gives.
+1. Removing the long proof of `thm:ufi` may remove lemmas that later chapters cite (`lem:missing` and others). The equivalence table lists every label cited elsewhere before anything is deleted.
+2. Normalisation of measures and characters between Volume 8 and Chapter 12. A factor here changes the functional equation.
+3. Tate's thesis: convergence and the interchange in the global zeta integral.
+4. Mordell's theorem: the height inequality and the weak theorem's scope.
+5. Chebotarev: the reduction to the cyclotomic case.
+6. Stepanov–Bombieri: the construction of the auxiliary function.
+7. Three squares: the 2-adic step, repaired once.
+8. `thm:xnyy` depends on an admitted theorem; no later result may use it as proved.
 
-**Examples.** A class number computed from the bound, \(\mathbb Q(\sqrt{-5})\) again, and one field whose bound is larger than 1 so the computation is real.
+## Acceptance requirements
 
-**Figures.** Two.
-
-#### Chapter 4. Units
-
-**Status.** KEEP — `chapters/ch04-units.tex` (424 lines). Dirichlet's unit theorem is proved here, and again from Fujisaki in Chapter 9. The second proof is a return, and Chapter 9 should say so.
-
-**Hook.** The smallest positive solution of \(x^2-61y^2=1\) has ten digits. Why must there be one at all?
-
-**Synopsis.** Roots of unity, the logarithmic embedding, Dirichlet's unit theorem, the regulator, and the search for fundamental units. Book 2 proved Pell's equation. This chapter is the general unit theorem: the unit group has rank \(r_1+r_2-1\).
-
-**Proved.** Dirichlet's unit theorem. The structure \(\mathcal O_K^\times\cong\mu\times\mathbb Z^{r_1+r_2-1}\).
-
-**Examples.** A real quadratic unit, from Book 2's continued fraction, recognised as the fundamental unit. One regulator.
-
-**Figures.** One.
-
-#### Chapter 5. Cyclotomic Fields and Fermat
-
-**Status.** KEEP — `chapters/ch05-cyclotomic.tex` (634 lines). The first case of Fermat for regular primes is proved. The second case stays a remark.
-
-**Hook.** Fermat's sentence in the margin: no \(n\)th power is a sum of two \(n\)th powers for \(n>2\). The chapter proves a piece of it, and says which piece.
-
-**Synopsis.** Cyclotomic fields, the prime above \(p\), the ring of integers, Gauss sums and a return of quadratic reciprocity, Kummer's lemma on units, and the first case for regular primes. Regularity is a condition on the class group. The class group, a concealed room, is now carrying Fermat's sentence.
-
-**Proved.** \([\mathbb Q(\zeta_n):\mathbb Q]=\varphi(n)\), matching Book 3. The ring of integers of \(\mathbb Q(\zeta_p)\). The first case of Fermat's last theorem for a regular prime.
-
-**Examples.** The class number of \(\mathbb Q(\zeta_p)\) for a small irregular or regular prime, whichever the chapter computes. One Kummer descent step, written out.
-
-**Figures.** Two.
-
-### Part II. Local and Global
-
-#### Chapter 6. Local Fields
-
-**Status.** KEEP — `chapters/ch06-local.tex` (592 lines). Book 2 built \(\mathbb Q_p\). Book 8 gave it Haar measure. This chapter classifies the finite extensions.
-
-**Hook.** \(\mathbb Q_2\) has seven quadratic extensions. \(\mathbb Q_5\) has three.
-
-**Synopsis.** Absolute values, Hensel's factorisation, ramification index and residue degree, unramified and totally ramified extensions, Krasner's lemma, and the completions of a number field. Every finite extension of \(\mathbb Q_p\) is generated by a root of a polynomial the chapter can describe. The numbers \(e\) and \(f\) return from Chapter 2, now locally.
-
-**Proved.** Existence and uniqueness of the extension of the absolute value. \(ef=n\). The classification of unramified extensions. Krasner's lemma. Finiteness of the number of extensions of a given degree.
-
-**Examples.** The seven quadratic extensions of \(\mathbb Q_2\). One unramified extension, a root of unity.
-
-**Figures.** Two.
-
-#### Chapter 7. Quadratic Forms and the Local–Global Principle
-
-**Status.** KEEP — `chapters/ch07-hasse.tex` (598 lines). The three-squares proof was the review's false conclusion about the integer 28. The source now writes \(n=4^am\) with \(4\nmid m\) before the 2-adic test. A second reading of that paragraph is the only work. Hasse–Minkowski and the Davenport–Cassels lemma checked out. The preface's sentence that the chapter settles sums of three squares is true of the repaired proof.
-
-**Hook.** Does \(2x^2+7y^2=3z^2\) have a nontrivial rational solution? It has real solutions and \(p\)-adic solutions at 3 and at 5. It fails at 2.
-
-**Synopsis.** Quadratic forms, the Hilbert symbol, the product formula, forms over \(\mathbb Q_p\), the Hasse–Minkowski theorem, Legendre's theorem, and three squares. A quadratic equation is solvable over \(\mathbb Q\) exactly when it is solvable over \(\mathbb R\) and over every \(\mathbb Q_p\). Three squares is the application: \(n\) is a sum of three integer squares if and only if it is not of the form \(4^a(8b+7)\). Book 2 admitted this theorem. This chapter owns it.
-
-**Proved.** The Hilbert product formula. Hasse–Minkowski for quadratic forms. The three-squares theorem, with \(m\) odd in the 2-adic test.
-
-**Examples.** The form in the hook, failing at 2. The integer 28, which is \(4\cdot 7\) and is not a sum of three squares, computed both ways so the repaired test is visible. The integer 7 itself.
-
-**Figures.** One.
-
-#### Chapter 8. Zeta Functions and Densities
-
-**Status.** KEEP — `chapters/ch08-zeta.tex` (940 lines). Chebotarev is proved in Dirichlet density. Natural density is explicitly not claimed. That sentence stays.
-
-**Hook.** \(\mathbb Q(\sqrt{-23})\) has class number 3. A series with signs from the squares modulo 23 sums to \(3\pi/\sqrt{23}\), or the multiple the chapter actually displays.
-
-**Synopsis.** The Dedekind zeta function, lattice points in cones, counting ideals, the analytic class-number formula, abelian fields and Dirichlet \(L\)-functions, the class number of \(\mathbb Q(\zeta_p)\), and Chebotarev in Dirichlet density. The class-number formula ties \(h_K\) to a special value. Book 15's Cohen–Lenstra heuristic will say the formula does not determine the proportion of discriminants with \(3\mid h(-d)\). This chapter does not pretend it does.
-
-**Proved.** The class-number formula. Analytic continuation of \(\zeta_K\) to \(\mathrm{Re}\,s>1-1/n\), of the strength the file proves. Chebotarev in Dirichlet density. The class-number formula's special case for an imaginary quadratic field, matching Book 6's Theorem on \(L(1,\chi)\).
-
-**Examples.** \(h(-23)=3\), from the series. One Frobenius density, a splitting type whose density is the size of a conjugacy class.
-
-**Figures.** Two.
-
-### Part III. Adèles and Tate's Thesis
-
-#### Chapter 9. Adèles, Idèles and Tate's Thesis
-
-**Status.** REVISE — `chapters/ch09-tate.tex` (873 lines). Tate's thesis for \(\mathbb Q\), including primitive Dirichlet \(L\)-functions, is proved. The functional equation of \(\zeta_K\) for a general number field is a sketch: Haar measure on each completion, the character \(\psi\circ\mathrm{Tr}\), and Poisson summation on the adèles are not written. Call that paragraph a sketch in its heading. The preface's "Tate derives the functional equation" is true for Riemann's zeta and for Dirichlet \(L\)-functions. Fujisaki's compactness, and the second proof of the unit theorem, name Chapter 4.
-
-**Hook.** Riemann proved the functional equation with Poisson summation. Tate proved it with Poisson summation too, on a larger group.
-
-**Synopsis.** The adèles and idèles of \(\mathbb Q\), Haar measure, characters, Fourier analysis, and Tate's thesis. This is the third time the series builds the functional equation: Book 5 from the theta function, Book 6 as a tool, Book 8's Ikehara as a consequence of a zero-free line, and now Tate as a theorem about Fourier analysis on the adèles. The chapter's introduction counts those constructions so the reader sees one beam, three times.
-
-**Proved.** The functional equation of \(\zeta(s)\) and of \(L(s,\chi)\) for primitive Dirichlet characters, by Tate's method over \(\mathbb Q\). Compactness of the idèle-class group modulo the connected component, or the form Fujisaki's lemma takes in the file. Dirichlet's unit theorem recovered from that compactness, labelled as a second proof.
-
-**Examples.** The local factor at a prime, computed. The completed \(L\)-function of \(\chi_4\), matching Book 6's value at 1.
-
-**Figures.** One.
-
-#### Chapter 10. Class Field Theory
-
-**Status.** KEEP — `chapters/ch10-cft.tex` (707 lines). Artin reciprocity and the existence theorem are admitted in the headings. Kronecker–Weber is proved. That split is the right one, and the preface matches it.
-
-**Hook.** A prime \(p\equiv 1\pmod 3\) can be written \(x^2+27y^2\) exactly when 2 is a cube modulo \(p\). No congruence on \(p\) says this. What kind of law is it?
-
-**Synopsis.** Kronecker–Weber, the statements of Artin reciprocity and the existence theorem, cubic reciprocity and \(x^2+27y^2\), and one page on Langlands. The concealed storey has a law that is not a congruence. The law is stated. The proof that every abelian extension of \(\mathbb Q\) lies in a cyclotomic field is the theorem this book owns. The Hilbert class field is described under the admitted existence theorem, and the heading says "admitted".
-
-**Proved.** Kronecker–Weber. The consequences of the admitted reciprocity law that the chapter derives, including the \(x^2+27y^2\) criterion if it is derived from the admitted statement and not smuggled in as a proof of reciprocity.
-
-**Examples.** The Hilbert class field of \(\mathbb Q(\sqrt{-5})\) and of \(\mathbb Q(\sqrt{-23})\), the exercises the review checked. One prime written as \(x^2+27y^2\), and one that is not.
-
-**Figures.** Two.
-
-### Part IV. Elliptic Curves and Modular Forms
-
-#### Chapter 11. Algebraic Curves
-
-**Status.** KEEP — `chapters/ch11-curves.tex` (752 lines). Book 9's appendix gave Bézout as a picture. This chapter proves it with intersection numbers. The appendix is the drawing; this is the proof.
-
-**Hook.** A line meets a parabola twice, a circle meets a circle twice, a cubic meets a cubic nine times. Except when they do not, until one counts points at infinity and multiplicities.
-
-**Synopsis.** Plane curves, intersection numbers, Bézout, Max Noether's theorem, divisors, Riemann–Roch for smooth plane curves, and codes from curves. Riemann–Roch is the theorem the elliptic group law will use. Genus is a number the reader can compute for a smooth plane curve.
-
-**Proved.** Bézout. Riemann–Roch for smooth plane curves. The genus formula for a smooth plane curve of degree \(d\).
-
-**Examples.** A smooth cubic, genus 1. One Riemann–Roch space, computed.
-
-**Figures.** Two.
-
-#### Chapter 12. Elliptic Curves
-
-**Status.** KEEP — `chapters/ch12-elliptic.tex` (602 lines). The group law is proved here, from Riemann–Roch. Book 9's appendix does not carry it. The canonical height is named and not proved as a quadratic form. The \(n\)-Selmer group is not constructed. The Tate–Shafarevich group is named as the gap between a Selmer bound and the rank. A full 2-descent is given for \(y^2=x^3-x\) and \(y^2=x^3-4x\). Mordell–Weil is proved for \(E(\mathbb Q)\) and stated over a general number field.
-
-**Hook.** The right triangle of sides 3, 4, 5 has area 6. So does a triangle with sides in the hundreds. Where did that come from?
-
-**Synopsis.** The group law, torsion, Nagell–Lutz, Mordell's theorem, and congruent numbers. The rank is finite. The chapter does not determine it. Book 15 will build a 2-Selmer group for one family in this language and will state the average-rank conjectures. It will not reprove Mordell.
-
-**Proved.** The chord-and-tangent group law on a smooth cubic, including the degenerate cases. Nagell–Lutz. Mordell–Weil for \(E(\mathbb Q)\). The 2-descent for the two curves named above.
-
-**Examples.** \(y^2=x^3-x\), its torsion and its rank by the descent. One congruent number.
-
-**Figures.** Two.
-
-#### Chapter 13. Curves over Finite Fields
-
-**Status.** KEEP — `chapters/ch13-finite.tex` (662 lines). Hasse's bound is proved for \(y^m=f(x)\) by Stepanov–Bombieri. Weil's theorem for a general curve is stated. The preface says so.
-
-**Hook.** How many solutions has \(x^3+y^3=1\) modulo \(p\)? About \(p\), give or take \(2\sqrt p\).
-
-**Synopsis.** Frobenius, the zeta function of a curve, counting with characters, Bombieri's upper bound, and the Riemann hypothesis for the curves the method reaches. This is a Riemann hypothesis the series proves, for a special class of curves. The Riemann hypothesis for \(\zeta(s)\) remains open. The two share a name and not a proof, and the chapter says so.
-
-**Proved.** The zeta function of the curves treated. Hasse's bound for \(y^m=f(x)\).
-
-**Examples.** \(x^3+y^3=1\) modulo a small prime, counted and compared with \(p\pm 2\sqrt p\).
-
-**Figures.** Two.
-
-#### Chapter 14. Modular Forms and \(L\)-functions
-
-**Status.** REVISE — `chapters/ch14-modular.tex` (586 lines). Book 6 tasted \(E_4^2=E_8\) and \(\tau(n)\) modulo 691. This chapter owns the valence formula, Hecke operators, and Hecke's proof that the \(L\)-function of a cusp form has a functional equation. Modularity is stated. In the beauty paragraph, do not attribute \(|c_p|\le 2\sqrt p\) for \(\eta(\tau)^2\eta(11\tau)^2\) to the curve Riemann hypothesis unless Eichler–Shimura is marked as quoted. The identification \(c_p=a_p\) is a numerical check plus a remark.
-
-**Hook.** Count the points of \(y^2+y=x^3-x^2\) modulo \(p\). Expand \(q\prod(1-q^n)^2(1-q^{11n})^2\). The same numbers come out. Why?
-
-**Synopsis.** The fundamental domain, the valence formula, Hecke operators, \(L\)-functions, and one elliptic curve matched with one modular form. The functional equation of \(\eta^2\eta(11\tau)^2\) is proved. The reason the coefficients count points is modularity, stated and not proved. That statement is the cliffhanger of the concealed storeys: the rooms exist, the count matches as far as the series can see, and the identification is a theorem the series does not prove.
-
-**Proved.** The valence formula. Hecke's functional equation for the \(L\)-function of a modular form of the type the chapter treats. The dimension of a space of cusp forms, if the file computes one. Multiplicativity of \(\tau(n)\) from the Hecke operators, if that is included; otherwise it stays in Book 6 and this chapter cites it.
-
-**Examples.** The curve of conductor 11 and the product for \(\eta(\tau)^2\eta(11\tau)^2\), coefficients compared for small \(p\), the comparison labelled as a check. \(j=q^{-1}+744+196884q+\cdots\), the expansion the exercises already compute.
-
-**Figures.** Two.
-
-## Owns, defers, hands forward
-
-**Owns.** Unique ideal factorisation in \(\mathcal O_K\). The Minkowski bound and finiteness of the class group. Dirichlet's unit theorem. Kronecker–Weber. Hasse–Minkowski and three squares. The class-number formula. Chebotarev in Dirichlet density. Tate's thesis for \(\mathbb Q\) and primitive Dirichlet \(L\)-functions. Riemann–Roch for smooth plane curves. The group law, Nagell–Lutz, and Mordell–Weil over \(\mathbb Q\). Hasse's bound for \(y^m=f(x)\). The functional equation of a modular \(L\)-function of the type proved here. The first case of Fermat for regular primes.
-
-**Defers.** Artin reciprocity and the existence theorem, admitted. The functional equation of \(\zeta_K\) for a general field, a sketch. Modularity, Sato–Tate, Mazur's torsion theorem, Weil for a general curve, the second case of Fermat. Genus theory of the 2-rank. The canonical height as a quadratic form. The general \(n\)-Selmer group. Class-group moments and average ranks (Book 15, stated).
-
-**Hands forward.** The concealed storeys, furnished. Book 14 uses the class group, Siegel's input, and the discriminant. Book 15 uses one 2-descent, the class-number formula, and the admitted shape of modularity, and it does not pretend to prove the averages.
-
-## Pages and effort
-
-Baseline 248 pages. Target 250–270. Effort: light to moderate. A second reading of the repaired three-squares test, the sketch heading on the general functional equation, the Eichler–Shimura sentence, and the discriminant pointer in Book 14 if it is still wrong.
+- Structure equals the table above; Chapters 1–17 keep today's numbers.
+- No premise from Volumes 14–15. Volumes 7, 8 and 10 are cited where this plan says.
+- Equivalence tables for D-22 and D-23 filed before the consolidating pull requests.
+- Verification records for every label in the flagship table, Chapters 4, 11, 12 and 15 first.
+- Every item of the "without proof" table carries its heading; the preface's claim about what is proved matches the table.
+- The ten editorial standards of the master plan, section 6.5.

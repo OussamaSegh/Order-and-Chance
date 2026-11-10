@@ -40,6 +40,8 @@ Notebook folders follow the new numbers: `python/volume1` through `python/volume
 
 ## Parts inside each volume
 
+The table describes the manuscripts as they stand. For Volumes 5–15 the approved plan is `docs/plan/MASTER-PLAN-V5-V15.md`. When its structural decisions are applied, these rows change: Waring's problem leaves Volume 5 for Volume 14 and the Hardy–Ramanujan formula moves to Volume 5's third part; the semicircle and the sine kernel return from Volume 8 to Volume 12, whose third part is again Networks and Random Matrices; six linear-algebra chapters of Volume 8 become appendices. Update this table in the pull request that makes each move.
+
 A few part names were adjusted so the part matches the chapters that actually sit there.
 
 | Volume | Part | Chapters |

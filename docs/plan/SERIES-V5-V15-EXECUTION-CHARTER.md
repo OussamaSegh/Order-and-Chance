@@ -1,5 +1,7 @@
 # Volumes 5–15 — execution charter and acceptance gates
 
+> **Historical record. Not the plan.** This document is kept as it was written, for the record of how the plan was reached. It is superseded by the [definitive master plan for Volumes 5–15](MASTER-PLAN-V5-V15.md), which rules on every question raised here. Section 2 of the master plan lists which of this document's recommendations were accepted and which were rejected. Do not act on a recommendation below without checking it there.
+
 **Status:** Proposed implementation standard, accompanying PR #150's detailed diagnostic review. This is a *plan*, not evidence that the manuscripts have been corrected or their proofs independently verified.
 
 **Scope:** Volumes 5–15 of *Order and Chance*. Preserve published Volumes 1–3 and the currently completed Volume 4 text. Keep the existing 15-volume sequence, titles, subtitles, six-part series division, and the central question: how can primes obey rigid laws while displaying randomness? Any future change to that canon needs an explicit decision record, not an incidental chapter move.

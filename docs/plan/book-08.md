@@ -2,7 +2,7 @@
 
 *Operators, Spectra and Transforms.*
 
-**Status of this file.** Blueprint of Volume 8 under the [master plan](MASTER-PLAN-V5-V15.md), 2026-11-10. It replaces the earlier specification, which described ten chapters; the manuscript prints twenty-five. Chapter numbers below are the numbers after decisions D-16 and D-18 are applied. No proof named here has been verified.
+**Status of this file.** Blueprint of Volume 8 under the [master plan](MASTER-PLAN-V5-V15.md), 2026-11-10. It replaces the earlier specification, which described ten chapters; the manuscript prints twenty-four. Chapter numbers below are the numbers after decisions D-16 and D-18 are applied. No proof named here has been verified.
 
 **Series part.** III. Analysis and Geometry. **Directory.** `volume8-analysis`.
 
