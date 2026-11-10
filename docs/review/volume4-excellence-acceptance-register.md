@@ -1,8 +1,8 @@
 # Volume 4 — excellence acceptance register
 
 **State:** PHASE 2 SOURCE-MATHEMATICS PASS / PHASE 3 BOOK-WIDE QA IN_PROGRESS. Overall excellence and release gates are not closed. Phase 3 tracking is GitHub issue [#139](https://github.com/OussamaSegh/Order-and-Chance/issues/139). The Phase 3 baseline is merged `main` `2655cf5ac02c0a1c510c0da13f8c6b223c4d9c5f` (PR #137). Do not read a Phase 3 gate as passed unless the handoff cites examined evidence. At the merged `main` of PR #136 (`070b9e00a5afadbe3d4153339cfd99cd72329d24`), sole-validator source acceptance covers **127/127 labeled mathematical proof-bearing assertions and 107/107 exercise/hint/solution triples**, including the Chapter 12 signoff merged in #135. The whole-book 41-figure mathematical-semantic, reading/pedagogy, full cross-volume graph, final-candidate and external print/device/release gates are **not** automatically passed. The author appointed GPT-6 as sole mathematical validator on 9 November 2026; external mathematical signoff is not required. **Created:** 8 November 2026.
-**Plan:** [Volume 4 excellence execution plan](../plan/volume4-excellence-execution-plan-2026-11-08.md).  
-**Planning baseline:** `main` `e120d10a1a1466d5dfc5b6ea4229a83ba8d83cfe`. This is **not** a final candidate SHA.  
+**Plan:** [Volume 4 excellence execution plan](../plan/volume4-excellence-execution-plan-2026-11-08.md).
+**Planning baseline:** `main` `e120d10a1a1466d5dfc5b6ea4229a83ba8d83cfe`. This is **not** a final candidate SHA.
 **Important:** Historical reviews exist in `volume4-chapter-issue-log.md`, `volume4-coverage-2026-11-08.md` and other review documents. Nothing below erases their work or treats their past source/CI signoffs as acceptance of a new revision.
 
 ## Rules for updating

@@ -1,7 +1,7 @@
 # Volume 4 Phase 3 handoff
 
-**Updated:** 10 November 2026.  
-**Tracker:** https://github.com/OussamaSegh/Order-and-Chance/issues/139  
+**Updated:** 10 November 2026.
+**Tracker:** https://github.com/OussamaSegh/Order-and-Chance/issues/139
 **Reviewer:** the designated validator (an AI reviewer). Not an external referee, and not a publication approval.
 
 ## Baseline

@@ -1,8 +1,8 @@
 # Volume 4 Phase 3 — figure audit
 
-**Date:** 10 November 2026.  
-**Reviewer:** the designated validator (an AI reviewer). This is not an external mathematical referee.  
-**Baseline:** `main` `2655cf5ac02c0a1c510c0da13f8c6b223c4d9c5f`.  
+**Date:** 10 November 2026.
+**Reviewer:** the designated validator (an AI reviewer). This is not an external mathematical referee.
+**Baseline:** `main` `2655cf5ac02c0a1c510c0da13f8c6b223c4d9c5f`.
 **Method:** source inspection of every `\fig` call, its TikZ, and its caption. Concrete numbers were recomputed. This pass did **not** open a rendered PDF or EPUB, so it does not close the rendered-plate gate.
 
 The manuscript calls **41** distinct figure files. `tools/test_volume4_route.py` now pins that set. Extra files under `volume4-chance/figures/` are not inputs. They are listed at the end and are not release blockers.

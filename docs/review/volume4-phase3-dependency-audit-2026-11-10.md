@@ -1,8 +1,8 @@
 # Volume 4 Phase 3 — cross-volume dependency audit
 
-**Date:** 10 November 2026.  
-**Reviewer:** the designated validator (an AI reviewer). Not an external referee.  
-**Baseline:** `main` `2655cf5ac02c0a1c510c0da13f8c6b223c4d9c5f`.  
+**Date:** 10 November 2026.
+**Reviewer:** the designated validator (an AI reviewer). Not an external referee.
+**Baseline:** `main` `2655cf5ac02c0a1c510c0da13f8c6b223c4d9c5f`.
 **Scope that was actually checked:** the 18 repairs from PR #136, Volumes 1–3 against the parent of that PR, Volume 4's named citations of Volumes 1–6, and Volume 4 citations inside Volumes 5 and 6 plus one further phantom number found in Volume 11 while confirming DEP-29. This is not a proof-by-proof reading of Volumes 5–15.
 
 ## Tests and the 18 repairs
