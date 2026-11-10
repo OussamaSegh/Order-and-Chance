@@ -94,7 +94,29 @@ Chapter~4 proved that the average of bounded independent variables settles to th
 
 There is still a way to make the bad averages rare enough. If the fourth moment is finite, expanding the fourth power of the centred sum shows that its expectation grows only like $n^2$, while the fourth power of the threshold $n\varepsilon$ grows like $n^4$. This gives a summable bound proportional to $1/n^2$. Borel--Cantelli can finish.
 
-One technical point matters for our foundations: the unbounded random variables from Chapter~5 depend on infinitely many digits. A deviation event cannot automatically be treated as one of the finite-digit cylinder events of Chapter~1. The proof first clips the variables and approximates their quantiles by finite-digit steps, so the outer-content bound is justified rather than assumed.
+One technical point matters for our foundations: the unbounded random variables from Chapter~5 depend on infinitely many digits. A deviation event cannot automatically be treated as one of the finite-digit cylinder events of Chapter~1. The proof first clips the variables and approximates their quantiles by finite-digit steps, so the outer-content bound is justified rather than assumed. The product of two independent factors is the same kind of step. It is written out before it is used.
+
+\begin{propositionx}[product of independent factors]\label{prop:indepproduct}
+Let $U$ and $V$ be distinct uniforms from Proposition~\ref{prop:manyuniforms}, and let $\phi$ and $\psi$ be bounded and monotone. Then $\mathbb E[\phi(U)\psi(V)]=\mathbb E[\phi(U)]\,\mathbb E[\psi(V)]$. The same factorisation holds for a product of at most four bounded monotone functions of distinct blocks.
+
+Let $H$ be bounded and constant on a finite partition into cylinders of bits that $U$ does not use, and let $Q$ be monotone with $\mathbb E[Q(U)^2]<\infty$. Then
+\[
+ \mathbb E[H\,Q(U)]=\mathbb E[H]\,\mathbb E[Q(U)],\qquad
+ \mathbb E\bigl[H\,Q(U)^2\bigr]=\mathbb E[H]\,\mathbb E\bigl[Q(U)^2\bigr].
+\]
+If $\mathbb E[Q(U)]=0$, the first product is $0$.
+\end{propositionx}
+\begin{proof}
+A bounded nondecreasing $\phi$ has finite one-sided limits at the endpoints of $[0,1]$. On each dyadic interval $[j2^{-m},(j+1)2^{-m})$ let $L_m$ take the left value and $R_m$ the right value, using those endpoint limits at $0$ and $1$. Then $L_m\le\phi\le R_m$, both steps depend only on the first $m$ digits of their own uniform, and $\mathbb E[R_m-\,L_m]=2^{-m}(\phi(1)-\phi(0))$. A nonincreasing function is the same construction run backwards. Thus $\mathbb E|\phi-L_m|\to0$, and $|L_m|$ stays at most the bound on $\phi$.
+
+A product of such steps, one from each of $r\le4$ distinct blocks, is a finite linear combination of joint cylinders. Proposition~\ref{prop:manyuniforms} makes each joint cylinder probability the product of the lengths, so the expectation of the product of the steps is the product of the expectations. Replacing the factors one at a time, the error in returning from the steps to the bounded monotone functions is at most a constant times $\sum_j\mathbb E|\phi_j-L_{j,m}|$, which tends to $0$. The expectations of the steps tend to the expectations of the functions. That is the first identity.
+
+Now let $H=\sum_a h_a\mathbf 1_{C_a}$ be the finite-bit function in the second claim, and let $\phi$ be bounded and monotone. Each product $\mathbf 1_{C_a}L_m(U)$ uses disjoint blocks of bits, so $\mathbb E[\mathbf 1_{C_a}L_m(U)]=P(C_a)\,\mathbb E[L_m]$. Letting $m\to\infty$ gives $\mathbb E[H\,\phi(U)]=\mathbb E[H]\,\mathbb E[\phi]$.
+
+The clip $Q^{(M)}=\max(-M,\min(M,Q))$ is bounded and monotone, and $|Q-Q^{(M)}|\le Q^2/M$ because $|Q|>M$ forces $|Q|\le Q^2/M$. Hence $\mathbb E|Q-Q^{(M)}|\le\mathbb E[Q^2]/M\to0$, and $\mathbb E[Q^{(M)}]\to\mathbb E[Q]$. The identity already proved gives $\mathbb E[H\,Q^{(M)}]=\mathbb E[H]\,\mathbb E[Q^{(M)}]$. The difference from $\mathbb E[H\,Q]$ is at most $\|H\|_\infty\mathbb E|Q-Q^{(M)}|$, so the first formula of the second claim follows.
+
+For the square, split $Q^{(M)}=Q^{(M)}_+-Q^{(M)}_-$ into its nonnegative and nonpositive parts. Both parts are monotone, their squares are monotone, and $(Q^{(M)})^2$ is the sum of those two squares. The bounded identity applies to each square, so $\mathbb E[H\,(Q^{(M)})^2]=\mathbb E[H]\,\mathbb E[(Q^{(M)})^2]$. The set $\{|Q|>M\}$ is a union of at most two tails of $(0,1)$, because $Q$ is monotone. On that set $Q^2-(Q^{(M)})^2=Q^2$. The integral of $Q^2$ over the tail tends to $0$ as $M\to\infty$, because $\mathbb E[Q^2]$ is a convergent improper integral. Therefore $\mathbb E[H\,Q^2]=\mathbb E[H]\,\mathbb E[Q^2]$.
+\end{proof}
 
 \begin{theorem}[strong law, fourth moment]\label{thm:slln4}
 Let $X_i=F^{-1}(U_i)$ be i.i.d.\ copies, in the sense of Propositions~\ref{prop:manyuniforms} and~\ref{prop:inverse}, with $\mathbb E[X_1]=\mu$ and $\mathbb E[X_1^4]<\infty$. Set $S_n=X_1+\cdots+X_n$. Then $S_n/n\to\mu$ almost surely.
@@ -102,54 +124,40 @@ Let $X_i=F^{-1}(U_i)$ be i.i.d.\ copies, in the sense of Propositions~\ref{prop:
 \begin{proof}
 Write $Z_i=X_i-\mu$ and $T_n=Z_1+\cdots+Z_n$. The claim $S_n/n\to\mu$ is the claim $T_n/n\to0$. The proof bounds the outer content of $\{|T_n|\ge n\varepsilon\}$, sums those bounds, and passes to every positive $\varepsilon$ at once.
 
-\emph{The fourth moment is of order $n^2$.} Since $|x-\mu|\le|x|+|\mu|$ and $(a+b)^2\le2(a^2+b^2)$, one has $(a+b)^4\le4(a^2+b^2)^2\le8(a^4+b^4)$. Thus $\mathbb E|Z_1|^4\le8(\mathbb E|X_1|^4+|\mu|^4)<\infty$. Write $\mu_4=\mathbb E[Z_1^4]$ and $\sigma^2=\mathbb E[Z_1^2]$. Expand $T_n^4=\sum_{i,j,k,\ell}Z_i Z_j Z_k Z_\ell$. If any index appears only once, independence and $\mathbb E[Z_i]=0$ make that term's expectation zero. The surviving patterns are a fourth power, and a product of two distinct squares. There are $n$ fourth powers. For an unordered pair $\{i,j\}$ the multinomial coefficient of $Z_i^2 Z_j^2$ is $4!/(2!2!)=6$, and there are $n(n-1)/2$ such pairs, so those terms contribute $6\cdot n(n-1)/2\cdot\sigma^4=3n(n-1)\sigma^4$. Therefore
+\emph{A centred clip has fourth moment of order $n^2$.} Since $|x-\mu|\le|x|+|\mu|$ and $(a+b)^4\le8(a^4+b^4)$, one has $\mathbb E|Z_1|^4\le8(\mathbb E|X_1|^4+|\mu|^4)<\infty$. Let $Q$ be the centred quantile, so $Z_i=Q(U_i)$, and write $Q^{(M)}$ for its clip at height $M$. Set $\mu_M=\mathbb E[Q^{(M)}(U)]$ and $Y=Q^{(M)}(U)-\mu_M$. Then $Y$ is bounded and monotone, and $\mathbb E[Y]=0$. The copies $Y_i=Y(U_i)$ use distinct blocks.
+
+Proposition~\ref{prop:indepproduct} factors a product of bounded monotone functions of those blocks. Split $Y=Y_+-Y_-$ into its nonnegative and nonpositive parts, and split $Y^2=Y_+^2+Y_-^2$. Each of $Y_+$, $Y_-$, $Y_+^2$ and $Y_-^2$ is monotone. A product $Y_i^2 Y_j^2$ therefore expands into four products of monotone functions, and
 \[
- \mathbb E[T_n^4]=n\mu_4+3n(n-1)\sigma^4\le Cn^2
+ \mathbb E[Y_i^2 Y_j^2]=\bigl(\mathbb E[Y^2]\bigr)^2\qquad(i\ne j).
 \]
-for a constant $C$ that does not depend on $n$.
+A monomial in which some index appears only once expands, after the same splitting, into a sum of products of monotone functions, and each of those products contains the factor $\mathbb E[Y]=0$. Expand $\mathbb E\bigl[(\sum_i Y_i)^4\bigr]$. The surviving patterns are $n$ fourth powers and, for each unordered pair, $4!/(2!2!)=6$ orders of two squares. There are $n(n-1)/2$ such pairs, so those terms contribute $3n(n-1)(\mathbb E[Y^2])^2$. Hence
+\[
+ \mathbb E\Bigl[\Bigl(\sum_{i=1}^n Y_i\Bigr)^4\Bigr]
+ =n\,\mathbb E[Y^4]+3n(n-1)\bigl(\mathbb E[Y^2]\bigr)^2.
+\]
+The elementary bounds $|Q|\le1+|Q|^4$ on the set $\{|Q|>1\}$ and $|Y|\le|Q|+\mathbb E|Q|$ give $\mathbb E|Q|\le1+\mathbb E|Q|^4$ and $\mathbb E[Y^4]\le8\mathbb E|Q|^4+8(\mathbb E|Q|)^4$. Both $\mathbb E[Y^4]$ and $(\mathbb E[Y^2])^2$ are therefore at most a constant built from $\mathbb E|Q|^4$ alone. That constant does not depend on $n$ or on $M$, and the display is at most $Cn^2$.
 
 \emph{The deviation event need not be finite-bit.} Each $Z_i$ may depend on infinitely many binary digits, so Borel--Cantelli cannot be quoted for $\{|T_n|\ge n\varepsilon\}$ until an outer-content bound is proved from finite-bit events.
 
-\emph{Clip, then bound the clip by finite-digit steps.} Let $Q(u)=F^{-1}(u)-\mu$ on $(0,1)$, so $Z_i=Q(U_i)$, and let $Q_M=\max(-M,\min(M,Q))$. A bounded nondecreasing function has finite one-sided limits at $0$ and at $1$. Define $Q_M(0)$ and $Q_M(1)$ to be those limits. The function on $[0,1]$ is still bounded by $M$. It need not extend continuously: a quantile may jump, and an unbounded quantile is not eventually constant near an endpoint. The dyadic bounds after Proposition~\ref{prop:inverse} still apply. On each interval $[j2^{-m},(j+1)2^{-m})$ set $L_m(u)=Q_M(j2^{-m})$ and $R_m(u)=Q_M((j+1)2^{-m})$. Then $L_m\le Q_M\le R_m$, both steps depend only on the first $m$ digits, and
-\[
- \mathbb E[R_m(U)-L_m(U)]=2^{-m}\bigl(Q_M(1)-Q_M(0)\bigr)\le 2^{1-m}M.
-\]
+\emph{Centre the clip, then replace it by finite-digit steps.} For $M\ge1$, $|\mu_M|=|\mathbb E[Q-Q^{(M)}]|\le\mathbb E[Q^2]/M$, since $|Q-Q^{(M)}|\le Q^2/M$. Choose $M$ large enough that $|\mu_M|<\varepsilon/2$. On the event that every $|Z_i|\le M$ one has $T_n=\sum_i Q^{(M)}(U_i)=\sum_i Y_i+n\mu_M$, so $|T_n|\ge n\varepsilon$ forces $|\sum_i Y_i|\ge n\varepsilon/2$. The event $B_M=\{\max_{i\le n}|Z_i|>M\}$ is a union of $n$ events $\{|Q(U_i)|>M\}$. Since $Q$ is monotone, each of those is an initial interval of $[0,1)$, a final interval, or a union of both. Countable subadditivity gives $P^*(B_M)\le n P(|Z_1|>M)\le n\mathbb E[Z_1^4]/M^4$.
 
-On the event that every $|Z_i|\le M$, the clipped sum $T_{n,M}=\sum_i Q_M(U_i)$ equals $T_n$. Write $D_i=Q_M(U_i)-L_m(U_i)$, so $0\le D_i\le 2M$ and $T_{n,M}=\sum_i L_m(U_i)+\sum_i D_i$. The same split, run from $R_m$, bounds the upper step. Therefore
-\[
- \{|T_n|\ge n\varepsilon\}
- \subseteq B_M\cup\Bigl\{\Bigl|\sum_{i=1}^n L_m(U_i)\Bigr|\ge n\varepsilon\Bigr\}
- \cup\Bigl\{\Bigl|\sum_{i=1}^n R_m(U_i)\Bigr|\ge n\varepsilon\Bigr\},
-\]
-where $B_M=\{\max_{i\le n}|Z_i|>M\}$. The two sums are finite-bit. The event $B_M$ is a union of $n$ events $\{|Q(U_i)|>M\}$. Since $Q$ is increasing, each of those is an initial interval of $[0,1)$, a final interval, or a union of both. Countable subadditivity gives $P^*(B_M)\le n P(|Z_1|>M)$.
+The centred function $Y$ is bounded and monotone, so it has the same dyadic steps as the clip. On each interval $[j2^{-m},(j+1)2^{-m})$ let $L_m$ take the left value of $Y$ and $R_m$ the right value. Then $L_m\le Y\le R_m$, both steps depend only on the first $m$ digits, and $\mathbb E[R_m-L_m]\le2^{1-m}\cdot4M$ because $|Y|\le2M$. Write $D_i=Y(U_i)-L_m(U_i)$, so $0\le D_i\le4M$ and $\sum_i Y_i=\sum_i L_m(U_i)+\sum_i D_i$. The same split, run from $R_m$, bounds the upper step.
 
-\emph{Pass to the limit in the right order.} Let $S^L=\sum_i L_m(U_i)$ and $S^D=\sum_i D_i$, so $S^L=T_{n,M}-S^D$. The bound $|a-b|^4\le8(|a|^4+|b|^4)$ gives $\mathbb E[(S^L)^4]\le8\mathbb E[T_{n,M}^4]+8\mathbb E[(S^D)^4]$. Each $D_i$ is at most $2M$, so $(S^D)^4\le(2Mn)^2(S^D)^2$ and
+The cross term $\mathbb E[D(U)D(V)]$ factors. Indeed $D=Y-L_m$, the product $Y(U)Y(V)$ has expectation $0$ by Proposition~\ref{prop:indepproduct}, the mixed products $Y(U)L_m(V)$ and $L_m(U)Y(V)$ have expectation $0$ by the finite-bit half of that proposition, and $\mathbb E[L_m(U)L_m(V)]=\mathbb E[L_m]^2$ by the cylinder table. Therefore $\mathbb E[D(U)D(V)]=(\mathbb E D)^2$, and
 \[
- \mathbb E[(S^D)^2]=n\mathbb E[D_1^2]+n(n-1)(\mathbb E D_1)^2\le n(2M)\mathbb E[D_1]+n^2(\mathbb E D_1)^2.
+ \mathbb E\Bigl[\Bigl(\sum_i D_i\Bigr)^2\Bigr]
+ =n\mathbb E[D_1^2]+n(n-1)(\mathbb E D_1)^2
+ \le n(4M)\mathbb E[D_1]+n^2(\mathbb E D_1)^2.
 \]
-The expectation $\mathbb E[D_1]$ is at most $2^{1-m}M$, which tends to $0$ as $m\to\infty$. Choose $m$ large enough, for this fixed $n$ and $M$, that $\mathbb E[(S^D)^4]\le n^2$. The upper step $R_m$ has the same bound. Thus each of the two finite-bit fourth moments is at most $8\mathbb E[T_{n,M}^4]+8n^2$. Markov's inequality yields
+The expectation $\mathbb E[D_1]$ tends to $0$ as $m\to\infty$. Each $D_i$ is at most $4M$, so $(\sum D_i)^4\le(4Mn)^2(\sum D_i)^2$. Choose $m$ large enough, for this fixed $n$ and $M$, that the fourth moment of $\sum D_i$ is at most $n^2$. The upper step $R_m$ obeys the same bound.
+
+Let $S^L=\sum_i L_m(U_i)$. Then $|a-b|^4\le8(|a|^4+|b|^4)$ gives $\mathbb E[(S^L)^4]\le8\mathbb E[(\sum Y_i)^4]+8n^2\le8Cn^2+8n^2$. If $|\sum Y_i|\ge n\varepsilon/2$, then either $|S^L|\ge n\varepsilon/4$ or $|\sum D_i|\ge n\varepsilon/4$, and the same alternative applies to the upper step $R_m$. Both step sums are finite-bit. Markov's inequality yields
 \[
  P^*(|T_n|\ge n\varepsilon)
- \le nP(|Z_1|>M)
- +\frac{2\bigl(8\mathbb E[T_{n,M}^4]+8n^2\bigr)}{n^4\varepsilon^4}.
+ \le\frac{n\mathbb E[Z_1^4]}{M^4}
+ +\frac{2\cdot8(C+1)n^2+2n^2}{(n\varepsilon/4)^4}.
 \]
-Write $T_n-T_{n,M}=\sum_{i=1}^n a_i$, where $a_i=0$ on $\{|Z_i|\le M\}$ and $|a_i|\le|Z_i|$ on $\{|Z_i|>M\}$. Cauchy--Schwarz gives $\bigl(\sum_i a_i^2\bigr)^2\le\bigl(\sum_i a_i^4\bigr)\bigl(\sum_i 1^2\bigr)=n\sum_i a_i^4$, and $\bigl(\sum_i a_i\bigr)^2\le n\sum_i a_i^2$, so
-\[
- \Bigl(\sum_i a_i\Bigr)^4\le n^3\sum_i a_i^4.
-\]
-Taking expectations, $\mathbb E[(T_n-T_{n,M})^4]\le n^4\mathbb E[|Z_1|^4\mathbf 1_{\{|Z_1|>M\}}]$. The bound $|a+b|^4\le8(|a|^4+|b|^4)$, applied to $T_{n,M}=T_n-(T_n-T_{n,M})$, therefore gives
-\[
- \mathbb E[T_{n,M}^4]
- \le8\mathbb E[T_n^4]+8n^4\mathbb E\bigl[|Z_1|^4\mathbf 1_{\{|Z_1|>M\}}\bigr].
-\] Also $P(|Z_1|>M)\le\mathbb E[Z_1^4]/M^4$. Substitute $\mathbb E[T_n^4]\le Cn^2$. Then $\mathbb E[T_{n,M}^4]\le 8Cn^2+8n^4\mathbb E[|Z_1|^4\mathbf 1_{\{|Z_1|>M\}}]$, and the displayed probability is at most
-\[
- \frac{n\mathbb E[Z_1^4]}{M^4}+\frac{128C+16}{n^2\varepsilon^4}+\frac{128}{\varepsilon^4}\mathbb E\bigl[|Z_1|^4\mathbf 1_{\{|Z_1|>M\}}\bigr].
-\]
-The bound holds for every $M>0$. Send $M\to\infty$: the first term and the clipped fourth-moment tail tend to $0$. What remains is
-\[
- P^*(|T_n|\ge n\varepsilon)\le\frac{128C+16}{n^2\varepsilon^4}.
-\]
-The $16$ in the numerator is the room left for the two dyadic errors: each contributes a factor $8n^2$, and the two of them contribute $16n^2$ in the numerator before it is divided by $n^4$.
+The second numerator is at most $16(C+1)n^2+2n^2$. Dividing by $n^4(\varepsilon/4)^4$ produces a constant multiple of $1/n^2$. Send $M\to\infty$: the first term tends to $0$, and the mesh $m$ may be chosen after $M$. What remains is a constant multiple of $1/n^2$. The constant depends on $\varepsilon$ and on $\mathbb E|Z_1|^4$, and not on $n$.
 
 \emph{Sum and let $\varepsilon$ tend to zero.} The right-hand side is summable in $n$. The outcomes for which $|T_n|\ge n\varepsilon$ for infinitely many $n$ sit in $\bigcup_{n\ge N}\{|T_n|\ge n\varepsilon\}$ for every $N$, so their outer content is at most the tail of the series, which tends to $0$. Thus the outer content is $0$ for each fixed $\varepsilon>0$. The countable union over $\varepsilon=1/m$ still has outer content $0$, by Proposition~\ref{prop:subadd}. Outside that union, $T_n/n\to0$, and therefore $S_n/n\to\mu$.
 \end{proof}
@@ -214,7 +222,7 @@ In particular, $\varphi_X(0)=1$ and $|\varphi_X(t)|\le1$. For independent $X$ an
 \[
  \varphi_{X+Y}(t)=\varphi_X(t)\varphi_Y(t).
 \]
-For finite or countable laws, this follows from the same product calculation as PGFs. For the independent continuous laws constructed in Chapter~5, it follows first for products of step approximations and then by their bounded integral limits. The rest of the chapter uses this identity only for explicitly constructed independent laws.
+For finite or countable laws, this follows from the same product calculation as PGFs. For the independent copies constructed in Chapter~5, Proposition~\ref{prop:indepproduct} gives the product for a bounded finite-bit function of one block against a monotone function of another, and $\cos(tQ(u))$ and $\sin(tQ(u))$ are bounded. The rest of the chapter uses the identity only for explicitly constructed independent laws.
 
 We will need a theorem about convergence of these functions, but take care: pointwise convergence of characteristic functions \emph{to} a proposed limit does not, by itself, supply a convergence-in-distribution theorem. That converse requires the additional continuity theorem proved in Volume~11.
 
@@ -415,7 +423,13 @@ f(A+x)=f(A)+f'(A)x+\tfrac12 f''(A)x^2+R(x),
 \]
 where $|R(x)|\le M|x|^3/6$ if $|f'''|\le M$. If $|f''|\le B$, the expansion stopped one order earlier also yields $|R(x)|\le B x^2$. Thus $|R(x)|\le\min(M|x|^3/6,\,Bx^2)$.
 
-The linear terms have expectation $0$ and the quadratic terms have the same expectation, because $X_{n,k}$ and $\xi_{n,k}$ share a mean and a variance and are independent of $A_{n,k}$. The difference of the expectations of $f$ is at most the sum of the expected remainders. On $|x|\le\varepsilon$ the remainder is at most $(M\varepsilon/6)x^2$. On $|x|>\varepsilon$ it is at most $B x^2$. Summing on $k$, the pieces that carry a factor $\varepsilon$ contribute at most $M\varepsilon/3$, since both arrays have total variance $1$. The pieces that carry the indicator of $\{|X_{n,k}|>\varepsilon\}$ tend to $0$ by the stated Lindeberg hypothesis; values exactly equal to $\varepsilon$ were assigned to the small-increment part.
+The linear terms have expectation $0$ and the quadratic terms have the same expectation. The summand $X_{n,k}$ is a centred monotone function of its own uniform, or a centred normal built by Box--Muller from two further uniforms, and $A_{n,k}$ is a function of the remaining blocks. The same description applies to $\xi_{n,k}$. Fix one such summand $X$, written $Q(U)$ in the monotone case, and write $H$ for $f'(A)$ or $f''(A)$. The hypothesis gives a bound $B$ for $|H|$.
+
+Clip $Q$ at height $M\ge1$. Proposition~\ref{prop:indepproduct} will apply once $H$ is replaced by a finite-bit function of the other blocks. The clip error satisfies $|\mathbb E[H(Q-Q^{(M)})]|\le B\mathbb E[Q^2]/M$, and $|\mathbb E[H(Q^2-(Q^{(M)})^2)]|\le B\mathbb E[Q^2\mathbf 1_{|Q|>M}]$. Both tend to $0$ as $M\to\infty$, the second because $\mathbb E[Q^2]<\infty$ and $\{|Q|>M\}$ is a tail of $(0,1)$.
+
+The clipped quantile is bounded. On each cylinder $C$ formed by the first $m$ digits of every block other than $U$, the remaining bits of those blocks are a fair string independent of $C$. Let $H_m$ be the constant on $C$ equal to the average of $H$ over that string. The average is an integral of a bounded function over a product of intervals. After clipping the coordinates that enter $A$, Proposition~\ref{prop:fubini} evaluates it on a large box, and the Gaussian or quantile tails of those coordinates make the integral over the complement as small as we like. Thus $H_m$ is finite-bit and $|H_m|\le B$. Proposition~\ref{prop:indepproduct} gives $\mathbb E[H_m Q^{(M)}]=\mathbb E[H_m]\,\mathbb E[Q^{(M)}]$, and the same identity for the square. By construction, the average of $H-H_m$ on each such cylinder is $0$. Approximate $Q^{(M)}$ by its dyadic steps $L$, which use only the bits of $U$. On each joint cylinder of those steps and of the digits that define $H_m$, the unread bits that still enter $H$ remain a fair string, so the average of $(H-H_m)L$ on that cylinder is $0$. Therefore $\mathbb E[(H-H_m)L]=0$. Letting the step of $Q^{(M)}$ refine, $\mathbb E[(H-H_m)Q^{(M)}]=0$. Combined with the identity for $H_m$, this is $\mathbb E[H\,Q^{(M)}]=\mathbb E[H]\,\mathbb E[Q^{(M)}]$. The same averaging gives the square. Sending $M\to\infty$ yields $\mathbb E[H\,Q]=\mathbb E[H]\,\mathbb E[Q]$ and $\mathbb E[H\,Q^2]=\mathbb E[H]\,\mathbb E[Q^2]$.
+
+A normal coordinate is the Box--Muller function of two uniforms. Clipping that function at height $M$ produces a bounded continuous function of those two uniforms, and the same cylinder average of $H$, now taken over all other blocks, has conditional expectation $0$ against the dyadic steps of the two uniforms. The Gaussian moments $\mathbb E[\xi^2]=\sigma^2$ and $\mathbb E|\xi|^3<\infty$ make the clip error tend to $0$ exactly as above. Thus if $X$ is centred then $\mathbb E[f'(A)X]=0$, while $\mathbb E[f''(A)X^2]=\mathbb E[f''(A)]\,\mathbb E[X^2]$, and the Gaussian copy contributes the same quadratic expectation. The difference of the expectations of $f$ is at most the sum of the expected remainders. On $|x|\le\varepsilon$ the remainder is at most $(M\varepsilon/6)x^2$. On $|x|>\varepsilon$ it is at most $B x^2$. Summing on $k$, the pieces that carry a factor $\varepsilon$ contribute at most $M\varepsilon/3$, since both arrays have total variance $1$. The pieces that carry the indicator of $\{|X_{n,k}|>\varepsilon\}$ tend to $0$ by the stated Lindeberg hypothesis; values exactly equal to $\varepsilon$ were assigned to the small-increment part.
 
 For the Gaussian pieces, first let the largest variance tend to $0$. For every $\eta>0$,
 \[
