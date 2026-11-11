@@ -1,7 +1,9 @@
 # Order and Chance: definitive master plan for Volumes 5–15
 
 **Date.** 2026-11-10.
-**Status.** Final architectural plan, awaiting the author's approval. Nothing in this plan has been applied to a manuscript.
+**Status.** Final architectural plan, awaiting the author's approval.
+
+**Rewrite progress.** Volume 5 is done: rewritten to this plan and merged to `main` on 2026-11-11 (pull request #194; record in `docs/handoffs/volume5-rewrite.md`). Its proofs still await independent verification (gate B). Volumes 6–15 are not started; nothing in this plan has been applied to their manuscripts.
 **Scope.** Volumes 5 through 15. Volumes 1–3 are published and Volume 4 is the established foundation. This plan does not change them.
 
 ## 0. How to read this plan

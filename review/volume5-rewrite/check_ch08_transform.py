@@ -56,7 +56,7 @@ for n in range(1, 60):
     val = [(1 + 1j) * sqrt(n), sqrt(n), 0, 1j * sqrt(n)][n % 4]
     good &= abs(G - val) < mpf(10) ** -15 and abs(G - (1 + 1j) * (1 + mpc(0, 1) ** (-n)) / 2 * sqrt(n)) < mpf(10) ** -15
 check("Gauss sums G(n), n < 60, all four cases", good)
-def leg(a, p): 
+def leg(a, p):
     r = pow(a % p, (p - 1) // 2, p); return -1 if r == p - 1 else r
 good = True
 primes = [3, 5, 7, 11, 13, 17, 19, 23]

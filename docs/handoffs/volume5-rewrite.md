@@ -2,7 +2,7 @@
 
 Volume 5, *Calculation: From Formula to Insight*, has been rewritten to `docs/plan/MASTER-PLAN-V5-V15.md` and `docs/plan/book-05.md`. All thirteen chapters, the preface and the blurb have had their pass (table below). Read this file first.
 
-**Branch and pull request.** The author chose to keep the whole rewrite in PR #157, on branch `claude/project-thread-khh5pi`, together with the master plan. Do not merge without the author's word.
+**Branch and pull request.** The rewrite was written on the master plan's pull request (#157) and, at the author's request, merged to `main` on its own pull request, without the plan documents. The master plan and the blueprints (`docs/plan/MASTER-PLAN-V5-V15.md`, `docs/plan/book-05.md`) stay on PR #157, which remains open for the rewrites of the next volumes.
 
 ## What "rewrite" means here
 

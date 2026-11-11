@@ -2,7 +2,7 @@
 
 *From Formula to Insight.*
 
-**Status of this file.** Blueprint of Volume 5 under the [master plan](MASTER-PLAN-V5-V15.md), 2026-11-10. It replaces the earlier specification of this volume, which described a twelve-chapter manuscript that no longer exists. Chapter numbers below are the numbers after decisions D-10 and D-11 are applied. No proof named here has been verified.
+**Status of this file.** Blueprint of Volume 5 under the [master plan](MASTER-PLAN-V5-V15.md), 2026-11-10. It replaces the earlier specification of this volume, which described a twelve-chapter manuscript that no longer exists. Chapter numbers below are the numbers after decisions D-10 and D-11 are applied. The rewrite to this blueprint is done and merged to `main` (2026-11-11, pull request #194; record in `docs/handoffs/volume5-rewrite.md`). No proof named here has been independently verified.
 
 **Series part.** II. Bridges. **Directory.** `volume5-calculation`.
 
