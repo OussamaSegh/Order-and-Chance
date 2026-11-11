@@ -2,9 +2,13 @@
 
 **Reviewer.** Independent second reading by cloud agent `bc-114da047-b320-5bb0-b0d1-2f6495477a25`. The restoration was written by a different session, `bc-323d34bf`. This file does not edit that branch. Nothing here is a merge, and nothing is restored by this review.
 
-**Head reviewed.** Pull request [#192](https://github.com/OussamaSegh/Order-and-Chance/pull/192). The current verdict is the recheck below, at live head `82a3f104ed9696ff80df585e16ba1d1b904e29cb`. The REQUEST CHANGES section is the record of head `ec6e71da0c9f3c2a78246b7bb35078296c512f9f`.
+**Head reviewed.** Pull request [#192](https://github.com/OussamaSegh/Order-and-Chance/pull/192). The current verdict is the merge check below, at live head `3bbabd311cf81525bc92016961c418c423de6baa`. The Goodman correction was approved at `82a3f104ed9696ff80df585e16ba1d1b904e29cb`. The REQUEST CHANGES section is the record of head `ec6e71da0c9f3c2a78246b7bb35078296c512f9f`.
 
-**Verdict.** APPROVE at `82a3f104`. The Goodman denominator is now \(8\).
+**Verdict.** APPROVE at `3bbabd31`. The Goodman denominator remains \(8\), and the merge of `main` adds no restoration-content change.
+
+## Merge check — head `3bbabd31`
+
+`3bbabd311cf81525bc92016961c418c423de6baa` is a merge. Its first parent is the approved head `82a3f104ed9696ff80df585e16ba1d1b904e29cb`. Its second parent is `1b71f3d1b069ba9749f1e78f5a291e5f411b1764`, the Volume 5 rewrite (#194). Against `82a3f104`, no file under `volume4-chance/` or `tools/` changes. The Chapter 2 blob is still `e37bf3057f41100109c0a323e4c75c585c56368f`, and the Goodman chain still ends in \(n(n-1)/8\). Against current `main`, the paths that differ are the restoration files already reviewed: the nine Volume 4 chapter files, the four source-pin tests, and the two Volume 3 seam records. Volume 5 matches `main`. The merge adds the rewrite and does not alter the restored exercises, the 2-SAT theorem, or the Goodman correction.
 
 ## Recheck — head `82a3f104`
 
