@@ -1,0 +1,169 @@
+# Volume 1 independent scored read
+
+**Book:** *Order and Chance*, Volume 1, *First Principles: Proof, Problem Solving and Mathematical Thinking*, SEGHAIER Oussama, first edition, 2026.
+**Commit reviewed:** `8b8a5be337271478f9f7a2bc24d7b1a9b3602c2f` (current `main` at the time of reading).
+**Artifacts:** GitHub release `books` (published 2026-11-11), reading PDF `Volume.1.-.First.Principles.pdf` (452 pages, 504 × 720 pt) and print PDF `Volume.1.-.First.Principles.-.Print.pdf` (451 pages, 513 × 738 pt, PDF 1.3), plus the EPUB (32.3 MB).
+**Reader used for calibration:** a motivated high-school reader, judged against the standard of Courant–Robbins, Spivak, Niven–Zuckerman, Artin, and Tao’s *Analysis I*. A 10 is reserved for work with no gap a careful reader of those books would mark.
+**Independence:** this scorecard and issue log were written before any file under `review/`, `docs/review/`, `docs/handoffs/`, or `docs/plan/` whose path mentions Volume 1 was opened, and before any earlier Volume 1 pull-request discussion was read. The comparison section, if present below the rule line at the end, was written after this scorecard was committed.
+
+Printed page numbers below are the folios of the print PDF. PDF page numbers are the physical pages of that file (page 1 is the series list, not a cover). The reading PDF inserts a cover, so its physical pages sit one later.
+
+## How this was read
+
+The source read in full was the preface, the blurb, About the Cover, `kdp.md`, and Chapter 0 including every solution. For Chapters 1–10 and the field guide, the formal statements and the proofs named in the issue log and in “Verified correct” were read line by line. Other sections were read closely but not every exercise solution was re-derived. Numerical claims were recomputed in Python, separately from the proofs. Later-volume citations were extracted from `volume2-*` through `volume15-*` (348 lines containing `Volume~1` or “First Principles”); every numbered theorem, proposition, or exercise citation that the extractor could attach to Volume 1 was checked against the print PDF’s headings, and a further sample of descriptive citations was read in context.
+
+## 1. Chapter scorecard
+
+Columns: (a) correctness, (b) rigor, (c) prerequisite discipline, (d) clarity, (e) pedagogy, (f) exercises, (g) figures, (h) voice, (i) notation, (j) typography of the rendered pages that were inspected.
+
+| Chapter | a | b | c | d | e | f | g | h | i | j |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| 0 The Language of Mathematics | 9 | 8 | 9 | 9 | 9 | 9 | 8 | 9 | 9 | 8 |
+| 1 Sums | 8 | 8 | 8 | 8 | 9 | 8 | 8 | 9 | 8 | 8 |
+| 2 Counting | 8 | 8 | 8 | 8 | 8 | 7 | 8 | 8 | 8 | 8 |
+| 3 Sequences, Series and Limits | 8 | 8 | 8 | 8 | 8 | 7 | 8 | 8 | 8 | 8 |
+| 4 Orders | 8 | 8 | 8 | 7 | 8 | 7 | 8 | 8 | 8 | 8 |
+| 5 Complex numbers and roots of unity | 8 | 8 | 8 | 8 | 8 | 7 | 8 | 8 | 8 | 8 |
+| 6 Polynomials | 8 | 6 | 8 | 7 | 8 | 7 | 8 | 8 | 8 | 8 |
+| 7 Linear Algebra | 8 | 7 | 8 | 7 | 8 | 7 | 8 | 8 | 8 | 8 |
+| 8 Differential and Integral Calculus | 8 | 7 | 8 | 7 | 8 | 7 | 8 | 8 | 8 | 8 |
+| 9 Inequalities, Convexity and Estimates | 8 | 7 | 8 | 8 | 8 | 7 | 8 | 8 | 8 | 8 |
+| 10 First Probability | 9 | 8 | 8 | 8 | 9 | 8 | 8 | 9 | 8 | 8 |
+| Field guide | 8 | 8 | 8 | 8 | 8 | — | 8 | 9 | 8 | 8 |
+
+The field guide has worked checks rather than a starred exercise set, so (f) is not scored.
+
+### Justifications
+
+**Chapter 0.** The truth tables, the negation rules (Proposition 0.1), the set identities, the inverse criterion (Theorem 0.4), and the partition theorem (Theorem 0.5) are stated with their edge cases, including the empty set. Every solution in `ch00-language.tex` was read; the ones recomputed (the self-inverse map `(x+1)/(x-1)`, the retraction on `{0,1}`, the midpoint by cases and by squaring) are correct. Square-root existence is explicitly postponed to the intermediate-value theorem, and that postponement is kept. The score in (b) stops at 8 because the ordered-field rules used in the early calculations are described in prose rather than listed as a closed axiom set. The voice is the best in the book: short sentences, a counterexample before the repair, and no outline-announcing openings. Figures 0.1–0.8 match their captions on the points that were checked (rays for `x^2>1`, the non-transitive 3/4 steps, the three-set inclusion order).
+
+**Chapter 1.** The four proofs of `\sum k^3 = (n(n+1)/2)^2` agree with each other and with direct computation at `n=4` (100) and `n=10` (3025). Division with remainder, Bézout, Euclid’s lemma, and unique factorization are proved from well-ordering before they are used; the negative-dividend check `−7 = (−3)·3+2` is the right remainder. Bernoulli’s inequality is proved here, before the geometric series in Chapter 3 needs it. Exercise 1.7 really is the Fibonacci gcd identity that Volume 2 cites. Not every solution was re-derived, so (a) and (f) stay at 8. The five-agreements workshop (`Q(5)=31`, not 32) is exact and is the right moral for the chapter.
+
+**Chapter 2.** The inclusion-exclusion count of multiples of 2, 3, and 5 up to 100 is `50+33+20−16−10−6+3=74`, and the seven Venn regions in the caption of Figure 2.4 add to 74. The complement really is 26: 1, the 22 primes from 7 to 97, and the composites 49, 77, and 91. The reflected-path count `\binom{8}{4}-\binom{8}{3}=14` is the Catalan number `C_4`. Derangement numbers through `n=10` match the inclusion-exclusion formula used later. The chapter body was not read at the same density as Chapter 0, which is why (f) is 7.
+
+**Chapter 3.** This is the analytic spine, and the parts read line by line hold: the floor (including `⌊−1.2⌋=−2`), the construction of `\sqrt2` before Newton’s sequence uses it, Bolzano–Weierstrass by peaks, the Cauchy criterion, Cesàro, IVT by bisection, EVT, Heine, Rolle, and the mean value theorem. The bisection arithmetic `f(1.6)=−0.104` for `x^3−2x−1`, and the identity `\phi^3−2\phi−1=0` for the golden ratio, are correct. The six-term integral for `\ln 2` equals the printed fraction `15757912/22733865 = 0.69314707…`, and the remainder bound `1/9211644 < 1.1×10^{−7}` is right, so the birthday argument’s `\ln 2 < 0.693148` is earned. Stirling’s shape (Proposition 3.18) was expanded by hand; the `1/(12n^2)` coefficient is correct. The integral is still the preface’s axiom, used honestly. (f) is 7 because the exercise solutions were sampled, not all recomputed.
+
+**Chapter 4.** Mirsky, Dilworth (Perles), Erdős–Szekeres (Theorem 4.5), LYM and Sperner (Theorem 4.6), the symmetric chain decomposition, and the Erdős–Ko–Rado bound were read. The small checks match: the Boolean middle rank, the `B_4` chain count `1+3+2=6=\binom{4}{2}` covering 16 sets, and the sequence `4,7,2,9,5,1,8,3,10,6` with ranks as captioned. Exercise 4.1 is Esther Klein’s five-point quadrilateral, and the solution’s case split is the standard one. The prose is clear in the examples and dense in Dilworth and Katona’s seating argument, which a high-school reader will have to read twice; that is why (d) is 7. Dates that were checked against sources (Mirsky, *Amer. Math. Monthly* 78 (1971), 876–877; Erdős’s own account that the EKR paper was finished in 1938 and published in 1961 in *Quart. J. Math.* 12, 313–320) agree with the text.
+
+**Chapter 5.** The exponential form is built from the preface’s sine and cosine plus the Chapter 3 comparison, not from the later fundamental theorem of algebra. De Moivre, the three cube roots of `8i`, `\cos^3\theta`, the robot path for multiplier `1+i` ending at `5i`, `\cos(2\pi/5)=(\sqrt5−1)/4`, and `\prod_{k=1}^{6}\sin(k\pi/7)=7/64` were checked algebraically. The group definition is short and is placed before it is used; Volume 2’s citation of `(ℤ,+)` and the subtraction test matches this section. Roots-of-unity filter and cyclotomic exercises were not all re-solved.
+
+**Chapter 6.** Viète, Lagrange interpolation, the rational-root test (Proposition 6.8), Eisenstein for `\Phi_p(X+1)`, Gauss–Lucas, and Descartes’ rule were read and the local checks hold (`X^3−3X±2`, Horner remainder `−19`, the plastic number near `1.3247`, the sign count for `X^3−X−1`). The Basel solution (Exercise 6.7) has the right Viète sum `m(2m−1)/3` and the right squeeze to `\pi^2/6`. The score in (b) is 6 because Theorem 6.4, the existence theorem the rest of the algebra depends on, invokes continuity of `|P|` on a closed disc without a lemma this book has proved. See V1-01.
+
+**Chapter 7.** The chessboard determinant `|16−15|=1`, the eigenvalues 1 and 3 of `\begin{pmatrix}2&1\\1&2\end{pmatrix}`, the least-squares fit `a=7/6`, `b=1/2`, residual squared length `1/6`, and `\det H_2=1/12` are correct. The Hilbert determinant at `n=12` is `2.637…×10^{−78}`, which the caption’s “about `2.6×10^{−78}`” fairly records. Cayley–Hamilton’s coefficient comparison telescopes. The spectral theorem (Theorem 7.9) is a real proof, and it inherits V1-01 because it takes a complex eigenvalue from Theorem 6.4. The axiomatic determinant section was not re-checked line by line, so (b) stays at 7 even apart from that inheritance.
+
+**Chapter 8.** Wallis’s recurrence, the Gaussian integral substitutions, and the identification `C=\sqrt{2\pi}` were checked algebraically. At `n=10`, `10!/(\sqrt{10}(10/e)^{10})=2.5276`, and `\sqrt{2\pi}(1+1/120)=2.5275`, as the text says. Taylor values of sine at `\pi` are `3.1416`, `0.524`, `0.00693`, and `2.1×10^{−5}`, matching the caption’s `3.14`, `0.524`, `0.0069`, `0.00002`. The Gaussian sandwich at `n=3` is `\sqrt3 W_7≈0.792` and `\sqrt3 W_4≈1.020`. L’Hôpital’s rule is proved for the `0/0` form, and the `\infty/\infty` example is not pretended to be an instance of that statement. The integral itself remains an axiom of the preface; the deductions from that axiom, in what was read, are careful. Niven’s exercise solution was only started, not finished.
+
+**Chapter 9.** Jensen’s equality case and the AM–GM proof from the tangent to `\ln` were read. The numerical checks hold: the mean of `1,4,4` is 3 against geometric mean `2\sqrt[3]{2}≈2.52`, and the mean of `0.5, 1.2, 3.1` is `1.6` against geometric mean about `1.23`. The inequality `1−x≤e^{−x}` used for birthdays is the tangent to the convex function `e^{−x}`, as Volume 4 later says. Hölder, Minkowski, and Carleman were not read at the same depth, so (b) and (f) are 7.
+
+**Chapter 10.** The medical test is exact: `P(+)=0.0594`, posterior `1/6`, and in 10,000 people the split is 99 true positives and 495 false positives. A second conditionally independent test gives `99/124≈0.7984`. Derangement numbers `D_1,…,D_8=0,1,2,9,44,265,1854,14833` match inclusion-exclusion, the gap at `n=10` is `2.31×10^{−8}` against the bound `1/11!≈2.51×10^{−8}`, and `D_n` is the integer nearest `n!/e` for `1≤n≤12`. Chebyshev’s `1/16` for a fair coin and 100 tosses is right, and the exact two-sided tail is `7.85×10^{−5}`, about 800 times smaller, as stated. The weak law is Chebyshev plus pairwise additivity of variance, with the hypotheses written. The birthday bound `e^{−253/365}<1/2` uses the Chapter 3 estimate of `\ln 2` correctly, and the exact distinct-birthday probability is `0.4927`. (a) is 9 on the strength of these checks; it is not 10 because the coupon-collector and ballot solutions were not recomputed in full.
+
+**Field guide.** The Collatz facts in About the Cover are not this chapter’s, but the guide’s own numbers were checked: `59·509=30031=2·3·5·7·11·13+1`, `f(n)=n^2+n+41` is prime for `0≤n≤39` and `f(40)=41^2`, Lucas `L_{10}=123` and `\phi^{10}` begins `122.991`, and the legal-word probabilities `p_2=3/4`, `p_3=1/2` match `L_n/2^n`. The guide does the pedagogical job it claims: one problem, three kinds of evidence, and a door into Volume 2 that does not pretend the infinitude of primes has been proved.
+
+## 2. Whole-book scores
+
+| Item | Score | Why |
+|---|---:|---|
+| Structure and arc | 8 | The printed order is language, sums, counting, limits, orders, complex numbers, polynomials, linear algebra, calculus, inequalities, probability. Orders may be read after counting, and the text says so and warns that the cosine identities need Chapter 3. The cube identity and the hat check, promised in the preface, are both proved. The arc is a toolkit, not a single climax, which is what the subtitle asks for. |
+| Foundation it lays | 8 | Well-ordering, completeness, the four integral rules, and the four derivative formulas for `exp`, `\ln`, sine, and cosine are named before use. Induction, unique factorization, `\sqrt2`, Bolzano–Weierstrass, the mean value theorem, and finite probability are built here. The integral is not constructed; the book says Volume 7 will do that, and it does not use the construction as a hidden lemma. |
+| Preparation for later volumes | 8 | Numbered citations that were matched to print headings resolve and say what this book says: Theorem 3.10 (Rolle and the mean value theorem), Proposition 3.17 (Euler’s constant), Proposition 3.18 (Stirling’s shape), Theorem 4.5, Theorem 4.6 (LYM), Theorem 6.4, Proposition 6.8, Theorem 6.12, Theorem 7.3, Theorem 7.9, Theorem 8.6, Theorem 9.3, Theorem 9.4, Exercise 1.7, Exercise 4.1, Exercise 6.7, Exercise 8.4. One later sentence overclaims a promise this book does not make (V1-04). |
+| Delivery of the title and subtitle | 9 | *First Principles*, and *Proof, Problem Solving and Mathematical Thinking*, is what the workshops do: a pattern is checked, then an argument is written, and the solutions separate “How to find it” from the write-up. Order and chance are both present, as the preface’s two questions, and both are answered. |
+| Front and back matter, index, bibliography | 7 | The preface is a model of the series voice and of the axiom list. Chapter-end “Sources and further reading” cites real books and papers, with pages where the text depends on them (Cantor’s diagonal paper is *Jahresbericht der DMV* 1 (1890–91), 75–78, the issue of 1892, as the notes say). There is no index and no single bibliography. In a book of 437 folios that later volumes cite by theorem number, the missing index is a real cost. |
+| Print PDF production | 8 | 451 pages, media box 513 × 738 pt, PDF 1.3, unencrypted. Trim boxes alternate: odd pages `[0,9,504,729]`, even pages `[9,9,513,729]`, so the 9 pt bleed is on the outside edge, with 9 pt at top and bottom and none on the binding edge. The part opener (print PDF page 15) is a full charcoal page. Theorem 6.4’s page (folio 238) shows the figure, the theorem box, and the start of the proof without a collision. Blank pages inspected (print PDF pages 10, 448, 450) are empty leaves from the double-page breaks, not missing text. Not every page was looked at. |
+| EPUB quality | 8 | 32.3 MB, under the 50 MB cap. All 120 TikZ plates are PNG, at least 1600 pixels wide, with `width:100%`, `max-width:100%`, and `height:auto`. All 16,466 inline formulas carry an em width and an em `vertical-align`. Fonts are the design-5e families. One plate, the preface figure, has alt text `image` (V1-06). The file was inspected as a package, not on a Kindle Paperwhite. |
+
+## 3. Overall
+
+**Overall score: 8.**
+
+This is a real textbook, not a survey of names. The sentences that were recomputed are right, the proofs that were read usually say what they use, and the voice is a person teaching. The existence of a complex root, which the spectral theorem then quotes, is the one named proof that is not yet finished at the standard this book otherwise aims at. The missing index is the main production gap.
+
+**Verdict.** I would recommend the book to the motivated reader it was written for. I would not recommend it as-is to a press that requires every named proof to be complete: Theorem 6.4 should be given the continuity lemma it uses, and an index should be added, before that claim is fair. Those are repairs, not a different book.
+
+## Voice pass
+
+The chapter prose was read against the series test (a friend explaining, short sentences, a number or a picture, no “in this section we will,” no “delve,” no hollow intensifiers). Chapters 0, 1, and 10, the preface, the blurb, and About the Cover pass. The KDP description does not quite: it calls the series a “fifteen-volume journey” (`kdp.md` line 7, and the same sentence in the release listing). Inside the mathematics, Descartes’ Step 2 and Dilworth’s induction are harder than the workshop voice, but they are still teaching, not a summary of a section.
+
+## Issue log
+
+| ID | Location | Category | Severity | Evidence | Suggested fix |
+|---|---|---|---|---|---|
+| V1-01 | `volume1-first-principles/chapters/ch03-polynomials.tex:159`; Theorem 6.4, d’Alembert–Gauss, printed p. 238 (print PDF p. 252) | rigor | major | The proof extracts a convergent subsequence of a sequence in the disc by applying Bolzano–Weierstrass (Proposition 3.4(c)) to real and imaginary parts, then says “The modulus is continuous, so the limit stays in the disc” and “continuity of `|P|` gives `|P(z_0)|=m`.” Chapter 3 defines continuity only for a function on a real interval. No lemma gives continuity of a polynomial in two real variables, or of `z ↦ |P(z)|`. The decrease step after the minimum is found is correct, and the real `k`th root it uses is the one Chapter 3 already built. Theorem 7.9 (spectral theorem, printed with the heading “THEOREM 7.9spectral theorem”) takes a complex eigenvalue from this result, so the gap travels. | Before the minimum, prove that a polynomial `ℂ → ℂ`, read as a map `ℝ^2 → ℝ^2`, is continuous, or prove `|P(z)−P(w)| ≤ C|z−w|` on the disc from the triangle inequality and the one-variable rules. Then the sequential argument already written finishes the proof. |
+| V1-02 | `volume1-first-principles/chapters/ch03-polynomials.tex:112`; Proposition 6.2(c). The power rule actually proved is `ch05-sequences-series.tex:417–421` | rigor | minor | The Taylor formula for polynomials says the `k`th derivative of `(X−a)^j` at `a` is `j!` when `k=j`. The power rule on record is `d/dx x^\alpha = \alpha x^{\alpha−1}` for `x>0`, via `exp` and `\ln`. That does not differentiate `(x−a)^n` at points where `x−a ≤ 0`. The product rule (Proposition 3.6) does, by a two-line induction that is not written. | Add the induction for positive integer powers on all of `ℝ`, and point to it here. |
+| V1-03 | Print contents, folio xiv (print PDF p. 14); `volume1-first-principles/main.tex` has no index | back matter | minor | The contents run from the preface through About the Cover (folio 437) and stop. There is no index. Later volumes cite this book by theorem number; a reader coming back from Volume 8 or Volume 15 has only the contents and the PDF bookmarks. | Add an index of theorems, named examples, and symbols. Chapter-end bibliographies can stay as they are. |
+| V1-04 | `volume5-calculation/chapters/ch03-series.tex:20` | citation | minor | “Volume 1 proved `\zeta(2)=\pi^2/6` with Viète’s relations … and promised five more proofs.” The proof is real: Exercise 6.7, with a complete solution. Volume 1 does not promise five further proofs. Volume 5’s own plan (two in that chapter, two in its Chapter 8, one in its Chapter 11) is Volume 5’s, not a promise printed in Volume 1. | Delete “and promised five more proofs,” or replace it with “Exercise 6.7.” |
+| V1-05 | `volume1-first-principles/kdp.md:7`; same wording in the release file `Volume.1.-.First.Principles.-.Publishing.Listing.md` | voice | minor | “a fifteen-volume journey through the ideas that connect mathematical structure and randomness.” The house voice bars *journey* as filler. The rest of the description is concrete (cubes, hats, induction, the exercise stars). The blurb in `blurb.tex` does not have this sentence and does pass the test. | Replace “journey through the ideas” with a list of the objects, in the manner of the blurb. |
+| V1-06 | EPUB `EPUB/text/ch002.xhtml`, plate `oc-plate-preface-two-questions.png` | EPUB | minor | The plate is full width and wide enough, but its alt text is `image`. The other 119 plates carry the caption. The print caption is the two-panel sentence under the preface figure. | Use that caption as the alt text. |
+| V1-07 | `volume4-chance/chapters/bibliography.tex:25` | citation | minor | The item credits “Volume 1, Chapter 8, for the Riemann integral, the fundamental theorem, and `\int_0^\infty e^{−u^2} du = \sqrt\pi/2`.” The Gaussian value and a first fundamental theorem are in Chapter 8 (Proposition 8.5 and the toolkit around Theorem 8.2). The integral those theorems use is the signed area named in the preface, and Volume 1 says Volume 7 builds it from rectangles. Calling it the Riemann integral overstates what was proved. | Say “the integral as Volume 1 axiomatized it,” and keep the Gaussian evaluation. |
+
+No critical issue was found in what was checked: no false identity among the recomputed numbers, and no theorem whose statement is the negation of the classical one.
+
+## Verified correct
+
+These were recomputed or re-read. A numerical check is not a proof; where a proof was also read, that is said.
+
+**Arithmetic and counting.**
+
+- `\sum_{k=1}^{n} k^3 = (n(n+1)/2)^2` at `n=4` and `n=10`, and the binomial form at `n=3` equals 36 (`ch01-sums.tex`, the four proofs).
+- `26^5 − 21^5 = 7797275` (`ch02-counting.tex:43–45`).
+- Inclusion-exclusion regions for multiples of 2, 3, 5 in `{1,…,100}`: union 74, outside 26, region sizes 27, 14, 7, 13, 7, 3, 3 (`ch02-counting.tex:128–170`).
+- Paths to `(4,3)`: `\binom{7}{4}=35`. Good paths to `(4,4)`: `\binom{8}{4}−\binom{8}{3}=14`.
+- Derangements `!n` for `0≤n≤12` by inclusion-exclusion, including `!4=9` and the printed list through `!8`. Nearest-integer claim for `n!/e` holds for `1≤n≤12`. Gap at `n=10` is `2.311×10^{−8}`.
+- `Q(5)=\sum_{j=0}^{4}\binom{5}{j}=31`.
+
+**Analysis.**
+
+- Floor examples `⌊2.3⌋=2`, `⌊−1.2⌋=−2`. Construction of `\sqrt2` as `\sup\{x>0:x^2<2\}` was read; it does not assume the root.
+- Bisection values `f(1)=−2`, `f(1.6)=−0.104`, `f(2.2)=5.248`, and six bisections of an interval of length 1.2 leave length `1.2/64=0.01875<0.02`.
+- Secant slopes of `y=x^2` at `x=2.2` and `x=1.45` are `3.2` and `2.45`. Difference quotient of `1/x` at `2` and `2.1` is `−1/4.2≈−0.238`.
+- `\sum_{k=1}^{N} k/2^k = 2−(N+2)2^{−N}`; at `N=10` this is `1.98828125`.
+- Sine and tangent at `1/2` radian: `0.4794…` and `0.5463…`.
+- Six-term series for `\ln 2` equals `15757912/22733865`, and `693148×365=252999020<253×10^6`.
+- Stirling ratio at `n=10` is `2.527597…`; `\sqrt{2\pi}=2.506628…`; one-term correction `2.527517…`. Wallis values `W_7=16/35`, `W_4=3\pi/16` give the printed Gaussian sandwich at `n=3`.
+- The constant identification in Theorem 8.6 was expanded by hand from Proposition 3.18 and Wallis (ii)–(iii); it does give `C=\sqrt{2\pi}`.
+
+**Algebra and geometry.**
+
+- `(1+i)+(1+i)^2+(1+i)^3` sums with the initial `1` to `5i`, with positions `0,1,2+i,2+3i,5i`.
+- Cube roots of `8i`: `(\sqrt3+i)^3=8i`.
+- `\cos(2\pi/5)=(\sqrt5−1)/4` from `c+d=−1`, `cd=−1`.
+- `\prod_{k=1}^{n−1}\sin(k\pi/n)=n/2^{n−1}`; at `n=7` this is `7/64`.
+- Long division of `X^4+2X^3−X+1` by `X^2+1`, and Horner for `X^5−2X^3+X^2−7` at `−2`.
+- Factorizations `X^3−3X+2=(X−1)^2(X+2)` and `X^4−4X+3=(X−1)^2(X^2+2X+3)`.
+- Least squares for points `(0,1),(1,2),(2,2)`: normal equations, solution `(7/6,1/2)`, residual squared length `1/6`.
+- `\det\begin{pmatrix}8&5\\3&2\end{pmatrix}=1`. Eigenvalues of `\begin{pmatrix}2&1\\1&2\end{pmatrix}` are 1 and 3, with the printed unit eigenvectors.
+- `\det H_2=1/12`. Exact `\det H_{12}` has leading digits `2.637…×10^{−78}`.
+- Cayley–Hamilton coefficient telescope, checked on the general index, not only `n=2`.
+- Descartes on `X^3−X−1`: one sign change; `P(−1/\sqrt3)=2/(3\sqrt3)−1<0`.
+
+**Probability.**
+
+- Four hats: 24 permutations, 9 derangements, `9/24`. Five cards: `44/120`, and `|44/120−1/e|=0.00121<0.002`.
+- Bayes numbers `0.0099/0.0594=1/6`, counts 99 and 495, second test `99/124`.
+- Fair coin, `n=100`: variance 25, Chebyshev bound `1/16`, exact tail `P(S≤30 or S≥70)=7.850×10^{−5}`.
+- Sampling bound: `n≥2000` gives failure probability `≤0.05` at tolerance `0.05`. The poll bound `n≥5556` for margin `0.03` is the right ceiling of `2500/(9×0.05)`.
+- Birthday: distinct-birthday probability for 23 people is `0.49270…`. Pairs: `\binom{23}{2}=253`.
+- Pairwise-independence example: `XYZ=1` always, and `1/4≠1/8`. Covariance matrix `(1/4)\begin{pmatrix}1&−1\\−1&1\end{pmatrix}` has eigenvalues `0` and `1/2`.
+- Dice: 25 ordered triples sum to 9, and 27 sum to 10, out of 216.
+
+**Other checked claims.**
+
+- Collatz orbit of 27: 111 steps, maximum 9232 (About the Cover; computed directly).
+- `n^2+n+41` prime for `0≤n≤39`, and `f(40)=1681=41^2` (field guide).
+- `\phi^{10}=122.99186…`, Lucas number `L_{10}=123`.
+- Cantor, *Ueber eine elementare Frage der Mannigfaltigkeitslehre*, *Jahresbericht der DMV* 1 (1890–91), pp. 75–78, issue of 1892, lecture at Halle in September 1891. Consulted the transcription at onepagepapers.com/cantor-diagonal/read/ and the Stony Brook HTML of the same paper. The chapter’s citation matches.
+- Erdős, Ko, and Rado: Erdős, “My joint work with Richard Rado,” *Surveys in Combinatorics* (LMS Lecture Note Series 123, 1987), says the paper was essentially finished in 1938 and published in 1961; the paper is *Quart. J. Math. Oxford* (2) 12 (1961), 313–320. The orders chapter’s dates match. The book claims the bound, not the uniqueness clause of the 1961 paper.
+- Mirsky, “A dual of Dilworth’s decomposition theorem,” *Amer. Math. Monthly* 78 (1971), 876–877. The year matches.
+
+Proofs read and found correct in structure, beyond the numerical checks: Proposition 0.1 through Theorem 0.5 and the image-intersection workshop; the four cube proofs; division, Bézout, Euclid; Bolzano–Weierstrass, IVT, EVT, Heine, Rolle, MVT, the sequence for `e`, the sine comparison, the first fundamental theorem under the stated integral axioms, positive-term series tests, Stirling’s shape, Abel summation; Mirsky, Dilworth, Erdős–Szekeres, LYM, symmetric chains, Erdős–Ko–Rado; exponential form and the sine product; Descartes and Gauss–Lucas; spectral theorem aside from its use of Theorem 6.4, Gram determinant, Cayley–Hamilton; Wallis, the Gaussian integral, Stirling’s constant, l’Hôpital for `0/0`; AM–GM; Markov, Chebyshev, and the weak law.
+
+## Not reviewed
+
+- Exercise solutions not named above. In particular, the full write-ups of Hölder, Minkowski, Carleman, Niven’s proof that `\pi` is irrational, the ballot theorem, the coupon collector, Frullani, and the three-star exercises in Chapters 2, 6, and 7 were not recomputed.
+- The axiomatic construction of the determinant (Theorem 7.3’s uniqueness argument) was sampled, not read as a hostile line-by-line check. The product rule `\det(AB)=\det A\det B` was not re-proved from the axioms.
+- Most historical page numbers (Leibniz in Gerhardt volume 7 page 200, Blumenthal pages 402–403, the l’Hôpital contract of 17 March 1694, Huygens pages 521–534, Euler’s Berlin memoir pagination) were not opened in the cited editions.
+- De Moivre’s partial sum `B≈2.5074` was not recomputed from the 1730 series. The comparison with `\sqrt{2\pi}=2.506628…` was.
+- About 348 later-volume lines mention Volume 1. Numbered citations the matcher could tie to Volume 1 were checked against headings. Descriptive citations were sampled (birthday, `1−x≤e^{−x}`, integral test for `H_{52}`, groups in Chapter 5, rational roots, LYM, Stirling, Chebyshev, Gaussian integral), not all read.
+- Print and reading PDFs: geometry of every page’s boxes was not measured. Pages looked at as images were the contents (folios xiii–xiv), the Part I opener, the inclusion-exclusion page (folio 94), the d’Alembert–Gauss spread (folios 238–239), and the closing leaves including About the Cover. No overfull line was seen on those pages. That is not a full production pass.
+- The EPUB was not opened on a Kindle Paperwhite. Formula PNGs were checked for em width and em baseline in the markup, not for visual baseline alignment on a device.
+- Covers, ISBN barcode art, and the paperback wrap were not reviewed. The paperback ISBN in `main.tex` is `9798165526770`, which is also the ISBN printed on the copyright page.
+- `python/volume1` was not read. The book does not send the reader there.
