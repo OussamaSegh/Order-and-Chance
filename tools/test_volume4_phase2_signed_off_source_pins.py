@@ -15,7 +15,8 @@ PINS = {
         # Reread 2026-11-11 for the finite-additivity derivation (V4R2-02). Labels unchanged.
         # 2026-11-11: pb:goodman and pb:samecycle appended. Earlier claim labels unchanged.
         # The new statements were checked in this preparation. Not an independent sign-off.
-        "sha": "008864cae9f906c7ea947f49587b69fd46b52cd9",
+        # 2026-11-11: Goodman part (b) denominator corrected from 6 to 8. Not an independent sign-off.
+        "sha": "e37bf3057f41100109c0a323e4c75c585c56368f",
         "claims": "thm:poissonlimit prop:fixedpoisson prop:cycles thm:coupon lem:geovar prop:couponvar prop:empty".split(),
         "exercises": "ex:records ex:fixedvar ex:quicksort ex:factorial ex:reservoir ex:prisoners ex:birthdaywait ex:twopoisson pb:goodman pb:samecycle".split(),
     },
