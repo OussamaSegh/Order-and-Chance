@@ -190,6 +190,12 @@ def main(src: str, dst: str, figdir: str) -> None:
 
     text = portraits(text)
     # Small-screen line breaks of the PDF (common/preamble.tex) mean nothing in an EPUB.
+    # PDF index pages are \pageref values. Pandoc has no aux file, so the EPUB
+    # keeps the theorem numbers and drops the page command.
+    text = re.sub(
+        r"\\newcommand\{\\ocindexpage\}\[1\]\{, p\.~\\(?:pageref|csname pageref\\endcsname)\{#1\}\}\n?",
+        "", text)
+    text = re.sub(r"\\ocindexpage\{[^{}]*\}", "", text)
     text = re.sub(r"\\qq(?![a-z])", r"\\qquad ", text)
     text = re.sub(r"\\eqbr(?![a-z])", "", text)
     # The EPUB cover is set by pandoc's --epub-cover-image instead.
