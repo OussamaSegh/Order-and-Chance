@@ -418,3 +418,33 @@ The same sign-off describes the clip by the bound \(|Q-Q^{(M)}|\le Q^2/M\) and �
 The preface’s contract is treated, in the first summary and again after the blurb repair, as matched by the proofs. After V4-01 through V4-04 it is not. The blurb repair itself is real: the blurb now names Volume 1, as m9 asked.
 
 I did not find a regression in the Bayer–Diaconis sentence, the superposition residual, the \(\pi>2\) comparison, the Chapter 9 pointers in Volume 3, or the Theorem 12.9 pointer in Volume 12. Those repairs are still doing the job the second pass describes.
+
+## Final status, 11 November 2026
+
+Every finding below was repaired on `main` after a second reading of the diff. Numbered theorems, sections, and exercises were not renumbered. Volumes 1 and 2 were not edited. The Volume 3 manuscript was not edited. Four pull requests refreshed the Volume 3 seam digest because that ledger hashes four Volume 4 files by byte. The digest moved with the file. No Volume 3 classification was reassigned.
+
+| Finding | Severity | Fix | Residual doubt |
+| --- | --- | --- | --- |
+| V4-01 | major | [#164](https://github.com/OussamaSegh/Order-and-Chance/pull/164). The product proposition now factors any finite product of bounded functions that are uniformly continuous on compact subintervals of \((0,1)\), by freezing the ends and passing to dyadic steps. Cosine and sine of a continuous quantile, including \(\Phi^{-1}\), are in that class. Gaussian vectors use the same product. | The identity is not claimed for an arbitrary measurable function. The theorems that use it do not need that wider class. |
+| V4-02 | major | [#164](https://github.com/OussamaSegh/Order-and-Chance/pull/164). Lindeberg's swap clips every block, replaces the clips by dyadic steps, and writes the Lipschitz errors before the limits. A normal summand is realised as \(\Phi^{-1}\) of a fresh uniform. | None for the stated model. The argument does not repeat a separate Box–Muller cylinder estimate, because the quantile realisation is the one the proof uses. |
+| V4-03 | major | [#163](https://github.com/OussamaSegh/Order-and-Chance/pull/163). Each side of the rectangle is cut into arc-length pieces of diameter \(L/n\), covered by \((r,\theta)\) squares, and priced by the maximum of the product density times the area. | The factor \(9\) from the \(3\times 3\) enlargement is a convenient upper bound, not a sharp area. The limit only needs that the cover's probability tends to \(0\). |
+| V4-04 | major | [#164](https://github.com/OussamaSegh/Order-and-Chance/pull/164). Exercise 6.2 uses Theorem 6.4 for the sample mean. The squares are split into monotone pieces, the product proposition gives the variance, and Chebyshev is applied to a clipped square. | The expectation of that clipped square is the finite-bit limit the product proposition already takes. It is not a new integral theorem. |
+| V4-05 | major | [#170](https://github.com/OussamaSegh/Order-and-Chance/pull/170). The preface, the blurb, and `kdp.md` say that every proof step is in this volume or in Volume 1, and that a later volume's theorem is named and not used as a step. | None. The sentence is true of the text on `main` after #163 and #164. |
+| V4-06 | minor | [#164](https://github.com/OussamaSegh/Order-and-Chance/pull/164). On the tail, \(Q^2-(Q^{(M)})^2=Q^2-M^2\). | None. |
+| V4-07 | minor | [#164](https://github.com/OussamaSegh/Order-and-Chance/pull/164). The tail beyond \(1.9\) standard deviations is printed as \(0.02872\), without an ellipsis. | None. \(0.02872\) is the five-digit rounding of \(0.02871655\ldots\). |
+| V4-08 | minor | [#167](https://github.com/OussamaSegh/Order-and-Chance/pull/167). \(G(0)=G(0)^2\), the zero law is excluded, and the rational powers are written before continuity. | None. |
+| V4-09 | minor | [#161](https://github.com/OussamaSegh/Order-and-Chance/pull/161). The events are \(\{Z_n>0\}\). | None. |
+| V4-10 | minor | [#161](https://github.com/OussamaSegh/Order-and-Chance/pull/161). The bridge says size \(O(\log n)\). | None. |
+| V4-11 | minor | [#162](https://github.com/OussamaSegh/Order-and-Chance/pull/162). When \((1-\varepsilon)\log_2 n\) is an integer, the blocks are rerun at \(\varepsilon/2\). | None. |
+| V4-12 | minor | [#162](https://github.com/OussamaSegh/Order-and-Chance/pull/162). The countable case cites the nonnegative double-sum principle of Volume 1, Chapter 10. | None. |
+| V4-13 | minor | [#166](https://github.com/OussamaSegh/Order-and-Chance/pull/166). The derivative of \(\ln(1-x)+x+x^2\) is checked on \([0,1/2]\). | None. |
+| V4-14 | minor | [#160](https://github.com/OussamaSegh/Order-and-Chance/pull/160). Outer content is an infimum of countable covers, and a tail of ones cannot occur. | None. |
+| V4-15 | minor | [#160](https://github.com/OussamaSegh/Order-and-Chance/pull/160). The host is named as Volume 1's door experiment. | None. |
+| V4-16 | minor | [#171](https://github.com/OussamaSegh/Order-and-Chance/pull/171). The bibliography repeats the chapter source lists. The index points at the existing theorem numbers. | Locators are theorem numbers, not page numbers. The EPUB is built from the source, not from the aux file, so a page number would not survive. |
+| V4-17 | minor | [#168](https://github.com/OussamaSegh/Order-and-Chance/pull/168). The appendix says it is lettered B. The letter stays, because later volumes cite Theorem B.7. | None. |
+| V4-18 | minor | [#164](https://github.com/OussamaSegh/Order-and-Chance/pull/164). The integrating factor shows that \(\varphi'(t)=-t\varphi(t)\) and \(\varphi(0)=1\) force \(\varphi(t)=e^{-t^2/2}\). | None. |
+| V4-19 | minor | [#164](https://github.com/OussamaSegh/Order-and-Chance/pull/164), using the identity proved in [#163](https://github.com/OussamaSegh/Order-and-Chance/pull/163). Glivenko–Cantelli cites the right-continuity argument, so a flat stretch is allowed. | None. |
+| V4-20 | minor | [#169](https://github.com/OussamaSegh/Order-and-Chance/pull/169). The pale edges are opaque mixtures of the series colours with white. The build of that head reported 291 print pages and 0 pages flattened. | The final page count is the one in the `books` release built from the merge of every repair, not this intermediate 291. |
+| V4-21 | minor | [#163](https://github.com/OussamaSegh/Order-and-Chance/pull/163). Right-continuity gives \(Q(u)\le x\) if and only if \(u\le F(x)\). | None. |
+| V4-22 | minor | [#165](https://github.com/OussamaSegh/Order-and-Chance/pull/165). The ratio includes the factor \(1/4\) from the powers of \(2\). | None. |
+| V4-23 | minor | [#165](https://github.com/OussamaSegh/Order-and-Chance/pull/165). The maximum meets the first boundary vertex, which may be either marked point. | None. |
