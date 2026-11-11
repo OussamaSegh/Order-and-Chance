@@ -24,8 +24,8 @@ Gate B of the master plan (independent verification) is not this pass. The write
 | Ch. | Title | File | State |
 | --- | --- | --- | --- |
 | — | Structure (D-10, D-11) | `main.tex` | **Done** |
-| 1 | Finite Calculus | `ch01-finite.tex` | Not started |
-| 2 | Generating Functions as a Computing Tool | `ch02-generating.tex` | Not started |
+| 1 | Finite Calculus | `ch01-finite.tex` | **Done** |
+| 2 | Generating Functions as a Computing Tool | `ch02-generating.tex` | **Done** |
 | 3 | Classic Series and Infinite Products | `ch03-series.tex` | Not started |
 | 4 | Integration Techniques | `ch04-integrals.tex`, `bbp-borwein.tex` | Not started |
 | 5 | The Gamma and Beta Functions | `ch05-gamma.tex` | Not started |
@@ -45,9 +45,19 @@ Gate B of the master plan (independent verification) is not this pass. The write
 
 **Chapter 12.** New: Lemma `lem:pdisc` (the partition product as a holomorphic function on the disc, which the old chapter assumed), Theorem `thm:eta` (η(−1/τ)=√(−iτ)·η(τ), proved from `thm:pentagonal`, `thm:poisson`, `thm:gaussianft`, `prop:ftbasic`, `thm:identity`), a table of p(n) against the formula, a closing section, one computation exercise (`ex:etacheck`). The citation of Volume 6 as a premise is gone. The reference to a "Problem Book" is gone. The remaining mentions of later volumes are previews (Volume 14 for the circle method and Kloosterman sums, Volume 6 for modular forms). Checks: `python3 review/volume5-rewrite/check_ch12_hardy_ramanujan.py` (η transformation at three points to 30 digits, every constant of the proof, the Rademacher partial sums, the table, the congruences, the exercises). The four mathematical risks of the blueprint: (1) branch of the square root, convergence and the passage to the half-plane are written out in the proof of `thm:eta`; (2) the chapter uses nothing from the Waring chapter; (3) the minor arc is y ≤ |x| ≤ 1/2, the whole rest of the circle; (4) is a Chapter 8 item.
 
+**Chapter 1.** Worked first example, closing section, von Staudt part (a) now proved, citations of Volumes 1–2 corrected, sources merged. Two problems whose solutions need Chapter 2 (`pb:fixmoments`, `pb:necklacering`) moved to the end of Chapter 2. Check: `check_ch01_finite.py`.
+
+**Chapter 2.** Opening example (paying 4 cents), closing section, all internal numbers turned into `\ref`, citations of Volumes 1–4 corrected. Solutions that leaned on later chapters are now self-contained or split: the die problem (`pb:diehit`) is solved with `thm:rational` instead of Cauchy's estimates; the arcsine series gets its end-point convergence from an elementary bound on the central binomial coefficient; the Catalan parity problem uses Legendre's formula (Volume 2, Chapter 1) instead of a Chapter 13 problem; the pole analysis of the zigzag numbers is a new exercise at the end of Chapter 9 (`pb:zigzagpole`); the large-n birthday asymptotic is a new exercise at the end of Chapter 11 (`pb:birthdaytriple`), with an elementary squeeze in place of dominated convergence. Check: `check_ch02_generating.py`.
+
+## Rules found on the way (keep them)
+
+- **Numbering inside a chapter is preserved.** Volumes 6–15 cite Volume 5 by hand-typed numbers (for example "Volume 5, Theorem 2.12", "Volume 5, Exercise 2.3"). Their migration stays a pure chapter shift only if no numbered statement or exercise is inserted or removed in the middle of a chapter. New exercises go at the END of the exercise list (and their hints and solutions at the end of those sections). An exercise that needs a later chapter keeps its place and number, loses the forward part, and the forward part becomes a new exercise at the end of the later chapter.
+- **Citations of Volumes 1–4 are by chapter and topic, not by statement number**, checked against the printed order: Volume 1: 1 Language, 2 Sums, 3 Counting, 4 Sequences and series, 5 Orders, 6 Complex numbers, 7 Polynomials, 8 Linear algebra, 9 Calculus, 10 Inequalities, 11 Probability. Volume 2: 1 Divisibility, 2 Primes, 3 Congruences, 4 Arithmetic functions (Möbius), 5 Primitive roots (cyclotomic polynomials), 6 Quadratic reciprocity, 7 Sums of squares, 8 Diophantine, 9 Continued fractions, 10 Gaussian and Eisenstein, 11 Characters. Volume 3: 1 Groups, 2 Quotients, 3 Actions, 4 Symmetric group, 5 Sylow, 6 Rings, 7 Modules, 8 Extensions, 9 Finite fields, 10 Galois, 11 Representations, 12 Quaternions, 13–16 linear algebra and combinatorics. Volume 4: 1 Counting, 2 Random variables, 3 Generating functions, 4 Concentration, 5 Continuous, 6 CLT, 7 Entropy, 8 Walks, 9 Markov, 10 Poisson, 11 Martingales, 12 Brownian, 13 Method, 14 Graphs, 15 Extremal. Many old citations in Volume 5 were written in file numbering and are off by one or more.
+- Scratch build: three `xelatex` passes are not needed while editing; two give stable references.
+
 ## Plan items still open, by chapter
 
-- **Ch. 4, 7, 9.** One new exercise of the hardest level each.
+- **Ch. 4, 7, 9.** One new exercise of the hardest level each (Chapter 9 already received `pb:zigzagpole`, two stars; it still needs a three-star one).
 - **Ch. 8.** Jacobi's theta becomes ϑ, with a sentence fixing the letter at first use. State the class of functions of the inversion theorem (`thm:ftinversion`) and check it is the class Chapter 12 and Volume 6 use (risk 4). "Chapter~12 follows him" is a stale number.
 - **Ch. 9.** One sentence saying which complex analysis this chapter owns and which Volume 8, Chapter 14 owns. The line about the homology form of Cauchy's theorem says "proved in Volume 8": check against Volume 7, Chapter 6 (Jordan) and Volume 8.
 - **Ch. 10.** Completed zeta is ξ, not Λ (master plan 4.5). A sentence fixing the letter. The unproved claim about smooth cutoffs of Σn: prove it or remove it. Numerical zeros of ζ: stated as computations with a source.
