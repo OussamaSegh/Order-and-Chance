@@ -26,7 +26,7 @@ Gate B of the master plan (independent verification) is not this pass. The write
 | — | Structure (D-10, D-11) | `main.tex` | **Done** |
 | 1 | Finite Calculus | `ch01-finite.tex` | **Done** |
 | 2 | Generating Functions as a Computing Tool | `ch02-generating.tex` | **Done** |
-| 3 | Classic Series and Infinite Products | `ch03-series.tex` | Not started |
+| 3 | Classic Series and Infinite Products | `ch03-series.tex` | **Done** |
 | 4 | Integration Techniques | `ch04-integrals.tex`, `bbp-borwein.tex` | Not started |
 | 5 | The Gamma and Beta Functions | `ch05-gamma.tex` | Not started |
 | 6 | Fourier Series | `ch06-fourier.tex` | Not started |
@@ -48,6 +48,8 @@ Gate B of the master plan (independent verification) is not this pass. The write
 **Chapter 1.** Worked first example, closing section, von Staudt part (a) now proved, citations of Volumes 1–2 corrected, sources merged. Two problems whose solutions need Chapter 2 (`pb:fixmoments`, `pb:necklacering`) moved to the end of Chapter 2. Check: `check_ch01_finite.py`.
 
 **Chapter 2.** Opening example (paying 4 cents), closing section, all internal numbers turned into `\ref`, citations of Volumes 1–4 corrected. Solutions that leaned on later chapters are now self-contained or split: the die problem (`pb:diehit`) is solved with `thm:rational` instead of Cauchy's estimates; the arcsine series gets its end-point convergence from an elementary bound on the central binomial coefficient; the Catalan parity problem uses Legendre's formula (Volume 2, Chapter 1) instead of a Chapter 13 problem; the pole analysis of the zigzag numbers is a new exercise at the end of Chapter 9 (`pb:zigzagpole`); the large-n birthday asymptotic is a new exercise at the end of Chapter 11 (`pb:birthdaytriple`), with an elementary squeeze in place of dominated convergence. Check: `check_ch02_generating.py`.
+
+**Chapter 3.** Closing section; the Bernoulli asymptotic now proves ζ(2k)→1 before using it; internal numbers turned into `\ref`; Volume 2 citations corrected (continued fractions are its Chapter 9); Tonelli in Ritelli's exercise is worded "Admitted here, proved in Volume 7, Theorem 9.5". The last exercise (`pb:levy`, growth of continued fraction denominators) used the Gauss–Kuzmin exercise of Chapter 10 as a premise, so it moved to the end of Chapter 10, with the attribution corrected to Khinchin 1935 and Lévy 1936. Check: `check_ch03_series.py`.
 
 ## Rules found on the way (keep them)
 
