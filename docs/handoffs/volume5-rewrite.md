@@ -32,7 +32,7 @@ Gate B of the master plan (independent verification) is not this pass. The write
 | 6 | Fourier Series | `ch06-fourier.tex` | **Done** |
 | 7 | The Discrete Fourier Transform and the FFT | `ch07-fft.tex` | **Done** |
 | 8 | The Fourier Transform and Poisson Summation | `ch08-transform.tex` | **Done** |
-| 9 | Complex Analysis for Computing | `ch09-complex.tex` | Not started |
+| 9 | Complex Analysis for Computing | `ch09-complex.tex` | **Done** |
 | 10 | The Zeta Function | `ch10-zeta.tex` | Not started |
 | 11 | Asymptotics | `ch11-asymptotics.tex` | Not started |
 | 12 | The Hardy–Ramanujan Formula | `hardy-ramanujan.tex` | **Done** (rewritten, new proof of the η transformation) |
@@ -61,6 +61,8 @@ Gate B of the master plan (independent verification) is not this pass. The write
 
 **Chapter 8.** Opening sum (Σ e^{-πn²/100} = 10 to 135 decimal places) and a closing section that explains it. All proofs re-read, including Dirichlet's evaluation of the Gauss sum and the Fresnel lemma; no repair was needed. Plan items done: Jacobi's theta is ϑ, with a sentence fixing the letter; the class of functions of the inversion theorem is stated after `thm:ftinversion` (continuous, integrable, integrable transform; sufficient: C² with f, f', f'' integrable), with the list of the functions this volume feeds to it, which covers Chapter 12 (risk 4: Chapter 12 uses `thm:poisson` on a Gaussian times an exponential, inside the class); the stale "Chapter~12 follows him" is a label. The triangle function was called Λ, a letter the master plan reserves: it is now T. The eigenvalue remark on Hermite functions is marked as not proved. Sources: the epigraph's status (attributed, quoted by Arber, no written source), Whittaker 1915, the Olbers letter through Berndt–Evans. **Chapter 10 still writes θ(t) at one place (its line on ω(t)); fix in its pass.** Check: `check_ch08_transform.py` (160-digit evaluation of the opening sum, Gauss sums for n < 60, reciprocity for the primes below 24).
 
+**Chapter 9.** Opening puzzle (∫cos x/(1+x²) = π/e, solved in the residue section) and a closing section. All proofs re-read from Goursat to Rouché; none needed repair. Plan items done: a paragraph in the introduction says what this chapter owns (convex contours: Goursat, Cauchy on star-shaped sets, Taylor, Laurent, residues, argument principle) and what Volume 8, Chapter 14 owns (homology form, Phragmén–Lindelöf, Hadamard, Mellin inversion); the remark on the homology form now cites Volume 8, Chapter 14 and, for Jordan, Volume 7, Chapter 6; new three-star exercise `ex:jensen` (Jensen's formula and the bound N(r) ≤ eAr + log C for entire functions of exponential growth), appended last. Smaller repairs: the sentence on the decay of Γ claims only what part (d) proves; in the rank problem "dominated convergence" for a series is replaced by the uniform tail bound, and its tools line no longer points to "the preceding problem"; the Dedekind lead cites `thm:eta` of Chapter 12 instead of "Volume 6, Theorem 12.7"; two leftovers from the notebooks removed. Sources added (Painlevé and Hadamard for the epigraph, Rademacher–Grosswald, Vardi, Jensen). Check: `check_ch09_complex.py` (includes the Dedekind averages for k up to 100003 and every printed constant).
+
 ## Rules found on the way (keep them)
 
 - **Numbering inside a chapter is preserved.** Volumes 6–15 cite Volume 5 by hand-typed numbers (for example "Volume 5, Theorem 2.12", "Volume 5, Exercise 2.3"). Their migration stays a pure chapter shift only if no numbered statement or exercise is inserted or removed in the middle of a chapter. New exercises go at the END of the exercise list (and their hints and solutions at the end of those sections). An exercise that needs a later chapter keeps its place and number, loses the forward part, and the forward part becomes a new exercise at the end of the later chapter.
@@ -69,9 +71,8 @@ Gate B of the master plan (independent verification) is not this pass. The write
 
 ## Plan items still open, by chapter
 
-- **Ch. 9.** One new exercise of the hardest level (Chapter 4 has `ex:fresnel`, Chapter 7 has `ex:uncertainty`; Chapter 9 already received `pb:zigzagpole`, two stars, and still needs a three-star one).
 - **Ch. 8 (for Volume 6's thread).** The inversion theorem's class is now stated; Volume 6 must check its own uses against it.
-- **Ch. 9.** One sentence saying which complex analysis this chapter owns and which Volume 8, Chapter 14 owns. The line about the homology form of Cauchy's theorem says "proved in Volume 8": check against Volume 7, Chapter 6 (Jordan) and Volume 8.
+- **Ch. 9 (for Volume 8's thread).** Volume 8, Chapter 14 owes the matching sentence on which complex analysis it owns.
 - **Ch. 10.** Completed zeta is ξ, not Λ (master plan 4.5). A sentence fixing the letter. The unproved claim about smooth cutoffs of Σn: prove it or remove it. Numerical zeros of ζ: stated as computations with a source.
 - **Ch. 13.** Legendre's modulus function must not use Λ. The closing problems each state the chapters they use; their hand-typed numbers ("Theorem~12.3", "Exercise~7.7", "Volume~5") are in the old numbering. Problems citing Volume 13, Exercise 8.5 or Volume 6 as tools break rule R1 (a solution is a proof): rework or move.
 - **All.** About 460 hand-typed internal references to convert to `\ref`.
