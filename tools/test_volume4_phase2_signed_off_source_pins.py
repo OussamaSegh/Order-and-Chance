@@ -22,7 +22,8 @@ PINS = {
         "exercises": "ex:entropymax ex:prefixoptimal ex:entropychain ex:entropyproduct ex:ambiguouscode ex:typicalcount".split(),
     },
     "extremal.tex": {
-        "sha": "3899f21ebcc1a05e68cd545cdb96e103d215ffad",
+        # Reread 2026-11-11: the appendix states that it is lettered B (V4-17).
+        "sha": "9a7f9e14985567962b94061a4f4e54781e2e512f",
         "claims": "thm:turan thm:ramsey thm:schur thm:sunflower thm:ekr thm:vdw3 thm:vdw".split(),
         "exercises": "ex:r33 ex:turanedges ex:ekrsharp ex:schurtwo ex:ekrcomplement".split(),
     },
