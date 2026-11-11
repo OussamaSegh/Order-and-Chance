@@ -2,7 +2,7 @@
 
 **Reviewer.** Independent second reading by cloud agent `bc-114da047-b320-5bb0-b0d1-2f6495477a25` (grok-4.7). The audit itself was written by a different session, `bc-323d34bf`. This file does not edit the audit, the manuscripts, or any figure. It does not restore anything. The owner decides.
 
-**Audit under review.** Pull request [#190](https://github.com/OussamaSegh/Order-and-Chance/pull/190). The current verdict is the reconciliation pass below, at live head `9896c5ca0a7bc06b90081ca2f4752b96f7e32e1c`. The first pass read `791d35f619e84c75c1bf8e2bf623bd2adcdf46ba` and remains the record of that head.
+**Audit under review.** Pull request [#190](https://github.com/OussamaSegh/Order-and-Chance/pull/190). The current verdict is the reconciliation pass below, at live head `9896c5ca0a7bc06b90081ca2f4752b96f7e32e1c`. The current recommendation count is 12 restore, 1 repair, 19 optional, and 77 omit. Everything under the heading **First pass, historical** is the record of head `791d35f619e84c75c1bf8e2bf623bd2adcdf46ba`. The counts 16/1/18/74 and the red `site` job in that record are not the current verdict.
 
 ## Reconciliation pass — head `9896c5ca`
 
@@ -58,15 +58,19 @@ The reconciled table, the owner list, and the closing paragraph on small cuts ag
 - It still says `ex:ballsbins` (b) and `extremal:ex:wlower` were not re-proved. The table and the reconciliation section say both were checked, and both are restores.
 - It still asks whether the knight write-up uses the stationary formula or a different count, and it calls 168 the edge count. The table now quotes the hand sum 336. The edge count is 168, and the corner return is also 168. The open question in that bullet is the question the row already answered by omitting the exercise.
 
-Those three bullets are stale. They do not change the owner list, because the list itself no longer contains the knight or the uniform integer, and it does contain the two checked bounds. A later reader who stops at “Unresolved” will not see that. The minimal repair, if the audit is touched again, is to delete those three stale sentences. This reading does not edit the audit.
+Those three bullets are stale. They do not change the owner list, because the list itself no longer contains the knight or the uniform integer, and it does contain the two checked bounds. The audit author has asked to delete only those three claims. Head `9896c5ca` still contains them. This reading will certify that deletion only after a new head of #190. It does not edit the audit.
 
 The note’s own last sentence is the right strength: none of the checked list is approved for restoration by the audit, and this review does not restore it either.
 
 ### Checks, separate from the reading
 
-On head `9896c5ca`, Build books [43067468190](https://github.com/OussamaSegh/Order-and-Chance/actions/runs/43067468190) has `list`, `debs`, all fifteen volume builds, and `site` in success. `publish` is skipped. A green docs build is not a mathematical acceptance. Pull request #180 was not re-read. Its writer’s later head, when there is one, is a separate review.
+On head `9896c5ca`, Build books [43067468190](https://github.com/OussamaSegh/Order-and-Chance/actions/runs/43067468190) has `list`, `debs`, all fifteen volume builds, and `site` in success. `publish` is skipped. A green docs build is not a mathematical acceptance. Pull request #180 was not re-read. A later head that resolves its fingerprint conflict is a separate exact-head review. It is not part of this note.
 
-**Pins, checked in git.**
+## First pass, historical — head `791d35f6`
+
+This section is the record of the first reading. It is not the current verdict. The recommendation split here is 16 restore, 1 repair, 18 optional, and 74 omit. The current split, in the reconciliation pass above, is 12 restore, 1 repair, 19 optional, and 77 omit. The red `site` job below belongs to review-log #188 at `8c338504`. It is not the build of audit head `9896c5ca`, which is green. The pin `a2cfdd30` in the table below is what `origin/main` was during that first reading. Live `main` at the reconciliation reading is `6e5cc70d`.
+
+**Pins, checked in git, at the first reading.**
 
 | Role | SHA | Check |
 | --- | --- | --- |
@@ -78,7 +82,7 @@ On head `9896c5ca`, Build books [43067468190](https://github.com/OussamaSegh/Ord
 
 The twelve baseline chapter blobs and line counts in the audit’s blob table match `git rev-parse` and `git show` line counts, including `gilmer.tex`.
 
-## Counts that were recomputed, not taken from the prose
+## Historical first pass — counts at head `791d35f6`
 
 Routed files are `main.tex` inputs, plus one nested input: `gilmer.tex` from baseline Chapter 4, and `ch05-geometric.tex` from the pinned continuous chapter.
 
@@ -96,9 +100,9 @@ Routed files are `main.tex` inputs, plus one nested input: `gilmer.tex` from bas
 | `git diff --shortstat 3cc07e86 a2cfdd30 -- volume4-chance` | 311 insertions, 122 deletions | 19 files, 311 insertions, 122 deletions |
 | `3cc07e86` ancestor of the pin | yes | yes |
 
-The arithmetic of the inventory is consistent. No row is missing from the 109, and no class or recommendation total disagrees with the rows.
+The arithmetic of the inventory is consistent with audit head `791d35f6`. No row is missing from the 109, and no class or recommendation total disagrees with the rows of that head. The recommendation line 16/1/18/74 is this historical count. The current count is 12 restore, 1 repair, 19 optional, and 77 omit.
 
-## What this reading accepts
+## Historical first pass — what that reading accepted
 
 **Renamed is not lost, where the target was opened.** `ex:longestrun` is now `ex:runs` at `ch04-inequalities.tex` lines 302–304, and the statement says convergence in probability and that a complete almost-sure statement is not required. `ex:betagamma` is the exercise of that label in `volume7-spaces/chapters/ch08-products.tex` line 344. `ex:polyabeta` in Volume 11, `ch09-martingales.tex` line 453, is the general Beta\((a,b)\) urn. `thm:commute` is in Volume 12 at `ch08-networks.tex` line 114. `conjectures:thm:gilmer` is in Volume 15 at `conjectures-ch08-geometric.tex` line 300, with the same constant arithmetic at line 377. The finite-method labels `thm:erdos`, `thm:alter`, `thm:lll`, `prop:second`, `prop:euler`, `prop:crossing`, `thm:subcrit`, and `thm:triangles` are in the pinned sources. `prop:race`, `thm:uniform`, `thm:ruin`, `ex:unfair`, `thm:kraft`, `prop:chain`, `thm:mutual`, `thm:buffon`, `thm:ramsey`, `thm:sunflower`, and `ex:schurtwo` are present. The old-to-new plan’s sentence that exercises 1.1–1.6 were rebuilt in the same slots, including “two tests”, is stale: `ex:twotests` is not in the pinned volume. The audit says the plan is not authority. That judgment is right.
 
@@ -110,11 +114,11 @@ The arithmetic of the inventory is consistent. No row is missing from the 109, a
 
 **Page claim.** No baseline page count is asserted. The 289-page interior is tied to `3cc07e86`, an ancestor, not to `a2cfdd30`. That restriction is correct. The 300–600 sentence is a cap, not a quota. The audit does not recommend filler.
 
-## The seventeen restore or repair rows
+## Historical first pass — the seventeen restore or repair rows at `791d35f6`
 
 These are the inventory rows whose recommendation starts with “restore” or “repair”. Twelve of them, plus the 2-SAT section, are the audit’s “checked” owner list. Four more are explicitly “after a line reading”. The audit does not claim those four are proved.
 
-### Accepted as solvable from Volumes 1–4, main step checked here
+### Historical — accepted as solvable from Volumes 1–4, main step checked at `791d35f6`
 
 The check is the method in the baseline solution, not the topic name.
 
@@ -136,7 +140,7 @@ The check is the method in the baseline solution, not the topic name.
 
 These are recommendations for the owner. They are not restorations.
 
-### Not accepted as a finished Volume 1–4 proof
+### Historical — not accepted as a finished Volume 1–4 proof at `791d35f6`
 
 **`pb:nouniform` (a), V4-RM-E05.** The audit marks this high confidence and puts it on the checked list. The baseline solution says \(P(\{n\})\le 1/m\) for every \(m\), hence the singleton has mass 0, and \(P(\mathbb N^*)=\sum_n P(\{n\})=0\). The tools line cites “Volume 4, Chapter 1 (additivity)”. The pinned Chapter 1, `ch01-counting.tex` line 43, says the book has not proved countable additivity on a full infinite-event space. Finite additivity does not make a countably infinite sum of zeros equal to zero. Part (a) as written uses a hypothesis the four volumes refuse. Do not restore it as a consequence of Chapter 1. A version that states “assume countable additivity” as an extra hypothesis would be a different exercise, and the audit’s part (c) already says densities give up that hypothesis. Part (c)’s block proportions, about \(2/3\) and \(1/3\) for the unions of \([4^j,2\cdot 4^j)\), hence about \(1/3\) and \(1/6\) for the even subset, match the description. That arithmetic was not in the audit. It still does not repair part (a).
 
@@ -150,7 +154,7 @@ These are recommendations for the owner. They are not restorations.
 
 **`ex:ballsbins` (b).** The audit left the maximum of \(\psi\) unchecked. This reading checked it: \(\psi(u)=(\ln u+1-\ln 3)/u\), \(\psi'(u)=(\ln 3-\ln u)/u^2\), maximum \(1/3\) at \(u=3\). The union bound in (b) then follows. Gonnet’s matching lower bound is a citation and should not be copied in as a proof. Part (b) without that citation is elementary. The audit’s “restore (a) only” is safer than wrong. It is stricter than the calculus requires.
 
-## Issue log
+## Historical first pass — issue log at `791d35f6`
 
 | ID | Severity | Finding | What to do if the owner asks | Unresolved |
 | --- | --- | --- | --- | --- |
@@ -164,13 +168,13 @@ These are recommendations for the owner. They are not restorations.
 
 No issue here authorises a manuscript edit.
 
-## Classifications left provisional
+## Historical first pass — classifications left provisional at `791d35f6`
 
 Rows whose confidence is low, or whose note says “not line-checked” or “Tools”, were not re-proved. That includes `pb:lcs`, `pb:kacring`, `pb:foata`, `pb:range`, and the network solutions past their tools lines. The audit’s confidence column already says so. Accepting the “omit” recommendation for a tools-line that names a later volume is a classification, not a certificate that the solution has no elementary core. `pb:lcs` is the row the audit itself leaves unresolved. It stays unresolved.
 
 The 74 omissions include those rows and the advanced block. This reading accepts the large omissions: the measure engine, the Gilmer defect, the network chain as a chapter, and the workshop list taken whole. It does not accept every individual “omit” as a proof that the solution is empty of a Volume 1–4 exercise. The owner list is the right granularity.
 
-## Owner list this reading would actually put forward
+## Historical first pass — owner list at `791d35f6`
 
 Ready, with the limits named above: Sicherman (wording), loaded dice, Goodman, uniform cycle length, hashing, broken stick, wait to pass 1, balls and bins (a), and (b) without the Gonnet citation, secretary (a) and the \(1/e\) limit without the optimality sentence, McMillan, subset sums (a) and (b), the six-line van der Waerden lower bound without Berlekamp, and the 2-SAT section with the tail-sum sentence instead of “monotone convergence”.
 
@@ -178,7 +182,7 @@ Not ready: no uniform integer as written, the second medical test until the rate
 
 Nothing in that list should be restored by this review. The page ledger, the Brownian branch, and the owner’s instruction still stand.
 
-## What was not done
+## Historical first pass — what was not done at `791d35f6`
 
 - The 74 omit-rows were not all re-proved.
 - `conjectures:lem:hxy` was not re-derived.
@@ -186,6 +190,8 @@ Nothing in that list should be restored by this review. The page ledger, the Bro
 - Figures were not reviewed.
 - The pinned book was not rebuilt, so no page count of `a2cfdd30` is claimed.
 
-## CI
+## Historical first pass — CI recorded at `791d35f6`
+
+This red job is not the current audit build. The build of head `9896c5ca` is the green run in the reconciliation pass.
 
 Review-log pull request #188, head `8c338504f964f88e329bb06c82e65e0abc127009`, Build books run [43052798216](https://github.com/OussamaSegh/Order-and-Chance/actions/runs/43052798216), finished **failure**. `list`, `debs`, and all fifteen volume builds succeeded. `publish` was skipped. The only failed job is [`site`](https://github.com/OussamaSegh/Order-and-Chance/actions/runs/43052798216/job/130662463390), exit 100, `Temporary failure resolving 'azure.archive.ubuntu.com'` while installing poppler. That is an infrastructure blocker. It is not a green build, and it is not a manuscript failure.
