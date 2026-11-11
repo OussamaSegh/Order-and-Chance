@@ -24,7 +24,8 @@ SOURCES = {
         "",
     ),
     "ch12-method.tex": (
-        "7bb8f4a676a46524817beb217d04f18ad6317a21",
+        # Reread 2026-11-11 for the common-face sentence in Euler's formula (V4R2-13). Labels unchanged.
+        "762a62a5aaa86a84b9c8038cae7ebd5e6813d750",
         "thm:erdos thm:alter thm:lll prop:second prop:euler prop:crossing",
         "ex:carowei ex:tournament ex:sumfree ex:crossing ex:propertyb ex:localcolour",
     ),
