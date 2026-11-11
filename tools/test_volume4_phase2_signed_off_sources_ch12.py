@@ -13,8 +13,9 @@ from pathlib import Path
 SOURCE = Path(__file__).resolve().parents[1] / "volume4-chance" / "chapters" / "ch11-brownian.tex"
 # Caption ink words only. The reviewed mathematics is the predecessor blob
 # 7c576031edc38e04019336de0a0a1a1bfefeb2b1; the diff is the reflection caption.
-# Reread 2026-11-11 for the existence outer-content argument and the reflection window (V4R2-01, V4R2-10, V4R2-15, V4R2-16). Labels unchanged.
-BLOB = "fe398da68dcbd1405ab1808352be288681a4e817"
+# Reread 2026-11-11 for the existence outer-content argument and the reflection window (V4R2-01, V4R2-10, V4R2-15, V4R2-16).
+# Further writer repair the same day: bin-increment thresholds and reflection strips use the rectangle reduction. Labels unchanged. This pin is source identity, not an independent sign-off.
+BLOB = "be598028839c9125bd1adc7d7058cf7124a4d301"
 PROOFS = """prop:bmgauss lem:levylevel thm:levy prop:scaling lem:squares
 thm:qv thm:dyadicito thm:pwz prop:bmmart prop:restart
 thm:reflection prop:bmsquare""".split()
