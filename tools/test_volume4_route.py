@@ -74,7 +74,7 @@ class TestVolume4Route(unittest.TestCase):
         main, files = manuscript()
         chapter_names = re.findall(r"\\input\{chapters/([^{}]+)\}", main)
         self.assertEqual(
-            tuple(name for name in chapter_names if name not in ("preface", "extremal")),
+            tuple(name for name in chapter_names if name not in ("preface", "extremal", "bibliography", "index")),
             APPROVED_CHAPTERS,
         )
         self.assertEqual(len(re.findall(r"\\part\{", main)), 4)
