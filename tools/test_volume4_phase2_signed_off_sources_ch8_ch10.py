@@ -16,7 +16,8 @@ SPECS = {
  "ch07-walks.tex": {
    # Reread 2026-11-11 for the factor 1/4 in the arcsine identity (V4-22)
    # and the first boundary vertex in the harmonic argument (V4-23).
-   "sha": "2bee3768ab8711567283311188176db71f7bb29a",
+   # Reread 2026-11-11 for the ruin constants and the iterated integral (V4R2-03, V4R2-04). Labels unchanged.
+   "sha": "18357275853785063a72241deb759166ab5ca7f8",
    "proofs": "thm:rwreflect thm:ruin prop:duration prop:visits thm:polya thm:arcsine prop:harmonic thm:arcsinelimit lem:centralbin".split(),
    "ex": "ex:ballotwalk ex:maxlaw ex:timepositive ex:unfair ex:meet ex:escape ex:exittime ex:electric".split(),
  },
