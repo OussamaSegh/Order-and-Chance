@@ -172,4 +172,73 @@ These were read and, where a number appears, recomputed. A check of a number is 
 
 ## Comparison with the earlier scored read
 
-Reserved for the comparison written after this scorecard and issue log were committed.
+This section was written after the scorecard and the issue log above were committed, in `9b0b4684`. The file compared is `docs/review/volume4-independent-scored-read-2026-11-11.md`. Its scorecard and issue log judge the book before the repairs in its Final status table. That table says V4-01 through V4-23 were repaired on `main`. The scores in this report are of `8b8a5be3`, which already contains those repairs. The comparison is therefore between a pre-repair scorecard and a post-repair reading, not between two readings of one unchanged text.
+
+### Scores, dimension by dimension
+
+Overall: 7 then, 8 now.
+
+| Chapter | Earlier a–j | This reading a–j | What moved |
+| --- | --- | --- | --- |
+| 1 | 9 8 9 8 8 9 8 9 9 8 | 9 8 9 8 9 9 8 9 9 9 | Pedagogy and layout up one. The same proofs. |
+| 2 | 9 8 9 8 8 8 8 9 9 8 | 9 8 8 8 9 8 8 9 9 8 | Prerequisites down one for the unnamed “union bound in Chapter 1”. Pedagogy up one. |
+| 3 | 9 8 8 8 8 8 8 8 8 8 | 9 8 9 7 8 8 8 8 9 8 | Prerequisites and notation up, because the undefined \(S_N\) is gone. Clarity down one: the generating-function derivative is still a steep proof. |
+| 4 | 9 8 9 8 8 8 8 8 8 8 | 9 8 8 8 9 8 8 8 9 8 | Notation up. Prerequisites down one against their 9; the digit-model warning is honest, and I did not give 9. |
+| 5 | 8 6 8 7 7 8 8 8 8 8 | 9 7 8 7 8 8 8 8 8 8 | Correctness and rigor up. The rectangle cover that was V4-03 is now written. |
+| 6 | 8 5 6 6 7 7 8 8 8 7 | 9 7 8 7 8 8 8 8 9 8 | The largest rise. Rigor was 5 because the product of characteristic functions and the Lindeberg swap did not close. Both arguments are now on the page. Prerequisites were 6 because Exercise 6.2 used Volume 1’s weak law outside that law’s finite-sum proof; the solution now uses Theorem 6.4 and a clipped square. |
+| 7 | 8 8 8 8 8 8 8 8 8 8 | 9 8 8 8 8 7 8 8 9 8 | Correctness and notation up one. Exercises down one because I did not recompute every solution. |
+| 8 | 9 7 8 7 8 8 8 8 8 8 | 9 8 8 8 9 7 8 8 9 8 | Rigor, clarity, pedagogy, and notation up. Exercises down one for the same coverage reason. |
+| 9 | 8 7 8 8 8 8 8 8 8 8 | 9 8 8 8 8 7 8 8 9 8 | Correctness and rigor up. I recomputed the 52-card distances; that review did not. |
+| 10 | 8 7 8 8 8 8 8 8 8 8 | 8 7 8 8 8 7 7 8 8 8 | Exercises and figures down one. I did not recompute M/M/1. |
+| 11 | 8 7 8 7 8 8 8 8 8 8 | 8 8 8 7 8 7 7 8 8 8 | Rigor up one on the optional-stopping block. Exercises and figures down. |
+| 12 | 8 7 8 7 7 7 7 8 8 8 | 8 6 7 7 7 7 7 8 8 8 | Rigor and prerequisites down. The Lévy construction’s call on Theorem 4.4 is V4R2-01. That review did not line-check this construction. |
+| 13 | 9 8 8 8 8 8 8 8 8 7 | 9 8 8 7 8 7 7 8 8 8 | Layout up. The full-page raster of the local-lemma page is gone. Clarity, exercises, and figures down one on coverage. |
+| 14 | 8 7 8 8 8 7 7 8 8 8 | 8 8 8 8 8 7 7 8 8 8 | Rigor up one. The \(O(\log n)\) bridge is now what Theorem 14.1 proves. |
+| B | 8 8 9 8 8 8 8 7 8 8 | 8 7 8 7 7 7 8 8 8 8 | Voice up: the appendix no longer apologises that there is no Appendix A. The other dimensions are lower because I re-proved Turán and the crossing count, not Ramsey through van der Waerden. |
+
+Whole-book: structure 8 against 8; continuity 8 against 8; preparation 8 against 8; title 9 against 8; front and back matter 7 against 5; print PDF 9 against 8; EPUB 8 against 8. The front-matter rise is the index, the collected bibliography, and a listing that now says the same thing as the preface. Their print file had 291 pages and a raster text page at folio 248. The release I opened has 299 pages, and no page is a text page replaced by one large image.
+
+### What that review missed
+
+These are in the issue log above and are not in its issue log or its Final status table.
+
+- **V4R2-01.** Theorem 12.4 cites Theorem 4.4(a) for normal thresholds. That review’s “Not reviewed” list says the Lévy construction was not line-checked.
+- **V4R2-02.** “The union bound in Chapter 1” is not a named result of Chapter 1.
+- **V4R2-03.** Biased ruin states \(A+B(q/p)^k\) and does not solve for \(A\) and \(B\).
+- **V4R2-04.** The walk in dimension \(d\ge 3\) integrates over a cube. The Fubini proposition is for a rectangle, and the proof does not say to iterate.
+- **V4R2-05.** Shannon’s 1948 paper is still among the sources of the concentration chapter, which does not use entropy. The collected bibliography copies that list, so the item appears twice in the book’s source apparatus, once in the wrong chapter.
+- **V4R2-06.** A Volume 5 tools line says “Chapter 8 (periodic chains)”. Their script checked numbered citations and would not have caught a parenthetical. The period is defined in Chapter 9.
+- **V4R2-09.** After the listing was brought into line with the preface, the remaining sentences (“climbs to the theorems”, “a drunk bird”) are still louder than `blurb.tex`. That is a voice note, not the contradiction they repaired.
+
+V4R2-07 is not something they missed. They wrote that “twelve rows” describes the cover drawing, not the 1873 machine, and they did not call it an error. I still think the colophon should say that in one clause. V4R2-08 is the residual they already printed under V4-16: the index points at theorem numbers, not pages.
+
+### Fixes marked closed
+
+I re-opened each row of the Final status table in the current source.
+
+| Finding | Still closed? |
+| --- | --- |
+| V4-01 | Yes. The product proposition factors bounded maps that are uniformly continuous on compact subintervals of \((0,1)\). Cosine and sine of a continuous quantile, including \(\Phi^{-1}\), are put in that class before they are multiplied. |
+| V4-02 | Yes. The Lindeberg swap clips, replaces clips by dyadic steps, and writes the Lipschitz errors before \(m\to\infty\) and \(K\to\infty\). |
+| V4-03 | Yes. Each side of the rectangle is cut into arc-length pieces and covered by \((r,\theta)\) squares. The factor \(9\) is still only an upper bound, which is the residual they named. The errors are sent to \(0\). |
+| V4-04 | Yes. The solution of Exercise 6.2 uses Theorem 6.4 for the sample mean and Chebyshev on a clipped square. It does not call Volume 1’s weak law. |
+| V4-05 | Yes. The preface, `blurb.tex`, and `kdp.md` all say that a proof step is in this volume or in Volume 1, and that a later theorem is named and not used. |
+| V4-06 | Yes. The tail identity is \(Q^2-(Q^{(M)})^2=Q^2-M^2\). |
+| V4-07 | Yes. The continuity correction is printed as \(0.02872\), without an ellipsis. The value \(0.02871655\ldots\) rounds to that. |
+| V4-08 | Yes. \(G(0)\in\{0,1\}\) is derived, the law \(T=0\) is excluded, and \(G(1/q)=e^{-\lambda/q}\) is written before continuity. |
+| V4-09 | Yes. The bridge talks about \(\{Z_n>0\}\). There is no \(S_N\). |
+| V4-10 | Yes. The bridge says size \(O(\log n)\), and Chapter 14 does not claim more. |
+| V4-11 | Yes. When \((1-\varepsilon)\log_2 n\) is an integer, the blocks are rerun at \(\varepsilon/2\). I checked that step; it does what it claims. |
+| V4-12 | Yes. The countable case of Hoeffding cites the nonnegative double-sum principle of Volume 1, Chapter 10. |
+| V4-13 | Yes. \(f(x)=\ln(1-x)+x+x^2\) has \(f'(x)=x(1-2x)/(1-x)\ge 0\) on \([0,1/2]\). |
+| V4-14 | Yes. Outer content is an infimum of countable covers, and a tail of chosen ones is empty because a remainder lies in \([0,1)\). |
+| V4-15 | Yes. The host is named as Volume 1’s door experiment, now with \(n\) doors. |
+| V4-16 | Yes, with the residual they stated. There is a bibliography and an index of theorem numbers. There are still no page numbers. That residual is V4R2-08. |
+| V4-17 | Yes. The appendix says it is lettered B, without the apology. |
+| V4-18 | Yes. \((\varphi(t)e^{t^2/2})'=0\) and \(\varphi(0)=1\) are written. |
+| V4-19 and V4-21 | Yes. Chapter 5 proves \(Q(u)\le x\) if and only if \(u\le F(x)\) from right-continuity, and Glivenko–Cantelli cites that identity and allows a flat stretch. |
+| V4-20 | Yes. The release print file has 299 pages. No page is a text page replaced by one image larger than the text block. The intermediate count 291 is not the file I opened. |
+| V4-22 | Yes. The ratio \(u_{2m}/u_{2m-2}\) includes the factor \(1/4\). |
+| V4-23 | Yes. The maximum is said to meet the first boundary vertex, which may be either marked point, and both boundary values are 0. |
+
+No row in that table is still open as a failed repair. I did not find a regression in the repaired sentences: the new run-length case, the clip identity, the host sentence, the \(O(\log n)\) bridge, and the product proposition’s hypotheses match the jobs they are given. The Shannon item in the concentration chapter’s source list was copied into the collected bibliography; that is a preserved mis-filing, not a new false theorem introduced by the repair.
