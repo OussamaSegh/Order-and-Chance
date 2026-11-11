@@ -14,7 +14,9 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1] / "volume4-chance" / "chapters"
 SPECS = {
  "ch07-walks.tex": {
-   "sha": "79fba127ab7b7ce6c9064bedfc40345f32e91e04",
+   # Reread 2026-11-11 for the factor 1/4 in the arcsine identity (V4-22)
+   # and the first boundary vertex in the harmonic argument (V4-23).
+   "sha": "2bee3768ab8711567283311188176db71f7bb29a",
    "proofs": "thm:rwreflect thm:ruin prop:duration prop:visits thm:polya thm:arcsine prop:harmonic thm:arcsinelimit lem:centralbin".split(),
    "ex": "ex:ballotwalk ex:maxlaw ex:timepositive ex:unfair ex:meet ex:escape ex:exittime ex:electric".split(),
  },
