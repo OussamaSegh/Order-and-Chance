@@ -433,5 +433,20 @@ Text.
             self.assertEqual(book.read_bytes(), again)
 
 
+class IndexPagePrep(unittest.TestCase):
+    def test_index_page_commands_are_removed_before_pandoc(self):
+        with tempfile.TemporaryDirectory() as directory:
+            source = Path(directory) / "main.tex"
+            destination = Path(directory) / "epub.tex"
+            source.write_text(
+                "\\newcommand{\\ocindexpage}[1]{, p.~\\csname pageref\\endcsname{#1}}\n"
+                "Theorem~1.7\\ocindexpage{thm:ballot}.\n")
+            epub_prep.main(str(source), str(destination), directory)
+            text = destination.read_text()
+            self.assertIn("Theorem~1.7", text)
+            self.assertNotIn("ocindexpage", text)
+            self.assertNotIn("pageref", text)
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -12,7 +12,9 @@ import unittest
 ROOT = Path(__file__).resolve().parents[1] / "volume4-chance" / "chapters"
 SOURCES = {
     "ch05-continuous.tex": (
-        "4d2221df7adeb926d46c7526faa7829a77645db9",
+        # Reread 2026-11-11 for the generalised-inverse identity and the
+        # Box--Muller grid cover (V4-21, V4-03). Labels unchanged.
+        "d69220a56c54b6a5571a02a2609520187322aa3d",
         "prop:densitymean prop:gausstail prop:fubini prop:polar prop:manyuniforms prop:orderpair prop:inverse thm:dct thm:boxmuller",
         "ex:counter ex:densityunique ex:tail ex:cauchy ex:gamma ex:order ex:cantor ex:usquare ex:radius",
     ),
@@ -22,7 +24,8 @@ SOURCES = {
         "",
     ),
     "ch12-method.tex": (
-        "7bb8f4a676a46524817beb217d04f18ad6317a21",
+        # Reread 2026-11-11 for the common-face sentence in Euler's formula (V4R2-13). Labels unchanged.
+        "762a62a5aaa86a84b9c8038cae7ebd5e6813d750",
         "thm:erdos thm:alter thm:lll prop:second prop:euler prop:crossing",
         "ex:carowei ex:tournament ex:sumfree ex:crossing ex:propertyb ex:localcolour",
     ),

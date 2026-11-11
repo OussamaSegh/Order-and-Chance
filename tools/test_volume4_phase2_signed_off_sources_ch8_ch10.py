@@ -14,14 +14,19 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1] / "volume4-chance" / "chapters"
 SPECS = {
  "ch07-walks.tex": {
-   "sha": "8b64abc66f79ccbc792906fbfa9ba50e9ab3e890",
+   # Reread 2026-11-11 for the factor 1/4 in the arcsine identity (V4-22)
+   # and the first boundary vertex in the harmonic argument (V4-23).
+   # Reread 2026-11-11 for the ruin constants and the iterated integral (V4R2-03, V4R2-04). Labels unchanged.
+   # Writer repair the same day: return attribution, half-line Gaussian citation, meeting sign (V4R2-18, V4R2-19, V4R2-20). Not an independent sign-off.
+   "sha": "d23df25f67660781c6d1bae09469f7d4c535079b",
    "proofs": "thm:rwreflect thm:ruin prop:duration prop:visits thm:polya thm:arcsine prop:harmonic thm:arcsinelimit lem:centralbin".split(),
    "ex": "ex:ballotwalk ex:maxlaw ex:timepositive ex:unfair ex:meet ex:escape ex:exittime ex:electric".split(),
  },
  "ch09-poisson.tex": {
    # Caption ink word only ("blue" -> "charcoal"). Proofs and exercises
    # are unchanged from 6de4e7e1fd5c6369d553e45190e54807c553a743.
-   "sha": "94576b65f92540eb47c9b4db66c785e5119e9ecc",
+   # Reread 2026-11-11 for G(0) in {0,1} and the rational powers (V4-08).
+   "sha": "c4c36ee1b854ebc7b8a34a35f77f5c4b952549af",
    "proofs": "prop:memoryless lem:gamma thm:uniform lem:colouring thm:increments thm:thinning thm:superpose prop:residual prop:onesidedgap prop:race thm:lecam thm:mm1 prop:emptiness".split(),
    "ex": "ex:twoexp ex:minexp ex:bus ex:lecamnum ex:mm1mean ex:emptycheck ex:superpose ex:firstarrival".split(),
  },

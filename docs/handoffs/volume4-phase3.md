@@ -88,3 +88,45 @@ No other Volume 4 pull request is open. The other `volume4` branches on the remo
 ## Permission limits
 
 Workflow dispatch on `main` returned HTTP 403. Issue edit and issue comment on #139 returned HTTP 403. The issue body is still the placeholder created at open.
+
+## Successor-review repairs — 10 November 2026
+
+The review is `docs/review/volume4-successor-review-2026-11-10.md`, merged as #151. The repairs were squash-merged only after the exact head was green. Each squash tree matches that head, except where a later pull request added a file the earlier head did not contain.
+
+| Pull request | Reviewed head | Squash on `main` |
+| --- | --- | --- |
+| #152 proof gaps M1, M2, M3, M5 | `789b09b512eb7d01b45dcb2f8617ed0a13b5562b` | `1c6222a4df8a61836ac07b9dd7ed35af354e354b` |
+| #155 wording, m1–m13, Theorem 6.14 | `97d8fb71d974c6f5ff0410598f165b355299c3c6` | `d9b3c742d757b967b0fa5b17efd4b4c74b282170` |
+| #154 Volume 12 pointer | `2cf9d56e0f136b223290b5fa4c8a50dd549b3041` | `b61dae522dd9ce700b0a47f099bbd67e4bbb3e86` |
+| #153 Volume 3, two sentences | `4c1bf8ddb745f660f07d4f575c563577179b04c5` | `364647dea3074e4069eff024ddc468a58e1c4ebd` |
+| #151 the review, with the second pass | `c894c4a6e8ebeef50b97aa35659511a00e36b937` | `bc2a409d3a34460b5bbce397aa822c7b6e9a4d77` |
+
+`main` after those five squashes is `bc2a409d3a34460b5bbce397aa822c7b6e9a4d77`. The book bytes are the tree of `364647de`; the last commit adds only the review.
+
+No previously existing Volume 4 aux label changed its number. The new product statement is an unnumbered proposition. Its label is anchored to section 6.2. Theorems 6.4, 6.10, 6.14, 8.5, 9.9, 10.8, 11.12 and 12.12 kept their numbers. Volumes 1 and 2 are byte-identical to the tree before #153.
+
+The interior typeset on the wording head was 291 pages. The previous print interior was 289. Build books [42921215985](https://github.com/OussamaSegh/Order-and-Chance/actions/runs/42921215985) published the `books` release from `364647de`. The later docs run [42925715312](https://github.com/OussamaSegh/Order-and-Chance/actions/runs/42925715312) rebuilt no volume and did not replace the release.
+
+Release: https://github.com/OussamaSegh/Order-and-Chance/releases/tag/books
+
+| File | SHA-256 | Pages | Page size |
+| --- | --- | --- | --- |
+| Volume 4 - Chance - Print.pdf | `bd04b4464b356ead6f7a66dbf2e69112556a43faadf40876fab18428ff24debc` | 291 | 513 × 738 pt |
+| Volume 4 - Chance - Paperback Cover.pdf | `51289f882ded4c0df61da76a1259d58eb54583e0bfc92591d5738c5fd57ff23f` | 1 | 1075.34 × 738 pt |
+| Volume 4 - Chance.pdf | `913dafa2572cdbb95b2964696f3677eaa0a17ceb719c9d100bfbbd6c0b499b68` | 292 | 504 × 720 pt |
+| Volume 4 - Chance.epub | `cf91fa84d15cc4bde1a5a9fa7d0dbc28039b900b185575a8a691eb04a59503b4` | | |
+| Volume 3 - Symmetry - Print.pdf | `80e505a5644590988a646a8c7a4ac6c557ac5d54036800253099ba779426de18` | 517 | 513 × 738 pt |
+| Volume 3 - Symmetry.pdf | `e6eb43a85289771ad903cca3e2e5fb62bbe489fa2e37cbb564e9c2000a2e2573` | 518 | 504 × 720 pt |
+| Volume 3 - Symmetry.epub | `fc8c19ac0bae784904c295ca2446c9c909fa910099895ab067c8e3396ef42ea9` | | |
+
+Volume 4 metadata: 291 interior pages, KDP even-round 292, spine 0.6853 in, wrap width 14.9353 in. The cover's 1075.34 pt width is that wrap. The previous print was 289 pages, even-round 290, spine 0.6806 in. The old cover does not fit the new book.
+
+Volume 3 metadata: 517 interior pages, even-round 518, spine 1.2157 in, wrap width 15.4657 in. The cover is 1113.53 × 738 pt, which is that width. The two edited sentences replace "Chapter 8" with "Chapter 9" and do not change the line count.
+
+KDP upload, from the release, using the names without the dots GitHub inserts:
+
+- `Volume 4 - Chance - Print.pdf`
+- `Volume 4 - Chance - Paperback Cover.pdf`
+- `Volume 3 - Symmetry - Print.pdf`
+
+The Volume 3 paperback cover on the release matches the 517-page interior. Replace the uploaded cover as well if the listing was not already built for 517 pages and a 1.2157 in spine. The reading PDF and the EPUB are the GitHub release, not the KDP manuscript or cover.

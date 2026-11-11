@@ -109,16 +109,13 @@ class TestVolume4MathAudit(unittest.TestCase):
 
 
     def test_exponential_quantile_satisfies_fourth_moment_strong_law(self):
-        """A positive-support exponential is not excluded by SLLN4."""
+        """The exponential quantile is a positive law. Theorem 6.4 is not cited for it."""
         from math import exp, log
 
         source = (CHAPTERS / "ch09-poisson.tex").read_text(encoding="utf-8")
-        self.assertIn("does apply to these exponential gaps", source)
-        self.assertIn(r"E=-\ln(1-U)/\lambda", source)
-        self.assertNotIn(
-            "asks for a distribution function that is strictly increasing on the whole line",
-            source,
-        )
+        self.assertIn("Theorem~\\ref{thm:slln4} is not applied to them", source)
+        self.assertIn("flat on $(-\\infty,0]$", source)
+        self.assertNotIn("does apply to these exponential gaps", source)
         # The inverse-CDF construction works although F is flat for x <= 0.
         for rate in (0.5, 1.0, 2.0):
             for u in (0.01, 0.25, 0.7, 0.99):
@@ -228,10 +225,10 @@ class TestVolume4MathAudit(unittest.TestCase):
     def test_poisson_no_explosion_uses_one_countable_probability_one_event(self):
         """Finite counts at each fixed time require a countable intersection."""
         source = (CHAPTERS / "ch09-poisson.tex").read_text(encoding="utf-8")
-        excerpt = source.split(r"\label{def:pp}", 1)[1].split(
-            r"\begin{theorem}[counts and conditional uniformity]", 1
+        excerpt = source.split(r"\label{thm:uniform}", 1)[1].split(
+            r"\end{proof}", 1
         )[0]
-        self.assertIn(r"t=1,2,3,\ldots", excerpt)
+        self.assertIn("positive integers $t$", excerpt)
         self.assertIn("Intersect these probability-one statements", excerpt)
         self.assertIn(r"T_n\to\infty", excerpt)
 

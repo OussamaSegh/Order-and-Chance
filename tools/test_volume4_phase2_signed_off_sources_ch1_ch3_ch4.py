@@ -12,17 +12,24 @@ import unittest
 ROOT = Path(__file__).resolve().parents[1] / "volume4-chance" / "chapters"
 SCOPE = {
     "ch01-counting.tex": {
-        "sha": "ef5b5ac00bb5f137f4f8cb9934a41c3422984a01",
+        # Reread 2026-11-11 for the countable-cover wording and the tail-of-ones
+        # argument (V4-14), and for the named host sentence (V4-15).
+        # Writer addition 2026-11-11: unnumbered dyadic outer-content lemma. Numbered labels unchanged. Not an independent sign-off.
+        "sha": "45b451d1194ac238f60da615e2844504cfd40635",
         "claims": "prop:bits prop:subadd prop:infdigits thm:ballot".split(),
         "exercises": "ex:mybirthday ex:twochildren ex:penney ex:montyn ex:pairwise ex:aces ex:catalan ex:smallballot".split(),
     },
     "ch03-generating.tex": {
-        "sha": "10c1ebdc486ca82ec335654bbacc8cfa6ad0ae76",
+        # Reread 2026-11-11 for the undefined S_N and the O(log n) bridge (V4-09, V4-10).
+        "sha": "369bbb43ea41bbfb7e81340c9248516564135d3d",
         "claims": "prop:pgfcoeff prop:pgfmean prop:pgfvar prop:pgfsum prop:randomsum prop:genmean thm:extinction".split(),
         "exercises": "ex:thinning ex:golden ex:lotka ex:randomsumvar ex:progeny ex:firstpassage ex:binseries ex:poissongw".split(),
     },
     "ch04-inequalities.tex": {
-        "sha": "9501619f8494005eb2c50d0d689541332ea04289",
+        # Reread 2026-11-11 for the countable moment-generating product (V4-12)
+        # and the integer atom in the longest-run solution (V4-11).
+        # Reread 2026-11-11 for removal of the unused Shannon source line (V4R2-05). Labels unchanged.
+        "sha": "f1fc8df91bdcb119f5345059525680e367dec5cc",
         "claims": "lem:hoeffding thm:hoeffding thm:kolmogorov thm:bc thm:sllnbound thm:weierstrass".split(),
         "exercises": "ex:markovsharp ex:chernoffbin ex:bcfinite ex:bernstein2 ex:gapfill ex:runs".split(),
     },
