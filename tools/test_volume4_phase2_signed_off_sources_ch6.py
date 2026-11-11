@@ -11,7 +11,9 @@ from math import comb, factorial, sqrt
 from pathlib import Path
 
 SOURCE=Path(__file__).resolve().parents[1]/"volume4-chance"/"chapters"/"ch06-clt.tex"
-SHA="aeec3a00b72d7c7fd368461dea6c4045e91d4dcf"
+# Reread 2026-11-11 for V4-01, V4-02, V4-04, V4-06, V4-07, V4-18, V4-19.
+# Numbered labels are unchanged. This pin is identity, not a proof.
+SHA="b5dca78a4fcc9477ec4426aa398b84283ecad1c3"
 PROOFS="prop:modes prop:cdf thm:slln4 thm:gc lem:diffint prop:cfexamples thm:cfconv thm:inversion lem:normalsum thm:lindeberg cor:clt thm:local prop:cyclebern thm:gaussvec".split()
 EX="ex:slutsky ex:confidence ex:delta ex:cauchyclt ex:poissonhalf ex:returns ex:thirdmoment ex:cyclesclt".split()
 
