@@ -175,4 +175,35 @@ Sources actually consulted for the external claims: the reading and print PDFs; 
 
 ## 7. Comparison with existing reviews
 
-Not yet written. It will be added only after this scorecard and issue log are committed.
+Written after the scorecard above was committed. The documents opened were `review/volume3-rewrite/REVIEW.md` (2 November 2026, twelve editorial passes) and the internal series under `review/volume3-internal/`, chiefly `ASSIGNED-FINAL-REVIEW.md`, `PROGRESS.md`, `GLOBAL-CH10.md` and `GLOBAL-APPC.md`. No earlier pull-request thread was read.
+
+### What those reviews already caught, and what is still fixed
+
+The rewrite log’s corrections are present in the current manuscript, and the checks in this read agree with them.
+
+- The odd-cycle walk in the solution of the character exercise uses \(\cos(\pi/n)\), attained at \(m=(n\pm1)/2\), not \(\cos(2\pi/n)\). For odd \(n\ge 3\), \(\pi/n<2\pi/n\le\pi/2\), so the cosine at the smaller angle is the larger one. The correction is right (`ch11-characters.tex` around the boxed transform of \(s^{*t}\)).
+- The class equations of \(D_4\) and \(Q_8\) are \(8=1+1+2+2+2\) (`ch03-actions.tex`).
+- The Galois memoir is dated 16 January 1831, with publication in 1846; the finite-field note stays in 1830 (`ch10-galois.tex` sources, `ch09-finite-fields.tex`).
+- The cap-set base uses \(x=59/100\), not \(0.6\), and the rational comparison really is strict.
+- Pohlig–Hellman is stated for a cyclic group of factored order (`ch05-sylow.tex`). The QR sentence counts codewords, not an arbitrary fraction of the printed square (`ch09-finite-fields.tex`).
+- A search found no leftover `\end{solution>` typo. Exercise, hint and solution counts are 163 each.
+
+The rewrite log is explicit that a finished proof ledger is not a mathematical certificate, and that cross-volume continuity was still open at the end of that file. The later internal review is more confident: it says every reference use inside Volume 3 was traced, and that merge required no unresolved mathematical finding. That audit follows pointers **out of** Volume 3 into Volumes 1 and 2, and it forbids using a later volume as a premise. It does not check pointers **into** Volume 3 from Volumes 4–15.
+
+### What they missed
+
+1. **Stale theorem and exercise numbers in later volumes.** This is the largest gap. `GLOBAL-CH10.md` knows that `ex:phin` is the cyclotomic isomorphism and that Cardano is a separate deferred exercise. It never notices that Volumes 13 and 15 still call that isomorphism Exercise 10.8, which is now Cardano. The same silence covers Theorem 6.17 versus 6.18, Proposition 6.16 versus 6.17, and Theorem C.11 versus C.12. `GLOBAL-APPC.md` checks the Cauchy–Davenport argument and does not record its printed number. Issues V3-1, V3-2 and V3-3 are absent from both reviews.
+
+2. **Volume 9’s spectral theorem and “Chapter 2” as a volume formula.** Lemma 12.3 is discussed in the rewrite log as an axis-angle proof, which is what it is. Neither review flags Volume 9’s use of that lemma as surjectivity of \(\exp:\mathfrak{so}(3)\to SO(3)\), or the Gram-determinant sentence that sends the reader to Volume 3, Chapter 2. Issue V3-4.
+
+3. **No index.** The internal review treats bibliographies as reviewed and the page count as closed. It does not say that a 507-folio book has no index. Issue V3-5.
+
+4. **A verified paper left on the wrong chapter.** The rewrite log confirms Rokicki–Kociemba–Davidson–Dethridge and keeps it among the sources. The body of Chapter 1 no longer uses the cube-group diameter. The citation is accurate and misplaced. Issue V3-6.
+
+5. **Appendix D’s missing source list.** Both reviews discuss the 2026 Hadamard report, which the footnote states correctly. They do not note that Appendix D, unlike A–C, has no “Sources and further reading” section. Issue V3-7.
+
+The Sylow lemma’s unwritten case \(a=0\) (V3-8) is too small to call a miss; the internal registers are full of boundary notes of that kind.
+
+### What they mark as settled that is not
+
+Nothing in the list of explicit mathematical corrections above is still broken. The claim that does not hold is the internal review’s closure of “reference uses” if that phrase is read as the series’ citations of this volume. Those citations still resolve to the wrong statement in the four places logged as V3-1 through V3-4. The rewrite file itself did not claim that audit was done. The assigned final review’s sentence that merge required “no unresolved identified mathematical/editorial finding” is about findings that review had already identified. It did not identify these.
