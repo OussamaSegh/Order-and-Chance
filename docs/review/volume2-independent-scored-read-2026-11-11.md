@@ -215,6 +215,12 @@ These were checked in the source and, where a number appears, recomputed. The li
 - The ISBN \(9798167208650\) against an external registration record.
 - Existing Volume 2 review documents. They are compared only in the next section, after this scorecard was committed.
 
+## Audit closed
+
+Second passes of Chapters 4–7 were received and folded in above. Second passes of Chapters 2–3 and of Chapters 8–11 had not returned when this audit was closed. No further reading was started. Those chapters keep the first-pass scores. Their unread solutions stay in the list above. The issue log stops at V2-12.
+
+Final counts: **1 critical, 3 major, 8 minor.** Overall score **8.**
+
 ## Comparison with existing reviews
 
 Written after the scores and the issue log were committed in `af2cd9c8`. The files then opened were the Volume 2 records under `docs/reviews/`, `docs/plan/volume2-*.md`, `review/VOLUME2-REWRITE-PASS.md` and the November handoff. They were not used to change a score.
