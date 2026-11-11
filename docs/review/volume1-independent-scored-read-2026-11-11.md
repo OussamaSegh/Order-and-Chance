@@ -235,3 +235,45 @@ The two false sentences the Grok review treated as must-fix are not in this manu
 Nothing in that list is a fix those reviews announce which the current text has undone.
 
 Defining odd next to even, which the step-14 note records as the repair of the Grok review’s “odd is not defined,” does not close V1-08. The word now has a definition. The example still treats “even or odd, and not both” as already proved. That partition was not one of the items those reviews marked.
+
+## Final status
+
+Mapped to [Volume 1: apply independent scored read](https://github.com/OussamaSegh/Order-and-Chance/pull/187). The comparison above describes the manuscript at `8b8a5be`, before that pull request.
+
+| ID | PR | Status there |
+|---|---|---|
+| V1-01 | #187 | fixed |
+| V1-02 | #187 | fixed |
+| V1-03 | #187 | fixed |
+| V1-04 | #187 | fixed |
+| V1-05 | #187 | fixed |
+| V1-06 | #187 | fixed |
+| V1-07 | #187 | not fixed; deferred to the Volume 4 step |
+| V1-08 | #187 | fixed |
+| V1-09 | #187 | fixed |
+| V1-10 | #187 | fixed |
+| V1-11 | #187 | fixed |
+| V1-12 | #187 | fixed |
+| V1-13 | #187 | fixed |
+| V1-14 | #187 | fixed |
+| V1-15 | #187 | fixed |
+| V1-16 | #187 | fixed |
+| V1-17 | #187 | fixed |
+| V1-18 | #187 | fixed |
+| V1-19 | #187 | fixed |
+| V1-20 | #187 | fixed |
+| V1-21 | #187 | fixed |
+| V1-22 | #187 | fixed |
+| V1-23 | #187 | fixed |
+| V1-24 | #187 | fixed |
+| V1-25 | #187 | fixed |
+| V1-26 | #187 | fixed |
+| V1-27 | #187 | fixed |
+| V1-28 | #187 | fixed |
+| V1-29 | #187 | fixed |
+| V1-30 | #187 | fixed |
+| V1-31 | #187 | not fixed; the cited line has no opening bar |
+| V1-32 | #187 | fixed |
+| V1-33 | #187 | fixed |
+| V1-34 | #187 | fixed |
+| V1-35 | #187 | fixed |
