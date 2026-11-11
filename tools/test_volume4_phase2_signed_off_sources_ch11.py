@@ -13,7 +13,8 @@ from pathlib import Path
 
 SOURCE=Path(__file__).resolve().parents[1]/"volume4-chance"/"chapters"/"ch10-martingales.tex"
 # Reread 2026-11-11 for the Riemann-sum factor (V4R2-14). Labels unchanged.
-SHA="bd79c5b0b2cc0c279d28f3518dd4802aa45cd9a0"
+# Writer follow-up the same day: the omitted interval's contribution tends to 0. Not an independent sign-off.
+SHA="ab52d91b23073cb53bd0c83566da13845d604c35"
 PROOFS="thm:os thm:os2 thm:upcross prop:orthinc prop:l2cauchy thm:doob thm:azuma thm:monkey thm:L2conv thm:polyaurn thm:asconv".split()
 EX="ex:tower ex:barrier ex:stopmean ex:azumacoin ex:pattern".split()
 
