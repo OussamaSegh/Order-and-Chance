@@ -298,7 +298,7 @@ This section is a map of V4R2-01 through V4R2-20 after the repairs. It is not a 
 
 **V4R2-05.** Shannon’s 1948 paper is off the concentration chapter’s source list.
 
-**V4R2-06.** The Volume 5 tools line no longer says “Chapter 8 (periodic chains)”.
+**V4R2-06.** The cycle-walk tools line still omits “Chapter 8 (periodic chains)”. [#194](https://github.com/OussamaSegh/Order-and-Chance/pull/194), merge `1b71f3d1b069ba9749f1e78f5a291e5f411b1764`, rewrote `volume5-calculation/chapters/ch12-agm.tex`. The solution of `pb:cyclewalk` is still in that file, and its tools line is now “Volume 1, Chapter 6 (roots of unity filter); Volume 4, Chapter 2 (independence).” The Volume 1 chapter number in that line moved from 5 to 6 with the rewrite. The period gloss did not return, so this row stays fixed.
 
 **V4R2-07.** The colophon says the drawing has twelve rows and that Galton’s machine is a different object with more rows.
 
@@ -326,4 +326,10 @@ No ID in this list is open. None is only partly fixed, except that the printed i
 
 ### Cross-volume and KDP
 
-[#186](https://github.com/OussamaSegh/Order-and-Chance/pull/186) changes one file outside Volume 4: `volume5-calculation/chapters/ch12-agm.tex`, one line. `git show --stat 5a0c0d9d5576a5986ea5ad0f8679fb709473a185` shows that file and no other. No KDP upload was made from this note. A Volume 4 page count after these repairs was not measured from a build. The 299-page figure earlier in this file is the release opened for the scored read, before the repairs above.
+[#186](https://github.com/OussamaSegh/Order-and-Chance/pull/186) changes one file outside Volume 4: `volume5-calculation/chapters/ch12-agm.tex`, one line. `git show --stat 5a0c0d9d5576a5986ea5ad0f8679fb709473a185` shows that file and no other. That commit is still the repair recorded for V4R2-06.
+
+[#194](https://github.com/OussamaSegh/Order-and-Chance/pull/194) then rewrote Volume 5 and moved `volume5-calculation/chapters/waring.tex` to `volume14-primes/chapters/waring.tex`, with the five-squares figure beside it. The series note says that Waring file is not yet printed in Volume 14. It names Volumes 6 and 14, and it does not cite Volume 4, so no V4R2 row turns on it. The other rows, V4R2-01 through V4R2-05 and V4R2-07 through V4R2-20, sit in Volume 4 files. Those files match `main` after this merge, and #194 does not edit them.
+
+The rewritten calculation book does point at Volume 4, Chapter 8 for first-step decompositions, for the return formula of a walk, and for diffusion on the circle. Chapter 8 is the walk chapter, which is what those sentences are about. One Fourier sentence says “by independence (Volume 4, Chapter 8).” Independence is Volume 4, Chapter 2, and Chapter 8 is where the walk uses it. That sentence is new in the rewrite. It is outside V4R2-06, whose tools line still names Chapter 2.
+
+No KDP upload was made from this note. A Volume 4 page count after these repairs was not measured from a build. The 299-page figure earlier in this file is the release opened for the scored read, before the repairs above. The green build of #194 is a Volume 5 build, not a Volume 4 page count.
