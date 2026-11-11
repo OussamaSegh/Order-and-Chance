@@ -2,7 +2,21 @@
 
 **Reviewer.** Independent second reading by cloud agent `bc-114da047-b320-5bb0-b0d1-2f6495477a25` (grok-4.7). The audit itself was written by a different session, `bc-323d34bf`. This file does not edit the audit, the manuscripts, or any figure. It does not restore anything. The owner decides.
 
-**Audit under review.** Pull request [#190](https://github.com/OussamaSegh/Order-and-Chance/pull/190). The current verdict is the reconciliation pass below, at live head `9896c5ca0a7bc06b90081ca2f4752b96f7e32e1c`. The current recommendation count is 12 restore, 1 repair, 19 optional, and 77 omit. Everything under the heading **First pass, historical** is the record of head `791d35f619e84c75c1bf8e2bf623bd2adcdf46ba`. The counts 16/1/18/74 and the red `site` job in that record are not the current verdict.
+**Audit under review.** Pull request [#190](https://github.com/OussamaSegh/Order-and-Chance/pull/190). The current head is `0bfe83cb5a368975807a5f6db558c36219d29286`. The recommendation count remains 12 restore, 1 repair, 19 optional, and 77 omit. The cleanup section below certifies the deletion of the three stale sentences. The reconciliation pass remains the mathematical reading of head `9896c5ca`. Everything under **First pass, historical** is the record of head `791d35f6`. The counts 16/1/18/74 and the red `site` job in that record are not the current verdict.
+
+## Cleanup certified — head `0bfe83cb`
+
+One commit after `9896c5ca`: `0bfe83cb5a368975807a5f6db558c36219d29286`, “Drop the three stale doubts from the Volume 4 audit.” The diff is the audit note only, 7 insertions and 7 deletions. No manuscript, figure, or KDP file changed. This reading did not edit that branch and does not restore an exercise.
+
+The three stale sentences are gone.
+
+- `ex:ballsbins` (b) and `extremal:ex:wlower` are no longer listed as unreproved. The unresolved section now says the table records both bounds as checked.
+- The open question about the knight write-up, and the bare claim that 168 is the edge count, is deleted.
+- `ex:chromatic`, `ex:likelihood`, and `pb:littlewoodofford` remain unresolved, as they should.
+
+The same commit dates the pins. The manuscript pin stays `a2cfdd30a0f09eabcb932852c76537c8af592bdb`, and the note now says that SHA is not live `main`. Live `main` at the cleanup is `6e5cc70d814c9cc196a399aaa3982bb56803d501`. The inventory was not re-run against it. The method file on the manuscript pin is still blob `7bb8f4a676a46524817beb217d04f18ad6317a21`, 274 lines. The recommendation table is not in the diff, so 12/1/19/77 stands. The baseline pin `5c4840cc` is unchanged.
+
+That is the cleanup this reading asked for. It is not a new mathematical audit, and it is not a restoration.
 
 ## Reconciliation pass — head `9896c5ca`
 
