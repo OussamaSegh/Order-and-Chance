@@ -322,3 +322,28 @@ Mordell's theorem is Volume 13, Chapter 15. Volume 4 prints the extremal chapter
 
 No citation was left on an old volume number. `Volume~0` does not remain in Volumes 2–15.
 
+
+## Volume 5 after the master plan (11 November 2026)
+
+Decisions D-10 and D-11 of `MASTER-PLAN-V5-V15.md` are applied to Volume 5. Waring's problem left the volume and the Hardy–Ramanujan chapter moved to Part III. Every chapter from Integration Techniques on has a new number. A citation of Volume 5 in another volume that still uses the left column is out of date and must be changed to the right column by the thread that owns that volume. The labels did not change.
+
+| Chapter | File | Number before | Number now | Chapter label |
+| --- | --- | --- | --- | --- |
+| Finite Calculus | `ch01-finite.tex` | 1 | 1 | `ch:finite` |
+| Generating Functions as a Computing Tool | `ch02-generating.tex` | 2 | 2 | `ch:generating` |
+| Classic Series and Infinite Products | `ch03-series.tex` | 3 | 3 | `ch:series` |
+| The Hardy–Ramanujan Formula | `hardy-ramanujan.tex` | 4 | 12 | `ch:hr` |
+| Waring's Problem | `waring.tex`, now in `volume14-primes/chapters/` | 5 | Volume 14, Chapter 6, once Volume 14 prints it | — |
+| Integration Techniques | `ch04-integrals.tex` | 6 | 4 | `ch:integrals` |
+| The Gamma and Beta Functions | `ch05-gamma.tex` | 7 | 5 | `ch:gamma` |
+| Fourier Series | `ch06-fourier.tex` | 8 | 6 | `ch:fourier` |
+| The Discrete Fourier Transform and the FFT | `ch07-fft.tex` | 9 | 7 | `ch:fft` |
+| The Fourier Transform and Poisson Summation | `ch08-transform.tex` | 10 | 8 | `ch:transform` |
+| Complex Analysis for Computing | `ch09-complex.tex` | 11 | 9 | `ch:complex` |
+| The Zeta Function | `ch10-zeta.tex` | 12 | 10 | `ch:zeta` |
+| Asymptotics | `ch11-asymptotics.tex` | 13 | 11 | `ch:asymptotics` |
+| The Arithmetic–Geometric Mean | `ch12-agm.tex` | 14 | 13 | `ch:agm` |
+
+Theorem, lemma and exercise numbers follow the chapter number: an old "Volume 5, Theorem 12.3" is now Theorem 10.3, provided nothing inside the chapter was renumbered. Chapter 12 is the exception. It gained a lemma, a definition and a theorem, so its statements must be looked up by label: `lem:pdisc`, `lem:plog`, `thm:eta` (new, the transformation of η), `lem:ptrans`, `thm:hr`, `thm:rademacher`.
+
+Volume 6, Chapter 12 may now cite `thm:eta` of Volume 5 for the transformation of η (master plan, D-10).
