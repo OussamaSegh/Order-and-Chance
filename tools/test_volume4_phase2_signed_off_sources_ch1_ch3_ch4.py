@@ -23,7 +23,9 @@ SCOPE = {
         "exercises": "ex:thinning ex:golden ex:lotka ex:randomsumvar ex:progeny ex:firstpassage ex:binseries ex:poissongw".split(),
     },
     "ch04-inequalities.tex": {
-        "sha": "d93243f41ca3d6c7f3e5985b5b6a518254dfd091",
+        # Reread 2026-11-11 for the countable moment-generating product (V4-12)
+        # and the integer atom in the longest-run solution (V4-11).
+        "sha": "0ff39609953328e49d094801d0b3d761ea354512",
         "claims": "lem:hoeffding thm:hoeffding thm:kolmogorov thm:bc thm:sllnbound thm:weierstrass".split(),
         "exercises": "ex:markovsharp ex:chernoffbin ex:bcfinite ex:bernstein2 ex:gapfill ex:runs".split(),
     },
