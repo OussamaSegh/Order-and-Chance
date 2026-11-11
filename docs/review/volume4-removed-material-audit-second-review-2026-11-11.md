@@ -2,7 +2,69 @@
 
 **Reviewer.** Independent second reading by cloud agent `bc-114da047-b320-5bb0-b0d1-2f6495477a25` (grok-4.7). The audit itself was written by a different session, `bc-323d34bf`. This file does not edit the audit, the manuscripts, or any figure. It does not restore anything. The owner decides.
 
-**Audit under review.** Pull request [#190](https://github.com/OussamaSegh/Order-and-Chance/pull/190), live head `791d35f619e84c75c1bf8e2bf623bd2adcdf46ba`, file `docs/review/volume4-removed-material-audit-2026-11-11.md`. One commit, docs only.
+**Audit under review.** Pull request [#190](https://github.com/OussamaSegh/Order-and-Chance/pull/190). The current verdict is the reconciliation pass below, at live head `9896c5ca0a7bc06b90081ca2f4752b96f7e32e1c`. The first pass read `791d35f619e84c75c1bf8e2bf623bd2adcdf46ba` and remains the record of that head.
+
+## Reconciliation pass — head `9896c5ca`
+
+**What changed.** Two commits after `791d35f6`: `6dc3c31da5561559167b2d030b7d64931e193810` and `9896c5ca0a7bc06b90081ca2f4752b96f7e32e1c`. The diff is one file, `docs/review/volume4-removed-material-audit-2026-11-11.md`, 76 insertions and 24 deletions. No manuscript, figure, or KDP file is in the diff. This reading did not edit that branch and does not restore an exercise.
+
+**Pins, dated, and not interchangeable.**
+
+| Role | SHA | When |
+| --- | --- | --- |
+| Baseline, unchanged | `5c4840ccdbae22abfa8a28d01b8c5d1ab16355e6` | First parent of squash `e120d10a`, merged 8 November 2026. Still the pre-PR 111 tree. |
+| Manuscript pin used by the audit | `a2cfdd30a0f09eabcb932852c76537c8af592bdb` | The audit’s “current main” cell. Commit `9896c5ca` is dated 11 November 2026, 17:21:48Z, and the merges of #181, #182, #184, #186, and #189 begin at 17:22Z. At the audit’s commit, that SHA was `origin/main`. |
+| Live `main` at this reading | `6e5cc70d814c9cc196a399aaa3982bb56803d501` | `git rev-parse origin/main` on 11 November 2026, after those merges. Subject: the five round-2 sentences, #189, 18:24:32 +0100. |
+
+The sentence “`git rev-parse origin/main` still returns `a2cfdd30`” is true of the audit’s commit and false of this reading. `a2cfdd30` is the manuscript pin. It is not live `main`. Between the two SHAs, `ch01-counting.tex`, `ch04-inequalities.tex`, and `ch08-markov.tex` have the same blobs, so the Chapter 1, Markov, and inequality lines cited below did not move. `extremal.tex` and `ch12-method.tex` each changed by the merged wording fixes. Those edits do not change the baseline solutions checked here.
+
+**Verdict.** The corrected table matches the findings in the first pass. `pb:nouniform` is off the owner list. The knight row quotes the hand sum and is omitted. `ex:sharp` is marked partly rewritten, and part (b) stays off the list. The van der Waerden lower bound and both parts of balls and bins are on the checked list, with Berlekamp and Gonnet left out. The recommendation counts were recomputed from the cells, not taken from the prose. One section at the end of the note still states the old doubts. That is a documentation defect. It does not put the withdrawn rows back on the owner list.
+
+### Counts, from the 109 exercise cells
+
+A recommendation is counted by its first word. A class is counted the same way.
+
+| First word of the recommendation | This reading | The note’s reconciled table |
+| --- | ---: | ---: |
+| restore | 12 | 12 |
+| repair+restore | 1 | 1 |
+| optional | 19 | 19 |
+| omit | 77 | 77 |
+
+The four numbers add to 109. The twelve restores are `ex:secretary`, `pb:goodman`, `pb:sicherman`, `pb:loaded`, `pb:subsetsum`, `ex:ballsbins`, `ex:mcmillan`, `pb:passone`, `pb:stick`, `pb:samecycle`, `pb:hashing`, and `extremal:ex:wlower`. The repair row is `ex:twotests`. Relative to the first-pass 16 restores, four cells left that column: `pb:nouniform`, `ex:knight`, and `ex:chromatic` now start with “omit”, and `ex:likelihood` now starts with “optional”. That is 16 − 4 = 12, and 74 + 3 = 77, and 18 + 1 = 19.
+
+Class first words: 57 `lost`, 33 `too`, 9 `rewritten`, 7 `duplicate`, 1 `relocated`, 1 `partial`, 1 `partly`. The note’s sentence “2 with a relocation” is those last two rows, `ex:polyabeta` (“relocated”) and `ex:betagamma` (“partial relocation”). The “partly” row is `ex:sharp`. The first-pass total of 10 rewritten rows was the 9 that still start with “rewritten”, plus the old class of `ex:sharp`. The 174 triples, 65 retained labels, and 109 absent labels were not recomputed again. The row count is still 109, and the note does not change that arithmetic.
+
+### The five corrections, checked again on the baseline
+
+**`pb:nouniform`.** Baseline solution lines 700–719 say a singleton has mass at most \(1/m\) for every \(m\), hence mass 0, and then \(P(\mathbb N^*)=\sum_n P(\{n\})=0\). The exercise itself asks for a countably additive measure. Pinned `ch01-counting.tex` line 43, blob unchanged on live `main`, says countable additivity on a full infinite-event space is not proved. Finite additivity does not turn a countably infinite sum of zeros into zero. Withdrawing “restore (a)” is the right classification. Part (b), finite additivity of a density, is a count and is not promoted. Part (c) says that in any interval, \(B\) contains one of every two consecutive integers. With \(I_j=[4^j,2\cdot 4^j)\), the integer 3 is odd and outside every block, and 4 is even and inside \(I_1\), so both lie in \(B\). The sentence is false. The block proportions at \(N=2\cdot 4^j\) and \(N=4^{j+1}\) still tend to \(2/3\) and \(1/3\), and the even subset to about \(1/3\) and \(1/6\). This reading recomputed those limits. The note says it did not, and it does not use them to repair part (a) or the false sentence. That restraint is right.
+
+**`ex:knight`.** Baseline solution lines 803–809 are the hand sum \(2\cdot 26+2\cdot 38+4\cdot 52=336\), corner return \(336/2=168\), centre return \(336/8=42\). The figure caption states the same degree sum. There is no program in that solution. The number 168 is both the edge count and the corner return. Pinned `ch08-markov.tex` line 221 proves reversibility for the degree weights. The word “return” elsewhere in that chapter is the period. The chapter does not state that the mean return time is \(1/\pi(x)\). Baseline `cor:graph` cited Kac’s formula for that identity, and that corollary is not the pinned text. Omitting the exercise is the right row. The earlier draft’s program count is withdrawn, as it should be.
+
+**`ex:sharp`.** Baseline part (a) puts mass at \(0\) and \(a\). Baseline part (b) puts mass \(\sigma^2/(2a^2)\) at each of \(\pm a\). Pinned `ex:markovsharp` asks which tail probabilities \(p\) are possible for mean \(a\), and separately asks for Markov’s equality on \(\{0,a\}\). It does not ask for a prescribed variance. “Partly rewritten” is the right class. Part (b) stays off the owner list. The omit recommendation stands.
+
+**`extremal:ex:wlower`.** The six lines check. A \(k\)-term progression in \([N]\) is \(a\ge 1\), \(d\ge 1\), \(a+(k-1)d\le N\). For each \(d\) there are \(N-(k-1)d\) positive choices of \(a\), and that decreasing sum is strictly less than \(\int_0^{N/(k-1)}(N-(k-1)x)\,dx=N^2/(2(k-1))\). Each progression is monochromatic with probability \(2^{1-k}\). If \(N^2\le(k-1)2^k\), the expectation is strictly less than 1, so some colouring of \([N]\) has none, and \(W(k,2)\) is larger than \(\lfloor\sqrt{k-1}\,2^{k/2}\rfloor\). Since \(W(k,2)\) is an integer, it is larger than the real bound as well. Berlekamp’s finite-field bound is a citation. Restoring the exercise without that sentence is the right limit. The first-moment method is already `thm:erdos` on the pinned book.
+
+**`ex:ballsbins` (b).** \(\psi(u)=(\ln u+1-\ln 3)/u\) and \(\psi'(u)=(\ln 3-\ln u)/u^2\). The derivative is zero at \(u=3\), positive before it, and negative after it, and \(\psi(3)=1/3\). The solution’s comparison \(k(\ln k-1)\ge 2\ln n\) follows, and the union bound over \(n\) bins is at most \(1/n\). Gonnet’s matching lower bound is a citation. Restoring (a) and (b) without that citation is elementary. Part (a)’s \(\binom{n}{k}n^{-k}\le 1/k!\) and \(e^k\ge k^k/k!\) were already accepted.
+
+**Wording that was already a condition.** Sicherman stays a restore only if the write-up peels irreducible factors by the division argument in Volume 1, Chapter 6, and does not cite a theorem titled unique factorisation of \(\mathbb Q[X]\). The face expansion is unchanged. `ex:twotests` stays a repair until the rates are in the prompt. Baseline `ex:medical` begins at line 129 and contains prior \(0.01\), sensitivity \(0.99\), and false positive \(0.05\). `ex:chromatic` is now omit, and the Bollobás asymptotic is named. `ex:likelihood` is optional and off the checked list. Those four match the first pass.
+
+The parallel-reading proposals that stay off the list, including `pb:erdosselfridge`, the tiled-floor needle, carries, dice modulo \(m\), and Gilbreath, were not re-derived here. Volume 15, `conjectures-ch08-geometric.tex` line 136, does say that Volume 4, Appendix B, proves the happy-ending function finite by Ramsey’s theorem. Pinned `thm:ramsey` colours the edges of a complete graph. It is not the \(k\)-uniform theorem the baseline exercise used. That citation is a later repair. This reading does not edit Volume 15.
+
+### The unresolved section was not brought up to the table
+
+The reconciled table, the owner list, and the closing paragraph on small cuts agree with each other. The section headed “Unresolved” does not.
+
+- It still says `ex:ballsbins` (b) and `extremal:ex:wlower` were not re-proved. The table and the reconciliation section say both were checked, and both are restores.
+- It still asks whether the knight write-up uses the stationary formula or a different count, and it calls 168 the edge count. The table now quotes the hand sum 336. The edge count is 168, and the corner return is also 168. The open question in that bullet is the question the row already answered by omitting the exercise.
+
+Those three bullets are stale. They do not change the owner list, because the list itself no longer contains the knight or the uniform integer, and it does contain the two checked bounds. A later reader who stops at “Unresolved” will not see that. The minimal repair, if the audit is touched again, is to delete those three stale sentences. This reading does not edit the audit.
+
+The note’s own last sentence is the right strength: none of the checked list is approved for restoration by the audit, and this review does not restore it either.
+
+### Checks, separate from the reading
+
+On head `9896c5ca`, Build books [43067468190](https://github.com/OussamaSegh/Order-and-Chance/actions/runs/43067468190) has `list`, `debs`, all fifteen volume builds, and `site` in success. `publish` is skipped. A green docs build is not a mathematical acceptance. Pull request #180 was not re-read. Its writer’s later head, when there is one, is a separate review.
 
 **Pins, checked in git.**
 
