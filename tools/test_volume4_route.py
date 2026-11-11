@@ -33,7 +33,7 @@ APPROVED_CHAPTERS = (
 
 INPUT = re.compile(r"\\input\{([^{}]+)\}")
 LABEL = re.compile(r"\\label\{([^{}]+)\}")
-REF = re.compile(r"\\(?:ref|eqref|pageref|autoref)\{([^{}]+)\}")
+REF = re.compile(r"\\(?:ref|eqref|pageref|autoref|ocindexpage)\{([^{}]+)\}")
 FIG = re.compile(r"\\fig\{([^{}]+)\}")
 EXERCISE = re.compile(
     r"\\begin\{exercise\}(?:\[[^\]]*\])?\s*\\label\{([^{}]+)\}"

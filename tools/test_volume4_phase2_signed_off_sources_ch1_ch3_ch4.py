@@ -14,7 +14,8 @@ SCOPE = {
     "ch01-counting.tex": {
         # Reread 2026-11-11 for the countable-cover wording and the tail-of-ones
         # argument (V4-14), and for the named host sentence (V4-15).
-        "sha": "f4129ed5d7477942cbae9e83b122d871e0a7c6c2",
+        # Writer addition 2026-11-11: unnumbered dyadic outer-content lemma. Numbered labels unchanged. Not an independent sign-off.
+        "sha": "45b451d1194ac238f60da615e2844504cfd40635",
         "claims": "prop:bits prop:subadd prop:infdigits thm:ballot".split(),
         "exercises": "ex:mybirthday ex:twochildren ex:penney ex:montyn ex:pairwise ex:aces ex:catalan ex:smallballot".split(),
     },
@@ -27,7 +28,8 @@ SCOPE = {
     "ch04-inequalities.tex": {
         # Reread 2026-11-11 for the countable moment-generating product (V4-12)
         # and the integer atom in the longest-run solution (V4-11).
-        "sha": "0ff39609953328e49d094801d0b3d761ea354512",
+        # Reread 2026-11-11 for removal of the unused Shannon source line (V4R2-05). Labels unchanged.
+        "sha": "f1fc8df91bdcb119f5345059525680e367dec5cc",
         "claims": "lem:hoeffding thm:hoeffding thm:kolmogorov thm:bc thm:sllnbound thm:weierstrass".split(),
         "exercises": "ex:markovsharp ex:chernoffbin ex:bcfinite ex:bernstein2 ex:gapfill ex:runs".split(),
     },
