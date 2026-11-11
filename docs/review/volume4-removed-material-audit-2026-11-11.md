@@ -10,13 +10,14 @@ The owner identified the rewrite writer as cloud agent `bc-812f7ec4`. That ident
 
 | Role | SHA | What it is |
 | --- | --- | --- |
-| Current `main`, this audit's manuscript | `a2cfdd30a0f09eabcb932852c76537c8af592bdb` | Fetched again before this reconciliation. `git rev-parse origin/main` still returns this SHA. Subject: Volume 4, empty-success bound from finite additivity (#176), 11 November 2026, 12:37:59 +0000. |
+| Manuscript pin, the tree this inventory was compared with | `a2cfdd30a0f09eabcb932852c76537c8af592bdb` | This was `origin/main` when the comparison was made. Subject: Volume 4, empty-success bound from finite additivity (#176), 11 November 2026, 12:37:59 +0000. It is not live `main`. |
+| Live `main` at this cleanup | `6e5cc70d814c9cc196a399aaa3982bb56803d501` | `git rev-parse origin/main` on 11 November 2026, after #181, #182, #184, #186, and #189. Subject: Correct five Volume 4 sentences the second read left open (#189), 18:24:32 +0100. The inventory was not re-run against this SHA. |
 | Pre-PR 111 baseline | `5c4840ccdbae22abfa8a28d01b8c5d1ab16355e6` | First parent of squash commit `e120d10a1a1466d5dfc5b6ea4229a83ba8d83cfe`, “Rewrite Volume 4 from the Volume 1–3 boundary (#111)”, merged 8 November 2026, 15:02:18Z. Parent subject: merge of #112. |
-| 213-line method checkpoint | `285122b4a592bfef3c695b1103dd2cd3e8c3a77a` | On `origin/cursor/volume4-rewrite-ee7f` only. `ch12-method.tex` has 213 lines there, and also at `2051369ed01465195a397fbe6087cb161d1f7ece`. Current `main` has 274 lines. The 213-line file is a checkpoint, not the book. |
+| 213-line method checkpoint | `285122b4a592bfef3c695b1103dd2cd3e8c3a77a` | On `origin/cursor/volume4-rewrite-ee7f` only. `ch12-method.tex` has 213 lines there, and also at `2051369ed01465195a397fbe6087cb161d1f7ece`. The manuscript pin has 274 lines. The 213-line file is a checkpoint, not the book. |
 
 PR 111 is a single-parent squash. The baseline is the `main` tree it replaced, recovered from that parent, not from a guessed date.
 
-`volume4-chance/chapters/ch12-method.tex` on current `main` is blob `7bb8f4a676a46524817beb217d04f18ad6317a21`, 274 lines. That blob is unchanged on `main` after the squash: `git log e120d10a..a2cfdd30 -- volume4-chance/chapters/ch12-method.tex` is empty. Later restorations live in other chapter files.
+`volume4-chance/chapters/ch12-method.tex` on the manuscript pin is blob `7bb8f4a676a46524817beb217d04f18ad6317a21`, 274 lines. That blob is unchanged on that pin after the squash: `git log e120d10a..a2cfdd30 -- volume4-chance/chapters/ch12-method.tex` is empty. Later restorations on that pin live in other chapter files.
 
 ## How this audit was made
 
@@ -396,7 +397,7 @@ Four readings of the baseline solutions were run in this same audit session, aft
 
 ## Reconciliation with the distinct second review
 
-The distinct review is pull request #191, head `a76e24a7ba0b9f7f917c83e28f508bd1e98f03b5`, file `docs/review/volume4-removed-material-audit-second-review-2026-11-11.md`. It read audit head `791d35f6`. This section answers it from the later audit head `6dc3c31d` and from the table cells edited with this commit. `origin/main` was fetched again and is still `a2cfdd30a0f09eabcb932852c76537c8af592bdb`. The baseline pin `5c4840ccdbae22abfa8a28d01b8c5d1ab16355e6` is unchanged. This reconciliation is not an independent acceptance, and it does not restore any exercise.
+The distinct review is pull request #191, head `a76e24a7ba0b9f7f917c83e28f508bd1e98f03b5`, file `docs/review/volume4-removed-material-audit-second-review-2026-11-11.md`. It read audit head `791d35f6`. This section answers it from the later audit head `6dc3c31d` and from the table cells edited with this commit. `origin/main` was fetched again at that commit and was then `a2cfdd30a0f09eabcb932852c76537c8af592bdb`. Live `origin/main` at the later cleanup is `6e5cc70d814c9cc196a399aaa3982bb56803d501`, recorded in the pin table. The inventory was not re-run against it. The baseline pin `5c4840ccdbae22abfa8a28d01b8c5d1ab16355e6` is unchanged. This reconciliation is not an independent acceptance, and it does not restore any exercise.
 
 | Second-review finding | What this audit does |
 | --- | --- |
@@ -439,9 +440,8 @@ Those four numbers add to 109. The class column has 9 rows that start with “re
 ## Unresolved
 
 - `pb:nouniform`: part (a) is not a Volume 1–4 proof, because it uses countable additivity. Part (c)’s density sentence is false. The block proportions reported by the second review were not recomputed here.
-- `ex:ballsbins` (b), `ex:chromatic`, `extremal:ex:wlower`, `ex:likelihood`, and `pb:littlewoodofford`: the class is plausible and the solution was not re-proved.
+- `ex:chromatic`, `ex:likelihood`, and `pb:littlewoodofford`: the class is plausible and the solution was not re-proved. `ex:ballsbins` (b) and `extremal:ex:wlower` are not open: the table records both bounds as checked.
 - `pb:lcs` and `pb:leastqnr` (b): the solutions may contain a heuristic presented as a proof. They stay out either way.
 - `conjectures:lem:hxy`: the defect estimate was read and not re-derived.
 - The Chernoff \(\delta^2/3\) calculus was not re-derived.
-- The page count of `a2cfdd30` is unknown. The 289-page print interior belongs to `3cc07e86`.
-- Whether `ex:knight`’s old write-up uses the stationary formula that the pinned chapter proves, or a different count. The number 168 is the edge count.
+- The page count of the manuscript pin `a2cfdd30` is unknown. The 289-page print interior belongs to `3cc07e86`. Live `main` `6e5cc70d` was not built for this note.
