@@ -14,9 +14,9 @@ SCOPE = {
     "ch01-counting.tex": {
         # Reread 2026-11-11 for the countable-cover wording and the tail-of-ones
         # argument (V4-14), and for the named host sentence (V4-15).
-        # 2026-11-11: ex:twotests and ex:secretary appended. Earlier claim labels unchanged.
-        # The new statements were checked in this preparation. Not an independent sign-off.
-        "sha": "e095d568b132c56c2c42cb6d411e39fc59e952a2",
+        # 2026-11-11: unnumbered dyadic outer-content lemma from main, then ex:twotests and ex:secretary appended.
+        # Numbered claim labels unchanged. Not an independent sign-off.
+        "sha": "7ca981366fe12e6d6212d30d161e7823cfd4801d",
         "claims": "prop:bits prop:subadd prop:infdigits thm:ballot".split(),
         "exercises": "ex:mybirthday ex:twochildren ex:penney ex:montyn ex:pairwise ex:aces ex:catalan ex:smallballot ex:twotests ex:secretary".split(),
     },
