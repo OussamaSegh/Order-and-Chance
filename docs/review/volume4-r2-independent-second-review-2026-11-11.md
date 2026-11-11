@@ -8,7 +8,136 @@
 
 **How to read the dispositions.** “Approve the repair” means the manuscript change closes the cited issue and does not weaken the stated theorem. It is not a merge. Parent Nori merges. “Repair before approval” means the stated conclusions are the classical ones, but the write-up still does not justify a step it uses.
 
-## Disposition of the five open pull requests
+The section **Second pass** below is the current verdict. It supersedes the first-pass rows for #180 and for V4R2-14 and V4R2-17 through V4R2-20. The first pass remains the record of head `fd0aa1ca`.
+
+## Second pass — head `3bb6331e` and pull request #189
+
+**Reviewer.** Same independent reviewer, `bc-114da047-b320-5bb0-b0d1-2f6495477a25`. The new commits are by a different writer run, `bc-0f6fa3d7`. This pass did not edit those branches, did not merge, and did not comment on them.
+
+**Live heads, checked before this section was written.**
+
+| PR | Live head | Parent | Base |
+| --- | --- | --- | --- |
+| [#180](https://github.com/OussamaSegh/Order-and-Chance/pull/180) | `3bb6331ef89bd9b74a57a1ad2640a79ffc9a13d3` | `fd0aa1cac46cf0df819e6cb1daf570ba3a51a1a7` | `a2cfdd30a0f09eabcb932852c76537c8af592bdb` |
+| [#189](https://github.com/OussamaSegh/Order-and-Chance/pull/189) | `e21f0e2be08bab75bc6657e2ad7d861386ac271d` | `a2cfdd30a0f09eabcb932852c76537c8af592bdb` | same |
+
+Commit `3bb6331e` is an ordinary child of `fd0aa1ca`. Its message is “Price Brownian bin increments and reflection strips by rectangle covers.” `main` was still `a2cfdd30`. Both pull requests were `MERGEABLE` / `UNSTABLE`.
+
+**Verdict.** Do not approve #180 as a finished proof of Theorem 12.4 or Theorem 12.12. Approve the five repairs in #189. The theorem sentences are the original ones. No caption, font, figure, or label moved in either diff.
+
+### The rectangle cover proves an upper bound
+
+File `volume4-chance/chapters/ch11-brownian.tex` at `3bb6331e`. The new argument is lines 71–79.
+
+The integral calculation on line 75 is calculus, and it is separate from outer content. It integrates the product of the coordinate Gaussian densities one variable at a time. The step-function approximation on a compact set, with Gaussian tails cut by Proposition `prop:gausstail`, is the same kind of iteration already used for a continuous integrand on a rectangle. The induction on the number of coordinates is the right reduction: a linear image of one normal is the one-variable integral; a further coordinate \(cZ_m\) produces a bounded continuous function \(g\) of the previous image; Lemma `lem:normalsum` is used only as the completion of the square for two densities. A zero coefficient is the one-coordinate case. A negative \(c\) reverses the interval. This calculation shows that the product integral over \(\{a<L\le b\}\) equals the \(N(0,\sigma^2)\) probability \(\gamma\). It does not show that a digit event has outer content \(\gamma\).
+
+The transfer on lines 77–79 does prove the cover inequality \(P^*\le\gamma\).
+
+- A coordinate rectangle pulls back to an interval condition on finitely many uniforms. Proposition `prop:manyuniforms` prices that condition by the product of the lengths, which is the Gaussian mass of the rectangle.
+- Chapter 1, `ch01-counting.tex` line 88, gives only one comparison for a finite union of intervals: outer content is at most the assigned length, because the set covers itself. The outer dyadic unions in the proof of `prop:manyuniforms` therefore give \(P^*(\text{pulled-back rectangle})\le\) its Gaussian mass.
+- The cubes that meet \(\{a<L\le b\}\), together with the coordinate tails outside the box, cover the digit event. Subadditivity and the Lipschitz bound \(\lambda=\sum|c_j|\) put the outer content at most \(\gamma+2\eta\). Sending \(\eta\) to 0 yields \(P^*\le\gamma\).
+
+Line 73’s rejection of Chebyshev is a correct numerical remark, not a proof: \(\sigma^2/a_n^2=1/(2n)\) and \(\sum 2^n/(2n)\) diverges. Lines 83–86 are the Gaussian integral for the standardised height \(\sqrt{2n}\). That integral is at most \(e^{-n}/\sqrt{\pi n}\), hence at most \(e^{-n}\). Combined with the cover inequality, the outer content of one bin threshold is at most \(e^{-n}\). Line 92 then has
+\[
+P^*(E_n)\le 2^n e^{-n}+\sum_{k\ge n}2^k e^{-2k},
+\]
+which tends to 0. The displacement half on lines 62–69 still avoids Theorem `thm:bc`. The modulus on line 94, the almost-sure Cauchy property, and the choice of \(t_n\) on lines 96–100 use that upper bound. Those parts stand.
+
+### Equality is not proved, and the one-coordinate case does not supply it
+
+Line 75 states the claim as equality: the digit event has outer content \(\gamma\). Line 79 proves \(P^*\le\gamma\), then says the inner cubes are the other half of “the squeeze already used for one coordinate, where the outer content equals the Gaussian value.” Line 62 is that one-coordinate sentence: the squeeze of dyadic cylinders makes “the outer content of the condition” equal to the Gaussian tail.
+
+Chapter 1, line 88, says the matching lower bound — that no cover of a finite union of intervals is shorter than the assigned length — is not proved. Outer content is monotone, so a subset’s outer content is a lower bound for the set that contains it. The inner cubes have assigned probability at least \(\gamma-2\eta\). That assigned probability is not known to equal their outer content. Without \(P^*(\text{inner cubes})\ge\) their length, the inclusion of the inner cubes does not force \(P^*(\{a<L\le b\})\ge\gamma\).
+
+The one-coordinate squeeze has the same shape. The outer dyadic unions prove \(P^*\le\) the interval length. The inner unions prove a lower bound only if those finite-bit events already satisfy \(P^*=P\). That is the comparison Chapter 1 declines to prove. Line 79 cites line 62. Line 62 does not contain the missing lemma. The equality is not proved for one coordinate, and it is not proved for a linear image. There is no earlier proof to borrow.
+
+The tail sums do not need the equality. Line 79 says so, and the inequality on line 92 really uses only \(P^*\le\gamma\). The distributional sandwich does need it.
+
+Lines 112–116 subtract \(P^*(E_n)\) from \(P^*(\{B_{t_n}\le x-\delta_n\})\). The right-hand half of that display, together with the cover inequality, does give
+\[
+P^*(\{B_t\le x\})\le F_{t_n}(x+\delta_n)+P^*(E_n),
+\]
+and the right-hand side tends to the distribution function of \(N(0,t)\). The left-hand half tends to that same function only if \(P^*(\{B_{t_n}\le x-\delta_n\})\) is already equal to the Gaussian value, or at least within \(\eta\) of it from below. Line 102 asserts that equality. Its only source is line 79. An upper bound \(P^*\le F\) makes the left-hand half useless: it can sit far below \(F\).
+
+So Theorem 12.4’s construction, continuity, and modulus are in place, and its identification of \(P^*(\{B_t\le x\})\) with the Gaussian distribution function is not. Line 116 extends the same unproved equality to half-lines of an increment. Line 118 still says the joint distribution function is squeezed to the product of the marginals. A joint rectangle needs the same missing lower bound, and the sentence does not build one. Definition `def:bm` requires those laws and the independence. The theorem sentence on line 59 is unchanged. It is not weakened, and it is not yet proved.
+
+The repair is one lemma, proved at the Chapter 1 standard: the outer content of a finite union of half-open dyadic intervals equals the sum of their lengths. After that lemma, the inner cubes on line 79 give the matching lower bound, and the same lemma feeds the one-coordinate thresholds. Until it is proved, lines 62, 79, 102, 116, and 127 should not say “equals”.
+
+### What the reflection repair does settle
+
+Lines 96–100 name \(t_n=2^{-n}\lfloor 2^nt\rfloor\), the left endpoint of the level-\(n\) bin that contains \(t\in(0,1]\). The distance bound \(|B_t-B_{t_n}|\le a_n+\rho_n\) uses one bin increment and one copy of \(\rho_n\), because the dyadic value is already final. A neighbouring dyadic is excluded. That detail is right.
+
+Line 127 gives every unit copy its own \(E_n\), and it builds the comparison position \(S_n\) in the copy that contains \(t\). An integer time is the right endpoint of the preceding copy. Line 346 puts the hitting window in that same copy. Those details are right.
+
+Lines 348–353 no longer price the strip \(\{|B_t-a|\le\omega_n\}\) by subtracting half-line contents. The strip sits in \(G_n\) or in a bounded interval of \(S_n\). The cover inequality, not the equality, bounds that interval by length times maximum density, \(2(\omega_n+\delta_n)(2\pi v_n)^{-1/2}\). For large \(n\), \(v_n\ge t/2\). The window’s outer content tends to 0. This step uses the proved half of the rectangle argument.
+
+The continuous-test algebra from the first pass is still the text after line 355: \(\delta\) before \(\varepsilon\), factor \(12=2\times 6\), and indicators kept out of the restart identity. The comparison that sends \(R_n\) to \(R\) uses an upper bound on an increment tail and on a strip. Those upper bounds follow from the cover inequality and Proposition `prop:gausstail`, even though line 360 says the half-line contents “equal” the Gaussian tails.
+
+Line 404 then says the extension supplies the upper half-line and that its outer content is \(1-\Phi(a/\sqrt t)\). That sentence is the unproved equality. The atom \(\{B_t=a\}\) does go to outer content 0, because it sits in every strip and the strip’s cover bound tends to 0 with the width. The two sides \(L\) and \(R\) match by the continuous test. The displayed value
+\[
+P(M_t\ge a)=2\bigl(1-\Phi(a/\sqrt t)\bigr)
+\]
+on lines 335 and 404 needs the half-line equality. Theorem 12.12 is unchanged and is not proved. The density derivative on lines 406–409 and the divergence of \(\int_1^\infty t^{-1/2}\,dt\) are calculus applied to that formula. They were recomputed and they are not a substitute for the missing lower bound.
+
+V4R2-15 and V4R2-16 remain fixed at lines 12 and 300 of this longer file; those sentences were not part of the new diff.
+
+The source pin in `tools/test_volume4_phase2_signed_off_sources_ch12.py` is `be598028839c9125bd1adc7d7058cf7124a4d301`. That is `git rev-parse 3bb6331e:volume4-chance/chapters/ch11-brownian.tex`. The comment says the pin is source identity, not an independent sign-off. This review does not treat it as one.
+
+### Pull request #189 — five sentences, approved
+
+Head `e21f0e2be08bab75bc6657e2ad7d861386ac271d`. No figure, caption, font, or `\label` is in the diff. The pins below match the git blobs and the comments say they are not an independent sign-off.
+
+| ID | Location at this head | Verdict |
+| --- | --- | --- |
+| V4R2-14 | `ch10-martingales.tex` line 311 | Approved. The factor \((n+2)/(n+1)\) tends to 1. The omitted interval has width \(1/(n+2)\), so its contribution tends to 0 because \(g\) is bounded. The truncated sum therefore tends to \(\int_0^1 g\). The false limit “tends to 1” is gone. Pin `ab52d91b23073cb53bd0c83566da13845d604c35`. |
+| V4R2-17 | `ch07-entropy.tex` line 239 | Approved. The sibling of a deepest leaf is a leaf: an internal sibling would have a child at greater depth. The probability \(s\) is then a symbol probability, and \(s\ge q\) applies. Pin `6eb06ea39e6563595171939ffe6237a7e3af19d3`. |
+| V4R2-18 | `ch07-walks.tex` lines 16–18 | Approved. The exact value \(\binom{2m}{m}2^{-2m}\) is the count of \(m\) steps each way. The asymptotic is Theorem `thm:local`. The displayed formula is unchanged. |
+| V4R2-19 | `ch07-walks.tex` line 246 | Approved. The citation is Volume 1, Chapter 8, \(\int_0^\infty e^{-u^2}\,du=\sqrt\pi/2\). Evenness doubles it to \(\sqrt\pi\). With \(a=n/(4d)\), the substitution gives \(\sqrt{\pi/a}\), and \(d\) factors give the displayed \((4\pi d/n)^{d/2}\). That last power was already the right value; the citation now matches the half-line Volume 1 prints. |
+| V4R2-20 | `ch07-walks.tex` lines 451 and 454 | Approved. The idea starts at \(-2\), and the solution sets \(D_0=-2\). |
+
+Walks pin `d23df25f67660781c6d1bae09469f7d4c535079b` matches the blob of `ch07-walks.tex`.
+
+### Current disposition of all twenty IDs
+
+| ID | Disposition after this pass |
+| --- | --- |
+| V4R2-01 | Not closed. Theorem 4.4 is still not mis-cited, and \(P^*(E_n)\to 0\) now follows from a proved cover inequality. The law in Theorem 12.4 needs \(P^*=\gamma\), and line 79 does not prove it. |
+| V4R2-02 | Closed on `main` by #176. |
+| V4R2-03 | Closed on `main` by #178. |
+| V4R2-04 | Closed on `main` by #178. |
+| V4R2-05 | Closed on `main` by #177. |
+| V4R2-06 | Repair approved in #186 at `b071f8d919e7a8cf7365b1213ca3628883f1fcc6`. Exact-head `site` job still red. |
+| V4R2-07 | Repair approved in #184 at `264518e7ac5006cbb35d01bf530f55e6ffa3f7fc`. Exact-head `site` job still red. |
+| V4R2-08 | Closed on `main` by #183. |
+| V4R2-09 | Closed on `main` by #185. |
+| V4R2-10 | Not closed. The strip, the bin endpoint, and the \(t>1\) copy are repaired. Line 404 still equates the half-line with \(1-\Phi\). |
+| V4R2-11 | Repair approved in #182 at `5131283032a53713afcd7bc0f9a6aa9679180e35`. Exact-head `site` job still red. |
+| V4R2-12 | Repair approved in #182, same head. |
+| V4R2-13 | Repair approved in #181 at `e2e80191e195425c153013b2cefdb97cf7f10ed9`. Exact-head `site` job still red. |
+| V4R2-14 | Closed by the sentence in #189. |
+| V4R2-15 | Closed in #180; still present at `3bb6331e`. |
+| V4R2-16 | Closed in #180; still present at `3bb6331e`. |
+| V4R2-17 | Closed by #189. |
+| V4R2-18 | Closed by #189. |
+| V4R2-19 | Closed by #189. |
+| V4R2-20 | Closed by #189. |
+
+### CI read once on the new heads
+
+Both Build books runs were already terminal. Only `site` failed, again at poppler, exit 100, `Temporary failure resolving 'azure.archive.ubuntu.com'`. All fifteen volume builds succeeded. This pass did not rerun anything and did not request a token.
+
+| Run | Head match | Conclusion | URL |
+| --- | --- | --- | --- |
+| 43044478991 Build books, #180 | `3bb6331e` | failure; `site` only | https://github.com/OussamaSegh/Order-and-Chance/actions/runs/43044478991 |
+| 43044478943 Volume 4 native QA, #180 | `3bb6331e` | success | https://github.com/OussamaSegh/Order-and-Chance/actions/runs/43044478943 |
+| 43044572385 Build books, #189 | `e21f0e2b` | failure; `site` only | https://github.com/OussamaSegh/Order-and-Chance/actions/runs/43044572385 |
+| 43044572307 Volume 4 native QA, #189 | `e21f0e2b` | success | https://github.com/OussamaSegh/Order-and-Chance/actions/runs/43044572307 |
+
+The same DNS failure is still the blocker for a green exact-head merge. Native QA success is not a proof of Theorem 12.4 or Theorem 12.12. Parent has not approved a merge on a red `site` job. This review does not approve one.
+
+## First pass — disposition of the five open pull requests at `fd0aa1ca`
+
+This table is the first reading. The current heads and verdicts are in the second pass above.
 
 | PR | Live head (full) | Base | Merge git | Mathematical disposition |
 | --- | --- | --- | --- | --- |
@@ -22,9 +151,9 @@ The bodies of these five PRs still name older heads (`6643969c`, `34fc29d9`, `f4
 
 The jobs that run, and the exact-head conclusions, are in the CI section. `publish` is `main`-only. A green volume build is not a proof.
 
-## What #180 must repair before it can be approved
+## What #180 had to repair at `fd0aa1ca`
 
-File at head `fd0aa1ca`: `volume4-chance/chapters/ch11-brownian.tex`. Theorem statements of existence (Theorem 12.4, label `thm:levy`) and reflection (Theorem 12.12, label `thm:reflection`) are the original sentences. No numbered environment was added. The source pin `fe398da68dcbd1405ab1808352be288681a4e817` matches `git rev-parse fd0aa1ca:volume4-chance/chapters/ch11-brownian.tex`.
+The second pass replaces this section for head `3bb6331e`. File at the first-pass head `fd0aa1ca`: `volume4-chance/chapters/ch11-brownian.tex`. Theorem statements of existence (Theorem 12.4, label `thm:levy`) and reflection (Theorem 12.12, label `thm:reflection`) are the original sentences. No numbered environment was added. The source pin `fe398da68dcbd1405ab1808352be288681a4e817` matches `git rev-parse fd0aa1ca:volume4-chance/chapters/ch11-brownian.tex`.
 
 ### Blocking gap in V4R2-01
 
