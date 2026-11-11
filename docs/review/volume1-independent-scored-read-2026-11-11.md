@@ -167,3 +167,34 @@ Proofs read and found correct in structure, beyond the numerical checks: Proposi
 - The EPUB was not opened on a Kindle Paperwhite. Formula PNGs were checked for em width and em baseline in the markup, not for visual baseline alignment on a device.
 - Covers, ISBN barcode art, and the paperback wrap were not reviewed. The paperback ISBN in `main.tex` is `9798165526770`, which is also the ISBN printed on the copyright page.
 - `python/volume1` was not read. The book does not send the reader there.
+
+## Comparison with existing Volume 1 reviews
+
+This section was written after the scorecard and the issue log were committed. It is the only part of the file that used the older Volume 1 review documents.
+
+The documents that actually review this *First Principles* manuscript are `docs/reviews/volume1-mathematical-coherence-review-2026-11-02.md`, `docs/reviews/volume1-high-school-prerequisite-audit-2026-11-02.md`, `docs/reviews/volume1-final-grok-review.md`, `docs/reviews/volume1-step14-rereview.md`, and `docs/reviews/volume1-kdp-epub-conversion-2026-11-06.md`. Two other files with Volume 1 in the path, `review/VOLUME1-ENHANCEMENT.md` and `review/volume1-reconstruction/OUTSTANDING-ISSUES.md`, review an earlier book called *The Integers* (6 × 9 inches, quadratic fields, a 214-page paperback in the enhancement note). Their claim that no further mathematical defect remained does not apply to the book scored above.
+
+### What they missed
+
+- **The continuity gap in Theorem 6.4 (V1-01).** The coherence review says the fundamental theorem of algebra “explicitly uses already-established sequential compactness and complex arithmetic,” and treats that as enough. Sequential compactness of the disc is the Bolzano–Weierstrass step, and it is written. Continuity of `|P|` as a function of two real variables is not a theorem of Chapter 3, and neither review says so. The final Grok review lists the same proof as a strength: “proved from the minimum of `|P|`, not assumed.” The minimum is the step that is not yet justified. The spectral theorem inherits it, which those reviews also do not say.
+- **The integer power rule (V1-02).** No review separates the positive-real power `x^\alpha=\exp(\alpha\ln x)` from the derivative of `(x-a)^n` on all of `\mathbb R`, which Proposition 6.2(c) uses.
+- **No index (V1-03).** The production reviews discuss KDP boxes, EPUB conversion, and the text layer. None of them treats the absence of an index, in a book later volumes cite by theorem number, as a back-matter gap.
+- **The Volume 5 overclaim (V1-04) and the Volume 4 “Riemann integral” wording (V1-07).** The citation checks in the older notes stay inside Volume 1, or they count dangling labels. They do not catch a later volume attributing a promise, or a construction, that this book does not make.
+- **Jacket voice and one alt string (V1-05, V1-06).** The Grok review says the blurb was not part of its reading, and the EPUB conversion note is about cover SVG, MathML, and transparent formula PNGs. The KDP sentence with “journey,” and the preface plate whose alt text is `image`, are not in those lists.
+
+### What they say was fixed, and whether it still is
+
+The repairs named in the coherence review and in the step-14 re-review are still in the manuscript:
+
+- The alternating-series remainder is the signed first omitted term `(-1)^{n+1}a_{n+1}` (`ch05-sequences-series.tex:689`).
+- Erdős–Ko–Rado assumes `1\le k` and `n\ge 2k`, and the text says the hypothesis “cannot be dropped in general,” with the `n=3`, `k=2` counterexample (`orders.tex:276`, `orders.tex:304`).
+- Odd is defined as `n=2k+1` beside even (`ch00-language.tex:38`). `\mathbb N^*=\{1,2,\ldots\}` is in the preface and in Chapter 0.
+- Both directions of `x^2>1` for `x<-1` are written (`ch00-language.tex:114–120`).
+- The condition number is the ratio of greatest stretch to least, and `|\det|` is the product of one stretch from each dimension (`ch07-linear-algebra.tex:577`). The old sentence, that the greatest and least stretches multiply to the determinant, is not there.
+- Lucas numbers are the integer closest to `\varphi^n` only for `n\ge 2` (`field-guide.tex:222` and the beauty note at line 243).
+- The cover credit says “from 2 up to 8,000” (`common/cover-notes.json`), matching About the Cover.
+- The polynomial theorem says “not prime,” and the sentence in front of it no longer says that one prime value forces composite values on every arithmetic progression (`field-guide.tex:56–62`).
+
+The two false sentences the Grok review treated as must-fix are not in this manuscript, for a stronger reason than a rewritten line. The high-school-scope audit removed `pb:bilinear`, which was the exponential-sum exercise, and the current solution of `ex:sin` (`ch05-sequences-series.tex:1175–1184`) has no numerical note of the form “`1/u_n^2-n/3` equals `2.19`.” Those claims are not sitting uncorrected. They are gone.
+
+Nothing in that list is a fix those reviews announce which the current text has undone.
