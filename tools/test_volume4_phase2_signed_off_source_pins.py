@@ -24,7 +24,8 @@ PINS = {
     },
     "extremal.tex": {
         # Reread 2026-11-11: the appendix states that it is lettered B (V4-17).
-        "sha": "9a7f9e14985567962b94061a4f4e54781e2e512f",
+        # Reread 2026-11-11 for the van der Waerden wording and the k=1 family (V4R2-11, V4R2-12). Labels unchanged.
+        "sha": "c94c620e322651d42f385b34bdb0ad86558ecfe2",
         "claims": "thm:turan thm:ramsey thm:schur thm:sunflower thm:ekr thm:vdw3 thm:vdw".split(),
         "exercises": "ex:r33 ex:turanedges ex:ekrsharp ex:schurtwo ex:ekrcomplement".split(),
     },
