@@ -10,7 +10,7 @@ Printed page numbers below are the folios of the print PDF. PDF page numbers are
 
 ## How this was read
 
-The source read in full was the preface, the blurb, About the Cover, `kdp.md`, and Chapter 0 including every solution. For Chapters 1–10 and the field guide, the formal statements and the proofs named in the issue log and in “Verified correct” were read line by line. Other sections were read closely but not every exercise solution was re-derived. Numerical claims were recomputed in Python, separately from the proofs. Later-volume citations were extracted from `volume2-*` through `volume15-*` (348 lines containing `Volume~1` or “First Principles”); every numbered theorem, proposition, or exercise citation that the extractor could attach to Volume 1 was checked against the print PDF’s headings, and a further sample of descriptive citations was read in context.
+The source read in full was the preface, the blurb, About the Cover, `kdp.md`, and Chapter 0 including every solution. For Chapters 1–10 and the field guide, the formal statements and the proofs named in the issue log and in “Verified correct” were read line by line. Other sections were read closely but not every exercise solution was re-derived. A second line-by-line pass of Chapters 2, 3, and 4 was still running when this report was closed, and it had returned no findings. The scores for counting, sequences, and orders are the first-pass scores below. No issue from that unfinished pass is in the log. Numerical claims were recomputed in Python, separately from the proofs. Later-volume citations were extracted from `volume2-*` through `volume15-*` (348 lines containing `Volume~1` or “First Principles”); every numbered theorem, proposition, or exercise citation that the extractor could attach to Volume 1 was checked against the print PDF’s headings, and a further sample of descriptive citations was read in context.
 
 ## 1. Chapter scorecard
 
@@ -112,7 +112,7 @@ The chapter prose was read against the series test (a friend explaining, short s
 | V1-23 | `ch02-complex-roots.tex:960`; solution of `ex:cyclo`(b) | exercise | minor | For odd \(n\), \(-\zeta\) is shown to have order \(2n\), and the map on primitive \(n\)th roots is injective. The count \(\varphi(2n)=\varphi(n)\) is then stated as: the integers in \(\{1,\ldots,2n\}\) coprime to \(2n\) are the odd ones coprime to \(n\), “and there are \(\varphi(n)\) of them.” The description is right. The count is the claim, and it is not proved. The sign \((-1)^{\varphi(n)}=1\) for odd \(n\ge 3\) is justified by conjugate pairs. The identity holds for odd \(n\le 39\) and fails for \(n=1\), which the solution excludes. | Pair \(k\) with \(k+n\). Since \(n\) is odd they have opposite parity and the same gcd with \(n\), so exactly one of each pair is the odd representative. |
 | V1-24 | `figures/ch03-equioscillation.tex:3`; caption `ch03-polynomials.tex:293` | figure | minor | The axis is `ymin=-0.2,ymax=0.55` with `clip=true`. The plotted data for \(x^4\) include the point \((1,1)\). The window cuts that graph off near height \(1/2\). The caption says the graph of \(x^4\) reaches \(1\). The equioscillation marks of \(\frac18 T_4\) at \(\cos(k\pi/4)\), with values \(\pm 1/8\), lie inside the window. So does \(\bigl(x^2-1/2\bigr)^2\), which reaches \(1/4\). | Raise the window above \(1\), or do not ask the reader to see a height the frame cuts off. |
 
-No critical issue was found in what was checked: no false identity among the recomputed numbers, and no theorem whose statement is the negation of the classical one.
+No critical issue was found in what was checked: no false identity among the recomputed numbers, and no theorem whose statement is the negation of the classical one. The log has 24 issues: 0 critical, 4 major, 20 minor. The major items are V1-01, V1-08, V1-11, and V1-13.
 
 ## Verified correct
 
@@ -175,6 +175,7 @@ Proofs read and found correct in structure, beyond the numerical checks: Proposi
 
 ## Not reviewed
 
+- A second line-by-line pass of Chapter 2 (counting), Chapter 3 (sequences), and Chapter 4 (orders) was still in progress at the close of this report and had produced no issue list. Those three chapters were read on the first pass, and the checks named in the chapter paragraphs and in “Verified correct” stand. They were not given the same second pass as Chapters 0, 1, 5, 6, 7, 8, 9, 10, and the field guide.
 - Exercise solutions not named above. In particular, the full write-ups of Hölder, Minkowski, Carleman, Niven’s proof that `\pi` is irrational, the ballot theorem, the coupon collector, Frullani, and the three-star exercises in Chapters 2, 6, and 7 were not recomputed.
 - The axiomatic construction of the determinant (Theorem 7.3’s uniqueness argument) was sampled, not read as a hostile line-by-line check. The product rule `\det(AB)=\det A\det B` was not re-proved from the axioms.
 - Most historical page numbers (Leibniz in Gerhardt volume 7 page 200, Blumenthal pages 402–403, the l’Hôpital contract of 17 March 1694, Huygens pages 521–534, Euler’s Berlin memoir pagination) were not opened in the cited editions.
