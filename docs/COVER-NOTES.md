@@ -25,7 +25,7 @@ Thirteen points, the residues modulo 13, sit equally spaced on a circle. A chord
 
 Cover illustration: Galton's quincunx and the binomial bell; see About the Cover.
 
-Twelve rows of pins, the bins under them filled in proportion to the binomial counts, and the normal curve those bins approach. This is Francis Galton's quincunx. He had the machine built in 1873, showed it at the Royal Institution in 1874, and described it in Natural Inheritance (1889): pellets fall through the pins and pile into a bell. The same limit is the theorem of the chapter Why the Bell Curve Appears. The drawing was computed by the book's own TikZ cover generator.
+The drawing has twelve rows of pins, the bins under them filled in proportion to the binomial counts, and the normal curve those bins approach. It is a picture of Francis Galton's quincunx, not a portrait of one machine. He had the machine built in 1873, showed it at the Royal Institution in 1874, and described it in Natural Inheritance (1889): pellets fall through the pins and pile into a bell. That machine is a different object, and it has more rows than the drawing. The same limit is the theorem of the chapter Why the Bell Curve Appears. The drawing was computed by the book's own TikZ cover generator.
 
 ## Volume 5 — Calculation
 

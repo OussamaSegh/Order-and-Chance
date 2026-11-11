@@ -18,13 +18,15 @@ PINS = {
         "exercises": "ex:records ex:fixedvar ex:quicksort ex:factorial ex:reservoir ex:prisoners ex:birthdaywait ex:twopoisson".split(),
     },
     "ch07-entropy.tex": {
-        "sha": "25330e7046f0b585bef9ebffb1408bc907c109df",
+        # Writer repair 2026-11-11: the deepest sibling is named a leaf (V4R2-17). Labels unchanged. Not an independent sign-off.
+        "sha": "6eb06ea39e6563595171939ffe6237a7e3af19d3",
         "claims": "prop:gibbs thm:aep thm:kraft thm:shannon prop:chain thm:kl thm:mutual thm:huffman".split(),
         "exercises": "ex:entropymax ex:prefixoptimal ex:entropychain ex:entropyproduct ex:ambiguouscode ex:typicalcount".split(),
     },
     "extremal.tex": {
         # Reread 2026-11-11: the appendix states that it is lettered B (V4-17).
-        "sha": "9a7f9e14985567962b94061a4f4e54781e2e512f",
+        # Reread 2026-11-11 for the van der Waerden wording and the k=1 family (V4R2-11, V4R2-12). Labels unchanged.
+        "sha": "c94c620e322651d42f385b34bdb0ad86558ecfe2",
         "claims": "thm:turan thm:ramsey thm:schur thm:sunflower thm:ekr thm:vdw3 thm:vdw".split(),
         "exercises": "ex:r33 ex:turanedges ex:ekrsharp ex:schurtwo ex:ekrcomplement".split(),
     },
