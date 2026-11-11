@@ -262,3 +262,68 @@ I re-opened each row of the Final status table in the current source.
 | V4-23 | Yes. The maximum is said to meet the first boundary vertex, which may be either marked point, and both boundary values are 0. |
 
 No row in that table is still open as a failed repair. I did not find a regression in the repaired sentences: the new run-length case, the clip identity, the host sentence, the \(O(\log n)\) bridge, and the product proposition’s hypotheses match the jobs they are given. The Shannon item in the concentration chapter’s source list was copied into the collected bibliography; that is a preserved mis-filing, not a new false theorem introduced by the repair.
+
+## Final status
+
+This section is a map of V4R2-01 through V4R2-20 after the repairs. It is not a new reading of the proofs. The dispositions are those of the fourth pass in `docs/review/volume4-r2-independent-second-review-2026-11-11.md`, the independent review merged in [#188](https://github.com/OussamaSegh/Order-and-Chance/pull/188). Each merge SHA below was checked with `git merge-base --is-ancestor` against `main` at `76b990aa7ee166231b9bc29c42172813aaaca97d`, and the subject line of that commit names the pull request.
+
+| ID | Pull request | Merge SHA | Status |
+| --- | --- | --- | --- |
+| V4R2-01 | [#180](https://github.com/OussamaSegh/Order-and-Chance/pull/180) | `0d8d5d75f563f87886ab59849f15a16923182092` | fixed |
+| V4R2-02 | [#176](https://github.com/OussamaSegh/Order-and-Chance/pull/176) | `a2cfdd30a0f09eabcb932852c76537c8af592bdb` | fixed |
+| V4R2-03 | [#178](https://github.com/OussamaSegh/Order-and-Chance/pull/178) | `6854ba6a2b57e7ad5a7b19b6c843ec11957753c0` | fixed |
+| V4R2-04 | [#178](https://github.com/OussamaSegh/Order-and-Chance/pull/178) | `6854ba6a2b57e7ad5a7b19b6c843ec11957753c0` | fixed |
+| V4R2-05 | [#177](https://github.com/OussamaSegh/Order-and-Chance/pull/177) | `4bd0254c49dec36f46701cfb2f07a8480f24275a` | fixed |
+| V4R2-06 | [#186](https://github.com/OussamaSegh/Order-and-Chance/pull/186) | `5a0c0d9d5576a5986ea5ad0f8679fb709473a185` | fixed |
+| V4R2-07 | [#184](https://github.com/OussamaSegh/Order-and-Chance/pull/184) | `414cb76f8c01ef89af5ea7fa14b639e069c14f32` | fixed |
+| V4R2-08 | [#183](https://github.com/OussamaSegh/Order-and-Chance/pull/183) | `9582c54f37d2007e20785452b92189424fca6dc6` | fixed |
+| V4R2-09 | [#185](https://github.com/OussamaSegh/Order-and-Chance/pull/185) | `54aca8162bffadc7d7dc9b1a582a5141cdc9e8f9` | fixed |
+| V4R2-10 | [#180](https://github.com/OussamaSegh/Order-and-Chance/pull/180) | `0d8d5d75f563f87886ab59849f15a16923182092` | fixed |
+| V4R2-11 | [#182](https://github.com/OussamaSegh/Order-and-Chance/pull/182) | `21cb46f07126287a7c918e6a79ec62ac8b02f503` | fixed |
+| V4R2-12 | [#182](https://github.com/OussamaSegh/Order-and-Chance/pull/182) | `21cb46f07126287a7c918e6a79ec62ac8b02f503` | fixed |
+| V4R2-13 | [#181](https://github.com/OussamaSegh/Order-and-Chance/pull/181) | `fb05d3f2f8873bfea9ed34758764badf70ca685a` | fixed |
+| V4R2-14 | [#189](https://github.com/OussamaSegh/Order-and-Chance/pull/189) | `6e5cc70d814c9cc196a399aaa3982bb56803d501` | fixed |
+| V4R2-15 | [#180](https://github.com/OussamaSegh/Order-and-Chance/pull/180) | `0d8d5d75f563f87886ab59849f15a16923182092` | fixed |
+| V4R2-16 | [#180](https://github.com/OussamaSegh/Order-and-Chance/pull/180) | `0d8d5d75f563f87886ab59849f15a16923182092` | fixed |
+| V4R2-17 | [#189](https://github.com/OussamaSegh/Order-and-Chance/pull/189) | `6e5cc70d814c9cc196a399aaa3982bb56803d501` | fixed |
+| V4R2-18 | [#189](https://github.com/OussamaSegh/Order-and-Chance/pull/189) | `6e5cc70d814c9cc196a399aaa3982bb56803d501` | fixed |
+| V4R2-19 | [#189](https://github.com/OussamaSegh/Order-and-Chance/pull/189) | `6e5cc70d814c9cc196a399aaa3982bb56803d501` | fixed |
+| V4R2-20 | [#189](https://github.com/OussamaSegh/Order-and-Chance/pull/189) | `6e5cc70d814c9cc196a399aaa3982bb56803d501` | fixed |
+
+**V4R2-01 and V4R2-10.** The fourth pass approves Theorems 12.4 and 12.12 at the pre-squash head `f7dc4d4ad17cc21fd163812c646e0132a530912b`. The squash merge of that pull request onto `main` is `0d8d5d75f563f87886ab59849f15a16923182092`. The dyadic outer-content lemma supplies the lower bound the second pass had refused, and the half-line \(1-\Phi(a/\sqrt t)\) is the lower half-line of \(-B\).
+
+**V4R2-02.** The empty-success bound cites Volume 1’s finite additivity.
+
+**V4R2-03 and V4R2-04.** One merge writes the ruin constants and says the cube integral is taken one coordinate at a time.
+
+**V4R2-05.** Shannon’s 1948 paper is off the concentration chapter’s source list.
+
+**V4R2-06.** The Volume 5 tools line no longer says “Chapter 8 (periodic chains)”.
+
+**V4R2-07.** The colophon says the drawing has twelve rows and that Galton’s machine is a different object with more rows.
+
+**V4R2-08.** The index source keeps the theorem numbers and adds a page reference for the reading and print PDFs. The fourth pass records that change as closed. This note did not open a release PDF and did not read the printed folios. That check still belongs at release.
+
+**V4R2-09.** The listing matches the blurb’s register. Horse-kick counts are the Poisson law of rare events.
+
+**V4R2-11 and V4R2-12.** “Equivalently” is gone from the infinite van der Waerden sentence, and the complementary-pair non-uniqueness is restricted to \(k\ge 2\).
+
+**V4R2-13.** The Euler sentence says the new edge is drawn inside one face of the graph already drawn.
+
+**V4R2-14.** [#179](https://github.com/OussamaSegh/Order-and-Chance/pull/179), merge `b27fd9fd1cc86276d881b2d906f9437e124cfd32`, wrote the factor \((n+2)/(n+1)\). That sentence still said the omitted piece tends to \(1\). [#189](https://github.com/OussamaSegh/Order-and-Chance/pull/189) says the omitted contribution tends to \(0\). The fourth pass treats the issue as closed by #189.
+
+**V4R2-15 and V4R2-16.** The deterministic bound in the restart proof is \(\beta\), and the opening points at the normal law in Chapter 5.
+
+**V4R2-17.** The sibling at maximum depth is called a leaf.
+
+**V4R2-18.** The exact return count is the binomial coefficient. The asymptotic is the local theorem.
+
+**V4R2-19.** The citation is Volume 1’s half-line integral, doubled because the integrand is even.
+
+**V4R2-20.** The meeting idea starts at \(-2\), with the solution.
+
+No ID in this list is open. None is only partly fixed, except that the printed index folios of V4R2-08 were not checked here.
+
+### Cross-volume and KDP
+
+[#186](https://github.com/OussamaSegh/Order-and-Chance/pull/186) changes one file outside Volume 4: `volume5-calculation/chapters/ch12-agm.tex`, one line. `git show --stat 5a0c0d9d5576a5986ea5ad0f8679fb709473a185` shows that file and no other. No KDP upload was made from this note. A Volume 4 page count after these repairs was not measured from a build. The 299-page figure earlier in this file is the release opened for the scored read, before the repairs above.
