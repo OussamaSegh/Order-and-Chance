@@ -33,7 +33,7 @@ Gate B of the master plan (independent verification) is not this pass. The write
 | 7 | The Discrete Fourier Transform and the FFT | `ch07-fft.tex` | **Done** |
 | 8 | The Fourier Transform and Poisson Summation | `ch08-transform.tex` | **Done** |
 | 9 | Complex Analysis for Computing | `ch09-complex.tex` | **Done** |
-| 10 | The Zeta Function | `ch10-zeta.tex` | Not started |
+| 10 | The Zeta Function | `ch10-zeta.tex` | **Done** |
 | 11 | Asymptotics | `ch11-asymptotics.tex` | Not started |
 | 12 | The Hardy–Ramanujan Formula | `hardy-ramanujan.tex` | **Done** (rewritten, new proof of the η transformation) |
 | 13 | The Arithmetic–Geometric Mean | `ch12-agm.tex` | Not started |
@@ -63,6 +63,10 @@ Gate B of the master plan (independent verification) is not this pass. The write
 
 **Chapter 9.** Opening puzzle (∫cos x/(1+x²) = π/e, solved in the residue section) and a closing section. All proofs re-read from Goursat to Rouché; none needed repair. Plan items done: a paragraph in the introduction says what this chapter owns (convex contours: Goursat, Cauchy on star-shaped sets, Taylor, Laurent, residues, argument principle) and what Volume 8, Chapter 14 owns (homology form, Phragmén–Lindelöf, Hadamard, Mellin inversion); the remark on the homology form now cites Volume 8, Chapter 14 and, for Jordan, Volume 7, Chapter 6; new three-star exercise `ex:jensen` (Jensen's formula and the bound N(r) ≤ eAr + log C for entire functions of exponential growth), appended last. Smaller repairs: the sentence on the decay of Γ claims only what part (d) proves; in the rank problem "dominated convergence" for a series is replaced by the uniform tail bound, and its tools line no longer points to "the preceding problem"; the Dedekind lead cites `thm:eta` of Chapter 12 instead of "Volume 6, Theorem 12.7"; two leftovers from the notebooks removed. Sources added (Painlevé and Hadamard for the epigraph, Rademacher–Grosswald, Vardi, Jensen). Check: `check_ch09_complex.py` (includes the Dedekind averages for k up to 100003 and every printed constant).
 
+**Chapter 10.** Opening experiment (the Euler product at s = 2 creeping up on π²/6) and a closing section. All proofs re-read. Changes: (1) the completed zeta is now ξ everywhere, as the master plan asks; Theorem `thm:functional` states Riemann's formula ξ(s) = ½ + ½s(s−1)I(s), entire, ξ(1−s) = ξ(s), and the corollary's proof runs through ζ(s) = π^{s/2}ξ(s)/((s−1)Γ(s/2+1)); the letter Λ no longer appears in the chapter, and a sentence fixes the letter. (2) Jacobi's theta is ϑ; the Riemann–Siegel phase is α with a sentence saying why. (3) The unproved smooth cut-off claim is replaced by a proved paragraph "Every power": Σ n^k e^{−n/N} = k!N^{k+1} + ζ(−k) + O(1/N), by differentiating 1/(e^h − 1); general cut-offs are a quoted remark that nothing uses. (4) Zeros are stated as computed values with sources (Odlyzko, Gourdon, Platt–Trudgian). (5) Uniqueness of Dirichlet coefficients no longer cites "dominated convergence for series". (6) Exercise `pb:sqrtsum` needed Proposition `prop:zetaem` of Chapter 11, so it moved wholesale to the end of Chapter 11; Chapter 10's exercises 10.1–10.7 keep their numbers and `pb:levy` is now 10.8. (7) The Gauss–Kuzmin journey defines the Gauss map and the partial quotients in its statement and its solution is self-contained (it no longer cites a Chapter 13 problem). Check: `check_ch10_zeta.py`.
+
+**For Volume 6's thread:** Volume 6, Chapter 6 quotes "Volume 5, Theorem 12.8" with Λ(s) = −1/s − 1/(1−s) + I(s). The theorem is now `thm:functional` of Chapter 10 and reads ξ(s) = ½ + ½s(s−1)I(s), with I named in the proof. Volume 6 also cites Volume 5 Exercises 12.2, 12.3, 12.4: these are still exercises 2, 3, 4 of the zeta chapter, which is now Chapter 10.
+
 ## Rules found on the way (keep them)
 
 - **Numbering inside a chapter is preserved.** Volumes 6–15 cite Volume 5 by hand-typed numbers (for example "Volume 5, Theorem 2.12", "Volume 5, Exercise 2.3"). Their migration stays a pure chapter shift only if no numbered statement or exercise is inserted or removed in the middle of a chapter. New exercises go at the END of the exercise list (and their hints and solutions at the end of those sections). An exercise that needs a later chapter keeps its place and number, loses the forward part, and the forward part becomes a new exercise at the end of the later chapter.
@@ -73,7 +77,6 @@ Gate B of the master plan (independent verification) is not this pass. The write
 
 - **Ch. 8 (for Volume 6's thread).** The inversion theorem's class is now stated; Volume 6 must check its own uses against it.
 - **Ch. 9 (for Volume 8's thread).** Volume 8, Chapter 14 owes the matching sentence on which complex analysis it owns.
-- **Ch. 10.** Completed zeta is ξ, not Λ (master plan 4.5). A sentence fixing the letter. The unproved claim about smooth cutoffs of Σn: prove it or remove it. Numerical zeros of ζ: stated as computations with a source.
 - **Ch. 13.** Legendre's modulus function must not use Λ. The closing problems each state the chapters they use; their hand-typed numbers ("Theorem~12.3", "Exercise~7.7", "Volume~5") are in the old numbering. Problems citing Volume 13, Exercise 8.5 or Volume 6 as tools break rule R1 (a solution is a proof): rework or move.
 - **All.** About 460 hand-typed internal references to convert to `\ref`.
 - **Other volumes.** Citations of Volume 5 by chapter number in Volumes 6–15 are now off (table in the citation map). This thread does not edit other volumes.
