@@ -27,7 +27,8 @@ SCOPE = {
     "ch04-inequalities.tex": {
         # Reread 2026-11-11 for the countable moment-generating product (V4-12)
         # and the integer atom in the longest-run solution (V4-11).
-        "sha": "0ff39609953328e49d094801d0b3d761ea354512",
+        # Reread 2026-11-11 for removal of the unused Shannon source line (V4R2-05). Labels unchanged.
+        "sha": "f1fc8df91bdcb119f5345059525680e367dec5cc",
         "claims": "lem:hoeffding thm:hoeffding thm:kolmogorov thm:bc thm:sllnbound thm:weierstrass".split(),
         "exercises": "ex:markovsharp ex:chernoffbin ex:bcfinite ex:bernstein2 ex:gapfill ex:runs".split(),
     },
