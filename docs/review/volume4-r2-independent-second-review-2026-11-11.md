@@ -38,7 +38,9 @@ The cover-note hash in the snapshot is `7d9bb310cdd17fdf3d0e53c12987a932397de120
 
 ### Checks on this head, separate from the proof
 
-[Build books 43074401955](https://github.com/OussamaSegh/Order-and-Chance/actions/runs/43074401955) completed success on `f7dc4d4a`, including `list`, `debs`, all fifteen volume builds, and `site`. `publish` is skipped. [Volume 4 native QA 43074401670](https://github.com/OussamaSegh/Order-and-Chance/actions/runs/43074401670) completed success on the same SHA. Those runs are the writer’s green builds. They are not the proof, and they are not the build of this review note. The build of the review note is recorded after this commit, on its own head.
+[Build books 43074401955](https://github.com/OussamaSegh/Order-and-Chance/actions/runs/43074401955) completed success on `f7dc4d4a`, including `list`, `debs`, all fifteen volume builds, and `site`. `publish` is skipped. [Volume 4 native QA 43074401670](https://github.com/OussamaSegh/Order-and-Chance/actions/runs/43074401670) completed success on the same SHA. Those runs are the writer’s green builds. They are not the proof, and they are not the build of this review note.
+
+The review note’s own build, on commit `99e9eecfd1f7538a2e4917c179cfd51a7c7b241f`, is [43085665060](https://github.com/OussamaSegh/Order-and-Chance/actions/runs/43085665060). It completed success. `list` and `site` succeeded. The volume matrix, `debs`, and `publish` were skipped. That run is not a proof of the Brownian theorems.
 
 ### Current disposition of all twenty IDs
 
