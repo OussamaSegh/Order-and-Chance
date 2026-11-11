@@ -14,7 +14,7 @@ SOURCES = {
     "ch05-continuous.tex": (
         # Reread 2026-11-11 for the generalised-inverse identity and the
         # Box--Muller grid cover (V4-21, V4-03). Labels unchanged.
-        "08a0b40df7de40abf6ebb36acc14f88cfcced266",
+        "d69220a56c54b6a5571a02a2609520187322aa3d",
         "prop:densitymean prop:gausstail prop:fubini prop:polar prop:manyuniforms prop:orderpair prop:inverse thm:dct thm:boxmuller",
         "ex:counter ex:densityunique ex:tail ex:cauchy ex:gamma ex:order ex:cantor ex:usquare ex:radius",
     ),
