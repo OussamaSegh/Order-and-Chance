@@ -1,6 +1,6 @@
 # Handoff: Volume 5 rewrite
 
-Volume 5, *Calculation: From Formula to Insight*, is being rewritten to `docs/plan/MASTER-PLAN-V5-V15.md` and `docs/plan/book-05.md`. This file is updated with every chapter. Read it first.
+Volume 5, *Calculation: From Formula to Insight*, has been rewritten to `docs/plan/MASTER-PLAN-V5-V15.md` and `docs/plan/book-05.md`. All thirteen chapters, the preface and the blurb have had their pass (table below). Read this file first.
 
 **Branch and pull request.** The author chose to keep the whole rewrite in PR #157, on branch `claude/project-thread-khh5pi`, together with the master plan. Do not merge without the author's word.
 
@@ -36,7 +36,7 @@ Gate B of the master plan (independent verification) is not this pass. The write
 | 10 | The Zeta Function | `ch10-zeta.tex` | **Done** |
 | 11 | Asymptotics | `ch11-asymptotics.tex` | **Done** |
 | 12 | The Hardy–Ramanujan Formula | `hardy-ramanujan.tex` | **Done** (rewritten, new proof of the η transformation) |
-| 13 | The Arithmetic–Geometric Mean | `ch12-agm.tex` | Not started |
+| 13 | The Arithmetic–Geometric Mean | `ch12-agm.tex` | Done |
 | — | Preface, blurb, final checks | `preface.tex`, `blurb.tex` | Preface chapter list updated; final pass not started |
 
 ## Done so far
@@ -67,6 +67,10 @@ Gate B of the master plan (independent verification) is not this pass. The write
 
 **Chapter 11.** Opening computation (H_1000000 from four terms, checked on H_10) and a closing section that explains it and points to Chapters 12 and 13. All proofs re-read (Euler–Maclaurin, the sign argument for harmonic numbers and Stirling's series, Laplace, transfer); none needed repair. Leftovers of the old notebooks ("a direct computation verifies…") are gone: the finite combination for ζ(−n) is now tied to Chapter 10 by the identity theorem, with ζ(−1) = 1 − ½ − ½ − 1/12 done by hand. All hand-typed numbers are `\ref`s; Volume 1 citations are by chapter; solutions that cited "Volume 5, Chapter 13" or Volume 4 for the binomial series now cite this chapter's own results. The exercise on Σ√k arrived from Chapter 10 as the last exercise (11.11). Sources added for Abel's letter, Euler (E47, E247), Maclaurin, Erdős–Rényi, Klamkin–Newman. Check: `check_ch11_asymptotics.py`.
 
+**Chapter 13.** All proofs re-read (Gauss's integral, Legendre's relation, the formula for π, quadratic convergence). Changes: (1) every hand-typed number is a `\ref` by label, in the new chapter order; (2) Legendre's auxiliary function is W(k), so Λ stays free for von Mangoldt; (3) the Brent–Salamin statement had digit counts shifted by one step: it now says π_1 = 3.1405… and that the errors of π_2, …, π_8 are below 10^-8, 10^-18, 10^-40, 10^-83, 10^-170, 10^-344, 10^-693, all recomputed; (4) a closing section, and an unnumbered paragraph that introduces the closing problems of the volume; (5) the closing problems obey R1: Dickman's ρ, y-smooth numbers and Ψ are defined where used, the Kummer solution proves Legendre's formula inline, the prime zeta problem proves an elementary bound and only quotes the prime number theorem, and Mertens's third theorem is admitted in one consistency check that is labelled as such; (6) in the polynomial Mertens solution exp(−1/20 + 1/1200) is 0.952022 (was printed 0.952017); (7) sources added (Gauss's diary via Gray, Legendre 1811, Serre, Granville, Lehmer, Northshield, Allouche–Shallit, Fan–Taussky–Todd, Feller, Rosen). Check: `check_ch13_agm.py`.
+
+**Preface and blurb.** The preface now says exactly what is admitted (Tonelli in two exercises, the volume of a convex set in one exercise of Chapter 6; no theorem depends on either). The blurb mentions the partition chapter.
+
 **For Volume 6's thread:** Volume 6, Chapter 6 quotes "Volume 5, Theorem 12.8" with Λ(s) = −1/s − 1/(1−s) + I(s). The theorem is now `thm:functional` of Chapter 10 and reads ξ(s) = ½ + ½s(s−1)I(s), with I named in the proof. Volume 6 also cites Volume 5 Exercises 12.2, 12.3, 12.4: these are still exercises 2, 3, 4 of the zeta chapter, which is now Chapter 10.
 
 ## Rules found on the way (keep them)
@@ -79,8 +83,6 @@ Gate B of the master plan (independent verification) is not this pass. The write
 
 - **Ch. 8 (for Volume 6's thread).** The inversion theorem's class is now stated; Volume 6 must check its own uses against it.
 - **Ch. 9 (for Volume 8's thread).** Volume 8, Chapter 14 owes the matching sentence on which complex analysis it owns.
-- **Ch. 13.** Legendre's modulus function must not use Λ. The closing problems each state the chapters they use; their hand-typed numbers ("Theorem~12.3", "Exercise~7.7", "Volume~5") are in the old numbering. Problems citing Volume 13, Exercise 8.5 or Volume 6 as tools break rule R1 (a solution is a proof): rework or move.
-- **All.** About 460 hand-typed internal references to convert to `\ref`.
 - **Other volumes.** Citations of Volume 5 by chapter number in Volumes 6–15 are now off (table in the citation map). This thread does not edit other volumes.
 - **Ledgers.** `docs/plan/ledgers/` does not exist yet (Phase 0 of the master plan). The per-chapter check scripts are the trace for numerical claims until it does.
 
