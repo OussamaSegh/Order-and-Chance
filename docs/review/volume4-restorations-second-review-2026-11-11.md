@@ -2,9 +2,21 @@
 
 **Reviewer.** Independent second reading by cloud agent `bc-114da047-b320-5bb0-b0d1-2f6495477a25`. The restoration was written by a different session, `bc-323d34bf`. This file does not edit that branch. Nothing here is a merge, and nothing is restored by this review.
 
-**Head reviewed.** Pull request [#192](https://github.com/OussamaSegh/Order-and-Chance/pull/192), live head `ec6e71da0c9f3c2a78246b7bb35078296c512f9f`. It is a merge. The first parent is `25f83e763d8949d0d3d8781c82b0762ad6295011`, the head named when this reading began. The second parent is `76b990aa7ee166231b9bc29c42172813aaaca97d`, which was `origin/main` at the merge: the Brownian proof (#180, commit `0d8d5d75`) and this series of review notes (#188). The manuscript commit of the restorations is `6b0042017a67eda3735cb91af739717d341e3331`.
+**Head reviewed.** Pull request [#192](https://github.com/OussamaSegh/Order-and-Chance/pull/192). The current verdict is the recheck below, at live head `82a3f104ed9696ff80df585e16ba1d1b904e29cb`. The REQUEST CHANGES section is the record of head `ec6e71da0c9f3c2a78246b7bb35078296c512f9f`.
 
-**Verdict.** REQUEST CHANGES. One displayed equality in the Goodman solution is false. The other twelve restorations, the repaired second test, and the 2-SAT theorem and corollary meet the constraints from the audit review. The false line is V4-REST-01 below. It does not spread into the other items.
+**Verdict.** APPROVE at `82a3f104`. The Goodman denominator is now \(8\).
+
+## Recheck — head `82a3f104`
+
+One commit after `ec6e71da`: `82a3f104ed9696ff80df585e16ba1d1b904e29cb`, “Correct the Goodman denominator in part (b).” Two files change. In `ch02-discrete.tex` the displayed chain is now
+\[
+\binom{n}{3}-\frac{n(n-1)^2}{8}=\frac{n(n-1)(n-5)}{24}=\frac14\binom{n}{3}-\frac{n(n-1)}{8}.
+\]
+Both equalities hold. For \(n=6\), each side is \(1.25\): \(\frac14\binom{6}{3}=5\) and \(6\cdot5/8=3.75\). The floor sentence and the limit \(1/4\) are unchanged. The source pin is the new git blob `e37bf3057f41100109c0a323e4c75c585c56368f`, and the comment says it is not an independent sign-off. No other exercise, theorem, caption, or diagram text moved. V4-REST-01 is closed. The approvals in the section below stand.
+
+## First reading — head `ec6e71da`, historical
+
+That head was a merge. The first parent was `25f83e763d8949d0d3d8781c82b0762ad6295011`. The second parent was `76b990aa7ee166231b9bc29c42172813aaaca97d`. The manuscript commit of the restorations is `6b0042017a67eda3735cb91af739717d341e3331`. The verdict at that head was REQUEST CHANGES, for the coefficient recorded as V4-REST-01.
 
 ## Scope
 
@@ -83,6 +95,6 @@ On this head the concept file still has 120 entries, every one `accepted-interna
 
 | ID | Severity | Finding | What to change | Unresolved |
 | --- | --- | --- | --- | --- |
-| V4-REST-01 | blocks this restoration | In `pb:goodman` (b), the solution writes \(\binom{n}{3}-n(n-1)^2/8=n(n-1)(n-5)/24=\frac14\binom{n}{3}-n(n-1)/6\). The first equality is right. The second is not. The correct remainder is \(n(n-1)/8\). For \(n=6\) the left side is \(1.25\) and the written right side is \(0\). | Replace \(n(n-1)/6\) by \(n(n-1)/8\). The \(O(n^2)\) sentence and the limit \(1/4\) then match the corrected identity. The floor still moves the count by less than \(n/2\). | None, once that coefficient is corrected. |
+| V4-REST-01 | closed at `82a3f104` | At `ec6e71da` the solution wrote \(\binom{n}{3}-n(n-1)^2/8=n(n-1)(n-5)/24=\frac14\binom{n}{3}-n(n-1)/6\). The second equality was false. For \(n=6\) the left side is \(1.25\) and that right side is \(0\). | The repair replaces the denominator \(6\) by \(8\). | Closed. Both equalities now hold, and \(n=6\) gives \(1.25\) on each side. |
 
-No other item on the approved list failed its check. V4-REST-01 is the reason the verdict is REQUEST CHANGES rather than APPROVE. This review does not edit the restoration branch.
+No other item on the approved list failed its check. V4-REST-01 was the reason the verdict at `ec6e71da` was REQUEST CHANGES. It is closed at `82a3f104`. This review does not edit the restoration branch.
