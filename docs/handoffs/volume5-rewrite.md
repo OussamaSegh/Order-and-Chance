@@ -31,7 +31,7 @@ Gate B of the master plan (independent verification) is not this pass. The write
 | 5 | The Gamma and Beta Functions | `ch05-gamma.tex` | **Done** |
 | 6 | Fourier Series | `ch06-fourier.tex` | **Done** |
 | 7 | The Discrete Fourier Transform and the FFT | `ch07-fft.tex` | **Done** |
-| 8 | The Fourier Transform and Poisson Summation | `ch08-transform.tex` | Not started |
+| 8 | The Fourier Transform and Poisson Summation | `ch08-transform.tex` | **Done** |
 | 9 | Complex Analysis for Computing | `ch09-complex.tex` | Not started |
 | 10 | The Zeta Function | `ch10-zeta.tex` | Not started |
 | 11 | Asymptotics | `ch11-asymptotics.tex` | Not started |
@@ -59,6 +59,8 @@ Gate B of the master plan (independent verification) is not this pass. The write
 
 **Chapter 7.** Worked transform of (1,2,3,4) before the inversion theorem; closing section. Repairs: the aliasing proposition now assumes f continuous (it needs f equal to its series) and the sentence "a numerical calculation showed this error" (a leftover from the notebooks) is replaced by a proved bound π²C/n² when |c_m| ≤ C/m²; the number-theoretic transform says why n is invertible modulo p; the claim that all four eigenvalues of the normalised transform occur "once n ≥ 4" was false for n = 4 (eigenvalues 1, 1, −1, −i) and now says n ≥ 5. Stale citations of Volumes 1–3 corrected, self-citations "Volume 5, Chapter 9" replaced by labels. Plan item done: new three-star exercise `ex:uncertainty` (Donoho–Stark uncertainty principle on Z/n, with the sparse-recovery corollary), appended last. Sources added (Strang for the epigraph, Karatsuba–Ofman, Schönhage–Strassen, Chung–Diaconis–Graham, Newman, Rothaus, Donoho–Stark, Tao). Check: `check_ch07_fft.py` (every number of the modulo-17 example, the primes, operation counts of the FFT, and the exercises by brute force).
 
+**Chapter 8.** Opening sum (Σ e^{-πn²/100} = 10 to 135 decimal places) and a closing section that explains it. All proofs re-read, including Dirichlet's evaluation of the Gauss sum and the Fresnel lemma; no repair was needed. Plan items done: Jacobi's theta is ϑ, with a sentence fixing the letter; the class of functions of the inversion theorem is stated after `thm:ftinversion` (continuous, integrable, integrable transform; sufficient: C² with f, f', f'' integrable), with the list of the functions this volume feeds to it, which covers Chapter 12 (risk 4: Chapter 12 uses `thm:poisson` on a Gaussian times an exponential, inside the class); the stale "Chapter~12 follows him" is a label. The triangle function was called Λ, a letter the master plan reserves: it is now T. The eigenvalue remark on Hermite functions is marked as not proved. Sources: the epigraph's status (attributed, quoted by Arber, no written source), Whittaker 1915, the Olbers letter through Berndt–Evans. **Chapter 10 still writes θ(t) at one place (its line on ω(t)); fix in its pass.** Check: `check_ch08_transform.py` (160-digit evaluation of the opening sum, Gauss sums for n < 60, reciprocity for the primes below 24).
+
 ## Rules found on the way (keep them)
 
 - **Numbering inside a chapter is preserved.** Volumes 6–15 cite Volume 5 by hand-typed numbers (for example "Volume 5, Theorem 2.12", "Volume 5, Exercise 2.3"). Their migration stays a pure chapter shift only if no numbered statement or exercise is inserted or removed in the middle of a chapter. New exercises go at the END of the exercise list (and their hints and solutions at the end of those sections). An exercise that needs a later chapter keeps its place and number, loses the forward part, and the forward part becomes a new exercise at the end of the later chapter.
@@ -68,7 +70,7 @@ Gate B of the master plan (independent verification) is not this pass. The write
 ## Plan items still open, by chapter
 
 - **Ch. 9.** One new exercise of the hardest level (Chapter 4 has `ex:fresnel`, Chapter 7 has `ex:uncertainty`; Chapter 9 already received `pb:zigzagpole`, two stars, and still needs a three-star one).
-- **Ch. 8.** Jacobi's theta becomes ϑ, with a sentence fixing the letter at first use. State the class of functions of the inversion theorem (`thm:ftinversion`) and check it is the class Chapter 12 and Volume 6 use (risk 4). "Chapter~12 follows him" is a stale number.
+- **Ch. 8 (for Volume 6's thread).** The inversion theorem's class is now stated; Volume 6 must check its own uses against it.
 - **Ch. 9.** One sentence saying which complex analysis this chapter owns and which Volume 8, Chapter 14 owns. The line about the homology form of Cauchy's theorem says "proved in Volume 8": check against Volume 7, Chapter 6 (Jordan) and Volume 8.
 - **Ch. 10.** Completed zeta is ξ, not Λ (master plan 4.5). A sentence fixing the letter. The unproved claim about smooth cutoffs of Σn: prove it or remove it. Numerical zeros of ζ: stated as computations with a source.
 - **Ch. 13.** Legendre's modulus function must not use Λ. The closing problems each state the chapters they use; their hand-typed numbers ("Theorem~12.3", "Exercise~7.7", "Volume~5") are in the old numbering. Problems citing Volume 13, Exercise 8.5 or Volume 6 as tools break rule R1 (a solution is a proof): rework or move.
