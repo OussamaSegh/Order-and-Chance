@@ -4,13 +4,70 @@
 
 **Source of the issue list.** Draft pull request [#175](https://github.com/OussamaSegh/Order-and-Chance/pull/175), live head `17ccaf44b70101ffe0f23d94384d25c7f0d70e8d`, file `docs/review/volume4-independent-scored-read-2-2026-11-11.md`. That head matches the expected `17ccaf44`. Its base is still `8b8a5be337271478f9f7a2bc24d7b1a9b3602c2f`, not current `main`. The issue log in that file is V4R2-01 through V4R2-20. This review reads that log and then checks the manuscripts. A green build is not treated as a proof.
 
-**Live `main` at this review.** `a2cfdd30a0f09eabcb932852c76537c8af592bdb` (`Volume 4: derive the empty-success bound from finite additivity (#176)`). The pause SHA named in the assignment had not moved.
+**Opening pin, not live `main`.** When this file was opened, `origin/main` was `a2cfdd30a0f09eabcb932852c76537c8af592bdb` (`Volume 4: derive the empty-success bound from finite additivity (#176)`). Live `main` at the fourth pass is `6e5cc70d814c9cc196a399aaa3982bb56803d501`.
 
 **How to read the dispositions.** “Approve the repair” means the manuscript change closes the cited issue and does not weaken the stated theorem. It is not a merge. Parent Nori merges. “Repair before approval” means the stated conclusions are the classical ones, but the write-up still does not justify a step it uses.
 
-The section **Third pass** is the current verdict on V4R2-01 and V4R2-10. The second pass remains the record of head `3bb6331e`, where those two IDs were not approved. The first pass remains the record of head `fd0aa1ca`.
+The section **Fourth pass** is the current verdict, at head `f7dc4d4ad17cc21fd163812c646e0132a530912b`. The third pass remains the record of head `9271ba96`, where Theorems 12.4 and 12.12 were approved and one atom sentence was still loose. The second pass remains the record of head `3bb6331e`. The first pass remains the record of head `fd0aa1ca`.
 
-## Third pass — head `9271ba96`, Theorems 12.4 and 12.12 approved
+## Fourth pass — head `f7dc4d4a`, approve Theorems 12.4 and 12.12
+
+**Reviewer.** Same independent reviewer, `bc-114da047-b320-5bb0-b0d1-2f6495477a25`. The new commits are still by writer `bc-0f6fa3d7`. This pass did not edit that branch, did not merge, and does not restore an exercise.
+
+**Parents.** `f7dc4d4ad17cc21fd163812c646e0132a530912b` is a merge commit. Its first parent is `74252a5b97b5162fe73b441cf5f03920dc3e9bc1`, whose only parent is the previously approved `9271ba96cacc8ed51f2bfed37bce050a179ea5bd`. Its second parent is `6e5cc70d814c9cc196a399aaa3982bb56803d501`, which is live `main`. That is an ordinary merge. It is not a rebase and not a force update. GitHub reports the pull request `MERGEABLE` and `CLEAN` onto that `main`.
+
+**What the proof diff is.** From `9271ba96` to `74252a5b`, two files change. `ch01-counting.tex` does not. Its git blob stays `45b451d1194ac238f60da615e2844504cfd40635`. `ch11-brownian.tex` changes from blob `7d4bd25d6a809e083af4c1e6c7bf9f394f587e30` to `26e4400c45d83e53a9e415cd24952eccbf0d26dc`, and the merge keeps that blob. The source pin in `tools/test_volume4_phase2_signed_off_sources_ch12.py` is that new blob, and the test still asserts equality with it. Labels are unchanged. Chapter 11 still has 5 theorems and 7 exercises. Chapter 1 still has 1 theorem, 8 exercises, and one unnumbered `lemmax`.
+
+### The atom sentence
+
+Lines 100–106 restrict the sandwich to \(t\in(0,1]\), and they record that \(t_n>0\) for every large \(n\). Lines 120–124 replace the sentence that gave the limit strip the Gaussian integral. The new text says: off \(E_n\), \(|B_t-B_{t_n}|\le\delta_n\), so
+\[
+\{B_t=x\}\subset E_n\cup\{x-\varepsilon-\delta_n<B_{t_n}\le x+\varepsilon+\delta_n\}.
+\]
+The second set is a bounded interval of the linear image \(B_{t_n}\). Line 106 already gives that interval the Gaussian integral, of length \(2\varepsilon+2\delta_n\). Subadditivity adds \(P^*(E_n)\). The standard-normal density of variance \(t_n\) is at most \(1/\sqrt{2\pi t_n}\), so the sum is at most \(P^*(E_n)+(2\varepsilon+2\delta_n)/\sqrt{2\pi t_n}\). Send \(n\to\infty\), using \(P^*(E_n)\to 0\), \(\delta_n\to 0\), and \(t_n\to t>0\). Then send \(\varepsilon\downarrow 0\). The outer content of \(\{B_t=x\}\) is 0.
+
+That is the comparison the third pass asked for. It uses the linear-image equality and subadditivity. It does not price a strip of the limit by subtracting two half-lines, and it does not use \(P^*(\mathrm{complement})=1-P^*\). For \(t\in(0,1]\) the denominator \(\sqrt{t_n}\) is positive for large \(n\). No new gap.
+
+The half-line law, the joint distribution function, the extension to \([0,\infty)\), and the reflection identity \(1-\Phi(a/\sqrt t)\) are the argument approved at `9271ba96`. They are still in the file.
+
+### The fingerprint
+
+Against `main` `6e5cc70d`, the only snapshotted source whose hash differs is `volume4-chance/chapters/ch01-counting.tex`, from `d4a32f1b…` to `df3f737679ce2583effd86e31bdbcd1ace11bc4c34c76294c6407930cd9926bc`, which is the sha256 of the approved Chapter 1 file. The stored snapshot hash is `2fb5c2aa1da3a82c1e5d13167ce6d0c1f72c37a6cae97379c7a5d277d28fce52`. All 120 concept entries stay `accepted-internal`. No file under `volume3-symmetry/` changes. `tools/test_volume3_internal.py` still rejects a snapshot whose sha256 has been replaced by zeros. The gate compares hashes. It was not turned off.
+
+The cover-note hash in the snapshot is `7d9bb310cdd17fdf3d0e53c12987a932397de1208fee5a15b64d542413e84359`, the sha256 of `common/cover-notes.json` on both this head and `main`. That change arrived with the merge of #184. It is not a Volume 3 manuscript edit. `seam-sources.json` updates the Chapter 1 hash and writes an existing en dash as a character rather than a JSON escape. The Chapter 8 sentence is the same sentence.
+
+### Checks on this head, separate from the proof
+
+[Build books 43074401955](https://github.com/OussamaSegh/Order-and-Chance/actions/runs/43074401955) completed success on `f7dc4d4a`, including `list`, `debs`, all fifteen volume builds, and `site`. `publish` is skipped. [Volume 4 native QA 43074401670](https://github.com/OussamaSegh/Order-and-Chance/actions/runs/43074401670) completed success on the same SHA. Those runs are the writer’s green builds. They are not the proof, and they are not the build of this review note. The build of the review note is recorded after this commit, on its own head.
+
+### Current disposition of all twenty IDs
+
+Live `main` is `6e5cc70d814c9cc196a399aaa3982bb56803d501`. The approved Brownian head is `f7dc4d4ad17cc21fd163812c646e0132a530912b`.
+
+| ID | Disposition |
+| --- | --- |
+| V4R2-01 | Approved at `f7dc4d4a`. The dyadic lemma and the linear-image equality stand, and the atom is the dyadic strip. |
+| V4R2-02 | Closed on `main` by #176. |
+| V4R2-03 | Closed on `main` by #178. |
+| V4R2-04 | Closed on `main` by #178. |
+| V4R2-05 | Closed on `main` by #177. |
+| V4R2-06 | Merged in #186 at `5a0c0d9d5576a5986ea5ad0f8679fb709473a185`. |
+| V4R2-07 | Merged in #184 at `414cb76f8c01ef89af5ea7fa14b639e069c14f32`. |
+| V4R2-08 | Closed on `main` by #183. |
+| V4R2-09 | Closed on `main` by #185. |
+| V4R2-10 | Approved at `f7dc4d4a`. The half-line \(1-\Phi(a/\sqrt t)\) is the lower half-line of \(-B\). |
+| V4R2-11 | Merged in #182 at `21cb46f07126287a7c918e6a79ec62ac8b02f503`. |
+| V4R2-12 | Merged in #182, same commit. |
+| V4R2-13 | Merged in #181 at `fb05d3f2f8873bfea9ed34758764badf70ca685a`. |
+| V4R2-14 | Merged in #189 at `6e5cc70d814c9cc196a399aaa3982bb56803d501`. |
+| V4R2-15 | Approved inside #180 and still present at `f7dc4d4a`. |
+| V4R2-16 | Approved inside #180 and still present at `f7dc4d4a`. |
+| V4R2-17 | Merged in #189. |
+| V4R2-18 | Merged in #189. |
+| V4R2-19 | Merged in #189. |
+| V4R2-20 | Merged in #189. |
+
+## Third pass — head `9271ba96`, historical record of the approval before the atom sentence
 
 **Reviewer.** Same independent reviewer, `bc-114da047-b320-5bb0-b0d1-2f6495477a25`. The new commits are still by writer `bc-0f6fa3d7`. This pass did not edit that branch.
 
