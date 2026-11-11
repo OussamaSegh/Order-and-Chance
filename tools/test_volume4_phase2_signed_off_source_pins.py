@@ -12,7 +12,8 @@ import unittest
 ROOT = Path(__file__).resolve().parents[1] / "volume4-chance" / "chapters"
 PINS = {
     "ch02-discrete.tex": {
-        "sha": "ef8e076f50f4785421e6ee6dee2fe4f288300b08",
+        # Reread 2026-11-11 for the finite-additivity derivation (V4R2-02). Labels unchanged.
+        "sha": "d6ddee17ed770fd8b017467160d7b36e8f3dc320",
         "claims": "thm:poissonlimit prop:fixedpoisson prop:cycles thm:coupon lem:geovar prop:couponvar prop:empty".split(),
         "exercises": "ex:records ex:fixedvar ex:quicksort ex:factorial ex:reservoir ex:prisoners ex:birthdaywait ex:twopoisson".split(),
     },
