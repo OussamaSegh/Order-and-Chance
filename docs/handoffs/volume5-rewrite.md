@@ -28,7 +28,7 @@ Gate B of the master plan (independent verification) is not this pass. The write
 | 2 | Generating Functions as a Computing Tool | `ch02-generating.tex` | **Done** |
 | 3 | Classic Series and Infinite Products | `ch03-series.tex` | **Done** |
 | 4 | Integration Techniques | `ch04-integrals.tex`, `bbp-borwein.tex` | **Done** |
-| 5 | The Gamma and Beta Functions | `ch05-gamma.tex` | Not started |
+| 5 | The Gamma and Beta Functions | `ch05-gamma.tex` | **Done** |
 | 6 | Fourier Series | `ch06-fourier.tex` | Not started |
 | 7 | The Discrete Fourier Transform and the FFT | `ch07-fft.tex` | Not started |
 | 8 | The Fourier Transform and Poisson Summation | `ch08-transform.tex` | Not started |
@@ -53,6 +53,8 @@ Gate B of the master plan (independent verification) is not this pass. The write
 
 **Chapter 4.** The trick shown on one integral before the theory; closing section; labels; Volume 1 and 4 citations corrected. Proof repairs: the Borwein theorem no longer says "by dominated convergence" for a discontinuous limit (explicit two-step estimate instead); the tiling problem proves additivity of the double integral by a common grid; Sondow's part (b) has a real remainder estimate; Tonelli in Sondow's part (a) is worded as admitted (Volume 7, Theorem 9.5); Euler's constant is cited from Volume 1, not from the later asymptotics chapter. Plan item done: new three-star exercise `ex:fresnel` (Fresnel integrals by a parameter), appended last. Check: `check_ch04_integrals.py` (includes the hexadecimal digits of π at position 10^6 and the exact Borwein fraction).
 
+**Chapter 5.** Proofs re-read and found sound (the chapter follows Artin: Bohr–Mollerup does the work, no double integral). Closing section added, which answers the opening question about (1/2)!. Internal numbers turned into `\ref`; Volume 1 citations corrected (Stirling's formula is its Chapter 9, the weighted AM–GM its Chapter 10, the product of sines its Chapter 6). The remark on the usual double-integral proof of the Beta formula now says plainly that this volume does not have Fubini–Tonelli or the change of variables, and does not use them. The ball volume keeps slicing as the definition of V_n. The sophomore's dream solution justifies term-by-term integration by uniform convergence (|x log x| ≤ 1/e) instead of an appeal to dominated convergence. Sources added for the exercises (Fulton–Harris, Nair, Dalzell, Lucas, Borwein–Bailey–Girgensohn). Check: `check_ch05_gamma.py` (includes a brute-force count of factorisations of an n-cycle for n ≤ 7).
+
 ## Rules found on the way (keep them)
 
 - **Numbering inside a chapter is preserved.** Volumes 6–15 cite Volume 5 by hand-typed numbers (for example "Volume 5, Theorem 2.12", "Volume 5, Exercise 2.3"). Their migration stays a pure chapter shift only if no numbered statement or exercise is inserted or removed in the middle of a chapter. New exercises go at the END of the exercise list (and their hints and solutions at the end of those sections). An exercise that needs a later chapter keeps its place and number, loses the forward part, and the forward part becomes a new exercise at the end of the later chapter.
@@ -66,7 +68,6 @@ Gate B of the master plan (independent verification) is not this pass. The write
 - **Ch. 9.** One sentence saying which complex analysis this chapter owns and which Volume 8, Chapter 14 owns. The line about the homology form of Cauchy's theorem says "proved in Volume 8": check against Volume 7, Chapter 6 (Jordan) and Volume 8.
 - **Ch. 10.** Completed zeta is ξ, not Λ (master plan 4.5). A sentence fixing the letter. The unproved claim about smooth cutoffs of Σn: prove it or remove it. Numerical zeros of ζ: stated as computations with a source.
 - **Ch. 13.** Legendre's modulus function must not use Λ. The closing problems each state the chapters they use; their hand-typed numbers ("Theorem~12.3", "Exercise~7.7", "Volume~5") are in the old numbering. Problems citing Volume 13, Exercise 8.5 or Volume 6 as tools break rule R1 (a solution is a proof): rework or move.
-- **Ch. 3, 5.** Tonelli is "Admitted here, proved in Volume 7, Theorem 9.5" at each use; Chapter 5 line on Fubini–Tonelli and change of variables needs the same wording or a proof on rectangles.
 - **All.** About 460 hand-typed internal references to convert to `\ref`.
 - **Other volumes.** Citations of Volume 5 by chapter number in Volumes 6–15 are now off (table in the citation map). This thread does not edit other volumes.
 - **Ledgers.** `docs/plan/ledgers/` does not exist yet (Phase 0 of the master plan). The per-chapter check scripts are the trace for numerical claims until it does.
