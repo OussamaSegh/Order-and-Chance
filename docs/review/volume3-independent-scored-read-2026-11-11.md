@@ -199,7 +199,7 @@ Sources actually consulted for the external claims: the reading and print PDFs; 
 - Every one of the 249 lines in the repository that mention “Volume 3”. The numbered theorem, proposition, lemma, corollary, and exercise pointers found by a script were the ones opened. Unnumbered phrases (“as in Volume 3”, “the Vandermonde determinant of Volume 3”) were sampled, not exhausted.
 - A Kindle Paperwhite rendering. EPUB structure and CSS were checked; device hyphenation and baseline alignment were not.
 - Visual inspection of all 518 reading pages. All pages were measured for text outside the trim; about thirty were rendered and looked at.
-- The comparison with existing Volume 3 reviews. That section is written after this scorecard is committed.
+- A separate chapter-by-chapter file for Chapters 1–3. That pass never wrote a report. It was not restarted. The scores for those chapters rest on the reading already recorded above.
 
 ## 7. Comparison with existing reviews
 
