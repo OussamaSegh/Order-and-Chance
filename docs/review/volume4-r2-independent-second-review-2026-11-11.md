@@ -8,7 +8,90 @@
 
 **How to read the dispositions.** “Approve the repair” means the manuscript change closes the cited issue and does not weaken the stated theorem. It is not a merge. Parent Nori merges. “Repair before approval” means the stated conclusions are the classical ones, but the write-up still does not justify a step it uses.
 
-The section **Second pass** below is the current verdict. It supersedes the first-pass rows for #180 and for V4R2-14 and V4R2-17 through V4R2-20. The first pass remains the record of head `fd0aa1ca`.
+The section **Third pass** is the current verdict on V4R2-01 and V4R2-10. The second pass remains the record of head `3bb6331e`, where those two IDs were not approved. The first pass remains the record of head `fd0aa1ca`.
+
+## Third pass — head `9271ba96`, Theorems 12.4 and 12.12 approved
+
+**Reviewer.** Same independent reviewer, `bc-114da047-b320-5bb0-b0d1-2f6495477a25`. The new commits are still by writer `bc-0f6fa3d7`. This pass did not edit that branch.
+
+**Live head.** [#180](https://github.com/OussamaSegh/Order-and-Chance/pull/180) is `9271ba96cacc8ed51f2bfed37bce050a179ea5bd`. It is a descendant of `3bb6331ef89bd9b74a57a1ad2640a79ffc9a13d3`. The two new commits are `ca63460f` (the dyadic lower bound) and `9271ba96` (the Volume 3 seam fingerprint). `main` has moved to `6e5cc70d814c9cc196a399aaa3982bb56803d501`, the merge of #189. Pull requests #181, #182, #184, #186, and #189 are merged. #180’s base is still `a2cfdd30`, and GitHub reports it `CONFLICTING`. The only file changed on both sides is `review/volume3-internal/concepts.json`. The chapter files merge. This review does not rebase the writer branch.
+
+**Verdict.** V4R2-01 and V4R2-10 are closed at this head. Theorems 12.4 and 12.12 are the original sentences, labels `thm:levy` and `thm:reflection`. No label was added or removed. Theorem counts stay 1 and 5 in the two edited chapters, and exercise counts stay 8 and 7. `lemmax` is an unnumbered lemma, so it does not move a number. No caption, font, or figure text changed. The source pins `45b451d1194ac238f60da615e2844504cfd40635` and `7d4bd25d6a809e083af4c1e6c7bf9f394f587e30` are the git blobs of `ch01-counting.tex` and `ch11-brownian.tex`. The comments say they are not an independent sign-off.
+
+A green build is not the reason for this approval. The proof was read. The build is recorded separately below.
+
+### The lower bound is now a proof
+
+`ch01-counting.tex` lines 101–130, unnumbered lemma “dyadic outer content”. It states four facts: a finite disjoint union of half-open dyadic intervals has outer content equal to the sum of its lengths; one half-open interval `[c,d)` has outer content `d-c`; a countable set of points has outer content 0; deleting a null set does not change outer content.
+
+The argument does not assume countable additivity, and it does not use `P*(A^c)=1-P*(A)`.
+
+- Monotonicity is the definition: a cover of a larger set covers a subset.
+- A point sits in `[x, min(1, x+2^{-M}))`. A countable set is covered by intervals of lengths `η 2^{-k}`. That is a countable cover, which the definition of outer content already allows.
+- If `P*(N)=0` and `N⊂A`, subadditivity gives `P*(A)≤P*(A\N)`, and monotonicity gives the other inequality. Proposition `prop:subadd` is already proved before the lemma.
+- For one dyadic interval, the interval is a cover, so outer content is at most its length. For the matching lower bound, a countable half-open cover is enlarged by `ε_i` with `∑ε_i<η` to an open cover of the compact segment `[a,b-δ]`. The least-upper-bound property, Volume 1, Chapter 3 (`ch05-sequences-series.tex`; the language chapter is Chapter 0), produces a finite subcover. The greedy right-endpoint walk on that finite cover has total length greater than `b-δ-a`. Sending `η` and then `δ` to 0 shows every cover is at least as long as the interval. The right endpoint `b` is excluded from `[a,b)`, and the closed segment stops at `b-δ`, which does lie in the interval.
+- A finite disjoint union is covered by its pieces. For a cover of the union, the intersections with each piece are half-open, cover that piece, and are disjoint inside each cover interval, so the one-interval bound adds.
+- A general half-open interval contains a dyadic union that omits at most one cell of length `2^{-N}` at each end. Monotonicity and the dyadic equality give the lower bound. Let `N→∞`.
+- Proposition `prop:bits` writes a finite-bit event as a finite union of disjoint level-`n` cylinders. The lemma equates its outer content with the sum of those lengths.
+
+This is the lemma the second pass asked for. It is proved from the definition, subadditivity, and the least upper bound. It is not an analogy with the one-coordinate squeeze.
+
+### Transfer into the Brownian argument
+
+`ch11-brownian.tex` line 62 now uses that lemma on both sides of the uniform squeeze. The inner dyadic union sits in the threshold except for countably many endpoints. Its outer content equals its length, deleting the endpoints does not change that content, and monotonicity lifts the lower bound to the threshold. The outer union covers the threshold and has outer content equal to its length. The two lengths approach the Gaussian tail, so the outer content equals that tail. The self-cover is no longer asked to do both jobs.
+
+Lines 79–83 do the same for a finite linear image `L=∑ c_j Z_j`. The outer cubes, replaced by dyadic unions whose lengths overshoot the Gaussian masses by less than `η`, plus the coordinate tails, give `P*≤γ+3η` by subadditivity. The inner cubes, replaced by one common disjoint dyadic union, have outer content equal to a length at least `γ-3η`, and that set sits in the digit event after the endpoints are deleted. Monotonicity gives the lower bound. Every `η>0` works, so `P*=γ`. The tail bound `P*(E_n)≤2^n e^{-n}+∑_{k≥n}2^k e^{-2k}` still uses only the upper bound. The integral `≤ e^{-n}/√(π n)` is a numerical check of the Gaussian tail, not the outer-content proof.
+
+The sandwich at line 120 is now two proved inequalities. The lower one uses `P*({B_{t_n}≤x-δ_n})=Φ_{t_n}(x-δ_n)`, the linear-image equality, and subtracts `P*(E_n)`. The upper one adds `P*(E_n)` to the enlarged dyadic half-line. Both Gaussian values tend to the distribution function of `N(0,t)`. So `P*({B_t≤x})` equals that distribution function.
+
+One increment uses both endpoints and the same equality. Several disjoint increments are handled as a quadrant of uncorrelated linear images. The product integral equals `∏ Φ(α_r/√ℓ_{n,r})` because Theorem `thm:gaussvec` rotates the coefficient rows to independent standard normals and reads rectangle probabilities from the product density. That theorem states that it does not use Lévy’s continuity theorem. The cube transfer then copies the one-image argument: the Chapter 1 lemma prices the assembled dyadic union, and the inclusions with `±2δ_n` pass to the limit. The joint distribution function equals the product of the marginals. That is the independence in Definition `def:bm`.
+
+On `[0,∞)`, pieces from different unit copies are conditions on disjoint bit blocks. Proposition `prop:manyuniforms` multiplies the lengths, and the Chapter 1 lemma turns the product into the outer content of the intersection. The quadrant argument applies to the resulting uncorrelated linear images. The upper half-line `{B_t≥x}` is the lower half-line of `-B_t`, and `-S_n` is the linear image with the signs reversed. The sandwich applies to that image. This is not the rule `P*(complement)=1-P*`.
+
+The reflection statement at line 359 is unchanged. Line 428 identifies `1-Φ(a/√t)` by that negated linear image. The window, the factor 12, the order of `δ` then `ε`, and the strip of `S_n` are the argument already accepted as algebra at `3bb6331e`. They now sit on an equality that has been proved. The density derivative and the divergent integral `∫_1^∞ t^{-1/2} dt` remain calculus checks of the displayed formula, not a substitute for the half-line.
+
+One sentence is looser than the proof around it. Line 120 says the limit strip `{x-ε<B_t≤x+ε}` has outer content equal to a Gaussian integral of length `2ε`. The equality that was proved for a bounded interval applies to a finite linear image, and the text has already said that subtracting two half-lines does not price a strip of the limit. The atom `P*({B_t=x})=0` follows from the inclusion already used for half-lines: the strip sits in `E_n` or in a dyadic strip, and the dyadic strip’s outer content equals the integral. The reflection’s own atom sentence uses the strip upper bound proved there, which tends to 0 with the width. This loose sentence does not reopen Theorems 12.4 or 12.12. The minimal wording, if the writer touches the line, is to name the dyadic strip.
+
+### The Volume 3 fingerprint
+
+`ca63460f` would fail `list` because `ch01-counting.tex` is a tracked seam source and its hash changed. `9271ba96` records the new hash. It does not turn the check off.
+
+- `review/volume3-internal/seam-sources.json` changes the sha256 of `volume4-chance/chapters/ch01-counting.tex` to `df3f737679ce2583effd86e31bdbcd1ace11bc4c34c76294c6407930cd9926bc`, which is the sha256 of the file at this head. The Chapter 8 note is the same sentence; a JSON escape became the en dash it already denoted.
+- `concepts.json` keeps 120 entries, every one `accepted-internal`. The only entry-level change is `reviewed_snapshot_sha256`. The snapshot’s source list changes only that Chapter 1 hash. The new key `v4r2_dyadic_outer_content_seam_retention` says the refresh is not a Volume 3 approval and not a sign-off of the lemma.
+- No file under `volume3-symmetry/` changed. `tools/test_volume3_internal.py` still rejects a snapshot whose sha256 has been replaced by zeros. The gate compares hashes. It was updated, not bypassed.
+
+### Checks, separate from the proof
+
+On this head, Build books [43066297012](https://github.com/OussamaSegh/Order-and-Chance/actions/runs/43066297012) has `list`, `debs`, all fifteen volume builds, and `site` in success. `publish` is skipped. Volume 4 native QA [43066296996](https://github.com/OussamaSegh/Order-and-Chance/actions/runs/43066296996) succeeded. That is the writer’s green run. It is not the proof.
+
+### Current disposition of all twenty IDs
+
+`main` is `6e5cc70d814c9cc196a399aaa3982bb56803d501`.
+
+| ID | Disposition |
+| --- | --- |
+| V4R2-01 | Closed at `9271ba96`. The dyadic lemma supplies the lower bound, and the linear-image equality is proved from it. |
+| V4R2-02 | Closed on `main` by #176. |
+| V4R2-03 | Closed on `main` by #178. |
+| V4R2-04 | Closed on `main` by #178. |
+| V4R2-05 | Closed on `main` by #177. |
+| V4R2-06 | Merged in #186 at `5a0c0d9d5576a5986ea5ad0f8679fb709473a185`. |
+| V4R2-07 | Merged in #184 at `414cb76f8c01ef89af5ea7fa14b639e069c14f32`. |
+| V4R2-08 | Closed on `main` by #183. |
+| V4R2-09 | Closed on `main` by #185. |
+| V4R2-10 | Closed at `9271ba96`. The half-line `1-Φ(a/√t)` is the lower half-line of `-B`, not a complement rule. |
+| V4R2-11 | Merged in #182 at `21cb46f07126287a7c918e6a79ec62ac8b02f503`. |
+| V4R2-12 | Merged in #182, same commit. |
+| V4R2-13 | Merged in #181 at `fb05d3f2f8873bfea9ed34758764badf70ca685a`. |
+| V4R2-14 | Merged in #189 at `6e5cc70d814c9cc196a399aaa3982bb56803d501`. |
+| V4R2-15 | Closed inside #180 and still present at `9271ba96`. |
+| V4R2-16 | Closed inside #180 and still present at `9271ba96`. |
+| V4R2-17 | Merged in #189. |
+| V4R2-18 | Merged in #189. |
+| V4R2-19 | Merged in #189. |
+| V4R2-20 | Merged in #189. |
+
+Audit #190 has moved to `9896c5ca0a7bc06b90081ca2f4752b96f7e32e1c`. This pass did not re-read it.
 
 ## Second pass — head `3bb6331e` and pull request #189
 
