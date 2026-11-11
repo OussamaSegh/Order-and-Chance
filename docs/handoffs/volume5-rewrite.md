@@ -27,7 +27,7 @@ Gate B of the master plan (independent verification) is not this pass. The write
 | 1 | Finite Calculus | `ch01-finite.tex` | **Done** |
 | 2 | Generating Functions as a Computing Tool | `ch02-generating.tex` | **Done** |
 | 3 | Classic Series and Infinite Products | `ch03-series.tex` | **Done** |
-| 4 | Integration Techniques | `ch04-integrals.tex`, `bbp-borwein.tex` | Not started |
+| 4 | Integration Techniques | `ch04-integrals.tex`, `bbp-borwein.tex` | **Done** |
 | 5 | The Gamma and Beta Functions | `ch05-gamma.tex` | Not started |
 | 6 | Fourier Series | `ch06-fourier.tex` | Not started |
 | 7 | The Discrete Fourier Transform and the FFT | `ch07-fft.tex` | Not started |
@@ -51,6 +51,8 @@ Gate B of the master plan (independent verification) is not this pass. The write
 
 **Chapter 3.** Closing section; the Bernoulli asymptotic now proves ζ(2k)→1 before using it; internal numbers turned into `\ref`; Volume 2 citations corrected (continued fractions are its Chapter 9); Tonelli in Ritelli's exercise is worded "Admitted here, proved in Volume 7, Theorem 9.5". The last exercise (`pb:levy`, growth of continued fraction denominators) used the Gauss–Kuzmin exercise of Chapter 10 as a premise, so it moved to the end of Chapter 10, with the attribution corrected to Khinchin 1935 and Lévy 1936. Check: `check_ch03_series.py`.
 
+**Chapter 4.** The trick shown on one integral before the theory; closing section; labels; Volume 1 and 4 citations corrected. Proof repairs: the Borwein theorem no longer says "by dominated convergence" for a discontinuous limit (explicit two-step estimate instead); the tiling problem proves additivity of the double integral by a common grid; Sondow's part (b) has a real remainder estimate; Tonelli in Sondow's part (a) is worded as admitted (Volume 7, Theorem 9.5); Euler's constant is cited from Volume 1, not from the later asymptotics chapter. Plan item done: new three-star exercise `ex:fresnel` (Fresnel integrals by a parameter), appended last. Check: `check_ch04_integrals.py` (includes the hexadecimal digits of π at position 10^6 and the exact Borwein fraction).
+
 ## Rules found on the way (keep them)
 
 - **Numbering inside a chapter is preserved.** Volumes 6–15 cite Volume 5 by hand-typed numbers (for example "Volume 5, Theorem 2.12", "Volume 5, Exercise 2.3"). Their migration stays a pure chapter shift only if no numbered statement or exercise is inserted or removed in the middle of a chapter. New exercises go at the END of the exercise list (and their hints and solutions at the end of those sections). An exercise that needs a later chapter keeps its place and number, loses the forward part, and the forward part becomes a new exercise at the end of the later chapter.
@@ -59,7 +61,7 @@ Gate B of the master plan (independent verification) is not this pass. The write
 
 ## Plan items still open, by chapter
 
-- **Ch. 4, 7, 9.** One new exercise of the hardest level each (Chapter 9 already received `pb:zigzagpole`, two stars; it still needs a three-star one).
+- **Ch. 7, 9.** One new exercise of the hardest level each (Chapter 4 has `ex:fresnel`; Chapter 9 already received `pb:zigzagpole`, two stars, and still needs a three-star one).
 - **Ch. 8.** Jacobi's theta becomes ϑ, with a sentence fixing the letter at first use. State the class of functions of the inversion theorem (`thm:ftinversion`) and check it is the class Chapter 12 and Volume 6 use (risk 4). "Chapter~12 follows him" is a stale number.
 - **Ch. 9.** One sentence saying which complex analysis this chapter owns and which Volume 8, Chapter 14 owns. The line about the homology form of Cauchy's theorem says "proved in Volume 8": check against Volume 7, Chapter 6 (Jordan) and Volume 8.
 - **Ch. 10.** Completed zeta is ξ, not Λ (master plan 4.5). A sentence fixing the letter. The unproved claim about smooth cutoffs of Σn: prove it or remove it. Numerical zeros of ζ: stated as computations with a source.
