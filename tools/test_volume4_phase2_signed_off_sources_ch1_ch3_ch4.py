@@ -17,7 +17,8 @@ SCOPE = {
         "exercises": "ex:mybirthday ex:twochildren ex:penney ex:montyn ex:pairwise ex:aces ex:catalan ex:smallballot".split(),
     },
     "ch03-generating.tex": {
-        "sha": "10c1ebdc486ca82ec335654bbacc8cfa6ad0ae76",
+        # Reread 2026-11-11 for the undefined S_N and the O(log n) bridge (V4-09, V4-10).
+        "sha": "369bbb43ea41bbfb7e81340c9248516564135d3d",
         "claims": "prop:pgfcoeff prop:pgfmean prop:pgfvar prop:pgfsum prop:randomsum prop:genmean thm:extinction".split(),
         "exercises": "ex:thinning ex:golden ex:lotka ex:randomsumvar ex:progeny ex:firstpassage ex:binseries ex:poissongw".split(),
     },
