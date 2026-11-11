@@ -12,7 +12,9 @@ import unittest
 ROOT = Path(__file__).resolve().parents[1] / "volume4-chance" / "chapters"
 SCOPE = {
     "ch01-counting.tex": {
-        "sha": "12f06afabe11582b9c8c0824b27959a6a03e26ed",
+        # Reread 2026-11-11 for the countable-cover wording and the tail-of-ones
+        # argument (V4-14), and for the named host sentence (V4-15).
+        "sha": "f4129ed5d7477942cbae9e83b122d871e0a7c6c2",
         "claims": "prop:bits prop:subadd prop:infdigits thm:ballot".split(),
         "exercises": "ex:mybirthday ex:twochildren ex:penney ex:montyn ex:pairwise ex:aces ex:catalan ex:smallballot".split(),
     },
