@@ -9,7 +9,7 @@ produce a uniform limit. The limit is a Brownian motion.
 
 Imagine watching a particle that receives many tiny random nudges. The walk of Chapter~8 jumps by whole steps. If we make the steps smaller and observe them more often, we expect a path with no visible jumps. But a continuous path is not a proof: we must actually construct it, and we must check that different time intervals have independent changes.
 
-The normal distribution of Chapter~6 suggests the rule. Over a time interval of length $h$, the increment should have mean zero and variance $h$; over two disjoint intervals, the increments should be independent. Writing $N(0,h)$ means a normal variable with mean $0$ and variance $h$, not standard deviation $h$. A Brownian motion is the continuous process that satisfies these rules.
+The normal distribution of Chapter~5 suggests the rule. Over a time interval of length $h$, the increment should have mean zero and variance $h$; over two disjoint intervals, the increments should be independent. Writing $N(0,h)$ means a normal variable with mean $0$ and variance $h$, not standard deviation $h$. A Brownian motion is the continuous process that satisfies these rules.
 
 \begin{definition}[Brownian motion]\label{def:bm}
 A Brownian motion satisfies $B_0=0$, has continuous paths, has independent increments, and gives $B_t-B_s$ the law $N(0,t-s)$.
@@ -59,15 +59,36 @@ Each has variance $2^{-n-1}+2^{-n-1}=2^{-n}$. Their covariance is $\operatorname
 The piecewise-linear interpolations converge uniformly, almost surely, to a Brownian motion on $[0,1]$.
 \end{theorem}
 \begin{proof}
-Level $n$ has at most $2^n$ new displacements, each $N(0,2^{-(n+1)})$. The threshold $a_n=\sqrt{2n}\,2^{-n/2}$ satisfies $a_n^2/(2\sigma^2)=2n$. Proposition~\ref{prop:gausstail} and a union bound produce a probability $O(2^n e^{-2n})$, whose series converges. Theorem~\ref{thm:bc}(a) says that almost surely $a_n$ eventually dominates every displacement. Since $\sum\sqrt n\,2^{-n/2}<\infty$, the interpolations are uniformly Cauchy. The limit $B$ is continuous. At a dyadic time the value is already final, and Lemma~\ref{lem:levylevel} gives independent normal increments of variance equal to the length.
-
-For a general time $t$, let $t_n$ be a dyadic within $2^{-n}$ of $t$, and write $\rho_n=\sum_{k\ge n}a_k$. On the event that every new displacement of level $k\ge n$ is at most $a_k$, and every level-$n$ increment is at most $a_n$, the uniform distance from the level-$n$ interpolant to $B$ is at most $\rho_n$, and $|B_t-B_{t_n}|\le a_n+\rho_n$. Call the complementary event $E_n$. It is a union of normal-threshold events, and its probability is $O(2^ne^{-n}+\sum_{k\ge n}2^ke^{-2k})$, which tends to $0$ as $n\to\infty$. Thus
+Level $n$ has at most $2^n$ new displacements. The $j$th one is $D_{n,j}=\sigma Z_{n,j}$ with $\sigma^2=2^{-(n+1)}$, where $Z_{n,j}$ is a standard normal built as $\Phi^{-1}$ of its own uniform $U_{n,j}$ from Proposition~\ref{prop:manyuniforms}. Set $a_n=\sqrt{2n}\,2^{-n/2}$. Then $a_n/\sigma=2\sqrt n$, so $a_n^2/(2\sigma^2)=2n$. The event $\{|D_{n,j}|>a_n\}$ is the pair of interval conditions $\{U_{n,j}<\Phi(-2\sqrt n)\}$ and $\{U_{n,j}>\Phi(2\sqrt n)\}$, up to the outer-content-zero set on which a block of bits is redefined. Proposition~\ref{prop:manyuniforms} squeezes each interval condition between finite unions of dyadic cylinders in the Chapter~1 model, and the total lengths of those unions approach the length of the interval. The outer content of the condition is therefore the Gaussian tail. Proposition~\ref{prop:gausstail} gives
 \[
- P(B_{t_n}\le x-a_n-\rho_n)-P(E_n)
- \le P(B_t\le x)
- \le P(B_{t_n}\le x+a_n+\rho_n)+P(E_n).
+ P(|Z|>2\sqrt n)
+ =\frac{2}{\sqrt{2\pi}}\int_{2\sqrt n}^{\infty}e^{-t^2/2}\,\dd t
+ \le\frac{1}{\sqrt{2\pi n}}\,e^{-2n}
+ \le e^{-2n}.
 \]
-The variable $B_{t_n}$ is normal of variance $t_n$. As $n\to\infty$, one has $t_n\to t$ and $a_n+\rho_n\to0$, so both Gaussian distribution functions tend to the distribution function of $N(0,t)$. Therefore $B_t$ has that law. The same comparison, applied to both endpoints of an interval, shows that $B_t-B_s$ is $N(0,t-s)$.
+Let $A_n$ be the union of these events over the finitely many displacements at level $n$. Proposition~\ref{prop:subadd} yields $P^*(A_n)\le 2^n e^{-2n}$. The series $\sum_n 2^n e^{-2n}$ converges, being geometric of ratio $2/e^2<1$. An outcome on which $a_n$ fails to dominate the level-$n$ displacements for infinitely many $n$ lies in $\bigcup_{n\ge N}A_n$ for every $N$. A second application of Proposition~\ref{prop:subadd} bounds that set's outer content by $\sum_{n\ge N}2^n e^{-2n}$, which tends to $0$ as $N\to\infty$. This is the convergent half of the Borel--Cantelli lemma, proved for these outer contents. Theorem~\ref{thm:bc}(a) is the same idea for events that are finite unions of half-open master intervals. A normal threshold of a coordinate built from infinitely many bits is not such a union, so that theorem is not the step used here. Almost surely, $a_n$ eventually dominates every displacement.
+
+The same estimate applies to the increments across the level-$n$ bins. Such an increment is normal of variance $2^{-n}$, so the standardised height of the threshold $a_n$ is $\sqrt{2n}$ and the tail is at most $e^{-n}$. There are at most $2^n$ bins. Let $E_n$ be the event that some displacement of level $k\ge n$ exceeds $a_k$, or some level-$n$ increment exceeds $a_n$. Countable subadditivity gives
+\[
+ P^*(E_n)=O\Bigl(2^n e^{-n}+\sum_{k\ge n}2^k e^{-2k}\Bigr).
+\]
+The bound tends to $0$, because $2/e<1$ and $2/e^2<1$. Write $\rho_n=\sum_{k\ge n}a_k$. The ratio $a_{k+1}/a_k$ tends to $1/\sqrt2$, so it is at most $4/5$ for every large $k$, and the tail $\rho_n$ is at most a constant multiple of $a_n$. In particular $\rho_n\to0$. On the complement of $E_n$, a displacement of size at most $a_k$ moves the piecewise-linear interpolant by at most $a_k$ at every time, so the level-$n$ interpolant lies within $\rho_n$ of the limit $B$. The interpolants are therefore uniformly Cauchy off one set of outer content zero, and $B$ is continuous. Each level-$n$ bin is a straight segment whose vertical change is the bin increment, hence at most $a_n$ off $E_n$. The limit lies within $\rho_n$ of the interpolant, so the oscillation of $B$ on one bin is at most $a_n+2\rho_n$. An interval of length $2^{-n}$ meets at most two bins, and the oscillation of $B$ on it is at most $\omega_n=2a_n+4\rho_n$. This modulus is the one used for the reflection principle below. It tends to $0$.
+
+At a dyadic time the value is already final, and Lemma~\ref{lem:levylevel} gives independent normal increments of variance equal to the length. For a general time $t>0$, let $t_n$ be a dyadic within $2^{-n}$ of $t$, and write $\delta_n=a_n+\rho_n$. On the complement of $E_n$ one has $|B_t-B_{t_n}|\le\delta_n$. The variable $B_{t_n}$ is a finite sum of those dyadic increments, hence $N(0,t_n)$ by Lemma~\ref{lem:normalsum}. Its threshold probabilities are the Gaussian distribution function given by that lemma. They are not outer-content estimates. The set $E_n$ is different: it is a union of single-coordinate normal thresholds, so the bound above is an outer content, and $E_n$ is not a finite union of master intervals.
+
+The containments of outcomes
+\[
+ \{B_{t_n}\le x-\delta_n\}\subset\{B_t\le x\}\cup E_n,
+ \qquad
+ \{B_t\le x\}\subset\{B_{t_n}\le x+\delta_n\}\cup E_n
+\]
+and Proposition~\ref{prop:subadd} produce the same numerical bounds as a union bound, with the dyadic thresholds kept at the Gaussian probabilities just named and with the exceptional set charged at its outer content:
+\[
+ P(B_{t_n}\le x-\delta_n)-P^*(E_n)
+ \le P^*(\{B_t\le x\})
+ \le P(B_{t_n}\le x+\delta_n)+P^*(E_n).
+\]
+As $n\to\infty$ one has $t_n\to t$ and $\delta_n\to0$, so both Gaussian distribution functions tend to the distribution function of $N(0,t)$. The outer content $P^*(\{B_t\le x\})$ equals that distribution function, which is the law required of $B_t$. The same comparison, applied to both endpoints of an interval, shows that $B_t-B_s$ is $N(0,t-s)$.
 
 For disjoint intervals, approximate the endpoints by dyadic times so that the dyadic intervals remain disjoint and their lengths tend to the true lengths. Lemma~\ref{lem:levylevel} makes those dyadic increments independent and normal. The same inclusion, with an error $2(a_n+\rho_n)$ at each end, squeezes the joint distribution function of the limiting increments to the product of the limiting Gaussian distribution functions. A finite collection is the same argument. The limit therefore meets Definition~\ref{def:bm}. For $s\le t$, independence and centring give $\operatorname{Cov}(B_s,B_t)=\operatorname{Var}(B_s)=s$.
 \end{proof}
@@ -276,7 +297,7 @@ This is a finite sum of ordinary fixed-time independence identities; it is not a
 
 On $\{\tau<\infty\}$ we have $0\le\tau_n-\tau<2^{-n}$. Continuity of the path shows that each stopped observation and each increment in the formula converges to the corresponding quantity at $\tau$. Write $V_n$ for the finite vector of those stopped observations and increments at time $\tau_n$, and $V$ for the same vector at time $\tau$. The product $F\cdot H$ is a bounded continuous function $\Psi$ of this vector. For $R>q$ the event $\{\tau=R\}$ is contained in $\{B_R=a\}$, and $B_R$ has a continuous normal density, so that event has probability zero. Hence $\mathbf1_{\{\tau_n\le R\}}\to\mathbf1_{\{\tau\le R\}}$ almost surely, and $\Psi(V_n)\to\Psi(V)$ almost surely on $\{\tau\le R\}$.
 
-The expectations converge because $\Psi$ is bounded and the coordinates have Gaussian tails. Let $|\Psi|\le B$. Fix $A>0$ and let $E_{n,A}$ be the event that some coordinate of $V_n$ or of $V$ exceeds $A$. On the complement, both vectors lie in a fixed compact box, where $\Psi$ is uniformly continuous. Once $n$ is large, $|\Psi(V_n)-\Psi(V)|$ is smaller than any prescribed $\eta$, except on $E_{n,A}$. The contribution of $E_{n,A}$ to the expectations is at most $2B\,P(E_{n,A})$. Each increment coordinate of $V_n$, on $\{\tau_n\le R\}$, has the law of a normal increment of a fixed length at most $\max v_i$, in the sense of bounded continuous test functions, because the finite-grid identity already proved that those increments are Brownian and independent of $\{\tau_n\le R\}$. The indicator of a tail $\{|x|>A\}$ is squeezed between two such test functions. A normal tail is then at most $\phi(A/c)/(A/c)$ by Proposition~\ref{prop:gausstail}, with $c$ the square root of that length, up to an error that those test functions can make arbitrarily small. The stopped observations $B_{r\wedge\tau_n}$ are bounded by $|a|$ plus the same kind of increment from the deterministic time $q$. Sending $A\to\infty$ makes $P(E_{n,A})$ small, uniformly in large $n$. Therefore $\mathbb E[\mathbf1_{\{\tau_n\le R\}}\Psi(V_n)]\to\mathbb E[\mathbf1_{\{\tau\le R\}}\Psi(V)]$, and the same limit applies to $\mathbb E[\mathbf1_{\{\tau_n\le R\}}H_n]$. The factorisation survives, with $\tau$ in place of $\tau_n$, on $\{\tau\le R\}$.
+The expectations converge because $\Psi$ is bounded and the coordinates have Gaussian tails. Let $|\Psi|\le\beta$. Fix $A>0$ and let $E_{n,A}$ be the event that some coordinate of $V_n$ or of $V$ exceeds $A$. On the complement, both vectors lie in a fixed compact box, where $\Psi$ is uniformly continuous. Once $n$ is large, $|\Psi(V_n)-\Psi(V)|$ is smaller than any prescribed $\eta$, except on $E_{n,A}$. The contribution of $E_{n,A}$ to the expectations is at most $2\beta\,P(E_{n,A})$. Each increment coordinate of $V_n$, on $\{\tau_n\le R\}$, has the law of a normal increment of a fixed length at most $\max v_i$, in the sense of bounded continuous test functions, because the finite-grid identity already proved that those increments are Brownian and independent of $\{\tau_n\le R\}$. The indicator of a tail $\{|x|>A\}$ is squeezed between two such test functions. A normal tail is then at most $\phi(A/c)/(A/c)$ by Proposition~\ref{prop:gausstail}, with $c$ the square root of that length, up to an error that those test functions can make arbitrarily small. The stopped observations $B_{r\wedge\tau_n}$ are bounded by $|a|$ plus the same kind of increment from the deterministic time $q$. Sending $A\to\infty$ makes $P(E_{n,A})$ small, uniformly in large $n$. Therefore $\mathbb E[\mathbf1_{\{\tau_n\le R\}}\Psi(V_n)]\to\mathbb E[\mathbf1_{\{\tau\le R\}}\Psi(V)]$, and the same limit applies to $\mathbb E[\mathbf1_{\{\tau_n\le R\}}H_n]$. The factorisation survives, with $\tau$ in place of $\tau_n$, on $\{\tau\le R\}$.
 
 Finally let $R$ tend to infinity through the integers. The events $\{\tau\le R\}$ increase to $\{\tau<\infty\}$, and the bounded factors allow the same limit. Thus the future increments at $\tau$ have the Brownian finite-dimensional laws and are independent of every finite observation of the \emph{stopped path} $(B_{r\wedge\tau})_{r\ge0}$, on the hitting event. A continuous stopped path is determined by its values on a countable dense set, so these tests express independence of the history up to $\tau$. Since the path is continuous and hits the level, $B_\tau=a$ on $\{\tau<\infty\}$. Consequently $B_{\tau+u}-a$ is a fresh Brownian motion as claimed.
 \end{proof}
@@ -293,10 +314,50 @@ Thus $M_t$ has the same law as $|B_t|$. Differentiating the distribution functio
 The expectation $\mathbb E[\tau_a]$ is infinite.
 \end{theorem}
 \begin{proof}
-A continuous path starting at $0$ has hit $a$ by time $t$ exactly when its maximum on $[0,t]$ is at least $a$. Proposition~\ref{prop:restart}, applied at level $a$ and at time $q=0$, says that on $\{\tau_a<\infty\}$ the shifted process $B_{\tau_a+u}-a$ is a Brownian motion independent of the stopped history. The symmetry used here is read at fixed dyadic times, which are the times already treated in that proof. For each fixed dyadic $s\le t$, the finite-grid identity makes $B_t-B_s$ symmetric about $0$ and independent of $\{\tau_n=s\}$. On that event, path continuity and $0\le\tau_n-\tau<2^{-n}$ give $B_s\to a$. Summing the finitely many such $s$ and passing to the limit with the same compact-box estimate as in the proposition gives
+A continuous path starting at $0$ has hit $a$ by time $t$ exactly when its maximum on $[0,t]$ is at least $a$. Proposition~\ref{prop:restart}, applied at level $a$ and at time $q=0$, says that on $\{\tau_a<\infty\}$ the shifted process $B_{\tau_a+u}-a$ is a Brownian motion independent of the stopped history, and that $B_{\tau_a}=a$. The comparison itself uses only the dyadic times $\tau_n$ already treated in that proof, and only bounded continuous test functions.
+
+Write $h=2^{-n}$ and let $G_n$ be the exceptional event $E_n$ of the existence argument, so $P^*(G_n)\to0$. On its complement the oscillation of $B$ on every interval of length $h$ is at most $\omega_n$, and $\omega_n\to0$. If $t-h<\tau_a\le t$, then $B_{\tau_a}=a$ and both times lie in an interval of length $h$, so $|B_t-a|\le\omega_n$ off $G_n$. The hitting event in that window is therefore contained in $G_n\cup\{|B_t-a|\le\omega_n\}$. Proposition~\ref{prop:subadd} and the normal density of $B_t$ bound its outer content by $P^*(G_n)+2\omega_n(2\pi t)^{-1/2}$, which tends to $0$. Every shorter window is contained in one of these dyadic windows, so the outer content of $\{t-h<\tau_a\le t\}$ tends to $0$ as $h\downarrow0$.
+
+Let $L_n=P(\tau_n\le t,\,B_t<a)$, $R_n=P(\tau_n\le t,\,B_t>a)$, $L=P(\tau_a\le t,\,B_t<a)$ and $R=P(\tau_a\le t,\,B_t>a)$. Since $\tau_a\le\tau_n$, one has $\{\tau_n\le t\}\subset\{\tau_a\le t\}$, and the two sets differ by a subset of $\{t-h<\tau_a\le t\}$. Thus $L_n\le L$ and $R_n\le R$, while $L-L_n$ and $R-R_n$ are at most the outer content of that window. In particular $L_n\to L$. The upper side has a direct Gaussian bound, which does not need the window's outer content. The event $\{B_t>a\}$ is contained in $\{\tau_a\le t\}$, so $R=P(B_t>a)$. The gap $R-R_n$ is contained in $\{B_{t-h}<a<B_t\}$. For any $\eta>0$,
 \[
- P(\tau_a\le t,\,B_t<a)=P(\tau_a\le t,\,B_t>a).
+ P(B_{t-h}<a<B_t)
+ \le P(|B_t-B_{t-h}|>\eta)+P(|B_t-a|\le\eta).
 \]
+The first term is a tail of $N(0,h)$ and tends to $0$ as $n\to\infty$, by Proposition~\ref{prop:gausstail}. The second is at most $2\eta(2\pi t)^{-1/2}$. Let $\eta\downarrow0$ after $n\to\infty$ to conclude $R_n\to R$.
+
+It remains to show $L_n-R_n\to0$. The two limits then give $L=R$. The indicators of $\{B_t<a\}$ and $\{B_t>a\}$ are not continuous test functions, and on $\{\tau_n=s\}$ the variable $B_t$ is symmetric about $B_s$, not about $a$. The difference is estimated through a window whose width is chosen after the time horizon has been fixed. Let $\eta>0$. First choose $\delta\in(0,t)$ so that the outer content of $\{t-2\delta<\tau_a\le t\}$ is less than $\eta$. With $\delta$ now fixed, choose $\varepsilon>0$ small enough that $12\varepsilon(2\pi\delta)^{-1/2}<\eta$.
+
+Let $F$ be continuous, odd, and satisfy $|F|\le1$, with $F(w)=-1$ for $w\le-2\varepsilon$ and $F(w)=1$ for $w\ge2\varepsilon$. Let $H$ be continuous, $0\le H\le1$, with $H(x)=1$ for $|x-a|\le\varepsilon$ and $H(x)=0$ for $|x-a|\ge2\varepsilon$. Let $\kappa$ be continuous, $0\le\kappa\le1$, with $\kappa(x)=0$ for $|x-a|\le\varepsilon/2$ and $\kappa(x)=1$ for $|x-a|\ge\varepsilon$, so that $\kappa(a)=0$ and $\kappa=1$ wherever $H<1$. Let $\psi$ be continuous, $0\le\psi\le1$, equal to $1$ on $[-2\varepsilon,2\varepsilon]$ and equal to $0$ outside $[-3\varepsilon,3\varepsilon]$. Write $S=\mathbf1_{\{B_t>a\}}-\mathbf1_{\{B_t<a\}}$ and $W=B_t-B_s$. For each dyadic $s\le t-\delta$ the finite-grid identity gives
+\[
+ \mathbb E\bigl[\mathbf1_{\{\tau_n=s\}}H(B_s)F(W)\bigr]
+ =\mathbb E[F(G_s)]\,\mathbb E\bigl[\mathbf1_{\{\tau_n=s\}}H(B_s)\bigr]=0,
+\]
+where $G_s$ is $N(0,t-s)$. The expectation of $F(G_s)$ vanishes because the density is even and $F$ is odd: the substitution $z\mapsto-z$ cancels the two halves of the integral. The same identity with $\psi$ in place of $F$, and with no factor $H$, gives
+\[
+ \mathbb E\bigl[\mathbf1_{\{\tau_n=s\}}\psi(W)\bigr]
+ =P(\tau_n=s)\,\mathbb E[\psi(G_s)]
+ \le P(\tau_n=s)\cdot\frac{6\varepsilon}{\sqrt{2\pi\delta}},
+\]
+since $\mathbb E[\psi(G_s)]\le P(|G_s|\le3\varepsilon)$ and the density of $G_s$ is at most $(2\pi\delta)^{-1/2}$.
+
+On $\{|B_s-a|\le\varepsilon\}$ and $\{|W|>2\varepsilon\}$, one has $S=F(W)$. Indeed $W>2\varepsilon$ forces $B_t>a+\varepsilon$, and $W<-2\varepsilon$ forces $B_t<a-\varepsilon$. Thus $|S-H(B_s)F(W)|\le 2\psi(W)$ on $\{H=1\}$. On $\{H<1\}$ the same difference is at most $2$, and $\kappa(B_s)=1$ there. Therefore, summing the finitely many dyadic times $s\le t-\delta$,
+\[
+ \bigl|R_n^{\mathrm{far}}-L_n^{\mathrm{far}}\bigr|
+ \le\frac{12\varepsilon}{\sqrt{2\pi\delta}}
+ +2\,\mathbb E\bigl[\kappa(B_{\tau_n})\mathbf1_{\{\tau_n\le t\}}\bigr],
+\]
+where the superscript restricts the events to $\{\tau_n\le t-\delta\}$. The function $\kappa$ is bounded and continuous, and the convergence already proved in Proposition~\ref{prop:restart} for such a function of the stopped position, at the fixed horizon $t$, yields
+\[
+ \mathbb E\bigl[\kappa(B_{\tau_n})\mathbf1_{\{\tau_n\le t\}}\bigr]
+ \to\mathbb E\bigl[\kappa(a)\mathbf1_{\{\tau_a\le t\}}\bigr]=0,
+\]
+because $\{\tau_a=t\}\subset\{B_t=a\}$ has probability zero and $\kappa(a)=0$. The near piece $t-\delta<\tau_n\le t$ has probability at most the outer content of $\{t-2\delta<\tau_a\le t\}$, once $n$ is large enough that $h<\delta$. That outer content is less than $\eta$. Hence
+\[
+ \limsup_{n\to\infty}|R_n-L_n|
+ \le\eta+\eta.
+\]
+The tolerance $\eta$ is arbitrary, so $L_n-R_n\to0$ and $L=R$.
+
 A continuous path that ends above $a$ has already hit $a$, so $P(\tau_a\le t,\,B_t>a)=P(B_t>a)$. Adding the two equal pieces, and using $P(B_t=a)=0$, gives $P(M_t\ge a)=2P(B_t\ge a)$. There is no atom at $a$. The standard normal distribution function supplies $P(B_t\ge a)=1-\Phi(a/\sqrt t)$, and $P(|B_t|\ge a)=2P(B_t\ge a)$, so $M_t$ and $|B_t|$ have the same distribution function.
 
 For the density, set $u(t)=a t^{-1/2}$. Then $u'(t)=-a/(2t^{3/2})$ and
