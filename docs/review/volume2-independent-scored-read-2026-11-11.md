@@ -212,4 +212,26 @@ These were checked in the source and, where a number appears, recomputed. The li
 
 ## Comparison with existing reviews
 
-Not written in this commit. The scores and the issue log above were fixed before any Volume 2 review file was opened. The comparison is added in the following commit.
+Written after the scores and the issue log were committed in `af2cd9c8`. The files then opened were the Volume 2 records under `docs/reviews/`, `docs/plan/volume2-*.md`, `review/VOLUME2-REWRITE-PASS.md` and the November handoff. They were not used to change a score.
+
+Those reviews are an internal double-pass on an earlier candidate, chiefly source `b67f700f` and CI build 1678 on `a317b585` (3–4 November 2026). The assigned final review (`docs/reviews/volume2-assigned-final-review-2026-11-04.md`) says no known unresolved proof, exercise, first-use, reference, computation, historical-claim or local-rendering defect remained, and it says so of that candidate. It also says the checks are not independent human refereeing. The proof register and the whole-book review mark results `VERIFIED_TWICE` on that basis. Nothing in them is a 0–10 score of the kind asked for here.
+
+### What they saw and this reading also sees
+
+They already knew the printed order. The ledger says legacy stems `ch09` and `ch08` must not be confused with printed Chapters 8 and 9, and the production audit checks that Diophantine equations precede continued fractions. The Huxley replacement is real in the current text: Theorem 7.5 quotes \(131/208+\varepsilon\) and calls it a 2003 benchmark, matching M. N. Huxley, Proc. London Math. Soc. (3) 87 (2003), 591–609, and not the withdrawn \(517/824\) bound. The square-unit hint in Chapter 6 now distinguishes moduli \(2\) and \(4\) from \(2^\ell\) with \(\ell\ge3\) (`ch06-quadratic-reciprocity.tex:744`). That correction, recorded as a repaired hint, is still in the source. The same is true of the local proofs that the November notes say were supplied for the orchard, for rational valuations, and for the cubic character sum that no longer imports Volume 13.
+
+### What they missed
+
+They never checked how Volumes 3–15 cite this book. The ledger warns the filename numbers and the printed numbers differ, and then stops inside Volume 2. Issue V2-01 is the consequence: 161 numbered citations in ten later volumes, including Theorem 8.6 read as periodicity (it is Markov), Theorem 9.2 read as Fermat’s descent (it is a continued-fraction bound), Theorem 4.5 read as cyclicity of \((\Z/p^e\Z)^\times\) (it is Euclid–Euler), and a Corollary 12.9 that does not exist. A reader of the series hits those sentences. The November reviews’ “no unresolved reference defect” does not cover them.
+
+They also treat both Theorem 1.5 and Theorem 6.3 as “Gauss’ lemma” and mark each `VERIFIED_TWICE` (`docs/reviews/volume2-proof-verification-register-2026-11-03.md`). The collision itself is never called a defect. It is issue V2-02, and it is still on the page.
+
+They do not ask for an index. The bibliography review checks 62 chapter-end source paragraphs. It does not notice that the bound volume has no index and no single bibliography (V2-03). The four-square identity is still an unchecked expansion (V2-04). Theorem 7.4 still says positive integers while the epigraph says non-negative (V2-05). Minkowski’s rectangle theorem is still a two-star exercise in Chapter 1; the crosswalk correctly says the proof is local, and does not say the star is wrong (V2-06). The cover sentence is still ambiguous (V2-07). The assigned review says the cover’s 557 prime dots were checked; this reading checked the colophon against Theorem 7.3 and the rendered cover, and did not recount the dots.
+
+### What they say is fixed, and whether it is
+
+The repairs named above (Huxley’s exponent, the power-of-two square index, the removal of a Volume 13 premise from the cubic character exercise) are present in `8b8a5be3`. This reading did not find those particular bugs still in the text.
+
+The 4 November handoff still describes the print interior as \(7\times10\) inches with no interior bleed (`docs/reviews/volume2-current-review-handoff-2026-11-04.md`). That described the candidate then on the table. It does not describe the `books` release read here: every print page is \(513\times738\) pt, and the part opener’s charcoal reaches the media edge. The change matches the later bleed instruction; it is a stale description, not a repair that failed inside the manuscript.
+
+Their acceptance sentence does not hold for the series as it stands on 11 November. The manuscript they checked can be free of the defects they listed and still send every later volume to the wrong theorem number. That gap was outside their ledger, and it is the main reason this reading does not recommend the volume as-is.
