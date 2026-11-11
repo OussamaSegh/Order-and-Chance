@@ -30,7 +30,7 @@ Gate B of the master plan (independent verification) is not this pass. The write
 | 4 | Integration Techniques | `ch04-integrals.tex`, `bbp-borwein.tex` | **Done** |
 | 5 | The Gamma and Beta Functions | `ch05-gamma.tex` | **Done** |
 | 6 | Fourier Series | `ch06-fourier.tex` | **Done** |
-| 7 | The Discrete Fourier Transform and the FFT | `ch07-fft.tex` | Not started |
+| 7 | The Discrete Fourier Transform and the FFT | `ch07-fft.tex` | **Done** |
 | 8 | The Fourier Transform and Poisson Summation | `ch08-transform.tex` | Not started |
 | 9 | Complex Analysis for Computing | `ch09-complex.tex` | Not started |
 | 10 | The Zeta Function | `ch10-zeta.tex` | Not started |
@@ -57,6 +57,8 @@ Gate B of the master plan (independent verification) is not this pass. The write
 
 **Chapter 6.** Opening experiment (the partial sums of Σ sin n / n on a calculator), closing section. Proofs re-read; one real repair: the paragraph "the Gibbs phenomenon is universal" subtracted a square wave, which has two jumps per period; it now subtracts the sawtooth (one jump), and proves that the sawtooth overshoots by the same proportion 0.0895. The stale line "Chapter 5 estimates the Weyl sums" (old Waring chapter) is now a preview of Volume 14. The Siegel exercise integrates over a convex set in R^n, which this volume has not defined: the exercise now says what is admitted (Volume 7 constructs the integral). Fejér was twenty, not nineteen, in 1900. Volume 1 and 4 citations corrected; self-citations "Volume 5, Chapter 8" removed. Sources added for the epigraph, Fejér, Carleson, Kahane–Katznelson, Rudin, flat Littlewood polynomials, Mauduit–Rivat, Siegel. Basel count checked: Chapter 3 announces six proofs (Volume 1, two in Chapter 3, two here, one in Chapter 9), and the labels "fourth and fifth" here and "sixth" in Chapter 9 agree. Check: `check_ch06_fourier.py`.
 
+**Chapter 7.** Worked transform of (1,2,3,4) before the inversion theorem; closing section. Repairs: the aliasing proposition now assumes f continuous (it needs f equal to its series) and the sentence "a numerical calculation showed this error" (a leftover from the notebooks) is replaced by a proved bound π²C/n² when |c_m| ≤ C/m²; the number-theoretic transform says why n is invertible modulo p; the claim that all four eigenvalues of the normalised transform occur "once n ≥ 4" was false for n = 4 (eigenvalues 1, 1, −1, −i) and now says n ≥ 5. Stale citations of Volumes 1–3 corrected, self-citations "Volume 5, Chapter 9" replaced by labels. Plan item done: new three-star exercise `ex:uncertainty` (Donoho–Stark uncertainty principle on Z/n, with the sparse-recovery corollary), appended last. Sources added (Strang for the epigraph, Karatsuba–Ofman, Schönhage–Strassen, Chung–Diaconis–Graham, Newman, Rothaus, Donoho–Stark, Tao). Check: `check_ch07_fft.py` (every number of the modulo-17 example, the primes, operation counts of the FFT, and the exercises by brute force).
+
 ## Rules found on the way (keep them)
 
 - **Numbering inside a chapter is preserved.** Volumes 6–15 cite Volume 5 by hand-typed numbers (for example "Volume 5, Theorem 2.12", "Volume 5, Exercise 2.3"). Their migration stays a pure chapter shift only if no numbered statement or exercise is inserted or removed in the middle of a chapter. New exercises go at the END of the exercise list (and their hints and solutions at the end of those sections). An exercise that needs a later chapter keeps its place and number, loses the forward part, and the forward part becomes a new exercise at the end of the later chapter.
@@ -65,7 +67,7 @@ Gate B of the master plan (independent verification) is not this pass. The write
 
 ## Plan items still open, by chapter
 
-- **Ch. 7, 9.** One new exercise of the hardest level each (Chapter 4 has `ex:fresnel`; Chapter 9 already received `pb:zigzagpole`, two stars, and still needs a three-star one).
+- **Ch. 9.** One new exercise of the hardest level (Chapter 4 has `ex:fresnel`, Chapter 7 has `ex:uncertainty`; Chapter 9 already received `pb:zigzagpole`, two stars, and still needs a three-star one).
 - **Ch. 8.** Jacobi's theta becomes ϑ, with a sentence fixing the letter at first use. State the class of functions of the inversion theorem (`thm:ftinversion`) and check it is the class Chapter 12 and Volume 6 use (risk 4). "Chapter~12 follows him" is a stale number.
 - **Ch. 9.** One sentence saying which complex analysis this chapter owns and which Volume 8, Chapter 14 owns. The line about the homology form of Cauchy's theorem says "proved in Volume 8": check against Volume 7, Chapter 6 (Jordan) and Volume 8.
 - **Ch. 10.** Completed zeta is ξ, not Λ (master plan 4.5). A sentence fixing the letter. The unproved claim about smooth cutoffs of Σn: prove it or remove it. Numerical zeros of ζ: stated as computations with a source.
