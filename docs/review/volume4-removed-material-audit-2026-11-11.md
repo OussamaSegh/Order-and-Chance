@@ -60,7 +60,7 @@ Of the 109 missing exercises, the class column of the inventory counts:
 | Too advanced for Volumes 1–4 | 33 |
 | Duplicate of a theorem or exercise the pinned series already has | 7 |
 
-The recommendation column counts 16 restores, 1 repair-then-restore, 18 optional items, and 74 omissions. The owner-decision list later in this note is the line-checked subset of those restores, plus the 2-SAT theorem, which is not one of the 109 exercises. The 74 omissions include the long workshop tail. Putting that tail back to fill pages would ignore the prerequisite line. The ideal length is 300–600 pages, with 600 as a maximum. Three hundred is not a quota.
+The recommendation column counts 16 restores, 1 repair-then-restore, 18 optional items, and 74 omissions. The section “Corrections after the parallel readings” withdraws `ex:knight`, `ex:chromatic`, and `ex:likelihood` from that restore count, narrows `pb:nouniform` to parts (a) and (b), and records that `ex:betagamma` was only partly relocated. Those corrections supersede the table cells they name. The owner-decision list later in this note is the line-checked subset of those restores, plus the 2-SAT theorem, which is not one of the 109 exercises. The 74 omissions include the long workshop tail. Putting that tail back to fill pages would ignore the prerequisite line. The ideal length is 300–600 pages, with 600 as a maximum. Three hundred is not a quota.
 
 ## What the pinned book still proves
 
@@ -165,7 +165,7 @@ Current targets, when the class is rewritten or relocated, are pinned paths.
 | V4-RM-E02 | `ex:secretary` | `ch01-counting.tex:435–441` | 620–635 | lost | Read (a). \(p_r=\frac{r-1}n\sum_{k=r}^n\frac1{k-1}\) follows from uniformity of the best among the first \(k-1\). The sentence that no strategy beats the best threshold was not re-proved | restore (a) and the \(1/e\) limit. Drop or prove the optimality sentence | high for (a) |
 | V4-RM-E03 | `ex:noodle` | `ch01-counting.tex:443–452` | 637–654 | lost, gap | The problem allows the reader to admit that the expected number of crossings of a segment is increasing and additive. Buffon’s needle is already `thm:buffon` | omit. A second proof that admits its main input is not a repair worth making while the direct proof stands | high on the gap |
 | V4-RM-E04 | `pb:whichroot` | `ch01-counting.tex:454–462` | 656–698 | too advanced | Tools cite Volume 13 for \(\mathbb Q_p\). Part (a) is a Catalan identity | omit. Part (a) is already the Catalan material of Chapter 3 | high |
-| V4-RM-E05 | `pb:nouniform` | `ch01-counting.tex:464–472` | 700–719 | lost | Read. (a) \(P(\{n\})\le 1/m\) for every \(m\), so the singleton has mass 0, and countable additivity gives mass 0. (b) the \(o(N)\) shift was read. (c) the \(1/3\) and \(1/6\) oscillation was not recomputed. The Hahn–Banach sentence is a lead, not a step | restore (a), and (b) if a density remark is wanted. Hold (c) until the oscillation is recomputed | high for (a) |
+| V4-RM-E05 | `pb:nouniform` | `ch01-counting.tex:464–472` | 700–719 | lost, gap in (c) | Read. (a) and (b) are complete. (c) says that in any interval \(B\) contains one of every two consecutive integers. That sentence is false: with \(I_j=[4^j,2\cdot 4^j[\), both \(3\) and \(4\) lie in \(B\). The written reason that \(B\) has density \(1/2\) does not hold. The Hahn–Banach sentence is a lead, not a step | restore (a) and (b) only. Do not restore (c) as written | high for (a)(b); high on the gap in (c) |
 | V4-RM-E06 | `pb:bollobas` | `ch01-counting.tex:474–482` | 721–740 | lost | Tools: random permutations and the LYM inequality | omit. Finite and standard, and it is extremal set theory rather than a probability theorem of this book | medium |
 | V4-RM-E07 | `pb:granularity` | `ch01-counting.tex:484–494` | 742–767 | too advanced | Boolean degree and influences | omit | medium |
 | V4-RM-E08 | `pb:leastqnr` | `ch02-discrete.tex:383–390` | 648–665 | too advanced | Tools: Legendre symbol. The statement says “pretend” the symbols are random | omit. Part (b) is a heuristic unless a later reading finds a real proof | medium |
@@ -194,7 +194,7 @@ Current targets, when the class is rewritten or relocated, are pinned paths.
 | V4-RM-E31 | `pb:bonami` | `ch04-inequalities.tex:634–642` | 946–975 | too advanced | Tools claim only Cauchy–Schwarz. The inequality is hypercontractivity even if an elementary proof exists. Not line-checked | omit | medium |
 | V4-RM-E32 | `pb:kacring` | `ch04-inequalities.tex:644–658` | 977–1005 | lost | Not line-checked | omit | low |
 | V4-RM-E33 | `pb:nbonacci` | `ch04-inequalities.tex:660–668` | 1007–1025 | lost | A recurrence for its own sake | omit | medium |
-| V4-RM-E34 | `ex:betagamma` | `ch05-continuous.tex:590–594` | 773–794 | relocated | Same change of variables \((s,t)\mapsto(s+t,s/(s+t))\) at `volume7-spaces/chapters/ch08-products.tex:344`, label `ex:betagamma` | omit from Volume 4 | high |
+| V4-RM-E34 | `ex:betagamma` | `ch05-continuous.tex:590–594` | 773–794 | partial relocation | Volume 7, `ch08-products.tex:344`, asks for \(\Gamma(a)\Gamma(b)=B(a,b)\Gamma(a+b)\). Line 349 asks for the sum of two Gamma laws. Neither exercise proves that \(S=X+Y\) and \(V=X/(X+Y)\) are independent | omit from Volume 4. The independence statement is lost; the integral identity is in Volume 7 | high |
 | V4-RM-E35 | `pb:laplace` | `ch05-continuous.tex:596–604` | 796–826 | lost | Square tiling. Buffon’s needle for parallel lines is already proved. Solution not line-checked | optional | medium |
 | V4-RM-E36 | `pb:passone` | `ch05-continuous.tex:606–613` | 828–850 | lost | Read. \(P(N>n)=1/n!\), \(\mathbb E[N]=e\), \(\mathbb E[N^2]=3e\), variance \(3e-e^2\). The numerical value \(0.7657\ldots\) matches \(3e-e^2\) | restore. The ordered-uniform map is already in Chapter 5 | high |
 | V4-RM-E37 | `pb:irwinhall` | `ch05-continuous.tex:615–624` | 852–880 | lost | The inclusion-exclusion for the simplex volume was read at the start and not finished | omit if `pb:passone` returns. The density formula is longer than the lesson | medium |
@@ -202,7 +202,7 @@ Current targets, when the class is rewritten or relocated, are pinned paths.
 | V4-RM-E39 | `pb:stick` | `ch05-continuous.tex:641–649` | 917–933 | lost | Read. \(P(\max A_j\ge 1/2)=n\,2^{-(n-1)}\). For three pieces the triangle probability is \(1-3/4=1/4\). \(\int_0^1 2t(1-t)^{n-1}\,dt=2/(n(n+1))\) was integrated by hand | restore | high |
 | V4-RM-E40 | `pb:sincsum` | `ch06-clt.tex:462–475` | 586–618 | too advanced | Tools: Volume 5 Fourier theorems | omit | high on the tools |
 | V4-RM-E41 | `pb:rootwalk` | `ch07-walks.tex:521–533` | 682–713 | too advanced | Tools: Volume 5 and `pb:vanish`. Pólya’s theorem is already proved | omit | medium |
-| V4-RM-E42 | `ex:knight` | `ch08-markov.tex:610–613` | 803–809 | lost | The knight graph on an \(8\times 8\) board was counted by a direct program: 168 edges, corner degree 2, so mean return \(2m/d=168\); a centre square has degree 8 and mean return 42. The old solution text was not compared word for word with that count | restore as a computation from the stationary law, once that law is the one the chapter proves | high on the count |
+| V4-RM-E42 | `ex:knight` | `ch08-markov.tex:610–613` | 803–809 | lost | The knight graph has 168 edges, corner degree 2, and a centre square has degree 8, so \(2m/d\) is 168 and 42. Current `ch08-markov.tex:221` proves that the walk is reversible for the degree weights. It does not prove that the mean return time is \(1/\pi(x)\) | omit. The numbers are not a reason to restore an exercise whose identity is not a theorem of the chapter | high |
 | V4-RM-E43 | `ex:gsr` | `ch08-markov.tex:638–641` | 855–861 | rewritten | The Gilbert–Shannon–Reeds model is stated at `ch08-markov.tex:256–274`, and Bayer–Diaconis is `thm:bayerdiaconis` | omit | high |
 | V4-RM-E44 | `pb:carries` | `ch08-markov.tex:648–656` | 872–896 | lost | Base-\(b\) digits and a Markov chain. Off the main path | omit | medium |
 | V4-RM-E45 | `pb:dicemod` | `ch08-markov.tex:658–665` | 898–923 | lost | Roots of unity, close to `pb:subsetsum` | omit if subset sums return | medium |
@@ -223,15 +223,15 @@ Current targets, when the class is rewritten or relocated, are pinned paths.
 | V4-RM-E60 | `ex:wald2` | `ch10-martingales.tex:616–619` | 706–717 | lost, gap risk | The solution cites the old \(L^2\) theorem. The pinned \(L^2\) theorem is for finite interval partitions. Copying the exercise unchanged could over-claim | omit. Bounded stopping is already `thm:os` | medium |
 | V4-RM-E61 | `ex:polyabeta` | `ch10-martingales.tex:621–628` | 719–733 | relocated | See V4-RM-POLYA | omit | high |
 | V4-RM-E62 | `ex:signs` | `ch10-martingales.tex:630–633` | 735–741 | lost | Not line-checked. Asks for variance, and for almost-sure convergence when \(\alpha>1/2\) | omit | medium |
-| V4-RM-E63 | `ex:chromatic` | `ch10-martingales.tex:635–639` | 743–751 | lost | Azuma on the random graph. The chapter has Azuma and the graph chapter has \(G(n,p)\). Solution not line-checked | restore only after the exposure martingale is re-read. Listed as small, not as a checked proof | medium |
-| V4-RM-E64 | `ex:likelihood` | `ch10-martingales.tex:641–646` | 753–762 | lost | Finite-alphabet likelihood martingale. Volume 7’s `ex:likelihood` at `ch10-radon.tex:333` is Gaussian absolute continuity, a different problem | restore the finite version. Not line-checked | medium |
+| V4-RM-E63 | `ex:chromatic` | `ch10-martingales.tex:635–639` | 743–751 | lost, citation gap | The deviation bound can be Azuma with a one-vertex Lipschitz constant. A parallel reading of the solution found the asymptotic \(\mathbb E\chi\sim n/(2\log_2 n)\) cited and not proved. This audit did not re-derive the solution | omit as written. Do not restore a solution that treats that asymptotic as known | medium |
+| V4-RM-E64 | `ex:likelihood` | `ch10-martingales.tex:641–646` | 753–762 | lost | Finite-alphabet likelihood martingale. Volume 7’s `ex:likelihood` at `ch10-radon.tex:333` is Gaussian absolute continuity, a different problem. A parallel reading judged the finite proof sound and still recommended leaving it out | optional. Not on the checked restoration list | medium |
 | V4-RM-E65 | `pb:vanish` | `ch12-method.tex:337–345` | 1067–1096 | too advanced | Cyclotomic fields, Volumes 1 and 3 in the tools line | omit | medium |
 | V4-RM-E66 | `pb:samecycle` | `ch12-method.tex:347–353` | 1098–1115 | lost | Read. Each length has \((n-1)!\) permutations, so the probability is \(1/n\). Hockey-stick gives probability \(1/k\) that \(1,\ldots,k\) share a cycle | restore. It belongs with the cycle section of Chapter 2 | high |
 | V4-RM-E67 | `pb:denes` | `ch12-method.tex:355–362` | 1117–1141 | lost | Transpositions and trees, Cayley’s count. Not line-checked | optional | medium |
 | V4-RM-E68 | `pb:conics` | `ch12-method.tex:364–376` | 1143–1172 | too advanced | Legendre sums over finite fields | omit | high on the tools |
 | V4-RM-E69 | `pb:hashing` | `ch12-method.tex:378–387` | 1174–1192 | lost | Read. Determinant \(x-y\neq 0\). The collision bound \(\le 1/m+1/p\) and the Markov step for \(m=n^2\) were checked | restore | high |
 | V4-RM-E70 | `pb:triangleseigen` | `ch12-method.tex:389–396` | 1194–1210 | too advanced | Tools cite Volume 8 for adjacency eigenvalues | omit | medium |
-| V4-RM-E71 | `pb:walks` | `ch12-method.tex:398–406` | 1212–1236 | too advanced | Tools cite Volume 12 for the matrix-tree lemma | omit | medium |
+| V4-RM-E71 | `pb:walks` | `ch12-method.tex:398–406` | 1212–1236 | too advanced, and one sentence is wrong | A parallel reading accepted the trace bound and rejected the identification of that bound with the expected number of closed 4-walks in \(G(n,\bar d/n)\): backtracking walks contribute on the order of \(n\bar d^2\). This audit did not re-derive the solution | omit. Do not restore the solution as written | medium |
 | V4-RM-E72 | `pb:littlewoodofford` | `ch12-method.tex:408–415` | 1238–1256 | lost | Tools: LYM and Stirling, both Volume 1. Not line-checked | optional. The method chapter already has a second-moment example | medium |
 | V4-RM-E73 | `pb:cubeiso` | `ch12-method.tex:417–420` | 1258–1275 | lost | Edge isoperimetry of the cube. Not line-checked | optional | medium |
 | V4-RM-E74 | `pb:erdosselfridge` | `ch12-method.tex:422–430` | 1277–1298 | lost | A finite potential. The local lemma is already a theorem. Not line-checked | optional | medium |
@@ -308,13 +308,18 @@ These are the items this reading would put back, each as a single exercise or a 
 8. `ex:secretary` (a) and the \(1/e\) limit (V4-RM-E02). The optimality sentence stays out until it is proved.
 9. `ex:mcmillan` (V4-RM-E26). Uniquely decodable codes obey Kraft’s inequality.
 10. `pb:subsetsum` (a) and (b) (V4-RM-E18). Part (a) was enumerated for \(p=3\).
-11. `pb:nouniform` (a) (V4-RM-E05). There is no uniform probability on the positive integers.
+11. `pb:nouniform` (a) and (b) (V4-RM-E05). There is no uniform probability on the positive integers, and density is finitely additive. Part (c) stays out: the written proof that \(B\) has density \(1/2\) is false at a block edge.
 12. `thm:twosat` (V4-RM-2SAT). Expected \(n^2\) flips. Rewrite the last limit as a tail sum.
+
+**Withdrawn from that list after the parallel readings below:**
+
+- `ex:knight`. The edge count is right. The mean return time is not a theorem of the pinned Markov chapter.
+- `ex:chromatic`, as written, because the solution cites an unproved asymptotic for \(\mathbb E\chi\).
+- `ex:likelihood`. The finite argument may be sound, and the chapter does not need it.
 
 **Worth a decision only after a line reading that this audit did not finish:**
 
-- `ex:knight` (the edge count 168 was programmed; the old solution text was not matched to it),
-- `ex:chromatic`, `ex:likelihood` (finite version), `extremal:ex:wlower`,
+- `extremal:ex:wlower`,
 - `ex:twotests` only if the medical rates are written into the prompt.
 
 That second group is still small. It is not approved.
@@ -375,6 +380,22 @@ The small cuts are not uniformly justified. Sicherman’s dice, a loaded die tha
 
 Several famous exercises were not lost. The medical doubling of a stake, unfair ruin, the riffle model, pattern waits, the Beta–Gamma identity, and the general Pólya urn live in the pinned Volume 4 or in a later volume under a new label. The longest-run exercise was deliberately weakened from almost sure to in probability, and the new statement says so.
 
+## Corrections after the parallel readings
+
+Four readings of the baseline solutions were run in this same audit session, after the first draft of this note. They are not the independent second review. They did not edit the tree. Where they only prefer a different teaching weight, the first recommendation stands. Where they found a false sentence, a missing hypothesis, or an overstated relocation, this section changes the row.
+
+- `pb:nouniform` (c), as above. Consecutive integers \(3\) and \(4\) are both in \(B\).
+- `ex:betagamma`, as above. Volume 7 does not prove the independence of the sum and the ratio.
+- `ex:knight`, as above. `ch08-markov.tex:221` stops at reversibility for the degree weights.
+- `ex:onestep` at current `ch11-brownian.tex:363–365` asks only for \(\mathbb E[B_t^2]=t\). The baseline exercise of that label, lines 479–483, was a one-period call. Put–call parity remains `ex:putcall`. The old call exercise is not restored.
+- `pb:walks`, as above. One identification in the solution does not survive backtracking.
+- `ex:sharp`. Current `ex:markovsharp` is the one-sided equality. The two-sided example, mass \(\sigma^2/(2a^2)\) at \(\pm a\), is not in that exercise. It is a short optional addition, not one of the checked restorations.
+- `ex:signs`. A parallel reading found the almost-sure convergence for \(\alpha>1/2\), and the variance \(\sum 1/n^2\), proved from \(L^2\), and found the divergence for \(\alpha\le 1/2\) asserted by the three-series theorem. The convergent case is already the paragraph after `thm:L2conv`. Leave the exercise out.
+- `pb:lcs`. The same reading found superadditivity and the union bound proved, and found the existence of \(\lim \mathbb E[L_n]/n\) cited to Fekete’s lemma in `pb:saw` rather than proved. Do not restore it as written. An enumeration \(\sum L_8=358424\) was reported; this audit did not repeat that count.
+- Volume 15, `conjectures-ch08-geometric.tex:136`, says Volume 4, Appendix B, proves that the happy-ending function \(f(n)\) is finite by Ramsey’s theorem. Current `thm:ramsey` colours pairs only. The baseline exercise `extremal:ex:happyending` used \(k\)-uniform Ramsey, and that theorem is gone. This audit does not edit Volume 15. The citation is a later repair, or a restoration of a finiteness proof that the appendix actually contains. Volume 15 then proves its own cup-and-cap bound. That stronger bound does not make the citation true.
+- The same readings would also restore `pb:erdosselfridge`, `pb:laplace` for a needle no longer than the tile, `pb:carries`, `pb:dicemod`, and `pb:gilbreath`, and would move `pb:range` and `pb:cyclecover` to the walk chapter and `pb:threegamblers` to the martingale chapter. Those solutions were not re-derived in the first pass. They stay off the checked list. The independent reading can accept or reject them.
+- A polar-coordinate estimate in the current Box–Muller argument was reported as unfinished. That is a defect in the pinned chapter, not a removed item, and it is not adopted here as a checked gap.
+
 ## What this audit did not do
 
 - It did not restore, rewrite, or delete any exercise.
@@ -386,7 +407,7 @@ Several famous exercises were not lost. The medical doubling of a stake, unfair 
 
 ## Unresolved
 
-- `pb:nouniform` (c): the density oscillation between about \(1/3\) and \(1/6\) was not recomputed.
+- `pb:nouniform` (c): the intersection proportions were not recomputed. The written proof that \(B\) has density \(1/2\) is already false, so the part stays out either way.
 - `ex:ballsbins` (b), `ex:chromatic`, `extremal:ex:wlower`, `ex:likelihood`, and `pb:littlewoodofford`: the class is plausible and the solution was not re-proved.
 - `pb:lcs` and `pb:leastqnr` (b): the solutions may contain a heuristic presented as a proof. They stay out either way.
 - `conjectures:lem:hxy`: the defect estimate was read and not re-derived.
