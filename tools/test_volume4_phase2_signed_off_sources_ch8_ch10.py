@@ -21,7 +21,8 @@ SPECS = {
  "ch09-poisson.tex": {
    # Caption ink word only ("blue" -> "charcoal"). Proofs and exercises
    # are unchanged from 6de4e7e1fd5c6369d553e45190e54807c553a743.
-   "sha": "5a6b467d0db684dcd9d3deeca3db7f856bb9a7fc",
+   # Reread 2026-11-11 for G(0) in {0,1} and the rational powers (V4-08).
+   "sha": "c4c36ee1b854ebc7b8a34a35f77f5c4b952549af",
    "proofs": "prop:memoryless lem:gamma thm:uniform lem:colouring thm:increments thm:thinning thm:superpose prop:residual prop:onesidedgap prop:race thm:lecam thm:mm1 prop:emptiness".split(),
    "ex": "ex:twoexp ex:minexp ex:bus ex:lecamnum ex:mm1mean ex:emptycheck ex:superpose ex:firstarrival".split(),
  },
