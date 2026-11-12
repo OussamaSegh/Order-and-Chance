@@ -37,7 +37,7 @@ A curve that bends more sharply the farther it has travelled, with the circle th
 
 Cover illustration: Ford circles and the Farey tessellation; see About the Cover.
 
-Reduced fractions of denominator up to eighty each carry a circle whose radius is one over twice the square of the denominator, standing on the axis and tangent to its neighbours. The pale arcs join Farey neighbours of denominator at most twenty-four. Lester Ford published the circles in the American Mathematical Monthly in 1938, in a note called Fractions. Their tangencies are the geometry behind the Farey sequence studied in the chapter Arithmetic Functions on Average, where the spacing of those fractions is tied to the Riemann hypothesis. The drawing was computed by the book's own TikZ cover generator.
+Reduced fractions of denominator up to eighty each carry a circle whose radius is one over twice the square of the denominator, standing on the axis and tangent to its neighbours. The pale arcs join Farey neighbours of denominator at most twenty-four. Lester Ford published the circles in the American Mathematical Monthly in 1938, in a note called Fractions. Their tangencies are the geometry behind the Farey sequence studied in the chapter Arithmetic Functions on Average. That chapter proves the elementary gaps between neighbours. A quotation in the solution of the Farey exercise ties a discrepancy of that sequence to the Riemann hypothesis. The drawing was computed by the book's own TikZ cover generator.
 
 ## Volume 7 — Spaces
 
