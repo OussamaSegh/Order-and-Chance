@@ -82,8 +82,11 @@ class CrossVolumeCitations(unittest.TestCase):
             ("theorem", "6.5"): "thm:qr",
             ("corollary", "6.4"): "cor:two",
             ("exercise", "6.7"): "ex:gausssum",
+            ("theorem", "2.1"): "thm:euclid-primes",
+            ("exercise", "2.9"): "ex:t1-factorial-new-prime",
             ("theorem", "7.3"): "thm:twosqn",
             ("theorem", "7.4"): "thm:foursq",
+            ("theorem", "7.5"): "thm:circle",
             ("theorem", "8.1"): "thm:pyth",
             ("theorem", "8.2"): "thm:fermat4",
             ("theorem", "8.6"): "thm:markov",
@@ -91,6 +94,7 @@ class CrossVolumeCitations(unittest.TestCase):
             ("theorem", "9.2"): "thm:cfapprox",
             ("theorem", "9.6"): "thm:periodic",
             ("theorem", "9.8"): "thm:pell",
+            ("theorem", "10.3"): "thm:ufd",
             ("theorem", "10.5"): "thm:gaussprimes",
             ("theorem", "10.9"): "thm:flt3",
             ("exercise", "1.3"): "ex:zeros",
@@ -121,6 +125,36 @@ class CrossVolumeCitations(unittest.TestCase):
                 gauss.replace("Exercise~5.7", "Exercise~6.7")),
             [],
         )
+
+    def test_volume2_pointers_name_the_stated_fact(self):
+        """A nearby number can exist and still describe a different theorem."""
+        root = citations.ROOT
+        bezout = (root / "volume13-arithmetic/chapters/ch12-ideals-quadratic.tex").read_text(encoding="utf-8")
+        self.assertIn(
+            r"the B\'ezout property in a Euclidean domain, proved in Volume~2, Theorem~10.3",
+            bezout,
+        )
+        self.assertNotIn("Theorem~1.4", bezout)
+        factorial = (root / "volume15-order-and-chance/chapters/ch09-lean.tex").read_text(encoding="utf-8")
+        self.assertIn(r"Volume~2, Exercise~2.9: a prime factor of $n!+1$", factorial)
+        self.assertNotIn("Theorem~2.1", factorial)
+        disc = (root / "volume6-crossroads/chapters/ch05-pnt.tex").read_text(encoding="utf-8")
+        self.assertIn(r"$\sim\pi x$ (Volume~2, Theorem~7.5, or a direct count)", disc)
+        ball = (root / "volume7-spaces/chapters/ch02-metric.tex").read_text(encoding="utf-8")
+        self.assertIn("The closed unit ball, and its identification with the compatible residue sequences, are built in this chapter.", ball)
+        self.assertNotIn("names this ball", ball)
+        triangle = (root / "volume13-arithmetic/chapters/ch12-elliptic.tex").read_text(encoding="utf-8")
+        self.assertIn(r"$x^4+y^4=z^2$ has no positive integer solution (Volume~2, Theorem~8.2)", triangle)
+        self.assertIn(r"Proposition~\ref{prop:congruent}", triangle)
+        self.assertNotIn("square area. Which numbers", triangle)
+        signed = (root / "volume5-calculation/chapters/ch08-transform.tex").read_text(encoding="utf-8")
+        self.assertIn(r"Volume~2, Exercise~6.7, gives $G(p)^2=", signed)
+        index = (root / "volume2-integers/chapters/index.tex").read_text(encoding="utf-8")
+        self.assertNotIn("print PDF", index)
+        self.assertIn(r"\ocindexpage{sym:divides}", index)
+        self.assertIn(r"\ocindexpage{sym:gcd}", index)
+        self.assertIn(r"\ocindexpage{sym:lcm}", index)
+        self.assertIn(r"\ocindexpage{ex:t1-factorial-new-prime}", index)
 
     def test_chapter_zero_offset_rejects_a_shifted_gloss(self):
         shifted = (
