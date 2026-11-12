@@ -197,4 +197,42 @@ Two differences, neither of them a false theorem. The blueprint's size estimate 
 - Whether every solution in Volumes 5 and 6 that admits a Volume 7 theorem is listed in the preface. The admissions I found by searching those volumes are listed.
 - The proofs in Volumes 8–15 that cite Volume 7, beyond the sentence that names the citation. The check was: the number exists, the environment type matches, and the sentence's claim is the statement of that item.
 - Volume 14, which does not mention Volume 7.
-- Anything in `docs/review/`, `docs/handoffs/`, or other Volume 7 plan files. Those were not opened before this scorecard and this issue log were committed.
+- Anything in `docs/review/`, `docs/handoffs/`, or other Volume 7 plan files, before the scorecard and the issue log were committed. They are used only in the next section.
+
+## Comparison with the existing reviews
+
+Written after the scorecard and the issue log were committed. The documents opened for this section are `docs/handoffs/volume7-rewrite.md`, the scripts and the baseline list in `review/volume7-rewrite/`, the October 2026 series review’s section “Volume 6 — Spaces” in `docs/review/SERIES-REVIEW-2026-10.md` (that section is this book, under the numbering of that month), and the description of PR #204. PR #204 has no review comments.
+
+### What those reviews said was wrong, and what is now true
+
+The October review named five repairs. Four are in the book as it stands, and the proofs were rechecked for this read rather than taken from that review.
+
+- The characterisation of Lebesgue measure no longer says that a general box is an increasing union of dyadic-corner boxes. It sandwiches \(Q\) between dyadic-corner boxes \(I\subseteq Q\subseteq O\) whose volumes differ by less than \(\varepsilon\) (`ch06-measures.tex:195–196`). That is the argument the review said was missing.
+- Outer-measure subadditivity separates the case \(\mu^*(A_n)=\infty\) (`ch06-measures.tex:150`).
+- Finite additivity of the cylinder set function is written out before the compactness argument in Kolmogorov’s theorem (`ch11-metricmeasures.tex:172`).
+- Conditional expectation and the tower property are Theorems 11.16 and 11.17, not an exercise. Both proofs were checked above.
+- Hausdorff measure is still cited to Falconer, in a remark headed *quoted, not proved here*, and the dimension arguments use it only as an outer measure. That is the second of the two options the October review allowed.
+
+The rewrite handoff’s account of the new corollary on \(\mathbb Z_p\), of Tietze as a proposition, of Khinchin without Lévy’s theorem, and of the two problems moved to `volume11-randomness/chapters/from-volume7-problems.tex` matches the manuscript. The handoff says those two problems are not yet included from Volume 11’s `main.tex`. That is still true, and it is Volume 11’s wiring, not a false theorem in Volume 7.
+
+### What they mark as settled, which is not
+
+The handoff says Volume 9 was updated because Chapter 6 was renumbered, and it names Lemma 6.4 and Proposition 6.6. Those two citations are right. The phrase “the definition after Lemma 6.1” in `volume9-shapes/chapters/ch03-forms.tex:347` was not updated. Item 6.1 is the polygonal theorem. The definition is 6.5. That is V7-05.
+
+The handoff says later volumes still cite Volume 7 by hand-typed numbers, and that each of those volumes checks its own citations. It does not claim the Volume 8 citations were rewritten. They were not. Theorem 6.5 in the Haar chapter and Proposition 9.6 in the Fourier chapter are the numbers from before Jordan was Chapter 6 (V7-03, V7-04). A reader who trusts the handoff’s “Volume 9 is fixed” sentence will miss the one leftover, and a reader who waits for Volume 8’s own pass will meet two wrong numbers until that pass exists.
+
+`review/volume7-rewrite/check_ch13_harder.py` asserts that the solutions of \(|e-p/q|<1/(q^2\log q)\) are exactly the eight printed fractions. For \(q<8\) the script tests only the integer nearest to \(eq\), not every \(p\). For \(q=2\) that integer is \(5\), so \((6,2)\) is never looked at. The script passes. The census is still short by one (V7-09).
+
+`check_ch09_products.py` accepts \(0.9^{100}\) as “about \(3\times 10^{-5}\)” whenever the relative error is under \(12\%\). The true value \(2.66\times 10^{-5}\) sits inside that tolerance, which is why V7-17 was not caught.
+
+### What they did not mention
+
+- The debts table is new since the October review. Its references are right and its third column is not readable (V7-01). PR #204 describes the table and not the setting.
+- The portmanteau theorem’s appeal to the layer-cake exercise (V7-02). The October review lists portmanteau among the arguments that are “in order”.
+- The \(\varepsilon\) against \(2\varepsilon\) slip in Arzelà–Ascoli (V7-10).
+- The square-root sketch inside the uniqueness of \(\mathbb R\) (V7-07), the integral in Theorem 2.16(f) (V7-08), the undefined principal logarithm (V7-11), and the appeal to unique factorisation in Chapter 1 (V7-12).
+- There is no index (V7-06). The October review did not ask for one.
+- The Weierstrass figure uses \(a=\tfrac12\), \(b=3\), which is not an instance of the inequality the paragraph states (V7-14).
+- Only the Jordan sources section is in the table of contents (V7-15), and two problems are marked *Journey* (V7-16).
+
+The handoff already says that several bibliographic details (Miranda 1940, the pages of Lebesgue’s 1926 lecture, Robinson 1947, Littlewood 1944, the chapter numbers in Falconer, the years of Lévy’s and Khinchin’s constants) were not checked against the sources. This read did not check them either. They stay in “Not reviewed”.
