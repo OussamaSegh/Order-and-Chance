@@ -16,7 +16,9 @@ SOURCES = {
         # Box--Muller grid cover (V4-21, V4-03). Labels unchanged.
         # 2026-11-11: pb:passone and pb:stick appended. Earlier claim labels unchanged.
         # The new statements were checked in this preparation. Not an independent sign-off.
-        "8d9be9fb56db0588a7f7860ea73a046f298362b2",
+        # 2026-11-12: V1-07. The Volume 1 credit no longer says Riemann integral.
+        # Labels unchanged. Not an independent sign-off of the chapter.
+        "02b9b2067fb9cbafce08f6b5f16646fd3c0cef48",
         "prop:densitymean prop:gausstail prop:fubini prop:polar prop:manyuniforms prop:orderpair prop:inverse thm:dct thm:boxmuller",
         "ex:counter ex:densityunique ex:tail ex:cauchy ex:gamma ex:order ex:cantor ex:usquare ex:radius pb:passone pb:stick",
     ),
