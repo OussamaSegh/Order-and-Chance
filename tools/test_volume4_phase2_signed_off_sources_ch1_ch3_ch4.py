@@ -14,22 +14,29 @@ SCOPE = {
     "ch01-counting.tex": {
         # Reread 2026-11-11 for the countable-cover wording and the tail-of-ones
         # argument (V4-14), and for the named host sentence (V4-15).
-        "sha": "f4129ed5d7477942cbae9e83b122d871e0a7c6c2",
+        # 2026-11-11: unnumbered dyadic outer-content lemma from main, then ex:twotests and ex:secretary appended.
+        # Numbered claim labels unchanged. Not an independent sign-off.
+        "sha": "7ca981366fe12e6d6212d30d161e7823cfd4801d",
         "claims": "prop:bits prop:subadd prop:infdigits thm:ballot".split(),
-        "exercises": "ex:mybirthday ex:twochildren ex:penney ex:montyn ex:pairwise ex:aces ex:catalan ex:smallballot".split(),
+        "exercises": "ex:mybirthday ex:twochildren ex:penney ex:montyn ex:pairwise ex:aces ex:catalan ex:smallballot ex:twotests ex:secretary".split(),
     },
     "ch03-generating.tex": {
         # Reread 2026-11-11 for the undefined S_N and the O(log n) bridge (V4-09, V4-10).
-        "sha": "369bbb43ea41bbfb7e81340c9248516564135d3d",
+        # 2026-11-11: pb:sicherman, pb:loaded and pb:subsetsum appended. Earlier claim labels unchanged.
+        # The new statements were checked in this preparation. Not an independent sign-off.
+        "sha": "db93b9ce97814c00b9aa83bb6c7e2c95724c0252",
         "claims": "prop:pgfcoeff prop:pgfmean prop:pgfvar prop:pgfsum prop:randomsum prop:genmean thm:extinction".split(),
-        "exercises": "ex:thinning ex:golden ex:lotka ex:randomsumvar ex:progeny ex:firstpassage ex:binseries ex:poissongw".split(),
+        "exercises": "ex:thinning ex:golden ex:lotka ex:randomsumvar ex:progeny ex:firstpassage ex:binseries ex:poissongw pb:sicherman pb:loaded pb:subsetsum".split(),
     },
     "ch04-inequalities.tex": {
         # Reread 2026-11-11 for the countable moment-generating product (V4-12)
         # and the integer atom in the longest-run solution (V4-11).
-        "sha": "0ff39609953328e49d094801d0b3d761ea354512",
+        # Reread 2026-11-11 for removal of the unused Shannon source line (V4R2-05). Labels unchanged.
+        # 2026-11-11: ex:ballsbins appended. Earlier claim labels unchanged.
+        # The new statement was checked in this preparation. Not an independent sign-off.
+        "sha": "3d027c47803509b00c95aa7580d4899fbe78112d",
         "claims": "lem:hoeffding thm:hoeffding thm:kolmogorov thm:bc thm:sllnbound thm:weierstrass".split(),
-        "exercises": "ex:markovsharp ex:chernoffbin ex:bcfinite ex:bernstein2 ex:gapfill ex:runs".split(),
+        "exercises": "ex:markovsharp ex:chernoffbin ex:bcfinite ex:bernstein2 ex:gapfill ex:runs ex:ballsbins".split(),
     },
 }
 PROOFS = re.compile(r"\\begin\{(?:theorem|lemma|proposition)\}(?:\[[^\]]+\])?\s*\\label\{([^}]+)\}")

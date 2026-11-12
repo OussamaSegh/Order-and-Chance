@@ -13,7 +13,11 @@ from pathlib import Path
 SOURCE = Path(__file__).resolve().parents[1] / "volume4-chance" / "chapters" / "ch11-brownian.tex"
 # Caption ink words only. The reviewed mathematics is the predecessor blob
 # 7c576031edc38e04019336de0a0a1a1bfefeb2b1; the diff is the reflection caption.
-BLOB = "126fae3f9abd40344549e6b2401c6da440cefdd1"
+# Reread 2026-11-11 for the existence outer-content argument and the reflection window (V4R2-01, V4R2-10, V4R2-15, V4R2-16).
+# Further writer repair the same day: bin-increment thresholds and reflection strips use the rectangle reduction. Labels unchanged. This pin is source identity, not an independent sign-off.
+# Later the same day: the lower bound uses the unnumbered dyadic lemma. Still not an independent sign-off.
+# Atom sentence names the dyadic strip. Source identity only, not an independent sign-off.
+BLOB = "26e4400c45d83e53a9e415cd24952eccbf0d26dc"
 PROOFS = """prop:bmgauss lem:levylevel thm:levy prop:scaling lem:squares
 thm:qv thm:dyadicito thm:pwz prop:bmmart prop:restart
 thm:reflection prop:bmsquare""".split()

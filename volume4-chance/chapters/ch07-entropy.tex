@@ -236,7 +236,7 @@ For a finite alphabet of at least two symbols, repeatedly merging two nodes of s
 \begin{proof}
 Proceed by induction on the number $m$ of symbols. For $m=2$ the words $0$ and $1$ have expected length $1$. The empty word is a prefix of every word, so neither symbol of a two-symbol prefix code can be assigned the empty word. Both lengths are at least $1$, and the expected length is at least $1$.
 
-Suppose $m\ge 3$, and that the claim is known for alphabets of size $m-1$. Among prefix codes, one of minimal length may be taken to be a full tree: a node with only one child can be deleted, and every word below it shortens by one bit. In a full tree every deepest leaf has a sibling. Let $p\le q$ be the two smallest probabilities, carried by symbols $x$ and $y$, and start from an optimal full tree. Every symbol has probability at least $p$. If $x$ is already at maximum depth, leave the tree as it is. If it is not, a deepest leaf has probability $r\ge p$. The expected length changes by $(p-r)$ times the positive difference of depths. A strict inequality $r>p$ would shorten an optimal code, so that case does not occur. The remaining case is $r=p$, the swap leaves the length unchanged, and a lightest symbol now sits at maximum depth. Call that symbol $x$ still, and let its sibling have probability $s$. Every symbol other than $x$ has probability at least $q$, so $s\ge q$. If $y$ is already the sibling, stop. If not, swapping $y$ into the sibling slot changes the length by $(q-s)$ times the difference of depths. Equal depths make that factor $0$, so the length does not change even when $s>q$. A positive depth gap and $s>q$ would shorten an optimal code, so that case does not occur. The case $s=q$ leaves the length unchanged whether or not the depths agree. Thus there is an optimal code in which the two lightest symbols are siblings at maximum depth.
+Suppose $m\ge 3$, and that the claim is known for alphabets of size $m-1$. Among prefix codes, one of minimal length may be taken to be a full tree: a node with only one child can be deleted, and every word below it shortens by one bit. In a full tree every deepest leaf has a sibling. Let $p\le q$ be the two smallest probabilities, carried by symbols $x$ and $y$, and start from an optimal full tree. Every symbol has probability at least $p$. If $x$ is already at maximum depth, leave the tree as it is. If it is not, a deepest leaf has probability $r\ge p$. The expected length changes by $(p-r)$ times the positive difference of depths. A strict inequality $r>p$ would shorten an optimal code, so that case does not occur. The remaining case is $r=p$, the swap leaves the length unchanged, and a lightest symbol now sits at maximum depth. Call that symbol $x$ still. Its sibling is a leaf: the depth is already maximal, and an internal sibling would have a child at greater depth. Let that leaf have probability $s$. Every symbol other than $x$ has probability at least $q$, so $s\ge q$. If $y$ is already the sibling, stop. If not, swapping $y$ into the sibling slot changes the length by $(q-s)$ times the difference of depths. Equal depths make that factor $0$, so the length does not change even when $s>q$. A positive depth gap and $s>q$ would shorten an optimal code, so that case does not occur. The case $s=q$ leaves the length unchanged whether or not the depths agree. Thus there is an optimal code in which the two lightest symbols are siblings at maximum depth.
 
 Delete those two sibling leaves and give their parent their combined probability. The code that remains is a prefix code for an alphabet of $m-1$ symbols, and the original expected length is the reduced length plus the combined probability. By induction the reduced code may be replaced by a Huffman code for the reduced alphabet without increasing its length. Putting the two light symbols back as children of the merged node is exactly one run of the merge procedure, and it is optimal.
 \end{proof}
@@ -313,6 +313,15 @@ The three codewords $0$, $01$, $10$ are not prefix-free. Show that the bit strin
 Let $X$ be Bernoulli$(1/4)$ and let $T_n(\varepsilon)$ be the typical set from Theorem~\ref{thm:aep}. Verify that $P(T_n(\varepsilon))\to1$ by Chebyshev, identify $H(X)$ explicitly, and use the two bounds in the theorem to bound $\log_2|T_n(\varepsilon)|/n$ for large $n$. State what happens as $\varepsilon\downarrow0$.
 \end{exercise}
 
+
+\begin{exercise}[$\star\star$]\label{ex:mcmillan}
+A code is uniquely decodable when every finite concatenation of codewords comes from only one sequence of symbols.
+\begin{enumerate}[label=(\alph*)]
+\item Show that a prefix code is uniquely decodable, and that $\{0,01\}$ is uniquely decodable but not a prefix code.
+\item Prove that a uniquely decodable binary code on a finite alphabet satisfies $\sum_a 2^{-\ell(a)}\le1$. Deduce that its expected length is at least $H(X)$, by the comparison already used for prefix codes in the proof of Theorem~\ref{thm:shannon}.
+\end{enumerate}
+\end{exercise}
+
 \section{Hints}
 
 \begin{hint}{ex:entropymax}
@@ -334,6 +343,11 @@ Compare the split $0\,|\,10$ with another split using the codeword $01$.
 \end{hint}
 \begin{hint}{ex:typicalcount}
 The information of one head is $\log_2 4$ and of one tail is $\log_2(4/3)$. The variance of the sum grows like $n$. Chebyshev is applied to the average.
+\end{hint}
+
+
+\begin{hint}{ex:mcmillan}
+Expand $\bigl(\sum_a 2^{-\ell(a)}\bigr)^N$. Unique decoding makes the concatenations of length $L$ inject into the $2^L$ binary words of that length.
 \end{hint}
 
 \section{Solutions}
@@ -404,6 +418,26 @@ H(X)-\varepsilon-\frac1n
 \le H(X)+\varepsilon,
 \]
 where $\frac12=2^{-1}$ supplies the $1/n$. First let $n\to\infty$ and then $\varepsilon\downarrow0$: the exponential growth rate is $H(X)$.
+\end{solution}
+
+
+\begin{solution}{ex:mcmillan}
+\idea Prefix-freeness makes the decoder stop at a leaf. McMillan's inequality is the same Kraft sum, obtained by counting concatenations instead of a tree.
+\writeup (a) In a prefix code, read bits until the current word is a codeword. Prefix-freeness says this happens at exactly one place, and the next symbol starts afresh. Different sequences of symbols therefore produce different bit strings.
+
+The code $\{0,01\}$ is not prefix-free, because $0$ is a prefix of $01$. It is still uniquely decodable. Scan a concatenation from the left. A symbol $1$ never begins a codeword, so every $1$ is the second bit of a $01$, and the bit before it is the matching $0$. Every remaining isolated $0$ is a codeword by itself. The parsing is unique.
+
+(b) Let $K=\sum_a 2^{-\ell(a)}$ and let $\ell_{\max}$ be the longest codeword length. Expanding the power gives
+\[
+ K^N=\sum_{a_1,\ldots,a_N}2^{-(\ell(a_1)+\cdots+\ell(a_N))}.
+\]
+Group the sequences by the length $L$ of their concatenation. Unique decodability says these concatenations are distinct binary words, so at most $2^L$ sequences have length $L$. Each contributes $2^{-L}$. The possible lengths run from $0$ to $N\ell_{\max}$, so
+\[
+ K^N\le N\ell_{\max}+1.
+\]
+If $K>1$, the left side grows exponentially and the right side does not. Thus $K\le1$.
+
+Theorem~\ref{thm:shannon} bounds the expected length of a prefix code by comparing $p_a$ with the normalised weights $2^{-\ell(a)}/K$. From the display $K\le1$ onward, that comparison never uses the prefix property again. The same lines give $H(X)\le\sum_a p_a\ell(a)$ for a uniquely decodable code.
 \end{solution}
 
 \section*{Sources and further reading}
