@@ -16,8 +16,12 @@ SPECS = {
  "ch07-walks.tex": {
    # Reread 2026-11-11 for the factor 1/4 in the arcsine identity (V4-22)
    # and the first boundary vertex in the harmonic argument (V4-23).
-   "sha": "2bee3768ab8711567283311188176db71f7bb29a",
-   "proofs": "thm:rwreflect thm:ruin prop:duration prop:visits thm:polya thm:arcsine prop:harmonic thm:arcsinelimit lem:centralbin".split(),
+   # Reread 2026-11-11 for the ruin constants and the iterated integral (V4R2-03, V4R2-04). Labels unchanged.
+   # Writer repair the same day: return attribution, half-line Gaussian citation, meeting sign (V4R2-18, V4R2-19, V4R2-20). Not an independent sign-off.
+   # 2026-11-11: thm:twosat appended after the existing claims. Exercise labels unchanged.
+   # The new proof was checked in this preparation. Not an independent sign-off.
+   "sha": "e45393f9961dae38495ddee1eb39594ccd5655cc",
+   "proofs": "thm:rwreflect thm:ruin prop:duration prop:visits thm:polya thm:arcsine prop:harmonic thm:arcsinelimit lem:centralbin thm:twosat".split(),
    "ex": "ex:ballotwalk ex:maxlaw ex:timepositive ex:unfair ex:meet ex:escape ex:exittime ex:electric".split(),
  },
  "ch09-poisson.tex": {

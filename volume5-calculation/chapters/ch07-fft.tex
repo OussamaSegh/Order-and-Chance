@@ -1,4 +1,4 @@
-\chapter{The Discrete Fourier Transform and the FFT}
+\chapter{The Discrete Fourier Transform and the FFT}\label{ch:fft}
 
 \begin{center}\itshape
 The most important numerical algorithm of our lifetime.\\
@@ -9,15 +9,14 @@ In 1963, at a meeting of President Kennedy's Science Advisory Committee about ho
 statistician John Tukey sketched a faster way to compute Fourier transforms. The physicist Richard Garwin saw what it meant, and found a programmer at
 IBM, James Cooley, to make it run. The resulting paper became one of the most cited in all of applied mathematics.
 
-Chapter~8 decomposed a function on the circle into infinitely many frequencies. A computer only ever sees finitely many
+Chapter~\ref{ch:fourier} decomposed a function on the circle into infinitely many frequencies. A computer only ever sees finitely many
 samples, and on $n$ samples there are exactly $n$ frequencies: the characters of the cyclic group $\Z/n\Z$, which Volume~3,
 Chapter~11, already studied. The transform is then a matrix, and computing it naively costs $n^2$ multiplications.
 
 In 1965 Cooley and Tukey published a way to do it in about $\frac n2\log_2n$ (Gauss had found the same idea in 1805, to
 interpolate the orbit of the asteroid Juno, and left it in an unpublished manuscript). For $n=2^{20}$, about a million,
 this is the difference between $10^{12}$ operations and $10^7$. The fast Fourier transform made digital audio, medical
-imaging, radar and modern cryptography practical, and it keeps a promise of Volume~1, Chapter~6: polynomials, and
-therefore large integers, can be multiplied in time $O(n\log n)$.
+imaging, radar and modern cryptography practical. Volume~1, Chapter~5, said that this volume turns the roots-of-unity filter into a fast way to multiply polynomials.
 
 \begin{think}
 To multiply two polynomials of degree $n-1$ the schoolbook method computes $n^2$ products of coefficients. But a polynomial of
@@ -37,8 +36,13 @@ The \emph{discrete Fourier transform} (DFT) of $a=(a_0,\dots,a_{n-1})\in\C^n$ is
 In matrix form $\hat a=F_na$, where $F_n=(\omega^{-jk})_{0\le j,k<n}$.
 \end{definition}
 
-This is the convention of most software; Volume~3, Theorem~11.14, divided by $n$. The DFT evaluates the polynomial
+This is the convention of most software; Volume~3, Chapter~11, divided by $n$. The DFT evaluates the polynomial
 $A(X)=\sum_ka_kX^k$ at the $n$-th roots of unity: $\hat a_j=A(\omega^{-j})$.
+
+Try $n=4$, so $\omega=i$, and $a=(1,2,3,4)$. Then $\hat a_0=1+2+3+4=10$, the sum. Next
+$\hat a_1=1+2(-i)+3(-1)+4i=-2+2i$, then $\hat a_2=1-2+3-4=-2$, the alternating sum, and $\hat a_3=-2-2i$, the conjugate
+of $\hat a_1$ because $a$ is real. Keep these four numbers in mind: $1+4+9+16=30$, and $\frac14(100+8+4+8)=30$ too. The
+next theorem says this is no accident.
 
 \begin{lemma}\label{lem:rootsum}
 For every integer $m$, $\sum_{k=0}^{n-1}\omega^{mk}$ is $n$ if $n$ divides $m$, and $0$ otherwise.
@@ -60,11 +64,11 @@ which is the inversion formula. Since $F_n$ is symmetric, $\overline{F_n}=F_n^*$
 Hermitian norm.
 \end{proof}
 
-The DFT is the Fourier series of Chapter~8 seen through samples. Sampling a function at $n$ equally spaced points cannot
+The DFT is the Fourier series of Chapter~\ref{ch:fourier} seen through samples. Sampling a function at $n$ equally spaced points cannot
 distinguish the frequencies $j$ and $j+n$, since $e^{i(j+n)t}=e^{ijt}$ at $t=\frac{2\pi k}n$; so they are added together.
 
 \begin{proposition}[aliasing]\label{prop:aliasing}
-Let $f$ be $2\pi$-periodic with $\sum_m|c_m(f)|<\infty$, so that $f=\sum_mc_m(f)e_m$ everywhere, and let $a_k=f\bigl(\frac{2\pi k}n\bigr)$. Then
+Let $f$ be continuous and $2\pi$-periodic with $\sum_m|c_m(f)|<\infty$, so that $f=\sum_mc_m(f)e_m$ everywhere (the series converges uniformly to a continuous function with the same coefficients, which is $f$ by Corollary~\ref{cor:fejer}), and let $a_k=f\bigl(\frac{2\pi k}n\bigr)$. Then
 \[
 \frac1n\hat a_j=\sum_{l\in\Z}c_{j+ln}(f).
 \]
@@ -75,8 +79,10 @@ Lemma~\ref{lem:rootsum} keeps exactly the $m\equiv j\pmod n$, each with weight $
 \end{proof}
 
 So $\frac1n\hat a_j$ approximates $c_j(f)$ for $|j|<\frac n2$, with an error equal to the tail of the coefficients at the frequencies
-$j\pm n,j\pm2n,\dots$: small when $f$ is smooth, by Exercise~\ref{ex:abs}. A numerical calculation showed this error, of order
-$\frac1n$ for a function with a jump and $\frac1{n^2}$ for one with a kink.
+$j\pm n,j\pm2n,\dots$: small when $f$ is smooth. For instance, suppose $|c_m(f)|\le\frac C{m^2}$ for $m\ne0$, as for the periodic
+function equal to $|x|$ on $[-\pi,\pi]$, which is continuous with a kink ($c_m=-\frac2{\pi m^2}$ for $m$ odd, $0$ for $m\ne0$ even).
+For $|j|\le\frac n2$ and $l\ne0$ we have $|j+ln|\ge(|l|-\frac12)n$, so the error is at most
+$\frac{2C}{n^2}\sum_{l\ge1}\frac1{(l-\frac12)^2}=\frac{\pi^2C}{n^2}$: doubling the number of samples divides it by four.
 
 \section{Convolution}
 
@@ -183,8 +189,8 @@ Consequently, if $a,b$ are vectors of $N$ integers in $[0,B[$, padded with zeros
 corresponding polynomials is computed exactly by transforms modulo $p$.
 \end{theorem}
 \begin{proof}
-$(\Z/p\Z)^\times$ is cyclic of order $p-1$ (Volume~2, Theorem~4.3), and $n$ divides $p-1$, so if $g$ is a generator, $w=g^{(p-1)/n}$ has order
-$n$. Lemma~\ref{lem:rootsum} holds in $\Z/p\Z$: if $n\nmid m$, then $w^m\ne1$, $w^m-1$ is invertible, and the geometric sum vanishes. The
+$(\Z/p\Z)^\times$ is cyclic of order $p-1$ (Volume~2, Chapter~5), and $n$ divides $p-1$, so if $g$ is a generator, $w=g^{(p-1)/n}$ has order
+$n$. Also $n<p$, so $n$ is invertible modulo $p$. Lemma~\ref{lem:rootsum} holds in $\Z/p\Z$: if $n\nmid m$, then $w^m\ne1$, $w^m-1$ is invertible, and the geometric sum vanishes. The
 proofs of inversion, of the convolution theorem and of the butterfly lemma used nothing else ($w^{n/2}=-1$ since it is a square
 root of $1$ different from $1$, and $\pm1$ are the only square roots of $1$ in a field). Finally, each coefficient of the product
 is a sum of at most $N$ products of integers in $[0,B-1]$, so it lies in $[0,N(B-1)^2]$; knowing it modulo $p>N(B-1)^2$ determines it.
@@ -198,13 +204,13 @@ and several primes combined by the Chinese remainder theorem. After the transfor
 \begin{remark}
 Iterating this idea, Sch\"onhage and Strassen (1971) multiplied $N$-bit integers in $O(N\log N\log\log N)$ bit operations, and
 Harvey and van der Hoeven (2019) reached $O(N\log N)$, which is believed to be optimal. Every computation of $\pi$ to billions of
-digits, and of the Mersenne primes of Volume~2, runs on FFT multiplication.
+digits, and of the Mersenne primes of Volume~2, Chapter~2, runs on FFT multiplication.
 \end{remark}
 
 \section{The discrete cosine transform}
 
 A signal on $\{0,\dots,N-1\}$ that is not periodic acquires a jump when it is wrapped around a circle, and by
-Chapter~8 a jump means slowly decaying coefficients. The cure is to reflect the signal before transforming it.
+Chapter~\ref{ch:fourier} a jump means slowly decaying coefficients. The cure is to reflect the signal before transforming it.
 
 \begin{proposition}\label{prop:dct}
 Let $x\in\C^N$ and let $y\in\C^{2N}$ be its even extension
@@ -236,7 +242,7 @@ Let $p$ be an odd prime, $\omega=e^{2\pi i/p}$, and $\chi(k)=\bigl(\frac kp\bigr
 \[
 g=\sum_{k=0}^{p-1}\chi(k)\omega^k
 \]
-be its Gauss sum (Volume~2, Exercise~5.7).
+be its Gauss sum (it appeared in the exercises of Volume~2, Chapter~6).
 
 \begin{proposition}\label{prop:gaussfourier}
 The DFT of $\chi$ is $\hat\chi_j=\chi(-j)\,g$ for every $j$. Consequently $|g|^2=p$, and $g=\sum_{a=0}^{p-1}\omega^{a^2}$.
@@ -251,9 +257,9 @@ p-1=\sum_k|\chi(k)|^2=\frac1p\sum_j|\hat\chi_j|^2=\frac1p(p-1)|g|^2,
 so $|g|^2=p$. Finally, the number of $a$ with $a^2\equiv m$ is $1+\chi(m)$, so $\sum_a\omega^{a^2}=\sum_m(1+\chi(m))\omega^m=0+g$.
 \end{proof}
 
-This recovers Volume~1, Exercise~5.8: the quadratic Gauss sum has modulus $\sqrt p$, because the Legendre symbol, like any
+This recovers an exercise of Volume~1, Chapter~5: the quadratic Gauss sum has modulus $\sqrt p$, because the Legendre symbol, like any
 character, has a flat spectrum. Its exact value, $\sqrt p$ for $p\equiv1\pmod4$ and $i\sqrt p$ for $p\equiv3\pmod4$, is Gauss's theorem, and
-Chapter~10 proves it with Poisson summation.
+Chapter~\ref{ch:transform} proves it with Poisson summation.
 
 \begin{figure}[ht]
 \centering
@@ -263,6 +269,22 @@ $0\le j\le128$; the two tones stand far above the noise floor. Bottom: the signa
 threshold (charcoal), against the clean signal (gray).}
 \label{fig:denoise}
 \end{figure}
+
+\section{What we proved, and what comes next}
+
+On $n$ samples there are $n$ frequencies, and the transform that passes from one to the other is a unitary matrix up to
+the factor $\sqrt n$ (Theorem~\ref{thm:dftinversion}). It turns convolution into pointwise multiplication
+(Theorem~\ref{thm:convolution}), and multiplying polynomials is a convolution (Corollary~\ref{cor:polymul}). That
+answers the think box: evaluate at the roots of unity, multiply the values, come back. The catch was the cost of going
+and coming back, and the butterfly removes it: because squaring folds the $n$-th roots of unity onto the $m$-th roots,
+one transform of length $n$ is two of length $\frac n2$ and $n$ more operations, which adds up to $\frac n2\log_2n$
+multiplications (Theorem~\ref{thm:fft}). The same algebra runs in $\Z/p\Z$ with no rounding at all
+(Theorem~\ref{thm:ntt}), and that is how very large integers are multiplied.
+
+Two remarks pointed forward. A sampled function shows its Fourier coefficients folded modulo $n$
+(Proposition~\ref{prop:aliasing}); Chapter~\ref{ch:transform} meets the same folding on the whole line, where it is the
+Poisson summation formula. And the Legendre symbol has a flat spectrum, $|g|=\sqrt p$
+(Proposition~\ref{prop:gaussfourier}); the sign of $g$, which cost Gauss four years, falls out of that same formula.
 
 \begin{beauty}
 The FFT is the Chinese remainder theorem for polynomials: $X^n-1=(X^m-1)(X^m+1)$, and reducing modulo the two factors is the
@@ -278,8 +300,8 @@ eigenvalues of the unitary matrix $\frac1{\sqrt n}F_n$?
 \end{exercise}
 
 \begin{exercise}[$\star\star$]\label{ex:circulantfft}
-A \emph{circulant} matrix has entries $C_{kl}=c_{k-l}$ for some $c\in\C^n$. Show that $C=F_n^{-1}\operatorname{diag}(\hat c)F_n$. Deduce $\det C=\prod_j\hat c_j$ (Volume~1,
-Exercise~2.7), and explain how to solve $Cx=y$ in $O(n\log n)$ operations when $n$ is a power of $2$.
+A \emph{circulant} matrix has entries $C_{kl}=c_{k-l}$ for some $c\in\C^n$. Show that $C=F_n^{-1}\operatorname{diag}(\hat c)F_n$. Deduce $\det C=\prod_j\hat c_j$ (as in Volume~1,
+Chapter~5), and explain how to solve $Cx=y$ in $O(n\log n)$ operations when $n$ is a power of $2$.
 \end{exercise}
 
 \begin{exercise}[$\star\star$]\label{ex:karatsuba}
@@ -350,7 +372,7 @@ $t\not\equiv0$).
 \end{exercise}
 
 \begin{exercise}[$\star\star$]\label{pb:newman}
-\emph{Newman's phenomenon.} Let $s(n)$ be the sum of the binary digits of $n$, and $\omega=e(\frac13)$.
+\emph{Newman's phenomenon.} Let $s(n)$ be the sum of the binary digits of $n$, and $\omega=e^{2i\pi/3}$.
 \begin{enumerate}[label=(\alph*)]
 \item For $k\ge1$ and $j\in\{0,1,2\}$, show that the number of $n<2^k$ with $s(n)\equiv j\pmod3$ is $\frac13\bigl(2^k+2\cos\frac{\pi(k-2j)}3\bigr)$.
 \item Show that
@@ -391,6 +413,19 @@ with seven equally spaced points (in the sense of the parametrisation) on it.}
 one Fourier mode, and after three steps only a regular pentagon is left.}
 \label{fig:pdn}
 \end{figure}
+
+\begin{exercise}[$\star\star\star$]\label{ex:uncertainty}
+\emph{A signal and its spectrum cannot both be short (Donoho and Stark, 1989).} For $a\in\C^n$ let $\operatorname{supp}a$ be the set of $k$
+with $a_k\ne0$.
+\begin{enumerate}[label=(\alph*)]
+\item Let $a\ne0$ have a support of $s$ elements. Show that among any $s$ consecutive indices $j_0,j_0+1,\dots,j_0+s-1$ (modulo $n$)
+there is one with $\hat a_j\ne0$.
+\item Deduce the uncertainty principle: $|\operatorname{supp}a|\cdot|\operatorname{supp}\hat a|\ge n$ for every $a\ne0$.
+\item Let $d$ divide $n$ and let $a$ be the indicator of the multiples of $d$ in $\Z/n\Z$. Compute $\hat a$, and check that equality holds.
+\item Let $2s\le n$. Show that a vector with at most $s$ non-zero entries is determined by any $2s$ consecutive entries of its
+transform.
+\end{enumerate}
+\end{exercise}
 
 \section{Hints}
 
@@ -437,13 +472,19 @@ Solve for $p$, and apply $A_\theta$ to $z_k=\omega^{jk}$. Which mode does $A_{2\
 $2^{n-1}(1-\mathbb E[fg])$. (d) Look at $\hat f(0)$.
 \end{hint}
 
+\begin{hint}{ex:uncertainty}
+(a) The $s$ equations $\hat a_j=0$ form a square linear system in the $s$ unknowns $a_k$, $k\in\operatorname{supp}a$. Its matrix is a Vandermonde
+matrix with rows rescaled. (b) Walk around the circle $\Z/n\Z$: how many zeros of $\hat a$ can follow a non-zero entry? (d) Take the
+difference of two candidates.
+\end{hint}
+
 \section{Solutions}
 
 \begin{solution}{ex:dftorder}
 \idea Transforming twice sums the characters twice; by orthogonality only the frequency $-j$ survives.
 \writeup $(F_n^2)_{jl}=\sum_k\omega^{-jk}\omega^{-kl}=\sum_k\omega^{-k(j+l)}$, which is $n$ if $l\equiv-j$ and $0$ otherwise, by Lemma~\ref{lem:rootsum}. So $F_n^2=nR$, and
 $R^2=I$ gives $F_n^4=n^2I$. For $U=\frac1{\sqrt n}F_n$, $U^4=I$, so every eigenvalue satisfies $\lambda^4=1$: $\lambda\in\{1,-1,i,-i\}$. (All four occur once
-$n\ge4$, with multiplicities close to $\frac n4$; Chapter~10 meets the eigenvectors of the continuous transform, the Hermite
+$n\ge5$, with multiplicities close to $\frac n4$; for $n=4$ the eigenvalues are $1,1,-1,-i$. Chapter~\ref{ch:transform} meets the eigenvectors of the continuous transform, the Hermite
 functions, of which the Gaussian is the first.)
 \end{solution}
 
@@ -451,7 +492,7 @@ functions, of which the Gaussian is the first.)
 \idea A circulant matrix commutes with cyclic shifts, so it is a convolution, and convolutions are diagonal in the Fourier
 basis.
 \writeup $(Cx)_k=\sum_lc_{k-l}x_l=(c*x)_k$, so $F_nCx=\hat c\cdot\hat x=\operatorname{diag}(\hat c)F_nx$ for all $x$, that is $C=F_n^{-1}\operatorname{diag}(\hat c)F_n$. Taking
-determinants, $\det C=\prod_j\hat c_j$, and $\hat c_j=P(\omega^{-j})$ with $P(X)=\sum_kc_kX^k$, which is Volume~1, Exercise~5.7. To solve $Cx=y$, compute $\hat y$ by
+determinants, $\det C=\prod_j\hat c_j$, and $\hat c_j=P(\omega^{-j})$ with $P(X)=\sum_kc_kX^k$, which is the formula of Volume~1, Chapter~5. To solve $Cx=y$, compute $\hat y$ by
 FFT, divide entrywise, $\hat x_j=\frac{\hat y_j}{\hat c_j}$ (possible iff no $\hat c_j$ vanishes, iff $C$ is invertible), and invert the FFT: three FFTs and $n$
 divisions, against $O(n^3)$ for Gaussian elimination.
 \end{solution}
@@ -493,7 +534,7 @@ $k\mapsto\omega^{jk}$ is multiplied by $\frac{1+\omega^j}2=\cos\frac{\pi j}n\,e^
 largest remaining moduli are those of $j=1$ and $j=n-1$, both $\cos\frac\pi n$, so after many steps only these two modes are
 visible, and two opposite modes make an affine image of a regular polygon.
 
-\writeup (a) By discrete Fourier inversion (Volume~5, Chapter~9), $z_k=\sum_{j=0}^{n-1}\hat z_j\omega^{jk}$ with
+\writeup (a) By discrete Fourier inversion (Theorem~\ref{thm:dftinversion}), $z_k=\sum_{j=0}^{n-1}\hat z_j\omega^{jk}$ with
 $\hat z_j=\frac1n\sum_kz_k\omega^{-jk}$, and $\hat z_0=0$ is the centroid. For the mode $u_k=\omega^{jk}$,
 $(Mu)_k=\frac12(1+\omega^j)\omega^{jk}$, and
 $\lambda_j=\frac{1+\omega^j}2=e^{i\pi j/n}\frac{e^{-i\pi j/n}+e^{i\pi j/n}}2=\cos\frac{\pi j}n\,e^{i\pi j/n}$. So
@@ -509,7 +550,7 @@ its shape) by an invertible linear map when $|a|\ne|b|$: polygons inscribed in a
 
 (c) For $n=4$, $\lambda_2=\frac{1+\omega^2}2=0$: after one step only the modes $1$ and $3$ remain, and $Mz$ is an affine image of
 a square, a parallelogram. This is Varignon's theorem: the midpoints of any quadrilateral form a parallelogram.
-\tools Volume~5, Chapter~9 (discrete Fourier transform); Volume~1, Chapters~5 and~7 (roots of unity, determinants).
+\tools This chapter (discrete Fourier inversion); Volume~1, Chapters~5 and~7 (roots of unity, determinants).
 \leads Darboux (1878) studied this iteration, and Berlekamp, Gilbert and Sinden (1965) used it for random polygons. The same
 eigenvalue computation shows that ``averaging with neighbours'' on a cycle mixes like $\cos^t\frac\pi n$, a first example of
 the spectral gap of a graph, and of diffusion on the circle (Volume~4, Chapter~8).
@@ -540,7 +581,7 @@ so the signed area is $\frac{3\sqrt3}4\bigl(|\hat z_1|^2-|\hat z_2|^2\bigr)$. Fo
 triangle has only the mode $1$, with $|1+\omega|=1$: area $\frac{3\sqrt3}4|\hat z_1|^2$. The inner one has only the mode $2$,
 with $|1+\omega^2|=1$: signed area $-\frac{3\sqrt3}4|\hat z_2|^2$, so it is clockwise, of area $\frac{3\sqrt3}4|\hat z_2|^2$. The
 difference of the areas is $\frac{3\sqrt3}4(|\hat z_1|^2-|\hat z_2|^2)$, the area of $ABC$.
-\tools Volume~1, Chapter~5 (complex numbers and rotations); Volume~5, Chapter~9 (discrete Fourier transform).
+\tools Volume~1, Chapter~5 (complex numbers and rotations); this chapter (discrete Fourier inversion).
 \leads The theorem is attributed to Napoleon Bonaparte, who was a good amateur geometer, though there is no evidence that he
 found it; it was printed by W.~Rutherford in 1825. The inner Napoleon triangle reduces to a point exactly when
 $\hat z_2=0$, that is when $ABC$ is itself equilateral and counterclockwise.
@@ -566,7 +607,7 @@ squares on the sides and takes their centres; $\theta=180^\circ$ takes midpoints
 midpoint of its base). So: \emph{the centres of the squares erected on the sides of a quadrilateral form a quadrilateral whose
 midpoint polygon is a square}, and by Varignon (Problem~\ref{pb:midpoint}) the order can be reversed: the centres of the
 squares erected on the sides of the Varignon parallelogram form a square.
-\tools Volume~5, Chapter~9 (discrete Fourier transform); Volume~1, Chapters~5 and~7 (rotations, diagonalisation).
+\tools This chapter (discrete Fourier inversion); Volume~1, Chapters~5 and~7 (rotations, diagonalisation).
 \leads Petr (1908), Douglas (1940) and Neumann (1941) found this independently. For $n=4$ the statement contains van Aubel's
 theorem: the segments joining the centres of opposite squares are equal and perpendicular.
 \end{solution}
@@ -590,17 +631,17 @@ $j$ in the window has $|\theta_j|\ge\frac14$, that is $\cos(2\pi\theta_j)\le0$.
 
 (d) When $\cos\le0$, $\bigl|\frac{1+2\cos}3\bigr|\le\frac13$; every factor has modulus at most $1$. Among $j<n$ there are
 $\lfloor n/L\rfloor$ disjoint windows of length $L$, so $|\hat P(t)|\le3^{-\lfloor n/L\rfloor}$ for $t\ne0$, where $\hat P$ is the transform of
-(b). By Cauchy--Schwarz and Plancherel on $\Z/p\Z$ (Volume~5, Chapter~9),
+(b). By Cauchy--Schwarz and Parseval on $\Z/p\Z$ (Theorem~\ref{thm:dftinversion}),
 \[
 \begin{aligned}d_n=\frac12\sum_x\Bigl|P(X_n=x)-\frac1p\Bigr|&\le\frac12\sqrt p\Bigl(\sum_x\Bigl|P(X_n=x)-\frac1p\Bigr|^2\Bigr)^{1/2}\\&=\frac12\Bigl(\sum_{t\ne0}|\hat P(t)|^2\Bigr)^{1/2}\le\frac12\sqrt p\,3^{-\lfloor n/L\rfloor}.\end{aligned}
 \]
 So $d_n\le\varepsilon$ once $\lfloor n/L\rfloor\ge\log_3\frac{\sqrt p}{2\varepsilon}$, which is $n=O(\log^2p)$ for fixed $\varepsilon$.
 
-\tools Volume~4, Chapter~6 (characteristic functions); Volume~5, Chapter~9 (Fourier analysis on $\Z/p\Z$); Volume~4, Chapter~9 (total
+\tools Volume~4, Chapter~6 (characteristic functions); this chapter (inversion and Parseval on $\Z/p\Z$); Volume~4, Chapter~9 (total
 variation).
 \leads Chung, Diaconis and Graham proved that $O(\log p\log\log p)$ steps always suffice and that about $1.02\log_2p$ steps suffice for almost all
 $p$, and that for some $p$ (of the form $2^k-1$) the order $\log p\log\log p$ is needed. Compare with the walk $X_{n+1}=X_n+\varepsilon_n$,
-which needs about $p^2$ steps (Chapter~13): multiplying by $2$ spreads the walk out exponentially fast. Hildebrand and Eberhard
+which needs about $p^2$ steps: multiplying by $2$ spreads the walk out exponentially fast. Hildebrand and Eberhard
 and Varjú have since sharpened the picture.
 \end{solution}
 
@@ -625,7 +666,7 @@ the factors for $t=1$ alternate between $1-\omega$ and $1-\omega^2$, and $(1-\om
 both $3^k$, and the sum is $\frac23\cdot3^k=2\cdot3^{k-1}$. For $K=2k+1$ they are $3^k(1-\omega)$ and $3^k(1-\omega^2)$, and the sum is $\frac13\cdot3^k\cdot3=3^k$.
 With $N=4^k$ the margin is $3^k=N^{\log3/\log4}=N^{0.79\ldots}$.
 
-\tools{Volume~1, Chapter~5 (roots of unity); Volume~5, Chapter~9 (characters of $\Z/n\Z$).}
+\tools{Volume~1, Chapter~5 (roots of unity); this chapter (Lemma~\ref{lem:rootsum}).}
 \leads D.~J.~Newman (1969) proved that the sum $\sum_{n<N,\,3\mid n}(-1)^{s(n)}$ is positive for \emph{every} $N\ge1$, and of exact order
 $N^{\log3/\log4}$. J.~Coquet (1983) found the exact formula: the sum is $N^{\log3/\log4}F(\log_4N)$ plus a bounded error, with $F$ continuous,
 periodic and nowhere differentiable. Similar biases hold for other moduli and bases, and Mauduit and Rivat (2010) proved that
@@ -648,12 +689,44 @@ they are then all equal to $2^{-n}$, and $f$ is bent.
 
 (d) $\hat f(0)=2^{-n}\sum_xf(x)=\pm2^{-n/2}$, so $\sum_xf(x)=\pm2^{n/2}$, and the number of $x$ with $f(x)=-1$ is $\frac12(2^n\mp2^{n/2})=2^{n-1}\mp2^{n/2-1}$.
 
-\tools{Volume~3, Chapter~11 (characters of finite abelian groups); Volume~5, Chapter~9 (Parseval).}
+\tools{Volume~3, Chapter~11 (characters of finite abelian groups and their orthogonality, which gives Parseval on $\mathbb F_2^n$ as in Theorem~\ref{thm:dftinversion}).}
 \leads Bent functions were defined and named by Oscar Rothaus in the 1960s, in research that was published only in 1976. A cipher whose
 components are close to linear functions is vulnerable to linear cryptanalysis (Matsui, 1993), so high nonlinearity is a design
 goal; but by (d) bent functions are unbalanced, and cryptographers trade a little nonlinearity for balance. The set
 $\{x:f(x)=-1\}$ of a bent function is a \emph{Hadamard difference set}, and its $\pm1$ matrix $(f(x+y))_{x,y}$ is a Hadamard matrix
 (Problem~\ref{pb:hadamard}).
+\end{solution}
+
+\begin{solution}{ex:uncertainty}
+\idea The transform evaluates a polynomial at roots of unity. A polynomial with $s$ terms is pinned down by $s$ consecutive
+evaluations, because the matrix of the system is a Vandermonde matrix at $s$ distinct points. So $\hat a$ has no run of $s$ zeros,
+and a circle of $n$ places with no run of $s$ zeros needs at least $\frac ns$ non-zero places.
+
+\writeup (a) Let $\operatorname{supp}a=\{k_1,\dots,k_s\}$, distinct modulo $n$, and $x_r=\omega^{-k_r}$, so the $x_r$ are distinct and non-zero.
+Suppose $\hat a_j=0$ for $j=j_0+i$, $0\le i<s$. Then
+\[
+0=\hat a_{j_0+i}=\sum_{r=1}^sa_{k_r}x_r^{j_0+i}=\sum_{r=1}^s\bigl(a_{k_r}x_r^{j_0}\bigr)x_r^i\qquad(0\le i<s).
+\]
+The matrix $(x_r^i)_{0\le i<s,\,1\le r\le s}$ is a Vandermonde matrix, of determinant $\prod_{r<r'}(x_{r'}-x_r)\ne0$ (Volume~1,
+Chapter~7). So all $a_{k_r}x_r^{j_0}$ vanish, and so do all $a_{k_r}$: a contradiction.
+
+(b) Let $s=|\operatorname{supp}a|$ and $J=\operatorname{supp}\hat a$, which is not empty since $\hat a\ne0$ by inversion. Give each index of $\Z/n\Z$ to the
+nearest element of $J$ at or before it, going round the circle. By (a), an element of $J$ is followed by at most $s-1$ indices
+outside $J$, so it receives at most $s$ indices. Every index is given to someone, so $n\le s\,|J|$.
+
+(c) $a_k=1$ for $k=dm$, $0\le m<\frac nd$, and $0$ otherwise. So $\hat a_j=\sum_{m<n/d}\omega^{-jdm}$, and $\omega^d$ is a root of unity of
+order $\frac nd$: by Lemma~\ref{lem:rootsum} (with $\frac nd$ in place of $n$), $\hat a_j=\frac nd$ if $\frac nd$ divides $j$, and $0$ otherwise. The support of
+$a$ has $\frac nd$ elements and that of $\hat a$ has $d$: the product is $n$. The transform of a comb is a comb, and the finer the
+one, the coarser the other.
+
+(d) Let $a$ and $a'$ have at most $s$ non-zero entries each, with $\hat a_j=\hat a'_j$ on $2s$ consecutive indices. Then $b=a-a'$ has a
+support of $s'\le2s$ elements, and $\hat b$ vanishes on $2s\ge s'$ consecutive indices. If $b\ne0$ this contradicts (a). So $a=a'$.
+
+\tools{This chapter (definition of the transform, inversion, Lemma~\ref{lem:rootsum}); Volume~1, Chapter~7 (Vandermonde determinant).}
+\leads Part (d) is the principle behind Reed--Solomon codes: send $2s$ extra evaluations and any $s$ errors can be located. It
+is also the first theorem of compressed sensing, where a short signal is recovered from few Fourier coefficients. For $n=p$
+prime the truth is far stronger: Tao (2005) showed $|\operatorname{supp}a|+|\operatorname{supp}\hat a|\ge p+1$, from a theorem of Chebotarev that every minor
+of $F_p$ is non-zero.
 \end{solution}
 
 \section*{Sources and further reading}
@@ -670,5 +743,18 @@ Chapter~30.
 \item D.~Harvey and J.~van der Hoeven, \emph{Integer multiplication in time $O(n\log n)$}, Annals of Mathematics 193 (2021),
 563--617.
 \item G.~K.~Wallace, \emph{The JPEG still picture compression standard}, Communications of the ACM 34 (1991), 30--44.
+\item G.~Strang, \emph{Wavelets}, American Scientist 82 (1994), 250--255, for the epigraph.
+\item A.~Karatsuba and Yu.~Ofman, \emph{Multiplication of multidigit numbers on automata}, Soviet Physics Doklady 7 (1963),
+595--596 (Russian original 1962); A.~Sch\"onhage and V.~Strassen, \emph{Schnelle Multiplikation gro\ss er Zahlen}, Computing 7
+(1971), 281--292.
+\item F.~R.~K.~Chung, P.~Diaconis and R.~L.~Graham, \emph{Random walks arising in random number generation}, Annals of
+Probability 15 (1987), 1148--1165, for Exercise~\ref{pb:cdg}.
+\item D.~J.~Newman, \emph{On the number of binary digits in a multiple of three}, Proceedings of the American Mathematical
+Society 21 (1969), 719--721, for Exercise~\ref{pb:newman}.
+\item O.~S.~Rothaus, \emph{On ``bent'' functions}, Journal of Combinatorial Theory, Series~A, 20 (1976), 300--305, for
+Exercise~\ref{pb:bent}.
+\item D.~L.~Donoho and P.~B.~Stark, \emph{Uncertainty principles and signal recovery}, SIAM Journal on Applied Mathematics 49
+(1989), 906--931; T.~Tao, \emph{An uncertainty principle for cyclic groups of prime order}, Mathematical Research Letters 12
+(2005), 121--127, for Exercise~\ref{ex:uncertainty}.
 \item J.~W.~Cooley, \emph{How the FFT gained acceptance}, in \emph{A History of Scientific Computing}, ACM Press, 1990, 133--140. Tukey, Garwin and the test-ban motivation.
 \end{itemize}

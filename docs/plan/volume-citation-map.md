@@ -43,12 +43,12 @@ Old Volume 0's numbered citations (Proposition 3.7, Exercise 1.6, and the rest) 
 | 1 | 1 | Divisibility and the Euclidean Algorithm | `chapters/ch01-divisibility.tex` | Volume 2, Chapter 1 |
 | 1 | 2 | Primes | `chapters/ch02-primes.tex` | Volume 2, Chapter 2 |
 | 1 | 3 | Congruences | `chapters/ch03-congruences.tex` | Volume 2, Chapter 3 |
-| 1 | 4 | Primitive Roots and the Multiplicative Group | `chapters/ch05-primitive-roots.tex` | Volume 2, Chapter 4 |
-| 1 | 5 | Quadratic Residues and Reciprocity | `chapters/ch06-quadratic-reciprocity.tex` | Volume 2, Chapter 5 |
-| 1 | 6 | Arithmetic Functions | `chapters/ch04-arithmetic-functions.tex` | Volume 2, Chapter 6 |
+| 1 | 4 | Primitive Roots and the Multiplicative Group | `chapters/ch05-primitive-roots.tex` | Volume 2, Chapter 5 |
+| 1 | 5 | Quadratic Residues and Reciprocity | `chapters/ch06-quadratic-reciprocity.tex` | Volume 2, Chapter 6 |
+| 1 | 6 | Arithmetic Functions | `chapters/ch04-arithmetic-functions.tex` | Volume 2, Chapter 4 |
 | 1 | 7 | Sums of Squares | `chapters/ch07-sums-of-squares.tex` | Volume 2, Chapter 7 |
-| 1 | 8 | Continued Fractions and Pell's Equation | `chapters/ch08-continued-fractions.tex` | Volume 2, Chapter 8 |
-| 1 | 9 | Diophantine Equations | `chapters/ch09-diophantine.tex` | Volume 2, Chapter 9 |
+| 1 | 8 | Continued Fractions and Pell's Equation | `chapters/ch08-continued-fractions.tex` | Volume 2, Chapter 9 |
+| 1 | 9 | Diophantine Equations | `chapters/ch09-diophantine.tex` | Volume 2, Chapter 8 |
 | 1 | 10 | Gaussian and Eisenstein Integers | `chapters/ch10-gaussian-eisenstein.tex` | Volume 2, Chapter 10 |
 | 1 | 11 | Quadratic Fields and Their Integers | `chapters/ch11-algebraic.tex` | Volume 13, Chapter 1 |
 | 1 | 12 | Ideals, Prime Splitting and Class Groups | `chapters/ch12-ideals.tex` | Volume 13, Chapter 2 |
@@ -305,7 +305,7 @@ The pass left these because one phrase named two homes, or the appendix letter w
 
 | Place | Decision |
 | --- | --- |
-| `volume2-integers` reciprocity tools | Cyclic units and reciprocity stay in Volume 2, Chapters 4 and 5. The \(p\)-adic squares are Volume 13, Chapter 8. |
+| `volume2-integers` reciprocity tools | Cyclic units and reciprocity stay in Volume 2, Chapters 5 and 6. The \(p\)-adic squares are Volume 13, Chapter 8. |
 | `volume2-integers` characters tools | \(\mathbb Z[\omega]\) stays in Volume 2, Chapter 10. The quadratic integers are Volume 13, Chapter 1. |
 | `volume4-chance` `ch12-method.tex` | Adjacency eigenvalues are Volume 8, Chapter 9. Ramanujan graphs are Volume 8, Chapter 11. The matrix-tree theorem is Volume 12, Appendix A. The central-binomial form of Stirling's formula, with the constant $\sqrt{2\pi}$, is Volume 1, Theorem 8.6. Exercise 3.7 only sharpens the shape and leaves the constant unknown. Jensen's inequality is Volume 1, Theorem 9.2. The Collatz appendix is not in the printed series; the sentence keeps the open question and drops the pointer. |
 | `volume8-analysis` `linear-ch08-graphs.tex` | Cheeger is Chapter 10 of that book, expanders and Ramanujan graphs are Chapter 11, and the matrix-tree theorem is Volume 12, Appendix A. |
@@ -318,7 +318,32 @@ The pass left these because one phrase named two homes, or the appendix letter w
 
 Three further sentences were inconsistent inside a paragraph that a later edit had only partly renumbered. Conditional expectation in the Volume 11 martingale reminder is Volume 4, and the tower property is Volume 7, Theorem 11.17. The adjacency spectra in the Volume 12 spectral chapter are Volume 8, Chapter 9. Fourier analysis in the Volume 13 Tate reminder is Volume 5, Chapter 10, and Carathéodory's extension theorem is Volume 7, Theorem 7.10.
 
-Mordell's theorem is Volume 13, Chapter 15. Volume 4 prints the extremal chapter as Appendix B. In Volume 2 the printed order is not the filename order: arithmetic functions are Chapter 6, primitive roots are Chapter 4, and quadratic reciprocity is Chapter 5. Citations of those three chapters follow the printed number. A later pass checked every `Volume~N` followed by a chapter, theorem, proposition, lemma, corollary, exercise or appendix number. The number was kept only when that item exists in the named volume and its label or title is the statement the sentence describes. Parenthetical locators and the later numbers in a list had often kept the pre-insertion number after the volume was updated; those now point at the current home of the same label. Volume 12 has no Chapter 10: the matrix-tree theorem is Appendix A. A numbered citation of the book the reader is already in no longer repeats that volume number. The reminders of squares in $\Q_p$ still say Volume 13, Corollary 8.8.
+Mordell's theorem is Volume 13, Chapter 15. Volume 4 prints the extremal chapter as Appendix B. In Volume 2 the printed order follows `volume2-integers/main.tex`, not the filenames: arithmetic functions are Chapter 4, primitive roots are Chapter 5, quadratic reciprocity is Chapter 6, Diophantine equations are Chapter 8, and continued fractions are Chapter 9. Citations of those chapters follow that printed number. A later pass checked every `Volume~N` followed by a chapter, theorem, proposition, lemma, corollary, exercise or appendix number. The number was kept only when that item exists in the named volume and its label or title is the statement the sentence describes. Parenthetical locators and the later numbers in a list had often kept the pre-insertion number after the volume was updated; those now point at the current home of the same label. Volume 12 has no Chapter 10: the matrix-tree theorem is Appendix A. A numbered citation of the book the reader is already in no longer repeats that volume number. The reminders of squares in $\Q_p$ still say Volume 13, Corollary 8.8.
 
 No citation was left on an old volume number. `Volume~0` does not remain in Volumes 2–15.
 
+
+## Volume 5 after the master plan (11 November 2026)
+
+Decisions D-10 and D-11 of `MASTER-PLAN-V5-V15.md` are applied to Volume 5. Waring's problem left the volume and the Hardy–Ramanujan chapter moved to Part III. Every chapter from Integration Techniques on has a new number. A citation of Volume 5 in another volume that still uses the left column is out of date and must be changed to the right column by the thread that owns that volume. The labels did not change.
+
+| Chapter | File | Number before | Number now | Chapter label |
+| --- | --- | --- | --- | --- |
+| Finite Calculus | `ch01-finite.tex` | 1 | 1 | `ch:finite` |
+| Generating Functions as a Computing Tool | `ch02-generating.tex` | 2 | 2 | `ch:generating` |
+| Classic Series and Infinite Products | `ch03-series.tex` | 3 | 3 | `ch:series` |
+| The Hardy–Ramanujan Formula | `hardy-ramanujan.tex` | 4 | 12 | `ch:hr` |
+| Waring's Problem | `waring.tex`, now in `volume14-primes/chapters/` | 5 | Volume 14, Chapter 6, once Volume 14 prints it | — |
+| Integration Techniques | `ch04-integrals.tex` | 6 | 4 | `ch:integrals` |
+| The Gamma and Beta Functions | `ch05-gamma.tex` | 7 | 5 | `ch:gamma` |
+| Fourier Series | `ch06-fourier.tex` | 8 | 6 | `ch:fourier` |
+| The Discrete Fourier Transform and the FFT | `ch07-fft.tex` | 9 | 7 | `ch:fft` |
+| The Fourier Transform and Poisson Summation | `ch08-transform.tex` | 10 | 8 | `ch:transform` |
+| Complex Analysis for Computing | `ch09-complex.tex` | 11 | 9 | `ch:complex` |
+| The Zeta Function | `ch10-zeta.tex` | 12 | 10 | `ch:zeta` |
+| Asymptotics | `ch11-asymptotics.tex` | 13 | 11 | `ch:asymptotics` |
+| The Arithmetic–Geometric Mean | `ch12-agm.tex` | 14 | 13 | `ch:agm` |
+
+Theorem, lemma and exercise numbers follow the chapter number: an old "Volume 5, Theorem 12.3" is now Theorem 10.3, provided nothing inside the chapter was renumbered. Chapter 12 is the exception. It gained a lemma, a definition and a theorem, so its statements must be looked up by label: `lem:pdisc`, `lem:plog`, `thm:eta` (new, the transformation of η), `lem:ptrans`, `thm:hr`, `thm:rademacher`.
+
+Volume 6, Chapter 12 may now cite `thm:eta` of Volume 5 for the transformation of η (master plan, D-10).
