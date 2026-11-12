@@ -80,3 +80,47 @@ Eight exposition ids in `review/volume3-internal/exposition.json` were removed a
 V2-02 through V2-23, read against the edited source and the numbering above, do what the pull request says. Theorem, proposition, and exercise numbers are unchanged. Euclid's lemma keeps the label `thm:gauss` and the number 1.5. The new proofs use only the preceding definitions in this volume, or Volume 1's linear algebra for the dot product that the four-square rows have already expanded. The optional three-star banners on Exercises 1.15, 3.16, and 3.18 match the book's "optional exploration" pattern, and the main route does not call those arguments as premises. The new mathematical sentences are plain. The index opener is the voice failure, IDX-01.
 
 V2-01 is not finished. The filename swap is gone from the citations that the scored read listed, and the checker now rejects that swap when the subject phrase sits next to the number. CITE-01 through CITE-05 are Volume 2 pointers whose nearby claim is still a different statement from the item they name. CITE-01 and CITE-02 were introduced by adding a theorem number to a sentence that had only said "Volume 2."
+
+## Recheck at `2aef4b5f`
+
+**Verdict: APPROVE**
+
+**Head:** `2aef4b5f405284b2eff15a218e1af56dd8a5b9fe` on `cursor/volume2-apply-scored-read`. One commit after `e3e25b4b`: "Point the remaining Volume 2 citations at the fact they name."
+
+This recheck did not push to that branch and did not merge it. The diff from `e3e25b4b` was read in the same detached worktree. `origin/main` is still `c734fe3a`, the parent of the review commit, so this branch did not need a merge from `main`.
+
+GitHub runs [43188775406](https://github.com/OussamaSegh/Order-and-Chance/actions/runs/43188775406) (Build books) and [43188775171](https://github.com/OussamaSegh/Order-and-Chance/actions/runs/43188775171) (Volume 4 native production QA) both completed with conclusion `success` at this SHA.
+
+### What was run on `2aef4b5f`
+
+- `./build.sh --pdf-only volume2-integers` exited 0. `build/volume2-integers/main.log` has no `Overfull` and no `undefined` (27 underfull lines). Layout: 391 whole boxes, maximum 371.3 pt, no overflow and no unresolved references.
+- `pdfinfo` on `build/volume2-integers/main.pdf`: 337 pages, 504 × 720 pt.
+- `pdfinfo` on `dist/kdp/Volume 2 - The Integers - Print.pdf`: 337 pages, 513 × 738 pt, PDF 1.3, encrypted no, empty title, author, creator, and producer. Every page rectangle is 513 × 738 pt. The build log says `KDP interior checked: 337 pages`.
+- The index has 80 `\ocindexpage{...}` entries. Every label is in `main.aux`. Each of the 72 numbered entries has the printed number on the PDF page whose label is that folio. The eight unnumbered entries land on the folio that holds the words: Legendre's formula on folio 7, `a|b` on folio 3 ("We write"), `gcd` on folio 4 ("greatest common divisor"), `lcm` and `v_p` on folio 6, φ on folio 51, μ on folio 86, `|x|_p` on folio 319. Exercise 2.9 is on folio 41, and that page prints "every prime divisor of n! + 1 exceeds n".
+- From `tools/`, `python3 -m unittest test_cross_volume_citations.CrossVolumeCitations.test_volume2_pointers_name_the_stated_fact test_cross_volume_citations.CrossVolumeCitations.test_volume2_numbers_match_the_printed_statements -v` ran 2 tests and exited 0.
+- `python3 review/volume3-internal/registers.py` printed `{"accepted-internal": 1178}` and exited 0. The concepts file changes only snapshot hashes. No review status changes.
+
+### The six fixes
+
+| ID | Ruling |
+|---|---|
+| CITE-01 | Fixed. The sentence now cites Theorem 10.3 for the Bézout property in a Euclidean domain. Theorem 10.3(a) is that property for the three rings, and for a domain with Euclidean division. |
+| CITE-02 | Fixed. The Lean sentence cites Exercise 2.9. That exercise says every prime divisor of `n!+1` exceeds `n`. The formalisation uses `minFac (n ! + 1)`. Theorem 2.1 is no longer named there. |
+| CITE-03 | Fixed. The disc of radius `√x` is cited as Theorem 7.5. That theorem is `N(R)∼πR²` for `x²+y²≤R²`, so the count at radius `√x` is `∼πx`. |
+| CITE-04 | Fixed. The field guide is now said to name the symbol `Z_p` and the absolute value `|x|_p`. The next sentence says the closed unit ball and the compatible sequences are built in Volume 7. |
+| CITE-05 | Fixed. Ruled below. |
+| IDX-01 | Fixed. The opener is "Each name points at the statement, exercise or definition it names." The page number is still printed by `\ocindexpage`. `a\|b` points at the sentence that defines it, `gcd` at the definition as the positive generator of `aZ+bZ`, and `lcm` at the valuation formula. Those are folios 3, 4, and 6. |
+
+### CITE-05
+
+The square-area claim is now supported, and it is not left as what Theorem 8.2 says.
+
+The opening sentence cites Theorem 8.2 only for `x⁴+y⁴=z²` having no positive integer solution. That is the statement of the theorem. The square-area sentence then names two results in this chapter. Proposition `prop:congruent` states the two maps and proves they are inverse bijections between rational triples `a²+b²=c²`, `ab=2n`, and points of `y²=x³-n²x` with `y≠0`. The algebra in that proof checks: the forward map gives area `n` because `y²=x³-n²x`, and the reverse map recovers `a`, `b`, and `c`. Theorem `thm:onecongruent` proves that `E_1(Q)` is exactly the four torsion points, by a 2-descent that does not assume the triangle claim. The consequences paragraph then uses the proposition: `1` is not congruent, and a rational right triangle of area `s²` scales by `1/s` to one of area `1`. The sides stay rational when `s` is rational. That is the square-area statement, proved in the theorem the sentence names. The rank proof does not call that conclusion as a premise.
+
+### The Volume 5 Gauss sum
+
+`volume5-calculation/chapters/ch08-transform.tex` now says Exercise 6.7 gives `G(p)²=((−1)/p)p`. Exercise 6.7 defines `p^*=((−1)/p)p` and `g=∑(a/p)ζ^a`, asks for `g²=p*` in (a), and asks in (d) to show `g=∑_{x=0}^{p-1}ζ^{x²}` and to say what (a) then gives for that sum. Volume 5's `G(p)` is that sum. The identity is the exercise, not a theorem of the chapter text. The following "hence `±`" is the same sign left open in the exercise solution.
+
+### Diff from `e3e25b4b`
+
+The manuscript edits are the six repairs, the Exercise 6.7 citation, three definition labels in Chapter 1, and the new index line for Exercise 2.9. No theorem, proposition, or exercise number moves. The new citation test anchors Theorem 2.1, Exercise 2.9, Theorem 7.5, and Theorem 10.3 to the same labels as before. The Volume 3 concept records change only the snapshot hash of `ch01-divisibility.tex` and the volume snapshot. Nothing else in the citation sentences changed. The other Volume 2 pointers read at `e3e25b4b` are still the same sentences.
