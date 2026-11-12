@@ -18,8 +18,10 @@ SPECS = {
    # and the first boundary vertex in the harmonic argument (V4-23).
    # Reread 2026-11-11 for the ruin constants and the iterated integral (V4R2-03, V4R2-04). Labels unchanged.
    # Writer repair the same day: return attribution, half-line Gaussian citation, meeting sign (V4R2-18, V4R2-19, V4R2-20). Not an independent sign-off.
-   "sha": "d23df25f67660781c6d1bae09469f7d4c535079b",
-   "proofs": "thm:rwreflect thm:ruin prop:duration prop:visits thm:polya thm:arcsine prop:harmonic thm:arcsinelimit lem:centralbin".split(),
+   # 2026-11-11: thm:twosat appended after the existing claims. Exercise labels unchanged.
+   # The new proof was checked in this preparation. Not an independent sign-off.
+   "sha": "e45393f9961dae38495ddee1eb39594ccd5655cc",
+   "proofs": "thm:rwreflect thm:ruin prop:duration prop:visits thm:polya thm:arcsine prop:harmonic thm:arcsinelimit lem:centralbin thm:twosat".split(),
    "ex": "ex:ballotwalk ex:maxlaw ex:timepositive ex:unfair ex:meet ex:escape ex:exittime ex:electric".split(),
  },
  "ch09-poisson.tex": {

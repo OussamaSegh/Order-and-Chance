@@ -194,6 +194,16 @@ Show that a family of fewer than $2^{k-1}$ sets of size $k$ has a $2$-colouring 
 Let $\mathcal F$ be a family of subsets of a finite ground set, each of size $k\ge2$. Assume every set of $\mathcal F$ intersects at most $d$ other sets. Colour the ground-set elements independently red or blue. Prove that $\mathcal F$ has a colouring with no monochromatic member whenever $e(d+1)2^{1-k}\le1$. Explain why the dependency condition is joint independence, not merely pairwise independence of the bad events.
 \end{exercise}
 
+
+\begin{exercise}[$\star$]\label{pb:hashing}
+Universal hashing. Let $p$ be prime and let $2\le m\le p$. Draw $a$ and $b$ independently and uniformly from $\Z/p\Z$, and set $h(x)=\bigl((ax+b)\bmod p\bigr)\bmod m$ for keys $x\in\{0,\ldots,p-1\}$.
+\begin{enumerate}[label=(\alph*)]
+\item Show that if $x\ne y$, the pair $(ax+b,\,ay+b)$ is uniform on $(\Z/p\Z)^2$.
+\item Deduce that $P(h(x)=h(y))\le 1/m+1/p$.
+\item Store $n$ keys in $m=n^2$ buckets with one such $h$. Show that the probability of no collision is at least $1/2-n^2/(2p)$.
+\end{enumerate}
+\end{exercise}
+
 \section{Hints}
 
 \begin{hint}{ex:carowei}
@@ -213,6 +223,11 @@ A fair colouring makes a $k$-set monochromatic with probability $2^{1-k}$.
 \end{hint}
 \begin{hint}{ex:localcolour}
 A fixed $k$-set is monochromatic with probability $2^{1-k}$. Events attached to disjoint sets are functions of disjoint collections of fair bits.
+\end{hint}
+
+
+\begin{hint}{pb:hashing}
+The matrix with rows $(x,1)$ and $(y,1)$ has determinant $x-y$. Markov's inequality from Volume~1 bounds the number of colliding pairs by its expectation.
 \end{hint}
 
 \section{Solutions}
@@ -263,6 +278,32 @@ The improvement comes from the four independent vertex choices needed for one cr
 \begin{solution}{ex:localcolour}
 \idea The only events a monochromatic-set event can depend on are those sharing some colour variable with its set.
 \writeup For $F\in\mathcal F$, let $A_F$ mean that all elements of $F$ have the same colour. Both all-red and all-blue have probability $2^{-k}$, so $P(A_F)=2^{1-k}$. If $G$ is disjoint from $F$, $A_G$ depends only on colour variables not used in $A_F$. More strongly, $A_F$ is independent of the \emph{joint family} of all events from sets disjoint from $F$, since all those events together are functions only of colour variables outside $F$. The intersection graph of the sets is therefore a valid dependency graph, with degree at most $d$. Theorem~\ref{thm:lll} applies under $e(d+1)2^{1-k}\le1$ and gives a positive probability that no $A_F$ occurs. Some actual colouring thus has no monochromatic set.
+\end{solution}
+
+
+\begin{solution}{pb:hashing}
+\idea A random linear function sends distinct keys to a uniform pair. Collisions are then an expectation, and Markov turns the expectation into a probability.
+\writeup (a) The map $(a,b)\mapsto(ax+b,\,ay+b)$ is a bijection of $(\Z/p\Z)^2$ when $x\ne y$. Its inverse is $a=(U-V)(x-y)^{-1}$ and $b=U-ax$, and $x-y$ has an inverse because $p$ is prime and $x\not\equiv y$. A bijection preserves the uniform law, so the image pair is uniform.
+
+(b) Let $U=ax+b$ and $V=ay+b$, read as integers in $\{0,\ldots,p-1\}$. Then $h(x)=h(y)$ exactly when $U\equiv V\pmod m$. Write $p=qm+s$ with $0\le s<m$ and $q=\lfloor p/m\rfloor$. Exactly $s$ residue classes modulo $m$ contain $q+1$ elements of $\{0,\ldots,p-1\}$, and the other $m-s$ classes contain $q$. If $n_r$ is the size of class $r$, the number of favourable pairs is $\sum_r n_r^2$, and
+\[
+ \sum_r n_r^2=s(q+1)^2+(m-s)q^2=mq^2+2sq+s.
+\]
+The comparison $p^2/m+p-\sum_r n_r^2=qm+s^2/m\ge0$ is a direct expansion, using $p=qm+s$. Therefore $\sum_r n_r^2\le p^2/m+p$, and
+\[
+ P(U\equiv V\pmod m)=\frac1{p^2}\sum_r n_r^2\le\frac1m+\frac1p.
+\]
+
+(c) Let $C$ be the number of unordered pairs of the $n$ keys that collide. Part~(b) and linearity give
+\[
+ \mathbb E[C]\le\binom n2\Bigl(\frac1{n^2}+\frac1p\Bigr)
+ =\frac{n(n-1)}{2n^2}+\frac{n(n-1)}{2p}
+ \le\frac12+\frac{n^2}{2p}-\frac1{2n}.
+\]
+Markov's inequality from Volume~1, Chapter~10, says $P(C\ge1)\le\mathbb E[C]$ because $C$ is a nonnegative integer. Hence
+\[
+ P(C=0)\ge1-\mathbb E[C]\ge\frac12-\frac{n^2}{2p}.
+\]
 \end{solution}
 
 \section*{Sources and further reading}

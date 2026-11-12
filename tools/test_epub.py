@@ -53,6 +53,18 @@ class Tags(HTMLParser):
         self.attributes.append((tag, dict(attrs)))
 
 
+class DescribedFigures(unittest.TestCase):
+    def test_preface_plate_keeps_the_sentence_under_the_figure(self):
+        sentence = (r"Left: the first four values agree, and so does $n=10$. "
+                    r"Right: one way four guests can each receive someone else's hat.")
+        out = epub_prep.replace_described_figures(
+            "\\figalt{preface-two-questions}{" + sentence + "}",
+            Path("/tmp/figures"))
+        self.assertIn("\\begin{ocimagealt}" + sentence, out)
+        self.assertIn("preface-two-questions.svg", out)
+        self.assertNotIn("figalt", out)
+
+
 @unittest.skipUnless(shutil.which("pandoc"), "Pandoc is required")
 class EpubRegression(unittest.TestCase):
     def convert(self, target, *arguments, cwd=None):
