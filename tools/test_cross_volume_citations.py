@@ -1,9 +1,9 @@
 """Citations of the form ``Volume N, Theorem X`` must match that volume's numbers.
 
-The walker reproduces the counters a build assigns. Volumes 3, 5, 7, 8, 10
+The walker reproduces the counters a build assigns. Volumes 5, 7, 8, 10
 and 12 still have citations whose kind or number does not match; those repairs
 belong with the volume being cited. Every other volume is gated here, including
-every citation of Volume 1 and of Volume 2.
+every citation of Volumes 1, 2 and 3.
 """
 
 import re
@@ -13,7 +13,7 @@ import cross_volume_citations as citations
 
 # Cited volumes whose mismatches are still open. Drop a number when its
 # citations have been repaired; the test then guards that volume too.
-OPEN_CITED_VOLUMES = {3, 5, 7, 8, 10, 12}
+OPEN_CITED_VOLUMES = {5, 7, 8, 10, 12}
 
 
 class CrossVolumeCitations(unittest.TestCase):
@@ -155,6 +155,31 @@ class CrossVolumeCitations(unittest.TestCase):
         self.assertIn(r"\ocindexpage{sym:gcd}", index)
         self.assertIn(r"\ocindexpage{sym:lcm}", index)
         self.assertIn(r"\ocindexpage{ex:t1-factorial-new-prime}", index)
+
+    def test_volume3_pointers_name_the_stated_fact(self):
+        """Exercise 10.8 is Cardano. The cyclotomic isomorphism is Exercise 10.1."""
+        root = citations.ROOT
+        cyclo = (root / "volume13-arithmetic/chapters/ch05-cyclotomic.tex").read_text(encoding="utf-8")
+        self.assertIn("Volume~3, Exercise~10.1", cyclo)
+        self.assertNotIn("Exercise~10.8", cyclo)
+        ideals = (root / "volume13-arithmetic/chapters/ch02-ideals.tex").read_text(encoding="utf-8")
+        self.assertIn("Volume~3, Theorem~10.6 and Exercise~10.1", ideals)
+        curves = (root / "volume13-arithmetic/chapters/ch11-curves.tex").read_text(encoding="utf-8")
+        self.assertIn("Volume~3, Theorem~6.18", curves)
+        self.assertIn("Volume~3, Proposition~6.17", curves)
+        additive = (root / "volume14-primes/chapters/ch11-additive.tex").read_text(encoding="utf-8")
+        self.assertIn("Volume~3, Theorem~C.12", additive)
+        cubes = (root / "volume15-order-and-chance/chapters/ch08-heuristics.tex").read_text(encoding="utf-8")
+        self.assertIn("Volume~3, Theorem~C.12", cubes)
+        lie = (root / "volume9-shapes/chapters/ch07-liegroups.tex").read_text(encoding="utf-8")
+        self.assertIn("Volume~3, Lemma~12.3", lie)
+        self.assertNotIn("as in Volume~3", lie)
+        quadrics = (root / "volume9-shapes/chapters/geometry-ch06-quadrics.tex").read_text(encoding="utf-8")
+        self.assertIn("Volume~1, Theorem~7.9", quadrics)
+        self.assertIn("Volume~1, Theorem~7.10", quadrics)
+        self.assertNotIn("Volume~3, Chapter~2", quadrics)
+        primitive = (root / "volume13-arithmetic/chapters/ch01-number-fields.tex").read_text(encoding="utf-8")
+        self.assertIn("Volume~3, Theorem~8.20", primitive)
 
     def test_chapter_zero_offset_rejects_a_shifted_gloss(self):
         shifted = (
