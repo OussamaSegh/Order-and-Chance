@@ -263,7 +263,7 @@ Of the 48 issues, 48 are fixed, 0 are partial, and 0 are not fixed.
 | V3-5 | fixed | #199 | `01eb4813` | The index names the statements, the notation, and three exercises, and the running head is Index. |
 | V3-6 | fixed | #199 | `01eb4813` | The cube-diameter paper is gone from Chapter 1 and remains in Chapter 4. |
 | V3-7 | fixed | #199 | `01eb4813` | Appendix D has a sources list. |
-| V3-8 | fixed | #199 | `01eb4813` | The case \(a=0\) is \(inom{m}{1}=m\). |
+| V3-8 | fixed | #199 | `01eb4813` | The case \(a=0\) is \(\binom{m}{1}=m\). |
 | V3-9 | fixed | #199 | `01eb4813` | The row-sum converse cites Frobenius. |
 | V3-10 | fixed | #199 | `01eb4813` | Strict positivity of a nonnegative eigenvector cites Frobenius. |
 | V3-11 | fixed | #199 | `01eb4813` | Every group of order 4 is abelian, and that applies to every Sylow subgroup through the half-turn. |
@@ -281,11 +281,11 @@ Of the 48 issues, 48 are fixed, 0 are partial, and 0 are not fixed.
 | V3-23 | fixed | #199 | `01eb4813` | The order-6 box reads \(D_3\cong\mathfrak S_3\). |
 | V3-24 | fixed | #199 | `01eb4813` | A move into the blank is the position \((b\,c)\sigma\). |
 | V3-25 | fixed | #199 | `01eb4813` | An \(F\)-turn alternates the primary facet in both orientations. |
-| V3-26 | fixed | #199 | `01eb4813` | The Rubik solution uses \(arepsilon\). |
+| V3-26 | fixed | #199 | `01eb4813` | The Rubik solution uses \(\varepsilon\). |
 | V3-27 | fixed | #199 | `01eb4813` | The unnumbered exchange lemma covers every field, and the dimension over \(R/(p)\) is named after the vector-space laws. |
 | V3-28 | fixed | #199 | `01eb4813` | A constructed regular polygon produces \(e^{\pm 2i\pi/n}\). |
 | V3-29 | fixed | #199 | `01eb4813` | \(2X^2-3\) has no rational root in lowest terms. |
-| V3-30 | fixed | #199 | `01eb4813` | If \(\sqrt\pi\) were algebraic then so would \(\pi\). |
+| V3-30 | fixed | #199 | `01eb4813` | If \(\sqrt{\pi}\) were algebraic then so would \(\pi\). |
 | V3-31 | fixed | #199 | `01eb4813` | Agreement on the two generators is the injection into \(\mathfrak S_3\). |
 | V3-32 | fixed | #199 | `01eb4813` | The two voice sentences are the ones the log asked for. |
 | V3-33 | fixed | #199 | `01eb4813` | A common divisor of \(X^n-1\) and \(nX^{n-1}\) divides the constant \(n\). |
@@ -300,7 +300,7 @@ Of the 48 issues, 48 are fixed, 0 are partial, and 0 are not fixed.
 | V3-42 | fixed | #199 | `01eb4813` | The fresh block of increments is separated from the symmetry. |
 | V3-43 | fixed | #199 | `01eb4813` | \(HN=\{hn:h\in H,\,n\in N\}\). |
 | V3-44 | fixed | #199 | `01eb4813` | Conjugation sends a word in the commutators to the word in the conjugates. |
-| V3-45 | fixed | #199 | `01eb4813` | The additive rule is \(k+(-1)^arepsilon k'\). |
+| V3-45 | fixed | #199 | `01eb4813` | The additive rule is \(k+(-1)^{\varepsilon}k'\). |
 | V3-46 | fixed | #199 | `01eb4813` | The class equation uses \(C_G(x)\). |
 | V3-47 | fixed | #199 | `01eb4813` | A centre of order \(p\) would make a group of order \(p^2\) abelian. |
 | V3-48 | fixed | #199 | `01eb4813` | Independence of the quotient basis uses the extended basis. |
