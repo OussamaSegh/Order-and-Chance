@@ -173,3 +173,25 @@ The new sentences are short and name the object. They do not open with an outlin
 ## Scope
 
 Fonts, sizes, and text inside diagrams stay as they were, apart from the colour name `ochre` and the cross, brace, window, and clipped curve that V1-10, V1-11, V1-17, V1-18, V1-24, and V1-30 require. The two changed captions are those two figure rows. `kdp.md` loses the word journey and does not gain a new claim.
+
+## Recheck at `fda6270b`
+
+**Verdict on `fda6270b4f4425cd77dd27095a01c465da43b776`: APPROVE.**
+
+The commit is `Correct Volume 5's chapter pointers into Volume 1.` The diff from `95b2005e` is that commit only: the thirteen Volume 5 chapter files named in V5-01 through V5-71, `tools/cross_volume_citations.py`, `tools/test_cross_volume_citations.py`, and one sentence in `docs/handoffs/volume5-rewrite.md`. `git diff 95b2005e fda6270b -- volume1-first-principles` is empty. Theorem and exercise numbers, diagrams, fonts, and the Volume 1 print count of 463 pages are the ones already measured at `95b2005e`. Volume 1 was not rebuilt.
+
+Each of V5-01 through V5-71 now cites the printed chapter from the table above. The subjects were read again against those chapters. No Volume 1 chapter pointer in Volume 5 remains on the old, shifted number. A fresh extract of every `Volume~1` in `volume5-calculation` finds no chapter number whose subject lives in a different printed chapter. Exercise 6.7 in `ch03-series.tex:20` is unchanged and still matches `ex:basel`.
+
+**V5-07.** `ch02-generating.tex:1310` now says Volume 1, Chapter 8, the derivative of an inverse, and that the case written there is arctan. Chapter 8 is the calculus chapter. Its inverse-function rule is `(f^{-1})'(b)=1/f'(a)`. The worked inverses on that page are the logarithm and the arctangent, and the arctangent line is `\arctan'(x)=1/(1+x^2)`. The word arcsin is not in Volume 1. The gloss is the right repair.
+
+**V5-30.** `ch07-fft.tex:19` now says Volume 1, Chapter 5, said that this volume turns the roots-of-unity filter into a fast way to multiply polynomials. The sentence Volume 1 prints, in the complex chapter at `ch02-complex-roots.tex:643`, is: Volume 5 turns the filter into a fast way to multiply polynomials. The filter in that chapter is the average against the roots of unity. The new sentence does not add an `O(n\log n)` bound or a claim about large integers.
+
+**V5-65.** `ch12-agm.tex:1715` now cites Chapter 5 for the multiple-angle form of cosine and sine, and Chapter 6 for the bound that a polynomial of degree `2n` has at most `2n` roots, with the Chebyshev polynomials. Chapter 5 says that the powers `e^{ik\theta}` come back to cosines and sines of multiple angles. Chapter 6 has the degree bound and the Chebyshev section. The phrase trigonometric polynomial is no longer offered as a Volume 1 heading.
+
+The other sixty-eight pointers are the same sentences with the chapter number lowered by one. `ch05-gamma.tex:178` reads Chapter 8 for Stirling's formula with the constant and Chapter 3 for the shape. `ch11-asymptotics.tex:778` reads Chapters 3 and 8. `ch07-fft.tex:553` and `:610` read Chapters 5 and 7.
+
+`docs/handoffs/volume5-rewrite.md` now lists Volume 1's language chapter as Chapter 0. That file is an internal handoff.
+
+The citation checker gained `volume1_chapter_gloss_mismatches`. A parenthetical subject, or the words beside a bare chapter number, is compared with a list of printed homes, and the words arcsin and trigonometric polynomial are rejected. `main` adds those misses to the existing number check. From `tools/` at this head, `python3 -m unittest test_cross_volume_citations.py -v` ran 8 tests and exited 0. The new tests pin Volume 1's chapters as 0 through 10, reject the old Chapter 7 gloss for polynomials that agree at infinitely many points, reject an arcsin gloss, require `gloss_mismatches()` to be empty, and pin the Volume 5 chapter numbers file by file, including the Stirling pair in `ch05-gamma.tex`.
+
+Volume 5 was rebuilt with `./build.sh --pdf-only volume5-calculation` because the chapter files changed. The script exited 0. `pdfinfo` on `dist/kdp/Volume 5 - Calculation - Print.pdf`: 345 pages, 513 × 738 pt, PDF 1.3, unencrypted. The typeset interior is 345 pages at 504 × 720 pt. `main.log` has no `Overfull` line and no `undefined` line. The layout check reported 386 whole boxes, maximum height 383.0 pt, and no overflow or unresolved references. The EPUB pipeline and the plates were not edited, so the EPUB was not rebuilt. No previous Volume 5 page count was measured at `95b2005e`.
