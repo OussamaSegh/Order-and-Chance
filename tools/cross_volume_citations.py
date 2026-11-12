@@ -482,6 +482,74 @@ def volume1_chapter_gloss_mismatches(text: str, source: str = "") -> list[str]:
     return problems
 
 
+# Printed Volume 2 is not the filename order. A citation whose nearby words
+# name one of these subjects must use that printed chapter, even when the
+# shifted number still exists.
+VOLUME2_SUBJECT_CHAPTER = (
+    ("primitive root", "5"),
+    ("Möbius", "4"),
+    ("multiplicative function", "4"),
+    ("Dirichlet convolution", "4"),
+    ("Legendre symbol", "6"),
+    ("quadratic reciprocity", "6"),
+    ("continued fraction", "9"),
+    ("Pythagorean", "8"),
+    ("Pell", "9"),
+    ("Gauss sum", "6"),
+    ("unique factorisation", "1"),
+    ("unique factorization", "1"),
+)
+# Gaussian unique factorisation lives in Chapter 10, beside the rational one.
+VOLUME2_SUBJECT_ALSO = {
+    "unique factorisation": {"10"},
+    "unique factorization": {"10"},
+}
+_VOLUME2_CITE = re.compile(
+    r"Volume~?2,\s+"
+    r"(Theorems?|Propositions?|Lemmas?|Corollar(?:y|ies)|Exercises?|Chapters?)~?"
+    r"([0-9]+(?:\.[0-9]+)?)"
+    r"((?:\s*(?:,|and|or|to|--+|–)\s*~?[0-9]+(?:\.[0-9]+)?)*)"
+)
+
+
+def _volume2_scope(text: str, start: int, end: int) -> str:
+    before = text[max(0, start - 140):start]
+    cut = max(before.rfind(";"), before.rfind("Volume~"), before.rfind("Volume "))
+    if cut != -1:
+        before = before[cut + 1:]
+    after = text[end:end + 80]
+    stop = after.find("Volume~")
+    if stop != -1:
+        after = after[:stop]
+    return before + " " + after
+
+
+def volume2_subject_mismatches(text: str, source: str = "") -> list[str]:
+    """Flag a Volume 2 citation whose nearby subject lives in another chapter.
+
+    The filename order and the printed order disagree on Chapters 4--6 and
+    8--9. Those shifted numbers still exist, so an existence check accepts
+    them. The subject next to the number does not.
+    """
+    text = strip_comments(text)
+    problems = []
+    where = f"{source}: " if source else ""
+    for match in _VOLUME2_CITE.finditer(text):
+        numbers = [match.group(2)] + _numbers_from(match.group(3) or "")
+        chapters = {item.split(".", 1)[0] for item in numbers}
+        scope = _volume2_scope(text, match.start(), match.end())
+        for phrase, home in VOLUME2_SUBJECT_CHAPTER:
+            if phrase not in scope:
+                continue
+            allowed = {home} | VOLUME2_SUBJECT_ALSO.get(phrase, set())
+            if chapters.isdisjoint(allowed):
+                problems.append(
+                    f"{where}Volume 2 subject: {phrase} is Chapter {home}, "
+                    f"cited {match.group(1)} {', '.join(numbers)} ({scope[:70]})"
+                )
+    return problems
+
+
 def gloss_mismatches() -> list[str]:
     found = []
     for directory in VOLUMES.values():
@@ -489,10 +557,10 @@ def gloss_mismatches() -> list[str]:
         for path in sorted(root.rglob("*.tex")):
             if "build" in path.parts:
                 continue
-            found.extend(volume1_chapter_gloss_mismatches(
-                path.read_text(encoding="utf-8"),
-                str(path.relative_to(ROOT)),
-            ))
+            text = path.read_text(encoding="utf-8")
+            source = str(path.relative_to(ROOT))
+            found.extend(volume1_chapter_gloss_mismatches(text, source))
+            found.extend(volume2_subject_mismatches(text, source))
     return found
 
 
