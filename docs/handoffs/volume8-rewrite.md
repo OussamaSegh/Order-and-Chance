@@ -59,13 +59,13 @@ Numbering inside each chapter is preserved (new statements and exercises go at t
 | — | Structure (D-16, D-18) | Done |
 | 1 | Banach Spaces | Done |
 | 2 | Hilbert Spaces | Done |
-| 3 | The Spectral Theorem and Its Relatives | Not started |
-| 4 | Singular Values | Not started |
-| 5 | Graphs through Their Eigenvalues | Not started |
-| 6 | Cuts, Mixing and Expansion | Not started |
-| 7 | Expanders and Ramanujan Graphs | Not started |
-| 8 | Operators, Spectra and Banach Algebras | Not started |
-| 9 | The Spectral Theorem for Compact Operators | Not started |
+| 3 | The Spectral Theorem and Its Relatives | Done |
+| 4 | Singular Values | Done |
+| 5 | Graphs through Their Eigenvalues | Done |
+| 6 | Cuts, Mixing and Expansion | Done |
+| 7 | Expanders and Ramanujan Graphs | Done |
+| 8 | Operators, Spectra and Banach Algebras | Done |
+| 9 | The Spectral Theorem for Compact Operators | Done |
 | 10 | The Fourier Transform | Not started |
 | 11 | Distributions and Sobolev Spaces | Not started |
 | 12 | Fourier Analysis on Finite Abelian Groups | Not started |
@@ -80,6 +80,13 @@ Numbering inside each chapter is preserved (new statements and exercises go at t
 
 - **1.** The complex case of the $L^p$ dual is written out in four steps (blueprint item, risk 4). The old paragraph tested the norm with $|g|^{q-1}\operatorname{sgn}g$ without the conjugate and did not treat $p=1$. Lebesgue constants are printed (1.436, 2.223, 3.139, 4.070) in place of "a direct computation gives them". Closing section. Citations of Volumes 5 and 7 checked: Volume 5's Fourier series are its Chapter 6. Sources added for Kolmogorov 1926, Riesz 1910, Steinhaus 1919, Wright 1973, Garnir 1974.
 - **2.** The Radon–Nikodym section is headed "A second proof" and says so (blueprint). Closing section. Citations of Volume 5 moved to its new chapters (6, 5, 9); the Gaussian kernel cites Volume 5, Theorem 8.3.
+- **3.** A reminder of what the chapter assumes (Appendices C and D). Closing section.
+- **4.** The photograph keeps 24 singular triples (24 cost 48,024 numbers, a 25th would exceed 50,000); caption fractions checked against the figure. Closing section.
+- **5.** Volume 3 Perron theory cited precisely (Appendix A: Theorems A.1, A.6, Exercise A.2). History corrected: Aschbacher 1971 excluded rank three, not vertex-transitivity (Higman; Mačaj–Širáň 2010 added); Graham–Pollak has had a counting proof since Vishwanathan 2013; the unsupported "no proof of the friendship theorem without counting" removed. Closing section.
+- **6.** The Laplacian is now defined before it is used; Fiedler named; the hypercube's h = 1 follows from the theorem itself. LPS needs d − 1 ≡ 1 mod 4. A Sources section added (there was none). Opening question, closing section.
+- **7.** R1: the reminder no longer imports Kesten's theorem from Volume 12 (the chapter proves its own Kesten 1959 statement, and the text compares it with Volume 12's `thm:kesten`, blueprint item 7); the Catalan moments of the semicircle are now proved in the solution instead of cited from the moved chapter. LPS girth corrected (about (4/3) log_p N in the bipartite case). Hoeffding cited as Volume 4, Theorem 4.2. Closing section. **Note for Volume 12:** the text says Volume 12, Chapter 9 (networks, `thm:kesten`) and Chapter 10 (semicircle), the current printed order; if the Volume 12 rewrite applies the blueprint order (networks 8, semicircle 9), these two numbers in `ch09-expanders.tex` must move with it.
+- **8.** All hand-typed internal numbers became `\ref`. Liouville and Laurent cited as Volume 5, Theorems 9.16 and 9.22; Fubini for series as Volume 7, Theorem 9.6. Wiener–Lévy marked as not developed. Opening question, closing section.
+- **9.** All hand-typed internal numbers became `\ref` (they were in the ten-chapter order: 3.x = Chapter 8, 1.x, 2.x). The full spectral theorem stays a remark, and the closing section says it was not proved (blueprint). Opening question, closing section.
 
 ## Tools
 
