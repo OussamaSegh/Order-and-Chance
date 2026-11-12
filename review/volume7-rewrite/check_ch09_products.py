@@ -13,7 +13,7 @@ check_true("V_100 = pi^50/50! about 2.4e-40", abs(v100 - mp.pi**50 / mp.factoria
 check_true("2^100 about 1.3e30", abs(mp.mpf(2)**100 / mp.mpf("1.3e30") - 1) < 0.03)
 check_true("fraction about 2e-70", abs(v100 / mp.mpf(2)**100 / mp.mpf("2e-70") - 1) < 0.08)
 check("sqrt(100/3)", float(mp.sqrt(mp.mpf(100) / 3)), 5.8, 0.03)
-check_true("0.9^100 about 3e-5", abs(mp.mpf("0.9")**100 / mp.mpf("3e-5") - 1) < 0.12)
+check_true("0.9^100 about 2.7e-5", abs(mp.mpf("0.9")**100 / mp.mpf("2.7e-5") - 1) < 0.02)
 check("cone, d=3", float(mp.quad(lambda t: (1 - t / 2)**2, [0, 2])), 2 / 3, 1e-12)
 check("Ritelli: int -ln x/(1-x^2)", float(mp.quad(lambda x: -mp.log(x) / (1 - x * x), [0, 0.5, 1])), float(mp.pi**2 / 8), 1e-10)
 check("sum 1/(2k+1)^2", float(mp.nsum(lambda k: 1 / (2 * k + 1)**2, [0, mp.inf])), float(mp.pi**2 / 8), 1e-12)

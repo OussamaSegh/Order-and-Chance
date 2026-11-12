@@ -36,7 +36,7 @@ for n in range(1, 5):
             ok &= Fraction(1, 2 * k) <= ratio <= Fraction(2, k)
 check_true("cylinder length and 1/(2k) <= P(a_{n+1}>=k | I) <= 2/k", ok)
 
-# Problem econt: digits of e, bounds on q_3k, the eight solutions
+# Problem econt: digits of e, bounds on q_3k, the nine integer solutions
 def e_digits(n):
     d = [2]
     k = 1
@@ -57,12 +57,13 @@ getcontext().prec = 80
 E = Decimal(1).exp()
 sols = []
 for q in range(2, 8):
-    p = int((E * q).to_integral_value())
-    if abs(E - Decimal(p) / q) < 1 / (Decimal(q) ** 2 * Decimal(q).ln()): sols.append((p, q))
+    center = E * q
+    for p in range(int(center) - 3, int(center) + 4):
+        if abs(E - Decimal(p) / q) < 1 / (Decimal(q) ** 2 * Decimal(q).ln()): sols.append((p, q))
 for p, q in zip(ps, qs):
     if q >= 8 and abs(E - Decimal(p) / q) < 1 / (Decimal(q) ** 2 * Decimal(q).ln()): sols.append((p, q))
-printed = [(5, 2), (8, 3), (11, 4), (19, 7), (193, 71), (2721, 1001), (49171, 18089), (1084483, 398959)]
-check_true(f"eight solutions for e: {sols}", sols == printed)
+printed = [(5, 2), (6, 2), (8, 3), (11, 4), (19, 7), (193, 71), (2721, 1001), (49171, 18089), (1084483, 398959)]
+check_true(f"nine solutions for e: {sols}", sols == printed)
 
 # Problem etwo
 phi = (1 + sqrt(5)) / 2
