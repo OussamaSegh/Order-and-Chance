@@ -5,8 +5,8 @@
 Heads reviewed:
 
 - Volume 5 in-volume: `1cc4048a746939e763b4f07ba3f3797976cb606d` (pull request 208)
-- Volume 6 in-volume: `03595b718add130fb82f7bc75faa504432481729` (pull request 209)
-- Downstream citations: `e5126c0bc154ad833305a9a55ef40219dbbe1704` (pull request 210)
+- Volume 6 in-volume: `cf892434e31e0f42f1fb58f41ce8afeb29f53415` (pull request 209)
+- Downstream citations: `6a835372f357a54943f6824daab43d281d4a1a56` (pull request 210)
 
 A number that was changed was recomputed, or counted from the source with examples included in the shared counter. A citation was accepted only when the statement at the new number is the statement the sentence uses.
 
@@ -96,9 +96,11 @@ A number that was changed was recomputed, or counted from the source with exampl
 
 ## What this pass sent back
 
-Two checks failed on the first CI run and were corrected before any merge.
+The mathematical sentences were not rejected. The guards that hash a source file were, and each one was refreshed after the file was reread.
 
 - The Gamma chapter’s new citation of Volume 1, Chapter 8, for Wallis, lengthened the pinned list in `tools/test_cross_volume_citations.py`. The pin is the order of appearance. The test passes.
 - Editing Volume 1’s integrals chapter changed the toolkit hash in `docs/reviews/volume2-forward-reference-review-2026-11-04.json`. The forward-reference count is still 86, and the reference count is still 326. The sentences that changed are Volume 5 chapter numbers, not Volume 1 premises.
+- The same integrals chapter is a Volume 3 prerequisite. Its hash in `review/volume3-internal/prerequisite-sources.json`, and the whole-volume fingerprint in `review/volume3-internal/concepts.json`, were moved with it. One hundred and twenty concept statuses are unchanged. The only snapshotted path that differs is that chapter.
+- The Farey cover sentence was regenerated from `common/cover-notes.json`. A hand-typed comma, where the generator writes a full stop, had left `docs/COVER-NOTES.md` stale. The Volume 3 inventory and fingerprint move with that JSON file and with nothing else.
 
-Nothing in the three diffs was rejected after those two corrections.
+The two fingerprint commits sit on different branches. Each matches that branch against current `main`. Once the cover-note change is on `main`, the downstream fingerprint has to be recomputed on the merged tree before that pull request is merged, because the live `common/cover-notes.json` and the integrals chapter will then both differ from the snapshot taken on either branch alone.
