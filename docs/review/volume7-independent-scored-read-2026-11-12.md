@@ -19,7 +19,7 @@ Columns are (a) correctness, (b) rigor, (c) prerequisites, (d) clarity, (e) peda
 | 1 | Sets, Choice and the Real Numbers | 8 | 7 | 8 | 8 | 9 | 8 | 8 | 8 | 8 | 8 |
 | 2 | Metric Spaces and Completeness | 9 | 8 | 8 | 9 | 9 | 8 | 8 | 9 | 8 | 8 |
 | 3 | Topological Spaces | 8 | 7 | 8 | 8 | 8 | 7 | 7 | 8 | 8 | 8 |
-| 4 | Compactness | 8 | 7 | 8 | 8 | 8 | 7 | 8 | 8 | 8 | 8 |
+| 4 | Compactness | 8 | 7 | 8 | 8 | 8 | 7 | 7 | 8 | 8 | 8 |
 | 5 | Baire's Theorem | 8 | 8 | 8 | 8 | 9 | 7 | 8 | 8 | 8 | 8 |
 | 6 | The Jordan Curve Theorem | 8 | 8 | 8 | 8 | 8 | 7 | 8 | 8 | 8 | 8 |
 | 7 | Measures | 8 | 8 | 8 | 8 | 8 | 7 | 8 | 8 | 8 | 8 |
@@ -62,7 +62,7 @@ The census of solutions of \(|e-p/q|<1/(q^2\log q)\) is wrong by one. The eight 
 
 **(f), throughout.** Every chapter has a warm-up, a middle exercise and a hard one, except that two problems in Chapter 13 are marked *Journey* rather than with stars (`ch12-harder.tex:96` and `:138`). Solutions I recomputed (Calkin–Wilf, Newton for \(\sqrt 2\), Hensel in \(\mathbb Z_5\), \(\mathbb Z_2\) onto the Cantor set, Khinchin, Borel–Bernstein, the \(e\) bounds, the Jarník–Besicovitch dimension) are right apart from the census just named. The exercise column is a 7 wherever I did not recompute the whole set.
 
-**(g)–(j).** Captions I checked (Calkin–Wilf, maximal function of \(1_{[-1,1]}\), which really is \(1/(|x|+1)\) off \([-1,1]\), Cantor covers with \(\sum(\operatorname{diam})^s=1\), the carpet \(\log 8/\log 3\)) match the mathematics. Plates in the EPUB are PNG and 1800 pixels wide. Rendered chapter pages (a part opener, the Hausdorff-distance definition, the opening of Chapter 12) follow the series page. The preface table does not; it is scored with the front matter, not against a chapter.
+**(g)–(j).** Captions I checked (Calkin–Wilf, maximal function of \(1_{[-1,1]}\), which really is \(1/(|x|+1)\) off \([-1,1]\), Cantor covers with \(\sum(\operatorname{diam})^s=1\), the carpet \(\log 8/\log 3\)) match the mathematics, except the right-hand family in the Arzelà–Ascoli figure (V7-22). Plates in the EPUB are PNG and 1800 pixels wide. Rendered chapter pages (a part opener, the Hausdorff-distance definition, the opening of Chapter 12) follow the series page. The preface table does not; it is scored with the front matter, not against a chapter.
 
 ### Whole book
 
@@ -120,8 +120,12 @@ I would not call the press file finished. The preface ledger is mis-set, one fla
 | V7-16 | `chapters/ch12-harder.tex:96`, `:138` | Notation | minor | The preface promises three grades, star, two stars, three stars. Problems 13.4 and 13.8 are marked *Journey*. | Use three stars, or add *Journey* to the preface's scale. |
 | V7-17 | `chapters/ch08-products.tex:305–306` | Numerical | minor | \(0.9^{100}=2.656\times 10^{-5}\), printed as \(\approx 3\times 10^{-5}\). The companion values \(\pi^{50}/50!\approx 2.37\times 10^{-40}\) (printed \(2.4\times 10^{-40}\)) and \(2^{100}\approx 1.27\times 10^{30}\) (printed \(1.3\times 10^{30}\)) are fair one-figure approximations. The fraction \(2\times 10^{-70}\) matches \(2.37\times 10^{-40}/1.27\times 10^{30}\) at one figure. | Print \(2.7\times 10^{-5}\), or say “about \(10^{-5}\)”. |
 | V7-18 | `volume9-shapes/chapters/ch01-manifolds.tex:539`, citing Theorem 7.11 | Downstream citation | minor | The sentence uses “a null set may be covered by cubes of total volume \(<\varepsilon\)”. That is the definition of outer measure in Theorem 7.10, together with \(\lambda=\lambda^*\). Theorem 7.11 is the measure of boxes, translation, and scaling. The fact is true and nearby; the number is one off in spirit. | Cite Theorem 7.10, or the sentence after Theorem 7.11 that discusses null covers. |
+| V7-19 | `chapters/ch05-baire.tex:250–252` | Rigor | minor | The claim that finitely many intervals covering \([a,b]\) have total length at least \(b-a\) is true. The induction is not: “the one containing \(a\) reaches some point \(c\), and the others cover \([c,b]\)” fails if \(c\) is not the right end of that interval. Points just past such a \(c\) may lie only in the same interval. | Take \(c\) to be the right endpoint of the open interval that contains \(a\). |
+| V7-20 | `chapters/ch04-compact.tex:74–75` | Correctness | minor | Proposition 4.2(d) needs a continuous bijection from a compact space onto a Hausdorff space. The maps from \([0,1]\) onto \(\mathbb R/\mathbb Z\) and onto \(S^1\) are not bijective. The homeomorphism is the continuous bijection from the compact quotient \(\mathbb R/\mathbb Z\) onto \(S^1\), which Chapter 3 already checks directly (`ch03-topology.tex:134–136`). | Replace the sentence with that bijection. |
+| V7-21 | `chapters/jordan.tex:244`, solution of Exercise 6.1 | Exercises | minor | The exercise assumes \(R>1+\sum|c_j|\). The solution writes the leash estimate under the weaker hypothesis \(R>1\), and then claims \(R^{n-1}\sum|c_j|<R^n\). That last step needs \(R>\sum|c_j|\). For \(p(z)=z+100\) and \(R=2\), \(100\not<2\). Under the exercise’s own bound the estimate is true; the write-up drops half of it. | Insert \(R>\sum|c_j|\) before the last comparison, which the hypothesis \(R>1+\sum|c_j|\) supplies. |
+| V7-22 | `chapters/ch04-compact.tex:342–344`; `figures/ch04-equicont.tex:16–22` | Figures | minor | The caption says the right-hand curves are \(x\mapsto\frac12\sin(x+c)+\frac c4\) for \(0\le c\le 2\), “all \(\frac12\)-Lipschitz”. The formula does have derivative bounded by \(\frac12\). The drawn polylines do not: the first orange curve rises with slope about \(0.78\) on \([0,0.06]\). They are not the graphs of that formula. The left-hand curves \(x^n\) are the right shape, and the theorem does not use the picture. | Redraw the family from the formula, or change the caption to the functions that were plotted. |
 
-Severity counts: **critical 0, major 6, minor 12.**
+Severity counts: **critical 0, major 6, minor 16.**
 
 ## Verified correct
 
@@ -236,3 +240,5 @@ The handoff says later volumes still cite Volume 7 by hand-typed numbers, and th
 - Only the Jordan sources section is in the table of contents (V7-15), and two problems are marked *Journey* (V7-16).
 
 The handoff already says that several bibliographic details (Miranda 1940, the pages of Lebesgue’s 1926 lecture, Robinson 1947, Littlewood 1944, the chapter numbers in Falconer, the years of Lévy’s and Khinchin’s constants) were not checked against the sources. This read did not check them either. They stay in “Not reviewed”.
+
+A later pass over Chapters 4–6, after the scorecard was committed, confirmed four further gaps that neither the October review nor the handoff names: the interval-cover induction (`ch05-baire.tex:250–252`, V7-19), the non-bijective maps offered as a homeomorphism (`ch04-compact.tex:75`, V7-20), the dropped half of the radius hypothesis in the winding proof of the fundamental theorem of algebra (`jordan.tex:244`, V7-21), and the Arzelà–Ascoli figure, whose right-hand curves are not the Lipschitz family named in the caption (V7-22). Chapter 4’s figure score is 7 on account of that last one. The overall score stays 8. The same pass agreed that the \(3\varepsilon\) net in Arzelà–Ascoli still proves total boundedness, which is why V7-10 remains minor, and that the polygon-to-curve argument, the winding homotopy, and Brouwer’s hypotheses do not have a break.
