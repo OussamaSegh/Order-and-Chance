@@ -257,3 +257,35 @@ The repairs named above (Huxley’s exponent, the power-of-two square index, the
 The 4 November handoff still describes the print interior as \(7\times10\) inches with no interior bleed (`docs/reviews/volume2-current-review-handoff-2026-11-04.md`). That described the candidate then on the table. It does not describe the `books` release read here: every print page is \(513\times738\) pt, and the part opener’s charcoal reaches the media edge. The change matches the later bleed instruction; it is a stale description, not a repair that failed inside the manuscript.
 
 Their acceptance sentence does not hold for the series as it stands on 11 November. The manuscript they checked can be free of the defects they listed and still send every later volume to the wrong theorem number. That gap was outside their ledger, and it is the main reason this reading does not recommend the volume as-is.
+
+## Final status
+
+The comparison above describes the manuscript at `8b8a5be3`, before the repairs. Those repairs are [Volume 2: apply independent scored read](https://github.com/OussamaSegh/Order-and-Chance/pull/197), squash-merged as `7c9ce3cbb43d13253312e33a0dd309d2db9d6b0d`. The second review is [pull request #198](https://github.com/OussamaSegh/Order-and-Chance/pull/198), squash-merged as `b9560869f5fc9532974445f2bd36e5c42892fd0f`. It approves head `2aef4b5f405284b2eff15a218e1af56dd8a5b9fe`, which is the head that #197 merged. The apply pull request recorded a print PDF of 337 pages.
+
+Of the 23 issues, 23 are fixed, 0 are partial, and 0 are not fixed.
+
+| ID | Status | PR | Merge | Note |
+|---|---|---|---|---|
+| V2-01 | fixed | #197 | `7c9ce3cb` | Later volumes name the printed chapter, theorem, or exercise, and the citation check rejects a Volume 2 number whose subject lives in another chapter. |
+| V2-02 | fixed | #197 | `7c9ce3cb` | Theorem 1.5 is Euclid’s lemma. Gauss’s lemma stays Theorem 6.3. |
+| V2-03 | fixed | #197 | `7c9ce3cb` | The new index lists named statements, cited exercises, and symbols, with page numbers. Chapter-end source lists stay. |
+| V2-04 | fixed | #197 | `7c9ce3cb` | Euler’s four-square identity is expanded from the four coefficient rows and their dot products. |
+| V2-05 | fixed | #197 | `7c9ce3cb` | Theorem 7.4 states the result for every non-negative integer, including the zero tuple. |
+| V2-06 | fixed | #197 | `7c9ce3cb` | Exercises 1.15, 3.16, and 3.18 are optional three-star explorations. |
+| V2-07 | fixed | #197 | `7c9ce3cb` | Each prime one more than a multiple of four carries eight dots. |
+| V2-08 | fixed | #197 | `7c9ce3cb` | The constant is \(0.18269\ldots\). |
+| V2-09 | fixed | #197 | `7c9ce3cb` | \(\bigl(\frac{3}{5}\bigr)=-1\), and the minus already in front makes the original symbol \(+1\). |
+| V2-10 | fixed | #197 | `7c9ce3cb` | The product is \(1\cdot\frac23\cdot\frac35=\frac25\). |
+| V2-11 | fixed | #197 | `7c9ce3cb` | \(k\equiv -l\) is excluded inside the proof of Theorem 6.3. |
+| V2-12 | fixed | #197 | `7c9ce3cb` | The caption names the teal and pale-coral fills. |
+| V2-13 | fixed | #197 | `7c9ce3cb` | The Hensel arrows record the lift. |
+| V2-14 | fixed | #197 | `7c9ce3cb` | Legendre’s formula is proved in the main text of Chapter 1. Exercise 1.3 still asks for the count. |
+| V2-15 | fixed | #197 | `7c9ce3cb` | The title is Bertrand’s postulate; Erdős’s elementary proof (1932). |
+| V2-16 | fixed | #197 | `7c9ce3cb` | The eight intervals are samples. |
+| V2-17 | fixed | #197 | `7c9ce3cb` | \(p\) divides the binomial coefficient because neither factorial in \(p!\) contains \(p\). |
+| V2-18 | fixed | #197 | `7c9ce3cb` | A prime dividing both \(x\) and \(n\) divides \(m\). |
+| V2-19 | fixed | #197 | `7c9ce3cb` | If \(q\) divides \(y\), then \(q\) divides \(1\). |
+| V2-20 | fixed | #197 | `7c9ce3cb` | \(x\) is already a root at least \(y\), and \(g\) opens upwards, so \(x\) is the larger root. |
+| V2-21 | fixed | #197 | `7c9ce3cb` | The two examples print the products in the order of Proposition 9.1. |
+| V2-22 | fixed | #197 | `7c9ce3cb` | The arrow runs from \(5\) to \(4\sqrt2\). |
+| V2-23 | fixed | #197 | `7c9ce3cb` | \(\pm 2\) is not divisible by \(\lambda\), so the sum is the zero residue and \(3n\ge 4\). |
