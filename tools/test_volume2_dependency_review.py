@@ -21,9 +21,12 @@ class DependencyReviewChecks(unittest.TestCase):
         result = checks.check(self.data, self.review)
         # 322 = 319 plus three backward citations in the Fermat-factor solution:
         # the order proposition twice, and the congruences chapter once.
-        # The 85 forward uses are unchanged.
-        self.assertEqual(result['references'], 322)
-        self.assertEqual(result['reviewed_forward_uses'], 85)
+        # The scored-read corrections add four citations: the valuation paragraph
+        # points forward to Exercise 1.3, the Lucas solution cites Exercise ex:n2n,
+        # and the continued-fraction examples cite Proposition 9.1 twice.
+        # Forward uses: 86 = 85 plus that Exercise 1.3 pointer.
+        self.assertEqual(result['references'], 326)
+        self.assertEqual(result['reviewed_forward_uses'], 86)
         self.assertIn('no automatic', result['scope'])
 
     def test_new_removed_or_changed_forward_reference_requires_review(self):

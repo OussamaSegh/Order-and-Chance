@@ -1,9 +1,9 @@
 """Citations of the form ``Volume N, Theorem X`` must match that volume's numbers.
 
-The walker reproduces the counters a build assigns. Volumes 2, 3, 5, 7, 8, 10
+The walker reproduces the counters a build assigns. Volumes 5, 7, 8, 10
 and 12 still have citations whose kind or number does not match; those repairs
 belong with the volume being cited. Every other volume is gated here, including
-every citation of Volume 1.
+every citation of Volumes 1, 2 and 3.
 """
 
 import re
@@ -13,7 +13,7 @@ import cross_volume_citations as citations
 
 # Cited volumes whose mismatches are still open. Drop a number when its
 # citations have been repaired; the test then guards that volume too.
-OPEN_CITED_VOLUMES = {2, 3, 5, 7, 8, 10, 12}
+OPEN_CITED_VOLUMES = {5, 7, 8, 10, 12}
 
 
 class CrossVolumeCitations(unittest.TestCase):
@@ -64,6 +64,122 @@ class CrossVolumeCitations(unittest.TestCase):
     def test_volume1_prints_the_language_chapter_as_zero(self):
         book = self.books[1]
         self.assertEqual(book.chapters, {str(number) for number in range(11)})
+
+    def test_volume2_numbers_match_the_printed_statements(self):
+        book = self.books[2]
+        anchors = {
+            ("theorem", "1.5"): "thm:gauss",
+            ("theorem", "1.6"): "thm:fta",
+            ("theorem", "3.5"): "thm:crt",
+            ("theorem", "3.8"): "thm:hensel",
+            ("theorem", "4.4"): "thm:mobius",
+            ("theorem", "4.5"): "thm:perfect",
+            ("theorem", "4.6"): "thm:hyperbola",
+            ("proposition", "4.3"): "prop:conv",
+            ("theorem", "5.3"): "thm:cyclic",
+            ("theorem", "5.5"): "thm:cyclicn",
+            ("exercise", "5.7"): "ex:cyclotomic",
+            ("theorem", "6.5"): "thm:qr",
+            ("corollary", "6.4"): "cor:two",
+            ("exercise", "6.7"): "ex:gausssum",
+            ("theorem", "2.1"): "thm:euclid-primes",
+            ("exercise", "2.9"): "ex:t1-factorial-new-prime",
+            ("theorem", "7.3"): "thm:twosqn",
+            ("theorem", "7.4"): "thm:foursq",
+            ("theorem", "7.5"): "thm:circle",
+            ("theorem", "8.1"): "thm:pyth",
+            ("theorem", "8.2"): "thm:fermat4",
+            ("theorem", "8.6"): "thm:markov",
+            ("proposition", "9.1"): "prop:cfconv",
+            ("theorem", "9.2"): "thm:cfapprox",
+            ("theorem", "9.6"): "thm:periodic",
+            ("theorem", "9.8"): "thm:pell",
+            ("theorem", "10.3"): "thm:ufd",
+            ("theorem", "10.5"): "thm:gaussprimes",
+            ("theorem", "10.9"): "thm:flt3",
+            ("exercise", "1.3"): "ex:zeros",
+            ("exercise", "4.7"): "ex:primitive",
+            ("exercise", "4.8"): "ex:coprimeprob",
+        }
+        self.assertEqual(book.chapters, {str(number) for number in range(1, 12)})
+        for key, label in anchors.items():
+            self.assertEqual(book.by_key[key].label, label, key)
+
+    def test_swapped_volume2_chapter_is_rejected(self):
+        # Filename order calls reciprocity Chapter 5 and continued fractions Chapter 8.
+        swapped = r"quadratic reciprocity, Volume~2, Chapter~5"
+        printed = swapped.replace("Chapter~5", "Chapter~6")
+        self.assertTrue(citations.volume2_subject_mismatches(swapped))
+        self.assertEqual(citations.volume2_subject_mismatches(printed), [])
+        old_pell = r"continued fraction of $\sqrt d$, Volume~2, Theorem~8.6"
+        self.assertTrue(citations.volume2_subject_mismatches(old_pell))
+        self.assertEqual(
+            citations.volume2_subject_mismatches(
+                old_pell.replace("Theorem~8.6", "Theorem~9.6")),
+            [],
+        )
+        gauss = r"the Gauss sum satisfies $g^2=q^*$ (Volume~2, Exercise~5.7)"
+        self.assertTrue(citations.volume2_subject_mismatches(gauss))
+        self.assertEqual(
+            citations.volume2_subject_mismatches(
+                gauss.replace("Exercise~5.7", "Exercise~6.7")),
+            [],
+        )
+
+    def test_volume2_pointers_name_the_stated_fact(self):
+        """A nearby number can exist and still describe a different theorem."""
+        root = citations.ROOT
+        bezout = (root / "volume13-arithmetic/chapters/ch12-ideals-quadratic.tex").read_text(encoding="utf-8")
+        self.assertIn(
+            r"the B\'ezout property in a Euclidean domain, proved in Volume~2, Theorem~10.3",
+            bezout,
+        )
+        self.assertNotIn("Theorem~1.4", bezout)
+        factorial = (root / "volume15-order-and-chance/chapters/ch09-lean.tex").read_text(encoding="utf-8")
+        self.assertIn(r"Volume~2, Exercise~2.9: a prime factor of $n!+1$", factorial)
+        self.assertNotIn("Theorem~2.1", factorial)
+        disc = (root / "volume6-crossroads/chapters/ch05-pnt.tex").read_text(encoding="utf-8")
+        self.assertIn(r"$\sim\pi x$ (Volume~2, Theorem~7.5, or a direct count)", disc)
+        ball = (root / "volume7-spaces/chapters/ch02-metric.tex").read_text(encoding="utf-8")
+        self.assertIn("The closed unit ball, and its identification with the compatible residue sequences, are built in this chapter.", ball)
+        self.assertNotIn("names this ball", ball)
+        triangle = (root / "volume13-arithmetic/chapters/ch12-elliptic.tex").read_text(encoding="utf-8")
+        self.assertIn(r"$x^4+y^4=z^2$ has no positive integer solution (Volume~2, Theorem~8.2)", triangle)
+        self.assertIn(r"Proposition~\ref{prop:congruent}", triangle)
+        self.assertNotIn("square area. Which numbers", triangle)
+        signed = (root / "volume5-calculation/chapters/ch08-transform.tex").read_text(encoding="utf-8")
+        self.assertIn(r"Volume~2, Exercise~6.7, gives $G(p)^2=", signed)
+        index = (root / "volume2-integers/chapters/index.tex").read_text(encoding="utf-8")
+        self.assertNotIn("print PDF", index)
+        self.assertIn(r"\ocindexpage{sym:divides}", index)
+        self.assertIn(r"\ocindexpage{sym:gcd}", index)
+        self.assertIn(r"\ocindexpage{sym:lcm}", index)
+        self.assertIn(r"\ocindexpage{ex:t1-factorial-new-prime}", index)
+
+    def test_volume3_pointers_name_the_stated_fact(self):
+        """Exercise 10.8 is Cardano. The cyclotomic isomorphism is Exercise 10.1."""
+        root = citations.ROOT
+        cyclo = (root / "volume13-arithmetic/chapters/ch05-cyclotomic.tex").read_text(encoding="utf-8")
+        self.assertIn("Volume~3, Exercise~10.1", cyclo)
+        self.assertNotIn("Exercise~10.8", cyclo)
+        ideals = (root / "volume13-arithmetic/chapters/ch02-ideals.tex").read_text(encoding="utf-8")
+        self.assertIn("Volume~3, Theorem~10.6 and Exercise~10.1", ideals)
+        curves = (root / "volume13-arithmetic/chapters/ch11-curves.tex").read_text(encoding="utf-8")
+        self.assertIn("Volume~3, Theorem~6.18", curves)
+        self.assertIn("Volume~3, Proposition~6.17", curves)
+        additive = (root / "volume14-primes/chapters/ch11-additive.tex").read_text(encoding="utf-8")
+        self.assertIn("Volume~3, Theorem~C.12", additive)
+        cubes = (root / "volume15-order-and-chance/chapters/ch08-heuristics.tex").read_text(encoding="utf-8")
+        self.assertIn("Volume~3, Theorem~C.12", cubes)
+        lie = (root / "volume9-shapes/chapters/ch07-liegroups.tex").read_text(encoding="utf-8")
+        self.assertIn("Volume~3, Lemma~12.3", lie)
+        self.assertNotIn("as in Volume~3", lie)
+        quadrics = (root / "volume9-shapes/chapters/geometry-ch06-quadrics.tex").read_text(encoding="utf-8")
+        self.assertIn("Volume~1, Theorem~7.9", quadrics)
+        self.assertIn("Volume~1, Theorem~7.10", quadrics)
+        self.assertNotIn("Volume~3, Chapter~2", quadrics)
+        primitive = (root / "volume13-arithmetic/chapters/ch01-number-fields.tex").read_text(encoding="utf-8")
+        self.assertIn("Volume~3, Theorem~8.20", primitive)
 
     def test_chapter_zero_offset_rejects_a_shifted_gloss(self):
         shifted = (
