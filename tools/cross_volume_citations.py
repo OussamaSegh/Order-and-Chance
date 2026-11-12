@@ -361,9 +361,144 @@ def mismatches(books: dict[int, BookNumbers] | None = None,
     return problems
 
 
+# Volume 1 prints its language chapter as Chapter 0 (``\setcounter{chapter}{-1}``).
+# A count that calls that chapter 1 cites every later chapter one too high.
+# Chapters 1 through 10 still exist, so an existence check accepts the shift.
+# A gloss sitting next to the citation is checked against the printed home.
+VOLUME1_GLOSS = (
+    ("polynomials that agree", "6"),
+    ("inclusion--exclusion", "2"),
+    ("inclusion-exclusion", "2"),
+    ("stars-and-bars", "2"),
+    ("stars and bars", "2"),
+    ("Cauchy product", "3"),
+    ("multiplicity of roots", "6"),
+    ("derivative of an inverse", "8"),
+    ("alternating harmonic", "3"),
+    ("Bolzano--Weierstrass", "3"),
+    ("Bolzano-Weierstrass", "3"),
+    ("Wallis integral", "8"),
+    ("geometric sums of roots of unity", "5"),
+    ("roots-of-unity filter", "5"),
+    ("roots of unity filter", "5"),
+    ("intermediate value", "3"),
+    ("product of sines", "5"),
+    ("binomial coefficient", "1"),
+    ("Cauchy--Schwarz", "9"),
+    ("Cauchy-Schwarz", "9"),
+    ("Riemann--Lebesgue", "8"),
+    ("quadratic Gauss sum", "5"),
+    ("Vandermonde", "7"),
+    ("d'Alembert", "6"),
+    ("Lagrange interpolation", "6"),
+    ("multiple-angle", "5"),
+    ("division of polynomials", "6"),
+    ("block matrices", "7"),
+    ("Gram--Schmidt", "7"),
+    ("Gram-Schmidt", "7"),
+    ("diagonalisation", "7"),
+    ("roots of polynomials", "6"),
+    ("symmetric matrices", "7"),
+    ("Chebyshev polynomial", "6"),
+    ("absolute convergence", "3"),
+    ("inverse functions", "8"),
+    ("comparison with integrals", "3"),
+    ("Euler's constant", "3"),
+    ("weighted AM--GM", "9"),
+    ("concavity of $\\ln$", "9"),
+)
+# These words must not be offered as what Volume 1 taught.
+VOLUME1_GLOSS_FORBIDDEN = ("arcsin", "trigonometric polynomial")
+_VOLUME1_CHAPTER = re.compile(
+    r"Volume~?1,\s+Chapter~?(\d+)(\s*\([^)]*\))?"
+    r"(?:\s+and\s+Chapter~?(\d+)(\s*\([^)]*\))?)?"
+)
+_VOLUME1_CHAPTERS = re.compile(
+    r"Volume~?1,\s+Chapters~?(\d+)\s+and~?(\d+)(\s*\([^)]*\))?"
+)
+
+
+def _gloss_hits(scope: str) -> set[str]:
+    return {chapter for phrase, chapter in VOLUME1_GLOSS if phrase in scope}
+
+
+def _gloss_neighbourhood(text: str, start: int, end: int) -> str:
+    """The words that name the subject, not the previous citation in the sentence."""
+    before = text[max(0, start - 160):start]
+    previous = before.rfind("Volume~")
+    if previous != -1:
+        before = before[previous + len("Volume~"):]
+    # ``(subject, Volume 1, Chapter N)`` keeps the subject and drops the paren.
+    stripped = before.rstrip()
+    if stripped.endswith("("):
+        clause = stripped[:-1]
+        cut = max(clause.rfind(";"), clause.rfind("."), clause.rfind(")"))
+        before = clause[cut + 1:]
+    after = text[end:end + 90]
+    return before + " " + after
+
+
+def volume1_chapter_gloss_mismatches(text: str, source: str = "") -> list[str]:
+    """Flag a Volume 1 chapter citation whose nearby gloss names another chapter.
+
+    The shift that counts the language chapter as Chapter 1 is the case this
+    catches: the cited number exists, and the subject is the previous chapter.
+    """
+    text = strip_comments(text)
+    problems = []
+    where = f"{source}: " if source else ""
+
+    def complain(cited: str, scope: str, detail: str) -> None:
+        problems.append(
+            f"{where}Volume 1 chapter gloss: cited {cited}, {detail} ({scope[:80]})"
+        )
+
+    for match in _VOLUME1_CHAPTER.finditer(text):
+        numbers = [match.group(1)]
+        scopes = []
+        if match.group(2):
+            scopes.append((match.group(1), match.group(2)))
+        if match.group(3):
+            numbers.append(match.group(3))
+            scopes.append((match.group(3), match.group(4) or ""))
+        if not match.group(2) and not match.group(3):
+            scopes.append((match.group(1), _gloss_neighbourhood(text, match.start(), match.end())))
+        for cited, scope in scopes:
+            if any(word in scope for word in VOLUME1_GLOSS_FORBIDDEN):
+                complain(cited, scope, "Volume 1 does not teach this")
+                continue
+            hits = _gloss_hits(scope)
+            if hits and hits != {cited}:
+                complain(cited, scope, f"printed chapter {sorted(hits)}")
+    for match in _VOLUME1_CHAPTERS.finditer(text):
+        numbers = {match.group(1), match.group(2)}
+        scope = match.group(3) or _gloss_neighbourhood(text, match.start(), match.end())
+        if any(word in scope for word in VOLUME1_GLOSS_FORBIDDEN):
+            complain(", ".join(sorted(numbers)), scope, "Volume 1 does not teach this")
+            continue
+        hits = _gloss_hits(scope)
+        if hits and not hits <= numbers:
+            complain(", ".join(sorted(numbers)), scope, f"printed chapters {sorted(hits)}")
+    return problems
+
+
+def gloss_mismatches() -> list[str]:
+    found = []
+    for directory in VOLUMES.values():
+        root = ROOT / directory
+        for path in sorted(root.rglob("*.tex")):
+            if "build" in path.parts:
+                continue
+            found.extend(volume1_chapter_gloss_mismatches(
+                path.read_text(encoding="utf-8"),
+                str(path.relative_to(ROOT)),
+            ))
+    return found
+
+
 def main() -> int:
     books = {n: number_volume(n) for n in VOLUMES}
-    problems = mismatches(books)
+    problems = mismatches(books) + gloss_mismatches()
     if problems:
         print(f"{len(problems)} citation mismatches")
         for line in problems:
