@@ -142,3 +142,42 @@ The page target in `book-06.md` is 190–220. This build is 291 print pages. The
 `./build.sh volume6-crossroads` was run on this commit. XeLaTeX, the interior checks, the reading PDF and the KDP interior and cover completed. The EPUB step first failed because `pngquant` and `oxipng` were not installed in this environment; those are pipeline tools, not a fault in the manuscript. They were installed and `tools/epub_fix.py` was run again.
 
 `tools/epub_fix.py` then exited 0. It wrote 24 plates at 1800 pixels and rendered 7708 distinct formulas (12900 occurrences). `tools/check_epub_media.py` exited 0, with the line “EPUB figures are full width and math carries an em baseline.” The EPUB is 23 MB, under the 50 MB cap. A spot check of `EPUB/text/ch004.xhtml` shows formula images with `width` and `vertical-align` in em, and every `img` tag in the EPUB contains `100%`. Plates include the closing-problem figures (`ch13-*`, `ch14-*`), which the chapter file inputs; they are not missing chapters. The score above is for that file. It was not paged through on a Kindle Paperwhite.
+
+## 9. Comparison with the existing reviews
+
+Written after the scores and the issue log were committed (`02253530`).
+
+The documents that review this manuscript are `docs/handoffs/volume6-rewrite.md` and the twelve scripts in `review/volume6-rewrite/`. `docs/review/SERIES-REVIEW-2026-10.md` uses the old numbering: its “Volume 6” is Spaces, and its Crossroads is the old problem book P1. It is not a review of this book.
+
+The handoff is a pass log, and it says so: “Gate B (independent verification) is not this pass.” It asks a later reader to check the bibliographic details that were written from memory. This section is that comparison, not a second pass through every paper.
+
+### What that pass got right, and what is in fact fixed
+
+These claims were re-checked against the source and hold.
+
+- Lemma 1.7’s first proof uses Volume 5, Proposition 10.6, which is the expansion of \(\zeta\) at 1.
+- Figure 4.1 states both the limits \(-1.188\) and \(-0.511\) and the values at \(10^6\). The values recompute to \(-1.1866\) and \(-0.5116\).
+- The mean gap at height \(10^6\) is printed \(0.525\). It is \(2\pi/\log(10^6/(2\pi))=0.5246\), which rounds to \(0.525\).
+- Buchstab’s \(\omega\) in Chapter 10 is Problem 8.10, not an undefined function.
+- Theorem 12.2 has both halves. Theorem 12.7 cites Volume 5, Theorem 12.4, and then gives Siegel’s contour.
+- The preface names Part II, and it names the two admitted facts. Both uses are labelled in the chapters.
+- The repaired pointers Volume 5, Theorem 5.8 (Stirling) and Corollary 4.5 (dominated convergence for continuous integrands) are those statements.
+- Exercise 3.8 stops at the character formula and sends the least-primitive-root bound to Exercise 11.9.
+
+`review/volume6-rewrite/check_ch01_mertens.py` was run again on this tree. All of its checks pass, including the values this report recomputed independently.
+
+### What they missed
+
+- **V6-01.** Their Chapter 1 script checks that \(M=\gamma-H\) equals \(0.2614972128\) to \(2\cdot 10^{-9}\). It does not check the sentence that the primes up to \(10^7\) already give those ten digits. The partial sum to \(10^7\) is \(0.2614972158\).
+- **V6-02.** The remark after Theorem 5.7 states the equivalence of the Riemann hypothesis with \(M(x)=O(x^{1/2+\varepsilon})\) as a fact. The handoff records that the waves of \(L(s,\chi)\) are quoted. It does not record that only one direction of this equivalence is an exercise.
+- **V6-03.** The Chapter 9 note says the smoothing step was corrected and that Berry–Esseen is quoted. The appeal to dominated convergence still does not meet Volume 4’s hypothesis of local uniform convergence.
+- **V6-04.** Nothing in the handoff asks where the infinite sequence of unequal Bernoulli variables in Definition 10.1 is constructed. Volume 4 does not write it.
+- **V6-05.** The voice pass is marked done. One sentence in Chapter 12 still says “a single landscape.”
+- **V6-06.** The closing problems are marked done, with tools named. The handoff does not say that they are most of the chapter’s length, or that the print book is 291 pages against the plan’s 190–220.
+- **V6-07.** The About the Cover sentence that ties Farey spacing to the Riemann hypothesis is not mentioned. The equivalence is a quotation in a solution.
+
+### What they say is fixed, and is
+
+The repairs listed above are in the file. No claimed repair that was re-opened turned out to be still broken.
+
+The handoff’s own caveat stands. The journal details it lists as written from memory were not re-audited here, except the ones named in Verified correct (Euler’s E175, Leech 1957, the three record gaps, Walfisz’s shape of the error as reported by Liu, and the Zentralblatt summary of Montgomery–Vaughan 1981). Those agree with the text. A Crossref pass is not repeated in this report.
