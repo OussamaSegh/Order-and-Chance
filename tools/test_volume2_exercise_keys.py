@@ -98,8 +98,8 @@ class TestVolume2ExerciseKeys(unittest.TestCase):
         self.assertEqual(total, 144)
         self.assertEqual(grade_counts, {
             r"$\star$": 37,
-            r"$\star\star$": 80,
-            r"$\star\star\star$": 20,
+            r"$\star\star$": 77,
+            r"$\star\star\star$": 23,
             "Journey": 7,
         })
 
