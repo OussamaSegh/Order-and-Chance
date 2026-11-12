@@ -238,42 +238,46 @@ Defining odd next to even, which the step-14 note records as the repair of the G
 
 ## Final status
 
-Mapped to [Volume 1: apply independent scored read](https://github.com/OussamaSegh/Order-and-Chance/pull/187). The comparison above describes the manuscript at `8b8a5be`, before that pull request.
+The comparison above describes the manuscript at `8b8a5be`, before the repairs. Those repairs are [Volume 1: apply independent scored read](https://github.com/OussamaSegh/Order-and-Chance/pull/187), squash-merged as `37c56ebb791ae3da566e440135567e35d7c49816`. The Volume 1 print PDF at that commit is 463 pages.
 
-| ID | PR | Status there |
-|---|---|---|
-| V1-01 | #187 | fixed |
-| V1-02 | #187 | fixed |
-| V1-03 | #187 | fixed |
-| V1-04 | #187 | fixed |
-| V1-05 | #187 | fixed |
-| V1-06 | #187 | fixed |
-| V1-07 | #187 | not fixed; deferred to the Volume 4 step |
-| V1-08 | #187 | fixed |
-| V1-09 | #187 | fixed |
-| V1-10 | #187 | fixed |
-| V1-11 | #187 | fixed |
-| V1-12 | #187 | fixed |
-| V1-13 | #187 | fixed |
-| V1-14 | #187 | fixed |
-| V1-15 | #187 | fixed |
-| V1-16 | #187 | fixed |
-| V1-17 | #187 | fixed |
-| V1-18 | #187 | fixed |
-| V1-19 | #187 | fixed |
-| V1-20 | #187 | fixed |
-| V1-21 | #187 | fixed |
-| V1-22 | #187 | fixed |
-| V1-23 | #187 | fixed |
-| V1-24 | #187 | fixed |
-| V1-25 | #187 | fixed |
-| V1-26 | #187 | fixed |
-| V1-27 | #187 | fixed |
-| V1-28 | #187 | fixed |
-| V1-29 | #187 | fixed |
-| V1-30 | #187 | fixed |
-| V1-31 | #187 | not fixed; the cited line has no opening bar |
-| V1-32 | #187 | fixed |
-| V1-33 | #187 | fixed |
-| V1-34 | #187 | fixed |
-| V1-35 | #187 | fixed |
+Of the 35 issues, 33 are fixed, 0 are partial, and 1 is not fixed. One more, V1-07, is deferred.
+
+The citation repairs V5-01 through V5-71, from the review in pull request #196, also landed in `37c56ebb`. Volume 5 now uses Volume 1’s printed chapter numbers, with the language chapter as Chapter 0.
+
+| ID | Status | PR | Merge | Note |
+|---|---|---|---|---|
+| V1-01 | fixed | #187 | `37c56ebb` | A sequence in the closed disc stays in the disc, and \(\|P(z)-P(w)\|\) is at most \(C\|z-w\|\) there, before the minimum is used. |
+| V1-02 | fixed | #187 | `37c56ebb` | Induction gives the derivative of \((x-a)^n\) on all of \(\mathbb R\), and Proposition 6.2(c) points to it. |
+| V1-03 | fixed | #187 | `37c56ebb` | The new index has 114 folios, and each one matches the built PDF. |
+| V1-04 | fixed | #187 | `37c56ebb` | Volume 5 cites Exercise 6.7 and no longer says Volume 1 promised five further proofs. |
+| V1-05 | fixed | #187 | `37c56ebb` | The KDP description names the subjects and no longer says journey. |
+| V1-06 | fixed | #187 | `37c56ebb` | The preface plate’s EPUB alt text is the sentence under the figure. |
+| V1-07 | deferred | #187 | `37c56ebb` | The Volume 4 bibliography still says “Riemann integral”; that wording waits for the final Volume 4 step. |
+| V1-08 | fixed | #187 | `37c56ebb` | Every integer is even or odd and not both, from well ordering, and the parity solution cites that split. |
+| V1-09 | fixed | #187 | `37c56ebb` | A real square root of 2 is called a later theorem, and the word continuous is gone. |
+| V1-10 | fixed | #187 | `37c56ebb` | The failing test point is a charcoal cross on the axis at 2. |
+| V1-11 | fixed | #187 | `37c56ebb` | The brace runs from \(2b\) back to \(a\), and the sentence under the line is gone. |
+| V1-12 | fixed | #187 | `37c56ebb` | A finite list has an lcm by repeating the two-integer case, and each prime’s exponent is the maximum. |
+| V1-13 | fixed | #187 | `37c56ebb` | Binet’s closed form waits until a square root of 5 exists. |
+| V1-14 | fixed | #187 | `37c56ebb` | The telescope solution writes \((n+1)(n+2)=n^2+3n+2>n^2\). |
+| V1-15 | fixed | #187 | `37c56ebb` | Heron’s formula is derived from an altitude and the school Pythagorean theorem. |
+| V1-16 | fixed | #187 | `37c56ebb` | The first geometric term matches, and every later term is strictly smaller, including when \(q=1\). |
+| V1-17 | fixed | #187 | `37c56ebb` | The last Simpson mark is \(1.190\times 10^{-13}\), and 256 means 512 panels. |
+| V1-18 | fixed | #187 | `37c56ebb` | The \(x=1/2\) curve starts where it enters the window, and that ink is not the whole area \(\Gamma(1/2)\). |
+| V1-19 | fixed | #187 | `37c56ebb` | Both associations of a product of three complex numbers are expanded. |
+| V1-20 | fixed | #187 | `37c56ebb` | \(P(a)=0\) gives the factor \(X-a\) before the roots of unity are removed. |
+| V1-21 | fixed | #187 | `37c56ebb` | The binomial theorem supplies the powers of \(X-a\), and the word basis is gone. |
+| V1-22 | fixed | #187 | `37c56ebb` | The spectral proof inserts \((Sx)^{\mathsf T}u=x^{\mathsf T}S^{\mathsf T}u=x^{\mathsf T}Su\). |
+| V1-23 | fixed | #187 | `37c56ebb` | For odd \(n\), \(k\) is paired with \(k+n\), which gives \(\varphi(2n)=\varphi(n)\). |
+| V1-24 | fixed | #187 | `37c56ebb` | The equioscillation window runs up to 1.35 and marks height 1. |
+| V1-25 | fixed | #187 | `37c56ebb` | The logarithm and power limits are proved before the \(p\)-series test uses them. |
+| V1-26 | fixed | #187 | `37c56ebb` | A continuous integrand is bounded, so \(H\) is continuous on the closed interval and the mean value theorem applies. |
+| V1-27 | fixed | #187 | `37c56ebb` | The epsilon bound from the difference quotient is written before the sequential characterisation. |
+| V1-28 | fixed | #187 | `37c56ebb` | The text cites \(\sin'(0)=\cos 0=1\), and says the sine-and-tangent proposition does not name the limit. |
+| V1-29 | fixed | #187 | `37c56ebb` | \(\inf S=-\sup(-S)\) is defined before the convergence criteria. |
+| V1-30 | fixed | #187 | `37c56ebb` | The rearrangement the caption calls ochre is drawn in a colour named ochre. |
+| V1-31 | not fixed | #187 | `37c56ebb` | At the read and at the merge, the line is \(1+5+6+1=13\) with no opening bar, so nothing was deleted. |
+| V1-32 | fixed | #187 | `37c56ebb` | The rank is the increasing coordinate, and Mirsky’s pigeonhole is on the \(m\) level sets. |
+| V1-33 | fixed | #187 | `37c56ebb` | Suk’s bound is written without little-o: the ratio to \(2^n\) is eventually smaller than \(2^{\varepsilon n}\). |
+| V1-34 | fixed | #187 | `37c56ebb` | The subset-sum product is the same bookkeeping as the binomial theorem, with \(t^j\) in place of a repeated factor \(t\). |
+| V1-35 | fixed | #187 | `37c56ebb` | The derangement solution says \(\tau\) is injective, hence bijective on a finite set. |
