@@ -6,7 +6,7 @@ Heads reviewed:
 
 - Volume 5 in-volume: `1cc4048a746939e763b4f07ba3f3797976cb606d` (pull request 208)
 - Volume 6 in-volume: `cf892434e31e0f42f1fb58f41ce8afeb29f53415` (pull request 209)
-- Downstream citations: `6a835372f357a54943f6824daab43d281d4a1a56` (pull request 210)
+- Downstream citations: `0ef74ff23d7051326714f6377064f33edbdc924e` (pull request 210), after `main` through the Volume 6 merge `b6713b53`
 
 A number that was changed was recomputed, or counted from the source with examples included in the shared counter. A citation was accepted only when the statement at the new number is the statement the sentence uses.
 
@@ -103,4 +103,4 @@ The mathematical sentences were not rejected. The guards that hash a source file
 - The same integrals chapter is a Volume 3 prerequisite. Its hash in `review/volume3-internal/prerequisite-sources.json`, and the whole-volume fingerprint in `review/volume3-internal/concepts.json`, were moved with it. One hundred and twenty concept statuses are unchanged. The only snapshotted path that differs is that chapter.
 - The Farey cover sentence was regenerated from `common/cover-notes.json`. A hand-typed comma, where the generator writes a full stop, had left `docs/COVER-NOTES.md` stale. The Volume 3 inventory and fingerprint move with that JSON file and with nothing else.
 
-The two fingerprint commits sit on different branches. Each matches that branch against current `main`. Once the cover-note change is on `main`, the downstream fingerprint has to be recomputed on the merged tree before that pull request is merged, because the live `common/cover-notes.json` and the integrals chapter will then both differ from the snapshot taken on either branch alone.
+The two fingerprint commits were each taken against the `main` of that moment. After the cover note landed, the downstream branch was merged with that `main` and the fingerprint was taken again. The only path that moved in that second snapshot is the integrals chapter, from `a7e2b87e` to `d03d42ef`. The snapshot itself moved from `8a728c10` to `7e5aadc6`. The Farey cover-note hash is the one already on `main`.
