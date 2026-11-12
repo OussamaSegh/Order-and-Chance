@@ -128,6 +128,24 @@ def preserve_graphics_alt(text: str) -> str:
     return ''.join(out)
 
 
+def replace_described_figures(text: str, figdir: Path) -> str:
+    """Turn ``\\figalt{name}{sentence}`` into an EPUB description plus the plate.
+
+    A plate that is not inside a ``figure`` caption otherwise reaches Pandoc
+    with the placeholder alt text ``image``.
+    """
+    def described(match: re.Match) -> str:
+        svg = str(Path(figdir).resolve() / (match.group(1) + ".svg"))
+        return ("\\begin{ocimagealt}" + match.group(2) + "\n\n"
+                + "\\includegraphics{" + svg + "}\n\\end{ocimagealt}")
+
+    return re.sub(
+        r"\\figalt\{([^{}]*)\}\{((?:[^{}]|\{[^{}]*\})*)\}",
+        described,
+        text,
+    )
+
+
 def main(src: str, dst: str, figdir: str) -> None:
     text = inline(Path(src))
     # PDF-only problem styling (\renewtcolorbox) is not for pandoc. The exname
@@ -147,7 +165,9 @@ def main(src: str, dst: str, figdir: str) -> None:
         text = text.replace("\\begin{document}", "\\begin{document}\n\\begin{exname}" + name.group(1) + "\\end{exname}", 1)
     # Figures: pandoc embeds this SVG. tools/epub_fix.py then replaces it with a
     # full-width PNG, because Kindle sizes an SVG from its viewBox. The online
-    # reader still uses the SVG.
+    # reader still uses the SVG. \figalt carries a sentence for the plate's
+    # alt text; Pandoc would otherwise write the placeholder "image".
+    text = replace_described_figures(text, Path(figdir))
     text = re.sub(r"\\fig\{([^}]*)\}",
                   lambda m: r"\includegraphics{" + str(Path(figdir).resolve() / (m.group(1) + ".svg")) + "}", text)
     # Portraits (\\portrait{file}{credit}, \\portraits{f1}{c1}{f2}{c2} of volume0's main.tex): the EPUB
@@ -190,6 +210,12 @@ def main(src: str, dst: str, figdir: str) -> None:
 
     text = portraits(text)
     # Small-screen line breaks of the PDF (common/preamble.tex) mean nothing in an EPUB.
+    # PDF index pages are \pageref values. Pandoc has no aux file, so the EPUB
+    # keeps the theorem numbers and drops the page command.
+    text = re.sub(
+        r"\\newcommand\{\\ocindexpage\}\[1\]\{, p\.~\\(?:pageref|csname pageref\\endcsname)\{#1\}\}\n?",
+        "", text)
+    text = re.sub(r"\\ocindexpage\{[^{}]*\}", "", text)
     text = re.sub(r"\\qq(?![a-z])", r"\\qquad ", text)
     text = re.sub(r"\\eqbr(?![a-z])", "", text)
     # The EPUB cover is set by pandoc's --epub-cover-image instead.

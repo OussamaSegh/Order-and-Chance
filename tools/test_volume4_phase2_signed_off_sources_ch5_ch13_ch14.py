@@ -14,9 +14,11 @@ SOURCES = {
     "ch05-continuous.tex": (
         # Reread 2026-11-11 for the generalised-inverse identity and the
         # Box--Muller grid cover (V4-21, V4-03). Labels unchanged.
-        "d69220a56c54b6a5571a02a2609520187322aa3d",
+        # 2026-11-11: pb:passone and pb:stick appended. Earlier claim labels unchanged.
+        # The new statements were checked in this preparation. Not an independent sign-off.
+        "8d9be9fb56db0588a7f7860ea73a046f298362b2",
         "prop:densitymean prop:gausstail prop:fubini prop:polar prop:manyuniforms prop:orderpair prop:inverse thm:dct thm:boxmuller",
-        "ex:counter ex:densityunique ex:tail ex:cauchy ex:gamma ex:order ex:cantor ex:usquare ex:radius",
+        "ex:counter ex:densityunique ex:tail ex:cauchy ex:gamma ex:order ex:cantor ex:usquare ex:radius pb:passone pb:stick",
     ),
     "ch05-geometric.tex": (
         "2bc6858a1cb598473be2f233ae5ed6b05ff0e93e",
@@ -24,9 +26,12 @@ SOURCES = {
         "",
     ),
     "ch12-method.tex": (
-        "7bb8f4a676a46524817beb217d04f18ad6317a21",
+        # Reread 2026-11-11 for the common-face sentence in Euler's formula (V4R2-13). Labels unchanged.
+        # 2026-11-11: pb:hashing appended. Earlier claim labels unchanged.
+        # The new statement was checked in this preparation. Not an independent sign-off.
+        "7c38329942b0f962dbdc97f059a39feaa6856189",
         "thm:erdos thm:alter thm:lll prop:second prop:euler prop:crossing",
-        "ex:carowei ex:tournament ex:sumfree ex:crossing ex:propertyb ex:localcolour",
+        "ex:carowei ex:tournament ex:sumfree ex:crossing ex:propertyb ex:localcolour pb:hashing",
     ),
     "ch14-graphs.tex": (
         "a494b82eee49bc1ed43d43b9b74894ed821706d4",

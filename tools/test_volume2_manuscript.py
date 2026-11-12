@@ -462,7 +462,7 @@ class TestVolume2Manuscript(unittest.TestCase):
             encoding="utf-8"
         )
         exercise = re.search(
-            r"\\begin\{exercise\}\[\$\\star\\star\$\]"
+            r"\\begin\{exercise\}\[\$\\star\\star\\star\$\]"
             r"\\label\{pb:morley\}([\s\S]*?)\\end\{exercise\}",
             congruences,
         )

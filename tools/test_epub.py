@@ -53,6 +53,18 @@ class Tags(HTMLParser):
         self.attributes.append((tag, dict(attrs)))
 
 
+class DescribedFigures(unittest.TestCase):
+    def test_preface_plate_keeps_the_sentence_under_the_figure(self):
+        sentence = (r"Left: the first four values agree, and so does $n=10$. "
+                    r"Right: one way four guests can each receive someone else's hat.")
+        out = epub_prep.replace_described_figures(
+            "\\figalt{preface-two-questions}{" + sentence + "}",
+            Path("/tmp/figures"))
+        self.assertIn("\\begin{ocimagealt}" + sentence, out)
+        self.assertIn("preface-two-questions.svg", out)
+        self.assertNotIn("figalt", out)
+
+
 @unittest.skipUnless(shutil.which("pandoc"), "Pandoc is required")
 class EpubRegression(unittest.TestCase):
     def convert(self, target, *arguments, cwd=None):
@@ -431,6 +443,21 @@ Text.
             again = book.read_bytes()
             epub_fix.main(str(book), render_math=False)
             self.assertEqual(book.read_bytes(), again)
+
+
+class IndexPagePrep(unittest.TestCase):
+    def test_index_page_commands_are_removed_before_pandoc(self):
+        with tempfile.TemporaryDirectory() as directory:
+            source = Path(directory) / "main.tex"
+            destination = Path(directory) / "epub.tex"
+            source.write_text(
+                "\\newcommand{\\ocindexpage}[1]{, p.~\\csname pageref\\endcsname{#1}}\n"
+                "Theorem~1.7\\ocindexpage{thm:ballot}.\n")
+            epub_prep.main(str(source), str(destination), directory)
+            text = destination.read_text()
+            self.assertIn("Theorem~1.7", text)
+            self.assertNotIn("ocindexpage", text)
+            self.assertNotIn("pageref", text)
 
 
 if __name__ == "__main__":
