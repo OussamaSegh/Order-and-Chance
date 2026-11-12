@@ -302,7 +302,7 @@ def check_local_indicator_prerequisites():
 def check_local_walk_analysis():
     source = SOURCE.read_text()
     solution = source.split(r'\begin{solution}{ex:circulant}', 1)[1].split(r'\end{solution}', 1)[0]
-    for required in ('already in Volume~1', 'difference quotient of the tail',
+    for required in ('standing facts', 'difference quotient of the tail',
                      'independently of', 'inverse-function rule', r'\sec^4x',
                      'Four successive applications of Rolle'):
         assert required in solution, required
