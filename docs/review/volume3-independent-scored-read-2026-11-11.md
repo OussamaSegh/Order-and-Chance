@@ -247,3 +247,60 @@ The Sylow lemma’s unwritten case \(a=0\) (V3-8) is too small to call a miss; t
 ### What they mark as settled that is not
 
 Nothing in the list of explicit mathematical corrections above is still broken. The claim that does not hold is the internal review’s closure of “reference uses” if that phrase is read as the series’ citations of this volume. Those citations still resolve to the wrong statement in the four places logged as V3-1 through V3-4. The rewrite file itself did not claim that audit was done. The assigned final review’s sentence that merge required “no unresolved identified mathematical/editorial finding” is about findings that review had already identified. It did not identify these.
+
+## Final status
+
+The comparison above describes the manuscript before the repairs. Those repairs are [Volume 3: apply independent scored read](https://github.com/OussamaSegh/Order-and-Chance/pull/199), squash-merged as `01eb48138fafc0261581c9afb3a2626a07415544`. The second review is [pull request #200](https://github.com/OussamaSegh/Order-and-Chance/pull/200), squash-merged as `84969291b18271e583d9566fcd4515576d525511`. It approves head `350fbb3e9a810434898c5598bf91f89a2803ecc1`, which is the head that #199 merged. The build of that head recorded a print interior of 523 pages.
+
+Of the 48 issues, 48 are fixed, 0 are partial, and 0 are not fixed.
+
+| ID | Status | PR | Merge | Note |
+|---|---|---|---|---|
+| V3-1 | fixed | #199 | `01eb4813` | Later volumes cite Exercise 10.1 for the cyclotomic isomorphism and the degree. Proposition 10.9 is the injection, and the isomorphism only when the conductor is prime. |
+| V3-2 | fixed | #199 | `01eb4813` | The polynomial UFD is Theorem 6.18. The divisibility descent is Proposition 6.17. |
+| V3-3 | fixed | #199 | `01eb4813` | Cauchy–Davenport is Theorem C.12 in Volume 14 and in the three-cubes sentence of Volume 15. |
+| V3-4 | fixed | #199 | `01eb4813` | Lemma 12.3 is the axis-angle statement. The spectral theorem and the squared volume are Volume 1, Theorems 7.9 and 7.10. The primitive element theorem is Theorem 8.20. Volume 9 no longer sends the matrix exponential to Chapter 3. |
+| V3-5 | fixed | #199 | `01eb4813` | The index names the statements, the notation, and three exercises, and the running head is Index. |
+| V3-6 | fixed | #199 | `01eb4813` | The cube-diameter paper is gone from Chapter 1 and remains in Chapter 4. |
+| V3-7 | fixed | #199 | `01eb4813` | Appendix D has a sources list. |
+| V3-8 | fixed | #199 | `01eb4813` | The case \(a=0\) is \(inom{m}{1}=m\). |
+| V3-9 | fixed | #199 | `01eb4813` | The row-sum converse cites Frobenius. |
+| V3-10 | fixed | #199 | `01eb4813` | Strict positivity of a nonnegative eigenvector cites Frobenius. |
+| V3-11 | fixed | #199 | `01eb4813` | Every group of order 4 is abelian, and that applies to every Sylow subgroup through the half-turn. |
+| V3-12 | fixed | #199 | `01eb4813` | A pure unit perpendicular to the axis reverses the angle. |
+| V3-13 | fixed | #199 | `01eb4813` | The six extra involutions are half-turns inside \(SO(3)\). |
+| V3-14 | fixed | #199 | `01eb4813` | \(1=1^2+0^2+0^2+0^2\) is written before the product. |
+| V3-15 | fixed | #199 | `01eb4813` | The three coordinates of the cross product are written. |
+| V3-16 | fixed | #199 | `01eb4813` | The supplementary law is Volume 2, Corollary 6.4. |
+| V3-17 | fixed | #199 | `01eb4813` | The identity in Theorem 11.14 is \(e\). |
+| V3-18 | fixed | #199 | `01eb4813` | \(\sin'=\cos\) and \(\cos'=-\sin\) are the standing facts in the preface of Volume 1. |
+| V3-19 | fixed | #199 | `01eb4813` | The Sylow template is written, and the four subgroups are conjugate, so the action is nontrivial. |
+| V3-20 | fixed | #199 | `01eb4813` | The two cases of \(n_2\) are split, the products are displayed, and a nontrivial homomorphism from a simple group is injective. |
+| V3-21 | fixed | #199 | `01eb4813` | Dummit and Foote are cited at Sections 4.3 and 4.6. |
+| V3-22 | fixed | #199 | `01eb4813` | The exercises on \(p^2\) and order 8 are named in Chapters 3 and 2. |
+| V3-23 | fixed | #199 | `01eb4813` | The order-6 box reads \(D_3\cong\mathfrak S_3\). |
+| V3-24 | fixed | #199 | `01eb4813` | A move into the blank is the position \((b\,c)\sigma\). |
+| V3-25 | fixed | #199 | `01eb4813` | An \(F\)-turn alternates the primary facet in both orientations. |
+| V3-26 | fixed | #199 | `01eb4813` | The Rubik solution uses \(arepsilon\). |
+| V3-27 | fixed | #199 | `01eb4813` | The unnumbered exchange lemma covers every field, and the dimension over \(R/(p)\) is named after the vector-space laws. |
+| V3-28 | fixed | #199 | `01eb4813` | A constructed regular polygon produces \(e^{\pm 2i\pi/n}\). |
+| V3-29 | fixed | #199 | `01eb4813` | \(2X^2-3\) has no rational root in lowest terms. |
+| V3-30 | fixed | #199 | `01eb4813` | If \(\sqrt\pi\) were algebraic then so would \(\pi\). |
+| V3-31 | fixed | #199 | `01eb4813` | Agreement on the two generators is the injection into \(\mathfrak S_3\). |
+| V3-32 | fixed | #199 | `01eb4813` | The two voice sentences are the ones the log asked for. |
+| V3-33 | fixed | #199 | `01eb4813` | A common divisor of \(X^n-1\) and \(nX^{n-1}\) divides the constant \(n\). |
+| V3-34 | fixed | #199 | `01eb4813` | The state at time 1 modulo 11 is \((1,1)\). |
+| V3-35 | fixed | #199 | `01eb4813` | The sum of squares and the division by 27 are written. |
+| V3-36 | fixed | #199 | `01eb4813` | Only the leading term of \(P\) meets the constant term of \(Q\). |
+| V3-37 | fixed | #199 | `01eb4813` | A Euclidean isometry is defined by distances, before the polarization identity. |
+| V3-38 | fixed | #199 | `01eb4813` | Left cancellation expands \((a^{-1}a)b=b\). |
+| V3-39 | fixed | #199 | `01eb4813` | \(sr^k=r^{-k}s\) is proved and then multiplied. |
+| V3-40 | fixed | #199 | `01eb4813` | An element that commutes with both generators commutes with every word. |
+| V3-41 | fixed | #199 | `01eb4813` | The exercise names \(F_0=0\), \(F_1=1\), and the recurrence. |
+| V3-42 | fixed | #199 | `01eb4813` | The fresh block of increments is separated from the symmetry. |
+| V3-43 | fixed | #199 | `01eb4813` | \(HN=\{hn:h\in H,\,n\in N\}\). |
+| V3-44 | fixed | #199 | `01eb4813` | Conjugation sends a word in the commutators to the word in the conjugates. |
+| V3-45 | fixed | #199 | `01eb4813` | The additive rule is \(k+(-1)^arepsilon k'\). |
+| V3-46 | fixed | #199 | `01eb4813` | The class equation uses \(C_G(x)\). |
+| V3-47 | fixed | #199 | `01eb4813` | A centre of order \(p\) would make a group of order \(p^2\) abelian. |
+| V3-48 | fixed | #199 | `01eb4813` | Independence of the quotient basis uses the extended basis. |
