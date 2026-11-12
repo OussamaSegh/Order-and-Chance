@@ -35,8 +35,8 @@ Gate B (independent verification) is not this pass.
 | 9 | Erdős–Kac | `ch09-erdoskac.tex` | **Done** |
 | 10 | Random models of the primes | `ch10-random.tex` | **Done** |
 | 11 | Exponential and character sums | `ch11-sums.tex` | **Done** |
-| 12 | Modular forms, closing problems | `ch12-modular.tex` | In progress |
-| — | Preface, blurb, final checks | `preface.tex`, `blurb.tex` | Not started |
+| 12 | Modular forms, closing problems | `ch12-modular.tex` | **Done** |
+| — | Preface, blurb, final checks | `preface.tex`, `blurb.tex`, `kdp.md` | **Done** (pull request open, awaiting review) |
 
 ## Done so far
 
@@ -64,6 +64,12 @@ Gate B (independent verification) is not this pass.
 
 **Chapter 11.** Vinogradov's non-residue theorem lost its year in the heading (the paper is 1927). The higher-degree remark and the remark on n(p) are quoted. In `pb:erdosnp` the mean is over the odd primes (the printed values are that mean), and two Chebyshev steps in the solution were wrong as written (y ≤ log M, θ(y) ≤ 1.01y) and are now correct. Self-citation replaced. Check: `check_ch11_sums.py` (n(p) for every prime below 10⁸, g(p) below 10⁶).
 
+**Chapter 12.** `thm:fundamental` (12.2) now has both halves (decision D-20): every orbit meets F, and two distinct equivalent points of F lie on its boundary and are related by T, T⁻¹ or S. Volumes 9 and 13 should cite Volume 6, Theorem 12.2 for this. `thm:eta` cites Volume 5, Theorem 12.4, and keeps Siegel's contour proof as the "second proof". One sentence explains q at its first appearance. Hecke's functional equation, Deligne, Sato–Tate and modularity are quoted as a preview of Volume 13. The unsourced Eichler epigraph was replaced by Hardy's (1940). Closing problems: P_n and d_n are now defined in `pb:logtwo` (they were used undefined); the orphan inequality `eq:bt13` moved into `pb:pminusone` and is derived from Exercise `ex:btap`; one interchange in `pb:beukersthree` is labelled as admitted Tonelli. Wrong citations fixed: Chinese remainders are Volume 2, Chapter 3 (not Volume 3, Chapter 2); Stirling is Volume 5, Theorem 5.8 (the tools line cited `thm:pntap`); dominated convergence is Volume 5, Corollary 4.5. Numbers corrected after recomputation: log 4 · n/log n = 449,368; Menon averages 7.982 and 11.978; the range of (π − li)/(√x/log x) on [10³, 10⁸] is −2.74 to −0.53 and that of (Π − li)/(√x/log x) is −0.89 to 0.71 (the old values were taken only just after the jumps); gap 1.77 between the 9th and 10th zeros; deficit 0.142; histogram bars from 0.990. Every closing problem names its tools. Sources for the closing problems added. Check: `check_ch12_modular.py` (about a minute; needs python-flint and scipy).
+
+**Preface, blurb, KDP text.** The preface said Volume 6 closes the first part of the series; it is the last volume of Part II. It claimed Fubini–Tonelli uses were labelled, but none was; it now lists the two admitted facts (the functional equation of L(s, χ) in one remark of Chapter 7, Tonelli in one solution of Chapter 12). The last paragraph states the series question in the form this volume can touch. Blurb and `kdp.md`: "every theorem", not "every result", is proved (several results are quoted); two of Ramanujan's three observations become theorems.
+
+**Final checks (2026-11-12).** Numbering matches `baseline-numbering.txt` except the one new exercise 11.9 (`pb:leastprimroot`). Build: 291 pages, no undefined reference; `tools/check_book_layout.py` and `tools/check_edition_copy.py` pass. All twelve chapter checks pass.
+
 ## Rules kept from Volume 5
 
 - **Numbering inside a chapter is preserved.** Other volumes cite Volume 6 by hand-typed numbers. New exercises go at the END of the exercise list, their hints and solutions at the end of those sections.
@@ -72,8 +78,9 @@ Gate B (independent verification) is not this pass.
 ## For the threads of other volumes
 
 - **Volume 5.** Volume 6 uses Γ′(1) = −γ from Volume 5, Exercise 5.7, which is only an exercise there.
+- **Volumes 9 and 13.** The fundamental domain, both halves, is Volume 6, Theorem 12.2 (D-20).
 - **Any volume citing Volume 6, Exercise 3.8** for the least primitive root: the bound is now the last exercise of Chapter 11 (`pb:leastprimroot`). No such citation was found in the repository on 2026-11-11.
 
 ## Not re-fetched
 
-Bibliographic details added in this pass (journal, volume, pages) were written from memory in a container without the papers at hand: Chapter 2 (Weber 1893, Walfisz 1963, Voronoï 1903, Hardy 1916, Cramér 1922, Sierpiński 1906, Schoenberg 1928, Erdős 1939, Franel and Landau 1924, Kalmár 1931, Hille 1936, Chor–Lemke–Mador 2000), Chapter 5 (Erdős–Turán 1941, Ruzsa 1993, Lindström 1969, Balogh–Füredi–Roy 2023, Estermann 1931, Granville 1998, Brandt–Damgård 1993). Chapters 10 and 11 added more in the same way (Zagier 1977, Westzynthius 1931, Baker–Harman–Pintz 2001, Selberg 1943, Hawkins 1958, Wunderlich 1974, Neudecker–Williams 1974, Heyde 1976, Lemke Oliver–Soundararajan 2016, Kolmogorov 1929, Littlewood 1914, Cramér 1920; Poincaré 1908, Bohl 1909, Sierpiński 1910, Weyl 1910, Pólya 1918, Vinogradov 1918, 1927, 1937, Ankeny 1952, Graham–Ringrose 1990, Miller 1976, Wooley 2016, Erdős 1961, Martin–Pollack 2013, Shoup 1992). An independent reviewer should check them against the papers.
+Bibliographic details added in this pass (journal, volume, pages) were written from memory in a container without the papers at hand: Chapter 2 (Weber 1893, Walfisz 1963, Voronoï 1903, Hardy 1916, Cramér 1922, Sierpiński 1906, Schoenberg 1928, Erdős 1939, Franel and Landau 1924, Kalmár 1931, Hille 1936, Chor–Lemke–Mador 2000), Chapter 5 (Erdős–Turán 1941, Ruzsa 1993, Lindström 1969, Balogh–Füredi–Roy 2023, Estermann 1931, Granville 1998, Brandt–Damgård 1993). Chapters 10 and 11 added more in the same way (Zagier 1977, Westzynthius 1931, Baker–Harman–Pintz 2001, Selberg 1943, Hawkins 1958, Wunderlich 1974, Neudecker–Williams 1974, Heyde 1976, Lemke Oliver–Soundararajan 2016, Kolmogorov 1929, Littlewood 1914, Cramér 1920; Poincaré 1908, Bohl 1909, Sierpiński 1910, Weyl 1910, Pólya 1918, Vinogradov 1918, 1927, 1937, Ankeny 1952, Graham–Ringrose 1990, Miller 1976, Wooley 2016, Erdős 1961, Martin–Pollack 2013, Shoup 1992; and for Chapter 12, Hardy 1940, Dedekind 1877, Lehmer 1947, Wiles 1995 and the whole list "For the closing problems"). An independent reviewer should check them against the papers.
