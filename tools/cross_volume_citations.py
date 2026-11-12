@@ -178,7 +178,7 @@ def number_volume(volume: int) -> BookNumbers:
         for match in re.finditer(
             r"\\begin\{document\}|\\end\{document\}|\\frontmatter|\\mainmatter|"
             r"\\backmatter|\\appendix|\\setcounter\{chapter\}\{-?\d+\}|"
-            r"\\chapter\*?|\\begin\{(?:" + "|".join(NUMBERED_ENVS) + r")\}(?:\[[^\]]*\])?|"
+            r"\\chapter(?![A-Za-z])\*?|\\begin\{(?:" + "|".join(NUMBERED_ENVS) + r")\}(?:\[[^\]]*\])?|"
             r"\\(?:input|include)\{[^}]+\}",
             text,
         ):

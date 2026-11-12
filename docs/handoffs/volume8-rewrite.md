@@ -50,7 +50,7 @@ Gate B of the master plan (independent verification) is not this pass.
 
 Numbering inside each chapter is preserved (new statements and exercises go at the end of a list), so a citation "Volume 8, Theorem 17.6" becomes "Volume 8, Theorem 9.6": only the chapter number moves. `review/volume8-rewrite/baseline-numbering.txt` is the printed order before the rewrite.
 
-**Moved to Volume 12 (D-16).** "Random Matrices I: The Semicircle" and "Random Matrices II: Unitary Matrices and the Zeros of Zeta" are now `volume12-random-motion/chapters/ch09-semicircle.tex` and `ch10-cue.tex`, with the figure `moments-ch05-semicircle.tex`. They ARE wired into Volume 12's `main.tex`, after the networks chapter, so they stay in print: Volume 12, Chapters 10 and 11. The third part of Volume 12 is "Networks and Random Matrices" in `main.tex` and in `common/series-catalog.json`. **Owed by the Volume 12 rewrite:** the blueprint's final order (networks 8, semicircle 9, unitary 10, log-correlated 11). It was not applied here because moving the log-correlated chapter renumbers Volume 12's Chapters 8 and 9, which Volume 15 cites by number; that is Volume 12's own pass.
+**Moved to Volume 12 (D-16).** "Random Matrices I: The Semicircle" and "Random Matrices II: Unitary Matrices and the Zeros of Zeta" are now `volume12-random-motion/chapters/ch09-semicircle.tex` and `ch10-cue.tex`, with the figure `moments-ch05-semicircle.tex`. They are wired into Volume 12's `main.tex` in the blueprint's final order: networks 8, semicircle 9, unitary matrices 10, log-correlated fields 11 (moved from Part II to the end of Part III), all in the part "Networks and Random Matrices". The figures `ch10-laws.tex` and `ch11-zeta.tex` moved with them. Every citation of those chapters and of the log-correlated chapter in Volumes 8, 14 and 15 was renumbered (for example Keating–Snaith is Volume 12, Theorem 10.10; `prop:cuelogcorr` is Proposition 11.3). Volume 12's preface, blurb and `docs/SERIES-STRUCTURE.md` say so. **Still owed by the Volume 12 rewrite:** the file names (`ch09-semicircle.tex`, `ch10-cue.tex` against the blueprint's `ch10-`, `ch11-`), and a full pass of the two chapters' citations of Volumes 4, 9 and 11 (only the Volume 8 ones and the internal numbers were fixed here).
 
 ## Chapter progress
 
@@ -66,15 +66,15 @@ Numbering inside each chapter is preserved (new statements and exercises go at t
 | 7 | Expanders and Ramanujan Graphs | Done |
 | 8 | Operators, Spectra and Banach Algebras | Done |
 | 9 | The Spectral Theorem for Compact Operators | Done |
-| 10 | The Fourier Transform | Not started |
-| 11 | Distributions and Sobolev Spaces | Not started |
-| 12 | Fourier Analysis on Finite Abelian Groups | Not started |
-| 13 | Haar Measure, Duality and the $p$-adic Numbers | Not started |
-| 14 | Cauchy's Theorem, Growth and Mellin Inversion | Not started |
-| 15 | Tauberian Theorems | Not started |
-| 16 | The Values of Zeta (problems) | Not started |
-| A–F | Appendices | Not started |
-| — | Preface, blurb, `kdp.md`, citations of Volume 8 in other volumes | Not started |
+| 10 | The Fourier Transform | Done |
+| 11 | Distributions and Sobolev Spaces | Done |
+| 12 | Fourier Analysis on Finite Abelian Groups | Done |
+| 13 | Haar Measure, Duality and the $p$-adic Numbers | Done |
+| 14 | Cauchy's Theorem, Growth and Mellin Inversion | Done |
+| 15 | Tauberian Theorems | Done |
+| 16 | The Values of Zeta (problems) | Done |
+| A–F | Appendices | Done |
+| — | Preface, blurb, `kdp.md`, citations of Volume 8 in other volumes | Done |
 
 ## What changed, chapter by chapter
 
@@ -87,6 +87,16 @@ Numbering inside each chapter is preserved (new statements and exercises go at t
 - **7.** R1: the reminder no longer imports Kesten's theorem from Volume 12 (the chapter proves its own Kesten 1959 statement, and the text compares it with Volume 12's `thm:kesten`, blueprint item 7); the Catalan moments of the semicircle are now proved in the solution instead of cited from the moved chapter. LPS girth corrected (about (4/3) log_p N in the bipartite case). Hoeffding cited as Volume 4, Theorem 4.2. Closing section. **Note for Volume 12:** the text says Volume 12, Chapter 9 (networks, `thm:kesten`) and Chapter 10 (semicircle), the current printed order; if the Volume 12 rewrite applies the blueprint order (networks 8, semicircle 9), these two numbers in `ch09-expanders.tex` must move with it.
 - **8.** All hand-typed internal numbers became `\ref`. Liouville and Laurent cited as Volume 5, Theorems 9.16 and 9.22; Fubini for series as Volume 7, Theorem 9.6. Wiener–Lévy marked as not developed. Opening question, closing section.
 - **9.** All hand-typed internal numbers became `\ref` (they were in the ten-chapter order: 3.x = Chapter 8, 1.x, 2.x). The full spectral theorem stays a remark, and the closing section says it was not proved (blueprint). Opening question, closing section.
+
+- **10–11.** Hand-typed numbers became `\ref`; Volume 5 and Volume 7 citations moved to their rewritten numbers. Closing sections.
+- **12.** Volume 5 citations fixed (Chapter 7, Theorems 7.9, 8.9, 8.16). Pontryagin duality is stated in Chapter 13 and proved there for $\mathbb Q_p$. Chebotarev is proved in Volume 13 in its Dirichlet density form. Closing section.
+- **13.** $\mathbb Q_p$ now comes from Volume 7 (Theorem 2.10, Corollary 2.11). Uniqueness of measures is Volume 7, Theorem 7.5. Exercise `ex:squareszp` moved to Volume 13, `ch12-padic.tex`, where it cites Proposition 13.12 and `cor:squares`. Closing section.
+- **14.** A sentence on the division of labour with Volume 5, Chapter 9 (blueprint), and the matching sentence in Volume 5. Volume 7 winding number and Jordan curve citations made exact. Error fixed in the Phragmén–Lindelöf exercise ($\exp(e^{t_0})$, not $e^e$). Closing section.
+- **15.** Label `sec:wienerlemma` added in Chapter 8. Tauber was 75 when deported, not 76. The Littlewood remark rewritten with Wielandt (1952) as source. The corollary is "the prime number theorem, second proof", importing Volume 6, Theorem 5.2. Closing section.
+- **16.** Retitled "The Values of Zeta". The limiting distribution is proved in Volume 15, Chapter 11; no problem uses it. False claims about a Beurling–Selberg chapter removed. The Bergman problem (d) is now proved with Volume 5 (identity theorem, Rouché) instead of a Volume 9 lemma (R1). New closing section "Where this leads".
+- **Appendices.** Each opens with one line saying what it assumes and who uses it. Appendix F's Lyapunov uniqueness used Sylvester's equation from Volume 10 (R1): now proved in two lines from the stability theorem. Self-references "Volume 8" became `\ref`. Dependency check: no main chapter uses an appendix whose proof uses a later main chapter (Appendix D only mentions Cauchy interlacing of Chapter 3 in a remark).
+- **Other volumes.** Every "Volume 8, ..." citation in Volumes 5, 9–15 was moved from the twenty-four-chapter order to the new one (for example Theorem 21.11 → 13.11, Theorem 3.8 → A.8, Theorem 14.5 → E.5); random-matrix citations now point to Volume 12. `tools/cross_volume_citations.py` reports no mismatch involving Volume 8 or Volume 12.
+- **Preface, blurb, `kdp.md`.** No longer claim the semicircle, the sine kernel, the unbounded spectral theorem, the Jordan curve theorem or the Riemann mapping theorem; they name the appendices and the problem chapter.
 
 ## Tools
 

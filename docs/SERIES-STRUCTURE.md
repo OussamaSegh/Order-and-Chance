@@ -68,8 +68,8 @@ A few part names were adjusted so the part matches the chapters that actually si
 | 7 | Measure and Integration | Measures through L^p |
 | 7 | Measures on Spaces | Radon measures, metric measure spaces, harder problems |
 | 8 Analysis | Banach and Hilbert Spaces | Banach spaces, Hilbert spaces |
-| 8 | Spectral Theory | Operators, the spectral theorem |
-| 8 | Fourier and Tauberian Methods | Fourier through Tauberian theorems and the harder problems. Haar measure and complex analysis sit in this part. |
+| 8 | Spectral Theory | The spectral theorem for matrices, singular values, graph spectra and expanders, then operators and the spectral theorem for compact operators |
+| 8 | Fourier and Tauberian Methods | Fourier through Tauberian theorems and the problems on the values of zeta. Haar measure and complex analysis sit in this part. Six linear-algebra appendices follow. |
 | 9 Shapes | Manifolds and Surfaces | Manifolds, flows. The requested name was “Curves and Surfaces”; the book opens with manifolds. |
 | 9 | Forms and Homology | Forms, curvature, coverings, homology |
 | 9 | Groups and Geometry | Lie groups through the hyperbolic plane, the Riemann mapping theorem and integral geometry, then the geometry appendices. Ceva and the Euler line are exercises on transformations. The curvature appendix is the curvature of curves and polyhedra. |
@@ -80,8 +80,8 @@ A few part names were adjusted so the part matches the chapters that actually si
 | 11 | Stable Laws | Stable laws, Stein’s method, large deviations, concentration. The requested phrase “Stable Laws and Ergodic Theory” is split because the martingale chapter lies between them. |
 | 11 | Martingales and Ergodic Theory | Martingales through sums of random pieces, then the transposition cutoff. |
 | 12 Random Motion | Brownian Motion | The Gaussian measure, paths |
-| 12 | Stochastic Calculus | Martingales through Lévy processes, then the branching random walk and the largest values of a characteristic polynomial. |
-| 12 | Networks | Walks on graphs, resistance, and the matrix-tree theorem, then the Laplacian appendix. Expanders, the semicircle and the sine kernel are in Volume 8. |
+| 12 | Stochastic Calculus | Martingales through Lévy processes. |
+| 12 | Networks and Random Matrices | Walks on graphs, resistance, and the matrix-tree theorem; the semicircle and the sine kernel (moved from Volume 8); then the branching random walk and the largest values of a characteristic polynomial, and the Laplacian appendix. Expanders are in Volume 8. |
 | 13 Arithmetic | Number Fields | Number fields through cyclotomic fields |
 | 13 | Local and Global | Local fields, the Hasse principle, zeta functions of number fields |
 | 13 | Adeles and Tate's Thesis | Tate’s thesis and class field theory |
