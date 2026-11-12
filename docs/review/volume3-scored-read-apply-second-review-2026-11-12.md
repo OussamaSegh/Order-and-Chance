@@ -1,5 +1,7 @@
 # Second review of PR #199
 
+**Current verdict: APPROVE** at `350fbb3e9a810434898c5598bf91f89a2803ecc1`. The first pass below requested changes at `299895f8`. The recheck is at the end of this file.
+
 **Verdict: REQUEST CHANGES**
 
 **Head reviewed:** `299895f839487dd0c6e9392a292c6e9c5c08e1c8` on `cursor/volume3-apply-scored-read-c1a4`.
@@ -178,3 +180,34 @@ The exponential of \(L(u)\) in Volume 9 is one sentence from the eigenvalues \(0
 Paley's 1932 item is printed as one article on pages 241–279. The London Mathematical Society issued it as (I) 241–264 and (II) 265–279. The range is the union, and part II is the Walsh–Kaczmarz half the annotation describes.
 
 The Cohen–Lenstra reminder cites Theorem 7.6 for the partition form of a finite abelian \(p\)-group. Theorem 7.6 states invariant factors. For a \(p\)-group those factors are the prime powers in the partition, and Corollary 7.7 writes the prime-power form. I do not require a renumbering.
+
+## Recheck at `350fbb3e`
+
+**Verdict: APPROVE**
+
+**Head:** `350fbb3e9a810434898c5598bf91f89a2803ecc1` on `cursor/volume3-apply-scored-read-c1a4`. One commit after `299895f8`: "Address the second review of the Volume 3 repairs."
+
+This recheck did not push to that branch and did not merge it. The diff from `299895f8` was read in the same worktree.
+
+### What was run on `350fbb3e`
+
+- `./build.sh --pdf-only volume3-symmetry` exited 0. `build/volume3-symmetry/main.log` has no `Overfull` and no `undefined` (39 underfull lines). Layout: 408 whole boxes, maximum 432.6 pt, no overflow and no unresolved references.
+- `pdfinfo` was not re-run as a separate command. PyMuPDF on `build/volume3-symmetry/main.pdf` reports 523 pages. PyMuPDF on `dist/kdp/Volume 3 - Symmetry - Print.pdf` reports 523 pages, every page 513 × 738 pt, empty title, encrypted no. The build log says `KDP interior checked: 523 pages, PDF 1.3`.
+- The index still has 96 `\ocindexpage` entries. Every label is in `main.aux`, and each printed number agrees with the aux. None of the target folios is missing from the PDF. Folio 509 opens "Each name points at the statement, exercise, or definition it names." Folio 511 is headed INDEX. Folio 513 is About the Cover.
+- The walker still returns the same 375 numbered statements as `main` at `1ac3cb11`, in the same order.
+- `python3 review/volume3-internal/registers.py` printed `{"accepted-internal": 1177, "pending": 19}` and exited 0.
+- From `tools/`, `python3 -m unittest test_cross_volume_citations.CrossVolumeCitations.test_resolved_volumes_have_no_mismatch test_cross_volume_citations.CrossVolumeCitations.test_volume3_pointers_name_the_stated_fact -v` ran 2 tests and exited 0.
+
+### The seven fixes
+
+| ID | Ruling |
+|---|---|
+| F-1 | Fixed. `ch11-characters.tex` now says Volume 1's preface takes \(\sin'=\cos\) and \(\cos'=-\sin\) as standing facts, once the word derivative has been defined, and that the comparison of sine and tangent then gives \(\sin h<h<\tan h\). That is the order in Volume 1. |
+| F-2 | Fixed. The opener is "Each name points at the statement, exercise, or definition it names." The exercises block is headed "Exercises." The production sentences are gone. The page numbers are still printed by `\ocindexpage`. |
+| F-3 | Fixed. `\markboth{Index}{Index}` follows `\chapter*{Index}`. Interior folio 511 is headed INDEX. |
+| F-4 | Fixed. The scalar multiplication is defined first. The next sentence says the exchange lemma makes that dimension well-defined over \(R/(p)\). |
+| F-5 | Fixed. The linear-fields solution no longer cites Volume 3, Chapter 3. The derivative check \(\frac{d}{dt}e^{tA}x=Ae^{tA}x\) and \(e^{0}x=x\) remains in the sentence. |
+| F-6 | Fixed. The reflection row's claim is the induction that is on the page, including \((sr^k)^2=s^2=e\). The `main.tex` row's claim includes `\input{chapters/index}`. Both rows stay `accepted-internal`, and the hashes still match. |
+| F-7 | Fixed. The text says the four Sylow subgroups are conjugate, so the action is nontrivial, and the kernel is proper. That is Sylow II, already proved. |
+
+No theorem, proposition, lemma, corollary, or exercise number moves. The other Volume 3 repairs read at `299895f8` are the same sentences.
