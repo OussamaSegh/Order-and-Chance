@@ -13,22 +13,28 @@ ROOT = Path(__file__).resolve().parents[1] / "volume4-chance" / "chapters"
 PINS = {
     "ch02-discrete.tex": {
         # Reread 2026-11-11 for the finite-additivity derivation (V4R2-02). Labels unchanged.
-        "sha": "d6ddee17ed770fd8b017467160d7b36e8f3dc320",
+        # 2026-11-11: pb:goodman and pb:samecycle appended. Earlier claim labels unchanged.
+        # The new statements were checked in this preparation. Not an independent sign-off.
+        # 2026-11-11: Goodman part (b) denominator corrected from 6 to 8. Not an independent sign-off.
+        "sha": "e37bf3057f41100109c0a323e4c75c585c56368f",
         "claims": "thm:poissonlimit prop:fixedpoisson prop:cycles thm:coupon lem:geovar prop:couponvar prop:empty".split(),
-        "exercises": "ex:records ex:fixedvar ex:quicksort ex:factorial ex:reservoir ex:prisoners ex:birthdaywait ex:twopoisson".split(),
+        "exercises": "ex:records ex:fixedvar ex:quicksort ex:factorial ex:reservoir ex:prisoners ex:birthdaywait ex:twopoisson pb:goodman pb:samecycle".split(),
     },
     "ch07-entropy.tex": {
         # Writer repair 2026-11-11: the deepest sibling is named a leaf (V4R2-17). Labels unchanged. Not an independent sign-off.
-        "sha": "6eb06ea39e6563595171939ffe6237a7e3af19d3",
+        # 2026-11-11: ex:mcmillan appended. Earlier claim labels unchanged.
+        "sha": "d079cee4d70bf027c17ef23d77a863512c847abf",
         "claims": "prop:gibbs thm:aep thm:kraft thm:shannon prop:chain thm:kl thm:mutual thm:huffman".split(),
-        "exercises": "ex:entropymax ex:prefixoptimal ex:entropychain ex:entropyproduct ex:ambiguouscode ex:typicalcount".split(),
+        "exercises": "ex:entropymax ex:prefixoptimal ex:entropychain ex:entropyproduct ex:ambiguouscode ex:typicalcount ex:mcmillan".split(),
     },
     "extremal.tex": {
         # Reread 2026-11-11: the appendix states that it is lettered B (V4-17).
         # Reread 2026-11-11 for the van der Waerden wording and the k=1 family (V4R2-11, V4R2-12). Labels unchanged.
-        "sha": "c94c620e322651d42f385b34bdb0ad86558ecfe2",
+        # 2026-11-11: ex:wlower appended. Earlier claim labels unchanged.
+        # The new statement was checked in this preparation. Not an independent sign-off.
+        "sha": "e7823562c81462cd47a16f9f05de7ea262f24554",
         "claims": "thm:turan thm:ramsey thm:schur thm:sunflower thm:ekr thm:vdw3 thm:vdw".split(),
-        "exercises": "ex:r33 ex:turanedges ex:ekrsharp ex:schurtwo ex:ekrcomplement".split(),
+        "exercises": "ex:r33 ex:turanedges ex:ekrsharp ex:schurtwo ex:ekrcomplement ex:wlower".split(),
     },
 }
 PROOFS = re.compile(r"\\begin\{(?:theorem|lemma|proposition)\}(?:\[[^\]]+\])?\s*\\label\{([^}]+)\}")

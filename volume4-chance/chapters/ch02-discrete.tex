@@ -368,6 +368,27 @@ Balls are thrown independently and uniformly into $N$ boxes until the first time
 Let $X$ and $Y$ be independent, Poisson$(\lambda)$ and Poisson$(\mu)$. Show, from the limit theorem or from the series, that $X+Y$ is Poisson$(\lambda+\mu)$.
 \end{exercise}
 
+
+\begin{exercise}[$\star\star$]\label{pb:goodman}
+Goodman's count. Colour the edges of the complete graph $K_n$ red and blue.
+\begin{enumerate}[label=(\alph*)]
+\item At each vertex, let $d$ be the number of red edges and let the remaining $n-1-d$ edges be blue. Show that the number of monochromatic triangles is at least
+\[
+ \binom n3-\frac n2\Bigl\lfloor\frac{(n-1)^2}4\Bigr\rfloor.
+\]
+Check that the bound equals $2$ when $n=6$.
+\item Show that the bound is $\frac14\binom n3+O(n^2)$, and that a uniform random colouring has exactly $\frac14\binom n3$ monochromatic triangles on average.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{pb:samecycle}
+Let $\sigma$ be a uniform random permutation of $\{1,\ldots,n\}$.
+\begin{enumerate}[label=(\alph*)]
+\item Show that the length of the cycle containing $1$ is uniform on $\{1,\ldots,n\}$.
+\item Show that $1,2,\ldots,k$ all lie on that same cycle with probability $1/k$, for $1\le k\le n$.
+\end{enumerate}
+\end{exercise}
+
 \section{Hints}
 
 \begin{hint}{ex:records}
@@ -393,6 +414,14 @@ Write $\mathbb E[W_N]=\sum_{m\ge0}P(W_N>m)$ and compare the product for $P(W_N>m
 \end{hint}
 \begin{hint}{ex:twopoisson}
 Write the probability of $X+Y=k$ as the sum over $X=j$, for $0\le j\le k$. Independence lets you multiply the two Poisson masses; the binomial theorem finishes the sum.
+\end{hint}
+
+
+\begin{hint}{pb:goodman}
+A bichromatic triangle is seen as a mixed pair of colours from exactly two of its vertices. The product $d(n-1-d)$ is largest when the two colours are as equal as possible.
+\end{hint}
+\begin{hint}{pb:samecycle}
+Build the cycle of $1$ by always jumping to a uniform unused value, with $1$ itself still available as the return. The relative order in which $\{1,2,\ldots,k\}$ appear in that walk is uniform.
 \end{hint}
 
 \section{Solutions}
@@ -544,6 +573,41 @@ The substitution $u=x/\sqrt N$ turns the right side into $\sqrt N\int_{(K-1)/\sq
  =e^{-(\lambda+\mu)}\frac{(\lambda+\mu)^n}{n!},
 \]
 because $\sum_{k=0}^n\binom{n}{k}\lambda^k\mu^{n-k}=(\lambda+\mu)^n$.
+\end{solution}
+
+
+\begin{solution}{pb:goodman}
+\idea Count mixed corners, then use that a product $d(m-d)$ cannot exceed the balanced value.
+\writeup (a) Let $m=n-1$ and let $d_i$ be the red degree of vertex $i$. A pair of neighbours joined to $i$ by different colours can be chosen in $d_i(m-d_i)$ ways. Any such pair spans a triangle that is not monochromatic, whatever colour the third edge has. Conversely, take a triangle that is not monochromatic. It has two edges of one colour and one edge of the other. The two vertices at the ends of the single edge each see one red edge and one blue edge of the triangle. The third vertex sees two edges of the same colour. So the triangle is counted twice in $\sum_i d_i(m-d_i)$, and
+\[
+ \text{number of bichromatic triangles}=\frac12\sum_{i=1}^n d_i(m-d_i).
+\]
+For an integer $d$, the product $d(m-d)$ is at most $\lfloor m^2/4\rfloor$: the two integers nearest $m/2$ give that value, and moving away decreases the product. Therefore the sum is at most $n\lfloor m^2/4\rfloor$, and the number of monochromatic triangles is at least
+\[
+ \binom n3-\frac n2\Bigl\lfloor\frac{(n-1)^2}4\Bigr\rfloor.
+\]
+For $n=6$, $\binom63=20$ and $\lfloor25/4\rfloor=6$, so the bound is $20-(6/2)\cdot6=2$.
+
+(b) If the floor is dropped, the same algebra gives
+\[
+ \binom n3-\frac{n(n-1)^2}8=\frac{n(n-1)(n-5)}{24}=\frac14\binom n3-\frac{n(n-1)}8.
+\]
+The floor changes the count by at most $n/2$. The error is $O(n^2)$, while $\binom n3$ has order $n^3$, so the ratio of the bound to $\binom n3$ tends to $1/4$.
+
+Now colour every edge independently red or blue with equal probability. A fixed triangle has eight possible colourings, and exactly two of them are monochromatic. Its probability is $1/4$. Linearity adds these probabilities over the $\binom n3$ triangles, so the expected number is exactly $\frac14\binom n3$.
+\end{solution}
+
+\begin{solution}{pb:samecycle}
+\idea The return to $1$ is one of $n$ equally likely places in a random order. Restricting that order to $k$ marked numbers leaves $1$ equally likely to be last.
+\writeup (a) Generate the cycle through $1$ as follows. The image $\sigma(1)$ is uniform on $\{1,\ldots,n\}$. If it is $1$, the cycle has length $1$. Otherwise, from the current point, the next image is uniform among the values not yet used, together with $1$, which has not yet been used as a value. The cycle closes when $1$ is chosen. The return on the first draw has probability $1/n$. For $2\le k\le n$, the return occurs on draw $k$ with probability
+\[
+ \frac{n-1}n\cdot\frac{n-2}{n-1}\cdots\frac{n-k+1}{n-k+2}\cdot\frac1{n-k+1}=\frac1n.
+\]
+The factors cancel, so the cycle length is uniform on $\{1,\ldots,n\}$.
+
+The same count can be written without the process. The number of permutations whose cycle through $1$ has length $k$ is $\binom{n-1}{k-1}(k-1)!(n-k)!$: choose the other $k-1$ members, arrange them after $1$ in the cycle, and permute the rest. Dividing by $n!$ leaves $1/n$.
+
+(b) Keep the same process, and watch only the marked set $\{1,2,\ldots,k\}$. Non-marked values may be chosen along the way. Conditional on the next chosen value being either $1$ or a marked number not yet visited, each of those remaining marked choices is equally likely. The relative order in which the $k$ marked numbers appear is therefore a uniform random order, and the cycle closes at the position of $1$ in that order. All $k$ marked numbers lie on the cycle of $1$ exactly when $1$ is last in this relative order, which has probability $1/k$.
 \end{solution}
 
 \section*{Sources and further reading}
