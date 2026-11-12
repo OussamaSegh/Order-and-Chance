@@ -4,7 +4,19 @@ The second eigenvalue of a regular graph says how cheaply the graph can be cut,\
 and how fast a random walk forgets where it started.
 \end{center}
 
-A connected graph can still be easy to split in two. The cheapest cut, relative to the piece it removes, is the Cheeger constant. The Laplacian's second eigenvalue bounds that cut, and the gap to the largest adjacency eigenvalue bounds how evenly the edges are spread. The graph spectra of the preceding chapter supply the eigenvalues. The expanders of the next chapter are the graphs for which the gap is as large as a tree allows.
+How do you tell, from a list of numbers, that a network has a bottleneck? A connected graph can still be easy to split in two: two dense clusters joined by three
+cables are connected, but cutting three cables disconnects them. The cheapest cut, relative to the piece it removes, is the Cheeger constant, and computing it means
+trying exponentially many pieces. This chapter shows that one eigenvalue, the second smallest eigenvalue of the Laplacian, gives the Cheeger constant up to a square
+root, and that its eigenvector finds a good cut. The gap between the two largest adjacency eigenvalues then says how evenly the edges are spread and how fast a
+random walk forgets where it started. The graph spectra of the preceding chapter supply the eigenvalues; the expanders of the next chapter are the graphs for which
+the gap is as large as a tree allows.
+
+The \emph{Laplacian} of a $d$-regular graph with adjacency matrix $A$ is $L=dI-A$. Since $x^{\mathsf T}Ax=2\sum_{uv\in E}x_ux_v$ and each vertex lies in $d$ edges,
+\[
+x^{\mathsf T}Lx=\sum_{uv\in E}(x_u-x_v)^2\qquad(x\in\R^n),
+\]
+a sum over the edges, each counted once. So $L$ is positive semi-definite, $L\mathbf1=0$, and its eigenvalues are $\mu_i=d-\lambda_i$, where $\lambda_1\ge\dots\ge\lambda_n$ are those of $A$.
+The next lemma is the part of the Courant--Fischer theorem (Theorem~\ref{linear:thm:courantfischer}) that we need, with its two-line proof.
 
 \begin{lemma}[Rayleigh]\label{expansion:lem:rayleigh}
 Let $M$ be a real symmetric matrix with eigenvalues $\nu_1\le\dots\le\nu_n$ and orthonormal eigenvectors $\psi_1,\dots,\psi_n$. If $x\ne0$ is orthogonal to
@@ -24,7 +36,7 @@ vertices. For $S\subseteq V$, write $\bar S=V\setminus S$ and $e(S,\bar S)$ for 
 \[
 h(G)=\min\Bigl\{\frac{e(S,\bar S)}{|S|}:S\ne\varnothing,\ |S|\le\frac n2\Bigr\}.
 \]
-Computing $h(G)$ exactly is NP-hard in general, a computational hardness property. The second eigenvalue gives it up to a square root, and its eigenvector gives a good cut.
+Computing $h(G)$ exactly is NP-hard in general. The second eigenvalue gives it up to a square root, and its eigenvector gives a good cut.
 
 \begin{theorem}[Cheeger's inequality: Dodziuk, 1984; Alon and Milman, 1985]\label{spectral:thm:cheeger}
 For every $d$-regular graph,
@@ -61,12 +73,12 @@ as each vertex is in $d$ edges. Combining the three steps, $h(G)\sum_vy_v^2\le\s
 \end{proof}
 
 The proof is an algorithm, called \emph{spectral partitioning}. The integral inequality $\int_0^\infty e(S_t,\bar S_t)\dd t\le\sqrt{2d\mu_2}\int_0^\infty|S_t|\dd t$ shows that some $t$ satisfies
-$e(S_t,\bar S_t)\le\sqrt{2d\mu_2}\,|S_t|$, and the sets $S_t$ are the $n$ or fewer \emph{sweep sets}: sort the vertices by the value of the Fiedler vector and try every threshold. In 2000 Jianbo Shi and
+$e(S_t,\bar S_t)\le\sqrt{2d\mu_2}\,|S_t|$, and the sets $S_t$ are the $n$ or fewer \emph{sweep sets}: sort the vertices by the value of the eigenvector $x$ and try every threshold. The eigenvector of $\mu_2$
+is called the \emph{Fiedler vector}, after Miroslav Fiedler, who named $\mu_2$ the \emph{algebraic connectivity} of the graph in 1973. In 2000 Jianbo Shi and
 Jitendra Malik used a normalised version of this idea to segment images, the pixels being vertices joined according to their similarity, and \emph{spectral clustering} became a standard tool of
 data analysis.
 
-Both inequalities are tight up to constants. For the hypercube $Q_n$, $\mu_2=2$ and $h(Q_n)=1$ (cut along a coordinate; that nothing is better is the edge-isoperimetric inequality, a classical
-exercise of combinatorics), so the left side is attained. For the cycle, $\mu_2\approx\frac{4\pi^2}{n^2}$ while $h(C_n)\approx\frac4n$, so the square root on the right is necessary (Exercise~\ref{spectral:ex:cheegercycle}).
+Both inequalities are tight up to constants. For the hypercube $Q_n$, $\mu_2=2$ (Example~\ref{linear:exa:spectra}), so $h(Q_n)\ge1$; cutting along a coordinate gives $2^{n-1}$ edges for $2^{n-1}$ vertices, so $h(Q_n)=1$ and the left side is attained. For the cycle, $\mu_2\approx\frac{4\pi^2}{n^2}$ while $h(C_n)\approx\frac4n$, so the square root on the right is necessary (Exercise~\ref{spectral:ex:cheegercycle}).
 
 \begin{figure}[ht]
 \centering
@@ -98,7 +110,7 @@ Expand $x=\sum_{i\ge2}c_i\psi_i$ and $y=\sum_{i\ge2}c'_i\psi_i$ in an orthonorma
 inequality. Finally $\|x\|^2=\|\mathbf1_S\|^2-\frac{|S|^2}n=|S|(1-\frac{|S|}n)$, and likewise for $y$.
 \end{proof}
 
-For instance an independent set $S$ has $e(S,S)=0$, so $\frac{d|S|^2}n\le\lambda|S|(1-\frac{|S|}n)$, that is $|S|\le\frac{n\lambda}{d+\lambda}$ (compare Hoffman's bound, Theorem~9.6). The lemma also
+For instance an independent set $S$ has $e(S,S)=0$, so $\frac{d|S|^2}n\le\lambda|S|(1-\frac{|S|}n)$, that is $|S|\le\frac{n\lambda}{d+\lambda}$ (compare Hoffman's bound, Theorem~\ref{linear:thm:hoffman}). The lemma also
 bounds the diameter (Exercise~\ref{spectral:ex:diameter}) and shows that random walks forget their starting point exponentially fast (Exercise~\ref{spectral:ex:walkmixing}). Good expanders want $\lambda$ as small as
 possible. How small can it be?
 
@@ -132,15 +144,25 @@ Lemma~\ref{expansion:lem:rayleigh}, $\mu_2\le\theta$, that is $\lambda_2=d-\mu_2
 
 A $d$-regular graph with $n$ vertices has at most $2(1+(d-1)+\dots+(d-1)^r)$ vertices within distance $r$ of a given edge, so when $n\to\infty$ with $d$ fixed, there are edges at distance $2k+2$ for larger
 and larger $k$: $\lambda_2\ge2\sqrt{d-1}-o(1)$. The number $2\sqrt{d-1}$ is the spectral radius of the infinite $d$-regular tree, which every large $d$-regular graph resembles locally. Graphs with
-$\lambda\le2\sqrt{d-1}$ are called \emph{Ramanujan graphs}: Lubotzky, Phillips and Sarnak (1988), and independently Margulis, built them for $d-1$ prime using Ramanujan's conjecture on the
+$\lambda\le2\sqrt{d-1}$ are called \emph{Ramanujan graphs}: Lubotzky, Phillips and Sarnak (1988), and independently Margulis, built them for $d-1$ a prime congruent to $1$ modulo $4$, using Ramanujan's conjecture on the
 coefficients of modular forms (proved by Deligne), and Marcus, Spielman and Srivastava (2013) proved that bipartite Ramanujan graphs exist for every degree, with a new method of ``interlacing
 families'' of polynomials. The next chapter tells this story. And Joel Friedman proved in 2008 that a \emph{random} $d$-regular graph has $\lambda\le2\sqrt{d-1}+\varepsilon$ with probability tending to $1$: almost all
 regular graphs are almost optimal expanders, while building one explicitly is hard.
 
 \begin{beauty}
 Two numbers attached to a matrix, the second smallest Laplacian eigenvalue and the gap to the spectral radius of a tree, answer two questions that seem to have nothing to do with
-linear algebra: how cheaply a network can be cut, and how fast a walk forgets its start. The count of the spanning trees, the product of the non-zero eigenvalues, is proved in Volume~12.
+linear algebra: how cheaply a network can be cut, and how fast a walk forgets its start. The count of the spanning trees, the product of the non-zero eigenvalues divided by $n$, is a third answer, proved later in the series (Volume~12, Appendix~A).
 \end{beauty}
+
+\section{What we proved, and what comes next}
+
+The opening asked how a list of numbers can reveal a bottleneck. The second smallest Laplacian eigenvalue does it: $\frac{\mu_2}2\le h(G)\le\sqrt{2d\mu_2}$
+(Theorem~\ref{spectral:thm:cheeger}), and the proof is an algorithm that finds the cut. When all the eigenvalues other than $d$ are small in absolute value, edges
+are spread as if at random (Lemma~\ref{spectral:lem:mixing}), the diameter is logarithmic and random walks mix exponentially fast. But no large $d$-regular graph
+can do better than $\lambda_2\approx2\sqrt{d-1}$ (Theorem~\ref{spectral:thm:alonboppana}).
+
+Graphs that reach this bound exist, and building them is the subject of the next chapter. It needs a little number theory, and it gives a graph a zeta function with
+its own Riemann hypothesis.
 
 \section{Exercises}
 \begin{exercise}[$\star$]\label{spectral:ex:cheegercycle}
@@ -223,3 +245,20 @@ distance $i<r$ has $d-1$ children (a coincidence or an extra edge would close a 
 (b) By (a) with $r=2k+2$, some vertex $x$ is at distance at least $2k+3$ from $\{v_1,v_2\}$. Take any edge $\{x,x'\}$: $x'$ is at distance at least $2k+2$. So the two edges are at distance at least
 $2k+2$, and $\lambda_2\ge2\sqrt{d-1}-\frac{2\sqrt{d-1}-1}{k+1}$. For fixed $d$ and $n\to\infty$, $k$ can be taken of order $\log_{d-1}n$, which proves $\lambda_2\ge2\sqrt{d-1}-O(\frac1{\log n})$.
 \end{solution}
+
+\section*{Sources and further reading}
+
+\begin{itemize}
+\item J.~Dodziuk, \emph{Difference equations, isoperimetric inequality and transience of certain random walks}, Transactions of the American Mathematical Society 284 (1984),
+787--794; N.~Alon and V.~D.~Milman, \emph{$\lambda_1$, isoperimetric inequalities for graphs, and superconcentrators}, Journal of Combinatorial Theory B 38 (1985), 73--88;
+N.~Alon, \emph{Eigenvalues and expanders}, Combinatorica 6 (1986), 83--96, where the bound $2\sqrt{d-1}$ is credited to Boppana.
+\item M.~Fiedler, \emph{Algebraic connectivity of graphs}, Czechoslovak Mathematical Journal 23 (1973), 298--305; J.~Shi and J.~Malik, \emph{Normalized cuts and image
+segmentation}, IEEE Transactions on Pattern Analysis and Machine Intelligence 22 (2000), 888--905.
+\item N.~Alon and F.~R.~K.~Chung, \emph{Explicit construction of linear sized tolerant networks}, Discrete Mathematics 72 (1988), 15--19 (the mixing lemma); A.~Nilli,
+\emph{On the second eigenvalue of a graph}, Discrete Mathematics 91 (1991), 207--210.
+\item A.~Lubotzky, R.~Phillips and P.~Sarnak, \emph{Ramanujan graphs}, Combinatorica 8 (1988), 261--277; G.~A.~Margulis, \emph{Explicit group-theoretic constructions of
+combinatorial schemes and their applications in the construction of expanders and concentrators}, Problems of Information Transmission 24 (1988), 39--46;
+A.~W.~Marcus, D.~A.~Spielman and N.~Srivastava, \emph{Interlacing families I: bipartite Ramanujan graphs of all degrees}, Annals of Mathematics 182 (2015), 307--325
+(preprint 2013); J.~Friedman, \emph{A proof of Alon's second eigenvalue conjecture and related problems}, Memoirs of the American Mathematical Society 195 (2008), no.~910.
+\item S.~Hoory, N.~Linial and A.~Wigderson, \emph{Expander graphs and their applications}, Bulletin of the American Mathematical Society 43 (2006), 439--561, the standard survey.
+\end{itemize}

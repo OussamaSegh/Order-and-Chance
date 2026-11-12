@@ -1,7 +1,7 @@
 """Citations of the form ``Volume N, Theorem X`` must match that volume's numbers.
 
-The walker reproduces the counters a build assigns. Volumes 5, 7, 8, 10
-and 12 still have citations whose kind or number does not match; those repairs
+The walker reproduces the counters a build assigns. Volumes 5, 7 and 10
+still have citations whose kind or number does not match; those repairs
 belong with the volume being cited. Every other volume is gated here, including
 every citation of Volumes 1, 2 and 3.
 """
@@ -13,7 +13,7 @@ import cross_volume_citations as citations
 
 # Cited volumes whose mismatches are still open. Drop a number when its
 # citations have been repaired; the test then guards that volume too.
-OPEN_CITED_VOLUMES = {5, 7, 8, 10, 12}
+OPEN_CITED_VOLUMES = {5, 7, 10}
 
 
 class CrossVolumeCitations(unittest.TestCase):
@@ -46,6 +46,20 @@ class CrossVolumeCitations(unittest.TestCase):
         for key, label in anchors.items():
             statement = book.by_key[key]
             self.assertEqual(statement.label, label, key)
+
+    def test_chaptermark_is_not_a_chapter(self):
+        # Volume 12's unitary-matrix chapter sets a \\chaptermark; it must not
+        # advance the chapter counter.
+        book = self.books[12]
+        self.assertEqual(book.by_key[("theorem", "10.10")].label, "thm:ksmoments")
+        self.assertEqual(book.by_key[("proposition", "11.3")].label, "prop:cuelogcorr")
+        self.assertNotIn("13", book.chapters)
+
+    def test_volume8_numbers_after_the_rewrite(self):
+        book = self.books[8]
+        self.assertEqual(book.by_key[("theorem", "13.11")].label, "thm:duals")
+        self.assertEqual(book.by_key[("theorem", "A.8")].label, "linear:thm:bidual")
+        self.assertEqual(book.by_key[("theorem", "E.5")].label, "linear:thm:hadamard")
 
     def test_volume4_appendix_is_lettered_b(self):
         book = self.books[4]
