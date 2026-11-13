@@ -271,6 +271,141 @@ class CrossVolumeCitations(unittest.TestCase):
             gamma,
         )
 
+    def test_volume4_subject_rejects_a_real_number_aimed_at_the_wrong_fact(self):
+        diffusion = r"diffusion on the circle (Volume~4, Chapter~8)"
+        self.assertTrue(citations.volume4_subject_mismatches(diffusion))
+        self.assertEqual(
+            citations.volume4_subject_mismatches(
+                r"After $t$ steps the modes have been multiplied by $\cos^t\frac\pi n$."
+            ),
+            [],
+        )
+        cone = r"Poincaré's cone condition (keeping the promise of Volume~4, Chapter~8)"
+        self.assertTrue(citations.volume4_subject_mismatches(cone))
+        chain = r"Volume~4, Proposition~8.4, whose proof applies to any Markov chain"
+        self.assertTrue(citations.volume4_subject_mismatches(chain))
+        fixed = (
+            r"By inclusion and exclusion (Volume~4, Proposition~2.3), "
+            r"$P(F_n=k)=\frac1{k!}\sum$"
+        )
+        self.assertTrue(citations.volume4_subject_mismatches(fixed))
+        counted = (
+            r"The proof of Volume~4, Proposition~2.3 writes "
+            r"$P(F_n=k)=\frac1{k!}\cdot\frac{D_{n-k}}{(n-k)!}$"
+        )
+        self.assertEqual(citations.volume4_subject_mismatches(counted), [])
+        variance = r"Volume~4, Chapter~5 (variance of sums)"
+        self.assertTrue(citations.volume4_subject_mismatches(variance))
+        self.assertEqual(
+            citations.volume4_subject_mismatches(
+                variance.replace("Chapter~5", "Chapter~2")),
+            [],
+        )
+        duration = (
+            r"Volume~4, Theorem~8.2 gave the same answers, "
+            r"$\frac a{a+b}$ and $ab$ steps."
+        )
+        self.assertTrue(citations.volume4_subject_mismatches(duration))
+        split = (
+            r"Volume~4, Theorem~8.2 gives the exit probability $\frac a{a+b}$, "
+            r"and Volume~4, Proposition~8.3 gives the mean duration $ab$."
+        )
+        self.assertEqual(citations.volume4_subject_mismatches(split), [])
+        one_card = (
+            r"Volume~4, Proposition~9.11 (the covariances "
+            r"$(1-\frac2n)^t-(1-\frac1n)^{2t}$ are negative)"
+        )
+        self.assertTrue(citations.volume4_subject_mismatches(one_card))
+        two_cards = (
+            r"$(1-\frac2n)^t$ is this model's covariance. "
+            r"Volume~4, Proposition~9.11 chooses two cards, so the exponent is $2t$."
+        )
+        self.assertEqual(citations.volume4_subject_mismatches(two_cards), [])
+
+    def test_volume4_pointers_name_the_stated_fact(self):
+        root = citations.ROOT
+        exit_time = (root / "volume12-random-motion/chapters/ch03-martingales.tex").read_text(encoding="utf-8")
+        self.assertIn(r"Volume~4, Theorem~8.2 gives the exit probability", exit_time)
+        self.assertIn(r"Volume~4, Proposition~8.3 gives the mean duration", exit_time)
+        self.assertNotIn("ab$ steps", exit_time)
+        projects = (root / "volume15-order-and-chance/chapters/ch12-projects.tex").read_text(encoding="utf-8")
+        self.assertIn("chooses two cards at a step", projects)
+        self.assertNotIn(r"Proposition~9.11 (the covariances", projects)
+        fixed_points = (root / "volume11-randomness/chapters/ch13-harder.tex").read_text(encoding="utf-8")
+        self.assertIn(r"Volume~1, Chapter~2, writes $\frac{D_r}{r!}", fixed_points)
+        self.assertNotIn("inclusion and exclusion (Volume~4, Proposition~2.3)", fixed_points)
+        self.assertIn("Volume~4, Chapter~2 (covariance)", fixed_points)
+        self.assertNotIn("Volume~4, Chapter~5 (variance of sums)", fixed_points)
+        independence = (root / "volume11-randomness/chapters/ch01-zero-one.tex").read_text(encoding="utf-8")
+        self.assertIn(r"Independence} (Volume~4, Chapter~4", independence)
+        walks = (root / "volume5-calculation/chapters/ch07-fft.tex").read_text(encoding="utf-8")
+        self.assertNotIn("diffusion on the circle (Volume~4, Chapter~8)", walks)
+        self.assertIn(r"e^{i\pi j/n}\cos\frac{\pi j}n", walks)
+        self.assertNotIn("two neighbours", walks)
+        cycles = (root / "volume11-randomness/chapters/ch12-permutations.tex").read_text(encoding="utf-8")
+        self.assertIn(r"Volume~4, Proposition~6.13 writes the number of cycles", cycles)
+        self.assertIn(r"Proposition~\ref{prop:firstcycle}", cycles)
+        self.assertNotIn("canonical cycle notation, each cycle starting", cycles)
+        analysis = (root / "volume12-random-motion/chapters/ch05-analysis.tex").read_text(encoding="utf-8")
+        self.assertIn("Volume~4, Proposition~8.7", analysis)
+        self.assertIn("The cone condition is proved in this chapter.", analysis)
+        self.assertNotIn("cone condition (the finite-graph", analysis)
+        self.assertNotIn("promise of Volume~4, Chapter~8", analysis)
+        index = (root / "volume4-chance/chapters/index.tex").read_text(encoding="utf-8")
+        book = self.books[4]
+        # The printed number beside each index label. def:charfn is located as
+        # "before Theorem 6.8" and is checked only for existence.
+        expected = {
+            "thm:ballot": "1.7",
+            "thm:bayerdiaconis": "9.9",
+            "thm:bc": "4.4",
+            "thm:boxmuller": "5.10",
+            "def:bm": "12.1",
+            "thm:levy": "12.4",
+            "thm:reflection": "12.12",
+            "thm:buffon": "5.12",
+            "cor:clt": "6.11",
+            "thm:lindeberg": "6.10",
+            "thm:inversion": "6.8",
+            "thm:coupon": "2.5",
+            "prop:gibbs": "7.1",
+            "thm:shannon": "7.4",
+            "thm:huffman": "7.8",
+            "thm:ekr": "B.5",
+            "thm:extinction": "3.8",
+            "thm:gc": "6.5",
+            "thm:hoeffding": "4.2",
+            "thm:local": "6.12",
+            "def:mart": "11.2",
+            "thm:os": "11.4",
+            "thm:os2": "11.5",
+            "thm:L2conv": "11.12",
+            "prop:memoryless": "10.1",
+            "def:outer": "1.3",
+            "thm:poissonlimit": "2.1",
+            "def:pp": "10.3",
+            "thm:polya": "8.5",
+            "thm:polyaurn": "11.13",
+            "thm:erdos": "13.1",
+            "thm:lll": "13.3",
+            "thm:ramsey": "B.2",
+            "thm:vdw": "B.7",
+            "thm:subcrit": "14.1",
+            "thm:triangles": "14.2",
+            "thm:sllnbound": "4.5",
+            "thm:slln4": "6.4",
+            "thm:top": "9.6",
+            "thm:turan": "B.1",
+            "thm:weierstrass": "4.6",
+        }
+        for label, number in expected.items():
+            self.assertIn(f"\\ocindexpage{{{label}}}", index)
+            owner = next(item for item in book.statements if item.label == label)
+            self.assertEqual(owner.number, number, label)
+        self.assertIn("\\ocindexpage{def:charfn}", index)
+        characteristic = (root / "volume4-chance/chapters/ch06-clt.tex").read_text(encoding="utf-8")
+        self.assertIn(r"\label{def:charfn}", characteristic)
+
     def test_sentence_window_does_not_adopt_the_next_local_number(self):
         text = (
             r"\tools{Volume~1, Chapter~8 (Taylor series); "
