@@ -134,3 +134,68 @@ These were checked in the source, not merely recognised as familiar. A numerical
 Read against `docs/plan/book-06.md` and the Volume 6 section of the master plan (twelve chapters, three parts, numbering frozen). The book matches that shape. The fundamental domain has both halves. The bias identity is admitted. The transformation of \(\eta\) cites Volume 5. Maier is a remark. The proportions of zeros are quoted. Buchstab is not claimed as a theorem of the sieve chapter; a problem proves it for \(u\le 3\) and sends the rest to Volume 15. The catalog subtitle is *Arithmetic Meets Analysis*, and that is the subtitle on the title page.
 
 The blueprint’s page target, 190–220, is not met. The interior print PDF has 299 pages. The extra length is the closing-problem list, which the chapter tells the reader they may skip.
+
+## 8. Comparison with the earlier report
+
+Written after the scores and the issue log above were committed (`a30616f9`). The earlier report is the draft pull request #205, `docs/review/volume6-independent-scored-read-2026-11-12.md`. The fix log is `docs/review/volume5-volume6-fixes-review-2026-11-12.md`, which records pull requests #208–#210. Each earlier issue was re-opened in the current source. “Fixed” means the defect described there is gone, and the new sentence was read.
+
+| ID | Severity then | Now |
+| --- | --- | --- |
+| V6-01 | minor | Fixed. The primes to \(10^7\) are said to give eight digits, \(0.26149721\), and the next digit is said to move. The partial sum is \(0.2614972158\). |
+| V6-02 | minor | Fixed. The remark after Theorem 5.7 says Exercise 7.3 proves one direction, and that the converse is quoted from Titchmarsh, Chapter 14. |
+| V6-03 | minor | Fixed. The proof of Lemma 9.6 says the Taylor remainder is uniform for \(\lvert t\rvert\le A\), which is the hypothesis Volume 4 asks for. |
+| V6-04 | minor | Fixed. Definition 10.1 builds the variables by successive splittings of \([0,1]\). |
+| V6-05 | minor | Fixed. “Landscape” is gone from Chapter 12. |
+| V6-06 | minor | Fixed in the sense asked. A section “Closing problems” follows Exercise 12.6, and the chapter says a reader may stop there. The list is still why the book is long. |
+| V6-07 | minor | Fixed. About the Cover separates the proved Farey gaps from the quotation that ties a discrepancy to the Riemann hypothesis. |
+| V6-08 | minor | Fixed. Volume 14 now cites Theorems 3.6, 3.8 and 5.2 for continuation and non-vanishing on \(\operatorname{Re}s=1\). |
+| V6-09 | minor | Fixed. The Roth solution cites Theorem 8.4, with \(1+o(1)\). |
+| V6-10 | minor | Fixed. The large-sieve chapter cites Volume 5, Proposition 10.2, for uniqueness of Dirichlet coefficients. |
+| V6-11 | minor | Fixed. Volume 7’s problem chapter cites its own chapters for Borel–Cantelli, Baire, and Lebesgue density. It does not attribute them to Volume 6. |
+| V6-12 | minor | Fixed. Volume 15 ties the constant that bears on Siegel zeros to the progression inequality of Exercise 8.4, and states the short-interval ratio \(2k\). |
+| V6-13 | minor | Fixed. Volume 13 says the product, not Theorem 12.7, shows that \(\Delta\) has no zeros, and cites Theorem 12.9(c) for \(\dim M_4=1\). |
+| V6-14 | minor | Not a defect. The vertical Stirling formula is printed as (6.1) on the reading PDF, page 102 of that file. Equations are numbered by chapter. The citation in Volume 14 was already right. The suggested change to equation (1) would have been a new error. The fix log left it, correctly. |
+| V6-15 | minor | Fixed. Proposition 1.2(b) prints \(2\log 4\). |
+| V6-16 | minor | Fixed. The write-up of the cycle exercise divides by \(n!\). |
+| V6-17 | minor | Fixed. At \(x=10^9\) the solution says \(3.3\) with \(M\), and \(3.0\) for the main term alone. |
+| V6-18 | minor | Fixed. The missing piece of \(\int e^{-u}\log u\,du\) over \((0,\delta\log 2)\) is estimated. |
+| V6-19 | minor | Fixed. The caption says \(0.308\) is the difference of the two higher-power contributions. Recomputed, that difference to \(10^6\) is \(0.307\). |
+| V6-20 | minor | Fixed. The race caption says the \(99.59\%\) is conditional, and the remark names the hypotheses. |
+| V6-21 | minor | Fixed. The opening cites Theorem 2.4 for the product and the lower bound, and the paragraph after it for \(\pi(x)<\sqrt x+2\ln 4\cdot x/\ln x\). |
+| V6-22 | minor | Fixed. The visible-point solution names Euclid’s lemma from Volume 2, Chapter 1. |
+| V6-23 | minor | Fixed. Schur (1912) is existence; Murty (1988) is the converse. |
+| V6-24 | minor | Fixed. The solution writes the reciprocity sign and the cancellation against \(\bigl(\frac{-1}{p}\bigr)\). |
+| V6-25 | major | Fixed. The opening lists the product, the count, and the critical line. Infinitude is separated from the hypothesis and proved as a corollary. The years 1893 and 1905 match that order. |
+| V6-26 | major | Fixed. The opening display is the formula for \(\psi_0\), with the symmetric limit, and it says the proof gives Corollary 7.6. The half-step \(\frac12\log p\) at a prime is stated. |
+| V6-27 | minor | Fixed. The series is \(-\frac{L'}{L}(1,\chi_{-4})=-0.24561\). The closed form stays positive. |
+| V6-28 | minor | Fixed. The solution says one \(\varepsilon\) gives only \(\beta\le\frac12+\varepsilon\), and the hypothesis for every \(\varepsilon\) gives \(\beta\le\frac12\). |
+| V6-29 | minor | Fixed. Littlewood’s infinitude of lead changes is no longer said to rest on the conditional display. |
+| V6-30 | minor | Fixed. Theorem 7.8 uses \(\log(T+2)\), and absorbs \(\log T/\log(T+2)\to 1\) into the choice of \(c\). |
+| V6-31 | minor | Fixed. The sum is over \(\gamma\neq 0\), and the positive frequencies are named as such. |
+| V6-32 | minor | Fixed. The caption says the ordinates are computed sign changes of \(Z(t)\). |
+| V6-33 | minor | Fixed. The text says about \(11\%\) of the main term, and \(12\%\) of \(x/\log x\). |
+| V6-34 | minor | Fixed. The range of \(m\) is the \(N+H-1\) integers from \(2-H\) to \(N\), and each \(z_n\) appears \(H\) times. |
+| V6-35 | minor | Fixed. The Graham–Ringrose factors are restored. The remark stays quoted. |
+| V6-36 | minor | Fixed. Proposition 6.7 is cited for the standard normal, and \(sZ\) supplies the variance. |
+| V6-37 | minor | Fixed. The odd harmonic sum is written as \(\frac12\log Y+O(1)\). |
+| V6-38 | minor | Fixed. Exercise 8.4 requires \(x/q\ge 3\), and says the factor is an asymptotic as \(x/q\to\infty\). |
+| V6-39 | minor | Fixed. That exercise uses \(\log\). |
+| V6-40 | minor | Fixed. The solution says the model and the primes disagree, and that Maier’s theorem is quoted. |
+| V6-41 | minor | Fixed. Montgomery–Vaughan, the sharp large-sieve constant, Baker–Harman–Pintz, and the 2018 gap bound sit in remarks. |
+| V6-42 | minor | Fixed. The opening says Ramanujan proved the congruence, and that multiplicativity and the bound were conjectures. |
+| V6-43 | minor | Fixed. The two solutions, and the central-binomial solution beside them, take a finite sum up to a fixed \(K\) and then a tail. |
+
+The fix log’s verdicts match this table. Nothing it marks “Accept” is still broken. V6-14 is the one place the earlier report itself was wrong, and the fix log said so.
+
+**Nothing found that the fixes introduced.** The repaired sentences that were re-read — the constant \(2\log 4\), the division by \(n!\), \(\psi_0\) in the opening display, the range of \(m\) in van der Corput’s inequality, the sign of \(L'/L\), the zero-free logarithm \(\log(T+2)\), and the tail split in the closing problems — say what the repairs claimed. No new false identity was found in those passages.
+
+**What the earlier report and the fix log did not record.** These are the issues in the log above. They are not regressions of the November fixes.
+
+- V6-1. The letter \(\tau\) is the divisor function in Chapter 2 and Ramanujan’s function in Chapter 12, with no warning. The earlier report checked both theorems and did not flag the clash.
+- V6-2. Volume 8’s expander chapter still cites Chapter 5 for an error \(O(\sqrt x\log x)\) under the Riemann hypothesis. The downstream fix corrected V6-08 through V6-13 and did not touch this sentence. Chapter 5 says it gives no error term.
+- V6-3. The blurb and the KDP text still say the \(4n+3\) primes lead most of the time, and that every theorem is proved in full. The earlier report repaired About the Cover (V6-07) and the race caption (V6-20). It did not read the jacket against the conditional density.
+- V6-4. The index is a selective list. The earlier report did not ask whether Theorem 12.2 or the congruence modulo \(691\) can be found from it. The page numbers that are printed were checked here and are right.
+- V6-5. The last page of Chapter 12 names the zero-free region, Selberg’s sieve, and Weyl sums as where Volume 14 starts. Those are theorems of this volume. Volume 14’s preface describes a different starting point.
+- V6-6. Lemma 9.6’s box still does not say that \(m_k\) are the Gaussian moments defined above it. V6-03 fixed the dominated-convergence step. The box was left as a general implication, which it is not.
+
+The earlier report was the more thorough pass on exercise solutions in Chapters 5–12. This re-read confirms that those repairs hold, and does not repeat a line-by-line audit of every closing-problem solution. The two major defects it found, the misnamed Riemann hypothesis and the explicit formula written for \(\psi\) instead of \(\psi_0\), are repaired.
