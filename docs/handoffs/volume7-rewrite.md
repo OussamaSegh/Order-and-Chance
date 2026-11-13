@@ -1,93 +1,89 @@
-# Handoff: Volume 7 rewrite
+# Volume 7 rewrite — handoff
 
-Volume 7, *Spaces: Topology, Measure and Limits*, has been rewritten to `docs/plan/MASTER-PLAN-V5-V15.md` and `docs/plan/book-07.md`. Read this file first. It was updated after every chapter; the state below is final for this pass.
+Branch: `cursor/volume7-complete-rewrite-8161`. Base: `main` at `87b07362` (Volume 6 rewrite, PR #234). Do not edit Volumes 1–6 or Volumes 11–15. Do not merge or edit PR #157. Read the blueprint with `git show origin/claude/project-thread-khh5pi:docs/plan/book-07.md`. The blueprint keeps thirteen chapters and the existing statement numbers. Where it disagrees with the older `docs/plan/book-07.md` on `main`, the blueprint wins. The sentence-level rewrite does not renumber.
 
-**Branch and pull request.** The work is on branch `claude/project-thread-ehtc3u`, one pull request for the whole volume, as Volumes 5 and 6 each landed on their own pull request. The master plan and the blueprints stay on PR #157 (branch `claude/project-thread-khh5pi`), which remains open and is not merged. Read the blueprint with `git show origin/claude/project-thread-khh5pi:docs/plan/book-07.md`. The copy of `docs/plan/book-07.md` on `main` is the older specification; where the two differ, the blueprint on PR #157 wins.
+## What “rewritten” means
 
-## What "rewrite" means here
+A sentence counts when it has at least 40 characters and at least 25 characters outside mathematics. It is rewritten when it is not identical to the sentence in `origin/main`. Target: at least 90% in every chapter, in the main text and again from the exercises onward (hints and solutions included). Quotations inside quotation marks may stay. A displayed formula that was already checked may stay. The English around it may not.
 
-The blueprint keeps the structure of Volume 7 (thirteen chapters, three parts) and its numbering. Chapters 1–12 are "Keep", Chapter 2 gains one corollary, Chapter 13 is split (decision D-15). So each chapter gets one pass, with the same list as Volumes 5 and 6 (`docs/handoffs/volume5-rewrite.md`):
+## Style
 
-1. **Voice.** `docs/WRITING-STYLE.md`, Sound human. Opens with a question, shows an example before the general statement, ends with "What we proved, and what comes next".
-2. **Proof read.** Every proof re-read as a hostile examiner.
-3. **Numbers.** Every printed number that is not proved on the page is recomputed by a script in `review/volume7-rewrite/`, one script per chapter (`check_chNN_*.py`, helper `common.py`).
-4. **History.** Every date, quotation and attribution has a source in the chapter's one "Sources" section.
-5. **References.** Hand-typed numbers inside the volume become `\ref`. Chapters get labels (table below).
-6. **Plan items** of the blueprint for that chapter.
-7. **R1.** No proof or solution uses a later chapter or a later volume as a premise. A forward part moves to the end of the later chapter's exercise list, or to the later volume.
-8. **Build.** The volume builds with no undefined reference.
+`docs/WRITING-STYLE.md`, Sound human, and the openings of Volumes 5 and 6 after their rewrites. Short sentences. A small case before the general claim. “You” when the reader should check a case. No “delve”, “robust”, “landscape”, “tapestry”, “journey”, “it is important to note”, “in this section we will”, “in conclusion”. The volume already has that voice. This pass still rewrites the sentences. It does not replace the voice with a generic textbook.
 
-Gate B of the master plan (independent verification) is not this pass.
+## Numbering lock
 
-## Chapter progress
+Do not insert a theorem, proposition, lemma, corollary, or exercise except four new exercises at the **end** of each chapter’s exercise list. Keep every `\label`. Keep the order of numbered environments. Later volumes cite Volume 7 by hand-typed numbers (Banach is Theorem 2.12, Jordan is Theorem 6.10, Carathéodory extension is Theorem 7.10, Fubini is Theorem 9.6, conditional expectation is Theorem 11.16, the tower property is cited elsewhere as Theorem 11.17, Riesz representation is Theorem 12.3). A new statement in the middle would shift those numbers. New exercises use fresh labels `ex:v7cNNa` through `ex:v7cNNd`.
 
-| Ch. | Title | File | Label | State |
-| --- | --- | --- | --- | --- |
-| 1 | Sets, Choice and the Real Numbers | `ch01-sets.tex` | `ch:sets` | Done |
-| 2 | Metric Spaces and Completeness | `ch02-metric.tex` | `ch:metric` | Done |
-| 3 | Topological Spaces | `ch03-topology.tex` | `ch:topology` | Done |
-| 4 | Compactness | `ch04-compact.tex` | `ch:compact` | Done |
-| 5 | Baire's Theorem | `ch05-baire.tex` | `ch:baire` | Done |
-| 6 | The Jordan Curve Theorem | `jordan.tex`, `jordan-polygon.tex` | `ch:jordan` | Done |
-| 7 | Measures | `ch06-measures.tex` | `ch:measures` | Done |
-| 8 | The Lebesgue Integral | `ch07-integral.tex` | `ch:integral` | Done |
-| 9 | Product Measures and Change of Variables | `ch08-products.tex` | `ch:products` | Done |
-| 10 | $L^p$ Spaces | `ch09-lp.tex` | `ch:lp` | Done |
-| 11 | Differentiation and Radon–Nikodym | `ch10-radon.tex` | `ch:radon` | Done |
-| 12 | Measures on Metric Spaces | `ch11-metricmeasures.tex` | `ch:metricmeasures` | Done |
-| 13 | Almost Every Number (problems) | `ch12-harder.tex` | `ch:harder` | Done |
-| — | Preface (debts table), blurb, final checks | `preface.tex`, `blurb.tex`, `kdp.md` | | Done |
+No proof or solution may use a later chapter or a later volume as a premise. A forward pointer is a preview.
 
-## What changed, chapter by chapter
+## Portraits
 
-- **1.** Voice; new exercise `ex:cwcompute` at the end.
-- **2.** New `cor:Zpcompact` after `thm:Qp` (the plan's addition, decisions D-14 and D-17); new exercise `ex:Z2cantor`. This shifts the statements after 2.10 by one: Banach is now Theorem 2.12, `thm:exp` 2.16, Hutchinson 2.20.
-- **3.** New `prop:tietze` (Tietze for metric spaces) at the end of the statements; exercise `ex:tietze` replaced by `ex:tietzeR`.
-- **4, 5.** Voice, sources, one new exercise in Chapter 5 (`ex:takagivalues`).
-- **6.** Polygons first. Numbering changed: `thm:jordanpoly` 6.1, `lem:parity` 6.2, `lem:sides` 6.3, `lem:lift` 6.4, `prop:windingprops` 6.6, `thm:brouwer` 6.7, `lem:crossing` 6.8, `lem:arc` 6.9, `thm:jordan` 6.10. `lem:arc` now cites `prop:tietze`. Three new exercises.
-- **7–12.** Wording about Volume 4 follows Volume 4 as printed (it no longer admits Kolmogorov's theorem or an axiom (A1)). New exercises `ex:dealing`, `ex:limits`, `ex:frullani`, `ex:tent`, `ex:maximalcompute`, `ex:coversums`. The solution of `ex:salem` proves the strong law for a biased coin by fourth moments; Chapters 12 and 13 use it. Statements quoted and not used are marked quoted (Hausdorff measure facts from Falconer, the general Prokhorov theorem, Moran–Hutchinson).
-- **13.** See the next section.
-- **Preface.** Rewritten, with the table of debts. `blurb.tex` and `kdp.md` no longer claim Dedekind cuts as a second construction, duality of $L^p$ or a Riesz representation theorem, none of which is in the book.
+`volume7-spaces/photos/CREDITS.md` lists eighteen files, the source URL, the licence, and the print cap. `\portrait` is defined in `volume7-spaces/main.tex`, the same macro Volumes 5 and 6 use. Place them at the first real mention:
 
-## Chapter 13 and decision D-15
+| Chapter | File | Portraits |
+| --- | --- | --- |
+| 1 | `ch01-sets.tex` | `dedekind`, `cantor` |
+| 2 | `ch02-metric.tex` | `frechet` |
+| 3 | `ch03-topology.tex` | `hausdorff`, `urysohn` |
+| 4 | `ch04-compact.tex` | none (Weierstrass is in Chapter 5) |
+| 5 | `ch05-baire.tex` | `baire`, `weierstrass` |
+| 6 | `jordan.tex` | `jordan` |
+| 7 | `ch06-measures.tex` | `lebesgue`, `borel`, `vitali`, `caratheodory` |
+| 8 | `ch07-integral.tex` | `fatou`, `levi` |
+| 9 | `ch08-products.tex` | `fubini`, `tonelli` |
+| 10 | `ch09-lp.tex` | none (no Riesz portrait with a clear licence) |
+| 11 | `ch10-radon.tex` | `radon` |
+| 12 | `ch11-metricmeasures.tex` | `kolmogorov` |
+| 13 | `ch12-harder.tex` | none (no Khinchin portrait with a clear licence) |
 
-No solution uses a later volume. What was done:
+Caption pattern, credits exactly as in `photos/CREDITS.md`. Example:
 
-- **Khinchin's theorem** (`pb:khinchin`): Lévy's theorem is replaced by an elementary bound. $q_n\le\prod(a_i+1)$, the integral of $\prod(a_i+1)^{1/2}$ is at most $c^n$ with $c=2\sum 1/(k\sqrt{k+1})=4.3680\ldots$ by bounded distortion (`pb:borelbernstein`(a)), then Markov and Borel–Cantelli give $q_n\le e^{5n}$ for almost every $x$. The blocks are $Q_n=\lfloor e^{5n}\rfloor$ and the constant in (d) is 6.
-- **Null sets** in `pb:badnull`(c), `pb:good`(a), `pb:etwo`(a) and `pb:typicalcf`(b) come from `pb:borelbernstein` and `pb:khinchin`(b), not from the ergodic theorem.
-- `pb:eggleston`(b) uses the strong law from the solution of `ex:salem`. `pb:cantorfourier`(c) is now the elementary statement (no point of the Cantor set has an equidistributed orbit under multiplication by 3).
-- **Moved to Volume 11**, file `volume11-randomness/chapters/from-volume7-problems.tex`, NOT wired into Volume 11's `main.tex`: Minkowski's question mark (whole problem, hint, solution, figure `volume11-randomness/figures/from-volume7-minkowski.tex`) and the old part (c) of the Cantor measure problem (the orbit is distributed according to the Cantor measure), as a new problem `pb:cantororbit`. The Volume 11 rewrite places them; the header of the file lists what to check.
-- Quoted and not proved: Euler's continued fraction of $e$ (used in `pb:econt`, source Cohn 2006), Lévy's constant, Khinchin's constant (leads only).
-- Problems after 13.5 are renumbered down by one.
+```
+\portrait{dedekind}{Richard Dedekind (1831--1916). Photograph, about 1870. Public domain, via Wikimedia Commons.}
+```
 
-## For the other volumes
+Banach, Nikodym, Khinchin and Riesz were not included. The Commons files were a monument, a tomb, or a portrait whose public-domain claim had no source.
 
-- **Volume 9.** Fixed here because the numbers changed in this pass: Banach is Volume 7, Theorem 2.12 (`ch01-manifolds.tex`); the lifting lemma is Lemma 6.4 and the winding-number proposition is Proposition 6.6 (six citations in `ch03-forms.tex`, `ch04-curvature.tex`, `ch05-coverings.tex`).
-- **Every later volume** cites Volume 7 by hand-typed numbers, some from before the Jordan chapter was inserted. Only Chapters 2, 6 and 13 changed numbering in this pass; `review/volume7-rewrite/baseline-numbering.txt` against `statements.py` gives the table. Each volume's rewrite checks its own citations of Volume 7.
-- **Volume 11** owns the two moved problems (above), and Volume 7 now says, as previews, that Volume 11 proves Lévy's and Khinchin's constants and the ergodicity of the Gauss map.
-- **Volume 6** (PR #195, not merged when this was written): Chapter 13 cites the prime number theorem as Volume 6, Theorem 5.5, Chapter 5. If the number changes, fix `pb:jarnik`(b).
-- **Volumes 1–6** citations were checked against the printed books: Volume 2 continued fractions are Chapter 9 (Proposition 9.1, Theorem 9.2, Lemma 9.4, Theorems 9.5 and 9.6, Exercise 9.7); Volume 5 Weyl's criterion is Theorem 6.13.
+## Figures
 
-## Not re-fetched
+Each chapter gains at least two new TikZ figures, files `volume7-spaces/figures/chNN-rw-*.tex`, colours `MidnightBlue` and `BurntOrange`, included by `\fig{...}` inside `\begin{figure}[ht]`. Captions state the takeaway. Do not overwrite an existing figure file. Do not set a pixel width.
 
-These bibliographic details were written from memory and not checked against the source in this pass: Miranda 1940 (Chapter 6); the pages of Lebesgue's 1926 Copenhagen lecture, *Matematisk Tidsskrift B* (1926) 54–74 (Chapter 8); Robinson 1947 and Littlewood 1944 (Chapter 7); Moran 1946 and Hutchinson 1981, and the chapter numbers of Falconer's *Fractal Geometry*, 3rd ed. (Chapter 12); Lévy 1936 and Khinchin 1935 as the years of the two constants (Chapter 13). Gate B should check them.
+## Exercises
 
-## Checks
+Four new exercises per chapter, after the last existing exercise, each with a hint and a solution (`\idea` then `\writeup`). Solvable from this chapter and earlier. Stars as in the series.
 
-`python3 review/volume7-rewrite/check_chNN_*.py`, thirteen scripts, all pass. The build has no undefined reference.
+## Done
 
+- Branch created.
+- Portrait macro, eighteen photographs, `photos/CREDITS.md`.
+- About the Cover rewritten (112 words, inside the 80–150 check). Only the Volume 7 string in `common/cover-notes.json` changed, plus the generated `about-the-cover.tex`, the Volume 7 paragraph in `docs/COVER-NOTES.md`, and the two hashes in `tools/assets/series/manifest.json`. Motifs and lettering were not regenerated.
+- `blurb.tex` rewritten (194 words, the same length as before). `kdp.md` rewritten. ISBN left blank. Riesz representation is claimed only for positive functionals. Prokhorov is claimed only for tight laws on Euclidean space. Hausdorff measure as a Borel measure is marked quoted.
 
-File names keep their old numbers (the Jordan chapter was inserted as Chapter 6), so the file number is one less than the chapter number from `ch06-measures.tex` on.
+## In progress
 
-## Tools
+Chapters 1–13, preface. Not yet rewritten at sentence level.
 
-`review/volume7-rewrite/statements.py volume7-spaces` prints every numbered statement in printed order. `baseline-numbering.txt` is that list before the rewrite. `internal_numbers.py` finds hand-typed statement numbers. `list_citations.py` lists every citation of another volume.
+## Remains
 
-## Rules kept from Volumes 5 and 6
+1. Rewrite every chapter, including proofs, exercises, hints, solutions, and the sources section’s English. Commit after each chapter.
+2. Add the portraits, two figures, and four exercises in each chapter as above.
+3. Rewrite `chapters/preface.tex` (the debts table stays; the prose changes). The index is a list of statement names. Rewrite its one introductory sentence only. Do not change index numbers.
+4. Independent review. Write `docs/review/volume7-rewrite-findings-<date>.md`.
+5. Measure the rewrite share against `origin/main` and put the table in this file.
+6. `./build.sh volume7-spaces`. Zero undefined references. Layout checks pass. EPUB plates full width and in colour. Portraits at least 300 ppi.
+7. Push and poll CI until `list`, `debs`, `build`, and `site` pass. `publish` is skipped on a pull request.
 
-- **Numbering inside a chapter is preserved.** Other volumes cite Volume 7 by hand-typed numbers. New statements and exercises go where they shift nothing that is cited, by default at the END of a list.
-- Citations of Volumes 1–4 are by chapter and topic, checked against the printed order listed in `docs/handoffs/volume5-rewrite.md`. Citations of Volume 5 follow its new chapter order (`docs/plan/volume-citation-map.md`).
+## Open math questions
 
-## How to build
+- Chapter 12 quotes, and must keep quoting: that Hausdorff measure is a Borel measure, the general Prokhorov theorem on Polish spaces, and Moran–Hutchinson. The proved Prokhorov theorem is the Euclidean form.
+- Chapter 13 must not use the ergodic theorem or Lévy’s constant as a premise. The existing elementary bound for Khinchin stays.
+- Fréchet’s file is marked public domain on Commons, with no photographer and no date. It is included with that note. Drop it if a later check rejects the claim.
+- Volume 8 still cites Volume 6, Chapter 5, for an error term that chapter does not give (recorded in the Volume 6 handoff). Not this pull request.
+- Later volumes cite Volume 7 by hand-typed numbers. This pass must not shift them. Do not edit those volumes. List any citation that is already wrong, and leave it.
 
-`./build.sh --pdf-only volume7-spaces`, or `xelatex` in `volume7-spaces/` as `build.sh` does. The cloud container has no TeX by default: install the packages listed in `.github/workflows/build.yml`.
+## Exact next steps
+
+1. Rewrite `volume7-spaces/chapters/ch01-sets.tex` in place. Preserve labels and order. Add `\portrait{dedekind}` and `\portrait{cantor}` with the captions in `photos/CREDITS.md`. Add two figures `figures/ch01-rw-*.tex` and four exercises `ex:v7c01a`–`ex:v7c01d` at the end of the exercise list, with hints and solutions.
+2. Commit that chapter. Update this file: chapter 1 done, chapter 2 next.
+3. Repeat for chapters 2–13 and the preface, one commit each.
+4. Do not start the build until the sentence rewrite of every chapter is committed.
