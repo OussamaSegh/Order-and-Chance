@@ -170,7 +170,7 @@ Written after the scores and the issue log above were committed (`a30616f9`). Th
 | V6-27 | minor | Fixed. The series is \(-\frac{L'}{L}(1,\chi_{-4})=-0.24561\). The closed form stays positive. |
 | V6-28 | minor | Fixed. The solution says one \(\varepsilon\) gives only \(\beta\le\frac12+\varepsilon\), and the hypothesis for every \(\varepsilon\) gives \(\beta\le\frac12\). |
 | V6-29 | minor | Fixed. Littlewood’s infinitude of lead changes is no longer said to rest on the conditional display. |
-| V6-30 | minor | Fixed. Theorem 7.8 uses \(\log(T+2)\), and absorbs \(\log T/\log(T+2)\to 1\) into the choice of \(c\). |
+| V6-30 | minor | Fixed in the conclusion, with one leftover in the display. The sentence before the estimate uses \(\log(T+2)\), and the next sentence takes the ratio \(\log T/\log(T+2)\to 1\) and the factor \(\frac12\) before choosing \(c\). The aligned bound on the same page (`ch07-explicit.tex:243`) still writes \(e^{-c_1\log x/\log T}\). For a general \(T\ge 3\) that exponential is smaller than the one just proved; \(\log(T+2)<2\log T\) is what justifies a factor \(\frac12\), and that factor is restored before the theorem is stated. The error term \(xe^{-c\sqrt{\log x}}\) stands. |
 | V6-31 | minor | Fixed. The sum is over \(\gamma\neq 0\), and the positive frequencies are named as such. |
 | V6-32 | minor | Fixed. The caption says the ordinates are computed sign changes of \(Z(t)\). |
 | V6-33 | minor | Fixed. The text says about \(11\%\) of the main term, and \(12\%\) of \(x/\log x\). |
@@ -185,9 +185,11 @@ Written after the scores and the issue log above were committed (`a30616f9`). Th
 | V6-42 | minor | Fixed. The opening says Ramanujan proved the congruence, and that multiplicativity and the bound were conjectures. |
 | V6-43 | minor | Fixed. The two solutions, and the central-binomial solution beside them, take a finite sum up to a fixed \(K\) and then a tail. |
 
-The fix log’s verdicts match this table. Nothing it marks “Accept” is still broken. V6-14 is the one place the earlier report itself was wrong, and the fix log said so.
+The fix log’s verdicts match this table, with one qualification. V6-30 is fixed as a theorem: the constant \(c\) is chosen after the ratio of the logarithms is absorbed. The intermediate display still has the old denominator \(\log T\). V6-14 is the one place the earlier report itself was wrong, and the fix log said so.
 
-**Nothing found that the fixes introduced.** The repaired sentences that were re-read — the constant \(2\log 4\), the division by \(n!\), \(\psi_0\) in the opening display, the range of \(m\) in van der Corput’s inequality, the sign of \(L'/L\), the zero-free logarithm \(\log(T+2)\), and the tail split in the closing problems — say what the repairs claimed. No new false identity was found in those passages.
+Two further sentences in Chapter 7, both low, were not in that log. At `ch07-explicit.tex:352`, “that density is a consequence of the formula above” attaches the Rubinstein–Sarnak density for \(\pi(x;4,3)-\pi(x;4,1)\) to the conditional approximation for the \(\theta\)-race. The hypotheses are named in the same paragraph; the passage from \(\theta\) to \(\pi\) is not. In the solution of the bias exercise (`ch07-explicit.tex:491`), “oscillations of the same size without a preferred sign” does not follow from the unconditional prime-power identity. The identity, the handicap \(\sqrt x\), and the four numerical values at \(10^6\) are right. Neither sentence changes a numbered theorem, so they stay out of the score.
+
+**Nothing found that the fixes introduced.** The repaired sentences that were re-read — the constant \(2\log 4\), the division by \(n!\), \(\psi_0\) in the opening display, the range of \(m\) in van der Corput’s inequality, the sign of \(L'/L\), and the tail split in the closing problems — say what the repairs claimed. The zero-free repair put \(\log(T+2)\) in the sentence and in the choice of \(c\), and left \(\log T\) in the display between them. That is an incomplete edit, not a new false theorem.
 
 **What the earlier report and the fix log did not record.** These are the issues in the log above. They are not regressions of the November fixes.
 
