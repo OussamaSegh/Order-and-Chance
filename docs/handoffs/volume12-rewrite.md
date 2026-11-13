@@ -29,8 +29,8 @@ Gate B of the master plan (independent verification records) is not this pass.
 | 2 | The Fine Structure of a Brownian Path | `ch02-paths.tex` | Done |
 | 3 | Continuous Martingales | `ch03-martingales.tex` | Done |
 | 4 | The Itô Integral | `ch04-ito.tex` | Done |
-| 5 | Brownian Motion and Analysis | `ch05-analysis.tex` | To do |
-| 6 | Stochastic Differential Equations | `ch06-sde.tex` | To do |
+| 5 | Brownian Motion and Analysis | `ch05-analysis.tex` | Done |
+| 6 | Stochastic Differential Equations | `ch06-sde.tex` | Done |
 | 7 | Markov Processes and Lévy Processes | `ch07-levy.tex` | To do |
 | 8 | Random Walks on Networks and Groups | `ch08-networks.tex` | To do |
 | 9 | Random Matrices I: The Semicircle | `ch09-semicircle.tex` | To do |
