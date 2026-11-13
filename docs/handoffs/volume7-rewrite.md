@@ -59,14 +59,19 @@ Four new exercises per chapter, after the last existing exercise, each with a hi
 - About the Cover rewritten (112 words, inside the 80–150 check). Only the Volume 7 string in `common/cover-notes.json` changed, plus the generated `about-the-cover.tex`, the Volume 7 paragraph in `docs/COVER-NOTES.md`, and the two hashes in `tools/assets/series/manifest.json`. Motifs and lettering were not regenerated.
 - `blurb.tex` rewritten (194 words, the same length as before). `kdp.md` rewritten. ISBN left blank. Riesz representation is claimed only for positive functionals. Prokhorov is claimed only for tight laws on Euclidean space. Hausdorff measure as a Borel measure is marked quoted.
 
+## Done
+
+- Setup commit `9bfef5e5`: portraits, credits, blurb, listing, About the Cover.
+- Preface and index introduction: `8ffe7fb2`.
+- Chapter 1, `ch01-sets.tex`, commit `b1e0447f`. Labels preserved in order. New figures `ch01-rw-cut`, `ch01-rw-cauchy`. New exercises `ex:v7c01a`–`ex:v7c01d`. Measured rewrite share against `origin/main`: 99% before the exercises, 96% from the exercises on, 98% whole file (sentences of at least 40 characters with at least 25 outside math).
+
 ## In progress
 
-Preface and the index introduction are rewritten locally and not yet the whole story of the chapters. Chapters 1–13 are being rewritten in parallel, each agent limited to its own file and to new `figures/*-rw-*.tex` plates. Do not commit a chapter until its labels have been checked against `origin/main`.
+Chapter 2, `ch02-metric.tex`. No other chapter file has been rewritten yet.
 
-## Done since the setup commit
+## Remains
 
-- Preface rewritten (`chapters/preface.tex`). Debts table and theorem references unchanged.
-- Index introduction rewritten. Statement numbers in the index unchanged.
+Chapters 2–13, then the independent review, the local PDF and EPUB build, marking the PR ready, and CI.
 
 ## Remains
 
