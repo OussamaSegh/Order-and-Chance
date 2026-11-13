@@ -1,47 +1,39 @@
 \chapter{Integration Techniques}\label{ch:integrals}
 
 \begin{center}\itshape
-I had learned to do integrals by various methods shown in a book that my high school physics teacher\\
-gave me. One thing I never did learn was contour integration. [\dots] I had a different box of tools.\\
-\upshape --- Richard Feynman, \emph{Surely You're Joking, Mr.~Feynman!}
+$\displaystyle\int_0^1\frac{x-1}{\ln x}\,\dd x$ has no antiderivative you can write down.\\
+A parameter in the exponent makes the value $\ln 2\approx 0.693147$.
 \end{center}
 
-Feynman's ``different box of tools'' was mostly one tool: put a parameter $t$ into the integral, differentiate with
-respect to $t$ under the integral sign, and solve the differential equation that comes out. With it he could compute
-integrals that defeated his colleagues at MIT and Princeton. The trick is two centuries older (Leibniz used it, and so
-did Euler), and it always needs a justification, since swapping a derivative with an integral can fail.
+For $t\ge0$ set $F(t)=\int_0^1\frac{x^t-1}{\ln x}\dd x$. Differentiate in $t$ under the integral sign, and the logarithm cancels: $F'(t)=\int_0^1 x^t\dd x=\frac1{t+1}$. So $F(t)=\ln(1+t)+C$. At $t=0$ the integrand is $0$, so $F(0)=0$ and $C=0$. The integral we wanted is $F(1)=\ln 2$. Example~\ref{ex:logint} is the place where this differentiation is proved.
 
-Here is the trick at work, before any theory. Take $\int_0^1\frac{x-1}{\ln x}\dd x$. No antiderivative is in sight. Put a
-parameter in the exponent: $F(t)=\int_0^1\frac{x^t-1}{\ln x}\dd x$. Differentiate under the integral sign, without asking
-permission yet: the logarithm cancels, and $F'(t)=\int_0^1x^t\dd x=\frac1{t+1}$. So $F(t)=\ln(1+t)+C$, and $F(0)=0$ gives
-$C=0$. The integral we wanted is $F(1)=\ln2$. Example~\ref{ex:logint} asks permission.
+\begin{figure}[ht]
+\centering
+\fig{ch04-rewrite-param}
+\caption{As $t$ grows, the graph of $x^t$ on $[0,1]$ falls, and the three graphs meet at $x=1$. The area under the graph is $1/(t+1)$, which is $F'(t)$ in the opening.}
+\label{fig:rw04-param}
+\end{figure}
 
-This chapter supplies the justification and then uses it. The first two sections prove when limits and derivatives
-pass under an integral sign, first on a closed bounded interval, where uniform continuity does everything, then on
-unbounded intervals, where an integrable bound independent of the parameter is needed; they also prove Fubini's
-theorem for continuous functions on rectangles. The rest of the chapter is a tour of the toolbox: Feynman's trick,
-Frullani's integrals, symmetry, and the most famous semi-convergent integral, Dirichlet's
-$\int_0^\infty\frac{\sin x}x\dd x=\frac\pi2$. Complex analysis, the other box of tools, comes in Chapter~\ref{ch:complex}.
+Richard Feynman learned integrals from a book his high-school physics teacher gave him, and contour integration was not in that book. The parameter above was his working tool. He tells the story in \emph{Surely You're Joking, Mr.~Feynman!} (Norton, 1985), in the chapter ``A Different Box of Tools.'' Leibniz had already differentiated under an integral sign, and Euler used the move often. The swap can fail. On a closed bounded rectangle, continuity is uniform, and that is enough to pass a derivative under the integral. On an unbounded interval, one integrable function has to sit above the whole family. A continuous function on a rectangle may be integrated in either order. With those three facts we compute the Gaussian integral, Frullani's integrals, and Dirichlet's $\int_0^\infty\frac{\sin x}x\dd x=\frac\pi2$. Contour integration is Chapter~\ref{ch:complex}.
 
 \begin{think}
-For $t>0$, the substitution $u=tx$ shows that $\int_0^\infty\frac{\sin tx}x\dd x$ does not depend on $t$. Differentiating
-under the integral sign gives $\int_0^\infty\cos tx\dd x$. What has gone wrong?
+For $t>0$, the substitution $u=tx$ shows that $\int_0^\infty\frac{\sin tx}x\dd x$ does not depend on $t$. Differentiate
+under the integral sign and you get $\int_0^\infty\cos tx\dd x$. What has gone wrong?
 \end{think}
 
 \section{Parameters on a compact interval}
 
-Volume~1 integrated continuous functions on closed bounded intervals. With a parameter, the key is that continuity on a
-closed bounded rectangle is automatically uniform.
+Volume~1 integrated continuous functions on closed bounded intervals. Add a parameter, and continuity on a closed bounded rectangle is uniform: one $\delta$ works at every point. That is Heine's lemma.
 
 \begin{lemma}[Heine]\label{lem:heine}
 A continuous function $f$ on a closed bounded rectangle $K=[a,b]\times[c,d]$ is uniformly continuous: for every
 $\varepsilon>0$ there is $\delta>0$ such that $|f(p)-f(q)|\le\varepsilon$ whenever $p,q\in K$ and $|p-q|\le\delta$.
 \end{lemma}
 \begin{proof}
-Otherwise there are $\varepsilon>0$ and points $p_n,q_n\in K$ with $|p_n-q_n|\le\frac1n$ and $|f(p_n)-f(q_n)|>\varepsilon$. Applying
+Suppose not. Then some $\varepsilon>0$ has pairs $p_n,q_n\in K$ with $|p_n-q_n|\le\frac1n$ and $|f(p_n)-f(q_n)|>\varepsilon$. Apply
 Bolzano--Weierstrass (Volume~1, Chapter~3) to the first coordinates, then to the second coordinates along the extracted
-subsequence, we get a subsequence $p_{n_k}\to p\in K$, and then $q_{n_k}\to p$ too. By continuity
-$f(p_{n_k})-f(q_{n_k})\to f(p)-f(p)=0$, a contradiction.
+subsequence. Some subsequence satisfies $p_{n_k}\to p\in K$, and then $q_{n_k}\to p$ as well. Continuity forces
+$f(p_{n_k})-f(q_{n_k})\to f(p)-f(p)=0$, which contradicts the gap $\varepsilon$.
 \end{proof}
 
 \begin{theorem}\label{thm:paramcompact}
@@ -52,17 +44,24 @@ F'(t)=\int_a^b\partial_tf(x,t)\dd x.
 \]
 \end{theorem}
 \begin{proof}
+\emph{Continuity.}
 Let $t_0\in J$ and let $[c,d]\subseteq J$ be a closed bounded interval that is a neighbourhood of $t_0$ in $J$. Given $\varepsilon>0$,
 Lemma~\ref{lem:heine} on $[a,b]\times[c,d]$ gives $\delta$ with $|f(x,t)-f(x,t_0)|\le\varepsilon$ for $|t-t_0|\le\delta$, $t\in[c,d]$, so
-$|F(t)-F(t_0)|\le(b-a)\varepsilon$. For the derivative, let $q(x,t)=\frac{f(x,t)-f(x,t_0)}{t-t_0}$. By the mean value theorem, for each $x$
+$|F(t)-F(t_0)|\le(b-a)\varepsilon$.
+\emph{The difference quotient.}
+For the derivative, let $q(x,t)=\frac{f(x,t)-f(x,t_0)}{t-t_0}$. By the mean value theorem, for each $x$
 there is $\tau$ between $t_0$ and $t$ with
 \[
 q(x,t)-\partial_tf(x,t_0)=\partial_tf(x,\tau)-\partial_tf(x,t_0),
 \]
 which is at most $\varepsilon$ in absolute value when $|t-t_0|\le\delta$, now with $\delta$ given by the uniform continuity of $\partial_tf$
 on $[a,b]\times[c,d]$. Integrating, $\bigl|\frac{F(t)-F(t_0)}{t-t_0}-\int_a^b\partial_tf(x,t_0)\dd x\bigr|\le(b-a)\varepsilon$. So $F'(t_0)$ exists and is the
-integral of $\partial_tf(\cdot,t_0)$, which is continuous in $t_0$ by the first part.
+integral of $\partial_tf(\cdot,t_0)$.
+\emph{The derivative is continuous.}
+That integral is continuous in $t_0$ by the first part of the theorem.
 \end{proof}
+
+The bound $(b-a)\varepsilon$ is why the interval of integration has to be finite here. An infinite interval needs a different hypothesis, and that is the next section.
 
 \begin{theorem}[Fubini on a rectangle]\label{thm:fubinirect}
 If $f$ is continuous on $[a,b]\times[c,d]$, then
@@ -71,6 +70,7 @@ If $f$ is continuous on $[a,b]\times[c,d]$, then
 \]
 \end{theorem}
 \begin{proof}
+\emph{Two antiderivatives.}
 For $s\in[a,b]$ let
 \[
 \begin{gathered}\varphi(s)=\int_a^s\Bigl(\int_c^df(x,y)\dd y\Bigr)\dd x,\qq\psi(s)=\int_c^d\Bigl(\int_a^sf(x,y)\dd x\Bigr)\dd y.\end{gathered}
@@ -79,9 +79,13 @@ The inner
 integral in $\varphi$ is a continuous function of $x$ by Theorem~\ref{thm:paramcompact}, so $\varphi'(s)=\int_c^df(s,y)\dd y$ by the
 fundamental theorem of calculus. In $\psi$, the function $g(s,y)=\int_a^sf(x,y)\dd x$ is continuous on $[a,b]\times[c,d]$ (it is
 $\int_a^bf(x,y)\mathbf 1_{x\le s}\dd x$; directly, $|g(s,y)-g(s',y')|\le|s-s'|\max|f|+(b-a)\max_x|f(x,y)-f(x,y')|$) and has the
-continuous partial derivative $\partial_sg(s,y)=f(s,y)$. By Theorem~\ref{thm:paramcompact}, $\psi'(s)=\int_c^df(s,y)\dd y=\varphi'(s)$.
+continuous partial derivative $\partial_sg(s,y)=f(s,y)$.
+\emph{The same derivative.}
+By Theorem~\ref{thm:paramcompact}, $\psi'(s)=\int_c^df(s,y)\dd y=\varphi'(s)$.
 Since $\varphi(a)=\psi(a)=0$, $\varphi=\psi$, and $s=b$ gives the theorem.
 \end{proof}
+
+Try the theorem on $f=1$ on the unit square. Both orders give area $1$. The content of the theorem is that the same equality holds for every continuous $f$, not only for products.
 
 \section{Improper integrals with a parameter}
 
@@ -92,20 +96,25 @@ $I$); by the Cauchy criterion this holds if $\int_I|g|<\infty$, and then $\bigl|
 subintervals are bounded, and a continuous $f$ with $|f|\le g$, $g$ integrable, is integrable (comparison). The main
 example: $x^{-s}$ is integrable on $[1,\infty[$ if and only if $s>1$, and on $]0,1]$ if and only if $s<1$.
 
+For a family of integrands, the comparison function has to be chosen once, and it has to work for every value of the parameter.
+
 \begin{theorem}[domination]\label{thm:domination}
 Let $I$, $J$ be intervals and $f$ continuous on $I\times J$, with $|f(x,t)|\le g(x)$ for all $(x,t)$, where $g$ is continuous and
 integrable on $I$. Then $F(t)=\int_If(x,t)\dd x$ is continuous on $J$. If moreover $\partial_tf$ is continuous on $I\times J$ and
 $|\partial_tf(x,t)|\le h(x)$ with $h$ continuous and integrable on $I$, then $F$ is of class $C^1$ and $F'(t)=\int_I\partial_tf(x,t)\dd x$.
 \end{theorem}
 \begin{proof}
+\emph{Cut off a small tail.}
 Given $\varepsilon>0$, choose a closed bounded $[u,v]\subseteq I$ with $\int_{I\setminus[u,v]}g\le\varepsilon$ and $\int_{I\setminus[u,v]}h\le\varepsilon$. Then
 for $t,t_0\in J$, $|F(t)-F(t_0)|\le2\varepsilon+\bigl|\int_u^v(f(x,t)-f(x,t_0))\dd x\bigr|$, and the last term is at most $\varepsilon$ for $t$ close to
-$t_0$ by Theorem~\ref{thm:paramcompact} on $[u,v]$. For the derivative, the difference quotient minus $\int_I\partial_tf(x,t_0)\dd x$
+$t_0$ by Theorem~\ref{thm:paramcompact} on $[u,v]$.
+\emph{The difference quotient.}
+For the derivative, the difference quotient minus $\int_I\partial_tf(x,t_0)\dd x$
 is, by the mean value theorem as before, at most $2\varepsilon$ outside $[u,v]$ (each term is bounded by $h$) plus a term over $[u,v]$
 that tends to $0$ by Theorem~\ref{thm:paramcompact}. Continuity of $F'$ follows from the first part applied to $\partial_tf$.
 \end{proof}
 
-The same proof gives the version for sequences that is used throughout this volume.
+The same cut gives the version for sequences used throughout this volume. The integrands stay continuous, and the integral is over an interval.
 
 \begin{corollary}[dominated convergence for continuous functions]\label{cor:dct}
 Let $f_n$ and $f$ be continuous on $I$, with $f_n\to f$ uniformly on every closed bounded subinterval, and $|f_n|\le g$ with $g$
@@ -123,6 +132,8 @@ the limit.
 
 \section{Feynman's trick}
 
+The pattern is fixed. Put the parameter where the differentiated integrand is elementary. Compute $F'$. Read the constant from a value of $t$ where $F$ is obvious, often $t=0$ or $t\to\infty$.
+
 \begin{example}\label{ex:logint}
 For $t\ge0$ let $F(t)=\int_0^1\frac{x^t-1}{\ln x}\dd x$. On $I=\left]0,1\right[$ and $J=[0,\infty[$ the integrand is continuous, with
 $\partial_t\frac{x^t-1}{\ln x}=x^t$. For $t\in[0,T]$ the bounds are $\bigl|\frac{x^t-1}{\ln x}\bigr|\le t\le T$, since $1-e^{-u}\le u$ for
@@ -133,19 +144,26 @@ $F(0)=0$, $F(t)=\ln(1+t)$; in particular
 \]
 \end{example}
 
-The pattern is always the same: choose where to put the parameter so that the differentiated integrand is elementary;
-compute $F'$; find the constant from a value of $t$ where $F$ is obvious, often $t=0$ or $t\to\infty$.
+At $t=1$ this is the opening integral, and $\ln 2\approx0.693147$. The bound $T$ is why the theorem is applied on each compact piece of the parameter, not on the whole half-line at once.
 
 \begin{example}[the Gaussian integral]\label{ex:gaussfeynman}
 Let $F(t)=\Bigl(\int_0^te^{-x^2}\dd x\Bigr)^2$ and $G(t)=\int_0^1\frac{e^{-t^2(1+y^2)}}{1+y^2}\dd y$. By Theorem~\ref{thm:paramcompact},
 \[
-\begin{aligned}G'(t)&=-2t\int_0^1e^{-t^2(1+y^2)}\dd y\eqbr=-2e^{-t^2}\int_0^te^{-u^2}\dd u=-F'(t),\end{aligned}
+G'(t)=-2t\int_0^1e^{-t^2(1+y^2)}\dd y=-2te^{-t^2}\int_0^1e^{-(ty)^2}\dd y.
 \]
-with $u=ty$. So $F+G$ is constant, equal to $G(0)=\int_0^1\frac{\mathrm dy}{1+y^2}=\frac\pi4$. As $t\to\infty$, $0\le G(t)\le e^{-t^2}\to0$, so
-$\bigl(\int_0^\infty e^{-x^2}\dd x\bigr)^2=\frac\pi4$, and $\int_0^\infty e^{-x^2}\dd x=\frac{\sqrt\pi}2$. Volume~1, Chapter~8, found it by Wallis integrals. This second proof uses only a parameter. Volume~4, Chapter~5, takes the value from Volume~1 and uses polar rectangles to build two independent normal variables; it does not evaluate the integral.
+Put $u=ty$, so $\dd u=t\,\dd y$. As $y$ runs from $0$ to $1$, $u$ runs from $0$ to $t$, and the factor $t$ cancels:
+\[
+\begin{aligned}G'(t)&=-2e^{-t^2}\int_0^te^{-u^2}\dd u=-F'(t),\end{aligned}
+\]
+since $F'(t)=2e^{-t^2}\int_0^te^{-x^2}\dd x$. So $F+G$ is constant, equal to $G(0)=\int_0^1\frac{\mathrm dy}{1+y^2}=\frac\pi4$. As $t\to\infty$, $0\le G(t)\le e^{-t^2}\to0$, so
+$\bigl(\int_0^\infty e^{-x^2}\dd x\bigr)^2=\frac\pi4$, and $\int_0^\infty e^{-x^2}\dd x=\frac{\sqrt\pi}2$. Volume~1, Chapter~8, found the same value from the Wallis integrals. This argument uses only a parameter. Volume~4, Chapter~5, takes the value from Volume~1 and uses polar rectangles to build two independent normal variables; it does not evaluate the integral.
 \end{example}
 
+The number to keep is $\frac{\sqrt\pi}2\approx0.886227$. Squaring it returns $\frac\pi4$.
+
 \section{Frullani integrals and symmetry}
+
+Frullani's integral compares the same function at two scales. The antiderivative never appears. Only the values at $0$ and at infinity survive.
 
 \begin{theorem}[Frullani]\label{thm:frullani}
 Let $f$ be continuous on $[0,\infty[$ with a limit $f(\infty)$ at infinity. For $a,b>0$,
@@ -154,26 +172,28 @@ Let $f$ be continuous on $[0,\infty[$ with a limit $f(\infty)$ at infinity. For 
 \]
 \end{theorem}
 \begin{proof}
+\emph{Cut the integral.}
 For $0<\varepsilon<R$, let $I_{\varepsilon,R}=\int_\varepsilon^R\frac{f(ax)-f(bx)}x\dd x$. Substituting $u=ax$ and $u=bx$ in the two halves,
 \[
 \begin{aligned}I_{\varepsilon,R}&=\int_{a\varepsilon}^{aR}\frac{f(u)}u\dd u-\int_{b\varepsilon}^{bR}\frac{f(u)}u\dd u\\&=\int_{a\varepsilon}^{b\varepsilon}\frac{f(u)}u\dd u-\int_{aR}^{bR}\frac{f(u)}u\dd u.\end{aligned}
 \]
-(The difference of the two integrals over the common range cancels; if $a>b$, read $\int_p^q$ as $-\int_q^p$.) On
+(The difference of the two integrals over the common range cancels; if $a>b$, read $\int_p^q$ as $-\int_q^p$.)
+\emph{The two ends.}
+On
 $[a\varepsilon,b\varepsilon]$, $f(u)=f(0)+o(1)$ as $\varepsilon\to0$, and $\int_{a\varepsilon}^{b\varepsilon}\frac{\mathrm du}u=\ln\frac ba$, so the first term tends to
 $f(0)\ln\frac ba$. Likewise the second tends to $f(\infty)\ln\frac ba$ as $R\to\infty$.
 \end{proof}
 
-With $f(x)=e^{-x}$,
+With $f(x)=e^{-x}$, one has $f(0)=1$ and $f(\infty)=0$, so
 \[
 \int_0^\infty\frac{e^{-ax}-e^{-bx}}x\dd x=\ln\frac ba.
 \]
-With $f(x)=\arctan x$,
+At $a=1$ and $b=2$ the value is $\ln 2\approx0.693147$. With $f(x)=\arctan x$, one has $f(0)=0$ and $f(\infty)=\frac\pi2$, so
 \[
 \int_0^\infty\frac{\arctan bx-\arctan ax}x\dd x=\frac\pi2\ln\frac ba.
 \]
 
-Symmetry is the cheapest trick of all. The substitution $x\mapsto a+b-x$ preserves $\int_a^b$, and sometimes turns an
-integral into a multiple of itself plus something known.
+The substitution $x\mapsto a+b-x$ preserves $\int_a^b$. Sometimes the reflected integral is a multiple of the original plus a quantity you already know.
 
 \begin{proposition}\label{prop:logsin}
 The integrals $\int_0^{\pi/2}\ln\sin x\dd x$ and $\int_0^{\pi/2}\ln\cos x\dd x$ are both equal to $-\frac\pi2\ln2$.
@@ -187,11 +207,19 @@ shows they are equal; call their value $L$. Then, using $\sin x\cos x=\frac{\sin
 because $\int_0^\pi\ln\sin u\dd u=2L$ by the symmetry $u\mapsto\pi-u$. Hence $L=-\frac\pi2\ln2$.
 \end{proof}
 
+So $\int_0^{\pi/2}\ln\sin x\dd x\approx-1.088$. The negative sign is the fact that $\sin x\le1$ on the interval, so the logarithm is not positive.
+
 \section{Dirichlet's integral}
 
-The function $\frac{\sin x}x$ is not integrable on $[0,\infty[$: over $[k\pi,(k+1)\pi]$ its absolute value has integral at
-least $\frac2{(k+1)\pi}$, and the harmonic series diverges. But its integral converges as an improper integral, thanks to the
-cancellations between the positive and negative arches (Figure~\ref{fig:si}).
+The function $\frac{\sin x}x$ is not integrable on $[0,\infty[$. Over $[k\pi,(k+1)\pi]$ its absolute value has integral at
+least $\frac2{(k+1)\pi}$, and those lower bounds are a constant times the harmonic series, which diverges. The signed integral still converges. The positive arches and the negative arches cancel (Figure~\ref{fig:rw04-dirichlet}).
+
+\begin{figure}[ht]
+\centering
+\fig{ch04-rewrite-dirichlet}
+\caption{The arches of $\sin x/x$ alternate. Each arch has absolute area at least $2/((k+1)\pi)$, and those lower bounds already diverge, so the absolute integral diverges. The signed integral converges.}
+\label{fig:rw04-dirichlet}
+\end{figure}
 
 \begin{lemma}\label{lem:secondmean}
 Let $u$ be of class $C^1$, positive and non-increasing on $[A,B]$. Then $\bigl|\int_A^Bu(x)\sin x\dd x\bigr|\le2u(A)$.
@@ -201,10 +229,13 @@ Integrate by parts: $\int_A^Bu\sin=\bigl[-u\cos\bigr]_A^B+\int_A^Bu'\cos$, so th
 $u(A)+u(B)+\int_A^B|u'|=u(A)+u(B)+u(A)-u(B)=2u(A)$, since $u'\le0$.
 \end{proof}
 
+The bound depends only on the value of $u$ at the left endpoint. For $u(x)=1/x$ it says that the tail of Dirichlet's integral, from $A$ onward, is at most $2/A$.
+
 \begin{theorem}[Dirichlet]\label{thm:dirichletint}
 The improper integral $\int_0^\infty\frac{\sin x}x\dd x$ converges, and equals $\frac\pi2$.
 \end{theorem}
 \begin{proof}
+\emph{A uniform tail.}
 For $t\ge0$ and $A>0$, Lemma~\ref{lem:secondmean} with $u(x)=\frac{e^{-tx}}x$ gives $\bigl|\int_A^B\frac{e^{-tx}\sin x}x\dd x\bigr|\le\frac2A$
 for all $B>A$, uniformly in $t\ge0$. With $t=0$, the Cauchy criterion shows that the integral converges (near $0$ the integrand
 extends continuously by $1$). Let $F(t)=\int_0^\infty e^{-tx}\frac{\sin x}x\dd x$.
@@ -212,7 +243,7 @@ extends continuously by $1$). Let $F(t)=\int_0^\infty e^{-tx}\frac{\sin x}x\dd x
 \emph{For $t>0$.} On $J=[t_0,\infty[$ with $t_0>0$, the integrand and its $t$-derivative $-e^{-tx}\sin x$ are bounded by $e^{-t_0x}$,
 which is integrable. By Theorem~\ref{thm:domination}, $F'(t)=-\int_0^\infty e^{-tx}\sin x\dd x=-\frac1{1+t^2}$ (integrate by parts twice, or take
 the imaginary part of $\int_0^\infty e^{(-t+i)x}\dd x=\frac1{t-i}$). So $F(t)=C-\arctan t$ on $]0,\infty[$. Since $\bigl|\frac{\sin x}x\bigr|\le1$,
-$|F(t)|\le\int_0^\infty e^{-tx}\dd x=\frac1t\to0$, and $C=\frac\pi2$.
+$|F(t)|\le\int_0^\infty e^{-tx}\dd x=\frac1t\to0$. Also $\arctan t\to\frac\pi2$, so $C-\frac\pi2=0$ and $C=\frac\pi2$. Thus $F(t)=\frac\pi2-\arctan t$ for $t>0$. At $t=1$ this is $\frac\pi4\approx0.785398$.
 
 \emph{At $t=0$.} For $A>0$ and $t>0$, let $D=\bigl|F(t)-\int_0^\infty\frac{\sin x}x\dd x\bigr|$. Then
 \[
@@ -224,8 +255,8 @@ using $1-e^{-tx}\le tx$. Letting $t\to0$, then $A\to\infty$, gives $\int_0^\inft
 \begin{figure}[ht]
 \centering
 \fig{ch04-si}
-\caption{The partial integrals $\operatorname{Si}(X)=\int_0^X\frac{\sin x}x\dd x$ oscillate around $\frac\pi2$ with decreasing amplitude. The
-first maximum, at $X=\pi$, is $\operatorname{Si}(\pi)\approx1.852$, about $18\%$ above the limit: this overshoot is the Gibbs phenomenon
+\caption{The partial integrals $\operatorname{Si}(X)=\int_0^X\frac{\sin x}x\dd x$ oscillate about $\frac\pi2$, and the amplitude falls. The
+first maximum, at $X=\pi$, is $\operatorname{Si}(\pi)\approx1.852$, about $18\%$ above the limit. That overshoot is the Gibbs phenomenon
 of Chapter~\ref{ch:fourier}.}
 \label{fig:si}
 \end{figure}
@@ -233,33 +264,27 @@ of Chapter~\ref{ch:fourier}.}
 \begin{figure}[ht]
 \centering
 \fig{ch04-damped}
-\caption{The damped integrands $e^{-tx}\frac{\sin x}x$ for $t=0$, $0.3$ and $1$. For $t>0$ the integral is absolutely convergent and can
-be differentiated in $t$; the value at $t=0$ is recovered as a limit.}
+\caption{The integrands $e^{-tx}\frac{\sin x}x$ for $t=0$, $t=0.3$ and $t=1$. For $t>0$ the integral converges absolutely, and it may be
+differentiated in $t$. The value at $t=0$ is the limit of those integrals.}
 \label{fig:damped}
 \end{figure}
 
-Now the question of the opening box has an answer. For $t>0$, $\int_0^\infty\frac{\sin tx}x\dd x=\frac\pi2$; for $t<0$ it is $-\frac\pi2$,
-and for $t=0$ it is $0$. The function of $t$ is a step, not differentiable at $0$, and the formally differentiated integral
-$\int_0^\infty\cos tx\dd x$ diverges for every $t$: no integrable bound $h$ exists, and Theorem~\ref{thm:domination} does not apply.
+The opening question now has an answer. For $t>0$, $\int_0^\infty\frac{\sin tx}x\dd x=\frac\pi2$. For $t<0$ the same integral equals $-\frac\pi2$,
+and for $t=0$ it equals $0$. The function of $t$ is a step. It is not differentiable at $0$. The differentiated integral
+$\int_0^\infty\cos tx\dd x$ diverges for every $t$. No integrable bound $h$ exists, so Theorem~\ref{thm:domination} does not apply.
 
 \input{chapters/bbp-borwein}
 
 \section{What we proved, and what comes next}
 
-The chapter had one question: when may a limit, a derivative or a second integral pass through an integral sign? On a
+A limit, a derivative, or a second integral may pass under the integral sign when the hypotheses above hold. On a
 closed bounded interval, continuity is enough (Theorems~\ref{thm:paramcompact} and~\ref{thm:fubinirect}). On an unbounded
-one, we need a single integrable function above the whole family (Theorem~\ref{thm:domination},
-Corollary~\ref{cor:dct}). With that licence, Feynman's trick gave the Gaussian integral in a few lines, Frullani's
-formula and symmetry gave integrals with no elementary antiderivative, and a damping factor $e^{-tx}$ tamed Dirichlet's
-integral, which converges only by cancellation.
+interval, one integrable function has to lie above the whole family (Theorem~\ref{thm:domination},
+Corollary~\ref{cor:dct}). That licence gives the Gaussian integral, Frullani's formula, the symmetry for $\ln\sin x$, and Dirichlet's integral, which converges by cancellation. The damping $e^{-tx}$ is what makes the derivative legal for $t>0$. The value at $t=0$ is a limit.
 
-The two closing sections were applications with a moral. The integral behind the formula of Bailey, Borwein and Plouffe
-reaches a hexadecimal digit of $\pi$ without the digits before it. The Borwein integrals show a pattern that holds seven
-times and fails the eighth, for a reason that only a proof reveals.
+The formula of Bailey, Borwein and Plouffe reaches one hexadecimal place of $\pi$ without the places before it. At $d=999999$ those digits are \texttt{26C65E52}. The Borwein integrals equal $\frac\pi2$ seven times and then miss it by about $2.31\times10^{-11}$, because a sum of lengths crosses $1$. A closed form is one half of the story. A pattern that breaks by a tiny probability is the other.
 
-Two threads continue. The integrals $\int_0^\infty t^{x-1}e^{-t}\dd t$ and $\int_0^1t^{a-1}(1-t)^{b-1}\dd t$ are functions of
-their parameters, and Chapter~\ref{ch:gamma} studies them for their own sake: they are the Gamma and Beta functions.
-And the integrals that defeat every trick of this chapter fall to the other box of tools, in Chapter~\ref{ch:complex}.
+Two integrals are still waiting, as functions of their parameters: $\int_0^\infty t^{x-1}e^{-t}\dd t$ and $\int_0^1 t^{a-1}(1-t)^{b-1}\dd t$. Chapter~\ref{ch:gamma} asks which curve through the factorials has a convex logarithm, and the first of those integrals is the answer. The integrals that survive every trick of this chapter are taken up by contour integration, in Chapter~\ref{ch:complex}.
 
 \section{Exercises}
 
@@ -347,6 +372,30 @@ Be careful: (a) and (b) only give the square of the integral.
 \end{enumerate}
 \end{exercise}
 
+\begin{exercise}[$\star$]\label{ex:rw04a}
+For $a>0$ let $F(a)=\int_0^\infty e^{-ax}\dd x$. Compute $F(a)$. Then differentiate in $a$ under the integral sign and show that $\int_0^\infty x e^{-ax}\dd x=\frac1{a^2}$. Check the second integral at $a=3$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:rw04b}
+Let $f(x)=e^{-x^2}$. Check the hypotheses of Theorem~\ref{thm:frullani}, and show that for $a,b>0$,
+\[
+\int_0^\infty\frac{e^{-a^2x^2}-e^{-b^2x^2}}x\dd x=\ln\frac ba.
+\]
+Differentiate in $b$ and recover $\int_0^\infty 2bx\,e^{-b^2x^2}\dd x=\frac1b$. Check $a=1$ and $b=2$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:rw04c}
+Let $P_N$ be the partial sum of $4S_1-2S_4-S_5-S_6$ in Theorem~\ref{thm:bbp}, through $k=N$. Show that $P_0=\frac{47}{15}$ and $P_1=\frac{102913}{32760}$. Using $\pi=3.141592653589793\ldots$, show that $\pi-P_1<2\times10^{-4}$.
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:rw04d}
+For $0\le a<b$, show that
+\[
+\int_0^\infty\frac{\cos(ax)-\cos(bx)}{x^2}\dd x=\frac\pi2(b-a).
+\]
+You may write the difference of cosines as an integral in a parameter, apply Theorem~\ref{thm:fubinirect} on a finite rectangle, and pass to the limit with the bound on $\int\sin$. Check the case $a=0$, $b=2$.
+\end{exercise}
+
 \begin{figure}[ht]
 \centering
 \fig{ch04-longest}
@@ -403,6 +452,22 @@ $\frac1{-\log u}=\int_0^\infty u^t\dd t$ for $0<u<1$. You should meet $\sum_{m\g
 (b) Cut the integral at a small $\delta$. On $[\delta,1]$ integrate by parts, writing $e^{it^2y^2}$ as a derivative divided by $2it^2y$. (c) $\Phi$ is
 continuous and $\Phi^2$ has a non-zero limit, so $\Phi$ ends up near one of the two square roots and cannot jump to the other. Which one? Look at the sign
 of $\int_0^t\sin(x^2)\dd x$.
+\end{hint}
+
+\begin{hint}{ex:rw04a}
+On $a\in[a_0,A]$ with $a_0>0$, the derivative $-xe^{-ax}$ is bounded by $xe^{-a_0x}$.
+\end{hint}
+
+\begin{hint}{ex:rw04b}
+Here $f(0)=1$ and $f(\infty)=0$, and $f(bx)=e^{-b^2x^2}$. For the derivative in $b$, put $w=b^2x^2$.
+\end{hint}
+
+\begin{hint}{ex:rw04c}
+The $k=0$ term is $4-\frac12-\frac15-\frac16$. The $k=1$ term is $\frac1{16}\bigl(\frac49-\frac16-\frac1{13}-\frac1{14}\bigr)$.
+\end{hint}
+
+\begin{hint}{ex:rw04d}
+$\cos(ax)-\cos(bx)=\int_a^b x\sin(ux)\dd u$. For $u>0$, $\int_0^\infty\frac{\sin(ux)}x\dd x=\frac\pi2$.
 \end{hint}
 
 \section{Solutions}
@@ -613,6 +678,54 @@ and imaginary parts are both $\frac12\sqrt{\frac\pi2}$.
 \leads These integrals carry the name of Fresnel, who met them in 1818 in his theory of the diffraction of light; Euler had found their value in 1781.
 The integration by parts in (b) is the first appearance of an idea that returns in Chapter~\ref{ch:fourier}: a fast oscillation integrated against a smooth
 function gives almost nothing. Lemma~\ref{lem:fresnel} of Chapter~\ref{ch:transform} proves the same value another way and uses it to evaluate Gauss sums.
+\end{solution}
+
+\begin{solution}{ex:rw04a}
+\idea The exponential integral is elementary. Its derivative in the parameter is the integral with an extra factor $-x$, once a dominant is in hand.
+\writeup For $a>0$, $\int_0^\infty e^{-ax}\dd x=\frac1a$. Fix $0<a_0\le a\le A$. Then $|xe^{-ax}|\le xe^{-a_0x}$, and $\int_0^\infty xe^{-a_0x}\dd x=\frac1{a_0^2}<\infty$. Theorem~\ref{thm:domination} gives
+\[
+F'(a)=\int_0^\infty -xe^{-ax}\dd x=-\frac1{a^2},
+\]
+so $\int_0^\infty xe^{-ax}\dd x=\frac1{a^2}$. At $a=3$ the integral equals $\frac19=0.111111111111$. The same value comes from one integration by parts, with no parameter: $\int_0^\infty xe^{-3x}\dd x=\bigl[- \frac x3 e^{-3x}\bigr]_0^\infty+\frac13\int_0^\infty e^{-3x}\dd x=\frac19$.
+\end{solution}
+
+\begin{solution}{ex:rw04b}
+\idea Frullani needs only the values of $f$ at $0$ and at infinity. Differentiating in the second scale produces a Gaussian integral you can finish by a substitution.
+\writeup The function $f(x)=e^{-x^2}$ is continuous on $[0,\infty[$, with $f(0)=1$ and $f(\infty)=0$. Theorem~\ref{thm:frullani} gives
+\[
+\int_0^\infty\frac{f(ax)-f(bx)}x\dd x=\ln\frac ba,
+\]
+and $f(ax)=e^{-a^2x^2}$. At $a=1$ and $b=2$ the integral equals $\ln 2=0.693147180560$. For the derivative, take $b\in[b_0,B]$ with $b_0>0$. Then
+\[
+\frac{\partial}{\partial b}\frac{e^{-a^2x^2}-e^{-b^2x^2}}x=2bx\,e^{-b^2x^2},
+\]
+and $|2bx\,e^{-b^2x^2}|\le 2Bx\,e^{-b_0^2x^2}$, which is integrable on $[0,\infty[$. Differentiating $\ln(b/a)$ therefore gives $\int_0^\infty 2bx\,e^{-b^2x^2}\dd x=\frac1b$. The substitution $w=b^2x^2$ has $\dd w=2b^2x\,\dd x$, so $2bx\,\dd x=\dd w/b$ and the integral is $\frac1b\int_0^\infty e^{-w}\dd w=\frac1b$. At $b=2$ both sides equal $\frac12=0.5$.
+\end{solution}
+
+\begin{solution}{ex:rw04c}
+\idea Add the $k=0$ term as a single fraction, then the $k=1$ term, and subtract from $\pi$.
+\writeup The $k=0$ term is $4-\frac24-\frac15-\frac16=\frac{120-15-6-5}{30}=\frac{94}{30}=\frac{47}{15}=3.133333333333$. The $k=1$ term has denominator $16$. The combination inside is $\frac49-\frac16-\frac1{13}-\frac1{14}$. The common denominator $9\cdot2\cdot7\cdot13=1638$ gives
+\[
+\frac{728-273-126-117}{1638}=\frac{212}{1638}=\frac{106}{819},
+\]
+and dividing by $16$ leaves $\frac{53}{6552}$. Now $\frac{47}{15}+\frac{53}{6552}=\frac{102648+265}{32760}=\frac{102913}{32760}=3.141422466422$. Then $\pi-P_1=1.70187167\times10^{-4}$, which is less than $2\times10^{-4}$.
+\end{solution}
+
+\begin{solution}{ex:rw04d}
+\idea The difference of two cosines is an integral of sines. Fubini on a finite rectangle, then the Dirichlet limit, turns that into a length times $\pi/2$.
+\writeup For $u>0$, the substitution $y=ux$ in Theorem~\ref{thm:dirichletint} gives $\int_0^\infty\frac{\sin(ux)}x\dd x=\frac\pi2$. Also $\frac{\partial}{\partial u}\cos(ux)=-x\sin(ux)$, so
+\[
+\cos(ax)-\cos(bx)=\int_a^b x\sin(ux)\dd u
+\]
+when $0\le a<b$, and
+\[
+\frac{\cos(ax)-\cos(bx)}{x^2}=\int_a^b\frac{\sin(ux)}x\dd u.
+\]
+If $a>0$, integrate in $x$ from $0$ to $T$. The integrand $\sin(ux)/x$ extends continuously by the value $u$ at $x=0$, so Theorem~\ref{thm:fubinirect} on $[0,T]\times[a,b]$ gives
+\[
+\int_0^T\frac{\cos(ax)-\cos(bx)}{x^2}\dd x=\int_a^b D_T(u)\dd u,\qquad D_T(u)=\int_0^{uT}\frac{\sin y}y\dd y.
+\]
+The function $D_T$ is bounded by some $B$ independent of $T$ and $u>0$, by the same bound used for $\operatorname{Si}$ in the proof of Theorem~\ref{conjectures:thm:borwein}, and $D_T(u)\to\frac\pi2$ as $T\to\infty$, uniformly for $u\ge a$. So the integral from $0$ to $\infty$ equals $\frac\pi2(b-a)$. If $a=0$, the same identity holds on $[\delta,b]$, and the piece over $[0,\delta]$ is at most $B\delta+\frac\pi2\delta$. Let $T\to\infty$ and then $\delta\to0$. At $a=0$ and $b=2$ the value is $\pi=3.141592653590$. As a second computation of that case, integrate by parts: $\int_0^\infty\frac{1-\cos(2x)}{x^2}\dd x=\int_0^\infty\frac{2\sin(2x)}x\dd x=\int_0^\infty\frac{2\sin y}y\dd y=\pi$.
 \end{solution}
 
 \section*{Sources and further reading}
