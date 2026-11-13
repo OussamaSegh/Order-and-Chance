@@ -1,359 +1,394 @@
 \chapter{The Lebesgue Integral}\label{ch:integral}
 
 \begin{center}\itshape
-To add up a pile of coins, you can take them one by one in the order they lie on the table, or sort them first by value
-and count each kind. Riemann does the first, Lebesgue the second. Why does sorting by value make limits so much
-easier to handle?
+Coins on a table can be added in the order they happen to lie, or sorted into heaps of equal value.\\
+Riemann cuts the axis of \(x\). Lebesgue cuts the axis of the values.\\
+Why does the second cut let a limit pass inside the sum?
 \end{center}
 
+In 1926 Henri Lebesgue lectured in Copenhagen on the way the integral had grown. He asked the audience to picture two merchants counting the day's takings. The first merchant has no system. He adds each coin and each note as it comes to hand. A Riemann sum does the same job on a graph: cut the \(x\)-axis into short pieces and add \(f(x_i)\) times the length. The second merchant sorts the money into heaps of equal value, counts a heap, and multiplies. A Lebesgue sum does that on the graph. The set where \(y_j\le f<y_{j+1}\) may be scattered, and you add \(y_j\) times its measure (Figure~\ref{fig:sums}). Finitely many coins give both merchants the same total. For a function, the sorted count is the one that survives a limit. The wording here is a paraphrase; the lecture is listed in the sources.
 
-In 1926 Henri Lebesgue gave a lecture in Copenhagen on the history of the integral, and explained his own with two merchants counting the day's takings.
-The first has no method. He adds up the coins and notes in the order in which they come to hand. That is Riemann's integral. The second
-sorts the money into heaps of equal value, counts each heap, and multiplies: so many coins of one crown, so many of two, so many of five. That is
-Lebesgue's. Both reach the same total. (This is a paraphrase of the lecture, which is listed in the sources.)
+Riemann's habilitation of 1854 cut the axis of the variable into small intervals and added \(f(x_i)\,\Delta x_i\). Lebesgue cut the axis of the values. A level set may be any measurable set. Two gains follow. The same sentence defines the integral for a length, an area, a probability, or counting measure. And a limit may pass under the integral sign once a mild hypothesis is checked. The indicator of the rationals in \([0,1]\) has upper Darboux sum \(1\) and lower Darboux sum \(0\) for every subdivision, so Riemann's integral refuses it. The Lebesgue integral of that indicator is \(0\).
 
-The joke hides a revolution. Bernhard Riemann (1854) cut the axis of the variable into small intervals and added $f(x_i)\,\Delta x_i$.
-Lebesgue cut the axis of \emph{values}: the level sets $\{y_j\le f<y_{j+1}\}$ can be any measurable sets, wildly scattered, and he
-adds $y_j\,\mu\{y_j\le f<y_{j+1}\}$ (Figure~\ref{fig:sums}). Two things follow. The integral makes sense for any measure: lengths,
-probabilities, counting, areas of surfaces. And limits pass under the integral sign under astonishingly mild conditions. Within
-four years, Beppo Levi (monotone convergence, 1906), Pierre Fatou (his lemma, 1906) and Lebesgue himself (dominated convergence)
-had found the three theorems that every analyst and probabilist now uses daily. Riemann's integral, by comparison, makes you
-check uniform convergence, and still cannot integrate the indicator of the rationals.
+The three theorems that make the integral usable were found soon after. Beppo Levi proved monotone convergence in 1906. For a rising sequence of nonnegative measurable functions, the integral of the limit equals the limit of the integrals, finite or not.
 
-This chapter settles three things that earlier volumes left for it. Volume~1 took the integral of a continuous function on a segment as known, with four working
-rules, and said that Volume~7 would build it. It is built here, and Lebesgue's
-criterion says exactly which bounded functions have a Riemann integral. Volume~4 named uniform integrability and did without it. It is the exact
-condition for passing to the limit in $L^1$ (Vitali's theorem). And Volume~5 differentiated under the integral sign, Feynman's trick, for continuous
-functions with a continuous dominating function. Here the same theorem holds for measurable functions and any measure.
+\portrait{levi}{Beppo Levi (1875--1961). Photograph, early twentieth century, author unknown. Public domain, via Wikimedia Commons.}
+
+Pierre Fatou, also in 1906, proved the inequality for \(\liminf\) that now carries his name. The paper is about trigonometric series and Taylor series.
+
+\portrait{fatou}{Pierre Fatou (1878--1929). Photograph, author unknown. Public domain, via Wikimedia Commons.}
+
+Dominated convergence, the theorem for a signed sequence, was published by Lebesgue in 1908, in a note on Fredholm's equation. He cuts off a set on which the integral of the dominant is smaller than a chosen \(\varepsilon\), and uses bounded convergence on what remains. The proof below goes through Fatou's lemma, and the underlying space is allowed to have infinite measure. These three statements are the ones you will use.
+
+Three debts from earlier volumes are paid here. Volume~1 used the integral of a continuous function on a segment, together with four working rules, and said that Volume~7 would construct it. Theorem~\ref{thm:riemanncont} is that construction. Lebesgue's criterion then names the bounded functions that possess a Riemann integral. Volume~4 named uniform integrability and did not call on it. Vitali's theorem is the exact condition for a limit in \(L^1\). Volume~5 differentiated under the integral sign for continuous integrands with a continuous dominant, the move sometimes called Feynman's trick. Theorem~\ref{thm:parameter} is the same conclusion for measurable functions and an arbitrary measure.
 
 \begin{figure}[ht]
 \centering
 \fig{ch07-sums}
-\caption{Riemann sums (left) cut the horizontal axis into intervals and use rectangles. Lebesgue sums (right) cut the vertical axis into levels $y_j$ and use
-the measure of the set where $f\ge y_j$, a union of intervals here, any measurable set in general: the integral is $\sum_j(y_{j+1}-y_j)\,\mu\{f\ge y_{j+1}\}$ in the limit.}
+\caption{On the left, a Riemann sum cuts the \(x\)-axis into intervals and raises a rectangle on each. On the right, a Lebesgue sum cuts the \(y\)-axis into levels. The set where \(f\ge y_j\) may be a union of intervals, as drawn, or any measurable set. In the limit the integral equals \(\sum_j(y_{j+1}-y_j)\,\mu\{f\ge y_{j+1}\}\).}
 \label{fig:sums}
 \end{figure}
 
 \section{Measurable functions}
 
-Throughout, $(E,\mathcal A,\mu)$ is a measure space. Functions may take the values $\pm\infty$ when this is convenient; $[0,+\infty]$ carries the obvious order and
-topology.
+The integral needs one regularity condition, and it is about level sets. Fix a measure space \((E,\mathcal A,\mu)\). A function may take the values \(\pm\infty\). The set \([0,+\infty]\) carries the order and the topology you expect: neighbourhoods of \(+\infty\) are the sets \((a,+\infty]\).
 
 \begin{definition}
-A function $f:E\to[-\infty,+\infty]$ is \emph{measurable} if $\{f\le t\}\in\mathcal A$ for every real $t$. A \emph{simple} function is a finite linear combination $s=\sum_ia_i\mathbf 1_{A_i}$ of
-indicators of sets $A_i\in\mathcal A$.
+A function \(f:E\to[-\infty,+\infty]\) is \emph{measurable} when \(\{f\le t\}\in\mathcal A\) for every real \(t\). A \emph{simple} function is a finite sum \(s=\sum_ia_i\mathbf 1_{A_i}\) with each \(A_i\in\mathcal A\).
 \end{definition}
 
-As noted in Chapter~\ref{ch:measures}, $f$ is then measurable for the full Borel $\sigma$-algebra ($\{f\in B\}\in\mathcal A$ for Borel $B$), and continuous functions of measurable functions are
-measurable. Indeed the class of $B$ with $\{f\in B\}\in\mathcal A$ is a $\sigma$-algebra containing the half-lines, and if $g:\R^n\to\R$ is continuous, $\{g(f_1,\dots,f_n)<t\}$ is the
-preimage of an open set of $\R^n$, a countable union of boxes, each of which pulls back to a finite intersection of sets $\{a_i<f_i\le b_i\}$.
+Chapter~\ref{ch:measures} already records the consequence for Borel sets. The family of Borel sets \(B\) such that \(\{f\in B\}\in\mathcal A\) is a \(\sigma\)-algebra, and it contains every half-line \((-\infty,t]\), so it contains every Borel set. Thus \(\{f\in B\}\in\mathcal A\) whenever \(B\) is Borel. Continuous functions preserve this. If \(g:\R^n\to\R\) is continuous and \(f_1,\dots,f_n\) are measurable and real-valued, then \(\{g(f_1,\dots,f_n)<t\}\) is the preimage of an open set. An open set in \(\R^n\) is a countable union of boxes, and the preimage of a box \(\prod_i\,]a_i,b_i]\) is a finite intersection of sets \(\{a_i<f_i\le b_i\}\). Each of those is a difference of sets \(\{f_i\le b_i\}\) and \(\{f_i\le a_i\}\).
 
 \begin{proposition}\label{prop:measurablefns}
 \begin{enumerate}[label=(\alph*)]
-\item Sums, products, maxima and minima of finitely many real measurable functions are measurable, and so are $f^+=\max(f,0)$, $f^-=\max(-f,0)$ and $|f|$.
-\item If $f_n$ are measurable, so are $\sup_nf_n$, $\inf_nf_n$, $\limsup_nf_n$, $\liminf_nf_n$, and $\lim_nf_n$ where it exists.
-\item If $f\ge0$ is measurable, the simple functions $s_n=\min\bigl(n,2^{-n}\lfloor2^nf\rfloor\bigr)$ are measurable, satisfy $0\le s_1\le s_2\le\cdots$, and $s_n\to f$ pointwise; uniformly if $f$
+\item Sums, products, maxima and minima of finitely many real measurable functions are measurable, and so are \(f^+=\max(f,0)\), \(f^-=\max(-f,0)\) and \(|f|\).
+\item If \(f_n\) are measurable, so are \(\sup_nf_n\), \(\inf_nf_n\), \(\limsup_nf_n\), \(\liminf_nf_n\), and \(\lim_nf_n\) where it exists.
+\item If \(f\ge0\) is measurable, the simple functions \(s_n=\min\bigl(n,2^{-n}\lfloor2^nf\rfloor\bigr)\) are measurable, satisfy \(0\le s_1\le s_2\le\cdots\), and \(s_n\to f\) pointwise; uniformly if \(f\)
 is bounded.
 \end{enumerate}
 \end{proposition}
 \begin{proof}
-(a) Continuous functions of measurable functions. (b) $\{\sup_nf_n\le t\}=\bigcap_n\{f_n\le t\}$; $\inf_nf_n=-\sup_n(-f_n)$; $\limsup_n=\inf_m\sup_{n\ge m}$; the set where the limit exists is
-$\{\limsup=\liminf\}$, measurable. (c) $s_n$ takes the values $k2^{-n}$, $0\le k\le n2^n$, on the measurable sets $\{k2^{-n}\le f<(k+1)2^{-n}\}$ (and $n$ on $\{f\ge n\}$). Passing from $n$ to $n+1$
-halves the grid and raises the cap, so $s_n\le s_{n+1}$. Where $f(x)<n$, $0\le f(x)-s_n(x)<2^{-n}$; where $f(x)=+\infty$, $s_n(x)=n$.
+(a) Sum, product, max and min are continuous functions of the tuple, and so are \(t\mapsto\max(t,0)\), \(t\mapsto\max(-t,0)\) and \(t\mapsto|t|\). The paragraph above applies.
+
+(b) The inequality \(\sup_nf_n\le t\) holds exactly on \(\bigcap_n\{f_n\le t\}\). Also \(\inf_nf_n=-\sup_n(-f_n)\), and \(\limsup_nf_n=\inf_m\sup_{n\ge m}f_n\). The limit exists precisely on the measurable set \(\{\limsup_nf_n=\liminf_nf_n\}\).
+
+(c) The value \(s_n(x)\) equals \(k2^{-n}\) for some integer \(k\) with \(0\le k\le n2^n\), on the measurable set \(\{k2^{-n}\le f<(k+1)2^{-n}\}\), and equals \(n\) on \(\{f\ge n\}\). To see the sequence rise, write \(m=\lfloor2^nf(x)\rfloor\), so \(2m\le2^{n+1}f(x)<2m+2\). Then \(\lfloor2^{n+1}f(x)\rfloor\ge2m\), and the value at stage \(n+1\) before the cap is at least the value at stage \(n\) before the cap. The cap itself rises from \(n\) to \(n+1\). If stage \(n\) is already capped, then \(f(x)\ge n\), so the stage \(n+1\) value is at least \(n\). Thus \(s_n\le s_{n+1}\). Where \(f(x)\) is finite and \(f(x)<n\), one has \(0\le f(x)-s_n(x)<2^{-n}\). Where \(f(x)=+\infty\), one has \(s_n(x)=n\). If \(0\le f\le M\), then for every \(n>M\) the error is less than \(2^{-n}\) at every \(x\), so the convergence is uniform.
 \end{proof}
 
-\section{The integral and the three convergence theorems}
+\section{The integral, and passing to the limit}
+
+A simple function is a finite list of heights and measurable heaps. Add height times measure. For a general nonnegative measurable function, take every simple function underneath it and keep the least upper bound of those sums.
 
 \begin{definition}
-For a simple $s=\sum_ia_i\mathbf 1_{A_i}\ge0$ with disjoint $A_i$, let $\int s\,d\mu=\sum_ia_i\mu(A_i)$ (with $0\cdot\infty=0$). For a measurable $f\ge0$, let
+For a simple \(s=\sum_ia_i\mathbf 1_{A_i}\ge0\) with the sets \(A_i\) disjoint, set \(\int s\,d\mu=\sum_ia_i\mu(A_i)\), using the convention \(0\cdot\infty=0\). For a measurable \(f\ge0\), set
 \[\int f\,d\mu=\sup\Bigl\{\int s\,d\mu:\ s\text{ simple},\ 0\le s\le f\Bigr\}\in[0,+\infty].\]
-For $A\in\mathcal A$, $\int_Af\,d\mu=\int f\mathbf 1_A\,d\mu$.
+For \(A\in\mathcal A\), write \(\int_Af\,d\mu=\int f\mathbf 1_A\,d\mu\).
 \end{definition}
 
-The integral of a simple function does not depend on how it is written: two representations with disjoint sets have a common refinement (the
-intersections $A_i\cap B_j$), on which both sums agree. It is linear and monotone on simple functions (compute on a common refinement), so the two
-definitions agree for simple $f$, and $f\le g$ implies $\int f\le\int g$.
+The product \(0\cdot\infty\) is \(0\) because a zero height contributes nothing, however large the set. The number \(\int s\,d\mu\) does not depend on the way \(s\) is written. If \(s=\sum_ia_i\mathbf 1_{A_i}=\sum_jb_j\mathbf 1_{B_j}\) with both families disjoint, the intersections \(A_i\cap B_j\) refine both partitions. On a nonempty intersection the two coefficients agree, and both sums become \(\sum_{i,j}a_i\mu(A_i\cap B_j)\). On a common refinement, the integral of a sum of two nonnegative simple functions is the sum of the integrals, and \(0\le s\le t\) implies \(\int s\le\int t\). So the supremum definition agrees with the finite sum when \(f\) itself is simple and nonnegative. The same comparison gives \(f\le g\Rightarrow\int f\le\int g\).
 
-Here is the first of the three theorems, and the engine of the other two. If the functions only go up, nothing can go wrong:
-the integral of the limit is the limit of the integrals, even when both are infinite.
+Figure~\ref{fig:v7c08slices} is one such pair. The coral graph is \(f\). The charcoal steps are one simple \(s\le f\). Reading the picture in horizontal bands, rather than in vertical strips, is the whole of the definition.
+
+\begin{figure}[ht]
+\centering
+\fig{ch08-rw-slices}
+\caption{The charcoal steps are a simple function \(s\) under the coral graph \(f\). Each shaded band is one horizontal slice: its thickness times the length of the set where \(s\) clears the bottom of the band is the contribution of that slice to \(\int s\). The integral of \(f\) is the least upper bound of these sums, over every simple \(s\) with \(0\le s\le f\).}
+\label{fig:v7c08slices}
+\end{figure}
+
+The first convergence theorem is the engine of the other two. When the functions only rise, mass cannot disappear. The integrals rise to the integral of the limit, and both sides may be infinite.
 
 \begin{theorem}[monotone convergence]\label{thm:mct6}
-If $0\le f_1\le f_2\le\cdots$ are measurable and $f_n\to f$ pointwise, then $\int f_n\,d\mu\to\int f\,d\mu$.
+If \(0\le f_1\le f_2\le\cdots\) are measurable and \(f_n\to f\) pointwise, then \(\int f_n\,d\mu\to\int f\,d\mu\).
 \end{theorem}
 \begin{proof}
-$f$ is measurable, and $\int f_n$ increases to a limit $L\le\int f$. Conversely let $s=\sum_ia_i\mathbf 1_{A_i}\le f$ be simple and $c\in\,]0,1[$. The sets $E_n=\{f_n\ge cs\}$ increase to $E$: at a point
-where $s(x)>0$, $f_n(x)\to f(x)\ge s(x)>cs(x)$, and where $s(x)=0$ every $E_n$ contains $x$. So $\int f_n\ge\int cs\mathbf 1_{E_n}=c\sum_ia_i\mu(A_i\cap E_n)\to c\int s$ by continuity from below.
-Hence $L\ge c\int s$; let $c\to1$ and take the supremum over $s$.
+Proposition~\ref{prop:measurablefns}(b) makes \(f\) measurable. The integrals \(\int f_n\) increase, and the inequality \(f_n\le f\) forces their limit \(L\) to satisfy \(L\le\int f\).
+
+For the reverse, take a simple \(s=\sum_ia_i\mathbf 1_{A_i}\) with \(0\le s\le f\) and the sets \(A_i\) disjoint, and fix \(c\in\,]0,1[\). The sets \(E_n=\{f_n\ge cs\}\) increase. Their union is all of \(E\). Where \(s(x)>0\), one has \(f_n(x)\to f(x)\ge s(x)>cs(x)\), so \(x\) eventually lies in \(E_n\). Where \(s(x)=0\), every \(E_n\) contains \(x\). Thus
+\[
+\int f_n\ge\int cs\mathbf 1_{E_n}=c\sum_ia_i\mu(A_i\cap E_n).
+\]
+Continuity from below (Proposition~\ref{prop:measureprops}(c)) sends \(\mu(A_i\cap E_n)\) to \(\mu(A_i)\), so the right-hand side tends to \(c\int s\). Hence \(L\ge c\int s\). Let \(c\uparrow1\), then take the supremum over \(s\). Both steps are valid in \([0,+\infty]\).
 \end{proof}
 
+A one-line check: \(f_n=\mathbf 1_{[0,1-1/n]}\) increases to \(\mathbf 1_{[0,1)}\), and the integrals \(1-1/n\) tend to \(1\).
+
 \begin{corollary}\label{cor:linearity6}
-For measurable $f,g\ge0$ and $a,b\ge0$, $\int(af+bg)=a\int f+b\int g$. For measurable $f_n\ge0$, $\int\sum_nf_n=\sum_n\int f_n$. If $f\ge0$, then $\nu(A)=\int_Af\,d\mu$ is a measure.
+For measurable \(f,g\ge0\) and \(a,b\ge0\), \(\int(af+bg)=a\int f+b\int g\). For measurable \(f_n\ge0\), \(\int\sum_nf_n=\sum_n\int f_n\). If \(f\ge0\), then \(\nu(A)=\int_Af\,d\mu\) is a measure.
 \end{corollary}
 \begin{proof}
-Approximate $f$ and $g$ by increasing simple functions (Proposition~\ref{prop:measurablefns}(c)); linearity holds for simple functions and passes to the limit by
-monotone convergence. The series is the increasing limit of its partial sums. For $\nu$, apply the series statement to $f\mathbf 1_{A_k}$ for disjoint $A_k$.
+Proposition~\ref{prop:measurablefns}(c) supplies simple functions increasing to \(f\) and to \(g\). Their linear combination increases to \(af+bg\). The identity holds for simple functions, and monotone convergence passes it to the limit. The partial sums of \(\sum_nf_n\) increase to the sum, so the series form is another case of the theorem. For \(\nu\), apply that series form to the functions \(f\mathbf 1_{A_k}\) with the \(A_k\) disjoint: their sum is \(f\mathbf 1_{\bigcup A_k}\).
 \end{proof}
 
 \begin{proposition}\label{prop:markov}
-Let $f\ge0$ be measurable. (a) (Markov) $\mu(f\ge t)\le\frac1t\int f\,d\mu$ for $t>0$. (b) $\int f=0$ iff $f=0$ a.e. (c) If $\int f<\infty$, then $f<\infty$ a.e. (d) If $f=g$ a.e., then
-$\int f=\int g$.
+Let \(f\ge0\) be measurable. (a) (Markov) \(\mu(f\ge t)\le\frac1t\int f\,d\mu\) for \(t>0\). (b) \(\int f=0\) iff \(f=0\) a.e. (c) If \(\int f<\infty\), then \(f<\infty\) a.e. (d) If \(f=g\) a.e., then
+\(\int f=\int g\).
 \end{proposition}
 \begin{proof}
-(a) $t\mathbf 1_{\{f\ge t\}}\le f$. (b) If $\int f=0$, (a) gives $\mu(f\ge\frac1k)=0$ for all $k$, and $\{f>0\}=\bigcup_k\{f\ge\frac1k\}$. Conversely if $f=0$ a.e., every simple $s\le f$ vanishes a.e. and has
-integral $0$. (c) $\mu(f=\infty)\le\mu(f\ge t)\le\frac1t\int f$ for all $t$. (d) Let $N$ be null with $f=g$ off $N$; then $\int f=\int f\mathbf 1_{N^c}+\int f\mathbf 1_N=\int f\mathbf 1_{N^c}$ by (b), and the same
-for $g$.
+(a) The inequality \(t\mathbf 1_{\{f\ge t\}}\le f\) integrates to the claim.
+
+(b) If \(\int f=0\), part (a) yields \(\mu(f\ge1/k)=0\) for every \(k\ge1\). The set \(\{f>0\}\) is the union of these null sets. Conversely, if \(f=0\) almost everywhere, every simple \(s\) with \(0\le s\le f\) vanishes almost everywhere, so each term \(a_i\mu(A_i)\) in its integral is \(0\). The supremum is \(0\).
+
+(c) For every \(t>0\), \(\mu(f=\infty)\le\mu(f\ge t)\le t^{-1}\int f\). The right-hand side tends to \(0\) as \(t\to\infty\).
+
+(d) Let \(N\) be a null set with \(f=g\) off \(N\). Corollary~\ref{cor:linearity6} splits the integral into \(N\) and its complement. The function \(f\mathbf 1_N\) is \(0\) almost everywhere, so part (b) gives \(\int f\mathbf 1_N=0\). The same holds for \(g\), and \(f\mathbf 1_{N^c}=g\mathbf 1_{N^c}\).
 \end{proof}
+
+Markov is sharp enough to be useful and too crude to be the last word. For \(f=\mathbf 1_{[0,1]}\) and \(t=\frac12\), the set \(\{f\ge t\}\) has measure \(1\), while \(t^{-1}\int f=2\). The inequality reads \(1\le2\).
 
 \begin{theorem}[Fatou's lemma]\label{thm:fatou6}
-For measurable $f_n\ge0$, $\int\liminf_nf_n\,d\mu\le\liminf_n\int f_n\,d\mu$.
+For measurable \(f_n\ge0\), \(\int\liminf_nf_n\,d\mu\le\liminf_n\int f_n\,d\mu\).
 \end{theorem}
 \begin{proof}
-$g_m=\inf_{n\ge m}f_n$ increases to $\liminf_nf_n$, and $\int g_m\le\int f_n$ for every $n\ge m$, so $\int g_m\le\inf_{n\ge m}\int f_n$. Let $m\to\infty$ and use monotone convergence.
+The functions \(g_m=\inf_{n\ge m}f_n\) increase to \(\liminf_nf_n\), and \(g_m\le f_n\) whenever \(n\ge m\), so \(\int g_m\le\inf_{n\ge m}\int f_n\). Let \(m\to\infty\) and apply monotone convergence on the left.
 \end{proof}
+
+Fatou gives an inequality, and the inequality can be strict. The spikes below have left side \(0\) and right side \(1\).
+
+A complex-valued function is called measurable when its real and imaginary parts are measurable. Then \(|f|\), \(\operatorname{Re}f\) and \(\operatorname{Im}f\) are measurable.
 
 \begin{definition}
-A measurable $f:E\to\R$ (or $\C$) is \emph{integrable} if $\int|f|\,d\mu<\infty$; then $\int f=\int f^+-\int f^-$ for real $f$, and $\int f=\int\operatorname{Re}f+i\int\operatorname{Im}f$ for complex $f$. The integrable functions
-form a vector space $\mathcal L^1(\mu)$, on which $f\mapsto\int f$ is linear and $|\int f|\le\int|f|$.
+A measurable \(f:E\to\R\) (or \(\C\)) is \emph{integrable} when \(\int|f|\,d\mu<\infty\). One then sets \(\int f=\int f^+-\int f^-\) for real \(f\), and \(\int f=\int\operatorname{Re}f+i\int\operatorname{Im}f\) for complex \(f\). The integrable functions
+form a vector space \(\mathcal L^1(\mu)\), on which \(f\mapsto\int f\) is linear and \(|\int f|\le\int|f|\).
 \end{definition}
 
-Linearity follows from Corollary~\ref{cor:linearity6}: if $h=f+g$, then $h^++f^-+g^-=h^-+f^++g^+$, and one integrates both sides. For $|\int f|\le\int|f|$ with complex $f$, choose $|c|=1$
-with $c\int f=|\int f|$; then $|\int f|=\int\operatorname{Re}(cf)\le\int|f|$.
+The real case of linearity comes from Corollary~\ref{cor:linearity6}. If \(h=f+g\), the nonnegative functions \(h^++f^-+g^-\) and \(h^-+f^++g^+\) agree at every point, because their difference is \(h-(f+g)=0\). Integrate both sides and rearrange. Each piece has a finite integral, since it is at most \(|f|+|g|\). For a scalar \(c\ge0\), \((cf)^+=cf^+\) and \((cf)^-=cf^-\). For \(c<0\) the two parts exchange, and a minus sign comes out. For a complex integrand, split into real and imaginary parts. In particular \(\int(if)=i\int f\), because \(i(u+iv)=-v+iu\).
+
+For the absolute-value inequality with complex \(f\), choose a complex number \(c\) with \(|c|=1\) and \(c\int f=|\int f|\). Then \(|\int f|=\operatorname{Re}(c\int f)=\int\operatorname{Re}(cf)\le\int|cf|=\int|f|\).
+
+% MATHFIX: Theorems thm:dct6, thm:vitali7 and thm:parameter conclude that a limit function is integrable, without a measurability hypothesis on that limit. A general measure space need not be complete, so altering a function on a non-measurable subset of a null set can destroy measurability, and the integral is then undefined. The proofs use the measurable function that agrees with the limit off one null set. Integrals of the given sequence do not change.
 
 \begin{theorem}[dominated convergence]\label{thm:dct6}
-Let $f_n$ be measurable with $f_n\to f$ a.e., and $|f_n|\le g$ a.e. for an integrable $g$. Then $f$ is integrable, $\int|f_n-f|\,d\mu\to0$, and $\int f_n\to\int f$.
+Let \(f_n\) be measurable with \(f_n\to f\) a.e., and \(|f_n|\le g\) a.e.\ for an integrable \(g\). Then \(f\) is integrable, \(\int|f_n-f|\,d\mu\to0\), and \(\int f_n\to\int f\).
 \end{theorem}
 \begin{proof}
-Changing everything on a null set (Proposition~\ref{prop:markov}(d)), we may assume convergence and domination everywhere. Then $|f|\le g$, and $2g-|f_n-f|\ge0$. By
-Fatou, $\int2g\le\liminf_n\int(2g-|f_n-f|)=\int2g-\limsup_n\int|f_n-f|$. Since $\int g<\infty$, $\limsup_n\int|f_n-f|\le0$. Finally $|\int f_n-\int f|\le\int|f_n-f|$.
+Let \(N\) be a null set off which \(f_n(x)\to f(x)\) and \(|f_n(x)|\le g(x)\). Replace \(f_n\) and \(g\) by \(0\) on \(N\), and define \(\varphi\) to be \(\lim_nf_n\) off \(N\) and \(0\) on \(N\). For a complex sequence, do this separately for the real and imaginary parts. The new functions are measurable, \(f_n\to\varphi\) at every point, and \(|f_n|\le g\) at every point. Proposition~\ref{prop:markov}(d) says that the integrals are the same as before the replacement. In particular \(|\varphi|\le g\), so \(\varphi\) is integrable, and the nonnegative function \(2g-|f_n-\varphi|\) is available for Fatou's lemma:
+\[
+\int 2g\le\liminf_n\int\bigl(2g-|f_n-\varphi|\bigr)=\int 2g-\limsup_n\int|f_n-\varphi|.
+\]
+The number \(\int g\) is finite, so the \(\int 2g\) terms cancel and \(\limsup_n\int|f_n-\varphi|\le0\). Thus \(\int|f_n-\varphi|\to0\). The triangle inequality \(|\int f_n-\int\varphi|\le\int|f_n-\varphi|\) gives \(\int f_n\to\int\varphi\).
+
+If the function \(f\) in the statement is measurable, then \(f=\varphi\) almost everywhere, and Proposition~\ref{prop:markov}(d) identifies the integrals of \(f\) with those of \(\varphi\).
 \end{proof}
 
-A finite measure space allows constants as dominating functions: \emph{bounded convergence} is the case $g=M$ with $\mu(E)<\infty$. Counting measure on $\N$ turns integrals
-into series, and the three theorems into statements about series: $\sum_k\lim_na_{n,k}=\lim_n\sum_ka_{n,k}$ when $|a_{n,k}|\le b_k$ with $\sum_kb_k<\infty$ (Tannery's theorem).
+On a finite measure space a constant is integrable. \emph{Bounded convergence} is the case \(g=M\) with \(\mu(E)<\infty\): a uniformly bounded sequence that converges almost everywhere may pass inside the integral. Counting measure on \(\N\) turns integrals into series, and the three theorems into theorems about series. The dominated case is Tannery's theorem. If \(a_{n,k}\to a_k\) and \(|a_{n,k}|\le b_k\) with \(\sum_kb_k<\infty\), then \(\sum_k\lim_na_{n,k}=\lim_n\sum_ka_{n,k}\).
 
 \begin{think}
-Let $f_n=n\mathbf 1_{]0,\frac1n[}$ on $[0,1]$ with Lebesgue measure. Then $f_n\to0$ everywhere, and $\int f_n=1$ for all $n$. Which hypothesis of each theorem fails?
+Let \(f_n=n\mathbf 1_{]0,1/n[}\) on \([0,1]\) with Lebesgue measure. Then \(f_n(x)\to0\) at every \(x\), while \(\int f_n=1\) for every \(n\). Which hypothesis of each of the three theorems fails?
 \end{think}
 
-Monotone convergence does not apply ($f_n$ is not increasing), Fatou applies and is strict ($0<1$), and dominated convergence fails because $\sup_nf_n$, which is about
-$\frac1x$, is not integrable. The mass $1$ escapes into the point $0$, where the limit cannot see it (Figure~\ref{fig:escape}). Section~\ref{sec:ui} makes ``no mass escapes'' precise.
+Figure~\ref{fig:v7c08nodom} draws \(n=1,2,4\). Each block has area \(1\). At a fixed \(x>0\) only the blocks with \(1/n>x\) cover \(x\), so the pointwise limit is \(0\) and the integral of the limit is \(0\). The sequence is not increasing. At \(x=\frac12\) one has \(f_1\bigl(\frac12\bigr)=1\) and \(f_n\bigl(\frac12\bigr)=0\) for every \(n\ge2\). Fatou's lemma does apply, and it is strict, since \(0<1\). Dominated convergence asks for one integrable \(g\) with \(f_n\le g\) for every \(n\). The outer corner \((1/n,n)\) lies on \(y=1/x\). On \(]0,\frac12]\) the tallest block at \(x\) has height at least \(1/(2x)\): if \(y=1/x\ge2\) and \(m\) is the greatest integer strictly less than \(y\), then \(m\ge y-1\ge y/2\) and \(f_m(x)=m\). The integral of \(1/(2x)\) over \(]0,\frac12]\) diverges, so no integrable \(g\) sits above every block. The mass \(1\) slips toward the point \(0\), where the limit cannot see it. Section~\ref{sec:ui} turns ``no mass escapes'' into a definition, and Figure~\ref{fig:escape} compares these spikes with a family whose integrals do go to \(0\).
 
-\section{Riemann's integral and Lebesgue's criterion}
+\begin{figure}[ht]
+\centering
+\fig{ch08-rw-nodom}
+\caption{Charcoal blocks: \(f_n=n\mathbf 1_{]0,1/n[}\) for \(n=1,2,4\). Each block has area \(1\), and \(f_n(x)\to0\) for every \(x>0\), so the integral of the limit is \(0\). The coral curve \(y=1/x\) passes through the outer corner of each block. On \(]0,1/2]\) the tallest block is at least \(1/(2x)\), which is not integrable. Dominated convergence has nothing to dominate with, and the integrals stay at \(1\).}
+\label{fig:v7c08nodom}
+\end{figure}
 
-Let $f:[a,b]\to\R$ be bounded. For a subdivision $P:a=x_0<x_1<\cdots<x_n=b$, the lower and upper \emph{Darboux sums} are
+\section{Riemann's integral, and the criterion}
+
+The comparison with Riemann starts from Darboux sums. Let \(f:[a,b]\to\R\) be bounded. For a subdivision \(P:a=x_0<x_1<\cdots<x_n=b\), the lower and upper sums are
 \[L(f,P)=\sum_i(x_i-x_{i-1})\inf_{[x_{i-1},x_i]}f,\qquad U(f,P)=\sum_i(x_i-x_{i-1})\sup_{[x_{i-1},x_i]}f.\]
-Refining $P$ raises $L$ and lowers $U$, and $L(f,P)\le U(f,P')$ for any $P,P'$ (compare both with the common refinement). The function $f$ is \emph{Riemann integrable} if
-$\sup_PL(f,P)=\inf_PU(f,P)$, the common value being $\int_a^bf$. Every Riemann sum $\sum_i(x_i-x_{i-1})f(c_i)$, with $c_i$ in the $i$-th interval, lies between $L(f,P)$ and $U(f,P)$, so for an integrable $f$ the Riemann sums of Volume~1 tend to the same number when the subdivision is refined.
+Refining \(P\) raises \(L\) and lowers \(U\). For any two subdivisions, \(L(f,P)\le U(f,P')\), because both sums sit on the correct side of the sums for the common refinement. The function \(f\) is \emph{Riemann integrable} when \(\sup_PL(f,P)=\inf_PU(f,P)\). The common value is written \(\int_a^bf\). Every Riemann sum \(\sum_i(x_i-x_{i-1})f(c_i)\), with \(c_i\) in the \(i\)-th interval, lies between \(L(f,P)\) and \(U(f,P)\). So once \(f\) is Riemann integrable, the Riemann sums of Volume~1 approach the same number as the mesh of \(P\) tends to \(0\).
 
 \begin{think}
-Is the indicator of $\Q\cap[0,1]$ integrable? Compute its lower and upper Darboux sums for any subdivision, then its Lebesgue integral. Which of the two integrals
-can tell that $\Q$ is ``small''?
+Take the indicator of \(\Q\cap[0,1]\). For an arbitrary subdivision, what are the lower and upper Darboux sums? What is the Lebesgue integral? Which of the two integrals can tell that \(\Q\) is small?
 \end{think}
+
+On every subinterval the infimum of this indicator is \(0\) and the supremum is \(1\), because every interval contains both rationals and irrationals. The lower sum is \(0\) and the upper sum is \(1\). The Lebesgue integral is \(0\), since the function vanishes almost everywhere. Lebesgue's integral sees the smallness. Riemann's sums do not.
 
 \begin{theorem}[the integral of a continuous function]\label{thm:riemanncont}
-A continuous $f:[a,b]\to\R$ is Riemann integrable. The integral is linear, monotone, additive over adjacent intervals, and $\int_a^bc=c(b-a)$.
+A continuous \(f:[a,b]\to\R\) is Riemann integrable. The integral is linear, monotone, additive over adjacent intervals, and \(\int_a^bc=c(b-a)\).
 \end{theorem}
 \begin{proof}
-By Heine's theorem (Theorem~\ref{thm:heine}), for $\varepsilon>0$ there is $\delta>0$ with $|f(x)-f(y)|<\varepsilon$ when $|x-y|<\delta$. If all intervals of $P$ are shorter than $\delta$, then on each of them
-$\sup f-\inf f\le\varepsilon$, so $U(f,P)-L(f,P)\le\varepsilon(b-a)$. Hence $\sup L=\inf U$. Monotonicity and $\int c=c(b-a)$ are clear from the sums, and additivity from subdivisions that contain the
-common endpoint. For linearity, $L(f,P)+L(g,P)\le L(f+g,P)\le U(f+g,P)\le U(f,P)+U(g,P)$, and $L(cf,P)=cL(f,P)$ for $c\ge0$ (with $U$ and $L$ exchanged for $c<0$).
+Heine's theorem (Theorem~\ref{thm:heine}) supplies, for each \(\varepsilon>0\), a \(\delta>0\) such that \(|x-y|<\delta\) implies \(|f(x)-f(y)|<\varepsilon\). If every interval of \(P\) is shorter than \(\delta\), then on each of them \(\sup f-\inf f\le\varepsilon\), so \(U(f,P)-L(f,P)\le\varepsilon(b-a)\). Always \(\sup_PL\le\inf_PU\). The gap between them is at most \(\varepsilon(b-a)\) for every \(\varepsilon>0\), so the two numbers agree.
+
+The equalities \(\int_a^bc=c(b-a)\) and monotonicity are immediate from the sums: a larger function has larger infima and suprema. For additivity, a subdivision of \([a,c]\) joined to a subdivision of \([c,b]\) is a subdivision of \([a,b]\), and the sums add. For linearity, \(\inf f+\inf g\le\inf(f+g)\le\sup(f+g)\le\sup f+\sup g\), so
+\[
+L(f,P)+L(g,P)\le L(f+g,P)\le U(f+g,P)\le U(f,P)+U(g,P).
+\]
+If \(c\ge0\), then \(L(cf,P)=cL(f,P)\) and \(U(cf,P)=cU(f,P)\). If \(c<0\), infima and suprema exchange, and the common value of \(\sup L\) and \(\inf U\) is multiplied by \(c\).
 \end{proof}
 
-This is the integral that Volume~1 used. Everything there (the fundamental theorem of calculus, integration by parts, Taylor's formula) was
-derived from the four properties listed in the theorem, so it now stands on a proof. Now compare with Lebesgue's integral against $\lambda$ on $[a,b]$.
+This is the integral Volume~1 used. The fundamental theorem, integration by parts, and Taylor's formula with remainder were derived there from the four properties in the theorem, so those arguments now rest on a proof given here. The next theorem compares that integral with \(\int_{[a,b]}f\,d\lambda\).
 
 \begin{theorem}[Lebesgue, 1902]\label{thm:lebesguecriterion}
-A bounded function $f:[a,b]\to\R$ is Riemann integrable iff the set of its points of discontinuity is null. Then $f$ is Lebesgue measurable and
-$\int_a^bf=\int_{[a,b]}f\,d\lambda$.
+A bounded function \(f:[a,b]\to\R\) is Riemann integrable iff the set of its points of discontinuity is null. Then \(f\) is Lebesgue measurable and
+\(\int_a^bf=\int_{[a,b]}f\,d\lambda\).
 \end{theorem}
 \begin{proof}
-Let $P_n$ be the subdivision of $[a,b]$ into $2^n$ equal intervals, and $\ell_n$, $u_n$ the step functions equal on each open interval of $P_n$ to the infimum and the supremum of $f$ on
-its closure (and to $f$ at the points of $P_n$). Then $\ell_n\le f\le u_n$, $\ell_n$ increases and $u_n$ decreases, to limits $\ell\le f\le u$, Borel functions, and since $|f|\le M$, dominated convergence
-gives $\int\ell_n\,d\lambda=L(f,P_n)\to\int\ell\,d\lambda$ and $U(f,P_n)\to\int u\,d\lambda$.
+Let \(P_n\) cut \([a,b]\) into \(2^n\) equal intervals. On each open interval of \(P_n\), let \(\ell_n\) equal the infimum of \(f\) on the corresponding closed interval, and let \(u_n\) equal the supremum. At the finitely many grid points, set both functions equal to \(f\). Then \(\ell_n\le f\le u_n\). Refinement makes \(\ell_n\) increase and \(u_n\) decrease. The limits \(\ell\le f\le u\) are Borel measurable, being pointwise limits of the step functions \(\ell_n\) and \(u_n\). If \(|f|\le M\), the constant \(M\) is integrable on \([a,b]\). Dominated convergence gives \(\int\ell_n\,d\lambda=L(f,P_n)\to\int\ell\,d\lambda\) and \(U(f,P_n)\to\int u\,d\lambda\). The grid points do not affect the integrals.
 
-\emph{Step 1: $f$ is Riemann integrable iff $U(f,P_n)-L(f,P_n)\to0$.} If so, $\sup L=\inf U$. Conversely, let $P$ have $m$ interior points with $U(f,P)-L(f,P)<\varepsilon$. An interval of
-$P_n$ that contains no point of $P$ lies inside an interval of $P$; at most $2m$ intervals of $P_n$ contain a point of $P$, and on each of those $\sup f-\inf f\le2M$. Comparing with the common
-refinement $P\cup P_n$, $U(f,P_n)-L(f,P_n)\le U(f,P)-L(f,P)+2m\cdot2M\frac{b-a}{2^n}<2\varepsilon$ for $n$ large.
+\emph{Step 1: \(f\) is Riemann integrable if and only if \(U(f,P_n)-L(f,P_n)\to0\).} Suppose the difference tends to \(0\). For an arbitrary subdivision \(P\) and every \(n\), \(L(f,P)\le U(f,P_n)\), so \(L(f,P)\le\lim_nU(f,P_n)\). Hence \(\sup L\le\lim U(f,P_n)\). The same limit equals \(\lim L(f,P_n)\), which is at most \(\sup L\). The matching argument for upper sums gives \(\sup L=\inf U\).
 
-\emph{Step 2: off the countable set $D=\bigcup_nP_n$, $f$ is continuous at $x$ iff $\ell(x)=u(x)$.} For $x\notin D$, the interval of $P_n$ containing $x$ is a neighbourhood of $x$ shrinking to $x$. If
-$f$ is continuous at $x$, $\sup f-\inf f$ on these intervals tends to $0$, so $u(x)=\ell(x)$. If $u(x)-\ell(x)<\varepsilon$, then for $n$ large, $\sup f-\inf f<\varepsilon$ on a neighbourhood of $x$: the
-oscillation of $f$ at $x$ is less than $\varepsilon$; so $u(x)=\ell(x)$ means continuity at $x$.
+Conversely, suppose some subdivision \(P\) satisfies \(U(f,P)-L(f,P)<\varepsilon\), and let \(P\) have \(m\) division points strictly between \(a\) and \(b\). An interval of \(P_n\) that contains none of the \(m+2\) points of \(P\) (the endpoints included) lies inside one interval of \(P\), so its contribution to \(U-L\) is at most the contribution of that interval of \(P\). Each point of \(P\) lies in at most two intervals of \(P_n\), so at most \(2(m+2)\) intervals of \(P_n\) meet \(P\). On each of those, \(\sup f-\inf f\le2M\), and the length is \((b-a)2^{-n}\). Therefore
+\[
+U(f,P_n)-L(f,P_n)\le U(f,P)-L(f,P)+2(m+2)\cdot2M\cdot\frac{b-a}{2^n}.
+\]
+For large \(n\) the second term is less than \(\varepsilon\), and the difference of Darboux sums is less than \(2\varepsilon\).
 
-\emph{Conclusion.} By Step~1 and the two limits found at the start, $f$ is Riemann integrable iff $\int(u-\ell)\,d\lambda=0$, iff $u=\ell$ a.e. (Proposition~\ref{prop:markov}(b)), iff, by Step~2 and since $D$ is countable,
-$f$ is continuous a.e. Then $\ell=f=u$ a.e.; $f$ differs from the Borel function $\ell$ on a subset of a null set, so it is Lebesgue measurable, and
-$\int_a^bf=\lim L(f,P_n)=\int\ell\,d\lambda=\int f\,d\lambda$.
+\emph{Step 2: off the countable set \(D=\bigcup_nP_n\), continuity of \(f\) at \(x\) is equivalent to \(\ell(x)=u(x)\).} For \(x\notin D\), the interval of \(P_n\) that contains \(x\) is a neighbourhood of \(x\), and these neighbourhoods shrink to \(x\). If \(f\) is continuous at \(x\), the oscillation of \(f\) on that interval tends to \(0\), so \(u(x)=\ell(x)\). If \(u(x)-\ell(x)<\varepsilon\), then for large \(n\) one has \(\sup f-\inf f<\varepsilon\) on a neighbourhood of \(x\). So \(\ell(x)=u(x)\) means that the oscillation at \(x\) is \(0\).
+
+\emph{Conclusion.} Step~1, together with the two limits at the start of the proof, says that \(f\) is Riemann integrable if and only if \(\int(u-\ell)\,d\lambda=0\). By Proposition~\ref{prop:markov}(b) this happens if and only if \(u=\ell\) almost everywhere. Step~2 and the countability of \(D\) turn that into continuity almost everywhere. Then \(\ell=f=u\) almost everywhere. The function \(f\) differs from the Borel function \(\ell\) on a subset of a null set. Lebesgue measure is complete (Theorem~\ref{thm:caratheodory}), so \(f\) is Lebesgue measurable, and
+\[
+\int_a^bf=\lim_nL(f,P_n)=\int\ell\,d\lambda=\int f\,d\lambda.
+\]
 \end{proof}
 
-So monotone functions, continuous functions, and functions with countably many discontinuities are Riemann integrable. The indicator of
-$\Q\cap[0,1]$ is discontinuous everywhere, hence not Riemann integrable, although $\int\mathbf 1_\Q\,d\lambda=0$; Thomae's function (Exercise~\ref{ex:thomae}) is Riemann
-integrable with integral $0$. From now on $\int_a^bf\,dx$ denotes the Lebesgue integral; by the theorem, nothing changes for the functions of Volumes~1 to~5.
+Monotone functions, continuous functions, and functions with only countably many discontinuities are therefore Riemann integrable: a monotone function is discontinuous on an at most countable set. The indicator of \(\Q\cap[0,1]\) is discontinuous at every point, so it is not Riemann integrable, even though \(\int\mathbf 1_\Q\,d\lambda=0\). Thomae's function, Exercise~\ref{ex:thomae}, is continuous at every irrational and discontinuous at every rational. The discontinuities are countable, the criterion applies, and the function equals \(0\) almost everywhere, so the integral is \(0\). From here on, \(\int_a^bf\,dx\) means the Lebesgue integral. On the functions used in Volumes~1 to~5 the two integrals agree, by the theorem just proved.
 
-\emph{Improper integrals.} If $f\ge0$ is continuous on $[a,+\infty[$, then $\int_a^xf\,dt\to\int_{[a,\infty[}f\,d\lambda$ as $x\to\infty$, by monotone convergence: the improper Riemann integral and the Lebesgue integral
-agree, finite or not. For signed $f$ they agree when $\int|f|<\infty$, by dominated convergence. But $\int_0^x\frac{\sin t}t\,dt$ has a limit ($\frac\pi2$, Exercise~\ref{ex:dirichlet}) while
-$\int_0^\infty\frac{|\sin t|}t\,dt=\infty$ (on $[k\pi,(k+1)\pi]$ the integral is at least $\frac2{(k+1)\pi}$): $\frac{\sin t}t$ is not Lebesgue integrable, and its improper integral is a limit, not an integral.
+\emph{Improper integrals.} Suppose \(f\ge0\) is continuous on \([a,+\infty[\). The functions \(f\mathbf 1_{[a,x]}\) increase to \(f\mathbf 1_{[a,\infty[}\) as \(x\to\infty\). Monotone convergence says that the improper Riemann integral \(\lim_{x\to\infty}\int_a^xf\) equals \(\int_{[a,\infty[}f\,d\lambda\), whether the common value is finite or not. For a signed continuous \(f\) with \(\int|f|<\infty\), dominated convergence gives the same agreement along any sequence of upper limits tending to infinity. The two integrals part company for \(\frac{\sin t}t\). Exercise~\ref{ex:dirichlet} shows that \(\int_0^x\frac{\sin t}t\,dt\) tends to \(\frac\pi2\). On the other hand \(\int_0^\infty\frac{|\sin t|}t\,dt=\infty\): on \([k\pi,(k+1)\pi]\) one has \(1/t\ge1/((k+1)\pi)\) and \(\int|\sin t|\,dt=2\), so the piece is at least \(2/((k+1)\pi)\), and the series of those lower bounds diverges. Thus \(\frac{\sin t}t\) is not Lebesgue integrable on \([0,\infty[\). Its improper integral is a limit of proper integrals, not an integral of an integrable function.
 
 \section{Modes of convergence}
 
+Pointwise convergence is one way a sequence of functions can settle. Two others are used just as often.
+
 \begin{definition}
-Measurable functions $f_n$ \emph{converge in measure} to $f$ if $\mu(|f_n-f|>\varepsilon)\to0$ for every $\varepsilon>0$, and \emph{in $L^1$} if $\int|f_n-f|\,d\mu\to0$.
+Let \(f\) and \(f_n\) be measurable. The sequence \emph{converges in measure} to \(f\) when \(\mu(|f_n-f|>\varepsilon)\to0\) for every \(\varepsilon>0\), and \emph{in \(L^1\)} when \(\int|f_n-f|\,d\mu\to0\).
 \end{definition}
 
-In probability, convergence in measure is convergence in probability, and $L^1$ convergence is $\mathbb E|X_n-X|\to0$.
+On a probability space, convergence in measure is convergence in probability, and convergence in \(L^1\) is \(\mathbb E|X_n-X|\to0\).
 
 \begin{proposition}\label{prop:modes}
 \begin{enumerate}[label=(\alph*)]
-\item Convergence in $L^1$ implies convergence in measure.
-\item If $f_n\to f$ in measure, a subsequence converges to $f$ a.e.
-\item If $\mu(E)<\infty$, convergence a.e. implies convergence in measure.
-\item (Egorov) If $\mu(E)<\infty$ and $f_n\to f$ a.e. (all finite), then for every $\varepsilon>0$ there is $A$ with $\mu(A)<\varepsilon$ such that $f_n\to f$ uniformly on $E\setminus A$.
+\item Convergence in \(L^1\) implies convergence in measure.
+\item If \(f_n\to f\) in measure, a subsequence converges to \(f\) a.e.
+\item If \(\mu(E)<\infty\), convergence a.e.\ implies convergence in measure.
+\item (Egorov) If \(\mu(E)<\infty\) and \(f_n\to f\) a.e.\ (all finite), then for every \(\varepsilon>0\) there is \(A\) with \(\mu(A)<\varepsilon\) such that \(f_n\to f\) uniformly on \(E\setminus A\).
 \end{enumerate}
 \end{proposition}
 \begin{proof}
-(a) Markov: $\mu(|f_n-f|>\varepsilon)\le\frac1\varepsilon\int|f_n-f|$. (b) Choose $n_1<n_2<\cdots$ with $\mu(|f_{n_k}-f|>2^{-k})<2^{-k}$. By Borel--Cantelli, a.e. $x$ has $|f_{n_k}(x)-f(x)|\le2^{-k}$ for all large $k$.
-(c) $\mathbf 1_{\{|f_n-f|>\varepsilon\}}\to0$ a.e. and is bounded by $1$; bounded convergence gives $\mu(|f_n-f|>\varepsilon)\to0$. (d) For each $k$, the sets $B_{k,m}=\bigcup_{n\ge m}\{|f_n-f|>\frac1k\}$ decrease in
-$m$ to a null set, so by continuity from above some $m_k$ has $\mu(B_{k,m_k})<\varepsilon2^{-k}$. Let $A=\bigcup_kB_{k,m_k}$: $\mu(A)<\varepsilon$, and off $A$, $|f_n-f|\le\frac1k$ for all $n\ge m_k$, for every $k$.
+(a) Markov's inequality gives \(\mu(|f_n-f|>\varepsilon)\le\varepsilon^{-1}\int|f_n-f|\).
+
+(b) Choose indices \(n_1<n_2<\cdots\) with \(\mu(|f_{n_k}-f|>2^{-k})<2^{-k}\). The sum of these measures converges, so Borel--Cantelli (Proposition~\ref{prop:measureprops}(e)) puts almost every \(x\) in only finitely many of the sets. At such an \(x\), \(|f_{n_k}(x)-f(x)|\le2^{-k}\) for all large \(k\).
+
+(c) The indicators \(\mathbf 1_{\{|f_n-f|>\varepsilon\}}\) tend to \(0\) almost everywhere and are bounded by \(1\). Bounded convergence, which is dominated convergence with dominant \(1\), yields \(\mu(|f_n-f|>\varepsilon)\to0\).
+
+(d) Fix \(k\ge1\) and set \(B_{k,m}=\bigcup_{n\ge m}\{|f_n-f|>1/k\}\). As \(m\) grows these sets decrease, and their intersection is contained in the null set where the convergence fails. Since \(\mu(E)<\infty\), one has \(\mu(B_{k,1})<\infty\), so continuity from above (Proposition~\ref{prop:measureprops}(d)) supplies an index \(m_k\) with \(\mu(B_{k,m_k})<\varepsilon2^{-k}\). The union \(A=\bigcup_kB_{k,m_k}\) satisfies \(\mu(A)<\varepsilon\). Off \(A\), every \(k\) obeys \(|f_n-f|\le1/k\) for all \(n\ge m_k\).
 \end{proof}
 
-Egorov's theorem is Littlewood's \emph{third principle}: a.e. convergence is nearly uniform. None of the converses holds: the ``typewriter'' (Exercise~\ref{ex:typewriter})
-converges in measure and in $L^1$ but at no point, and $n\mathbf 1_{]0,\frac1n[}$ converges everywhere but not in $L^1$.
+Egorov's theorem is Littlewood's third principle: almost everywhere convergence is uniform convergence off a set you are allowed to make small. None of the four implications reverses in general. The typewriter sequence of Exercise~\ref{ex:typewriter} converges in measure and in \(L^1\), and the sequence of values \((f_n(x))\) converges at no \(x\). The spikes \(n\mathbf 1_{]0,1/n[}\) converge at every point and fail to converge in \(L^1\).
 
-\section{Uniform integrability and Vitali's theorem}\label{sec:ui}
+\section{Vitali and uniform integrability}\label{sec:ui}
 
 \begin{figure}[ht]
 \centering
 \fig{ch07-escape}
-\caption{Left: $f_n=n\mathbf 1_{]0,\frac1n[}$ for $n=1,2,4,8$: each has integral $1$, the limit $0$ has integral $0$; the mass escapes in ever thinner spikes. Right: $g_n=\sqrt n\,\mathbf 1_{]0,\frac1n[}$
-also tends to $0$. When $\sqrt n>M$ the tail integral equals $\frac1{\sqrt n}$; otherwise the spike never exceeds $M$ and the tail is $0$. Either way the tail is at most $\frac1M$: a uniformly integrable family, whose integrals do tend to $0$.}
+\caption{Left: \(f_n=n\mathbf 1_{]0,1/n[}\) for \(n=1,2,4,8\): each has integral \(1\), the limit \(0\) has integral \(0\); the mass escapes in ever thinner spikes. Right: \(g_n=\sqrt n\,\mathbf 1_{]0,1/n[}\)
+also tends to \(0\). When \(\sqrt n>M\) the tail integral equals \(\frac1{\sqrt n}\); otherwise the spike never exceeds \(M\) and the tail is \(0\). Either way the tail is at most \(\frac1M\): a uniformly integrable family, whose integrals do tend to \(0\).}
 \label{fig:escape}
 \end{figure}
 
+The right-hand family in Figure~\ref{fig:escape} is the model of the definition. The tails, past any fixed height \(M\), become uniformly small.
+
 \begin{definition}
-Let $\mu$ be finite. A family $\mathcal F$ of integrable functions is \emph{uniformly integrable} if
+Let \(\mu\) be finite. A family \(\mathcal F\) of integrable functions is \emph{uniformly integrable} when
 \[\sup_{f\in\mathcal F}\int_{\{|f|>M\}}|f|\,d\mu\longrightarrow0\qquad\text{as }M\to\infty.\]
 \end{definition}
 
-A single integrable $f$ is uniformly integrable, by dominated convergence:
+A single integrable \(f\) forms a uniformly integrable family. Indeed \(f\) is finite almost everywhere by Proposition~\ref{prop:markov}(c), so
 \[
 |f|\mathbf 1_{\{|f|>M\}}\to0
 \]
-almost everywhere, since $f$ is finite almost everywhere, and the truncations are dominated by $|f|$.
-Thus any finite family is uniformly integrable, as is any family dominated by one integrable $g$. A uniformly integrable family is bounded in $L^1$: $\int|f|\le M\mu(E)+\int_{\{|f|>M\}}|f|$. In probability ($\mu(E)=1$), the condition reads
-$\sup_X\mathbb E[|X|\mathbf 1_{\{|X|>M\}}]\to0$: no mass can hide in the tails.
+almost everywhere, and the functions are dominated by the integrable function \(|f|\). Dominated convergence sends the tails to \(0\). A finite union of uniformly integrable families is uniformly integrable: take the worst tail. A family dominated by one integrable \(g\) is uniformly integrable as well. If \(|f|\le g\), then \(\{|f|>M\}\subseteq\{|g|>M\}\) and the tail of \(f\) is at most the tail of \(g\). Any uniformly integrable family is bounded in \(L^1\). Choose \(M\) so that every tail is at most \(1\). Then \(\int|f|\le M\mu(E)+1\). On a probability space the definition reads \(\sup_X\mathbb E\bigl[|X|\mathbf 1_{\{|X|>M\}}\bigr]\to0\): no mass is allowed to hide in the far tails.
 
 \begin{lemma}\label{lem:abscont}
-If $f$ is integrable, then for every $\varepsilon>0$ there is $\delta>0$ such that $\mu(A)<\delta$ implies $\int_A|f|<\varepsilon$.
+If \(f\) is integrable, then for every \(\varepsilon>0\) there is \(\delta>0\) such that \(\mu(A)<\delta\) implies \(\int_A|f|<\varepsilon\).
 \end{lemma}
 \begin{proof}
-$\int_A|f|\le M\mu(A)+\int_{\{|f|>M\}}|f|$. Choose $M$ so that the second term is less than $\frac\varepsilon2$, then $\delta=\frac\varepsilon{2M}$.
+Split the integral at a height: \(\int_A|f|\le M\mu(A)+\int_{\{|f|>M\}}|f|\). First choose \(M\) so that the second term is less than \(\varepsilon/2\). Then set \(\delta=\varepsilon/(2M)\), or \(\delta=1\) if \(M=0\).
 \end{proof}
 
-We can now say exactly when the integrals of a convergent sequence converge. The answer, found by Giuseppe Vitali in 1907 (the
-same Vitali who built the non-measurable set), is that no mass may escape: the sequence must converge in measure, and must be
-uniformly integrable.
+Giuseppe Vitali, in 1907, named the exact extra hypothesis. The paper is the one cited in the sources. It is the same Vitali who had built a set that carries no translation-invariant measure. His convergence theorem says that the integrals follow the functions precisely when no mass escapes.
 
 \begin{theorem}[Vitali's convergence theorem]\label{thm:vitali7}
-Let $\mu$ be finite, $f_n$ integrable and $f_n\to f$ in measure. Then $f$ is integrable and $\int|f_n-f|\,d\mu\to0$ iff $(f_n)$ is uniformly integrable.
+Let \(\mu\) be finite, \(f_n\) integrable and \(f_n\to f\) in measure. Then \(f\) is integrable and \(\int|f_n-f|\,d\mu\to0\) iff \((f_n)\) is uniformly integrable.
 \end{theorem}
 \begin{proof}
-($\Leftarrow$) Let $C=\sup_n\int|f_n|<\infty$. By Proposition~\ref{prop:modes}(b) a subsequence tends to $f$ a.e., so by Fatou $\int|f|\le C$: $f$ is integrable. Let $\varphi_M(t)=\max(-M,\min(M,t))$,
-the truncation at level $M$, which is $1$-Lipschitz, and $|t-\varphi_M(t)|\le|t|\mathbf 1_{\{|t|>M\}}$. Then
-\[\begin{aligned}\int|f_n-f|&\le\int|f_n-\varphi_M(f_n)|+\int|\varphi_M(f_n)-\varphi_M(f)|\eqbr+\int|\varphi_M(f)-f|.\end{aligned}\]
-The first term is at most $\sup_n\int_{\{|f_n|>M\}}|f_n|$, the third at most $\int_{\{|f|>M\}}|f|$; both are less than $\varepsilon$ for $M$ large. Fix such an $M$. The middle integrand $h_n$ is at most
-$2M$ and at most $|f_n-f|$, so $\int h_n\le\varepsilon\mu(E)+2M\mu(|f_n-f|>\varepsilon)$, which is less than $\varepsilon(\mu(E)+1)$ for $n$ large. So $\limsup_n\int|f_n-f|\le\varepsilon(\mu(E)+3)$ for every $\varepsilon$.
+First suppose \((f_n)\) is uniformly integrable. The \(L^1\) bound recorded above gives \(C=\sup_n\int|f_n|<\infty\). Proposition~\ref{prop:modes}(b) extracts a subsequence converging to \(f\) almost everywhere. Along that subsequence Fatou's lemma yields \(\int|f|\le C\), where \(|f|\) means the measurable function \(\liminf_k|f_{n_k}|\), which equals \(|f|\) almost everywhere when \(f\) is measurable. In particular this measurable version is integrable. The same reading is the one marked before Theorem~\ref{thm:dct6}.
 
-($\Rightarrow$) Let $\varepsilon>0$ and $N$ with $\int|f_n-f|<\varepsilon$ for $n\ge N$. Let $\delta$ be given by Lemma~\ref{lem:abscont} for $f$. Since $\sup_n\int|f_n|=C<\infty$, Markov gives $\mu(|f_n|>M)\le\frac CM<\delta$ for
-$M$ large, and then for $n\ge N$
+Let \(\varphi_M(t)=\max(-M,\min(M,t))\). This truncation is \(1\)-Lipschitz, and \(|t-\varphi_M(t)|\le|t|\mathbf 1_{\{|t|>M\}}\). Split
+\[\begin{aligned}\int|f_n-f|&\le\int|f_n-\varphi_M(f_n)|+\int|\varphi_M(f_n)-\varphi_M(f)|\eqbr+\int|\varphi_M(f)-f|.\end{aligned}\]
+The first term is at most \(\sup_n\int_{\{|f_n|>M\}}|f_n|\), and the third is at most \(\int_{\{|f|>M\}}|f|\). Uniform integrability of the sequence, and the single-function case for \(f\), make both smaller than \(\varepsilon\) once \(M\) is large. Freeze that \(M\). The middle integrand \(h_n\) satisfies \(h_n\le|f_n-f|\) and \(h_n\le2M\). Split the domain into \(\{|f_n-f|\le\varepsilon\}\) and its complement:
+\[
+\int h_n\le\varepsilon\,\mu(E)+2M\,\mu(|f_n-f|>\varepsilon).
+\]
+Convergence in measure makes the second term smaller than \(\varepsilon\) for large \(n\), so \(\int h_n<\varepsilon(\mu(E)+1)\). Therefore \(\limsup_n\int|f_n-f|\le\varepsilon(\mu(E)+3)\). The number \(\varepsilon>0\) was arbitrary, so the limsup is \(0\).
+
+Conversely, suppose \(\int|f_n-f|\to0\). The numbers \(\int|f_n|\) stay bounded, because they form a convergent sequence after adding the fixed \(\int|f|\); call the bound \(C\). Fix \(\varepsilon>0\) and choose \(N\) so that \(n\ge N\) implies \(\int|f_n-f|<\varepsilon\). Lemma~\ref{lem:abscont} gives a \(\delta>0\) for this \(f\) and this \(\varepsilon\). Markov's inequality yields \(\mu(|f_n|>M)\le C/M\), so one \(M\) makes the inequality \(< \delta\) for every \(n\). Then, for \(n\ge N\),
 \[\int_{\{|f_n|>M\}}|f_n|\le\int|f_n-f|+\int_{\{|f_n|>M\}}|f|<2\varepsilon.\]
-The finitely many $f_n$, $n<N$, form a uniformly integrable family. So $\int_{\{|f_n|>M\}}|f_n|<2\varepsilon$ for all $n$ once $M$ is large enough.
+The finitely many functions \(f_n\) with \(n<N\) form a uniformly integrable family, so a possibly larger \(M\) brings their tails under \(2\varepsilon\) as well.
 \end{proof}
 
-In probability: if $X_n\to X$ in probability, then $\mathbb E|X_n-X|\to0$ iff $(X_n)$ is uniformly integrable, and then $\mathbb E[X_n]\to\mathbb E[X]$. Dominated convergence is the special
-case of a dominated family; Exercise~\ref{ex:vallee} gives the practical criterion $\sup_n\mathbb E[|X_n|^p]<\infty$ for some $p>1$. Volume~11 will use the theorem for martingales.
+In probability language: if \(X_n\to X\) in probability, then \(\mathbb E|X_n-X|\to0\) if and only if \((X_n)\) is uniformly integrable, and in that case \(\mathbb E[X_n]\to\mathbb E[X]\). Dominated convergence is the special case in which one integrable function bounds the whole family. Exercise~\ref{ex:vallee} gives a practical sufficient condition, \(\sup_n\mathbb E[|X_n|^p]<\infty\) for some \(p>1\). Volume~11 uses the theorem for martingales; nothing proved here depends on that later use.
 
 \section{Integrals depending on a parameter}
 
+Differentiating under the integral sign needs one integrable bound on the \(t\)-derivative, the same bound for every \(t\) you are using. Dominated convergence then moves the limit inside.
+
 \begin{theorem}\label{thm:parameter}
-Let $T$ be a metric space (for (b), an open interval of $\R$), and $h:E\times T\to\R$ (or $\C$) with $h(\cdot,t)$ integrable for each $t$. Let $H(t)=\int h(x,t)\,d\mu(x)$.
+Let \(T\) be a metric space (for (b), an open interval of \(\R\)), and \(h:E\times T\to\R\) (or \(\C\)) with \(h(\cdot,t)\) integrable for each \(t\). Let \(H(t)=\int h(x,t)\,d\mu(x)\).
 \begin{enumerate}[label=(\alph*)]
-\item (Continuity) If $t\mapsto h(x,t)$ is continuous at $t_0$ for a.e. $x$, and $|h(x,t)|\le g(x)$ for all $t$ near $t_0$ with $g$ integrable, then $H$ is continuous at $t_0$.
-\item (Differentiation) If $t\mapsto h(x,t)$ is differentiable on $T$ for a.e. $x$, and $|\partial_th(x,t)|\le g(x)$ for all $t\in T$ with $g$ integrable, then $H$ is differentiable on $T$ and
+\item (Continuity) If \(t\mapsto h(x,t)\) is continuous at \(t_0\) for a.e.\ \(x\), and \(|h(x,t)|\le g(x)\) for all \(t\) near \(t_0\) with \(g\) integrable, then \(H\) is continuous at \(t_0\).
+\item (Differentiation) If \(t\mapsto h(x,t)\) is differentiable on \(T\) for a.e.\ \(x\), and \(|\partial_th(x,t)|\le g(x)\) for all \(t\in T\) with \(g\) integrable, then \(H\) is differentiable on \(T\) and
 \[H'(t)=\int\partial_th(x,t)\,d\mu(x).\]
 \end{enumerate}
 \end{theorem}
 \begin{proof}
-(a) If $t_n\to t_0$, dominated convergence applies to $h(\cdot,t_n)\to h(\cdot,t_0)$. (b) Fix $t$ and $t_n\to t$, $t_n\ne t$. The quotients $q_n(x)=\frac{h(x,t_n)-h(x,t)}{t_n-t}$ tend to $\partial_th(x,t)$ for a.e.
-$x$ and, by the mean value theorem (applied to real and imaginary parts), $|q_n(x)|\le2g(x)$. In particular $x\mapsto\partial_th(x,t)$, an a.e.\ limit of the measurable $q_n$, is measurable and bounded by $g$, hence integrable.
-Dominated convergence gives $\frac{H(t_n)-H(t)}{t_n-t}=\int q_n\,d\mu\to\int\partial_th(x,t)\,d\mu(x)$, for every sequence $t_n\to t$.
+(a) If \(t_n\to t_0\), the functions \(h(\cdot,t_n)\) converge almost everywhere to \(h(\cdot,t_0)\) and are dominated by \(g\). Theorem~\ref{thm:dct6} gives \(H(t_n)\to H(t_0)\).
+
+(b) Fix \(t\) and a sequence \(t_n\to t\) with \(t_n\ne t\). The difference quotients
+\[
+q_n(x)=\frac{h(x,t_n)-h(x,t)}{t_n-t}
+\]
+converge to \(\partial_th(x,t)\) for almost every \(x\). Write \(h=u+iv\) in real and imaginary parts, allowing \(v=0\) when \(h\) is real. The mean value theorem (Theorem~\ref{thm:mvt}) supplies a point between \(t\) and \(t_n\) at which the difference quotient of \(u\) equals \(\partial_tu\). That partial is at most \(g\) in absolute value, because \(|\partial_tu|\le|\partial_th|\). The same bound holds for \(v\). Hence \(|q_n|\le2g\). The factor \(2\) is the sum of the two parts; a real integrand only needs the factor \(1\), and \(2g\) still dominates it.
+
+The functions \(q_n\) are measurable. Their pointwise limit off the null set, redefined as \(0\) on that null set, is a measurable function \(\psi\) with \(|\psi|\le2g\), and \(\psi=\partial_th(\cdot,t)\) almost everywhere on the set where the derivative exists. Theorem~\ref{thm:dct6} yields
+\[
+\frac{H(t_n)-H(t)}{t_n-t}=\int q_n\,d\mu\to\int\psi\,d\mu.
+\]
+Every sequence \(t_n\to t\) gives the same limit, so \(H\) is differentiable at \(t\) and the derivative equals that integral. The integrand in the statement is this measurable version of the partial derivative.
 \end{proof}
 
-The hypotheses only ask for a bound uniform in $t$, so in practice one restricts $t$ to a compact subinterval of $T$, where bounds are easier, and
-concludes on all of $T$ since differentiability is local. The theorem contains the version for continuous functions that Volume~5, Chapter~4, used for Feynman's trick.
-Exercises~\ref{ex:gausscos} and~\ref{ex:dirichlet} are typical.
+The bound has to be independent of \(t\), but only on a neighbourhood of the point where you differentiate. In practice one restricts \(t\) to a compact subinterval, finds a dominant there, and concludes. Differentiability is a local property, so the local conclusions cover \(T\). The continuous case used in Volume~5, Chapter~4, is the special case in which \(h\) and the dominant are continuous. Exercises~\ref{ex:gausscos} and~\ref{ex:dirichlet} are the standard illustrations.
 
 \begin{beauty}
-Lebesgue's idea, ``slice the values, not the variable'', sounds like a minor change of bookkeeping. It made limits commute
-with integrals under natural conditions, turned the integral into a tool valid for any measure (lengths, probabilities,
-counting, sums of series, surface areas, Haar measures on groups), and made the space of integrable functions complete
-(Chapter~\ref{ch:lp}). Not bad for a way of counting coins.
+Sorting the values, rather than the variable, looks like a change of bookkeeping. It lets a limit pass under the integral when the functions rise, or when one integrable function sits on top of them. The same definition serves for lengths, probabilities, counting measure, and sums of series. Chapter~\ref{ch:lp} will show that the integrable functions are complete in the \(L^1\) metric. Volume~8 uses the same integral as Haar measure on a group. The coin count was the right count.
 \end{beauty}
 
 \section{What we proved, and what comes next}
 
-The integral is now defined for every non-negative measurable function on every measure space, and for every integrable function. Three theorems move limits through
-it: monotone convergence (Theorem~\ref{thm:mct6}), Fatou's lemma (Theorem~\ref{thm:fatou6}) and dominated convergence (Theorem~\ref{thm:dct6}). For bounded functions on a
-segment the new integral agrees with Riemann's whenever Riemann's exists, and Lebesgue's criterion says when that is (Theorem~\ref{thm:lebesguecriterion}). On a finite
-measure space, Vitali's theorem gives the exact condition for convergence in $L^1$ (Theorem~\ref{thm:vitali7}). Continuity and differentiation of an integral with respect to a
-parameter follow from dominated convergence (Theorem~\ref{thm:parameter}). Nothing in the chapter was admitted.
+Every nonnegative measurable function on every measure space now has an integral in \([0,+\infty]\), and every integrable function has a finite integral. Three theorems move a limit through the integral sign: monotone convergence (Theorem~\ref{thm:mct6}), Fatou's lemma (Theorem~\ref{thm:fatou6}), and dominated convergence (Theorem~\ref{thm:dct6}). On a bounded interval, the new integral agrees with Riemann's whenever Riemann's exists, and Lebesgue's criterion (Theorem~\ref{thm:lebesguecriterion}) says when that happens. On a finite measure space, Vitali's theorem (Theorem~\ref{thm:vitali7}) is the exact condition for convergence in \(L^1\). Continuity and differentiability in a parameter (Theorem~\ref{thm:parameter}) are dominated convergence applied to the integrands and to the difference quotients. Each proof in the chapter starts from the measure constructed in Chapter~\ref{ch:measures}, or from Heine's theorem.
 
-All of this is integration in one variable, even when the variable is a point of $\R^d$. The formulas that calculus uses most are about two variables:
-integrate in $x$ and then in $y$, or in the other order, or change to polar coordinates. Volumes~4 and~5 exchanged integrals and sums of non-negative
-functions on the strength of a theorem promised for this volume. Chapter~\ref{ch:products} proves it.
+The variable of integration may already be a point of \(\R^d\). The formulas calculus reaches for next still involve two genuine variables: integrate in \(x\) and then in \(y\), or in the other order, or pass to polar coordinates. Volumes~4 and~5 interchanged integrals and sums of nonnegative terms by quoting a theorem left to this volume. Chapter~\ref{ch:products} proves it.
 
 \section{Exercises}
 
 \begin{exercise}[$\star$]\label{ex:fatoustrict}
-Find measurable $f_n\ge0$ on $(\R,\lambda)$ with (a) $f_n$ decreasing to $0$ but $\int f_n=+\infty$ for all $n$; (b) $f_n\to0$ everywhere, $\int f_n=1$, and all $f_n$ bounded by $1$. Which theorem
+Find measurable \(f_n\ge0\) on \((\R,\lambda)\) with (a) \(f_n\) decreasing to \(0\) but \(\int f_n=+\infty\) for all \(n\); (b) \(f_n\to0\) everywhere, \(\int f_n=1\), and all \(f_n\) bounded by \(1\). Which theorem
 fails in each case, and which hypothesis is missing?
 \end{exercise}
 
 \begin{exercise}[$\star$]\label{ex:typewriter}
-\emph{The typewriter.} Write $n=2^k+j$ with $0\le j<2^k$ and let $f_n=\mathbf 1_{[j2^{-k},(j+1)2^{-k}]}$ on $[0,1]$. Show that $f_n\to0$ in $L^1$ and in measure, but that $(f_n(x))$ converges for no $x$. Find a
+\emph{The typewriter.} Write \(n=2^k+j\) with \(0\le j<2^k\) and let \(f_n=\mathbf 1_{[j2^{-k},(j+1)2^{-k}]}\) on \([0,1]\). Show that \(f_n\to0\) in \(L^1\) and in measure, but that \((f_n(x))\) converges for no \(x\). Find a
 subsequence converging a.e.
 \end{exercise}
 
 \begin{exercise}[$\star$]\label{ex:riemannalgebra}
-Show, with Lebesgue's criterion, that the Riemann integrable functions on $[a,b]$ form an algebra stable under $|\cdot|$, $\max$ and $\min$, and that $g\circ f$ is Riemann integrable
-when $f$ is and $g$ is continuous. Is $f\circ g$ always Riemann integrable when $f$ is Riemann integrable and $g$ continuous?
+Show, with Lebesgue's criterion, that the Riemann integrable functions on \([a,b]\) form an algebra stable under \(|\cdot|\), \(\max\) and \(\min\), and that \(g\circ f\) is Riemann integrable
+when \(f\) is and \(g\) is continuous. Is \(f\circ g\) always Riemann integrable when \(f\) is Riemann integrable and \(g\) continuous?
 \end{exercise}
 
 \begin{exercise}[$\star\star$]\label{ex:layercake}
-\emph{The layer cake formula.} Let $f\ge0$ be measurable. Show that $\int f\,d\mu=\int_0^\infty\mu(f>t)\,dt$. (First for simple $f$, then by monotone convergence.) In probability,
-$\mathbb E[X]=\int_0^\infty\mathbb P(X>t)\,dt$ for $X\ge0$, and $\mathbb E[X^p]=\int_0^\infty pt^{p-1}\mathbb P(X>t)\,dt$.
+\emph{The layer cake formula.} Let \(f\ge0\) be measurable. Show that \(\int f\,d\mu=\int_0^\infty\mu(f>t)\,dt\). (First for simple \(f\), then by monotone convergence.) In probability,
+\(\mathbb E[X]=\int_0^\infty\mathbb P(X>t)\,dt\) for \(X\ge0\), and \(\mathbb E[X^p]=\int_0^\infty pt^{p-1}\mathbb P(X>t)\,dt\) for \(p>0\).
 \end{exercise}
 
 \begin{exercise}[$\star\star$]\label{ex:scheffe}
-\emph{Scheff\'e's lemma.} Let $f_n,f\ge0$ be integrable with $f_n\to f$ a.e. and $\int f_n\to\int f$. Show that $\int|f_n-f|\to0$. Deduce that if densities $p_n$ of laws on $\R$ converge a.e. to a
-density $p$, the laws converge in total variation: $\sup_B|\int_Bp_n-\int_Bp|\to0$.
+\emph{Scheff\'e's lemma.} Let \(f_n,f\ge0\) be integrable with \(f_n\to f\) a.e.\ and \(\int f_n\to\int f\). Show that \(\int|f_n-f|\to0\). Deduce that if densities \(p_n\) of laws on \(\R\) converge a.e.\ to a
+density \(p\), the laws converge in total variation: \(\sup_B|\int_Bp_n-\int_Bp|\to0\).
 \end{exercise}
 
 \begin{exercise}[$\star\star$]\label{ex:vallee}
-\emph{De la Vall\'ee Poussin's criterion.} Let $\mu$ be finite. Show that a family $\mathcal F$ is uniformly integrable if $\sup_{f\in\mathcal F}\int\Phi(|f|)\,d\mu<\infty$ for some $\Phi:[0,\infty[\to[0,\infty[$ with
-$\frac{\Phi(t)}t\to\infty$; for instance $\Phi(t)=t^p$, $p>1$, or $t\log^+t$. (The converse is also true.)
+\emph{De la Vall\'ee Poussin's criterion.} Let \(\mu\) be finite. Show that a family \(\mathcal F\) is uniformly integrable if \(\sup_{f\in\mathcal F}\int\Phi(|f|)\,d\mu<\infty\) for some \(\Phi:[0,\infty[\to[0,\infty[\) with
+\(\frac{\Phi(t)}t\to\infty\); for instance \(\Phi(t)=t^p\), \(p>1\), or \(t\log^+t\). (The converse is true as well; it is not asked for here.)
 \end{exercise}
 
 \begin{exercise}[$\star\star$]\label{ex:gausscos}
-Let $I(t)=\int_0^\infty e^{-x^2}\cos(tx)\,dx$. Justify that $I'(t)=-\int_0^\infty xe^{-x^2}\sin(tx)\,dx$, integrate by parts to get $I'=-\frac t2I$, and deduce $I(t)=\frac{\sqrt\pi}2e^{-t^2/4}$. What does this say about
-the characteristic function of a Gaussian (Volume~4)?
+Let \(I(t)=\int_0^\infty e^{-x^2}\cos(tx)\,dx\). Justify \(I'(t)=-\int_0^\infty xe^{-x^2}\sin(tx)\,dx\), integrate by parts to reach \(I'=-\frac t2I\), and deduce \(I(t)=\frac{\sqrt\pi}2e^{-t^2/4}\). What does the formula say about
+the characteristic function of a standard Gaussian, as computed in Volume~4?
 \end{exercise}
 
 \begin{exercise}[$\star\star$]\label{ex:rlemma}
-\emph{The Riemann--Lebesgue lemma.} Let $f$ be integrable on $\R$. Show that $\int f(x)e^{i\xi x}\,dx\to0$ as $|\xi|\to\infty$. (Approximate $f$ in $L^1$ by a step function, using the regularity of
-$\lambda$, Chapter~\ref{ch:measures}.) Volume~1 proved it only for $C^1$ functions.
+\emph{The Riemann--Lebesgue lemma.} Let \(f\) be integrable on \(\R\). Show that \(\int f(x)e^{i\xi x}\,dx\to0\) as \(|\xi|\to\infty\). (Approximate \(f\) in \(L^1\) by a step function, using the regularity of
+\(\lambda\) from Chapter~\ref{ch:measures}.) Volume~1 proved the lemma only for \(C^1\) functions.
 \end{exercise}
 
 \begin{exercise}[$\star\star\star$]\label{ex:dirichlet}
-\emph{The Dirichlet integral.} Let $F(t)=\int_0^\infty e^{-tx}\frac{\sin x}x\,dx$ for $t>0$. (a) Show that $F$ is differentiable on $]0,\infty[$ with $F'(t)=-\frac1{1+t^2}$, and that $F(t)\to0$ as $t\to\infty$; deduce
-$F(t)=\frac\pi2-\arctan t$. (b) Show that $\int_0^R\frac{\sin x}x\,dx\to\frac\pi2$ as $R\to\infty$, by proving that $F$ is continuous at $0$ for the improper integral: bound
-$\bigl|\int_R^\infty e^{-tx}\frac{\sin x}x\,dx\bigr|$ uniformly in $t\ge0$ by integrating by parts.
+\emph{The Dirichlet integral.} Let \(F(t)=\int_0^\infty e^{-tx}\frac{\sin x}x\,dx\) for \(t>0\). (a) Show that \(F\) is differentiable on \(]0,\infty[\) with \(F'(t)=-\frac1{1+t^2}\), and that \(F(t)\to0\) as \(t\to\infty\); deduce
+\(F(t)=\frac\pi2-\arctan t\). (b) Show that \(\int_0^R\frac{\sin x}x\,dx\to\frac\pi2\) as \(R\to\infty\), by proving that the improper integral is continuous at \(0\): bound
+\(\bigl|\int_R^\infty e^{-tx}\frac{\sin x}x\,dx\bigr|\) uniformly in \(t\ge0\) by an integration by parts.
 \end{exercise}
 
 \begin{exercise}[$\star$]\label{ex:limits}
@@ -362,153 +397,296 @@ $\bigl|\int_R^\infty e^{-tx}\frac{\sin x}x\,dx\bigr|$ uniformly in $t\ge0$ by in
 In each case name the theorem you use and write down the dominating function.
 \end{exercise}
 
+\begin{exercise}[$\star$]\label{ex:v7c08a}
+Let \(s=2\mathbf 1_{[0,1)}+5\mathbf 1_{[1,3]}\) on \(\R\), and let \(\lambda\) be Lebesgue measure. Compute \(\int s\,d\lambda\) from the disjoint representation. Then, for each \(t\ge0\), compute \(\lambda(s>t)\), and evaluate \(\int_0^\infty\lambda(s>t)\,dt\) by splitting the \(t\)-axis at \(2\) and at \(5\). The two numbers should agree.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:v7c08b}
+On \([0,1]\) with Lebesgue measure, justify the equality
+\[
+\int_0^1\sum_{n=1}^\infty\frac{x^n}{2^n}\,dx=\sum_{n=1}^\infty\int_0^1\frac{x^n}{2^n}\,dx
+\]
+and compute the common value.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:v7c08c}
+Let \(f_n(x)=ne^{-nx}\) for \(x\ge0\). Show that \(f_n\to0\) almost everywhere, that \(\int_0^\infty f_n=1\) for every \(n\), and that every measurable \(g\ge f_n\) for all \(n\) has \(\int g=\infty\). Say what Fatou's lemma reports about these numbers, and why monotone convergence does not apply. Then set \(h_n(x)=e^{-nx}\) on \([0,1]\). Show that dominated convergence does apply to \((h_n)\), and compute \(\lim_n\int_0^1 h_n\).
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:v7c08d}
+Let \(f(x)=x^{-1/2}\) on \(]0,1]\), with Lebesgue measure. Show that \(\int_{]0,1]}f\,d\lambda=2\). Then produce a number \(\delta>0\) such that \(\lambda(A)<\delta\) implies \(\int_A f\,d\lambda<\frac1{10}\). Use the split in the proof of Lemma~\ref{lem:abscont}.
+\end{exercise}
+
 \section{Hints}
 
 \begin{hint}{ex:fatoustrict}
-(a) $\mathbf 1_{[n,\infty[}$. (b) $\mathbf 1_{[n,n+1]}$: mass escapes to infinity rather than into a point.
+(a) Try \(\mathbf 1_{[n,\infty[}\). (b) Try \(\mathbf 1_{[n,n+1]}\). The mass walks off to infinity, one unit interval at a time.
 \end{hint}
 \begin{hint}{ex:typewriter}
-$\int f_n=2^{-k}$. Every $x$ lies in one interval of each generation and outside the others.
+The integral of \(f_n\) is \(2^{-k}\). Each \(x\) sits in one interval of a given generation and misses the others, except at shared endpoints.
 \end{hint}
 \begin{hint}{ex:riemannalgebra}
-Discontinuities of $f+g$, $fg$, $|f|$, $g\circ f$ lie in the union of those of $f$ and $g$. For $f\circ g$, take $f$ the indicator of $]0,1]$ and $g$ continuous, zero exactly on a fat
-Cantor set.
+A sum, a product, an absolute value, or a continuous function of \(f\) can jump only where \(f\) or \(g\) jumps. For \(f\circ g\), let \(f\) be the indicator of \(]0,\infty[\) and let \(g\) be the distance to a fat Cantor set.
 \end{hint}
 \begin{hint}{ex:layercake}
-For $s=\sum_ia_i\mathbf 1_{A_i}$ with $0<a_1<\cdots<a_m$ and disjoint $A_i$, $\mu(s>t)$ is a step function of $t$. For $s_n\uparrow f$, the sets $\{s_n>t\}$ increase to $\{f>t\}$.
+For \(s=\sum_ia_i\mathbf 1_{A_i}\) with \(0<a_1<\cdots<a_m\) and the \(A_i\) disjoint, the function \(t\mapsto\mu(s>t)\) is constant between the \(a_k\). If \(s_n\uparrow f\), the sets \(\{s_n>t\}\) increase to \(\{f>t\}\).
 \end{hint}
 \begin{hint}{ex:scheffe}
-$|f_n-f|=f_n+f-2\min(f_n,f)$, and $\min(f_n,f)\le f$: dominated convergence.
+Write \(|f_n-f|=f_n+f-2\min(f_n,f)\). The minimum is at most \(f\), so dominated convergence applies to it.
 \end{hint}
 \begin{hint}{ex:vallee}
-On $\{|f|>M\}$, $|f|\le\Phi(|f|)\cdot\sup_{t>M}\frac t{\Phi(t)}$.
+On \(\{|f|>M\}\), compare \(|f|\) with \(\Phi(|f|)\) times \(\sup_{t>M}t/\Phi(t)\).
 \end{hint}
 \begin{hint}{ex:gausscos}
-The $t$-derivative of $e^{-x^2}\cos tx$ is bounded by $xe^{-x^2}$. For the integration by parts, $-xe^{-x^2}$ is the derivative of $\frac12e^{-x^2}$. $I(0)=\frac{\sqrt\pi}2$ (Volume~1).
+The \(t\)-derivative of \(e^{-x^2}\cos(tx)\) is bounded by \(xe^{-x^2}\). For the parts, \(v=\frac12e^{-x^2}\) matches \(v'=-xe^{-x^2}\). The value \(I(0)=\frac{\sqrt\pi}2\) is the Gaussian integral of Volume~1.
 \end{hint}
 \begin{hint}{ex:rlemma}
-For $f=\mathbf 1_{]a,b]}$ compute the integral. Step functions with finitely many steps are dense in $L^1$: approximate $\{f>t\}$ by finite unions of intervals, or use Littlewood's first
-principle on the simple functions of Proposition~\ref{prop:measurablefns}(c).
+For \(f=\mathbf 1_{]a,b]}\) the integral is explicit. Finite step functions are dense in \(L^1\): start from the simple functions of Proposition~\ref{prop:measurablefns}(c), then approximate each set of finite measure by a finite union of intervals, using Proposition~\ref{prop:regularity}.
 \end{hint}
 \begin{hint}{ex:dirichlet}
-(a) On $[t_0,\infty[$, dominate by $e^{-t_0x}$, using $|\frac{\sin x}x|\le1$. $\int_0^\infty e^{-tx}\sin x\,dx=\frac1{1+t^2}$. (b) Write down an explicit primitive $\psi_t$ of $e^{-tx}\sin x$ and check that $|\psi_t|\le2$ for all $t\ge0$ and $x\ge0$. Integrate by
-parts on $[R,S]$, differentiating $\frac1x$: every term is then $O(\frac1R)$, whatever $t$ is.
+(a) On \([t_0,\infty[\), the \(t\)-derivative is bounded by \(e^{-t_0x}\), since \(|\sin x/x|\le1\). Check that \(e^{-tx}(-t\sin x-\cos x)/(1+t^2)\) has derivative \(e^{-tx}\sin x\). (b) The same primitive is bounded by \(2\) for every \(t\ge0\) and \(x\ge0\). Integrate by parts on \([R,S]\), differentiating \(1/x\).
 \end{hint}
 \begin{hint}{ex:limits}
-(a) $1-u\le e^{-u}$. Write the integral over $[0,\infty[$ with an indicator. (b) $|\sin u|\le|u|$.
+(a) Use \(1-u\le e^{-u}\), and write the moving upper limit as an indicator on \([0,\infty[\). (b) Use \(|\sin u|\le|u|\) for \(u\ge0\).
+\end{hint}
+
+\begin{hint}{ex:v7c08a}
+On \([0,1)\) the height is \(2\), and on \([1,3]\) the height is \(5\). The set \(\{s>t\}\) loses the first piece when \(t\) passes \(2\), and loses the second when \(t\) passes \(5\).
+\end{hint}
+\begin{hint}{ex:v7c08b}
+The sum inside is a geometric series, equal to \(x/(2-x)\) on \([0,1]\). Corollary~\ref{cor:linearity6} moves the sum outside, because every term is nonnegative. The antiderivative of \(2/(2-x)-1\) finishes the integral.
+\end{hint}
+\begin{hint}{ex:v7c08c}
+The substitution \(u=nx\) computes the integral. For the dominant, take \(x\in\,]0,\frac12]\) and the greatest integer \(m<1/x\). For \(h_n\), the constant \(1\) dominates on a set of measure \(1\).
+\end{hint}
+\begin{hint}{ex:v7c08d}
+On \([\frac1n,1]\) the function is continuous. The sets \(f\mathbf 1_{[\frac1n,1]}\) increase to \(f\). For the \(\delta\), the set \(\{f>M\}\) is \(]0,1/M^2[\), and its integral is \(2/M\). The choice \(M=40\) leaves room for \(\frac1{20}\) in each piece.
 \end{hint}
 
 \section{Solutions}
 
 \begin{solution}{ex:fatoustrict}
-\idea Monotone convergence downwards needs a finite starting integral; dominated convergence needs a dominating integrable function. Mass can escape to infinity
-as well as into a point.
-\writeup (a) $f_n=\mathbf 1_{[n,\infty[}$ decreases to $0$ but $\int f_n=\infty$. Monotone convergence holds only upwards; downwards it needs $\int f_1<\infty$ (then it follows from
-dominated convergence with $g=f_1$). (b) $f_n=\mathbf 1_{[n,n+1]}$: $f_n\to0$ everywhere, $\int f_n=1$, $0\le f_n\le1$, but $\lambda(\R)=\infty$ so the constant $1$ is not integrable, and $\sup_nf_n=\mathbf 1_{[1,\infty[}$ is not
-integrable either. Dominated convergence fails; Fatou holds and is strict.
+\idea A downward limit needs a finite integral at the start. A dominant has to be integrable, and on an infinite space the constant \(1\) is not.
+\writeup (a) Let \(f_n=\mathbf 1_{[n,\infty[}\). The sequence decreases pointwise to \(0\), and \(\int f_n=\infty\) for every \(n\). Monotone convergence is proved for increasing sequences. The downward companion needs a finite first integral. If \(0\le f_{n+1}\le f_n\) and \(\int f_1<\infty\), then \(f_1-f_n\) increases to \(f_1-\lim f_n\), and \(f_1\) dominates, so dominated convergence gives \(\int f_n\to\int\lim f_n\). Here \(\int f_1\) is already infinite, and that route is closed.
+
+(b) Let \(f_n=\mathbf 1_{[n,n+1]}\). Each \(x\) belongs to at most one of these intervals, so \(f_n(x)\to0\). The integral equals \(1\). Also \(0\le f_n\le1\). Lebesgue measure of \(\R\) is infinite, so the constant function \(1\) is not integrable, and neither is \(\sup_nf_n=\mathbf 1_{[1,\infty[}\). Dominated convergence does not apply. Fatou's lemma does apply, and \(0\le1\) is a strict inequality.
 \end{solution}
 
 \begin{solution}{ex:typewriter}
-\idea The bump sweeps $[0,1]$ again and again, getting thinner: small in measure, yet it comes back over every point once per sweep.
-\writeup $\int|f_n|=2^{-k}\to0$ as $n\to\infty$ (as $k\to\infty$), so $f_n\to0$ in $L^1$ and in measure (Proposition~\ref{prop:modes}(a)). For each $x\in[0,1]$ and each $k$, $x$ lies in at least one of the
-intervals $[j2^{-k},(j+1)2^{-k}]$, so $f_n(x)=1$ for at least one $n$ in each generation $2^k\le n<2^{k+1}$. For $k=1$ the two intervals share the endpoint $\frac12$, so that generation has no zero only at $x=\frac12$. Once $k\ge2$ there are at least four intervals and $x$ lies in at most two of them, so $f_n(x)=0$ for some $n$ in the generation as well. So $(f_n(x))$ takes both values infinitely often. The subsequence $f_{2^k}=\mathbf 1_{[0,2^{-k}]}$ tends to $0$ at every $x>0$, hence a.e.
+\idea The bump sweeps \([0,1]\) over and over, half as wide at each generation. It is small in integral, and it returns to every point once per sweep.
+\writeup One has \(\int|f_n|=2^{-k}\), and \(k\to\infty\) as \(n\to\infty\), so \(f_n\to0\) in \(L^1\). Proposition~\ref{prop:modes}(a) upgrades that to convergence in measure. Fix \(x\in[0,1]\) and a generation \(k\). The point \(x\) lies in at least one interval \([j2^{-k},(j+1)2^{-k}]\), so \(f_n(x)=1\) for at least one index in the block \(2^k\le n<2^{k+1}\). For \(k=1\) the two intervals meet at \(\frac12\), and that single point is the only place where the generation has no zero. For \(k\ge2\) there are at least four intervals, and \(x\) lies in at most two of them, so some index in the generation has \(f_n(x)=0\). The sequence \((f_n(x))\) therefore equals \(1\) for infinitely many \(n\) and equals \(0\) for infinitely many \(n\). It diverges at every \(x\). The subsequence \(f_{2^k}=\mathbf 1_{[0,2^{-k}]}\) tends to \(0\) at every \(x>0\), hence almost everywhere.
 \end{solution}
 
 \begin{solution}{ex:riemannalgebra}
-\idea Lebesgue's criterion turns integrability into a property of the set of discontinuities, and these sets behave well: a combination is continuous
-wherever its ingredients are.
-\writeup Let $D_f$ be the set of discontinuities of $f$. If $f,g$ are continuous at $x$, so are $f+g$, $fg$, $|f|$, $\max(f,g)$, $\min(f,g)$, and $h\circ f$ for continuous $h$. So their
-discontinuities lie in $D_f\cup D_g$, a null set if $f,g$ are Riemann integrable; they are bounded, and Theorem~\ref{thm:lebesguecriterion} applies. For $f\circ g$: let $K$ be a fat
-Cantor set in $[0,1]$ (Exercise~\ref{ex:fatcantor}), $g(x)=\operatorname{dist}(x,K)$, continuous, zero exactly on $K$, and $f=\mathbf 1_{]0,\infty[}$, Riemann integrable on any segment (one
-discontinuity). Then $f\circ g=\mathbf 1_{[0,1]\setminus K}$, which is discontinuous at every point of $K$ (since $K$ has empty interior, every point of $K$ is a limit of points outside $K$):
-its discontinuities have measure $\lambda(K)=\frac12$, and $f\circ g$ is not Riemann integrable.
+\idea The criterion turns Riemann integrability into a statement about the discontinuity set. Those sets behave well under the algebra operations.
+\writeup Let \(D_f\) be the discontinuity set of \(f\). If \(f\) and \(g\) are both continuous at \(x\), then so are \(f+g\), \(fg\), \(|f|\), \(\max(f,g)\), \(\min(f,g)\), and \(h\circ f\) for any continuous \(h\). The discontinuities of each combination therefore sit inside \(D_f\cup D_g\). When \(f\) and \(g\) are Riemann integrable that union is null, the combination is bounded, and Theorem~\ref{thm:lebesguecriterion} applies.
+
+The opposite order can fail. Let \(K\subseteq[0,1]\) be a fat Cantor set of measure \(\frac12\) (Exercise~\ref{ex:fatcantor}), and set \(g(x)=\operatorname{dist}(x,K)\). Then \(g\) is continuous, and \(g(x)=0\) exactly on \(K\), because \(K\) is closed. Let \(f=\mathbf 1_{]0,\infty[}\). On any segment, \(f\) has one discontinuity, so \(f\) is Riemann integrable. The composition \(f\circ g=\mathbf 1_{[0,1]\setminus K}\) equals \(0\) on \(K\) and equals \(1\) off \(K\). Since \(K\) has empty interior, every neighbourhood of a point of \(K\) meets the complement, so \(f\circ g\) is discontinuous at every point of \(K\). That set has measure \(\frac12\). Theorem~\ref{thm:lebesguecriterion} says \(f\circ g\) is not Riemann integrable.
 \end{solution}
 
 \begin{solution}{ex:layercake}
-\idea Integrating $\mu(f>t)$ over $t$ adds up the horizontal slices of the region under the graph; Fubini would say it at once, but monotone convergence is enough.
-\writeup Let $s=\sum_{i\le m}a_i\mathbf 1_{A_i}$ with $0=a_0<a_1<\cdots<a_m$ and disjoint $A_i$. For $a_{k-1}\le t<a_k$, $\mu(s>t)=\sum_{i\ge k}\mu(A_i)$, so
+\idea Integrating \(\mu(f>t)\) in the height variable \(t\) stacks the horizontal slices under the graph. Monotone convergence assembles the slices; a later change-of-variables theorem is not required.
+\writeup Let \(s=\sum_{i\le m}a_i\mathbf 1_{A_i}\) with \(0=a_0<a_1<\cdots<a_m\) and the \(A_i\) disjoint. For \(a_{k-1}\le t<a_k\) one has \(\mu(s>t)=\sum_{i\ge k}\mu(A_i)\), so
 \[\int_0^\infty\mu(s>t)\,dt=\sum_{k\le m}(a_k-a_{k-1})\sum_{i\ge k}\mu(A_i)=\sum_i\mu(A_i)\sum_{k\le i}(a_k-a_{k-1})=\sum_ia_i\mu(A_i).\]
-For $f\ge0$, take simple $s_n\uparrow f$ (Proposition~\ref{prop:measurablefns}(c)). For each $t$, $\{s_n>t\}$ increases to $\{f>t\}$ (if $f(x)>t$, then $s_n(x)>t$ for large $n$), so $\mu(s_n>t)\uparrow\mu(f>t)$. Two
-applications of monotone convergence, in $t$ for $\lambda$ and in $x$ for $\mu$, give $\int f\,d\mu=\lim\int s_n\,d\mu=\lim\int_0^\infty\mu(s_n>t)\,dt=\int_0^\infty\mu(f>t)\,dt$. (The functions $t\mapsto\mu(s_n>t)$ are
-non-increasing, hence Borel.) For $\mathbb E[X^p]$, apply this to $X^p$ and substitute $t=u^p$ ($\{X^p>u^p\}=\{X>u\}$; the change of variables for monotone $C^1$ maps on intervals holds for
-non-negative measurable integrands by approximation, or see Chapter~\ref{ch:products}).
+For a general measurable \(f\ge0\), Proposition~\ref{prop:measurablefns}(c) gives simple \(s_n\uparrow f\). If \(f(x)>t\), then \(s_n(x)>t\) for large \(n\), so \(\{s_n>t\}\) increases to \(\{f>t\}\) and \(\mu(s_n>t)\uparrow\mu(f>t)\). The map \(t\mapsto\mu(s_n>t)\) is non-increasing, hence Borel: its strict superlevel set is an interval. Monotone convergence in the \(t\)-variable, and monotone convergence for \(\int s_n\), give
+\[
+\int f\,d\mu=\lim_n\int s_n\,d\mu=\lim_n\int_0^\infty\mu(s_n>t)\,dt=\int_0^\infty\mu(f>t)\,dt.
+\]
+On a probability space, apply this to the random variable \(X\ge0\). That is the formula for \(\mathbb E[X]\).
+
+For \(p>0\), the same formula applied to \(X^p\) reads \(\mathbb E[X^p]=\int_0^\infty\mathbb P(X^p>s)\,ds\). Write \(\varphi(s)=\mathbb P(X^p>s)\). This \(\varphi\) is non-increasing. The simple functions \(\sigma_n=\min\bigl(n,2^{-n}\lfloor2^n\varphi\rfloor\bigr)\) increase to \(\varphi\), and each \(\sigma_n\) is a finite sum \(\sum_kc_k\mathbf 1_{[0,a_k)}\) (a single point does not affect the integral). For \(\psi=\mathbf 1_{[0,a)}\) with \(a<\infty\),
+\[
+\int_0^\infty\psi(s)\,ds=a.
+\]
+The substituted integral is handled by monotone convergence as well. On \([\frac1n,a^{1/p}]\) the function \(pt^{p-1}\) is continuous, and
+\[
+\int_{1/n}^{a^{1/p}}pt^{p-1}\,dt=a-n^{-p}.
+\]
+The integrands increase to \(pt^{p-1}\mathbf 1_{]0,a^{1/p}]}\), so monotone convergence gives \(\int_0^\infty pt^{p-1}\psi(t^p)\,dt=a\). If \(a=\infty\), both sides are infinite. Linearity extends the identity from \(\psi\) to each \(\sigma_n\). A further monotone convergence, now in the variable \(t\), passes it to \(\varphi\):
+\[
+\int_0^\infty\varphi(s)\,ds=\int_0^\infty pt^{p-1}\varphi(t^p)\,dt.
+\]
+For \(t\ge0\) and \(X\ge0\), the inequality \(X^p>t^p\) is the same as \(X>t\), because \(u\mapsto u^p\) is strictly increasing on \([0,\infty[\). That is the formula for \(\mathbb E[X^p]\).
 \end{solution}
 
 \begin{solution}{ex:scheffe}
-\idea If the integrals converge and the functions converge pointwise, the mass of $f_n$ cannot escape: what $f_n$ has above $f$ is compensated by what it lacks below, and
-the part below is dominated by $f$.
-\writeup $|f_n-f|=f_n+f-2\min(f_n,f)$. Since $0\le\min(f_n,f)\le f$ and $\min(f_n,f)\to f$ a.e., dominated convergence gives $\int\min(f_n,f)\to\int f$. Hence $\int|f_n-f|\to\int f+\int f-2\int f=0$. For
-densities, $|\int_Bp_n-\int_Bp|\le\int|p_n-p|\to0$ uniformly in $B$.
+\idea Once the integrals converge and the functions converge pointwise, the mass above \(f\) is paid for by the mass missing below \(f\). The part below \(f\) is dominated by \(f\).
+\writeup The identity \(|f_n-f|=f_n+f-2\min(f_n,f)\) is a check at each \(x\): the minimum is the smaller height, and the absolute difference is the sum of the two heights minus twice that smaller height. One has \(0\le\min(f_n,f)\le f\) and \(\min(f_n,f)\to f\) almost everywhere, so dominated convergence yields \(\int\min(f_n,f)\to\int f\). Therefore
+\[
+\int|f_n-f|\to\int f+\int f-2\int f=0.
+\]
+For densities, \(\bigl|\int_Bp_n-\int_Bp\bigr|\le\int|p_n-p|\) for every measurable \(B\), and the right-hand side tends to \(0\) with no dependence on \(B\).
 \end{solution}
 
 \begin{solution}{ex:vallee}
-\idea Superlinear growth of $\Phi$ means that large values of $|f|$ cost much more in $\int\Phi(|f|)$ than in $\int|f|$; a bound on the first leaves little room for tails.
-\writeup Let $C=\sup_f\int\Phi(|f|)$ and $\eta(M)=\sup_{t>M}\frac t{\Phi(t)}$, which tends to $0$ since $\frac{\Phi(t)}t\to\infty$ (and $\Phi(t)>0$ for $t$ large). On $\{|f|>M\}$, $|f|\le\eta(M)\Phi(|f|)$, so
-$\int_{\{|f|>M\}}|f|\le\eta(M)C\to0$ uniformly in $f$. For $\Phi(t)=t^p$, $\eta(M)=M^{1-p}$; for $t\log^+t$, $\eta(M)=\frac1{\log M}$.
+\idea If \(\Phi(t)/t\) tends to infinity, a large value of \(|f|\) costs much more in \(\int\Phi(|f|)\) than in \(\int|f|\). A uniform bound on the first integral leaves little room for tails.
+\writeup Let \(C=\sup_f\int\Phi(|f|)\) and \(\eta(M)=\sup_{t>M}t/\Phi(t)\). The hypothesis \(\Phi(t)/t\to\infty\) forces \(\eta(M)\to0\), and \(\Phi(t)>0\) for all large \(t\). On \(\{|f|>M\}\) one has \(|f|\le\eta(M)\Phi(|f|)\), so
+\[
+\int_{\{|f|>M\}}|f|\le\eta(M)\,C.
+\]
+The right-hand side tends to \(0\) as \(M\to\infty\), independently of \(f\). For \(\Phi(t)=t^p\) with \(p>1\), one has \(\eta(M)=M^{1-p}\). For \(\Phi(t)=t\log^+t\), one has \(\eta(M)=1/\log M\) when \(M>1\).
 \end{solution}
 
 \begin{solution}{ex:gausscos}
-\idea Differentiate under the integral sign, which needs one integrable bound for the derivative, uniform in $t$; then an integration by parts turns the
-derivative back into $I$ itself.
-\writeup The function $h(x,t)=e^{-x^2}\cos(tx)$ satisfies \[|\partial_th(x,t)|=|xe^{-x^2}\sin(tx)|\le xe^{-x^2},\] which is integrable on $[0,\infty[$, so Theorem~\ref{thm:parameter}(b) applies on all of $\R$. Integrating by parts on $[0,R]$
-with $u=\sin(tx)$ and $v'=-xe^{-x^2}$, $v=\frac12e^{-x^2}$:
+\idea One integrable bound on the \(t\)-derivative, the same bound for every \(t\), is the hypothesis of Theorem~\ref{thm:parameter}. Integration by parts then brings \(I\) back.
+\writeup The integrand \(h(x,t)=e^{-x^2}\cos(tx)\) satisfies \(|\partial_th(x,t)|=|xe^{-x^2}\sin(tx)|\le xe^{-x^2}\), and \(xe^{-x^2}\) is integrable on \([0,\infty[\) because it is the derivative of \(-\frac12e^{-x^2}\) up to a sign, and the improper integral equals \(\frac12\). Theorem~\ref{thm:parameter}(b) therefore applies on the whole line, and \(I'(t)=-\int_0^\infty xe^{-x^2}\sin(tx)\,dx\).
+
+Integrate by parts on \([0,R]\) with \(u=\sin(tx)\) and \(v'=-xe^{-x^2}\), so \(v=\frac12e^{-x^2}\). Let \(R\to\infty\). The boundary term vanishes at both ends, and
 \[\begin{aligned}I'(t)&=\Bigl[\tfrac12e^{-x^2}\sin(tx)\Bigr]_0^\infty-\frac t2\int_0^\infty e^{-x^2}\cos(tx)\,dx\eqbr=-\frac t2I(t).\end{aligned}\]
-So $(e^{t^2/4}I)'=0$, and $I(t)=I(0)e^{-t^2/4}=\frac{\sqrt\pi}2e^{-t^2/4}$. The factor $e^{-x^2}\sin(tx)$ is odd and $e^{-x^2}\cos(tx)$ is even, so $\int_\R e^{-x^2}e^{itx}\,dx=2I(t)=\sqrt\pi e^{-t^2/4}$; substituting $x=\frac y{\sqrt2}$, the standard
-Gaussian law has characteristic function $\mathbb E[e^{itZ}]=e^{-t^2/2}$, as Volume~4 found by another route.
+Differentiate the product \(e^{t^2/4}I(t)\). The two contributions \(e^{t^2/4}\cdot(t/2)I\) and \(e^{t^2/4}\cdot I'\) cancel, so the product is constant. Volume~1 gives \(I(0)=\frac{\sqrt\pi}2\), and therefore \(I(t)=\frac{\sqrt\pi}2e^{-t^2/4}\).
+
+The function \(e^{-x^2}\sin(tx)\) is odd and \(e^{-x^2}\cos(tx)\) is even, so
+\[
+\int_{-\infty}^\infty e^{-x^2}e^{itx}\,dx=2I(t)=\sqrt\pi\,e^{-t^2/4}.
+\]
+Substitute \(x=y/\sqrt2\), hence \(dx=dy/\sqrt2\). With \(s=t/\sqrt2\), so that \(t^2/4=s^2/2\),
+\[
+\int_{-\infty}^\infty e^{-y^2/2}e^{isy}\,dy=\sqrt{2\pi}\,e^{-s^2/2}.
+\]
+Divide by \(\sqrt{2\pi}\). The standard Gaussian density \((2\pi)^{-1/2}e^{-y^2/2}\) has characteristic function \(e^{-s^2/2}\). Volume~4 reached the same function by differentiating under the integral in the continuous setting.
 \end{solution}
 
 \begin{solution}{ex:rlemma}
-\idea Oscillation kills the integral of an indicator of an interval at speed $\frac1{|\xi|}$; step functions are dense in $L^1$, and the map $f\mapsto\int fe^{i\xi x}$ is $1$-Lipschitz for the $L^1$
-norm, uniformly in $\xi$.
-\writeup For $f=\mathbf 1_{]a,b]}$, $|\int_a^be^{i\xi x}\,dx|=|\frac{e^{i\xi b}-e^{i\xi a}}{i\xi}|\le\frac2{|\xi|}\to0$; by linearity the same holds for step functions (finite combinations of such indicators).
-Now let $f\in\mathcal L^1$ and $\varepsilon>0$. Splitting $f$ into real and imaginary, positive and negative parts, we may take $f\ge0$. By Proposition~\ref{prop:measurablefns}(c) and monotone
-convergence, a simple function $s=\sum_ia_i\mathbf 1_{A_i}\le f$ has $\int(f-s)<\varepsilon$, and the $A_i$ have finite measure. By Littlewood's first principle (after Proposition~\ref{prop:regularity}) each $A_i$
-is a finite union of intervals up to a set of measure $\frac\varepsilon{m|a_i|}$, so a step function $\phi$ has $\int|s-\phi|<\varepsilon$. Then $\int|f-\phi|<2\varepsilon$, and
-\[\Bigl|\int fe^{i\xi x}\Bigr|\le\int|f-\phi|+\Bigl|\int\phi e^{i\xi x}\Bigr|<2\varepsilon+\Bigl|\int\phi e^{i\xi x}\Bigr|,\]
-whose last term tends to $0$. So \[\limsup_{|\xi|\to\infty}\Bigl|\int fe^{i\xi x}\Bigr|\le2\varepsilon\] for every $\varepsilon>0$, and the limit is $0$.
+\idea On a single interval the oscillation produces a factor \(1/|\xi|\). Step functions are dense in \(L^1\), and \(f\mapsto\int fe^{i\xi x}\) does not increase the \(L^1\) norm.
+\writeup For \(f=\mathbf 1_{]a,b]}\),
+\[
+\Bigl|\int_a^be^{i\xi x}\,dx\Bigr|=\Bigl|\frac{e^{i\xi b}-e^{i\xi a}}{i\xi}\Bigr|\le\frac2{|\xi|},
+\]
+which tends to \(0\) as \(|\xi|\to\infty\). Finite linear combinations of such indicators, the step functions, obey the same limit.
+
+Now take \(f\in\mathcal L^1(\R)\) and \(\varepsilon>0\). Splitting into real and imaginary parts, and then into positive and negative parts, reduces the claim to the case \(f\ge0\). Proposition~\ref{prop:measurablefns}(c) and monotone convergence give a simple function \(s=\sum_{i\le m}a_i\mathbf 1_{A_i}\le f\) with \(\int(f-s)<\varepsilon\). Each \(A_i\) with \(a_i>0\) has finite measure. Exercise~\ref{ex:completion} puts inside \(A_i\) a Borel set of the same measure. The paragraph after Proposition~\ref{prop:regularity} approximates that Borel set, up to measure less than \(\varepsilon/(m|a_i|)\), by a finite union of intervals. The resulting step function \(\phi\) satisfies \(\int|s-\phi|<\varepsilon\), hence \(\int|f-\phi|<2\varepsilon\). Then
+\[\Bigl|\int fe^{i\xi x}\Bigr|\le\int|f-\phi|+\Bigl|\int\phi e^{i\xi x}\Bigr|<2\varepsilon+\Bigl|\int\phi e^{i\xi x}\Bigr|.\]
+The last term tends to \(0\) as \(|\xi|\to\infty\), so
+\[\limsup_{|\xi|\to\infty}\Bigl|\int fe^{i\xi x}\Bigr|\le2\varepsilon\]
+for every \(\varepsilon>0\). The limsup is \(0\).
 \end{solution}
 
 \begin{solution}{ex:dirichlet}
-\idea The factor $e^{-tx}$ makes everything absolutely integrable for $t>0$, so Feynman's trick applies there and gives $F$ exactly. The real work is at $t=0$, where
-$\frac{\sin x}x$ is not integrable: an integration by parts shows that the tails are small uniformly in $t$, which lets $t\to0$.
-\writeup (a) For $t\ge t_0>0$, $|\partial_t(e^{-tx}\frac{\sin x}x)|=|e^{-tx}\sin x|\le e^{-t_0x}$, integrable, so $F$ is differentiable on $]t_0,\infty[$ for each $t_0$, with
-\[F'(t)=-\int_0^\infty e^{-tx}\sin x\,dx=-\operatorname{Im}\int_0^\infty e^{(-t+i)x}\,dx=-\operatorname{Im}\frac1{t-i}=-\frac1{1+t^2}.\]
-Also $|F(t)|\le\int_0^\infty e^{-tx}\,dx=\frac1t\to0$. Since $\frac\pi2-\arctan t$ has the same derivative and also tends to $0$, $F(t)=\frac\pi2-\arctan t$.
-(b) Let $G_R(t)=\int_0^Re^{-tx}\frac{\sin x}x\,dx$ for $t\ge0$, a proper integral, continuous in $t$ by Theorem~\ref{thm:parameter}(a) (dominated by $1$ on $[0,R]$). Let $\psi_t(x)=-e^{-tx}\frac{t\sin x+\cos x}{1+t^2}$, a
-primitive of $e^{-tx}\sin x$, with $|\psi_t(x)|\le\frac{t+1}{1+t^2}\le2$. Integrating by parts on $[R,S]$,
-\[\int_R^Se^{-tx}\frac{\sin x}x\,dx=\Bigl[\frac{\psi_t(x)}x\Bigr]_R^S+\int_R^S\frac{\psi_t(x)}{x^2}\,dx,\]
-so $|\int_R^Se^{-tx}\frac{\sin x}x\,dx|\le\frac2S+\frac2R+\frac2R\le\frac6R$ for all $S>R$ and all $t\ge0$. Hence the improper integrals $\int_0^\infty e^{-tx}\frac{\sin x}x\,dx$ exist for $t\ge0$, equal $F(t)$ for $t>0$, and
-$|F(t)-G_R(t)|\le\frac6R$ uniformly in $t\ge0$ (with $F(0)$ the improper integral). A uniform limit of continuous functions is continuous, so $F$ is continuous at $0$:
-$\int_0^\infty\frac{\sin x}x\,dx=F(0)=\lim_{t\to0^+}(\frac\pi2-\arctan t)=\frac\pi2$.
+\idea For \(t>0\) the factor \(e^{-tx}\) makes the integral absolutely convergent, so Theorem~\ref{thm:parameter} computes \(F\) exactly. At \(t=0\) the function \(\sin x/x\) is not Lebesgue integrable. An integration by parts shows that the tails are small uniformly in \(t\), and that is what lets \(t\) reach \(0\).
+\writeup (a) For \(t\ge t_0>0\),
+\[
+\Bigl|\partial_t\Bigl(e^{-tx}\frac{\sin x}x\Bigr)\Bigr|=|e^{-tx}\sin x|\le e^{-t_0x},
+\]
+which is integrable on \([0,\infty[\). Theorem~\ref{thm:parameter}(b) gives differentiability on \(]t_0,\infty[\) for every \(t_0>0\). The derivative is \(F'(t)=-\int_0^\infty e^{-tx}\sin x\,dx\).
+
+The function \(\psi(x)=e^{-tx}(-t\sin x-\cos x)/(1+t^2)\) has derivative \(e^{-tx}\sin x\). Indeed, with \(u=e^{-tx}\) and \(v=(-t\sin x-\cos x)/(1+t^2)\),
+\begin{align*}
+u'v+uv'
+&=\frac{e^{-tx}}{1+t^2}\Bigl(t(t\sin x+\cos x)+(-t\cos x+\sin x)\Bigr)\\
+&=e^{-tx}\sin x.
+\end{align*}
+Thus \(\int_0^b e^{-tx}\sin x\,dx=\psi(b)-\psi(0)\). As \(b\to\infty\) the factor \(e^{-tb}\) sends \(\psi(b)\) to \(0\), and \(\psi(0)=-1/(1+t^2)\), so the improper integral equals \(1/(1+t^2)\). Therefore \(F'(t)=-1/(1+t^2)\).
+
+Also \(|\sin x/x|\le1\) for \(x>0\), the integrand at \(0\) being read as \(1\), so \(|F(t)|\le\int_0^\infty e^{-tx}\,dx=1/t\to0\) as \(t\to\infty\). The function \(\frac\pi2-\arctan t\) has the same derivative and the same limit \(0\) at infinity, so \(F(t)=\frac\pi2-\arctan t\).
+
+(b) For \(t\ge0\) and \(0\le x\le R\), the integrand of \(G_R(t)=\int_0^Re^{-tx}(\sin x)/x\,dx\) is bounded by \(1\). Theorem~\ref{thm:parameter}(a) makes \(G_R\) continuous on \([0,\infty[\). Use the same primitive \(\psi_t(x)=-e^{-tx}(t\sin x+\cos x)/(1+t^2)\) of \(e^{-tx}\sin x\). For \(t\ge0\),
+\[
+|\psi_t(x)|\le\frac{t+1}{1+t^2}.
+\]
+The quadratic \(2t^2-t+1=2\bigl(t-\frac14\bigr)^2+\frac78\) is positive, so \(t+1\le2(1+t^2)\) and \(|\psi_t|\le2\). Integrate by parts on \([R,S]\), differentiating \(1/x\):
+\[\int_R^Se^{-tx}\frac{\sin x}x\,dx=\Bigl[\frac{\psi_t(x)}x\Bigr]_R^S+\int_R^S\frac{\psi_t(x)}{x^2}\,dx.\]
+The absolute value is at most \(2/S+2/R+2\int_R^\infty x^{-2}\,dx\le2/S+2/R+2/R\le6/R\), for every \(S>R\) and every \(t\ge0\). The improper integrals \(\int_0^\infty e^{-tx}(\sin x)/x\,dx\) therefore exist for all \(t\ge0\). For \(t>0\) they equal \(F(t)\). Writing \(F(0)\) for the improper integral at \(t=0\), one has \(|F(t)-G_R(t)|\le6/R\) for every \(t\ge0\). A uniform limit of continuous functions is continuous, so \(F\) is continuous at \(0\):
+\[
+\int_0^\infty\frac{\sin x}x\,dx=F(0)=\lim_{t\to0^+}\Bigl(\frac\pi2-\arctan t\Bigr)=\frac\pi2.
+\]
 \end{solution}
 
 \begin{solution}{ex:limits}
-\idea Find the pointwise limit of the integrand first. Then look for one integrable function that bounds every integrand. The moving
-upper limit $n$ in (a) is put inside the integrand as an indicator.
-\writeup (a) Let $f_n(x)=(1-\frac xn)^ne^{x/2}\mathbf 1_{[0,n]}(x)$ on $[0,\infty[$. For fixed $x$ and $n>x$, $n\log(1-\frac xn)\to-x$, so $f_n(x)\to e^{-x}e^{x/2}=e^{-x/2}$. For $0\le x\le n$,
-$0\le1-\frac xn\le e^{-x/n}$, so $0\le f_n(x)\le e^{-x}e^{x/2}=e^{-x/2}$, which is integrable on $[0,\infty[$. By dominated convergence (Theorem~\ref{thm:dct6}) the limit is
-$\int_0^\infty e^{-x/2}\,dx=2$. For $n=10$ the integral is about $1.51$, and for $n=100$ about $1.93$: the convergence is slow.
+\idea Find the pointwise limit first, then one integrable function that sits above every integrand. In (a) the moving upper limit \(n\) becomes an indicator.
+\writeup (a) Define \(f_n(x)=\bigl(1-\frac xn\bigr)^ne^{x/2}\mathbf 1_{[0,n]}(x)\) on \([0,\infty[\). For fixed \(x\) and every \(n>x\), one has \(n\log\bigl(1-\frac xn\bigr)\to-x\), so \(f_n(x)\to e^{-x}e^{x/2}=e^{-x/2}\). For \(0\le x\le n\) the inequality \(1-u\le e^{-u}\) with \(u=x/n\) gives \(0\le1-\frac xn\le e^{-x/n}\), hence \(0\le f_n(x)\le e^{-x/2}\). The dominant \(e^{-x/2}\) is integrable on \([0,\infty[\), with integral \(2\). Theorem~\ref{thm:dct6} yields
+\[
+\lim_{n\to\infty}\int_0^nf_n=\int_0^\infty e^{-x/2}\,dx=2.
+\]
+The approach is slow. At \(n=10\) the integral is about \(1.51\), and at \(n=100\) it is about \(1.93\).
 
-(b) Let $g_n(x)=\frac{n\sin(x/n)}{x(1+x^2)}$ for $x>0$. Since $\frac{\sin u}u\to1$ as $u\to0$, $g_n(x)=\frac{\sin(x/n)}{x/n}\cdot\frac1{1+x^2}\to\frac1{1+x^2}$. Since $|\sin u|\le u$ for $u\ge0$, $|g_n(x)|\le\frac1{1+x^2}$, which is
-integrable. By dominated convergence the limit is $\int_0^\infty\frac{dx}{1+x^2}=\frac\pi2$.
+(b) Set \(g_n(x)=n\sin(x/n)/\bigl(x(1+x^2)\bigr)\) for \(x>0\). Then
+\[
+g_n(x)=\frac{\sin(x/n)}{x/n}\cdot\frac1{1+x^2}.
+\]
+As \(n\to\infty\) the first factor tends to \(1\), so \(g_n(x)\to1/(1+x^2)\). For \(u\ge0\) one has \(|\sin u|\le u\), hence \(|g_n(x)|\le1/(1+x^2)\). That dominant is integrable on \([0,\infty[\). Dominated convergence gives
+\[
+\lim_{n\to\infty}\int_0^\infty g_n=\int_0^\infty\frac{dx}{1+x^2}=\frac\pi2.
+\]
+\end{solution}
+
+\begin{solution}{ex:v7c08a}
+\idea Two heights and two lengths give the integral at once. The same number comes back if you stack horizontal slices and integrate the lengths.
+\writeup The sets \([0,1)\) and \([1,3]\) are disjoint, so
+\[
+\int s\,d\lambda=2\cdot\lambda([0,1))+5\cdot\lambda([1,3])=2\cdot1+5\cdot2=12.
+\]
+For \(0\le t<2\) both pieces contribute and \(\lambda(s>t)=3\). For \(2\le t<5\) only \([1,3]\) contributes and \(\lambda(s>t)=2\). For \(t\ge5\) the set is empty. Therefore
+\[
+\int_0^\infty\lambda(s>t)\,dt=2\cdot3+3\cdot2=12.
+\]
+The height integral and the slice integral agree. This is the layer-cake identity of Exercise~\ref{ex:layercake} on one simple function, computed by hand.
+\end{solution}
+
+\begin{solution}{ex:v7c08b}
+\idea The summands are nonnegative, so Corollary~\ref{cor:linearity6} lets the sum and the integral trade places. The geometric series sums in closed form, and one antiderivative finishes the job.
+\writeup For \(x\in[0,1]\),
+\[
+\sum_{n=1}^\infty\frac{x^n}{2^n}=\frac{x/2}{1-x/2}=\frac{x}{2-x}.
+\]
+At \(x=1\) both sides equal \(1\). Each term \(x^n/2^n\) is continuous on \([0,1]\), hence measurable and nonnegative. Corollary~\ref{cor:linearity6} gives
+\[
+\int_0^1\sum_{n=1}^\infty\frac{x^n}{2^n}\,dx=\sum_{n=1}^\infty\int_0^1\frac{x^n}{2^n}\,dx=\sum_{n=1}^\infty\frac1{2^n(n+1)}.
+\]
+The integrand on the left is \(x/(2-x)=2/(2-x)-1\). Its antiderivative is \(-2\ln(2-x)-x\), because the derivative of \(\ln(2-x)\) is \(-1/(2-x)\). Theorem~\ref{thm:riemanncont} identifies the Riemann integral of this continuous function with the Lebesgue integral, and the fundamental theorem, available from the four rules of that theorem, evaluates it:
+\[
+\bigl[-2\ln(2-x)-x\bigr]_0^1=(-2\ln1-1)-(-2\ln2)=2\ln2-1.
+\]
+The series of integrals equals the same number.
+\end{solution}
+
+\begin{solution}{ex:v7c08c}
+\idea Each \(f_n\) has integral \(1\) and the pointwise limit is \(0\) almost everywhere, so the integrals refuse to follow the functions. The obstruction is an explicit non-integrable lower bound for any dominant. On the unit interval the factor \(e^{-nx}\) is saved by the constant \(1\).
+\writeup For \(x>0\), \(nx\to\infty\) and \(ne^{-nx}\to0\). At \(x=0\) one has \(f_n(0)=n\). The convergence \(f_n\to0\) holds almost everywhere. The substitution \(u=nx\) gives
+\[
+\int_0^\infty ne^{-nx}\,dx=\int_0^\infty e^{-u}\,du=1.
+\]
+Thus \(\lim_n\int f_n=1\) and \(\int\lim f_n=0\).
+
+Suppose \(g\) is measurable and \(g\ge f_n\) for every \(n\). Take \(x\in\,]0,\frac12]\), and set \(y=1/x\ge2\). Let \(m\) be the greatest integer strictly less than \(y\). Then \(m\ge y-1\), and \(y-1\ge y/2\) because \(y\ge2\), so \(m\ge1/(2x)\). Also \(x<1/m\), hence \(f_m(x)=m\ge1/(2x)\). Therefore \(g(x)\ge1/(2x)\) on \(]0,\frac12]\). The integral of \(1/(2x)\) over that interval diverges, so \(\int g=\infty\). Dominated convergence has no integrable dominant available.
+
+Fatou's lemma does apply: \(\int\liminf_nf_n=0\le1=\liminf_n\int f_n\), and the inequality is strict. Monotone convergence asks for an increasing sequence. It does not apply. At the single point \(x=1\), for instance, \(f_n(1)=ne^{-n}\) tends to \(0\) and is not an increasing sequence of numbers, since \(f_1(1)=e^{-1}\) and \(f_2(1)=2e^{-2}<f_1(1)\).
+
+On \([0,1]\), one has \(0\le h_n(x)\le1\), and the constant \(1\) is integrable because the interval has finite measure. Also \(h_n(x)\to0\) for every \(x\in\,]0,1]\), while \(h_n(0)=1\). Dominated convergence applies, and
+\[
+\int_0^1e^{-nx}\,dx=\frac{1-e^{-n}}n\to0,
+\]
+which is the integral of the limit.
+\end{solution}
+
+\begin{solution}{ex:v7c08d}
+\idea The singularity at \(0\) is integrable because the antiderivative \(2x^{1/2}\) stays bounded. The \(\delta\) comes from cutting the integral into a bounded piece, controlled by the measure of \(A\), and a tail, controlled by the height \(M\).
+\writeup On each segment \([\frac1n,1]\) the function \(f\) is continuous. Theorem~\ref{thm:riemanncont} and the fundamental theorem give
+\[
+\int_{1/n}^1x^{-1/2}\,dx=\bigl[2x^{1/2}\bigr]_{1/n}^1=2-2n^{-1/2}.
+\]
+The functions \(f\mathbf 1_{[1/n,1]}\) increase pointwise to \(f\) on \(]0,1]\). Monotone convergence yields \(\int_{]0,1]}f\,d\lambda=2\).
+
+The same computation on \(]0,1/M^2]\) gives \(\int_{\{f>M\}}f=2/M\) for \(M>0\), because \(\{f>M\}=\,]0,1/M^2[\). Choose \(M=40\). Then \(2/M=\frac1{20}\). The split in Lemma~\ref{lem:abscont} reads
+\[
+\int_Af\le M\lambda(A)+\int_{\{f>M\}}f.
+\]
+If \(\lambda(A)<\frac1{800}\), the first term is strictly less than \(40\cdot\frac1{800}=\frac1{20}\). Adding the tail,
+\[
+\int_Af<\frac1{20}+\frac1{20}=\frac1{10}.
+\]
+The number \(\delta=\frac1{800}\) has the property asked for.
 \end{solution}
 
 \section*{Sources and further reading}
 \addcontentsline{toc}{section}{Sources and further reading}
 
 \begin{itemize}
-\item H.~Lebesgue, \emph{Le\c cons sur l'int\'egration et la recherche des fonctions primitives}, Gauthier-Villars, 1904. The integral, the criterion
-for Riemann integrability. The two merchants are in his lecture ``Sur le d\'eveloppement de la notion
-d'int\'egrale'', \emph{Matematisk Tidsskrift B} (1926), 54--74.
-\item G.~B.~Folland, \emph{Real Analysis}, 2nd ed., Wiley, 1999, Chapter~2. Integration, modes of convergence, Egorov.
-\item W.~Rudin, \emph{Real and Complex Analysis}, 3rd ed., McGraw--Hill, 1987, Chapter~1.
-\item P.~Billingsley, \emph{Probability and Measure}, 3rd ed., Wiley, 1995, Sections~15--16. Uniform integrability and Vitali's theorem in
-probabilistic language.
-\item D.~Williams, \emph{Probability with Martingales}, Cambridge University Press, 1991, Chapters~5--6 and~13. Monotone convergence, Fatou,
-dominated convergence and uniform integrability, with a probabilist's eye.
-\item G.~Vitali, \emph{Sull'integrazione per serie}, Rendiconti del Circolo Matematico di Palermo 23 (1907), 137--155.
-\item \emph{For the stories in the introduction.} B.~Riemann, \emph{\"Uber die Darstellbarkeit einer Function durch
-eine trigonometrische Reihe}, Habilitationsschrift, G\"ottingen, 1854; B.~Levi, ``Sopra l'integrazione delle serie'', \emph{Rend.\ Ist.\ Lombardo} 39 (1906), 775--780; P.~Fatou,
-``S\'eries trigonom\'etriques et s\'eries de Taylor'', \emph{Acta Math.} 30 (1906), 335--400. For the whole history: T.~Hawkins, \emph{Lebesgue's Theory of Integration: Its
-Origins and Development}, 2nd ed., Chelsea, 1975.
+\item H.~Lebesgue, \emph{Le\c cons sur l'int\'egration et la recherche des fonctions primitives}, Gauthier-Villars, 1904. The construction of the integral, and the criterion for Riemann integrability. The two merchants come from his lecture ``Sur le d\'eveloppement de la notion d'int\'egrale'', \emph{Matematisk Tidsskrift B} (1926), 54--74, given in Copenhagen on 8~May 1926.
+\item H.~Lebesgue, ``Sur la m\'ethode de M.~Goursat pour la r\'esolution de l'\'equation de Fredholm'', \emph{Bulletin de la Soci\'et\'e math\'ematique de France} 36 (1908), 3--19. A limit passes under the integral after a set of small integral has been cut off. That is dominated convergence in the form used for Fredholm's equation.
+\item G.~B.~Folland, \emph{Real Analysis}, 2nd ed., Wiley, 1999, Chapter~2. The integral, convergence in measure, and Egorov's theorem.
+\item W.~Rudin, \emph{Real and Complex Analysis}, 3rd ed., McGraw--Hill, 1987, Chapter~1. The integral and the convergence theorems, in compact form.
+\item P.~Billingsley, \emph{Probability and Measure}, 3rd ed., Wiley, 1995, Sections~15--16. Uniform integrability and Vitali's theorem, written for probability spaces.
+\item D.~Williams, \emph{Probability with Martingales}, Cambridge University Press, 1991, Chapters~5--6 and~13. Monotone convergence, Fatou's lemma, dominated convergence, and uniform integrability, arranged for martingales.
+\item G.~Vitali, \emph{Sull'integrazione per serie}, Rendiconti del Circolo Matematico di Palermo 23 (1907), 137--155. The convergence theorem under uniform absolute continuity of the integrals.
+\item \emph{For the history named in the opening.} B.~Riemann, \emph{\"Uber die Darstellbarkeit einer Function durch eine trigonometrische Reihe}, Habilitationsschrift, G\"ottingen, 1854. B.~Levi, ``Sopra l'integrazione delle serie'', \emph{Rend.\ Ist.\ Lombardo} 39 (1906), 775--780. P.~Fatou, ``S\'eries trigonom\'etriques et s\'eries de Taylor'', \emph{Acta Math.} 30 (1906), 335--400. The full development is in T.~Hawkins, \emph{Lebesgue's Theory of Integration: Its Origins and Development}, 2nd ed., Chelsea, 1975.
 \end{itemize}
