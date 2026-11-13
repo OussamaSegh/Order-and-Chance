@@ -32,7 +32,7 @@ Gate B of the master plan (independent verification records) is not this pass.
 | 5 | Brownian Motion and Analysis | `ch05-analysis.tex` | Done |
 | 6 | Stochastic Differential Equations | `ch06-sde.tex` | Done |
 | 7 | Markov Processes and Lévy Processes | `ch07-levy.tex` | Done |
-| 8 | Random Walks on Networks and Groups | `ch08-networks.tex` | To do |
+| 8 | Random Walks on Networks and Groups | `ch08-networks.tex` | Done |
 | 9 | Random Matrices I: The Semicircle | `ch09-semicircle.tex` | To do |
 | 10 | Random Matrices II: Unitary Matrices and the Zeros of Zeta | `ch10-cue.tex` | To do |
 | 11 | Log-Correlated Fields and the Largest Values | `ch12-logcorrelated.tex` (to be renamed `ch11-`), `brw-halfmoment.tex` | To do |
