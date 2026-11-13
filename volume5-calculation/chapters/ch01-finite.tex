@@ -1,35 +1,24 @@
 \chapter{Finite Calculus}\label{ch:finite}
 
 \begin{center}\itshape
-Everyone knows $1+2+\dots+n=\frac{n(n+1)}2$. What is $1^5+2^5+\dots+n^5$,\\
-and is there a method that would have found it, rather than a formula to remember?
+The sum $1+2+\dots+n$ is $\frac{n(n+1)}2$.\\
+What is $1^5+\dots+n^5$, and is there a method rather than a formula to memorise?
 \end{center}
 
-In his \emph{Ars Conjectandi}, printed in 1713, eight years after his death, Jacob Bernoulli could not resist a boast. With his new method, he wrote, it had taken him
-``less than half of a quarter of an hour'' to find that the tenth powers of the first thousand integers add up to
+Jacob Bernoulli's \emph{Ars Conjectandi} was printed in 1713, eight years after he died. He allowed himself one boast. His method, he wrote, had added the tenth powers of the first thousand integers in ``less than half of a quarter of an hour'':
 \[
 91\,409\,924\,241\,424\,243\,424\,241\,924\,242\,500.
 \]
-(A computer confirms every digit.) His secret was not speed with arithmetic. It was a calculus for sums, as complete as Newton's calculus for areas.
-This chapter builds it.
+Every digit checks. The speed was not arithmetic. It was a calculus for sums, as complete as the calculus for areas.
 
-Calculus computes $\int_a^bf$ by finding a function $F$ with $F'=f$. Sums have the same theory, with the
-\emph{difference} $\Delta F(x)=F(x+1)-F(x)$ in place of the derivative: to compute $\sum_{k=a}^{b-1}f(k)$, find $F$
-with $\Delta F=f$, and the sum is $F(b)-F(a)$. Everything else follows the continuous model, with small twists.
-Powers $x^m$ are replaced by \emph{falling powers} $x(x-1)\cdots(x-m+1)$, which behave perfectly under $\Delta$;
-integration by parts becomes \emph{summation by parts}; the exponential $e^x$ becomes $2^x$ and the logarithm
-becomes the harmonic number $H_x$.
+\portrait{jbernoulli}{Jacob Bernoulli (1655--1705). Portrait by his brother Nicolaus Bernoulli, 1687. Public domain.}
 
-The chapter develops this \emph{finite calculus}, then uses it on the oldest problem of its kind, the sums of
-powers $\sum k^p$. Two families of numbers do the translation between ordinary and falling powers: the
-\emph{Stirling numbers}, which count partitions of sets and cycles of permutations, and the \emph{Bernoulli
-numbers}, which give Faulhaber's formula for $\sum k^p$ and will return in Chapter~\ref{ch:series} with $\zeta(2k)$ and in
-Chapter~\ref{ch:asymptotics} with the Euler--Maclaurin formula. The chapter ends with Newton's interpolation formula, the principle
-of Babbage's difference engine.
+An integral $\int_a^bf$ equals $F(b)-F(a)$ once $F'=f$. A sum has the same shape. Write $\Delta F(x)=F(x+1)-F(x)$. If $\Delta F=f$, then $\sum_{k=a}^{b-1}f(k)=F(b)-F(a)$. Three things change with the shift. Ordinary powers $x^m$ difference badly. Falling powers $x(x-1)\cdots(x-m+1)$ difference cleanly. The product rule picks up a shift, $e^x$ becomes $2^x$, and $\ln x$ becomes the harmonic number $H_x$.
+
+The sums this calculus is built for are $\sum k^p$. Stirling numbers turn an ordinary power into falling powers, and the same numbers count set partitions and cycles of permutations. Bernoulli numbers then put every power sum into one formula, Faulhaber's formula. Those numbers are the rational part of $\zeta(2k)$ in Chapter~\ref{ch:series}, and they return in the Euler--Maclaurin formula of Chapter~\ref{ch:asymptotics}.
 
 \begin{think}
-The exponential is the function equal to its own derivative. Which function $f$ on the integers satisfies
-$\Delta f=f$, with $f(0)=1$?
+The exponential equals its own derivative. Which function $f$ on the integers satisfies $\Delta f=f$ and $f(0)=1$?
 \end{think}
 
 \section{The difference operator}
@@ -39,8 +28,7 @@ For a function $f$ defined on $\R$ (or on $\Z$), its \emph{difference} is $\Delt
 $a\le b$ we write $\sum_a^bf=\sum_{k=a}^{b-1}f(k)$, a sum over the half-open range $a\le k<b$ (it is $0$ when $a=b$).
 \end{definition}
 
-The half-open convention makes ranges add up, $\sum_a^bf+\sum_b^cf=\sum_a^cf$, exactly as for integrals, and it
-makes the next theorem exact.
+The half-open range is what makes the pieces fit. $\sum_a^bf+\sum_b^cf=\sum_a^cf$, just as for integrals, and the next theorem has no leftover term.
 
 \begin{theorem}[fundamental theorem of finite calculus]\label{thm:ftfc}
 If $\Delta F=f$ on the integers, then $\sum_a^bf=F(b)-F(a)$ for all integers $a\le b$. Conversely, if
@@ -51,11 +39,12 @@ $\sum_{k=a}^{b-1}\bigl(F(k+1)-F(k)\bigr)$ telescopes to $F(b)-F(a)$. If $\Delta(
 every integer $k$, so $F-G$ takes the same value at all integers.
 \end{proof}
 
-Try it once. The function $F(x)=\frac{x(x-1)}2$ has $\Delta F(x)=\frac{(x+1)x-x(x-1)}2=x$. So
-$0+1+\dots+(n-1)=F(n)-F(0)=\frac{n(n-1)}2$, with no induction and no pairing trick.
+Check it on a sum you know. Take $F(x)=\frac{x(x-1)}2$. Then $\Delta F(x)=\frac{(x+1)x-x(x-1)}2=x$, so
+$0+1+\dots+(n-1)=F(n)-F(0)=\frac{n(n-1)}2$. No induction, and no pairing.
 
-So every sum is a problem of finding an \emph{antidifference}. The first family to try is the powers, and they
-fail: $\Delta x^2=2x+1$, $\Delta x^3=3x^2+3x+1$, not as clean as $(x^m)'=mx^{m-1}$. The remedy is to change the powers.
+The question before the section is the same shape of problem. Try $f(x)=2^x$. Then $\Delta 2^x=2^{x+1}-2^x=2^x$, and $f(0)=1$. So $2^x$ equals its own difference. For a general base, $\Delta c^x=(c-1)c^x$.
+
+Every sum is now a search for an antidifference. Ordinary powers are the first guess, and they come out messy: $\Delta x^2=2x+1$ and $\Delta x^3=3x^2+3x+1$, while $(x^m)'=mx^{m-1}$. Figure~\ref{fig:rw01-edge} is the whole table for the squares. The second differences are the constant $2$, and the first differences are the odd numbers $1,3,5,7$, so the extra piece is linear. Change the powers.
 
 \begin{definition}
 The \emph{falling powers} are $x^{\underline 0}=1$ and $x^{\underline m}=x(x-1)\cdots(x-m+1)$ for $m\ge1$ ($m$ factors).
@@ -86,17 +75,13 @@ The sums follow from Theorem~\ref{thm:ftfc} with $F(x)=\frac{x^{\underline{m+1}}
 second is the first divided by $m!$.
 \end{proof}
 
-The second sum is the \emph{hockey-stick identity} of Pascal's triangle. Negative powers telescope the sums of
-reciprocals of products: with $m=-2$, $\Delta x^{\underline{-1}}=-x^{\underline{-2}}$, so
+The second sum is the hockey-stick identity in Pascal's triangle. Negative falling powers telescope products in the denominator. With $m=-2$, $\Delta x^{\underline{-1}}=-x^{\underline{-2}}$, so
 \[
 \sum_{k=0}^{n-1}\frac1{(k+1)(k+2)}=\Bigl[-x^{\underline{-1}}\Bigr]_0^n=1-\frac1{n+1}.
 \]
-To reach $x^{\underline{-1}}$ one would need $m=0$, and the rule then gives $\Delta x^{\underline 0}=0$, which is true but useless: $x^{\underline{-1}}=\frac1{x+1}$
-is the one power that is not a difference of a power, just as $\frac1x$ is the one power that is not a derivative of a
-power. Its antidifference is the \emph{harmonic number} $H_x$: set $H_0=0$, and for integers $n\ge1$ set $H_n=1+\frac12+\dots+\frac1n$. Then
-$\Delta H_n=\frac1{n+1}=n^{\underline{-1}}$, so $H$ plays the part of the logarithm. The sum in Example~\ref{ex:k2k} starts at $k=0$, where this value is $0$. And $\Delta2^x=2^x$: the function
-$2^x$ is the discrete exponential that answers the question opening the chapter, and more generally
-$\Delta c^x=(c-1)c^x$. Table~\ref{tab:dictionary} collects the dictionary.
+The missing case is $x^{\underline{-1}}$. The rule at $m=0$ only says $\Delta x^{\underline 0}=0$, which is true and useless. So $\frac1{x+1}$ is the one falling power that is not the difference of a falling power, just as $\frac1x$ is the one power that is not a derivative. Its antidifference is the harmonic number. Set $H_0=0$, and $H_n=1+\frac12+\dots+\frac1n$ for $n\ge1$. Then $\Delta H_n=\frac1{n+1}=n^{\underline{-1}}$. The sum in Example~\ref{ex:k2k} starts at $k=0$, where this value is $0$.
+
+We already checked $\Delta 2^x=2^x$. Table~\ref{tab:dictionary} is the dictionary. Figure~\ref{fig:rw01-falling} is the reason the dictionary changes the powers: at each integer the falling square is smaller than the ordinary square by exactly that integer.
 
 \begin{table}[ht]
 \centering
@@ -125,14 +110,20 @@ give it exactly, and the integral only gives its leading term.}
 \label{fig:staircase}
 \end{figure}
 
+\begin{figure}[ht]
+\centering
+\fig{ch01-rewrite-falling}
+\caption{At each integer from $1$ to $6$ the charcoal bar is $k^2$ and the coral bar is the falling square $k(k-1)$, smaller by exactly $k$.}
+\label{fig:rw01-falling}
+\end{figure}
+
 \section{Summation by parts}
 
-The product rule has a discrete form with a shift in it: if $Ev(x)=v(x+1)$, then
+The product rule picks up a shift. If $Ev(x)=v(x+1)$, then
 \[
-\begin{aligned}\Delta(uv)(x)&=u(x+1)v(x+1)-u(x)v(x)\eqbr=u(x)\,\Delta v(x)+\Delta u(x)\,v(x+1),\end{aligned}
+\begin{aligned}\Delta(uv)(x)&=u(x+1)v(x+1)-u(x)v(x)\eqbr=u(x)\,\Delta v(x)+\Delta u(x)\,v(x+1).\end{aligned}
 \]
-since the right-hand side is $u(x)v(x+1)-u(x)v(x)+u(x+1)v(x+1)-u(x)v(x+1)$. Summing over $a\le k<b$ with
-Theorem~\ref{thm:ftfc} gives the discrete integration by parts.
+Expand the right-hand side: $u(x)\bigl(v(x+1)-v(x)\bigr)+\bigl(u(x+1)-u(x)\bigr)v(x+1)$ cancels one copy of $u(x)v(x+1)$ and leaves $u(x+1)v(x+1)-u(x)v(x)$. Sum from $a$ to $b$ and apply Theorem~\ref{thm:ftfc}. That is summation by parts.
 
 \begin{proposition}[summation by parts]\label{prop:byparts}
 For functions $u$, $v$ on the integers and integers $a\le b$,
@@ -153,8 +144,7 @@ For $n=3$: $0+2+8=10=1\cdot8+2$. With $u=H_k$ and $\Delta v=1$, so $v(k)=k$, the
 \]
 \end{example}
 
-Abel's form of summation by parts is the one used for series. Write $A_k=a_1+\dots+a_k$ and $A_0=0$, so that
-$a_k=\Delta A_{k-1}$.
+Series want the same rule written in partial sums. Put $A_k=a_1+\dots+a_k$ and $A_0=0$, so $a_k=\Delta A_{k-1}$.
 
 \begin{proposition}[Abel summation]\label{prop:abel}
 For numbers $a_k$, $b_k$ and $n\ge1$,
@@ -177,7 +167,7 @@ since $|A_k(b_{k+1}-b_k)|\le M(b_k-b_{k+1})$ and $\sum_{k=1}^{n-1}(b_k-b_{k+1})=
 $\sum_{k=1}^na_kb_k$ converge, and the same bounds give $\bigl|\sum_{k=1}^na_kb_k\bigr|\le Mb_n+M(b_1-b_n)=Mb_1$.
 \end{proof}
 
-With $a_k=(-1)^{k+1}$ this is the alternating series test of Volume~1. The more interesting case is trigonometric.
+The choice $a_k=(-1)^{k+1}$ is the alternating series test from Volume~1. The sums that matter next are trigonometric.
 
 \begin{proposition}\label{prop:sinsum}
 For $x\notin2\pi\Z$ and $n\ge1$,
@@ -195,14 +185,11 @@ the last step by $\cos p-\cos q=2\sin\frac{q+p}2\sin\frac{q-p}2$. For $x\notin2\
 $a_k=\sin kx$ and $b_k=\frac1k$ gives the convergence; for $x\in2\pi\Z$ every term is $0$.
 \end{proof}
 
-Chapter~\ref{ch:fourier} shows that the sum of this series is $\frac{\pi-x}2$ for $0<x<2\pi$. The convergence is not absolute: the
-terms are not summable in absolute value, and only the cancellations that summation by parts exposes make the series
-converge.
+Chapter~\ref{ch:fourier} evaluates the sum: it equals $\frac{\pi-x}2$ for $0<x<2\pi$. The convergence is not absolute. The terms $\frac{|\sin kx|}{k}$ do not form a convergent series. What converges is the cancelled sum that summation by parts makes visible.
 
 \section{Stirling numbers}
 
-Falling powers sum easily and ordinary powers do not, so we need to convert between the two. The coefficients are
-classical combinatorial numbers.
+Falling powers sum in one line. Ordinary powers do not. The change-of-basis coefficients are old combinatorial numbers.
 
 \begin{definition}
 For integers $n,k\ge0$, the \emph{Stirling number of the second kind} $\stirlingii nk$ is the number of partitions of an
@@ -211,10 +198,7 @@ number of permutations of an $n$-element set with exactly $k$ cycles. By convent
 $\stirlingii n0=\stirlingi n0=0$ for $n\ge1$.
 \end{definition}
 
-For example $\stirlingii42=7$: the four partitions $\{a\}\{bcd\}$, $\{b\}\{acd\}$, $\{c\}\{abd\}$, $\{d\}\{abc\}$ and
-the three $\{ab\}\{cd\}$, $\{ac\}\{bd\}$, $\{ad\}\{bc\}$. And $\stirlingi42=11$: eight permutations of type
-$3+1$ and three of type $2+2$. Volume~4, Chapter~2, computed the expected number of cycles of a random permutation,
-which is $\frac1{n!}\sum_kk\stirlingi nk=H_n$.
+Count them once. $\stirlingii42=7$: four partitions of type $1+3$, namely $\{a\}\{bcd\}$ and its three siblings, and three of type $2+2$, namely $\{ab\}\{cd\}$, $\{ac\}\{bd\}$, $\{ad\}\{bc\}$. And $\stirlingi42=11$: eight permutations of cycle type $3+1$, and three of type $2+2$. Volume~4, Chapter~2, found the expected number of cycles of a random permutation, $\frac1{n!}\sum_kk\stirlingi nk=H_n$. Order in the count, chance in the average.
 
 \begin{proposition}\label{prop:stirlingrec}
 For $n\ge0$ and $k\ge1$,
@@ -283,7 +267,7 @@ which is $\sum_k\stirlingi{n+1}k x^k$ by Proposition~\ref{prop:stirlingrec}. The
 multiplied by $(-1)^n$.
 \end{proof}
 
-Combined with Proposition~\ref{prop:falling}, the first identity sums any power:
+Proposition~\ref{prop:falling} now sums any ordinary power. Substitute the first identity:
 \[
 \sum_{k=0}^{n-1}k^p=\sum_{j=0}^p\stirlingii pj\frac{n^{\underline{j+1}}}{j+1}.
 \]
@@ -297,11 +281,7 @@ also a polynomial in $\frac{n(n-1)}2$?
 
 \section{Bernoulli numbers and sums of powers}
 
-The Stirling route gives each sum of powers, but not a single formula for all of them. Johann Faulhaber of Ulm
-had worked out the sums one at a time, up to the seventeenth powers, by 1631. Jacob Bernoulli found the pattern behind
-them, through the numbers now named after him. Their natural home is a generating function, and we use the language
-of formal power series, which Chapter~\ref{ch:generating} develops further: a formal power series $\sum_{n\ge0}c_nt^n$ is just its
-sequence of coefficients, added termwise and multiplied by the Cauchy product
+Stirling numbers give each power sum separately. They do not give one formula that covers every exponent. Johann Faulhaber of Ulm had computed the sums one exponent at a time, through the seventeenth powers, by 1631. Bernoulli found the pattern, in the numbers that now carry his name. Their home is a generating function. Chapter~\ref{ch:generating} builds the language properly. For this section a formal series $\sum_{n\ge0}c_nt^n$ is its list of coefficients, added term by term and multiplied by the Cauchy product
 $\bigl(\sum a_nt^n\bigr)\bigl(\sum b_nt^n\bigr)=\sum_n\bigl(\sum_{k=0}^na_kb_{n-k}\bigr)t^n$, without any question of
 convergence. A series with $c_0\ne0$ has an inverse. Write $[n=0]$ for $1$ when $n=0$ and for $0$ otherwise. The equations $\sum_{k=0}^nc_kd_{n-k}=[n=0]$ determine $d_0=\frac1{c_0}$,
 then $d_1$, $d_2$, \dots one after the other. We write $e^{at}=\sum_n\frac{a^nt^n}{n!}$; the binomial theorem gives
@@ -366,31 +346,30 @@ So
 \[
 \begin{aligned}\sum_{k<1000}k^5&=\frac{10^{18}}6-\frac{10^{15}}2+\frac{5\cdot10^{12}}{12}-\frac{10^6}{12}\eqbr=166\,167\,083\,333\,250\,000.\end{aligned}
 \]
-Four terms, and a sum of a thousand fifth powers is done. This is what Bernoulli was proud of. With $p=10$ the same
-formula has seven terms, and they give his thirty-two digit number for the tenth powers.
+Four terms finish the fifth powers below $1000$. That is the boast, in a smaller case. The question above has a yes. Write $T=\frac{n(n-1)}2$. Then
+\[
+\frac{n^6}6-\frac{n^5}2+\frac{5n^4}{12}-\frac{n^2}{12}=\frac{n^2\bigl(2n^4-6n^3+5n^2-1\bigr)}{12},
+\]
+and $(n-1)^2(2n^2-2n-1)=2n^4-6n^3+5n^2-1$, which you can check by expanding the left-hand side. The second factor is $2n(n-1)-1=4T-1$, and $n^2(n-1)^2=4T^2$, so the sum equals $\frac{T^2(4T-1)}{3}$. For $n=4$ one has $T=6$ and $1^5+2^5+3^5=276$, and $\frac{36\cdot 23}{3}=276$.
 
-The coefficients of Faulhaber's formula are very regular
-at the top, $\frac{n^{p+1}}{p+1}-\frac{n^p}2+\frac p{12}n^{p-1}-\cdots$. The reason is that $\frac{n^{p+1}}{p+1}$ is the integral and the
-correction $-\frac{n^p}2$ is the trapezoid rule. Chapter~\ref{ch:asymptotics} turns this observation into the Euler--Maclaurin formula.
+For $p=10$ the odd Bernoulli numbers from $B_3$ onward vanish, so seven terms survive. The first thousand tenth powers run through $k=1000$. The sum in the theorem stops at $n-1$, so the formula is evaluated at $n=1001$. Those seven terms return
+\[
+91\,409\,924\,241\,424\,243\,424\,241\,924\,242\,500.
+\]
+
+The top of the formula is always $\frac{n^{p+1}}{p+1}-\frac{n^p}2+\frac{p}{12}n^{p-1}-\cdots$. The first term is the integral. The second is the correction from the trapezoid rule. Chapter~\ref{ch:asymptotics} turns that observation into the Euler--Maclaurin formula.
 
 \begin{remark}
-The Bernoulli numbers look tame up to $B_{10}=\frac5{66}$ and then the numerator $691$ appears. Their size is governed
-by Euler's formula $\zeta(2k)=\frac{(-1)^{k+1}B_{2k}(2\pi)^{2k}}{2(2k)!}$, proved in Chapter~\ref{ch:series}: since $\zeta(2k)\to1$,
-$|B_{2k}|$ grows like $\frac{2(2k)!}{(2\pi)^{2k}}$, faster than any exponential, so the series $\frac t{e^t-1}$ has radius of
-convergence $2\pi$ (its nearest singularities are the poles $\pm2\pi i$, as Chapter~\ref{ch:complex} explains). Their denominators are
-given by the theorem of von Staudt and Clausen (Exercise~\ref{ex:staudt}), and their numerators are linked to Kummer's
-work on Fermat's last theorem: the prime $691$ divides the numerator of $B_{12}$, so it is an \emph{irregular} prime.
+The fractions look mild through $B_{10}=\frac5{66}$. Then the numerator $691$ appears in $B_{12}$. Euler's evaluation $\zeta(2k)=\frac{(-1)^{k+1}B_{2k}(2\pi)^{2k}}{2(2k)!}$, proved in Chapter~\ref{ch:series}, explains the size. Since $\zeta(2k)\to1$, one has $|B_{2k}|\sim\frac{2(2k)!}{(2\pi)^{2k}}$, which outgrows every exponential. The series $\frac t{e^t-1}$ therefore has radius $2\pi$. Chapter~\ref{ch:complex} will say why: the nearest singularities are the poles $\pm2\pi i$. The denominators are the theorem of von Staudt and Clausen (Exercise~\ref{ex:staudt}). The numerators meet Fermat's last theorem in Kummer's work: $691$ divides the numerator of $B_{12}$, so $691$ is an irregular prime.
 \end{remark}
 
 \section{Newton's formula and the method of differences}
 
-Iterating $\Delta$ gives $\Delta^nf$. Since $\Delta=E-1$, where $E$ is the shift and $1$ the identity, and $E$ commutes
-with itself, the binomial theorem gives
+Repeat the difference and you get $\Delta^nf$. Write $\Delta=E-1$, with $E$ the shift. The shifts commute, so the binomial theorem is an identity of operators:
 \[
 \Delta^nf(x)=\sum_{k=0}^n(-1)^{n-k}\binom nkf(x+k).
 \]
-(For a careful reader: the operators $E^k$ act on functions and commute, so the expansion of $(E-1)^n$ is the
-ordinary algebraic one; or check it by induction on $n$, using Pascal's rule.)
+You can also prove the expansion by induction on $n$, using Pascal's rule. The operators are not a new algebra. They are a short way to say the same binomial sum.
 
 \begin{theorem}[Newton's interpolation formula]\label{thm:newton}
 If $f$ is a polynomial of degree at most $d$, then $\Delta^{d+1}f=0$ and, for all $x$,
@@ -405,12 +384,7 @@ write $f=\sum_{k=0}^dc_k\binom xk$. Then $\Delta^jf=\sum_kc_k\binom x{k-j}$ (ter
 $0$ is $c_j$, because $\binom0{k-j}=[k=j]$. Also $\Delta^{d+1}f=0$, since each $\Delta$ lowers the degree.
 \end{proof}
 
-Newton's formula recovers a polynomial from its values at $0,1,\dots,d$, using only subtractions: the numbers
-$\Delta^kf(0)$ are the left edge of the \emph{difference table} (Figure~\ref{fig:difftable}). Read backwards, it computes
-a polynomial at $0,1,2,\dots$ using only additions: once the left edge is known, each new row entry is the sum of
-two neighbours. Charles Babbage's difference engine, designed in the 1820s to print tables of logarithms and
-trigonometric functions free of human error, was a machine for exactly this: it held the differences of a polynomial
-approximating the function and added them, column after column.
+Newton's formula rebuilds a polynomial from the values $f(0),\dots,f(d)$, and the only operation in the table is subtraction. The numbers $\Delta^kf(0)$ are the left edge (Figure~\ref{fig:difftable}). Read the same table forwards and the only operation is addition: each new entry is the sum of two neighbours. Charles Babbage's difference engine, designed in the 1820s, was a machine for that addition. It held the differences of a polynomial standing in for a logarithm or a sine, and it added them column by column, so that a printed table would not depend on a human copyist. Figure~\ref{fig:rw01-edge} is the same left edge for the squares.
 
 \begin{figure}[ht]
 \centering
@@ -422,25 +396,26 @@ from the bottom up: $6$, then $18+6=24$, $38+24=62$, and $f(5)=69+62=131$.}
 \label{fig:difftable}
 \end{figure}
 
-Applied to $f(x)=x^n$, Newton's formula gives an explicit formula for the Stirling numbers. Comparing
+\begin{figure}[ht]
+\centering
+\fig{ch01-rewrite-edge}
+\caption{The difference table of $x^2$ through $x=4$ has constant second differences $2$, and the left edge $0,1,2$ rebuilds $x^2=x+2\binom{x}{2}$, which is $x^{\underline 2}+x$.}
+\label{fig:rw01-edge}
+\end{figure}
+
+Apply the formula to $f(x)=x^n$ and the Stirling numbers come out explicitly. Compare
 $x^n=\sum_kk!\stirlingii nk\binom xk$ (Theorem~\ref{thm:stirling}) with Theorem~\ref{thm:newton}, by uniqueness of the
 coefficients in a basis,
 \[
 \stirlingii nk=\frac1{k!}\Delta^k\bigl[x^n\bigr]_{x=0}=\frac1{k!}\sum_{j=0}^k(-1)^{k-j}\binom kjj^n.
 \]
-This is also inclusion--exclusion: $k!\stirlingii nk$ is the number of surjections from an $n$-set onto a $k$-set
-(Exercise~\ref{ex:surjections}).
+The same count is inclusion--exclusion. $k!\stirlingii nk$ is the number of surjections from an $n$-set onto a $k$-set (Exercise~\ref{ex:surjections}).
 
 \section{What we proved, and what comes next}
 
-Sums have a calculus. The fundamental theorem (Theorem~\ref{thm:ftfc}) turns a sum into a difference of two values, falling
-powers are the functions it likes (Proposition~\ref{prop:falling}), and summation by parts handles products. Stirling numbers
-translate between ordinary and falling powers (Theorem~\ref{thm:stirling}), and Bernoulli numbers package every sum of powers
-into one formula (Theorem~\ref{thm:faulhaber}). Newton's formula rebuilds a polynomial from its differences.
+A sum is a difference of two values of an antidifference (Theorem~\ref{thm:ftfc}). Falling powers are the functions that difference cleanly (Proposition~\ref{prop:falling}). Summation by parts handles a product. Stirling numbers change basis (Theorem~\ref{thm:stirling}). Bernoulli numbers put every $\sum k^p$ into one line (Theorem~\ref{thm:faulhaber}). Newton's formula rebuilds a polynomial from its difference table.
 
-One tool appeared twice without being the subject: the generating function. It defined the Bernoulli numbers, and it proved
-that the odd ones vanish with almost no computation. A sequence was packed into a series, and the series was easier to handle
-than the sequence. The next chapter takes that trick seriously. What else can a sequence tell you once it is a function?
+One tool was used and not yet studied. The generating function defined the Bernoulli numbers, and it showed that the odd ones past $B_1$ vanish, with almost no arithmetic. A sequence was packed into a series, and the series was the easier object. The next chapter asks what else a sequence will say once it is allowed to be a function.
 
 \section{Exercises}
 
@@ -491,6 +466,22 @@ Exercise~\ref{ex:powersmodp}.
 \end{enumerate}
 \end{exercise}
 
+\begin{exercise}[$\star$]\label{ex:rw01a}
+Compute $\Delta\bigl(x^{\underline 3}\bigr)$ from the definition, and hence $\sum_{k=0}^{n-1}k(k-1)(k-2)$. Check the case $n=4$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:rw01b}
+Write $x^3$ as a sum of falling powers, using $\stirlingii 31=1$, $\stirlingii 32=3$, $\stirlingii 33=1$. Deduce $\sum_{k=0}^{n-1}k^3=\bigl(\frac{n(n-1)}2\bigr)^2$. Check $n=4$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:rw01c}
+From Proposition~\ref{prop:bernoulli}(a) with $n=4$, and the values $B_0=1$, $B_1=-\frac12$, $B_2=\frac16$, $B_3=0$, compute $B_4$. Then use Theorem~\ref{thm:faulhaber} to find $\sum_{k=0}^{n-1}k^4$, and check that the sum through $k=2$ is $17$.
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:rw01d}
+Let $c\ne1$. Find a closed form for $\sum_{k=0}^{n-1}k\,c^k$ by summation by parts, and check it for $c=3$, $n=3$.
+\end{exercise}
+
 \section{Hints}
 
 \begin{hint}{ex:k22k}
@@ -518,6 +509,18 @@ Take a primitive root $g$ modulo $p$ (Volume~2, Chapter~5): the $k^m$ are the $g
 (a) The coefficient of $n$ in $n^{\underline{k+1}}=n(n-1)\cdots(n-k)$ is $(-1)(-2)\cdots(-k)$. (b) Write $k+1=ab$ and find $a$ and $b$, or $a$ and $2a$,
 among $1,\dots,k$. (c) $6\stirlingii m3=3^m-3\cdot2^m+3$, from the explicit formula of the last section. (d) Expand with the
 explicit formula and use $\binom{p-1}j\equiv(-1)^j\pmod p$.
+\end{hint}
+\begin{hint}{ex:rw01a}
+Proposition~\ref{prop:falling} with $m=3$. The sum is an antidifference evaluated at $n$ and at $0$.
+\end{hint}
+\begin{hint}{ex:rw01b}
+Theorem~\ref{thm:stirling} writes $x^3$ in the falling basis. Sum term by term and factor $\frac{n(n-1)}2$.
+\end{hint}
+\begin{hint}{ex:rw01c}
+The relation at $n=4$ is one linear equation for $B_4$. Then $p=4$ in Theorem~\ref{thm:faulhaber}, and $B_3=0$.
+\end{hint}
+\begin{hint}{ex:rw01d}
+$\Delta c^k=(c-1)c^k$, so the antidifference of $c^k$ is $\frac{c^k}{c-1}$. Take $u(k)=k$.
 \end{hint}
 
 \section{Solutions}
@@ -623,6 +626,46 @@ Putting (a)--(d) together: the terms with $k+1$ composite, including $k+1=4$, an
 $m\ge1$) are integers, and each prime $p$ with $(p-1)\mid m$ contributes $-\frac1p$ modulo an integer. So
 $B_m+\sum_{(p-1)\mid m}\frac1p\in\Z$. (A prime $p$ with $p-1>m$ gives no term in (a), since $k\le m$ there, and it is
 not in the sum either, since $(p-1)\nmid m$.)
+\end{solution}
+
+\begin{solution}{ex:rw01a}
+\idea A falling cube differences to three times a falling square. The fundamental theorem does the sum.
+\writeup $\Delta x^{\underline 3}=3x^{\underline 2}$, by Proposition~\ref{prop:falling}. So
+\[
+\sum_{k=0}^{n-1}k^{\underline 3}=\frac{n^{\underline 4}}{4}.
+\]
+For $n=4$ the only non-zero term is $3\cdot2\cdot1=6$, and $4^{\underline 4}/4=24/4=6$.
+\end{solution}
+
+\begin{solution}{ex:rw01b}
+\idea Change to the falling basis, then sum. The coefficient of $k^{\underline 2}$ is $3$, and $\sum k^{\underline 2}=n^{\underline 3}/3$, so that term contributes $n^{\underline 3}$, not a half.
+\writeup Theorem~\ref{thm:stirling} gives $x^3=x^{\underline 3}+3x^{\underline 2}+x$. Proposition~\ref{prop:falling} sums the three pieces separately:
+\[
+\sum_{k=0}^{n-1}k^3=\frac{n^{\underline 4}}4+n^{\underline 3}+\frac{n^{\underline 2}}2=\frac{n(n-1)}4\Bigl((n-2)(n-3)+4(n-2)+2\Bigr).
+\]
+The bracket is $(n-2)(n+1)+2=n(n-1)$. Multiply by the front factor: $\frac{n(n-1)}{4}\cdot n(n-1)=\bigl(\frac{n(n-1)}2\bigr)^2$. For $n=4$ both sides equal $1^3+2^3+3^3=36$.
+\end{solution}
+
+\begin{solution}{ex:rw01c}
+\idea One linear equation from the recurrence, then four terms of Faulhaber's formula.
+\writeup Proposition~\ref{prop:bernoulli}(a) at $n=4$ reads $\sum_{k=0}^4\binom5k B_k=0$. With $B_3=0$ this is
+\[
+1+5\Bigl(-\frac12\Bigr)+10\cdot\frac16+5B_4=0,
+\]
+so $1-\frac52+\frac53+5B_4=0$. The rational part is $\frac16$, hence $B_4=-\frac1{30}$. Theorem~\ref{thm:faulhaber} with $p=4$ gives
+\[
+\sum_{k=0}^{n-1}k^4=\frac1{5}\Bigl(n^5-\frac52 n^4+\frac53 n^3-\frac16 n\Bigr).
+\]
+Through $k=2$, so at $n=3$, the right-hand side is $\frac15\bigl(243-\frac{405}2+45-\frac12\bigr)=\frac15\cdot85=17$, and $0+1+16=17$.
+\end{solution}
+
+\begin{solution}{ex:rw01d}
+\idea $c^k$ is a constant times its own difference. Sum by parts and sum the geometric series that remains.
+\writeup Since $\Delta c^k=(c-1)c^k$, the function $v(k)=\frac{c^k}{c-1}$ has $\Delta v=c^k$. Take $u(k)=k$, so $\Delta u=1$ and $Ev(k)=\frac{c^{k+1}}{c-1}$. Proposition~\ref{prop:byparts} gives
+\[
+\sum_{k=0}^{n-1}kc^k=\frac{nc^n}{c-1}-\sum_{k=0}^{n-1}\frac{c^{k+1}}{c-1}=\frac{nc^n}{c-1}-\frac{c(c^n-1)}{(c-1)^2}=\frac{(n-1)c^{n+1}-nc^n+c}{(c-1)^2}.
+\]
+For $c=3$ and $n=3$ the closed form is $\frac{2\cdot 81-3\cdot 27+3}{4}=21$, and $0+1\cdot3+2\cdot9=21$.
 \end{solution}
 
 \section*{Sources and further reading}
