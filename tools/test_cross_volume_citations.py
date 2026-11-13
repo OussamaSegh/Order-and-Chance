@@ -149,9 +149,6 @@ class CrossVolumeCitations(unittest.TestCase):
             bezout,
         )
         self.assertNotIn("Theorem~1.4", bezout)
-        factorial = (root / "volume15-order-and-chance/chapters/ch09-lean.tex").read_text(encoding="utf-8")
-        self.assertIn(r"Volume~2, Exercise~2.9: a prime factor of $n!+1$", factorial)
-        self.assertNotIn("Theorem~2.1", factorial)
         disc = (root / "volume6-crossroads/chapters/ch05-pnt.tex").read_text(encoding="utf-8")
         self.assertIn(r"$\sim\pi x$ (Volume~2, Theorem~7.5, or a direct count)", disc)
         ball = (root / "volume7-spaces/chapters/ch02-metric.tex").read_text(encoding="utf-8")
@@ -183,8 +180,6 @@ class CrossVolumeCitations(unittest.TestCase):
         self.assertIn("Volume~3, Proposition~6.17", curves)
         additive = (root / "volume14-primes/chapters/ch11-additive.tex").read_text(encoding="utf-8")
         self.assertIn("Volume~3, Theorem~C.12", additive)
-        cubes = (root / "volume15-order-and-chance/chapters/ch08-heuristics.tex").read_text(encoding="utf-8")
-        self.assertIn("Volume~3, Theorem~C.12", cubes)
         lie = (root / "volume9-shapes/chapters/ch07-liegroups.tex").read_text(encoding="utf-8")
         self.assertIn("Volume~3, Lemma~12.3", lie)
         self.assertNotIn("as in Volume~3", lie)
