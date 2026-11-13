@@ -134,14 +134,14 @@ The four repairs above are later than this count. They change a few sentences an
 Local `./build.sh volume7-spaces` finished with exit 0.
 
 - Print interior, after the review repairs: **409 pages**, 513 × 738 pt (7.125 × 10.25 in). Spine 0.9623 in. Two pages flattened at 600 ppi. KDP interior and cover checks passed. No overfull box and no undefined reference.
-- Reading PDF: 408 pages, cover plus the same body.
+- Reading PDF after the final repairs: 410 pages, cover plus the same 409-page body.
 - Layout: 394 whole boxes, maximum height 288.5 pt, no overflow, no unresolved references.
 - `main.log`: no overfull boxes, no undefined references.
 - EPUB: 25 MB. 58 plates at 1800 px, full width, colour. Inline mathematics carries an em baseline. The three unincluded plates are not in the EPUB.
 
 ## In progress
 
-The review repairs through V7-23 are in the working tree, on top of the 409-page interior. CI on that head is the remaining check.
+The review repairs through V7-23 are committed and pushed, along with the continuation audit below. CI on the final head is the remaining check.
 
 ## Remains
 
@@ -159,7 +159,7 @@ The independent review is a separate agent. This file does not contain that revi
 
 ## Repairs after the second review
 
-The second review is `docs/review/volume7-rewrite-second-review-2026-11-13.md` on PR #241, read at `19a6165f`. It lists V7-1 through V7-23. None of the repairs weakens a numbered statement. Labels and statement numbers are unchanged. The only figure file edited in this pass is `figures/jordan-rw-winding.tex`, which this rewrite added. The convolution caption was changed; the trapezoid plate was left as drawn.
+The second review is `docs/review/volume7-rewrite-second-review-2026-11-13.md` on PR #241, read at `19a6165f`. It lists V7-1 through V7-23. None of the repairs weakens a numbered statement. Labels and statement numbers are unchanged. The figure files edited in this pass are `ch01-rw-cut`, `ch02-rw-open`, and `jordan-rw-winding`, all added by this rewrite. The convolution caption was changed; the trapezoid plate was left as drawn.
 
 - V7-1. Exercise `ex:v7c08c` bounds \(f_m(x)=me^{-mx}\) by \(m/e\ge 1/(2ex)\).
 - V7-2. Lemma `lem:monoivt` says every value between \(f(a)\) and \(f(b)\), endpoints included.
@@ -186,8 +186,16 @@ A comparison of every numbered statement with `origin/main`, made with the first
 
 Local `./build.sh --pdf-only volume7-spaces` after these repairs: exit 0, print interior **409 pages**, no overfull box, no undefined reference. Layout: 394 whole boxes, maximum height 288.5 pt, no overflow. `registers.py` printed `{"accepted-internal": 1177, "pending": 19}`. The fourteen cross-volume citation tests passed.
 
-## Exact next steps
+## Continuation on 13 November 2026
 
-1. Push `cursor/volume7-complete-rewrite-8161`.
-2. Poll the Actions run on that head until `list`, `debs`, `build`, and `site` have finished. `publish` is skipped on a pull request.
-3. Report the head SHA, the page count, and which commit fixes each V7 id. Do not push again just to record the run.
+The latest remote head was `9b1114a3`. All V7-1 through V7-23 repairs were already present. They were checked against the full independent review. The complete finding-to-commit table and the new numbered-statement audit are in [the resolution report](../review/volume7-rewrite-resolution-2026-11-13.md).
+
+Commit `fd967597` restores the endpoint cases in the three-function Hölder exercise and supplies their proofs. It corrects the sign in the decreasing intermediate-value argument, the Hardy bound's missing norm factor, the sign of the Young gap in the equality hint, and the Baire uncountability citation. The Basel exercise again asks for every exchange of limits to be justified. Commit `56aea886` aligns the new winding plate's outer arrow with its positive winding number and spells out the mean-value identity in the polynomial solution.
+
+All 308 original numbered environments retain their printed numbers, kinds and labels. All 323 original labels survive; 76 are added and none is duplicated. The 52 added exercises are the last four in each chapter. No pre-existing figure file changed.
+
+The eighteen citation tests, `tools/cross_volume_citations.py`, and `review/volume3-internal/registers.py` passed locally. The register counts remain `{"accepted-internal": 1177, "pending": 19}`.
+
+The final local `./build.sh --pdf-only volume7-spaces` exited 0: **409 print pages**, 513 by 738 pt, and 410 reading-PDF pages with the cover. The final TeX log has no overfull box and no undefined reference. Layout: 394 whole boxes, maximum height 288.5 pt, no overflow. Interior and cover preflight passed; the winding plate was inspected in the rendered PDF.
+
+Poll GitHub Actions on the exact final pushed head until every applicable job succeeds (`publish` is skipped on a PR). Put the head SHA, run IDs and conclusions in the PR description and final message; do not push another commit merely to record them. Stop after PR #237 is green and leave Volume 8 for the author's next instruction following independent review.
