@@ -194,6 +194,22 @@ class CrossVolumeCitations(unittest.TestCase):
         self.assertNotIn("Volume~3, Chapter~2", quadrics)
         primitive = (root / "volume13-arithmetic/chapters/ch01-number-fields.tex").read_text(encoding="utf-8")
         self.assertIn("Volume~3, Theorem~8.20", primitive)
+        gauss_sum = (root / "volume6-crossroads/chapters/ch12-modular.tex").read_text(encoding="utf-8")
+        self.assertIn("Vandermonde determinants (Volume~1, Proposition~7.4)", gauss_sum)
+        self.assertIn("eigenvalues and traces (Volume~1, Chapter~7)", gauss_sum)
+        self.assertNotIn("Vandermonde determinants (Volume~3)", gauss_sum)
+        trig = (root / "volume8-analysis/chapters/linear-ch01-duality.tex").read_text(encoding="utf-8")
+        self.assertIn("orthonormal, hence independent; Volume~5, Chapter~6", trig)
+        self.assertNotIn("Volume~3 or Volume~4", trig)
+        moments = (root / "volume15-order-and-chance/chapters/ra-symmoments.tex").read_text(encoding="utf-8")
+        self.assertIn("Volume~3, Corollary~7.7", moments)
+        bad = "the Vandermonde determinant (Volume~3)"
+        self.assertTrue(citations.volume3_misplaced_subject(bad))
+        self.assertEqual(
+            citations.volume3_misplaced_subject(
+                bad.replace("Volume~3", "Volume~1, Proposition~7.4")),
+            [],
+        )
 
     def test_chapter_zero_offset_rejects_a_shifted_gloss(self):
         shifted = (
