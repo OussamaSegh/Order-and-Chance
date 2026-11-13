@@ -1,7 +1,7 @@
 \chapter{Martingales II: Closing the Circle}
 \begin{center}\itshape
 A martingale is a fair game, and a fair game can still cheat you: its value can converge to zero while its average stays at one.\\
-Uniform integrability is exactly what forbids the trick. With it come martingales that run backwards in time,\\
+What exactly forbids the trick? Uniform integrability. With it come martingales that run backwards in time,\\
 de Finetti's theorem on exchangeable sequences, the question of when two infinite experiments can be told apart,\\
 and statistical tests that you may check as often as you like.
 \end{center}
@@ -360,8 +360,8 @@ theorem for Brownian motion: shifting a Brownian path by a function $h$ gives an
 \[
 \rho(p_n,q_n)=\frac{\sqrt{1+2\varepsilon_n}+\sqrt{1-2\varepsilon_n}}2=1-\frac{\varepsilon_n^2}2+O(\varepsilon_n^4).
 \]
-Since $\prod(1-u_n)>0$ if and only if $\sum u_n<\infty$ (for $0\le u_n<1$), the biased sequence can be detected with certainty if and only if $\sum\varepsilon_n^2=\infty$. For $\varepsilon_n=n^{-1/2}$ it can, although the bias
-tends to $0$; for $\varepsilon_n=n^{-0.51}$ it cannot.
+Since $\prod(1-u_n)>0$ if and only if $\sum u_n<\infty$ (for $0\le u_n<1$), the biased sequence can be detected with certainty if and only if $\sum\varepsilon_n^2=\infty$. For $\varepsilon_n=\frac12n^{-1/2}$ it can, although the bias
+tends to $0$; for $\varepsilon_n=\frac12n^{-0.51}$ it cannot.
 \end{example}
 
 \section{Peeking at the data: Ville's inequality}
@@ -369,8 +369,9 @@ tends to $0$; for $\varepsilon_n=n^{-0.51}$ it cannot.
 An online shop tests a new design of its checkout page. Half the visitors see the old page, half the new one, and the analyst computes, every morning, the usual test statistic: with $n$ visitors per
 group and $D_n$ the difference in the number of purchases, she declares the new page better as soon as the standardized difference exceeds $1.96$, a test ``at level $5\%$''. Each single test does have level $5\%$.
 But she looks every day, and stops at the first success. By the law of the iterated logarithm (Theorem~\ref{thm:hartmanwintner}), even when the two pages are identical, the standardized difference exceeds
-$1.96$, indeed exceeds any fixed level, infinitely often, almost surely. Given enough patience, the analyst is \emph{certain} to declare a winner that does not exist. Numerical simulation measures how fast:
-with daily looks over a long experiment, the false alarm rate is several times the advertised $5\%$.
+$1.96$, indeed exceeds any fixed level, infinitely often, almost surely. Given enough patience, the analyst is \emph{certain} to declare a winner that does not exist. A simulation shows how fast: with $30$ looks the
+false alarm rate is about $28\%$, with $100$ looks about $37\%$, not the advertised $5\%$. Armitage, McPherson and Rowe computed
+these numbers in 1969, for clinical trials analysed as the patients arrive.
 
 Ville's thesis contains the remedy. A non-negative supermartingale cannot often become large.
 
@@ -381,7 +382,8 @@ P\Bigl(\sup_{n\ge0}M_n\ge c\Bigr)\le\frac{\mathbb EM_0}c.
 \]
 \end{theorem}
 \begin{proof}
-Let $T$ be the first $n$ with $M_n\ge c$ ($T=\infty$ if there is none), a stopping time. The stopped process $M_{T\wedge n}$ is a supermartingale (Volume~4, Theorem~11.9), so
+Let $T$ be the first $n$ with $M_n\ge c$ ($T=\infty$ if there is none), a stopping time. Since $M_{T\wedge n}-M_0=\sum_{k=1}^n\mathbf 1_{\{T\ge k\}}(M_k-M_{k-1})$ and
+$\{T\ge k\}\in\mathcal F_{k-1}$, each term has mean $\mathbb E\bigl[\mathbf 1_{\{T\ge k\}}(\mathbb E[M_k\mid\mathcal F_{k-1}]-M_{k-1})\bigr]\le0$, so $\mathbb EM_{T\wedge n}\le\mathbb EM_0$ (the argument after Volume~4, Theorem~11.9), and
 \[
 c\,P(T\le n)\le\mathbb E\bigl[M_{T\wedge n}\mathbf 1_{\{T\le n\}}\bigr]\le\mathbb EM_{T\wedge n}\le\mathbb EM_0,
 \]
@@ -431,8 +433,22 @@ bias that is valid at all times simultaneously.
 
 \begin{think}
 In Theorem~\ref{thm:anytime}, the prior on $\theta$ was uniform. What happens with a prior concentrated near $\frac12$? Near $0.9$? A gambler who knows the true $\theta$ would bet with the likelihood ratio
-$\prod(2\theta)^{X_i}(2-2\theta)^{1-X_i}$: how fast does its capital grow, and why is this growth rate the exponent of the Chernoff--Stein lemma (Theorem~7.9)?
+$\prod(2\theta)^{X_i}(2-2\theta)^{1-X_i}$: how fast does its capital grow, and why is this growth rate the exponent of the Chernoff--Stein lemma (Theorem~\ref{thm:chernoffstein})?
 \end{think}
+
+\section{What we proved, and what comes next}
+
+The epigraph asked what forbids a fair game from converging to zero while its mean stays at one. Uniform integrability does: a martingale is
+uniformly integrable exactly when it converges in $L^1$, exactly when it is the sequence of predictions $\mathbb E[X\mid\mathcal F_n]$ of a final value
+(Theorem~\ref{thm:uimart}), and then optional stopping holds at every stopping time (Theorem~\ref{thm:uiost}). L\'evy's upward and downward theorems
+(Theorems~\ref{thm:levyup} and~\ref{thm:levydown}) gave the strong law by symmetry, de Finetti's theorem on exchangeable sequences
+(Theorem~\ref{thm:definetti}) and Doob's consistency of Bayesian learning (Theorem~\ref{thm:doobconsistency}). Kakutani's dichotomy
+(Theorem~\ref{thm:kakutani}) says that two infinite product measures are equivalent or mutually singular, and Ville's inequality
+(Theorem~\ref{thm:ville}) gives tests that remain valid however often one looks.
+
+The backward martingales of this chapter averaged over permutations of the coordinates. The next chapter averages along a single orbit of a
+transformation: the time average of one long trajectory, and when it equals the space average. That is ergodic theory, and its first theorem, Birkhoff's,
+is again a strong law.
 
 \section{Exercises}
 
@@ -528,7 +544,7 @@ $\operatorname{Cov}(X_1,X_2)=\mathbb E\Theta^2-(\mathbb E\Theta)^2=\operatorname
 \[
 \frac{a(a+1)\cdots(a+s-1)\cdot b(b+1)\cdots(b+n-s-1)}{(a+b)(a+b+1)\cdots(a+b+n-1)},
 \]
-which depends only on $s$: the sequence is exchangeable. With $B(x,y)=\int_0^1\theta^{x-1}(1-\theta)^{y-1}\dd\theta=\frac{(x-1)!\,(y-1)!}{(x+y-1)!}$ for positive integers (Volume~5, Section~7.4 gives $B(x,y)$ in general), the probability equals
+which depends only on $s$: the sequence is exchangeable. With $B(x,y)=\int_0^1\theta^{x-1}(1-\theta)^{y-1}\dd\theta=\frac{(x-1)!\,(y-1)!}{(x+y-1)!}$ for positive integers (Volume~5, Section~5.4 gives $B(x,y)$ in general), the probability equals
 \[
 \frac{(a+s-1)!\,(b+n-s-1)!\,(a+b-1)!}{(a-1)!\,(b-1)!\,(a+b+n-1)!}=\frac{B(a+s,b+n-s)}{B(a,b)}=\int_0^1\theta^s(1-\theta)^{n-s}\,\beta_{a,b}(\theta)\,\dd\theta,
 \]
@@ -575,6 +591,7 @@ general theory.
 \item \emph{Bayesian consistency.} J.~L.~Doob, ``Application of the theory of martingales'', in \emph{Le Calcul des Probabilit\'es et ses Applications}, Colloques Internationaux du CNRS 13 (1949), 23--27.
 D.~A.~Freedman, ``On the asymptotic behavior of Bayes' estimates in the discrete case'', \emph{Ann.\ Math.\ Statist.}\ 34 (1963), 1386--1403. W.~R.~Thompson, ``On the likelihood that one unknown probability
 exceeds another in view of the evidence of two samples'', \emph{Biometrika} 25 (1933), 285--294.
+\item \emph{Peeking.} P.~Armitage, C.~K.~McPherson and B.~C.~Rowe, ``Repeated significance tests on accumulating data'', \emph{J.\ Roy.\ Statist.\ Soc.\ Ser.~A} 132 (1969), 235--244.
 \item \emph{Kakutani.} S.~Kakutani, ``On equivalence of infinite product measures'', \emph{Ann.\ of Math.}\ 49 (1948), 214--224.
 \item \emph{Anytime-valid inference.} D.~A.~Darling and H.~Robbins, ``Confidence sequences for mean, variance, and median'', \emph{Proc.\ Nat.\ Acad.\ Sci.\ USA} 58 (1967), 66--68. H.~Robbins, ``Statistical methods related
 to the law of the iterated logarithm'', \emph{Ann.\ Math.\ Statist.}\ 41 (1970), 1397--1409. S.~R.~Howard, A.~Ramdas, J.~McAuliffe and J.~Sekhon, ``Time-uniform, nonparametric, nonasymptotic confidence sequences'',

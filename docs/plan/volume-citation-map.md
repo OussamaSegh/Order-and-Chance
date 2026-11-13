@@ -171,7 +171,7 @@ Old Volume 0's numbered citations (Proposition 3.7, Exercise 1.6, and the rest) 
 | 9 | 7 | Group Cohomology | `chapters/ch07-groupcoh.tex` | Volume 10, Chapter 8 |
 | 9 | 8 | Semisimple Algebras and Induction | `chapters/ch08-semisimple.tex` | Volume 10, Chapter 9 |
 | 9 | 9 | The Symmetric Group | `chapters/ch09-symmetric.tex` | Volume 10, Chapter 10 |
-| 9 | 10 | Shuffling Cards | `chapters/ch10-shuffling.tex` | Volume 11, Chapter 14 |
+| 9 | 10 | Shuffling Cards | `chapters/ch10-shuffling.tex` | Volume 11, Chapter 13 |
 | 9 | 11 | Compact Groups | `chapters/ch11-compact.tex` | Volume 10, Chapter 11 |
 | 10 | 1 | Independence and Zero--One Laws | `chapters/ch01-zero-one.tex` | Volume 11, Chapter 1 |
 | 10 | 2 | Laws of Large Numbers | `chapters/ch02-lln.tex` | Volume 11, Chapter 2 |
@@ -185,7 +185,7 @@ Old Volume 0's numbered citations (Proposition 3.7, Exercise 1.6, and the rest) 
 | 10 | 10 | Ergodic Theory | `chapters/ch10-ergodic.tex` | Volume 11, Chapter 10 |
 | 10 | 11 | Mod-\texorpdfstring{$\varphi$}{phi} Convergence | `chapters/ch11-modphi.tex` | Volume 11, Chapter 11 |
 | 10 | 12 | Random Permutations and the Poisson--Dirichlet Law | `chapters/ch12-permutations.tex` | Volume 11, Chapter 12 |
-| 10 | 13 | Harder problems | `chapters/ch13-harder.tex` | Volume 11, Chapter 13 |
+| 10 | 13 | Harder problems | `chapters/ch13-harder.tex` | Volume 11, Chapter 14 |
 | 11 | 1 | Gaussian Processes and the Birth of Brownian Motion | `chapters/ch01-gaussian.tex` | Volume 12, Chapter 1 |
 | 11 | 2 | The Fine Structure of a Brownian Path | `chapters/ch02-paths.tex` | Volume 12, Chapter 2 |
 | 11 | 3 | Continuous Martingales | `chapters/ch03-martingales.tex` | Volume 12, Chapter 3 |
@@ -243,7 +243,7 @@ Old Volume 0's numbered citations (Proposition 3.7, Exercise 1.6, and the rest) 
 | 14 | 13 | When order wins | `chapters/ch13-bias.tex` | Volume 15, Chapter 13 |
 | 14 | 14 | How Research Works | `chapters/ch01-research.tex` | split or dropped from the edition (see the note list) |
 | 14 | 15 | How to Read a Paper | `chapters/ch02-reading.tex` | split or dropped from the edition (see the note list) |
-| 14 | 16 | Reading a Classic: Shuffling Cards | `chapters/ch03-shuffling.tex` | Volume 11, Chapter 14 |
+| 14 | 16 | Reading a Classic: Shuffling Cards | `chapters/ch03-shuffling.tex` | Volume 11, Chapter 13 |
 | 14 | 17 | Guided Reading: Selberg's Theorem at Many Points | `chapters/ch04-selberg.tex` | Volume 12, Chapter 8 |
 | 14 | 18 | Guided Reading: Random Groups | `chapters/ch05-sandpiles.tex` | Volume 15, Chapter 7 |
 | 14 | 19 | Guided Reading: Better Than Square Root | `chapters/ch06-chaos.tex` | Volume 12, Chapter 8 |
@@ -347,3 +347,12 @@ Decisions D-10 and D-11 of `MASTER-PLAN-V5-V15.md` are applied to Volume 5. Wari
 Theorem, lemma and exercise numbers follow the chapter number: an old "Volume 5, Theorem 12.3" is now Theorem 10.3, provided nothing inside the chapter was renumbered. Chapter 12 is the exception. It gained a lemma, a definition and a theorem, so its statements must be looked up by label: `lem:pdisc`, `lem:plog`, `thm:eta` (new, the transformation of η), `lem:ptrans`, `thm:hr`, `thm:rademacher`.
 
 Volume 6, Chapter 12 may now cite `thm:eta` of Volume 5 for the transformation of η (master plan, D-10).
+
+## Volume 11 after the master plan (13 November 2026)
+
+Decision D-26 of `MASTER-PLAN-V5-V15.md` is applied to Volume 11. Chapters 1–12 keep their numbers and their statement numbers; Chapter 11 gained one statement at the end of its list (`cor:unifomega`). The last two chapters swapped: Shuffling Cards is now Chapter 13 and the problem chapter "Sums of Random Pieces" is Chapter 14. A citation "Volume 11, …~14.x" of a shuffling statement becomes 13.x (for example Theorem 13.8 `thm:ds`, Corollary 13.9 `cor:cutoff`, Theorem 13.10 `thm:bd`, Corollary 13.14 `cor:riffle`, Lemma 13.4 `lem:upperbound`); a citation of a problem "13.x" of the old problem chapter becomes Problem 14.x. The two continued-fraction problems moved from Volume 7 are Problems 14.23 (`pb:minkowski`) and 14.24 (`pb:cantororbit`).
+
+| Chapter | File | Number before | Number now | Chapter label |
+| --- | --- | --- | --- | --- |
+| Shuffling Cards | `shuffling.tex` | 14 | 13 | `ch:shuffling` |
+| Sums of Random Pieces | `ch13-harder.tex` | 13 | 14 | `ch:harder` |
