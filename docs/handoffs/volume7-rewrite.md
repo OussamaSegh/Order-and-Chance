@@ -157,6 +157,17 @@ The independent review is a separate agent. This file does not contain that revi
 - Volume 8 still cites Volume 6, Chapter 5, for an error term that chapter does not give (recorded in the Volume 6 handoff). Not this pull request.
 - Later volumes cite Volume 7 by hand-typed numbers. This pass did not shift them. Those volumes were not edited.
 
+## Repairs after the second review
+
+The second review, `docs/review/volume7-rewrite-second-review-2026-11-13.md` on PR #241, asked for four repairs at `a17a4d18`. They are in the following commit.
+
+- Exercise `ex:v7c08c` now bounds \(f_m(x)=me^{-mx}\) by \(m/e\ge 1/(2ex)\), using \(mx<1\).
+- Lemma `lem:monoivt` again says every value between \(f(a)\) and \(f(b)\), endpoints included. The proof takes the endpoints first, then the open interval, and reduces a decreasing map to \(-f\).
+- Theorem `thm:condexp` again says that \(X\ge 0\) almost surely forces \(\mathbb E[X\mid\mathcal G]\ge 0\) almost surely. The proof passes to \(\max(X,0)\).
+- The solution of `ex:v7c11b` cites `thm:continuum` for the uncountability of \(\R\).
+
+A comparison of every numbered statement with `origin/main` found no other dropped hypothesis or quantifier. Replacements such as “for all” by “for every”, and “unique” by “exactly one”, keep the claim.
+
 ## Exact next steps
 
 1. Push `cursor/volume7-complete-rewrite-8161`.
