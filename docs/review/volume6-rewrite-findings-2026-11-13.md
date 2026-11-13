@@ -35,3 +35,12 @@ Volume 5 citations stay hand-typed. After the parallel Volume 5 rewrite, re-chec
 Volume 8, `ch09-expanders.tex`, still cites Chapter 5 for an error term that Chapter 5 does not prove. The right pointer is Theorem 7.10. That file was not edited.
 
 No photograph was added. The new plates are TikZ, generated in the repository.
+
+## CI, first run
+
+Actions run 43466603421 failed in `list`. Two sentences were restored.
+
+- Chapter 3 no longer puts the words “primitive roots” in the 140-character window of the Volume 2, Chapter 4 citation. That chapter is the identity for \(\varphi\).
+- Chapter 5 again says there are \(\sim\pi x\) Gaussian integers of norm at most \(x\) (Volume 2, Theorem 7.5, or a direct count).
+
+`PYTHONPATH=tools python3 -m unittest tools.test_cross_volume_citations` passes, 14 tests.

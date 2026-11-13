@@ -37,21 +37,17 @@ The word “Journey” on some exercises is the existing long-exercise tag, not 
 
 ## In progress
 
-Pull request and CI. The local build succeeded on 13 November 2026.
+CI on pull request #234. The first Actions run failed in `list`: two citation checks.
 
-- Reading PDF: `dist/Volume 6 - Crossroads.pdf`
-- Print PDF: 377 pages, `dist/kdp/Volume 6 - Crossroads - Print.pdf`
-- EPUB: 28 MB, 48 plates at 1800 px, em baseline on formulas. `tools/check_epub_media.py` passed.
-- Layout: 335 boxes, maximum height 391.1 pt, no overfull line, no undefined reference.
-- Findings: `docs/review/volume6-rewrite-findings-2026-11-13.md`
+- `ch03-characters.tex` named primitive roots in the same sentence as Volume 2, Chapter 4. Chapter 4 is the arithmetic-function identity for \(\varphi\). The words were moved apart.
+- `ch05-pnt.tex` must keep the clause \(\sim\pi x\) (Volume 2, Theorem 7.5, or a direct count). That clause is restored.
 
-`publish` in `.github/workflows/build.yml` runs only on `main`, so a pull request finishes at `site`. Do not merge.
+Local `tools/test_cross_volume_citations.py` passes (14 tests). The next Actions run is the one to watch: `list`, then `debs`, `build`, `site`. `publish` stays skipped on a pull request.
 
 ## Remains
 
-1. Open the pull request titled “Volume 6: complete rewrite”, base `main`.
-2. Poll the Actions run until `list`, `debs`, `build`, and `site` have finished. `publish` is skipped on a pull request.
-3. If a job fails, fix it on this branch, push, and wait again. Do not merge.
+1. Poll run after the citation fix is pushed.
+2. If `build` fails, read the log, fix, push, and wait again. Do not merge.
 
 ## Open math questions
 
