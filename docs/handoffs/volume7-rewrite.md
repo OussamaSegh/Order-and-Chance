@@ -133,7 +133,7 @@ The four repairs above are later than this count. They change a few sentences an
 
 Local `./build.sh volume7-spaces` finished with exit 0.
 
-- Print interior: **407 pages**, 513 × 738 pt (7.125 × 10.25 in). Spine 0.9576 in. Two pages flattened at 600 ppi. KDP interior and cover checks passed.
+- Print interior, after the review repairs: **409 pages**, 513 × 738 pt (7.125 × 10.25 in). Spine 0.9623 in. Two pages flattened at 600 ppi. KDP interior and cover checks passed. No overfull box and no undefined reference.
 - Reading PDF: 408 pages, cover plus the same body.
 - Layout: 394 whole boxes, maximum height 288.5 pt, no overflow, no unresolved references.
 - `main.log`: no overfull boxes, no undefined references.
