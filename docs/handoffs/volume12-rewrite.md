@@ -37,8 +37,8 @@ Gate B of the master plan (independent verification records) is not this pass.
 | 10 | Random Matrices II: Unitary Matrices and the Zeros of Zeta | `ch10-cue.tex` | Done |
 | 11 | Log-Correlated Fields and the Largest Values | `ch11-logcorrelated.tex` (renamed from `ch12-`), `brw-halfmoment.tex` | Done |
 | A | Spectral Graph Theory | `spectral.tex` | Done |
-| — | `moments.tex` (not printed): written check, then removal | | To do |
-| — | Preface, blurb, `kdp.md` | | To do |
+| — | `moments.tex` (not printed): written check (`review/volume12-rewrite/moments-removal-check.md`), then removal | | Done |
+| — | Preface, blurb, `kdp.md` | | Done |
 
 ## Tools
 
