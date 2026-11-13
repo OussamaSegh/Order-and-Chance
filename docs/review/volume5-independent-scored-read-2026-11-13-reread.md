@@ -1,0 +1,137 @@
+# Volume 5 independent re-read, 13 November 2026
+
+Independent scored reading of *Order and Chance*, Volume 5, *Calculation: From Formula to Insight*, on `main` at `f10e4c99`. The built files are the GitHub release `books` republished from that commit: reading PDF (356 pages, 7 × 10 in), print PDF (355 pages, 7.125 × 10.25 in), and EPUB (26.1 MB).
+
+The reader in view is a motivated high-school student who will work. Scores are 0–10. A 10 would be a chapter I could not fault against a book at the level of Courant–Robbins, Spivak, Niven–Zuckerman, Artin, or Tao’s *Analysis I*. I did not give one.
+
+Printed folios below are the arabic folios of the reading PDF (the print PDF carries the same folios; it has no cover). File lines are the source on `f10e4c99`.
+
+The scores and the issue log were written before any earlier Volume 5 review, fix PR, or file under `review/` was opened.
+
+## How the book is built
+
+`volume5-calculation/main.tex` prints thirteen chapters in three parts.
+
+| Part | Chapters | Reading folio of the opener |
+| --- | --- | --- |
+| I. Series and Products | 1 Finite calculus, 2 Generating functions, 3 Series and products | 2, 21, 63 |
+| II. Integrals and Transforms | 4 Integration, 5 Gamma and Beta, 6 Fourier series, 7 DFT and FFT, 8 Fourier transform, 9 Complex analysis | 79, 101, 121, 143, 164, 181 |
+| III. The Zeta Function | 10 Zeta, 11 Asymptotics, 12 Hardy–Ramanujan, 13 AGM | 215, 235, 261, 279 |
+
+Index folio 338, sources 344, about the cover 346. Waring’s problem is not a chapter. The BBP series is a section of Chapter 4 (`bbp-borwein.tex` is input from `ch04-integrals.tex`). The eta transformation is proved in Chapter 12 from the pentagonal theorem, Poisson summation, and the identity theorem, and the proof cites nothing after Volume 5.
+
+## Scorecard
+
+Rows are chapters. Columns: (a) correctness, (b) rigor, (c) prerequisites, (d) clarity, (e) pedagogy, (f) exercises, (g) figures, (h) voice, (i) notation, (j) typography as rendered.
+
+| Ch | a | b | c | d | e | f | g | h | i | j |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 1 Finite calculus | 9 | 8 | 9 | 9 | 9 | 8 | 8 | 9 | 9 | 9 |
+| 2 Generating functions | 8 | 8 | 8 | 8 | 8 | 7 | 8 | 8 | 8 | 8 |
+| 3 Series and products | 9 | 8 | 9 | 9 | 9 | 8 | 8 | 8 | 9 | 9 |
+| 4 Integration | 9 | 8 | 9 | 8 | 9 | 8 | 8 | 9 | 8 | 8 |
+| 5 Gamma and Beta | 8 | 8 | 8 | 8 | 9 | 8 | 8 | 9 | 8 | 8 |
+| 6 Fourier series | 8 | 8 | 8 | 8 | 8 | 8 | 8 | 8 | 8 | 8 |
+| 7 DFT and the FFT | 8 | 8 | 8 | 8 | 8 | 7 | 8 | 8 | 8 | 8 |
+| 8 Fourier transform | 8 | 8 | 9 | 8 | 8 | 8 | 8 | 8 | 9 | 8 |
+| 9 Complex analysis | 8 | 8 | 8 | 7 | 8 | 7 | 8 | 8 | 8 | 8 |
+| 10 Zeta | 9 | 8 | 9 | 9 | 9 | 8 | 8 | 9 | 9 | 8 |
+| 11 Asymptotics | 8 | 8 | 8 | 8 | 8 | 7 | 8 | 8 | 8 | 8 |
+| 12 Hardy–Ramanujan | 8 | 8 | 9 | 7 | 8 | 8 | 8 | 8 | 8 | 8 |
+| 13 AGM | 9 | 8 | 8 | 8 | 8 | 7 | 8 | 8 | 8 | 8 |
+
+### Why these chapter scores
+
+**Chapter 1 (folios 2–20).** Bernoulli numbers use \(B_1=-\frac12\), and the values through \(B_{12}=-\frac{691}{2730}\) match the recurrence. Faulhaber’s formula gives \(\sum_{k<1000}k^5=166\,167\,083\,333\,250\,000\), and the tenth powers of \(1\) through \(1000\) are the 32-digit number on the opener. The formal-power-series language is introduced before Chapter 2 defines it at length; the local rules are enough for the proofs, which is why rigor is 8 rather than 9.
+
+**Chapter 2 (folios 21–62).** Franklin’s involution for the pentagonal theorem is written with the exceptional cases separated, and the signs match the product \(1-x-x^2+x^5+x^7-\cdots\). Twenty-eight exercises follow. I recomputed Dobinski’s exercise only as a citation target, not every solution, so the exercise score stays at 7.
+
+**Chapter 3 (folios 63–78).** \(\zeta(2k)=(-1)^{k+1}B_{2k}(2\pi)^{2k}/(2(2k)!)\) gives \(\pi^2/6\), \(\pi^4/90\), \(\pi^6/945\), \(\pi^8/9450\). Niven’s argument that \(\pi^2\) is irrational closes: the integral is a positive integer and is eventually smaller than 1. The Viète polygon areas 2, \(2\sqrt2\), and about 3.06 are right. The \(\zeta(5)\) sentence is the reason this chapter is not a 9 on voice; see V5-5.
+
+**Chapter 4 (folios 79–100).** The BBP identity \(\pi=4S_1-2S_4-S_5-S_6\) survives the substitutions and the partial fractions. At \(d=999999\) the hexadecimal digits are `26C65E52`, and at \(d=10^6\) they are `6C65E52`, as the text says. The Borwein fraction equals the deficit formula exactly, and the deficit is \(2.31\times10^{-11}\). Dominated convergence is stated for continuous integrands on intervals, which is what the later chapters use.
+
+**Chapter 5 (folios 101–120).** The ball volumes \(V_n=\pi^{n/2}/\Gamma(n/2+1)\), \(V_5=8\pi^2/15\approx5.264\), and \(V_{20}\approx0.026\) are right, and the surface-area solution correctly finds the maximum at the sphere in \(\mathbb R^7\). The lemniscate evaluation \(\int_0^1(1-r^4)^{-1/2}\,dr=\Gamma(1/4)^2/(4\sqrt{2\pi})\) matches the AGM formula in Chapter 13. I did not re-line the whole Bohr–Mollerup proof.
+
+**Chapter 6 (folios 121–142).** Gibbs’ constant \((2/\pi)\mathrm{Si}(\pi)=1.17897\ldots\), an overshoot of about 0.179 on a jump of height 2, is the classical value. Weyl’s criterion is Theorem 6.13 and the sequence \((n\alpha)\) is Corollary 6.14; both are what Volume 6 quotes. Siegel’s exercise admits the volume of a convex body and names Volume 7, Theorem 7.11, which is Lebesgue measure.
+
+**Chapter 7 (folios 143–163).** The FFT recurrence \(M(n)=2M(n/2)+n/2\) is \(\frac n2\log_2 n\) multiplications and \(n\log_2 n\) additions, and the text says “at most.” Figure 7.2 puts the spectral lines at bins 5 and 12, which are the two tones in the caption. I did not recompute a length-8 transform by hand.
+
+**Chapter 8 (folios 164–180).** The transform is \(\hat f(\xi)=\int f(x)e^{-2\pi ix\xi}\,dx\), with inversion \(f(x)=\int\hat f(\xi)e^{2\pi ix\xi}\,d\xi\) and \(\widehat{\hat f}(x)=f(-x)\). The Gaussian \(e^{-\pi x^2}\) is its own transform. Poisson summation and \(\vartheta(1/t)=\sqrt t\,\vartheta(t)\) are Theorem 8.9 and Corollary 8.10. The Gauss-sum evaluation \(G(n)=\frac{1+i}{2}(1+i^{-n})\sqrt n\) is the classical one, and the Fresnel value \(\int_0^\infty u^{-1/2}e^{iu}\,du=\sqrt\pi\,e^{i\pi/4}\) is right. The letter \(\vartheta\) is reserved for Jacobi and \(\theta\) for Chebyshev, which is the notation the later volumes need.
+
+**Chapter 9 (folios 181–214).** Cauchy’s theorem on a star-shaped set (Theorem 9.9) really does include \(F'=f\), which is what Volume 8 cites. The residue calculation \(\int_{-\infty}^\infty(1+x^4)^{-1}\,dx=\pi/\sqrt2\) is correct (\(\pi\sqrt2/2\) is the same number). The cotangent expansion on \(\mathbb C\) (Corollary 9.35) is the formula Volume 6 differentiates. The chapter is a full first course. A reader at the stated level will find the estimates dense, which is the clarity score of 7. I did not re-check every contour estimate.
+
+**Chapter 10 (folios 215–234).** The completed function is \(\xi(s)=\frac12 s(s-1)\pi^{-s/2}\Gamma(s/2)\zeta(s)\), the pole has residue 1, and \(\xi(1-s)=\xi(s)\). The asymmetric form is the standard \(2(2\pi)^{-s}\cos(\pi s/2)\Gamma(s)\zeta(s)\). From it, \(\zeta(1-2k)=-B_{2k}/(2k)\), so \(\zeta(-1)=-\frac1{12}\), \(\zeta(-3)=\frac1{120}\), \(\zeta(-5)=-\frac1{252}\), \(\zeta(-7)=\frac1{240}\), and \(\zeta(0)=-\frac12\). The ten ordinates through \(49.77\) match the zeros to two decimals. The exponential smoothing \(\sum n e^{-n/N}=N^2-\frac1{12}+O(N^{-2})\) is right, and the claim about every smooth cutoff is explicitly not proved. The Gauss–Kuzmin constant in the journey exercise equals \(2\zeta(3)-\frac32\).
+
+**Chapter 11 (folios 235–260).** Euler–Maclaurin’s first corrections are \(\frac12(f(b)-f(a))\), \(\frac1{12}(f'(b)-f'(a))\), \(-\frac1{720}(f'''(b)-f'''(a))\). The harmonic expansion through \(n^{-6}\) at \(n=10\) errs by \(4.09\times10^{-11}\) against \(H_{10}=7381/2520\); the text says \(4.1\times10^{-11}\), and the next term is \(4.2\times10^{-11}\). Stirling’s coefficients \(\frac1{12x}-\frac1{360x^3}+\frac1{1260x^5}-\frac1{1680x^7}\) are right, and the figure’s best errors \(10^{-3.5}\), \(10^{-6.4}\), \(10^{-12}\) are about half the smallest term at \(x=1,2,4\). A complex saddle for central binomial coefficients is present, as the master plan asked.
+
+**Chapter 12 (folios 261–278).** The eta proof on the imaginary axis is a Gaussian Fourier transform, a shift, and a modulation; the cosine table for odd residues mod 12 produces the factor \(1/\sqrt t\), and the identity theorem spreads it to the half-plane. The branch \(\sqrt{-i\tau}\) is the principal root with positive real part. The table \(p(10)=42\), \(p(100)=190\,569\,292\), \(p(200)=3\,972\,999\,029\,388\), \(p(1000)=2.406\times10^{31}\), and the ratios \(0.873\), \(0.956\), \(0.969\), \(0.986\) match the pentagonal recurrence and \(\mathrm{HR}(n)\). \(\log P(0.99)=160.45\). Rademacher’s series is headed “quoted” and is not used later. The \(O(n^{-1/4})\) error is weaker than the true \(O(n^{-1/2})\), and the text says where the proof lost the factor. The five-stage write-up is correct as far as I checked and hard to read, which is the clarity score.
+
+**Chapter 13 (folios 279–337).** \(\varpi=2.62205755429211981\ldots\) and \(M(1,\sqrt2)=\pi/\varpi=1.19814023473559220744\ldots\) to the digits shown. \(\Gamma(1/4)=(2\pi)^{3/4}/\sqrt{M(1,\sqrt2)}\) matches Euler’s integral. Brent–Salamin’s \(\pi_1=3.1405\ldots\), and the errors of \(\pi_2\) through \(\pi_8\) have decimal exponents \(-8.1\), \(-18.7\), \(-40.3\), \(-83.6\), \(-170.6\), \(-345.0\), \(-694.0\), inside the stated bounds. The chapter’s own exercises are five. Forty-one problems of the whole volume then follow, labelled as such. That set is why the exercise score is 7: it is not a path through the AGM, and I only sampled it (the prime-zeta values \(0.452247420041\) and \(0.452247414181\), difference \(5.86\times10^{-9}\), are right).
+
+## Whole book
+
+| Item | Score | Why |
+| --- | --- | --- |
+| Structure and arc | 9 | Three parts, from finite sums to the functional equation, a saddle, the partition asymptotic, and the AGM. The last chapter’s problem dump is labelled and does not break the arc. |
+| Continuity with Volumes 1–4 | 8 | The numbered pointers I checked (Euler’s constant in Volume 1, Chapter 3; complex numbers in Chapter 5; calculus and Stirling in Chapter 8; Cauchy–Schwarz in Chapter 9; \(\sum_{d\mid n}\varphi(d)=n\) in Volume 2, Chapter 3; Gauss sums in Exercise 6.7; continued fractions in Chapter 9; Hoeffding in Volume 4, Chapter 4; random walks in Chapter 8) say what this volume uses. One pointer names the wrong chapter for independence (V5-6). |
+| Preparation for later volumes | 8 | Volume 6’s reminders of the functional equation, the residue theorem, Weyl, Parseval, Stirling, the harmonic expansion, and Theorem 12.4 for \(\eta\) match the statements. One printed reminder in Volume 14 names the wrong corollary for the theta law (V5-1). Two further mismatches sit in Volume 15 files that `main.tex` does not print (V5-2, V5-3). |
+| Title and subtitle | 9 | The subtitle is a motion from a formula to what it means, and each chapter I read does that: a method for power sums, a recurrence as a rational function, a function as a sum over its poles, a factorial picked out by log-convexity, a sign fixed by an integral, a real integral as a residue, \(-1/12\) as a constant term, an asymptotic with a remainder, partitions governed by \(\tau\mapsto -1/\tau\), and digits of \(\pi\) doubled by an elliptic integral. |
+| Front matter, index, bibliography | 8 | The preface describes the thirteen chapters accurately. Its list of admitted facts is a little short (V5-4, V5-7). The sources name real books and papers; the 2026 \(\zeta(5)\) sentence needs a caveat (V5-5). The index entries I checked (Theorems 4.11, 6.11, 10.10, Corollary 8.10) point at the right folios. I did not check every index line. The blurb states what the volume proves and marks Rademacher as quoted. |
+| Print PDF | 8 | Every page is 513 × 738 pt. A scan found no text or drawing outside the 7 × 10 trim, with 0.125 in bleed on the top, bottom, and outside edge only. Part openers are full charcoal. Sample chapter openers, the Stirling figure, and Figure 7.2 are clean. I did not turn all 355 pages by eye. |
+| EPUB | 8 | 26.1 MB, no SVG plates, 37 plates whose PNG headers are about 1800 pixels wide, `width:100%` on plates, and 14,367 inline formulas with width and `vertical-align` in em. I did not read it on a Paperwhite. |
+
+## Overall
+
+**8.** I would recommend the volume to its reader as it stands. The flagship theorems I recomputed — Bernoulli and Faulhaber, the pentagonal signs, \(\zeta(2k)\), Niven, BBP, the Borwein deficit, the ball, Gibbs, the FFT count, Fourier inversion and the Gauss sum, the functional equation and the negative zeta values, Stirling’s series, the eta transformation, the Hardy–Ramanujan table, and Brent–Salamin — are right, and the proofs I followed state their hypotheses. It is not flawless: Chapters 9 and 12 are hard for the stated reader, a large exercise set was only sampled, and one printed later volume cites the theta transformation under the wrong number.
+
+## Issue log
+
+| ID | Location | Category | Severity | Evidence | Suggested fix |
+| --- | --- | --- | --- | --- | --- |
+| V5-1 | `volume14-primes/chapters/ch14-critical.tex:19` (Volume 14, opening reminder of the critical-line chapter). The statement it wants is Volume 5, Corollary 8.10, reading folio 169. | Cross-volume citation | major | The reminder says the theta law \(\theta(1/u)=\sqrt u\,\theta(u)\) is “Volume 5, Theorem 8.9 and Corollary 10.10.” Theorem 8.9 is Poisson summation. Number 10.10 is Theorem 10.10, \(\zeta(1-2k)=-B_{2k}/(2k)\), folio 221, not a corollary and not theta. The theta transformation is Corollary 8.10. The formula in the reminder is the right one; the number is not. | Cite Corollary 8.10. |
+| V5-2 | `volume15-order-and-chance/chapters/conjectures-ch01-born.tex:229`. Not reached from Volume 15 `main.tex`. | Cross-volume citation | minor | The Dirichlet integral \(\int_0^\infty(\sin u)/u\,du=\pi/2\) is cited as Volume 5, Theorem 6.11. Theorem 6.11 is Parseval (folio 126). The integral is Theorem 4.11 (folio 84). Printed uses of 6.11 in Volumes 11 and 12 correctly say Parseval. | If the file is ever printed, cite Theorem 4.11. |
+| V5-3 | `volume15-order-and-chance/chapters/ra-largemoduli.tex:24`. Not reached from Volume 15 `main.tex`. | Cross-volume citation | minor | Theorem 8.6 is quoted as \(f(u)=\int F(t)e^{-itu}\,dt\) with \(F(t)=\frac1{2\pi}\int f(u)e^{itu}\,du\). Volume 5’s Theorem 8.6 is the unitary convention: \(\hat f(\xi)=\int f(x)e^{-2\pi ix\xi}\,dx\) and \(f(x)=\int\hat f(\xi)e^{2\pi ix\xi}\,d\xi\), so \(\widehat{\hat f}(x)=f(-x)\). Volume 13’s Tate reminder states that convention and cites 8.6 correctly. | Quote the \(2\pi\) convention, or name the change of normalization. |
+| V5-4 | `volume5-calculation/chapters/preface.tex:25–28` | Admitted results | minor | The preface says the only unproved appeals are Tonelli in two exercises and the volume of a convex body in one exercise of Chapter 6, and that no theorem depends on them. Those three are real and correctly labelled (Volume 7, Theorems 9.5 and 7.11). A closing problem also admits Mertens’s third theorem (`ch12-agm.tex:760`) and a solution quotes the prime number theorem for a comparison (`ch12-agm.tex:2011`). Neither is a premise of a theorem. | Add those two appeals to the preface’s list, still as exercises. |
+| V5-5 | `volume5-calculation/chapters/ch03-series.tex:229`, reading folio 68 | Attribution | minor | “Fauzan gave an argument in 2026 that \(\zeta(5)\) is irrational, and Hyman formalised it in the Archive of Formal Proofs (*Zeta_5_Irrational*, 26 October 2026).” The AFP entry of that date, by Alex Raymond Hyman, does formalise Aabir Fauzan’s Zenodo preprint. The verb is “gave an argument,” not “proved.” The sentence stands next to Apéry’s theorem and does not say that the source is an unrefereed preprint, or that the formalisation discharges numeric inequalities by approximation. | Call it a 2026 preprint, name the formalisation’s numeric oracle, and keep it out of the list of theorems the reader may quote. |
+| V5-6 | `volume5-calculation/chapters/ch06-fourier.tex:367` | Prerequisite pointer | minor | “By independence (Volume 4, Chapter 8).” Independence of random variables is Volume 4, Chapter 2. The product of characteristic functions is used in Volume 4, Chapter 6, and the return-probability integral is in Chapter 8, *Random Walks*. The formula this example needs is in Chapter 8; the name “independence” points at the wrong chapter. | Cite Chapter 2 for independence and Chapter 8 for the return formula. |
+| V5-7 | `volume5-calculation/chapters/ch05-gamma.tex:428–431`, exercise `pb:ncycles` | Admitted results | minor | The exercise says to take as known that the exterior powers of the reflection representation are irreducible and pairwise non-isomorphic, citing Fulton and Harris, Proposition 3.12. That is a quoted fact outside the series, and the preface’s list does not mention it. | Mark the sentence “quoted” and add it to the preface’s list of appeals that no theorem uses. |
+
+No issue in this log is critical. I did not find a false flagship statement in the thirteen chapters.
+
+## Verified correct
+
+Numerical checks were done in Python with `mpmath` or exact fractions. A numerical check is not a proof. Where I also followed the argument, I say so.
+
+- Bernoulli recurrence and \(B_1=-\frac12,B_2=\frac16,B_4=-\frac1{30},B_6=\frac1{42},B_8=-\frac1{30},B_{10}=\frac5{66},B_{12}=-\frac{691}{2730}\). Faulhaber for fifth powers and for tenth powers through \(n=1000\). The opening argument of the difference calculus (Theorem 1.1 and the falling-power basis) reads correctly.
+- Pentagonal signs and the recurrence for \(p(n)\). Franklin’s pairing, including the two exceptional families, reads correctly on a full pass.
+- \(\zeta(2k)\) and the four displayed values. Niven’s proof that \(\pi^2\) is irrational, including the bound. Viète’s areas. Wallis’s product as a corollary of the sine product, at the level of the statement.
+- BBP partial fractions and the three integrals (logarithms cancel, the arctangent is \(\pi\)). Hexadecimal digits at positions \(10^6\) and \(10^6+1\). Borwein deficit fraction and \(2.31\times10^{-11}\). The probability statement of the Borwein theorem matches the simplex volume.
+- Ball volumes, the maximum at dimension 5, and the sphere of largest area in \(\mathbb R^7\). \(\Gamma(1/4)\) via the lemniscate and the AGM. \(\varpi\) to 17 decimals.
+- Gibbs constant and the location of the first maximum. Weyl’s criterion is the theorem Volume 6 cites, and \((n\alpha)\) is the next corollary.
+- FFT operation counts. Figure 7.2’s spikes sit at frequencies 5 and 12.
+- Fourier conventions, inversion, \(\widehat{\hat f}(x)=f(-x)\), the self-dual Gaussian, Poisson summation under the stated decay, and the theta transformation. The Gauss-sum cases mod 4. The Fresnel evaluation.
+- Residue at the two upper poles of \(1/(1+z^4)\), equal to \(\pi/\sqrt2\). Star-shaped Cauchy includes \(F'=f\). Complex cotangent partial fractions agree with the form Volume 6 differentiates. Basel by residues: residue \(-\pi^2/3\) gives \(\sum_{n\ne0}n^{-2}=\pi^2/3\).
+- Functional equation, residue 1, \(\zeta(0)=-\frac12\), trivial zeros, asymmetric form, and \(\zeta(1-2k)=-B_{2k}/(2k)\). Smoothed sums for \(k=0\) and \(k=1\), and the constant \(\zeta(-3)=\frac1{120}\) in the cubic smoothing. Ordinates to two decimals. Kuzmin’s contraction constant equals \(2\zeta(3)-3/2\).
+- Euler–Maclaurin corrections, the harmonic expansion at \(n=10\), Stirling coefficients, the sign of the remainder (the comparison \(\rho_m=T_m+\rho_{m+1}\) with opposite signs), and the figure’s optimal errors.
+- Eta transformation, including the Fourier-transform bookkeeping and the cosine signs. Hardy–Ramanujan table through \(n=1000\), \(\log P(0.99)\), and the shape of the main term \(e^{2a}/(4\sqrt3\,N')\). The major-arc and minor-arc inequalities I checked (the sine chord, the gain \(1/(80y)\), the Gaussian moments) support the \(O(n^{-1/4})\) conclusion. Rademacher is marked quoted.
+- AGM of \(1\) and \(\sqrt2\), Legendre’s relation at \(k=1/\sqrt2\), Brent–Salamin partial errors through \(\pi_8\), and the pendulum lengthening of 18.0 percent at a right angle.
+- Every one of the 165 exercises has a hint and a solution. Tonelli in Volume 7 is Theorem 9.5 (shared counter in the product-measure chapter). Lebesgue measure is Theorem 7.11.
+- Volume 6’s citations of Theorems 3.7, 5.8, 5.14, 6.13, 8.14, 9.9, 9.15, 9.18, 9.26, 9.36, 9.37, 10.3, 10.8, 12.4, Propositions 10.1, 10.2, 10.6, Corollaries 4.5, 6.14, 9.35, 10.4, 10.9, 11.6, and Exercises 5.7, 6.5, 10.2, 10.3 say what those statements say. Volume 8’s use of Theorem 10.10 for \(\zeta(-1)^2=1/144\) is right. Volume 13’s Tate reminder of the \(2\pi\) convention is right. Volume 14’s display of \(\Lambda_\zeta(s)=-\frac1s-\frac1{1-s}+I(s)\) matches Theorem 10.8, because \(1/(s(s-1))=-1/s-1/(1-s)\).
+
+Outside sources actually consulted: the AFP entry *Zeta_5_Irrational* (26 October 2026) and Fauzan’s Zenodo preprint for V5-5; the classical values of the zeros, Gibbs’ constant, the Glaisher–Kinkelin constant, and the Rademacher formula, against the statements as printed (the book’s Rademacher formula is the standard derivative form). Bernoulli, zeta, partitions, AGM, and BBP were recomputed rather than looked up.
+
+## Not reviewed
+
+- A line-by-line proof of every labelled statement. In particular I did not re-line Bohr–Mollerup, the whole of Fejér’s theorem, Laplace’s method past the statement and the figure, the transfer theorem, Goursat’s subdivision beyond the star-shaped conclusion, or every estimate in the five stages of the Hardy–Ramanujan proof. I checked the skeleton, the constants, and the inequalities named above.
+- All 165 solutions. I checked that each exercise has a hint and a solution, and I recomputed the numerical solutions named in the chapter notes and in “Verified correct.”
+- Every cross-volume sentence in Volumes 6–15. I extracted the numbered citations adjacent to “Volume 5” and checked kinds against a shared-counter numbering of this volume. I content-checked the reminders in Volumes 6, 8, 13, and 14 and the mismatches in V5-1–V5-3. Volume 9’s uses of Volume 5 that I saw are by chapter, not by a theorem number.
+- Every index entry, every running head, and every one of the 355 print pages by eye. The margin scan and the sample pages are what the print score rests on.
+- A Kindle Paperwhite. The EPUB checks are structural.
+- KDP’s own acceptance of the file.
+- Whether every historical date and quotation has a source beyond the ones I happened to know or looked up. The \(\zeta(5)\) sentence is the one I checked against a live page.
+
+## Conformance to the plan
+
+The manuscript matches the master plan’s decisions for this volume (the copy of `MASTER-PLAN-V5-V15.md` on the open plan PR, read only for structure): thirteen chapters, Hardy–Ramanujan as Chapter 12 in Part III with the eta transformation proved here, Waring removed, the BBP series left inside integration, a saddle-point example in the asymptotics chapter, \(\xi\) rather than \(\Lambda\) for the completed zeta, and \(\vartheta\) for Jacobi. Theorem 12.4 is what Volume 6 cites, and Volume 6 says its own argument is a second proof.
+
+`docs/plan/book-05.md` on `main` is an older blueprint: twelve chapters, the partition asymptotic in Part I, and Waring still in this volume. The printed book does not follow that file. It follows the later decision.
