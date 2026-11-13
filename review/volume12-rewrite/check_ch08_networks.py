@@ -34,7 +34,8 @@ p100Z2 = (comb(100, 50)/2**100)**2
 check("Z^2 p_100 ~ 1/(50 pi)", p100Z2, 1/(50*pi), 1e-4)
 check("Z^2 p_100 ~ 6e-3", p100Z2, 6e-3, 5e-4)
 print("  exact F_2 p_100 =", pr[99], " ratio to Z^2:", p100Z2/pr[99])
-check_true("at least four orders of magnitude", p100Z2/pr[99] > 1e4)
+check("exact F_2 p_100 ~ 2.4e-9", pr[99], 2.4e-9, 0.05e-9)
+check_true("six orders of magnitude", 1e6 <= p100Z2/pr[99] < 1e7)
 
 # hypercube: R = sum 1/((n-j) C(n,j)), n R -> 2, commute ~ 2^{n+1}
 import networkx as nx
