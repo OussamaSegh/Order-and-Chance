@@ -10,7 +10,7 @@ The last five chapters bring geometry back to algebra, probability and number th
 
 Eleven appendices carry the elementary geometry behind it all: Klein's programme, inversion, projective geometry, conics and quadrics, cubic curves, lattices and sphere packings, non-Euclidean geometry and convex bodies.
 
-Every theorem is proved in full. Every chapter opens with the story and the people behind the idea, and ends with exercises chosen for their beauty, each with a hint and a solution that explains how the argument is found.
+The numbered theorems are proved. A few named results are quoted and marked, among them the general de Rham theorem, the classification of surfaces, Hopf's ergodicity theorem, Hadwiger's theorem, Adams' count of vector fields, the intrinsic form of Bézout's theorem, and associativity of the chord-and-tangent law for every triple. Every chapter opens with the story and the people behind the idea, and ends with exercises chosen for their beauty, each with a hint and a solution that explains how the argument is found.
 
 Written for the reader who wants to understand, not to pass an examination.
 
