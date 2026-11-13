@@ -64,7 +64,7 @@ Every chapter now opens on a question (epigraph and first section) and ends with
 - **Ch 11.** Selberg–Delange declared admitted (proved in Volume 15, Chapter 3); new Corollary `cor:unifomega`; Delange 1959 sourced.
 - **Ch 12.** Duplicated sentence removed; Dickman, Golomb–Dickman and smooth-number proportions checked.
 - **Ch 13 (was 14).** Closing section added; the $n=52$ bound, riffle distances and constants checked.
-- **Ch 14 (was 13).** Retitled "Sums of Random Pieces"; self-citations "Volume 11" made internal; the upper bound lemma cited as Lemma 13.4; Volume 7 Corollary 11.6; the Erdős golden-ratio problem now needs only the rational root test (Volume 13 named as background, not a premise); "about three real roots" corrected to "about three and a half" ($\mathbb EN_{100}=3.56$); the map's "Volumes used" column renumbered to title-page numbers; new section "Continued fractions and the Gauss map" with the two Volume 7 problems (Problems 14.23 and 14.24, figure, hints, solutions, sources). `from-volume7-problems.tex` deleted.
+- **Ch 14 (was 13).** Retitled "Sums of Random Pieces"; self-citations "Volume 11" made internal; the upper bound lemma cited as Lemma 13.4; Volume 7 Corollary 11.6; the Erdős golden-ratio problem now needs only the rational root test (Volume 13 named as background, not a premise); "about three real roots" corrected to "about three and a half" ($\mathbb EN_{100}=3.56$); the map's "Volumes used" column renumbered to title-page numbers; new section "Continued fractions and the Gauss map" with the two Volume 7 problems (Problems 14.23 and 14.24, figure, hints, solutions, sources). `from-volume7-problems.tex` deleted. Two citations found by `tools/cross_volume_citations.py` fixed in Problem 14.11's solution (Erdős–Taylor): Prokhorov is Volume 7, Theorem 12.7, and the identity theorem is Volume 5, Theorem 9.18.
 - **Front matter.** The preface says a reader may begin after Volume 8, Volume 10 is needed only for Chapter 13, and describes Chapters 13 and 14; blurb and `kdp.md` likewise.
 - **Other volumes.** `volume15-order-and-chance/chapters/ch03-shuffling.tex` now cites the shuffling chapter as 13.x.
 
@@ -75,3 +75,8 @@ Every chapter now opens on a question (epigraph and first section) and ends with
 ## How to build
 
 `./build.sh --pdf-only volume11-randomness`. The cloud container has no TeX by default: install the packages listed in `.github/workflows/build.yml`. The checks need `pip install mpmath numpy scipy sympy networkx`.
+
+## Left for other volumes
+
+- `tools/cross_volume_citations.py` reports one mismatch outside this volume: `volume14-primes/chapters/ch14-critical.tex` cites "Volume 5, Corollary 10.10", which is a theorem. The Volume 14 rewrite fixes it.
+- Volume 14's Roth chapter is cited by name only from Chapters 10 and 12, so it can move when Volume 14 wires in Waring.
