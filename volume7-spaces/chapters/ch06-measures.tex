@@ -1,587 +1,1230 @@
 \chapter{Measures}\label{ch:measures}
 
 \begin{center}\itshape
-Every interval has a length. Can every set of real numbers be given a length, so that lengths add up over countably
-many disjoint pieces and do not change when a set is shifted? No. Then which sets can, and how many lengths are there?
+The interval $[0,1]$ has length $1$, and the two halves $[0,\tfrac12]$ and $]\tfrac12,1]$ have length $\tfrac12$ each.
+Can every set of real numbers be given a length that matches this rule on intervals, stays the same after a shift, and adds when countably many disjoint pieces are joined?
 \end{center}
 
-In 1902 a young French schoolteacher, Henri Lebesgue, defended a thesis with a modest title, \emph{Int\'egrale, longueur,
-aire}. In it he asked a question that sounds like a children's riddle: can we give every set of real numbers a length, so that
-an interval $[a,b]$ has length $b-a$, shifting a set does not change its length, and the length of a union of countably many
-disjoint pieces is the sum of their lengths? He left the question open. Three years later the Italian Giuseppe Vitali did, and the
-answer was no. There are sets that cannot be measured, and the axiom of choice of Chapter~\ref{ch:sets} is to blame. In 1914 Hausdorff made it
-worse, and in 1924 Banach and Tarski made it spectacular: a ball can be cut into finitely many pieces and reassembled into two balls of the
-same size. Volume, it turns out, is not defined for every set, and cannot be.
+Take the interval $[0,1]$ and a single point inside it. The interval has length $1$, and any length that agrees with ordinary length on intervals has to give the point length $0$, because the point sits inside an interval of length $1/n$ for every positive integer $n$.
+Countable additivity would then force every countable set to have length $0$.
+The hard question is what such a length can assign to an arbitrary set, while a shift is required to leave the length unchanged.
 
-So the question becomes: which sets \emph{can} be measured, and how do we build the measure? The answer, due to Constantin
-Carath\'eodory (1914), is a small masterpiece of laziness. Start from something that obviously deserves a length, the boxes. Give
-every set the smallest total volume of a countable cover by boxes; this ``outer measure'' is defined for all sets but is not
-additive. Then keep only the sets that split every other set additively. They form a $\sigma$-algebra, containing all the sets anyone
-will ever meet, and on it the outer measure is a true measure.
+In 1902 Henri Lebesgue, then teaching at the lyc\'ee in Nancy, defended the thesis \emph{Int\'egrale, longueur, aire}.
+He asked whether a length exists for every set of reals, equal to $b-a$ on the interval $[a,b]$, unchanged by translation, and equal to the sum of the lengths of countably many disjoint pieces, and he left the question open.
 
-Volume~4 did its probability on one space, the interval $[0,1)$, with the binary digits of a point as coin tosses. It was careful about what it had:
-a probability for every event that depends on finitely many digits, and an outer content for all other sets, used only to say that a set is negligible. It
-never claimed that every event has a probability. This chapter builds the measure that gives one to every Borel set, Lebesgue measure, and then, on that
-measure, infinite sequences of independent random variables with any prescribed laws. The second construction is the one Volume~4 did by hand: all the coin tosses
-of a lifetime, and infinitely many more, are hidden in the binary digits of a single random number. The chapter ends with Borel's
-theorem of 1909, a paradox of a gentler kind: almost every real number is normal, its digits behaving like those of a fair
-die, yet nobody has ever proved that a single familiar number, $\sqrt2$, $\pi$ or $e$, is normal.
+\portrait{lebesgue}{Henri Lebesgue (1875--1941). Photograph, author unknown. Public domain, via Wikimedia Commons.}
+
+Three years later Giuseppe Vitali answered the question.
+With the axiom of choice from Chapter~\ref{ch:sets}, there is a set that cannot carry such a length.
+In 1914 Hausdorff showed that the sphere, after a countable set is removed, splits into pieces that rotations rearrange paradoxically, and in 1924 Banach and Tarski showed that a solid ball can be cut into finitely many pieces and reassembled, by rigid motions, into two balls of the same size.
+Robinson showed in 1947 that five pieces suffice for the ball.
+Those decompositions are quoted here as warnings, and no proof in this chapter depends on them.
+A length with the three rules above, defined on every set, does not exist.
+
+\portrait{vitali}{Giuseppe Vitali (1875--1932). Photograph, about 1920, author unknown. Public domain, via Wikimedia Commons.}
+
+The useful question is which sets can be measured, and how the length is built.
+Constantin Carath\'eodory, in 1914, gave a construction that starts from the sets whose length is obvious.
+Cover an arbitrary set by countably many boxes, add the volumes of the boxes, and take the infimum of those sums.
+That outer measure is defined for every set, and it is not additive.
+Keep only the sets that split every test set into two pieces whose outer measures add.
+Those sets form a $\sigma$-algebra large enough for the Borel sets, and on that $\sigma$-algebra the outer measure is a measure.
+
+\portrait{caratheodory}{Constantin Carath\'eodory (1873--1950). Photograph, author unknown. Public domain, via Wikimedia Commons.}
+
+A reader of Volume~4 has seen coin tosses packed into the binary digits of a point of $[0,1)$.
+Every argument in this chapter is proved from the definitions below and from the earlier chapters of this volume.
+The chapter builds Lebesgue measure on the Borel sets, then builds, on the probability space $[0,1)$, a sequence of independent random variables with any prescribed laws.
+One uniform number supplies the whole sequence, because its binary digits can be dealt into infinitely many disjoint subsequences.
+The last theorem is Borel's theorem of 1909: almost every real number is normal in every base, while $\sqrt2$, $\pi$ and $e$ are not known to be normal in any base.
 
 \section{\texorpdfstring{$\sigma$}{Sigma}-algebras and measures}
 
+A length has to know which sets it is willing to measure, and the family of those sets has to survive the operations used in the axioms.
+
 \begin{definition}
-A \emph{$\sigma$-algebra} on a set $E$ is a family $\mathcal A$ of subsets of $E$ containing $E$ and stable under complements and countable unions (hence under
-countable intersections and differences). A \emph{measure} on $(E,\mathcal A)$ is a map $\mu:\mathcal A\to[0,+\infty]$ with $\mu(\varnothing)=0$ that is \emph{countably additive}: $\mu(\bigsqcup_kA_k)=\sum_k\mu(A_k)$
-for disjoint $A_k\in\mathcal A$ (the symbol $\bigsqcup$ marks a disjoint union). It is a \emph{probability} if $\mu(E)=1$, \emph{finite} if $\mu(E)<\infty$, and \emph{$\sigma$-finite} if $E$ is a countable
-union of sets of finite measure. A set $N$ with $\mu(N)=0$ is \emph{null}, and a property true outside a null set holds \emph{almost everywhere} (a.e.).
+A \emph{$\sigma$-algebra} on a set $E$ is a family $\mathcal A$ of subsets of $E$ such that $E\in\mathcal A$, the complement of every set in $\mathcal A$ is again in $\mathcal A$, and the union of every countable subcollection of $\mathcal A$ is again in $\mathcal A$.
+Countable intersections and differences then belong to $\mathcal A$ as well, because they can be written from complements and countable unions.
+A \emph{measure} on $(E,\mathcal A)$ is a map $\mu:\mathcal A\to[0,+\infty]$ with $\mu(\varnothing)=0$ which is \emph{countably additive}: whenever the sets $A_k\in\mathcal A$ are pairwise disjoint,
+\[
+\mu\Bigl(\bigsqcup_k A_k\Bigr)=\sum_k\mu(A_k).
+\]
+The symbol $\bigsqcup$ means that the union is disjoint.
+The measure is a \emph{probability} when $\mu(E)=1$, it is \emph{finite} when $\mu(E)<\infty$, and it is \emph{$\sigma$-finite} when $E$ is a countable union of sets of finite measure.
+A set $N$ with $\mu(N)=0$ is \emph{null}.
+A property that holds on the complement of a null set holds \emph{almost everywhere}.
 \end{definition}
 
-An intersection of $\sigma$-algebras is a $\sigma$-algebra, so every family $\mathcal C$ of subsets generates a smallest $\sigma$-algebra $\sigma(\mathcal C)$ containing it. The
-\emph{Borel} $\sigma$-algebra $\mathcal B(X)$ of a topological space is the one generated by the open sets.
+The intersection of any collection of $\sigma$-algebras on $E$ is again a $\sigma$-algebra.
+Every family $\mathcal C$ of subsets of $E$ is therefore contained in a smallest $\sigma$-algebra, written $\sigma(\mathcal C)$ and called the $\sigma$-algebra generated by $\mathcal C$.
+When $X$ is a topological space, the \emph{Borel} $\sigma$-algebra $\mathcal B(X)$ is the $\sigma$-algebra generated by the open sets.
+
+Before any theorem about Lebesgue measure, the axioms can be checked on a measure you can sum by hand.
+On the positive integers, give the point $n$ the mass $2^{-n}$.
+The total mass is $\sum_{n\ge1}2^{-n}=1$, so this is a probability on the power set.
+The sets $\{1,\ldots,n\}$ increase to the whole space, and the mass of the $n$-th set is $1-2^{-n}$, which tends to $1$.
 
 \begin{proposition}\label{prop:measureprops}
-Let $\mu$ be a measure on $(E,\mathcal A)$ and $A,B,A_k\in\mathcal A$.
+Let $\mu$ be a measure on $(E,\mathcal A)$ and let $A,B,A_k\in\mathcal A$.
 \begin{enumerate}[label=(\alph*)]
-\item If $A\subseteq B$ then $\mu(A)\le\mu(B)$, and $\mu(B\setminus A)=\mu(B)-\mu(A)$ if $\mu(A)<\infty$.
-\item $\mu(\bigcup_kA_k)\le\sum_k\mu(A_k)$ (countable subadditivity).
-\item If $A_1\subseteq A_2\subseteq\cdots$, then $\mu(\bigcup_kA_k)=\lim_k\mu(A_k)$ (continuity from below).
-\item If $A_1\supseteq A_2\supseteq\cdots$ and $\mu(A_1)<\infty$, then $\mu(\bigcap_kA_k)=\lim_k\mu(A_k)$ (continuity from above).
-\item (Borel--Cantelli) If $\sum_k\mu(A_k)<\infty$, then almost every point lies in only finitely many $A_k$.
+\item If $A\subseteq B$, then $\mu(A)\le\mu(B)$. If also $\mu(A)<\infty$, then $\mu(B\setminus A)=\mu(B)-\mu(A)$.
+\item $\mu(\bigcup_k A_k)\le\sum_k\mu(A_k)$. This is countable subadditivity.
+\item If $A_1\subseteq A_2\subseteq\cdots$, then $\mu(\bigcup_k A_k)=\lim_k\mu(A_k)$. This is continuity from below.
+\item If $A_1\supseteq A_2\supseteq\cdots$ and $\mu(A_1)<\infty$, then $\mu(\bigcap_k A_k)=\lim_k\mu(A_k)$. This is continuity from above.
+\item If $\sum_k\mu(A_k)<\infty$, then almost every point of $E$ lies in only finitely many of the sets $A_k$. This is the Borel--Cantelli lemma.
 \end{enumerate}
 \end{proposition}
 \begin{proof}
-(a) $\mu(B)=\mu(A)+\mu(B\setminus A)$. (b) The sets $A'_k=A_k\setminus(A_1\cup\cdots\cup A_{k-1})$ are disjoint, with the same union, and $\mu(A'_k)\le\mu(A_k)$. (c) With $A_0=\varnothing$,
-$\bigcup_kA_k=\bigsqcup_k(A_k\setminus A_{k-1})$, so $\mu(\bigcup_kA_k)=\lim_n\sum_{k\le n}\mu(A_k\setminus A_{k-1})=\lim_n\mu(A_n)$. (d) Apply (c) to $A_1\setminus A_k$ and use (a). (e) The set of
-points in infinitely many $A_k$ is $\bigcap_m\bigcup_{k\ge m}A_k$, of measure at most $\sum_{k\ge m}\mu(A_k)$ for every $m$, which tends to $0$.
+For (a), the set $B$ is the disjoint union of $A$ and $B\setminus A$, so $\mu(B)=\mu(A)+\mu(B\setminus A)$.
+The sum of two values in $[0,+\infty]$ is at least $\mu(A)$, which is monotonicity.
+When $\mu(A)$ is finite, it may be subtracted from both sides.
+
+For (b), replace the sets by the disjoint pieces $A'_1=A_1$ and $A'_k=A_k\setminus(A_1\cup\cdots\cup A_{k-1})$ for $k\ge2$.
+These pieces lie in $\mathcal A$, they have the same union as the original sets, and $A'_k\subseteq A_k$, so $\mu(A'_k)\le\mu(A_k)$ by (a).
+Countable additivity gives $\mu(\bigcup_k A_k)=\sum_k\mu(A'_k)\le\sum_k\mu(A_k)$.
+
+For (c), set $A_0=\varnothing$.
+The union is the disjoint union of the differences $A_k\setminus A_{k-1}$, so
+\[
+\mu\Bigl(\bigcup_k A_k\Bigr)=\lim_{n\to\infty}\sum_{k\le n}\mu(A_k\setminus A_{k-1}).
+\]
+The partial sum on the right is $\mu(A_n)$, because $A_n$ is the disjoint union of those first $n$ differences.
+The limit is therefore $\lim_n\mu(A_n)$.
+
+For (d), the sets $A_1\setminus A_k$ increase to $A_1\setminus\bigcap_k A_k$.
+Part (c) gives $\mu(A_1)-\lim_k\mu(A_k)=\mu(A_1)-\mu(\bigcap_k A_k)$, once (a) is applied to the finite number $\mu(A_1)$, and cancelling $\mu(A_1)$ is the claim.
+
+For (e), the set of points that lie in infinitely many $A_k$ is $\bigcap_m\bigcup_{k\ge m}A_k$.
+Part (b) bounds the measure of $\bigcup_{k\ge m}A_k$ by $\sum_{k\ge m}\mu(A_k)$.
+That tail tends to $0$ because the full series converges, and part (d) applies since the tail is at most the finite number $\sum_k\mu(A_k)$.
+The intersection therefore has measure $0$.
 \end{proof}
 
-The Borel sets of $\R^d$ are generated by the \emph{boxes} $]a,b]=\prod_i\,]a_i,b_i]$: a box is the intersection of the open boxes $\prod_i\,]a_i,b_i+\frac1n[$, so it is Borel; and an open
-set $U$ is the union of the countably many \emph{dyadic} boxes $\prod_i\,]k_i2^{-n},(k_i+1)2^{-n}]$ contained in it (around $x\in U$, a ball $B(x,r)\subseteq U$ contains the dyadic box of
-side $2^{-n}<r/\sqrt d$ that contains $x$).
+On the positive integers with mass $2^{-n}$, the Borel--Cantelli hypothesis holds for $A_n=\{n\}$, since $\sum_n 2^{-n}<\infty$, and each point lies in only one of these sets.
+The same proposition will be applied to Lebesgue measure as soon as that measure exists.
+
+The Borel $\sigma$-algebra of $\R^d$ is also generated by the boxes $\prod_i\,]a_i,b_i]$.
+A box is a Borel set, because it equals the intersection of the open boxes $\prod_i\,]a_i,b_i+1/n[$.
+An open set $U$ is a countable union of dyadic boxes.
+Around a point $x\in U$ there is a ball $B(x,r)\subseteq U$, and that ball contains the dyadic box of side $2^{-n}<r/\sqrt d$ that contains $x$.
+The dyadic boxes $\prod_i\,]k_i2^{-n},(k_i+1)2^{-n}]$ are countable, and the ones that sit inside $U$ cover $U$.
 
 \section{Uniqueness: Dynkin's theorem}
 
+Two measures can agree on a small family and still need a theorem before they agree on the generated $\sigma$-algebra.
+The small family has to be closed under intersections.
+
 \begin{definition}
-A family $\mathcal P$ of subsets of $E$ is a \emph{$\pi$-system} if it is stable under finite intersections. A family $\mathcal L$ is a \emph{$\lambda$-system} if $E\in\mathcal L$, $B\setminus A\in\mathcal L$ whenever
-$A\subseteq B$ are in $\mathcal L$, and $\bigcup_kA_k\in\mathcal L$ for every increasing sequence in $\mathcal L$.
+A family $\mathcal P$ of subsets of $E$ is a \emph{$\pi$-system} when the intersection of any two sets in $\mathcal P$ is again in $\mathcal P$.
+A family $\mathcal L$ is a \emph{$\lambda$-system} when $E\in\mathcal L$, the difference $B\setminus A$ lies in $\mathcal L$ whenever $A\subseteq B$ are both in $\mathcal L$, and the union of every increasing sequence of sets in $\mathcal L$ lies in $\mathcal L$.
 \end{definition}
 
+The boxes in $\R^d$ form a $\pi$-system, because the intersection of two boxes is a box.
+The half-lines $]-\infty,t]$ in $\R$ form a $\pi$-system for the same reason.
+
 \begin{theorem}[Dynkin's $\pi$-$\lambda$ theorem]\label{thm:dynkin6}
-If a $\lambda$-system $\mathcal L$ contains a $\pi$-system $\mathcal P$, then it contains $\sigma(\mathcal P)$.
+If a $\lambda$-system $\mathcal L$ contains a $\pi$-system $\mathcal P$, then $\mathcal L$ contains $\sigma(\mathcal P)$.
 \end{theorem}
 \begin{proof}
-Let $\mathcal D$ be the smallest $\lambda$-system containing $\mathcal P$ (an intersection of $\lambda$-systems is one); $\mathcal D\subseteq\mathcal L$. It suffices to show that $\mathcal D$ is a $\pi$-system:
-a $\lambda$-system stable under finite intersections is a $\sigma$-algebra (complements are differences with $E$; finite unions are complements of
-intersections of complements; countable unions are increasing unions of finite ones). For $A\in\mathcal D$, the family $\mathcal D_A=\{B:A\cap B\in\mathcal D\}$ is a
-$\lambda$-system (since $A\cap(C\setminus B)=(A\cap C)\setminus(A\cap B)$ and intersections with $A$ preserve increasing unions). If $A\in\mathcal P$, then $\mathcal D_A\supseteq\mathcal P$, so $\mathcal D_A\supseteq\mathcal D$:
-$A\cap B\in\mathcal D$ for $A\in\mathcal P$, $B\in\mathcal D$. Hence for $B\in\mathcal D$, $\mathcal D_B\supseteq\mathcal P$, so $\mathcal D_B\supseteq\mathcal D$: $\mathcal D$ is a $\pi$-system.
+An intersection of $\lambda$-systems is a $\lambda$-system, so there is a smallest $\lambda$-system $\mathcal D$ that contains $\mathcal P$.
+That smallest system sits inside $\mathcal L$.
+It is enough to prove that $\mathcal D$ is a $\pi$-system.
+A $\lambda$-system that is also a $\pi$-system is a $\sigma$-algebra: the complement of $A$ is $E\setminus A$, a finite union is the complement of the intersection of the complements, and a countable union is the increasing union of its finite partial unions.
+
+Fix $A\in\mathcal D$ and write $\mathcal D_A=\{B:A\cap B\in\mathcal D\}$.
+This family is a $\lambda$-system.
+It contains $E$ because $A\cap E=A$.
+If $B\subseteq C$ lie in $\mathcal D_A$, then $A\cap(C\setminus B)=(A\cap C)\setminus(A\cap B)$, so the difference $C\setminus B$ lies in $\mathcal D_A$.
+An increasing union is preserved because intersection with $A$ passes inside the union.
+
+Suppose now that $A\in\mathcal P$.
+For every $B\in\mathcal P$ the intersection $A\cap B$ lies in $\mathcal P$, hence in $\mathcal D$, so $\mathcal P\subseteq\mathcal D_A$.
+The smallest $\lambda$-system containing $\mathcal P$ is $\mathcal D$, and therefore $\mathcal D\subseteq\mathcal D_A$.
+In other words, $A\cap B\in\mathcal D$ whenever $A\in\mathcal P$ and $B\in\mathcal D$.
+
+That last sentence says that every $B\in\mathcal D$ satisfies $\mathcal P\subseteq\mathcal D_B$.
+Hence $\mathcal D\subseteq\mathcal D_B$ as well, and $A\cap B\in\mathcal D$ for all $A,B\in\mathcal D$.
+The family $\mathcal D$ is a $\pi$-system, so it is a $\sigma$-algebra containing $\mathcal P$, and it contains $\sigma(\mathcal P)$.
 \end{proof}
 
 \begin{theorem}[uniqueness of measures]\label{thm:uniq6}
-Let $\mu,\nu$ be measures on $\sigma(\mathcal P)$, where $\mathcal P$ is a $\pi$-system, that agree on $\mathcal P$. If $E=\bigcup_nE_n$ with $E_1\subseteq E_2\subseteq\cdots$ in $\mathcal P$ and $\mu(E_n)<\infty$,
-then $\mu=\nu$.
+Let $\mathcal P$ be a $\pi$-system and let $\mu$ and $\nu$ be measures on $\sigma(\mathcal P)$ that agree on $\mathcal P$.
+Suppose $E=\bigcup_n E_n$ with $E_1\subseteq E_2\subseteq\cdots$, each $E_n\in\mathcal P$, and $\mu(E_n)<\infty$.
+Then $\mu=\nu$ on $\sigma(\mathcal P)$.
 \end{theorem}
 \begin{proof}
-Fix $n$. The family of $A\in\sigma(\mathcal P)$ with $\mu(A\cap E_n)=\nu(A\cap E_n)$ contains $\mathcal P$ (as $A\cap E_n\in\mathcal P$) and is a $\lambda$-system, by Proposition~\ref{prop:measureprops}(a) and~(c) and the
-finiteness of $\mu(E_n)=\nu(E_n)$. By Dynkin's theorem it is all of $\sigma(\mathcal P)$. Let $n\to\infty$ and use continuity from below.
+The values $\nu(E_n)$ equal $\mu(E_n)$, so they are finite as well.
+Fix $n$, and let $\mathcal L$ be the family of sets $A\in\sigma(\mathcal P)$ such that $\mu(A\cap E_n)=\nu(A\cap E_n)$.
+If $A\in\mathcal P$, then $A\cap E_n\in\mathcal P$, so $\mu$ and $\nu$ agree on that intersection and $A\in\mathcal L$.
+Thus $\mathcal P\subseteq\mathcal L$.
+
+The family $\mathcal L$ is a $\lambda$-system.
+It contains $E$ because both measures give $E_n$ the same finite value.
+If $A\subseteq B$ lie in $\mathcal L$, Proposition~\ref{prop:measureprops}(a) subtracts the finite number $\mu(A\cap E_n)$ from $\mu(B\cap E_n)$, and the same subtraction for $\nu$ shows that $B\setminus A$ lies in $\mathcal L$.
+If $A_k$ increases and each $A_k$ lies in $\mathcal L$, continuity from below gives the same limit for $\mu$ and for $\nu$ on $A_k\cap E_n$.
+
+Dynkin's theorem, Theorem~\ref{thm:dynkin6}, says that $\mathcal L$ is all of $\sigma(\mathcal P)$, so $\mu(A\cap E_n)=\nu(A\cap E_n)$ for every $A$ in the generated $\sigma$-algebra.
+Let $n$ tend to infinity.
+The sets $A\cap E_n$ increase to $A$, and continuity from below gives $\mu(A)=\nu(A)$.
 \end{proof}
 
-So two Borel measures on $\R^d$ that agree on boxes, and are finite on bounded boxes, are equal. And a probability on $\R$ is determined
-by its distribution function $t\mapsto\mu(]-\infty,t])$, since the half-lines form a $\pi$-system.
+Two Borel measures on $\R^d$ that agree on boxes, and that are finite on every bounded box, are therefore equal.
+The bounded boxes $]-n,n]^d$ increase to $\R^d$ and lie in the $\pi$-system of boxes.
+A probability on $\R$ is determined by the distribution function $t\mapsto\mu(]-\infty,t])$, because those half-lines form a $\pi$-system and the whole line has finite measure.
 
 \section{Outer measures}
 
+Existence needs a number attached to every set, before any additivity is imposed.
+The number is the cheapest countable cover.
+
 \begin{definition}
-An \emph{outer measure} on $E$ is a map $\mu^*:\mathcal P(E)\to[0,+\infty]$ with $\mu^*(\varnothing)=0$, monotone ($A\subseteq B\Rightarrow\mu^*(A)\le\mu^*(B)$) and countably subadditive. A set $A$
-is \emph{$\mu^*$-measurable} if it splits every set additively:
+An \emph{outer measure} on a set $E$ is a map $\mu^*:\mathcal P(E)\to[0,+\infty]$ with $\mu^*(\varnothing)=0$, monotone in the sense that $A\subseteq B$ implies $\mu^*(A)\le\mu^*(B)$, and countably subadditive.
+A set $A\subseteq E$ is \emph{$\mu^*$-measurable} when it splits every test set additively:
 \[\mu^*(T)=\mu^*(T\cap A)+\mu^*(T\setminus A)\qquad\text{for every }T\subseteq E.\]
 \end{definition}
 
-By subadditivity, only ``$\ge$'' needs checking, and only for $T$ with $\mu^*(T)<\infty$. A set with $\mu^*(N)=0$ is measurable:
-$\mu^*(T\cap N)+\mu^*(T\setminus N)\le0+\mu^*(T)$.
+Countable subadditivity always gives the inequality $\mu^*(T)\le\mu^*(T\cap A)+\mu^*(T\setminus A)$.
+The measurable sets are the sets for which the reverse inequality holds.
+It is enough to test sets $T$ with $\mu^*(T)<\infty$, because both sides are infinite when $\mu^*(T)=\infty$.
+A set $N$ with $\mu^*(N)=0$ is measurable: monotonicity gives $\mu^*(T\cap N)+\mu^*(T\setminus N)\le0+\mu^*(T)$.
+Every subset of $N$ has outer measure $0$ as well, so the same one-line estimate shows that every subset of a null set is measurable.
+
+\begin{figure}[ht]
+\centering
+\fig{ch07-rw-intervals}
+\caption{The blue set $A$ is two segments in $[0,1]$, of lengths $0.28$ and $0.28$, so the total length is $0.56$.
+The upper orange cover uses three intervals of lengths $0.45$, $0.40$ and $0.50$, and those lengths add to $1.35$.
+The lower cover uses two intervals of length $0.35$, and those lengths add to $0.70$.
+Outer measure is the infimum of every such total, so each picture is only an upper bound.}
+\label{fig:rwintervals}
+\end{figure}
+
+Figure~\ref{fig:rwintervals} is the definition on the line.
+The loose cover is legal, and it only proves that the outer measure is at most $1.35$.
+The tighter cover improves the upper bound to $0.70$.
+Once the two segments are known to be measurable, the outer measure equals $0.56$, and no cover can undercut that value.
 
 \begin{theorem}[Carath\'eodory, 1914]\label{thm:caratheodory}
-The $\mu^*$-measurable sets form a $\sigma$-algebra $\mathcal M$, and $\mu^*$ restricted to $\mathcal M$ is a measure. It is \emph{complete}: subsets of null sets are in $\mathcal M$.
+The $\mu^*$-measurable sets form a $\sigma$-algebra $\mathcal M$, and the restriction of $\mu^*$ to $\mathcal M$ is a measure.
+This measure is \emph{complete}: every subset of a null set belongs to $\mathcal M$.
 \end{theorem}
 \begin{proof}
-The definition is symmetric in $A$ and $E\setminus A$, so $\mathcal M$ is stable under complements, and $E\in\mathcal M$.
+The splitting condition treats $A$ and $E\setminus A$ in the same way, so $\mathcal M$ is closed under complements.
+The whole set $E$ splits every $T$ as $T$ and $\varnothing$, so $E\in\mathcal M$.
 
-\emph{Finite unions.} Let $A,B\in\mathcal M$ and $T\subseteq E$. Splitting $T$ by $A$, then $T\setminus A$ by $B$:
+For a finite union, take $A,B\in\mathcal M$ and an arbitrary test set $T\subseteq E$.
+Split $T$ by $A$, then split the piece $T\setminus A$ by $B$:
 \[\begin{aligned}\mu^*(T)&=\mu^*(T\cap A)+\mu^*\bigl((T\setminus A)\cap B\bigr)\eqbr+\mu^*\bigl(T\setminus(A\cup B)\bigr)\\&\ge\mu^*\bigl(T\cap(A\cup B)\bigr)+\mu^*\bigl(T\setminus(A\cup B)\bigr),\end{aligned}\]
-since $T\cap(A\cup B)=(T\cap A)\cup((T\setminus A)\cap B)$. So $A\cup B\in\mathcal M$, and $\mathcal M$ is an algebra.
+The inequality is countable subadditivity, in fact finite subadditivity, applied to the two sets $T\cap A$ and $(T\setminus A)\cap B$.
+Their union is $T\cap(A\cup B)$.
+The reverse inequality is the general subadditive bound, so $A\cup B$ is measurable.
+Complements and finite unions make $\mathcal M$ an algebra.
 
-\emph{Countable disjoint unions.} Let $A_1,A_2,\ldots\in\mathcal M$ be disjoint, $S_n=A_1\sqcup\cdots\sqcup A_n$ and $S=\bigsqcup_kA_k$. Splitting $T\cap S_n$ by $A_n\in\mathcal M$ gives $\mu^*(T\cap S_n)=\mu^*(T\cap A_n)+\mu^*(T\cap S_{n-1})$,
-so by induction $\mu^*(T\cap S_n)=\sum_{k\le n}\mu^*(T\cap A_k)$. As $S_n\in\mathcal M$ and $T\setminus S_n\supseteq T\setminus S$,
+For a countable disjoint union, take pairwise disjoint measurable sets $A_1,A_2,\ldots$, write $S_n=A_1\sqcup\cdots\sqcup A_n$ and $S=\bigsqcup_k A_k$.
+The set $S_n$ is measurable by the finite case.
+Split $T\cap S_n$ by $A_n$:
+\[
+\mu^*(T\cap S_n)=\mu^*(T\cap A_n)+\mu^*(T\cap S_{n-1}).
+\]
+Induction gives $\mu^*(T\cap S_n)=\sum_{k\le n}\mu^*(T\cap A_k)$.
+Since $S_n$ is measurable and $T\setminus S_n$ contains $T\setminus S$,
 \[\begin{aligned}\mu^*(T)&=\mu^*(T\cap S_n)+\mu^*(T\setminus S_n)\eqbr\ge\sum_{k\le n}\mu^*(T\cap A_k)+\mu^*(T\setminus S).\end{aligned}\]
-Let $n\to\infty$ and use subadditivity: $\mu^*(T)\ge\sum_k\mu^*(T\cap A_k)+\mu^*(T\setminus S)\ge\mu^*(T\cap S)+\mu^*(T\setminus S)$. So $S\in\mathcal M$. An arbitrary countable union is a disjoint one
-of sets $A_k\setminus(A_1\cup\cdots\cup A_{k-1})\in\mathcal M$, so $\mathcal M$ is a $\sigma$-algebra. Taking $T=S$ in the first inequality gives $\mu^*(S)\ge\sum_k\mu^*(A_k)$; the reverse is
-subadditivity. So $\mu^*$ is countably additive on $\mathcal M$. Completeness was noted before the theorem.
+Let $n\to\infty$.
+The finite sums increase to the full series, and the inequality passes to the limit, so $\mu^*(T)$ is at least $\sum_k\mu^*(T\cap A_k)+\mu^*(T\setminus S)$.
+Subadditivity on the pieces $T\cap A_k$, whose union is $T\cap S$, gives
+\[
+\mu^*(T)\ge\sum_k\mu^*(T\cap A_k)+\mu^*(T\setminus S)\ge\mu^*(T\cap S)+\mu^*(T\setminus S).
+\]
+Thus $S$ is measurable.
+An arbitrary countable union is the disjoint union of the sets $A_k\setminus(A_1\cup\cdots\cup A_{k-1})$, and each of those differences is measurable because $\mathcal M$ is an algebra.
+So $\mathcal M$ is a $\sigma$-algebra.
+
+To see that $\mu^*$ is countably additive on $\mathcal M$, put $T=S$ in the inequality $\mu^*(T)\ge\sum_{k\le n}\mu^*(T\cap A_k)$.
+The result is $\mu^*(S)\ge\sum_k\mu^*(A_k)$.
+Subadditivity is the reverse inequality.
+Completeness was checked before the statement: a subset of a null set is null, and a null set is measurable.
 \end{proof}
 
 \section{Extending a premeasure}
 
+Lebesgue measure is the special case in which the boxes already carry a volume, and that volume is countably additive when a box happens to split into countably many boxes.
+The general pattern separates the algebraic shape of the boxes from the numerical premeasure.
+
 \begin{definition}
-A \emph{semiring} on $E$ is a family $\mathcal S$ of subsets containing $\varnothing$, stable under finite intersections, such that $A\setminus B$ is a finite disjoint union of members of
-$\mathcal S$ whenever $A,B\in\mathcal S$. A \emph{premeasure} on $\mathcal S$ is a map $\mu_0:\mathcal S\to[0,+\infty]$ with $\mu_0(\varnothing)=0$ that is countably additive on $\mathcal S$: if $S\in\mathcal S$ is the disjoint union
-of countably many $S_k\in\mathcal S$, then $\mu_0(S)=\sum_k\mu_0(S_k)$.
+A \emph{semiring} on $E$ is a family $\mathcal S$ of subsets of $E$ such that $\varnothing\in\mathcal S$, the intersection of two members is a member, and for all $A,B\in\mathcal S$ the difference $A\setminus B$ is a finite disjoint union of members of $\mathcal S$.
+A \emph{premeasure} on $\mathcal S$ is a map $\mu_0:\mathcal S\to[0,+\infty]$ with $\mu_0(\varnothing)=0$ which is countably additive on $\mathcal S$: if a set $S\in\mathcal S$ is the disjoint union of countably many sets $S_k\in\mathcal S$, then $\mu_0(S)=\sum_k\mu_0(S_k)$.
 \end{definition}
 
-The boxes $]a,b]$ of $\R^d$ (including the empty box) form a semiring: the intersection of two boxes is a box, and if $A=\prod_iA_i$ and $B=\prod_iB_i$ are boxes, each
-$A_i$ is the disjoint union of $A_i\cap B_i$ and at most two intervals of the same type, so $A$ is cut into at most $3^d$ disjoint boxes, one of which is $A\cap B$.
+The boxes $]a,b]=\prod_i\,]a_i,b_i]$ in $\R^d$, including the empty box, form a semiring.
+The intersection of two boxes is a box.
+If $A=\prod_i A_i$ and $B=\prod_i B_i$, each factor $A_i$ splits into the piece $A_i\cap B_i$ and at most two further intervals of the same half-open type.
+The product $A$ therefore splits into at most $3^d$ disjoint boxes, and one of those boxes is $A\cap B$.
+Check the case $d=1$: the difference $]0,3]\setminus\,]1,2]$ is the disjoint union of $]0,1]$ and $]2,3]$.
 
 \begin{lemma}\label{lem:semiring}
-Let $\mathcal S$ be a semiring and $\mu_0:\mathcal S\to[0,\infty]$ finitely additive. (a) For $A,B_1,\dots,B_m\in\mathcal S$, $A\setminus(B_1\cup\cdots\cup B_m)$ is a finite disjoint union of members of $\mathcal S$.
-(b) If $S,S_1,\dots,S_m\in\mathcal S$ and $S\subseteq S_1\cup\cdots\cup S_m$, then $\mu_0(S)\le\sum_k\mu_0(S_k)$. If the $S_k$ are disjoint and contained in $S$, then $\sum_k\mu_0(S_k)\le\mu_0(S)$.
+Let $\mathcal S$ be a semiring and let $\mu_0:\mathcal S\to[0,\infty]$ be finitely additive.
+\begin{enumerate}[label=(\alph*)]
+\item For $A,B_1,\ldots,B_m\in\mathcal S$, the difference $A\setminus(B_1\cup\cdots\cup B_m)$ is a finite disjoint union of members of $\mathcal S$.
+\item If $S,S_1,\ldots,S_m\in\mathcal S$ and $S\subseteq S_1\cup\cdots\cup S_m$, then $\mu_0(S)\le\sum_k\mu_0(S_k)$.
+If the sets $S_k$ are pairwise disjoint and all contained in $S$, then $\sum_k\mu_0(S_k)\le\mu_0(S)$.
+\end{enumerate}
 \end{lemma}
 \begin{proof}
-(a) By induction on $m$: if $A\setminus(B_1\cup\cdots\cup B_{m-1})=\bigsqcup_jC_j$, then removing $B_m$ replaces each $C_j$ by $C_j\setminus B_m$, a finite disjoint union of members.
-(b) For the second claim, $S\setminus(S_1\cup\cdots\cup S_m)$ is a disjoint union of members by (a), so $S$ is a finite disjoint union of the $S_k$ and these, and additivity
-gives the inequality. For the first, $S=\bigsqcup_k\bigl(S\cap S_k\setminus(S_1\cup\cdots\cup S_{k-1})\bigr)$, and by (a) the $k$-th piece is a finite disjoint union of members $R_{kj}\subseteq S_k$. By
-additivity and the second claim, $\mu_0(S)=\sum_{k,j}\mu_0(R_{kj})\le\sum_k\mu_0(S_k)$.
+For (a), induct on $m$.
+The case $m=1$ is the semiring axiom.
+If $A\setminus(B_1\cup\cdots\cup B_{m-1})$ is a disjoint union of members $C_j$, then removing $B_m$ replaces each $C_j$ by $C_j\setminus B_m$, which is itself a finite disjoint union of members.
+
+For the second claim in (b), part (a) writes $S\setminus(S_1\cup\cdots\cup S_m)$ as a finite disjoint union of members of $\mathcal S$.
+The set $S$ is then the disjoint union of the sets $S_k$ and those extra pieces.
+Finite additivity gives $\mu_0(S)=\sum_k\mu_0(S_k)$ plus a sum of nonnegative terms, so $\sum_k\mu_0(S_k)\le\mu_0(S)$.
+
+For the first claim in (b), chop $S$ into the disjoint pieces $S\cap S_k\setminus(S_1\cup\cdots\cup S_{k-1})$.
+Part (a), applied inside $S$, writes the $k$-th piece as a finite disjoint union of members $R_{kj}\subseteq S_k$.
+Finite additivity and the second claim give $\mu_0(S)=\sum_{k,j}\mu_0(R_{kj})\le\sum_k\mu_0(S_k)$.
 \end{proof}
+
+A premeasure is finitely additive.
+If $S$ is a finite disjoint union of sets $S_k$ in the semiring, pad the list with copies of $\varnothing$ and apply countable additivity.
+The empty set contributes $0$.
 
 \begin{theorem}[Carath\'eodory's extension theorem]\label{thm:extension}
-Let $\mu_0$ be a premeasure on a semiring $\mathcal S$ on $E$. For $A\subseteq E$ let
+Let $\mu_0$ be a premeasure on a semiring $\mathcal S$ of subsets of $E$. For each $A\subseteq E$, define
 \[\mu^*(A)=\inf\Bigl\{\sum_k\mu_0(S_k):\ S_k\in\mathcal S,\ A\subseteq\bigcup_kS_k\Bigr\}\]
-(with $\inf\varnothing=+\infty$). Then $\mu^*$ is an outer measure, every member of $\mathcal S$ is $\mu^*$-measurable, and $\mu^*=\mu_0$ on $\mathcal S$. Hence $\mu^*$ restricts to a measure on
-$\sigma(\mathcal S)$ that extends $\mu_0$; it is the only one if $E$ is a countable increasing union of members of $\mathcal S$ of finite measure.
+and read $\inf\varnothing$ as $+\infty$. Then $\mu^*$ is an outer measure, every set in $\mathcal S$ is $\mu^*$-measurable, and $\mu^*$ agrees with $\mu_0$ on $\mathcal S$.
+The restriction of $\mu^*$ to $\sigma(\mathcal S)$ is a measure extending $\mu_0$, and this extension is the only one when $E$ is an increasing union of countably many members of $\mathcal S$ of finite measure.
 \end{theorem}
 \begin{proof}
-\emph{Outer measure.} Monotonicity is clear. For subadditivity, if $\mu^*(A_n)=\infty$ for some $n$, then $\sum_n\mu^*(A_n)=\infty$ and there is nothing to prove. If every $\mu^*(A_n)$ is finite, given $\varepsilon>0$ cover each $A_n$ by members $S_{n,k}$ with $\sum_k\mu_0(S_{n,k})\le\mu^*(A_n)+\varepsilon2^{-n}$; together
-they cover $\bigcup_nA_n$, so $\mu^*(\bigcup_nA_n)\le\sum_n\mu^*(A_n)+\varepsilon$.
+The value $\mu^*$ is monotone, because every cover of a larger set is a cover of a smaller set, and the infimum can only fall or stay.
+If some set $A_n$ has $\mu^*(A_n)=\infty$, then $\sum_n\mu^*(A_n)=\infty$ and subadditivity of that series is immediate.
+Suppose every $\mu^*(A_n)$ is finite, and fix $\varepsilon>0$.
+Cover $A_n$ by members $S_{n,k}\in\mathcal S$ with $\sum_k\mu_0(S_{n,k})\le\mu^*(A_n)+\varepsilon 2^{-n}$.
+The double collection covers $\bigcup_n A_n$, so $\mu^*(\bigcup_n A_n)\le\sum_n\mu^*(A_n)+\varepsilon$.
+Let $\varepsilon\to0$.
+The empty family covers $\varnothing$, the empty sum is $0$, and therefore $\mu^*(\varnothing)=0$.
+Thus $\mu^*$ is an outer measure.
 
-\emph{$\mu^*=\mu_0$ on $\mathcal S$.} Covering $S$ by itself gives $\mu^*(S)\le\mu_0(S)$. Conversely let $S\subseteq\bigcup_kS_k$. As in Lemma~\ref{lem:semiring}(b), $S$ is the disjoint union of the countably many
-members $R_{kj}=$ pieces of $S\cap S_k\setminus(S_1\cup\cdots\cup S_{k-1})$, with $R_{kj}\subseteq S_k$ disjoint for fixed $k$. Countable additivity on $\mathcal S$ and Lemma~\ref{lem:semiring}(b) give
-$\mu_0(S)=\sum_k\sum_j\mu_0(R_{kj})\le\sum_k\mu_0(S_k)$. Taking the infimum, $\mu_0(S)\le\mu^*(S)$.
+On a set $S\in\mathcal S$, the cover consisting of $S$ alone gives $\mu^*(S)\le\mu_0(S)$.
+For the reverse, take any countable cover $S\subseteq\bigcup_k S_k$ by members of $\mathcal S$.
+The same chopping as in Lemma~\ref{lem:semiring}(b) writes $S$ as the disjoint union of countably many members $R_{kj}$, where the sets $R_{kj}$ are the semiring pieces of $S\cap S_k\setminus(S_1\cup\cdots\cup S_{k-1})$ and $R_{kj}\subseteq S_k$.
+Each fixed $k$ contributes only finitely many pieces, by Lemma~\ref{lem:semiring}(a).
+Countable additivity of $\mu_0$ and the second claim of Lemma~\ref{lem:semiring}(b) give $\mu_0(S)=\sum_k\sum_j\mu_0(R_{kj})\le\sum_k\mu_0(S_k)$.
+Every cover sum is at least $\mu_0(S)$, so the infimum satisfies $\mu_0(S)\le\mu^*(S)$.
 
-\emph{Members are measurable.} Let $S\in\mathcal S$ and $T$ with $\mu^*(T)<\infty$; cover $T$ by $S_k$ with $\sum_k\mu_0(S_k)\le\mu^*(T)+\varepsilon$. Each $S_k\setminus S$ is a finite disjoint union of members $R_{kj}$,
-and $S_k=(S_k\cap S)\sqcup\bigsqcup_jR_{kj}$, so $\mu_0(S_k)=\mu_0(S_k\cap S)+\sum_j\mu_0(R_{kj})$. The $S_k\cap S$ cover $T\cap S$ and the $R_{kj}$ cover $T\setminus S$, so
+It remains to test a member $S\in\mathcal S$ for measurability.
+Let $T\subseteq E$ satisfy $\mu^*(T)<\infty$, and cover $T$ by sets $S_k\in\mathcal S$ with $\sum_k\mu_0(S_k)\le\mu^*(T)+\varepsilon$.
+The intersection $S_k\cap S$ lies in $\mathcal S$.
+The difference $S_k\setminus S$ is a finite disjoint union of members $R_{kj}$, and
+\[
+S_k=(S_k\cap S)\sqcup\bigsqcup_j R_{kj}.
+\]
+Finite additivity gives $\mu_0(S_k)=\mu_0(S_k\cap S)+\sum_j\mu_0(R_{kj})$.
+The sets $S_k\cap S$ cover $T\cap S$, and the sets $R_{kj}$ cover $T\setminus S$, so
 \[\mu^*(T\cap S)+\mu^*(T\setminus S)\le\sum_k\mu_0(S_k)\le\mu^*(T)+\varepsilon.\]
+Let $\varepsilon\to0$.
+The set $S$ is $\mu^*$-measurable.
 
-By Carath\'eodory's theorem, $\mu^*$ is a measure on the $\sigma$-algebra $\mathcal M\supseteq\mathcal S$, hence on $\sigma(\mathcal S)$. Uniqueness is Theorem~\ref{thm:uniq6}, $\mathcal S$ being a $\pi$-system.
+Theorem~\ref{thm:caratheodory} says that $\mu^*$ is a measure on a $\sigma$-algebra $\mathcal M$ that contains $\mathcal S$, hence contains $\sigma(\mathcal S)$.
+The identity $\mu^*=\mu_0$ on $\mathcal S$ says that this measure extends $\mu_0$.
+The semiring $\mathcal S$ is a $\pi$-system.
+When $E$ is an increasing union of sets in $\mathcal S$ of finite $\mu_0$-measure, Theorem~\ref{thm:uniq6} says that the extension to $\sigma(\mathcal S)$ is the only one.
 \end{proof}
+
+The finite-measure hypothesis in the uniqueness clause is necessary for the invocation of Theorem~\ref{thm:uniq6}, and it is part of the statement.
+A premeasure that is infinite on every nonempty set in an exhaustion need not have a unique extension.
+The boxes used for Lebesgue measure do satisfy the hypothesis, because $]-n,n]^d$ has finite volume.
 
 \section{Lebesgue measure}
 
 \begin{figure}[ht]
 \centering
 \fig{ch06-covering}
-\caption{The outer measure of a set (charcoal) is the infimum of the total volume of countable covers by boxes (coral). Finer covers waste less; for a
-Borel set, the infimum is its Lebesgue measure.}
+\caption{Charcoal marks a set in the plane, and coral marks a countable cover by boxes.
+The outer measure is the infimum of the total volume of such covers.
+A finer cover leaves less unused volume, and for a Borel set the infimum equals Lebesgue measure.}
 \label{fig:covering}
 \end{figure}
 
+Figure~\ref{fig:covering} is the same idea as Figure~\ref{fig:rwintervals}, with boxes in the plane instead of intervals on the line.
+The volume of a box $\prod_i\,]a_i,b_i]$ is the product $\prod_i(b_i-a_i)$.
+
 \begin{theorem}[Lebesgue measure]\label{thm:lebesgue}
-There is a unique measure $\lambda_d$ on $\mathcal B(\R^d)$ with $\lambda_d(\prod_i\,]a_i,b_i])=\prod_i(b_i-a_i)$ for every box. It is translation invariant, $\lambda_d(tA)=t^d\lambda_d(A)$ for $t>0$, and it
-is the only translation-invariant measure on $\mathcal B(\R^d)$ that gives the unit cube $]0,1]^d$ measure $1$.
+There is a unique measure $\lambda_d$ on $\mathcal B(\R^d)$ such that $\lambda_d\bigl(\prod_i\,]a_i,b_i]\bigr)=\prod_i(b_i-a_i)$ for every box.
+This measure is translation invariant.
+It scales by the rule $\lambda_d(tA)=t^d\lambda_d(A)$ for every $t>0$.
+It is the only translation-invariant measure on $\mathcal B(\R^d)$ that assigns measure $1$ to the unit cube $]0,1]^d$.
 \end{theorem}
 \begin{proof}
-By Theorem~\ref{thm:extension}, it suffices to show that $\mathrm{vol}(]a,b])=\prod_i(b_i-a_i)$ is a premeasure on the semiring of boxes; uniqueness follows since $\R^d=\bigcup_n\,]-n,n]^d$.
+Write $\mathrm{vol}(]a,b])=\prod_i(b_i-a_i)$.
+By Theorem~\ref{thm:extension}, it is enough to prove that volume is a premeasure on the semiring of boxes.
+Uniqueness on the Borel $\sigma$-algebra follows, because $\R^d=\bigcup_n\,]-n,n]^d$ and each of those boxes has finite volume.
 
-\emph{Finite additivity.} Let a box $Q$ be the disjoint union of boxes $Q_1,\dots,Q_m$. In each coordinate, the endpoints of all these boxes cut the axis into intervals;
-their products form a grid of boxes (cells). Each $Q_k$, and $Q$, is the disjoint union of the cells it contains, and its volume is the sum of their volumes:
-expanding the product $\prod_i(b_i-a_i)$, each factor being a sum of consecutive cell lengths, gives one term per cell. Each cell of $Q$ lies in exactly one $Q_k$,
-so $\mathrm{vol}(Q)=\sum_k\mathrm{vol}(Q_k)$.
+For finite additivity, suppose a box $Q$ is the disjoint union of boxes $Q_1,\ldots,Q_m$.
+In each coordinate, collect the endpoints of $Q$ and of every $Q_k$, and cut that axis at those endpoints.
+The products of the resulting small intervals form a grid of cells.
+Each of $Q$ and $Q_k$ is a disjoint union of the cells it contains.
+The volume of a box is the product of its side lengths, and each side length is a sum of the cell lengths along that axis.
+Expanding the product produces one term for each cell.
+Every cell of $Q$ lies in exactly one $Q_k$, because the boxes $Q_k$ are disjoint and cover $Q$.
+Therefore $\mathrm{vol}(Q)=\sum_k\mathrm{vol}(Q_k)$.
 
-\emph{Countable additivity.} Let $Q=]a,b]=\bigsqcup_kQ_k$ with $Q_k=]a^k,b^k]$. For each $N$, Lemma~\ref{lem:semiring}(b) gives $\sum_{k\le N}\mathrm{vol}(Q_k)\le\mathrm{vol}(Q)$, hence $\sum_k\mathrm{vol}(Q_k)\le\mathrm{vol}(Q)$. For the
-reverse, let $\varepsilon>0$; we may assume $Q\ne\varnothing$. Since the volume of a box is continuous in its corners, there is $\delta>0$ with $\mathrm{vol}(]a+\delta,b])\ge\mathrm{vol}(Q)-\varepsilon$ (where
-$a+\delta$ adds $\delta$ to each coordinate), and for each $k$ there is $\delta_k>0$ with $\mathrm{vol}(]a^k,b^k+\delta_k])\le\mathrm{vol}(Q_k)+\varepsilon2^{-k}$. The closed box $K=[a+\delta,b]$ is compact
-(Theorem~\ref{thm:heineborel}) and covered by the open boxes $\prod_i\,]a^k_i,b^k_i+\delta_k[$, so by finitely many, $k\le N$. Then $]a+\delta,b]\subseteq\bigcup_{k\le N}\,]a^k,b^k+\delta_k]$, and by Lemma~\ref{lem:semiring}(b)
+For countable additivity, let $Q=]a,b]=\bigsqcup_k Q_k$ with $Q_k=]a^k,b^k]$.
+Lemma~\ref{lem:semiring}(b), applied to the first $N$ boxes, gives $\sum_{k\le N}\mathrm{vol}(Q_k)\le\mathrm{vol}(Q)$.
+Let $N\to\infty$, so $\sum_k\mathrm{vol}(Q_k)\le\mathrm{vol}(Q)$.
+
+The reverse inequality needs a compact set inside $Q$ and a little room around each $Q_k$.
+The empty box has volume $0$ and there is nothing to prove, so assume $Q$ is nonempty.
+Volume is continuous in the corners of the box.
+Choose $\delta>0$ with $\mathrm{vol}(]a+\delta,b])\ge\mathrm{vol}(Q)-\varepsilon$, where $a+\delta$ means that $\delta$ is added to every coordinate, and the inequality is arranged by taking $\delta$ small.
+For each $k$, choose $\delta_k>0$ with $\mathrm{vol}(]a^k,b^k+\delta_k])\le\mathrm{vol}(Q_k)+\varepsilon 2^{-k}$.
+The closed box $K=[a+\delta,b]$ is compact by the Heine--Borel theorem, Theorem~\ref{thm:heineborel}.
+The open boxes $\prod_i\,]a^k_i,b^k_i+\delta_k[$ cover $K$, so finitely many of them, say those with $k\le N$, already cover $K$.
+Hence $]a+\delta,b]\subseteq\bigcup_{k\le N}\,]a^k,b^k+\delta_k]$.
+Lemma~\ref{lem:semiring}(b) gives
 \[\mathrm{vol}(Q)-\varepsilon\le\sum_{k\le N}\bigl(\mathrm{vol}(Q_k)+\varepsilon2^{-k}\bigr)\le\sum_k\mathrm{vol}(Q_k)+\varepsilon.\]
+Let $\varepsilon\to0$.
+Combined with the earlier inequality, volume is countably additive on boxes.
 
-\emph{Invariance.} For $c\in\R^d$, $A\mapsto\lambda_d(A+c)$ is a measure on $\mathcal B(\R^d)$ (translation is a homeomorphism, so it maps Borel sets to Borel sets) that agrees with
-$\lambda_d$ on boxes, so it equals $\lambda_d$. Likewise $A\mapsto t^{-d}\lambda_d(tA)$.
+Translation comes next.
+For a fixed vector $c\in\R^d$, the set function $A\mapsto\lambda_d(A+c)$ is a measure on $\mathcal B(\R^d)$.
+Translation is a homeomorphism, so it sends Borel sets to Borel sets.
+On a box, translating the corners does not change the side lengths, so this measure agrees with $\lambda_d$ on boxes.
+Theorem~\ref{thm:uniq6} says the two measures are equal.
+The same argument applies to $A\mapsto t^{-d}\lambda_d(tA)$ for $t>0$, because the volume of a scaled box is $t^d$ times the original volume.
 
-\emph{Characterisation.} Let $\mu$ be translation invariant with $\mu(]0,1]^d)=1$. The unit cube is the disjoint union of $2^{nd}$ translates of $]0,2^{-n}]^d$, so this cube has
-$\mu$-measure $2^{-nd}$. A box with dyadic corners is a finite disjoint union of such cubes, so $\mu$ and $\lambda_d$ agree on it. A general box $Q=\,]a,b]$ of positive finite volume can be sandwiched between such boxes. Given $\varepsilon>0$, the dyadic rationals are dense and the volume is continuous in the corners, so there are boxes $I$ and $O$ with dyadic corners, $I\subseteq Q\subseteq O$ and $\mathrm{vol}(O)-\mathrm{vol}(I)<\varepsilon$. Then $\mathrm{vol}(I)=\mu(I)\le\mu(Q)\le\mu(O)=\mathrm{vol}(O)$, and also $\mathrm{vol}(I)\le\mathrm{vol}(Q)\le\mathrm{vol}(O)$, so $|\mu(Q)-\mathrm{vol}(Q)|<\varepsilon$. Thus $\mu$ and $\lambda_d$ agree on every box. By uniqueness, $\mu=\lambda_d$.
+For the characterisation, let $\mu$ be a translation-invariant Borel measure with $\mu(]0,1]^d)=1$.
+The unit cube is the disjoint union of $2^{nd}$ translates of the cube $]0,2^{-n}]^d$.
+Invariance forces those small cubes to share the measure of the unit cube, so each has measure $2^{-nd}$.
+A box whose corners all lie in $2^{-n}\Z^d$ is a finite disjoint union of such small cubes, and therefore $\mu$ and $\lambda_d$ agree on it.
+Now take a box $Q=\,]a,b]$ of positive finite volume, and fix $\varepsilon>0$.
+Dyadic rationals are dense, and volume is continuous in the corners, so there are boxes $I$ and $O$ with dyadic corners, $I\subseteq Q\subseteq O$, and $\mathrm{vol}(O)-\mathrm{vol}(I)<\varepsilon$.
+Then $\mathrm{vol}(I)=\mu(I)\le\mu(Q)\le\mu(O)=\mathrm{vol}(O)$, and the same sandwich holds with $\mathrm{vol}(Q)$ in place of $\mu(Q)$.
+Both numbers lie in an interval of length less than $\varepsilon$, so $|\mu(Q)-\mathrm{vol}(Q)|<\varepsilon$.
+The sandwich shows that $\mu$ and $\lambda_d$ take the same value on every box.
+Uniqueness gives $\mu=\lambda_d$.
 \end{proof}
 
-We write $\lambda$ for $\lambda_1$. The sets that are measurable for the outer measure $\lambda_d^*$ of Theorem~\ref{thm:extension} are the \emph{Lebesgue measurable} sets;
-they include the Borel sets and all subsets of null sets (Exercise~\ref{ex:completion} describes them exactly). Points and countable sets are null. A coordinate hyperplane $x_1=c$ is covered by the boxes $]c-\varepsilon2^{-k},c]\times\,]-k,k]^{d-1}$, of total volume at most $\varepsilon\sum_k2^{-k}(2k)^{d-1}$, so it is null, and so are the faces of a box. A tilted hyperplane is a rotation of a coordinate one. Chapter~\ref{ch:products} shows that rotations preserve $\lambda_d$; that fact is not used for the faces. So it does not matter whether boxes are open, closed or half-open.
+The symbol $\lambda$ means $\lambda_1$.
+The sets that are measurable for the outer measure $\lambda_d^*$ built in Theorem~\ref{thm:extension} are the \emph{Lebesgue measurable} sets.
+They include every Borel set, and they include every subset of a null set.
+Exercise~\ref{ex:completion} describes them by a sandwich between an $F_\sigma$ set and a $G_\delta$ set.
+A single point is null: it sits in a box of volume $\varepsilon$.
+A countable set is a countable union of null sets, so Proposition~\ref{prop:measureprops}(b) makes it null.
+
+A coordinate hyperplane $\{x_1=c\}$ is null for a similar cover.
+The boxes $]c-\varepsilon 2^{-k},c]\times\,]-k,k]^{d-1}$ cover it, and their total volume is at most $\varepsilon\sum_k 2^{-k}(2k)^{d-1}$.
+The series in $k$ converges, so the total can be made arbitrarily small by the choice of $\varepsilon$.
+Every face of a box sits in such a hyperplane and is therefore null.
+Whether a box is written open, closed, or half-open does not change its measure.
+A tilted hyperplane is a rigid image of a coordinate hyperplane.
+Chapter~\ref{ch:products} proves that rotations preserve $\lambda_d$.
+That fact is not used for the faces of a box, which are already null by the covers just written.
+
+\begin{figure}[ht]
+\centering
+\fig{ch07-rw-cantor}
+\caption{Blue marks the set that remains, and orange marks a middle interval that has been removed.
+The remaining length is $1$, then $\frac23$, then $\frac49$.
+The middle-thirds Cantor set sits inside every stage, and these lengths tend to $0$, so the Cantor set has Lebesgue measure $0$.}
+\label{fig:rwcantor}
+\end{figure}
+
+Figure~\ref{fig:rwcantor} makes the same point for an uncountable set.
+Proposition~\ref{prop:cantor} writes the $n$-th stage $C_n$ as the union of $2^n$ disjoint intervals of length $3^{-n}$, so $\lambda(C_n)=(2/3)^n$.
+The Cantor set $C$ is contained in every $C_n$.
+Monotonicity gives $\lambda(C)\le(2/3)^n$ for every $n$, and the only number that is at most every term of this sequence is $0$.
+The set $C$ is uncountable, because Proposition~\ref{prop:cantor} puts it in bijection with $\{0,1\}^\N$.
+Measure zero and countability are different kinds of smallness.
 
 \begin{proposition}[regularity]\label{prop:regularity}
 For every Borel set $A\subseteq\R^d$,
 \[\begin{aligned}\lambda_d(A)&=\inf\{\lambda_d(U):U\supseteq A\text{ open}\}\eqbr=\sup\{\lambda_d(K):K\subseteq A\text{ compact}\}.\end{aligned}\]
 \end{proposition}
 \begin{proof}
-\emph{Outer.} We may assume $\lambda_d(A)<\infty$. By the definition of $\lambda_d^*$ there are boxes $]a^k,b^k]$ covering $A$ with $\sum_k\mathrm{vol}\le\lambda_d(A)+\varepsilon$. Enlarge each to an open box
-$\prod_i\,]a^k_i,b^k_i+\delta_k[$ of volume at most $\mathrm{vol}(]a^k,b^k])+\varepsilon2^{-k}$. Their union $U$ is open, contains $A$, and $\lambda_d(U)\le\lambda_d(A)+2\varepsilon$.
+If $\lambda_d(A)=\infty$, every open set containing $A$ has infinite measure by monotonicity, so the outer infimum equals $\infty$.
+For the outer estimate that follows, take $\lambda_d(A)$ finite.
+The definition of $\lambda_d^*$ supplies boxes $]a^k,b^k]$ that cover $A$ and satisfy $\sum_k\mathrm{vol}(]a^k,b^k])\le\lambda_d(A)+\varepsilon$.
+Enlarge the $k$-th box to the open box $\prod_i\,]a^k_i,b^k_i+\delta_k[$ of volume at most $\mathrm{vol}(]a^k,b^k])+\varepsilon 2^{-k}$.
+The union $U$ of these open boxes is open, contains $A$, and satisfies $\lambda_d(U)\le\lambda_d(A)+2\varepsilon$.
 
-\emph{Inner.} First let $A$ be bounded, inside a closed box $B$. By the outer part, some open $U\supseteq B\setminus A$ has $\lambda_d(U)\le\lambda_d(B\setminus A)+\varepsilon$. Then $K=B\setminus U$ is closed and
-bounded, hence compact, $K\subseteq A$, and $\lambda_d(K)\ge\lambda_d(B)-\lambda_d(U)\ge\lambda_d(A)-\varepsilon$. In general, $A\cap[-n,n]^d$ increases to $A$, and continuity from below finishes.
+For the inner equality, first suppose $A$ is contained in a closed box $B$.
+The outer equality, applied to the Borel set $B\setminus A$, supplies an open set $U\supseteq B\setminus A$ with $\lambda_d(U)\le\lambda_d(B\setminus A)+\varepsilon$.
+The difference $K=B\setminus U$ is closed and bounded, hence compact by Theorem~\ref{thm:heineborel}, and $K\subseteq A$.
+Subtraction is legal because $\lambda_d(B)$ is finite:
+\[
+\lambda_d(K)\ge\lambda_d(B)-\lambda_d(U)\ge\lambda_d(A)-\varepsilon.
+\]
+In the general case the sets $A\cap[-n,n]^d$ increase to $A$.
+If $\lambda_d(A)$ is finite, choose $n$ so that $\lambda_d(A)-\lambda_d(A\cap[-n,n]^d)<\varepsilon$, and apply the bounded case inside $[-n,n]^d$ to find a compact set whose measure is at least $\lambda_d(A)-2\varepsilon$.
+If $\lambda_d(A)=\infty$, the same exhaustion produces compact subsets of arbitrarily large finite measure, so the supremum over compact subsets is $\infty$.
 \end{proof}
 
-So a Borel set is, up to $\varepsilon$, a compact set from inside and an open set from outside; for sets of finite measure this also gives
-\emph{Littlewood's first principle}: a Borel set $A$ of finite measure is, up to a set of measure $\varepsilon$, a finite union of boxes (take $U\supseteq A$ open with $\lambda_d(U\setminus A)<\varepsilon$; $U$ is a countable
-union of disjoint dyadic boxes (the maximal ones, since two dyadic boxes are nested or disjoint), and by continuity from below finitely many of them have total measure within $\varepsilon$ of $\lambda_d(U)$). Chapter~\ref{ch:metricmeasures} proves regularity for every finite Borel measure on a metric space.
+A Borel set of finite measure is therefore within $\varepsilon$ of a compact set from the inside and within $\varepsilon$ of an open set from the outside.
+Littlewood's first principle is the practical form of the outer approximation.
+Let $A$ be a Borel set of finite measure, and choose an open set $U\supseteq A$ with $\lambda_d(U\setminus A)<\varepsilon$.
+The open set $U$ is a countable union of disjoint dyadic boxes: two dyadic boxes are nested or disjoint, so the maximal dyadic boxes contained in $U$ are disjoint and cover $U$.
+Continuity from below keeps only finitely many of those boxes, with total measure within $\varepsilon$ of $\lambda_d(U)$.
+Up to a set of measure $2\varepsilon$, the set $A$ agrees with a finite union of boxes.
+Chapter~\ref{ch:metricmeasures} proves the same inner and outer approximation for every finite Borel measure on a metric space.
+The argument of that chapter is not used here.
 
 \begin{think}
-Can a Borel set $A\subseteq[0,1]$ and its complement both meet every subinterval in positive measure? Regularity says that $A$ looks like a finite union of
-intervals, up to $\varepsilon$\dots
+Can a Borel set $A\subseteq[0,1]$ meet every subinterval in a set of positive measure, while the complement $[0,1]\setminus A$ does the same?
+Regularity says that $A$ is close to a finite union of intervals, once a set of measure $\varepsilon$ is set aside.
 \end{think}
 
-Surprisingly, yes (Exercise~\ref{ex:everywhere}). Littlewood's principle approximates in measure, not interval by interval: the error set, of measure
-$\varepsilon$, can be spread over every interval.
+The answer is yes, and Exercise~\ref{ex:everywhere} builds the set.
+Littlewood's approximation controls the measure of the error, and it does not stop that error from meeting every interval.
+An error of measure $\varepsilon$ can be spread so that every subinterval still sees both $A$ and its complement.
 
 \section{Lebesgue--Stieltjes measures and laws on \texorpdfstring{$\R$}{R}}
 
+Lebesgue measure is the law of a uniform point on the line, in so far as a uniform law can live on an infinite interval.
+A general probability on $\R$ is no harder: its distribution function already records the measure of every half-line, and Carath\'eodory's theorem extends those increments.
+
 \begin{theorem}\label{thm:stieltjes}
-Let $F:\R\to\R$ be non-decreasing and right-continuous. There is a unique Borel measure $\mu_F$ on $\R$ with $\mu_F(]a,b])=F(b)-F(a)$ for all $a<b$. If moreover $F(t)\to0$ as
-$t\to-\infty$ and $F(t)\to1$ as $t\to+\infty$, then $\mu_F$ is a probability with distribution function $F$, and every probability on $\mathcal B(\R)$ arises in this way.
+Let $F:\R\to\R$ be non-decreasing and right-continuous.
+There is a unique Borel measure $\mu_F$ on $\R$ such that $\mu_F(]a,b])=F(b)-F(a)$ whenever $a<b$.
+If in addition $F(t)\to0$ as $t\to-\infty$ and $F(t)\to1$ as $t\to+\infty$, then $\mu_F$ is a probability, $F$ is its distribution function, and every probability on $\mathcal B(\R)$ arises from its distribution function in this way.
 \end{theorem}
 \begin{proof}
-On the semiring of intervals $]a,b]$, $\mu_0(]a,b])=F(b)-F(a)$ is finitely additive, since the increments telescope. For countable additivity, copy the proof of
-Theorem~\ref{thm:lebesgue} in dimension one: if $]a,b]=\bigsqcup_k\,]a_k,b_k]$, right-continuity gives $\delta>0$ with $F(a+\delta)\le F(a)+\varepsilon$ and $\delta_k>0$ with $F(b_k+\delta_k)\le F(b_k)+\varepsilon2^{-k}$;
-compactness of $[a+\delta,b]$ gives finitely many intervals $]a_k,b_k+\delta_k[$ covering it, and Lemma~\ref{lem:semiring}(b) gives $F(b)-F(a)-\varepsilon\le\sum_k(F(b_k)-F(a_k))+\varepsilon$. Existence and uniqueness
-follow from Theorem~\ref{thm:extension} ($\R=\bigcup_n\,]-n,n]$). In the second case, $\mu_F(]-\infty,t])=\lim_n(F(t)-F(-n))=F(t)$ and $\mu_F(\R)=1$, by continuity from below. Conversely the
-distribution function $F(t)=\mu(]-\infty,t])$ of a probability is non-decreasing, right-continuous (continuity from above) with the limits $0$ and $1$, and $\mu=\mu_F$ by
-uniqueness.
+On the semiring of intervals $]a,b]$, the formula $\mu_0(]a,b])=F(b)-F(a)$ is finitely additive, because a chain of adjacent intervals has increments that telescope.
+Countable additivity is the one-dimensional compact-cover argument from the proof of Theorem~\ref{thm:lebesgue}.
+If $]a,b]=\bigsqcup_k\,]a_k,b_k]$, right-continuity at $a$ supplies $\delta>0$ with $F(a+\delta)\le F(a)+\varepsilon$, and right-continuity at each $b_k$ supplies $\delta_k>0$ with $F(b_k+\delta_k)\le F(b_k)+\varepsilon 2^{-k}$.
+The enlarged interval $]a_k,b_k+\delta_k]$ then has increment at most $F(b_k)-F(a_k)+\varepsilon 2^{-k}$.
+The compact interval $[a+\delta,b]$ is covered by the open intervals $]a_k,b_k+\delta_k[$, hence by finitely many of them, and those finitely many enlarged intervals cover $]a+\delta,b]$.
+Lemma~\ref{lem:semiring}(b) turns that finite cover into the inequality $F(b)-F(a)-\varepsilon\le\sum_k\bigl(F(b_k)-F(a_k)\bigr)+\varepsilon$.
+The positive number $\varepsilon$ is arbitrary, so $\sum_k\bigl(F(b_k)-F(a_k)\bigr)\ge F(b)-F(a)$.
+The matching upper bound is the second claim of Lemma~\ref{lem:semiring}(b) applied to the first $N$ intervals and then passed to the limit.
+Theorem~\ref{thm:extension} gives existence and uniqueness, because $\R=\bigcup_n\,]-n,n]$ and each of those intervals has finite increment $F(n)-F(-n)$.
+
+In the probability case, continuity from below gives
+\[
+\mu_F(]-\infty,t])=\lim_{n\to\infty}\bigl(F(t)-F(-n)\bigr)=F(t),
+\]
+and the same limit with $t\to+\infty$ gives $\mu_F(\R)=1$.
+Conversely, if $\mu$ is a probability on $\mathcal B(\R)$, the function $F(t)=\mu(]-\infty,t])$ is non-decreasing.
+It is right-continuous because the intervals $]-\infty,t+1/n]$ decrease to $]-\infty,t]$ and $\mu$ is finite, so Proposition~\ref{prop:measureprops}(d) applies.
+The limits at $\pm\infty$ are $0$ and $1$.
+The half-lines form a $\pi$-system and $\mu(\R)$ is finite, so Theorem~\ref{thm:uniq6} gives $\mu=\mu_F$.
 \end{proof}
 
-Lebesgue measure is $\mu_F$ for $F(t)=t$. A jump of $F$ at $a$ is an atom: $\mu_F(\{a\})=F(a)-F(a^-)$ (Exercise~\ref{ex:atoms}). The Cantor staircase of Chapter~\ref{ch:metric} gives a
-continuous probability $\mu_c$ that lives on the null Cantor set; Chapter~\ref{ch:radon} sorts every law on $\R$ into atoms, a density and such singular parts.
+Lebesgue measure on $\R$ is $\mu_F$ for $F(t)=t$.
+A jump of $F$ at a point $a$ is an atom, and Exercise~\ref{ex:atoms} identifies the mass as $F(a)-F(a^-)$.
+The Cantor staircase $c$ of Exercise~\ref{ex:devil} is continuous and non-decreasing, with $c(0)=0$ and $c(1)=1$, and it is constant on each interval removed while the Cantor set is built.
+Extend it by $c(t)=0$ for $t<0$ and $c(t)=1$ for $t>1$.
+Theorem~\ref{thm:stieltjes} produces a probability $\mu_c$.
+The removed intervals are open sets on which $c$ is constant, so each of them has $\mu_c$-measure $0$.
+Their union is $[0,1]\setminus C$ up to endpoints, and the endpoints are null, so $\mu_c$ is carried by the null set $C$.
+Chapter~\ref{ch:radon} splits a general law on $\R$ into atoms, an absolutely continuous part, and a singular continuous part of this kind.
+That decomposition is not used in the arguments of this chapter.
 
-A \emph{random variable} on a probability space $(\Omega,\mathcal A,\mathbb P)$ is a map $X:\Omega\to\R$ with $\{X\in B\}\in\mathcal A$ for every Borel $B$ (a \emph{measurable} function); its \emph{law} is
-$B\mapsto\mathbb P(X\in B)$, a probability on $\mathcal B(\R)$. It is enough to check that $\{X\le t\}\in\mathcal A$ for every $t$, because the sets $B$ with $\{X\in B\}\in\mathcal A$ form a $\sigma$-algebra.
-For the same reason a sum of random variables is one ($\{X+Y<t\}=\bigcup_{q\in\Q}\{X<q\}\cap\{Y<t-q\}$), and so is the pointwise limit of a sequence ($\{\sup_nX_n\le t\}=\bigcap_n\{X_n\le t\}$, and
-$\lim=\inf_m\sup_{n\ge m}$). Chapter~\ref{ch:integral} develops this.
+A \emph{random variable} on a probability space $(\Omega,\mathcal A,\mathbb P)$ is a map $X:\Omega\to\R$ such that $\{X\in B\}\in\mathcal A$ for every Borel set $B$.
+The set $\{X\in B\}$ is the preimage $X^{-1}(B)$.
+The \emph{law} of $X$ is the probability $B\mapsto\mathbb P(X\in B)$ on $\mathcal B(\R)$.
+The sets $B$ for which $\{X\in B\}$ lies in $\mathcal A$ form a $\sigma$-algebra.
+It is therefore enough to check $\{X\le t\}\in\mathcal A$ for every real $t$, because those half-lines generate $\mathcal B(\R)$.
+A sum of two random variables is a random variable, since
+\[
+\{X+Y<t\}=\bigcup_{q\in\Q}\{X<q\}\cap\{Y<t-q\}
+\]
+and $\{X<q\}=\bigcup_n\{X\le q-1/n\}$.
+A pointwise limit of random variables is a random variable, because $\{\sup_n X_n\le t\}=\bigcap_n\{X_n\le t\}$ and a limit is an infimum of suprema of tails.
+Chapter~\ref{ch:integral} returns to measurable functions and builds the integral.
+The tests just written are the ones this chapter uses.
 
 \begin{proposition}[quantile transform]\label{prop:quantile}
-Let $F$ be a distribution function and $G(u)=\inf\{t:F(t)\ge u\}$ for $u\in\,]0,1[$. On $(]0,1[,\mathcal B,\lambda)$, the random variable $G$ has law $\mu_F$.
+Let $F$ be a distribution function, and define $G(u)=\inf\{t:F(t)\ge u\}$ for $u\in\,]0,1[$.
+On the probability space $(]0,1[,\mathcal B,\lambda)$, the random variable $G$ has law $\mu_F$.
 \end{proposition}
 \begin{proof}
-$G(u)$ is finite since $F$ has limits $0$ and $1$. By right-continuity the infimum is attained, so $G(u)\le t$ iff $F(t)\ge u$. Hence $\{G\le t\}=\,]0,F(t)]\cap\,]0,1[$, of measure $F(t)$: $G$ is
-measurable with distribution function $F$.
+The limits of $F$ are $0$ and $1$, so the set $\{t:F(t)\ge u\}$ is nonempty and bounded below, and $G(u)$ is a finite real number.
+The claim is that $G(u)\le t$ if and only if $F(t)\ge u$.
+If $F(t)\ge u$, then $t$ belongs to the set whose infimum is $G(u)$, so $G(u)\le t$.
+Suppose, in the other direction, that $G(u)\le t$ while $F(t)<u$.
+Right-continuity supplies $\delta>0$ with $F(t+\delta)<u$.
+Every point $s$ with $F(s)\ge u$ then satisfies $s\ge t+\delta$, so $G(u)\ge t+\delta>t$, which contradicts $G(u)\le t$.
+Hence $F(t)\ge u$.
+
+The set $\{G\le t\}$ is therefore $]0,F(t)]\cap\,]0,1[$.
+A distribution function takes values in $[0,1]$, so this set has Lebesgue measure $F(t)$.
+In particular $\{G\le t\}$ is a Borel subset of $]0,1[$, and $G$ is a random variable.
+Its distribution function is $F$, so Theorem~\ref{thm:stieltjes} says that its law is $\mu_F$.
+The same right-continuity shows that the infimum is attained in the sense $F(G(u))\ge u$: if $t_n\downarrow G(u)$, then $F(t_n)\ge u$ and $F(t_n)\to F(G(u))$.
 \end{proof}
+
+Check the exponential law, $F(t)=0$ for $t<0$ and $F(t)=1-e^{-t}$ for $t\ge0$.
+The inequality $F(t)\ge u$ becomes $t\ge-\log(1-u)$, so $G(u)=-\log(1-u)$.
+At $u=1/2$, the formula returns $\log 2$, and $F(\log 2)=1/2$.
 
 \section{Sets that cannot be measured}
 
+The outer measure $\lambda^*$ is defined for every subset of $\R$.
+Carath\'eodory's test rejects some of them, and the rejection uses the axiom of choice.
+
 \begin{theorem}[Vitali, 1905]\label{thm:vitali6}
-There is a subset of $[0,1]$ that is not Lebesgue measurable. More precisely, no translation-invariant measure on all subsets of $\R$ gives $[0,1]$ a finite
-positive measure.
+There is a subset of $[0,1]$ that is not Lebesgue measurable.
+More precisely, no translation-invariant measure defined on every subset of $\R$ can give $[0,1]$ a finite positive measure.
 \end{theorem}
 \begin{proof}
-Call $x,y\in[0,1]$ equivalent if $x-y\in\Q$. By the axiom of choice, let $V\subseteq[0,1]$ contain exactly one point of each class. The translates $V+r$, $r\in\Q\cap[-1,1]$, are
-disjoint (if $v+r=v'+r'$, then $v\sim v'$, so $v=v'$ and $r=r'$), contained in $[-1,2]$, and their union contains $[0,1]$ (each $x\in[0,1]$ is equivalent to some $v\in V$, and
-$x-v\in\Q\cap[-1,1]$). If $\mu$ were such a measure, defined on $V$, countable additivity and invariance would give $\mu([0,1])\le\sum_r\mu(V)\le\mu([-1,2])\le3\mu([0,1])$: the middle sum of
-countably many equal terms is $0$ or $+\infty$, while the ends are finite and positive. Since $\lambda$ on Lebesgue measurable sets is translation invariant (by the
-same argument as for Borel sets, translating covers), $V$ is not Lebesgue measurable.
+Call $x,y\in[0,1]$ equivalent when $x-y$ is rational.
+The axiom of choice, from Chapter~\ref{ch:sets}, supplies a set $V\subseteq[0,1]$ that contains exactly one point from each equivalence class.
+Let $R=\Q\cap[-1,1]$.
+The translates $V+r$ with $r\in R$ are pairwise disjoint: if $v+r=v'+r'$, then $v-v'$ is rational, so $v=v'$ and $r=r'$.
+Each translate sits inside $[-1,2]$.
+Their union contains $[0,1]$, because any $x\in[0,1]$ is equivalent to exactly one $v\in V$ and the difference $x-v$ lies in $R$.
+
+Suppose $\mu$ were a translation-invariant measure on every subset of $\R$, with $\mu([0,1])$ finite and positive.
+Countable additivity and invariance would give
+\[
+\mu([0,1])\le\sum_{r\in R}\mu(V)\le\mu([-1,2])\le 3\mu([0,1]).
+\]
+The sum in the middle has countably many equal terms.
+It equals $0$ when $\mu(V)=0$, and it equals $+\infty$ when $\mu(V)>0$.
+The left end of the inequality is positive and the right end is finite, so neither value of the middle sum is possible.
+
+Lebesgue measure is defined only on the Lebesgue measurable sets, so the same arithmetic shows that $V$ is not one of them once translates of measurable sets are known to be measurable.
+A cover of a set $A$ by boxes translates to a cover of $A+c$ by boxes of the same volumes, and the shift by $-c$ gives the reverse, so $\lambda^*(A+c)=\lambda^*(A)$.
+If $A$ is $\lambda^*$-measurable and $T\subseteq\R$ is any test set, the splitting rule for $A$ applied to $T-c$ reads $\lambda^*(T-c)=\lambda^*((T-c)\cap A)+\lambda^*((T-c)\setminus A)$.
+Invariance rewrites the three terms as $\lambda^*(T)$, $\lambda^*(T\cap(A+c))$ and $\lambda^*(T\setminus(A+c))$, so $A+c$ is Lebesgue measurable.
+If $V$ were Lebesgue measurable, each translate $V+r$ would be Lebesgue measurable, the inequality above would apply to $\lambda$, and the same contradiction would follow.
 \end{proof}
 
-Choice is essential: Solovay (1970) built a model of set theory without the full axiom of choice (but with countable choices) in which every set of
-reals is Lebesgue measurable. In dimension three, Banach and Tarski (1924) cut a ball into finitely many pieces that rigid motions reassemble into two balls of
-the same size (five pieces suffice, as Robinson showed in 1947); the pieces cannot be measurable. In dimensions one and two, Banach showed that finitely additive invariant ``measures'' on all sets do
-exist. The difference lies in the groups of motions: those of the line and the plane are \emph{amenable} and the rotations of space are not. Volume~8 takes this up with Haar measure; nothing here depends on it.
+The set $V$ was chosen with the full axiom of choice.
+Solovay proved in 1970 that if an inaccessible cardinal is consistent with the usual axioms, then there is a model of set theory with the axiom of dependent choices, without the full axiom of choice, in which every set of reals is Lebesgue measurable.
+The model is quoted as context.
+Nothing later in the chapter calls on it.
 
-There are also Lebesgue measurable sets that are not Borel (Exercise~\ref{ex:nonborel}): the completion adds genuinely new sets, all of them hidden inside null
-sets up to a Borel set.
+In dimension three the Banach--Tarski decomposition, quoted in the opening, cuts a ball into finitely many pieces that rigid motions reassemble into two balls of the same radius.
+If those pieces were Lebesgue measurable, finite additivity together with invariance under rigid motions would force one ball and two balls to have the same measure.
+Chapter~\ref{ch:products} treats the orthogonal transformations that appear in that invariance.
+Banach showed that in dimensions one and two, finitely additive, isometry-invariant extensions of Lebesgue measure to every subset do exist.
+The isometry groups of the line and of the plane are amenable, and the rotation group of space is not.
+Volume~8 takes up Haar measure on these groups.
+No identity in this chapter depends on that discussion.
+There are also Lebesgue measurable sets that fail to be Borel.
+Exercise~\ref{ex:nonborel} builds one inside the Cantor set, using the Cantor staircase to stretch a null set onto a set of measure $1$.
 
 \begin{think}
-Is a set of measure zero ``small'' in the sense of Baire? Is a meagre set small in the sense of measure?
+Does measure zero imply that a set is meagre in Baire's sense?
+Does meagreness imply measure zero?
 \end{think}
 
-Neither: by Theorem~\ref{thm:liouville}, $\R$ is the disjoint union of a null set that is comeagre (the Liouville numbers) and a meagre set of full measure.
+Neither implication holds.
+Theorem~\ref{thm:liouville} splits $\R$ into the Liouville numbers and their complement.
+The Liouville numbers form a null set that is comeagre, and the complement is meagre and differs from $\R$ by that null set, so the complement has full measure.
 
 \section{Independent sequences from one random number}
 
-How many coins can one toss with a single random number? Write $\omega\in[0,1[$ in binary: if $\omega$ is uniform, its digits are
-independent fair coins (Lemma~\ref{lem:digits6}). Now deal the digits like cards to infinitely many players: digits $1,3,5,\ldots$ to the
-first, $2,6,10,\ldots$ to the second, and so on. Each player receives infinitely many fair coins, hence a uniform number of her own, and the
-players are independent. One random number is infinitely many.
+One uniform number in $[0,1)$ has infinitely many binary digits.
+Those digits can be dealt, like a pack of cards, into infinitely many players, and each player still receives infinitely many digits.
 
-Volume~4, Chapter~5, made this deal and checked what it needed on dyadic intervals. Here the deal is made on the measure space
-$([0,1[,\mathcal B,\lambda)$, and independence is proved for all Borel sets. A family of random variables $(X_k)$ is \emph{independent} if for every finite set $J$ of indices and Borel sets $B_k$,
-$\mathbb P(X_k\in B_k\text{ for }k\in J)=\prod_{k\in J}\mathbb P(X_k\in B_k)$.
+Write $\omega\in[0,1)$ in base $2$, using the greedy expansion of Proposition~\ref{prop:cantor}.
+Lemma~\ref{lem:digits6} says that if $\omega$ is drawn with Lebesgue measure, the digits are independent fair bits.
+Deal digit number $2^{k-1}(2j-1)$ to player $k$, for $j=1,2,\ldots$.
+Player $1$ receives the odd positions $1,3,5,\ldots$, player $2$ receives the positions $2,6,10,\ldots$, and player $3$ receives the positions $4,12,20,\ldots$.
+Each player can assemble a number in $[0,1]$ from the bits that were dealt, and the players are independent.
+One draw has produced infinitely many draws.
+
+A family $(X_k)$ of random variables is \emph{independent} when, for every finite set $J$ of indices and every choice of Borel sets $B_k$,
+\[
+\mathbb P(X_k\in B_k\text{ for all }k\in J)=\prod_{k\in J}\mathbb P(X_k\in B_k).
+\]
+Volume~4 checked a form of this deal on dyadic intervals.
+The proof below does not quote that volume: the digits are identified here, and the passage from dyadic intervals to Borel sets is Dynkin's theorem.
 
 \begin{lemma}\label{lem:digits6}
-For $\omega\in[0,1[$ let $D_j(\omega)\in\{0,1\}$ be the $j$-th digit of its binary expansion (the greedy one, Proposition~\ref{prop:cantor}). The $D_j$ are Borel functions, and for any distinct
-indices $j_1,\dots,j_N$ and bits $c_1,\dots,c_N$, $\lambda(D_{j_1}=c_1,\dots,D_{j_N}=c_N)=2^{-N}$.
+For $\omega\in[0,1[$, let $D_j(\omega)\in\{0,1\}$ be the $j$-th binary digit in the greedy expansion of Proposition~\ref{prop:cantor}.
+Each $D_j$ is a Borel function on $[0,1)$.
+If $j_1,\ldots,j_N$ are distinct indices and $c_1,\ldots,c_N$ are bits, then
+\[
+\lambda(D_{j_1}=c_1,\ldots,D_{j_N}=c_N)=2^{-N}.
+\]
 \end{lemma}
 \begin{proof}
-Let $n\ge\max j_i$. The first $n$ digits of $\omega$ are those of a word $w$ iff $\omega\in[0.w,0.w+2^{-n}[$, an interval of length $2^{-n}$; so each $D_j$ is a step function, Borel. The event in
-question is the disjoint union of these intervals over the $2^{n-N}$ words $w$ of length $n$ with the prescribed digits at the positions $j_i$: its measure is $2^{n-N}2^{-n}$.
+Fix $n\ge\max_i j_i$.
+The first $n$ greedy digits of $\omega$ equal a word $w$ of length $n$ precisely on the interval $[0.w,\,0.w+2^{-n}[$, which has length $2^{-n}$.
+Those intervals partition $[0,1)$, and $D_j$ is constant on each of them, so $D_j$ is a Borel step function.
+The event in the statement prescribes $N$ of the $n$ digits and leaves the other $n-N$ digits free.
+There are $2^{n-N}$ such words, the corresponding intervals are disjoint, and the total length is $2^{n-N}\cdot 2^{-n}=2^{-N}$.
 \end{proof}
 
 \begin{figure}[ht]
 \centering
 \fig{ch06-digits}
-\caption{One uniform number $\omega=0.D_1D_2D_3\ldots$ in base $2$ hides infinitely many. The digits are dealt along the bijection $(k,j)\mapsto2^{k-1}(2j-1)$: the odd positions go to
-$U_1$, positions $2,6,10,\ldots$ to $U_2$, positions $4,12,20,\ldots$ to $U_3$, and so on. The rows use disjoint sets of independent digits, so they are independent uniform
-numbers.}
+\caption{A uniform number $\omega=0.D_1D_2D_3\ldots$ in base $2$ is dealt by the rule $(k,j)\mapsto 2^{k-1}(2j-1)$.
+Odd positions build $U_1$, the positions $2,6,10,\ldots$ build $U_2$, and the positions $4,12,20,\ldots$ build $U_3$.
+The rows use disjoint collections of digits, and Lemma~\ref{lem:digits6} makes those digits independent, so the numbers $U_k$ are independent and uniform on $[0,1)$.}
 \label{fig:digits}
 \end{figure}
 
 \begin{theorem}\label{thm:independent}
-Let $\mu_1,\mu_2,\ldots$ be probabilities on $\mathcal B(\R)$. On $([0,1[,\mathcal B,\lambda)$ there are independent random variables $X_1,X_2,\ldots$ such that $X_k$ has law $\mu_k$.
+Let $\mu_1,\mu_2,\ldots$ be probabilities on $\mathcal B(\R)$.
+On the space $([0,1[,\mathcal B,\lambda)$ there exist independent random variables $X_1,X_2,\ldots$ such that $X_k$ has law $\mu_k$.
 \end{theorem}
 \begin{proof}
-\emph{Splitting.} The map $(k,j)\mapsto2^{k-1}(2j-1)$ is a bijection $\N^*\times\N^*\to\N^*$ (every positive integer is uniquely a power of $2$ times an odd number). Let
-\[U_k=\sum_{j\ge1}D_{2^{k-1}(2j-1)}\,2^{-j},\]
-a random variable (a pointwise limit of finite sums of Borel functions), with values in $[0,1]$.
+Every positive integer factors uniquely as a power of $2$ times an odd positive integer, so the map $(k,j)\mapsto 2^{k-1}(2j-1)$ is a bijection from $\N^*\times\N^*$ onto $\N^*$.
+Define
+\[U_k=\sum_{j\ge1}D_{2^{k-1}(2j-1)}\,2^{-j}.\]
+Each partial sum is a Borel function, and $U_k$ is the pointwise limit, so $U_k$ is a random variable with values in $[0,1]$.
 
-\emph{Joint law on dyadic intervals.} Fix $n,m\ge1$ and dyadic intervals $I_k=[i_k2^{-n},(i_k+1)2^{-n}[$, $k\le m$, and let $A_k$ be the event that the first $n$ digits used by $U_k$
-spell the binary word of $i_k$. On $A_k$, $U_k$ lies in the closure of $I_k$, and equals its right end only if all later digits of $U_k$ are $1$. Off $A_k$, $U_k$ lies outside $I_k$, unless
-it equals the left end $i_k2^{-n}$ through an expansion whose digits are eventually all $1$. So $\{U_k\in I_k\}$ and $A_k$ differ by a subset of the event $Z_k$ that the digits of $U_k$ are
-eventually all $1$. For each $J$, the event that digits $D_{2^{k-1}(2j-1)}$ equal $1$ for all $j\ge J$ has measure at most $2^{-M}$ for every $M$ (Lemma~\ref{lem:digits6}, with $M$ of these digits),
-so it is null, and $Z_k$, a countable union of such events, is null. Up to a null set, $\{U_k\in I_k\text{ for }k\le m\}$ is $A_1\cap\cdots\cap A_m$, which prescribes $mn$ distinct digits, and Lemma~\ref{lem:digits6} gives
+The next step computes the joint law on dyadic intervals.
+Fix $n,m\ge1$ and dyadic intervals $I_k=[i_k 2^{-n},(i_k+1)2^{-n}[$ for $k\le m$.
+Let $A_k$ be the event that the first $n$ digits used by $U_k$ are the binary digits of the integer $i_k$.
+On $A_k$, the number $U_k$ lies in the closure of $I_k$, and it equals the right endpoint only when every later digit of $U_k$ equals $1$.
+Off $A_k$, the number $U_k$ lies outside $I_k$, except possibly when $U_k$ equals the left endpoint through an expansion that ends in infinite ones.
+The symmetric difference of $\{U_k\in I_k\}$ and $A_k$ is therefore contained in the event $Z_k$ that the digits of $U_k$ are eventually all equal to $1$.
+
+For each index $J$, the event that $D_{2^{k-1}(2j-1)}=1$ for every $j\ge J$ has measure at most $2^{-M}$ for every $M$.
+Lemma~\ref{lem:digits6} supplies the bound, by prescribing $M$ of those digits.
+That event is null, and $Z_k$ is a countable union of such events, so $Z_k$ is null.
+Up to a null set, the intersection $\{U_k\in I_k\text{ for all }k\le m\}$ equals $A_1\cap\cdots\cap A_m$.
+The event $A_1\cap\cdots\cap A_m$ prescribes $mn$ distinct digits.
+Lemma~\ref{lem:digits6} gives
 \[\lambda(U_1\in I_1,\dots,U_m\in I_m)=2^{-mn}=\prod_{k\le m}\lambda(I_k).\]
-Dyadic intervals of different lengths are finite disjoint unions of dyadic intervals of the smallest length, so the formula holds for all dyadic intervals.
+A dyadic interval of a coarser length is a finite disjoint union of dyadic intervals of length $2^{-n}$.
+Add the corresponding disjoint events, and the same product formula holds for dyadic intervals of any lengths.
 
-\emph{Extension.} The dyadic intervals of $[0,1[$, with $\varnothing$, form a $\pi$-system generating $\mathcal B([0,1[)$. With $m=1$, the law of $U_k$ agrees with $\lambda$ on it, so $U_k$ is
-uniform on $[0,1[$ (Theorem~\ref{thm:uniq6}; note $\lambda(U_k=1)=0$). For independence, fix dyadic $I_2,\dots,I_m$: the Borel $B_1$ with $\lambda(U_1\in B_1,U_2\in I_2,\dots)=\lambda(B_1)\prod_{k\ge2}\lambda(I_k)$
-form a $\lambda$-system containing the dyadic intervals, hence all Borel sets (Dynkin). Then fix a Borel $B_1$ and dyadic $I_3,\dots$, and do the same in the second
-variable; after $m$ steps, $\lambda(U_k\in B_k,\ k\le m)=\prod_k\lambda(B_k)$ for all Borel $B_k$.
+The dyadic intervals in $[0,1[$, together with $\varnothing$, form a $\pi$-system, and they generate $\mathcal B([0,1[)$.
+With $m=1$, the law of $U_k$ agrees with Lebesgue measure on that $\pi$-system.
+Theorem~\ref{thm:uniq6} says that $U_k$ is uniform on $[0,1)$.
+The equality $\lambda(U_k=1)=0$ is the case of the null set $Z_k$ already estimated, and $\lambda(U_k=0)=0$ by the same estimate with the digits equal to $0$.
 
-\emph{Laws.} Let $G_k$ be the quantile function of $\mu_k$ (Proposition~\ref{prop:quantile}), and $X_k=G_k(U_k)$ where $U_k\in\,]0,1[$, $X_k=0$ on the null set where $U_k$ is $0$ or $1$. $G_k$ is non-decreasing, so
-$\{G_k\le t\}$ is an interval and $G_k$ is Borel; thus $\{X_k\in B\}=\{U_k\in G_k^{-1}(B)\}$ up to a null set. So $X_k$ has law $\mu_k$, and the $X_k$ inherit independence from the $U_k$.
+Independence of the family $(U_k)$ is another pass through Dynkin's theorem, one coordinate at a time.
+Fix dyadic intervals $I_2,\ldots,I_m$.
+The Borel sets $B_1$ that satisfy
+\[
+\lambda(U_1\in B_1,\,U_2\in I_2,\ldots,U_m\in I_m)=\lambda(B_1)\prod_{k=2}^m\lambda(I_k)
+\]
+form a $\lambda$-system, because both sides are measures in $B_1$ and the whole interval $[0,1)$ has finite measure.
+The $\lambda$-system contains the dyadic intervals, so Theorem~\ref{thm:dynkin6} says that it contains every Borel set.
+Fix a Borel set $B_1$ and repeat the argument in the second variable, then in the third, and so on.
+After $m$ steps,
+\[
+\lambda(U_k\in B_k\text{ for all }k\le m)=\prod_{k\le m}\lambda(B_k)
+\]
+for all Borel sets $B_k$.
+The variables $U_1,U_2,\ldots$ are independent, and each is uniform on $[0,1)$.
+
+For the prescribed laws, let $G_k$ be the quantile function of $\mu_k$ from Proposition~\ref{prop:quantile}.
+Set $X_k=G_k(U_k)$ when $U_k\in\,]0,1[$, and set $X_k=0$ on the null set where $U_k$ equals $0$ or $1$.
+The function $G_k$ is non-decreasing, so $\{G_k\le t\}$ is an interval and $G_k$, read on $\R$, is Borel.
+Thus $\{X_k\in B\}=\{U_k\in G_k^{-1}(B)\}$ up to a null set.
+The law of $X_k$ is $\mu_k$, and the family $(X_k)$ inherits independence from the family $(U_k)$, because a condition on the $X_k$ is a condition on the $U_k$.
 \end{proof}
 
-This completes the construction of Volume~4, Chapter~5: there the joint law of the $U_k$ was known on dyadic intervals, here it is known on all Borel sets. The
-digits $D_j$ themselves are independent fair coins, the tosses of Volume~4, Chapter~1. Kolmogorov's extension theorem (Chapter~\ref{ch:metricmeasures}) builds, more generally, a sequence with any
-consistent family of finite-dimensional joint laws, not only independent ones.
+The joint law of $(U_1,\ldots,U_m)$ is now known on every Borel set of $[0,1)^m$, not only on products of dyadic intervals.
+The digits $D_j$ themselves are independent fair bits, by Lemma~\ref{lem:digits6} applied to any finite collection of them.
+Chapter~\ref{ch:metricmeasures} builds a sequence whose finite-dimensional laws are any consistent family, independent or not.
+Kolmogorov's extension theorem is that construction, and it is not a premise of the proof above.
 
 \section{Normal numbers}
 
-Is the digit $7$ as frequent as the digit $3$ in the decimal expansion of $\pi$? Billions of digits have been computed, and the
-frequencies look perfectly fair; nobody can prove it, nor even that $7$ appears infinitely often. In 1909 \'Emile Borel turned the
-question around: instead of one number, take all of them. Then the answer is yes, for almost every number, in every base at once.
+The decimal expansion of $\pi$ has been computed to billions of places, and the digit $7$ appears about as often as the digit $3$.
+Nobody has proved that $7$ appears infinitely often, and nobody has proved that the frequencies exist.
+In 1909 \'Emile Borel reversed the question: instead of one famous number, take almost every number.
 
-A real number $x\in[0,1[$ is \emph{normal in base $b$} if every block $w$ of $\ell$ digits occurs in its base-$b$ expansion with frequency $b^{-\ell}$: the number of positions $j\le n$
-such that digits $j,\dots,j+\ell-1$ spell $w$ is $nb^{-\ell}+o(n)$. It is \emph{absolutely normal} if it is normal in every base $b\ge2$; for $x\in\R$, apply this to its fractional part.
+\portrait{borel}{\'Emile Borel (1871--1956). Autochrome by Auguste L\'eon, Boulogne, 6 January 1918. Public domain, via Wikimedia Commons.}
+
+A number $x\in[0,1)$ is \emph{normal in base $b$} when every block $w$ of $\ell$ digits appears in the greedy base-$b$ expansion with frequency $b^{-\ell}$.
+The number of starting positions $j\le n$ at which the digits $j,\ldots,j+\ell-1$ spell $w$ is $n b^{-\ell}+o(n)$.
+The number $x$ is \emph{absolutely normal} when it is normal in every base $b\ge2$.
+For a general real number, apply the definition to the fractional part.
 
 \begin{lemma}\label{lem:fourth}
-Let $b\ge2$, $d\in\{0,\dots,b-1\}$, and $N_n(x)$ the number of $j\le n$ with $j$-th base-$b$ digit of $x$ equal to $d$. For $\varepsilon>0$,
+Let $b\ge2$, let $d\in\{0,\ldots,b-1\}$, and let $N_n(x)$ be the number of indices $j\le n$ whose base-$b$ digit in $x$ equals $d$.
+For every $\varepsilon>0$,
 \[\lambda\bigl\{x\in[0,1[:\ |N_n(x)-\tfrac nb|\ge n\varepsilon\bigr\}\le\frac3{\varepsilon^4n^2}.\]
 \end{lemma}
 \begin{proof}
-$N_n(x)$ depends only on the first $n$ digits, constant on each of the $b^n$ intervals of length $b^{-n}$ that they define. So the measure in question is $b^{-n}$ times the number
-of words $w\in\{0,\dots,b-1\}^n$ with $|\sum_iY_i(w)|\ge n\varepsilon$, where $Y_i(w)=\mathbf 1_{w_i=d}-\frac1b$. This number is at most $\sum_w(\sum_iY_i(w))^4/(n\varepsilon)^4$. Expand the fourth power into terms
-$\sum_wY_iY_jY_kY_l$. If one index, say $i$, occurs exactly once, summing over the letter $w_i$ first gives the factor $\sum_{c}(\mathbf 1_{c=d}-\frac1b)=1-1=0$: the term vanishes. The surviving
-terms have $i=j=k=l$ ($n$ of them) or two distinct indices each twice ($3n(n-1)$ ordered ones), and each is at most $b^n$ since $|Y_i|\le1$. So the count is at most
-$b^n(n+3n(n-1))/(n\varepsilon)^4\le3b^n/(\varepsilon^4n^2)$.
+The integer $N_n(x)$ depends only on the first $n$ digits, so it is constant on each of the $b^n$ intervals of length $b^{-n}$ determined by those digits.
+The measure in the statement equals $b^{-n}$ times the number of words $w\in\{0,\ldots,b-1\}^n$ for which $\bigl|\sum_{i=1}^n Y_i(w)\bigr|\ge n\varepsilon$, where $Y_i(w)=\mathbf 1_{w_i=d}-1/b$.
+That count is at most $\sum_w\bigl(\sum_i Y_i(w)\bigr)^4/(n\varepsilon)^4$, because each word that meets the threshold contributes at least $1$ after division by $(n\varepsilon)^4$, and the other words contribute a nonnegative fourth power.
+
+Expand the fourth power.
+The sum over words of $Y_i Y_j Y_k Y_l$ vanishes whenever some index appears exactly once.
+If the index $i$ appears once, the inner sum over the letter $w_i$ is $\sum_c(\mathbf 1_{c=d}-1/b)=0$, and the remaining letters factor out.
+The surviving tuples are those in which one index appears four times, and there are $n$ such tuples, together with those in which two distinct indices appear twice each.
+The number of ordered $4$-tuples in which two distinct indices each appear twice is $3n(n-1)$: the first coordinate may share its index with any one of the other three coordinates, the other two coordinates then carry the second index, and the two index values may be assigned in $n(n-1)$ ways.
+Each $|Y_i|$ is at most $1$, because $Y_i$ equals $-1/b$ or $1-1/b$.
+Each surviving sum over words is therefore at most $b^n$.
+The number of words is at most
+\[
+b^n\frac{n+3n(n-1)}{(n\varepsilon)^4}.
+\]
+The numerator $n+3n(n-1)=3n^2-2n$ is at most $3n^2$, so the fraction is at most $3/(\varepsilon^4 n^2)$.
+Multiply by $b^{-n}$ and the measure bound follows.
 \end{proof}
 
-This is Chebyshev's inequality with a fourth moment, written with words instead of expectations: Volume~4, Chapter~6, did the same for the strong
-law of large numbers.
+The estimate is a fourth-moment bound, counted on words.
+No expectation from another volume is required: the sum over the $b^n$ words is the whole argument.
+For a numerical check, take $b=2$, $\varepsilon=1/2$ and $n=10$.
+The right-hand side equals $3/((1/2)^4\cdot 100)=0.48$, which is a genuine upper bound and still larger than a typical frequency error.
+The decay $1/n^2$ is what Borel--Cantelli will use.
 
 \begin{theorem}[Borel, 1909]\label{thm:borelnormal}
-Almost every real number is absolutely normal.
+The set of real numbers that fail to be absolutely normal has Lebesgue measure zero.
 \end{theorem}
 \begin{proof}
-\emph{Single digits.} With $N_n$ as in Lemma~\ref{lem:fourth} and $\varepsilon=\frac1m$, the bounds $3m^4/n^2$ are summable over $n$, so by Borel--Cantelli, for almost every $x$, $|\frac{N_n(x)}n-\frac1b|<\frac1m$ for
-all large $n$. Intersecting over the countably many $m$, $b$ and $d$: for almost every $x$, every digit has frequency $\frac1b$ in every base $b$.
+Single digits come first.
+Apply Lemma~\ref{lem:fourth} with $\varepsilon=1/m$.
+The resulting measures are at most $3m^4/n^2$.
+For $n\ge2$, the comparison $1/n^2\le 1/(n-1)-1/n$ holds, because $n(n-1)\le n^2$ rearranges into that inequality.
+The telescoping series $\sum_{n\ge2}\bigl(1/(n-1)-1/n\bigr)$ equals $1$, so $\sum_n 3m^4/n^2$ converges.
+Proposition~\ref{prop:measureprops}(e) says that for almost every $x$, the inequality $|N_n(x)/n-1/b|\ge 1/m$ occurs for only finitely many $n$.
+Intersect these null sets of exceptions over the countable collection of integers $m\ge1$, bases $b\ge2$ and digits $d$.
+For almost every $x$, every digit in every base $b$ has frequency $1/b$.
 
-\emph{Blocks.} Fix $b$, $\ell\ge1$, a block $w$ of length $\ell$ and $r\in\{1,\dots,\ell\}$. The positions $j\equiv r\pmod\ell$ cut the expansion of $x$ into consecutive blocks of length $\ell$, which are
-the base-$b^\ell$ digits of $y_r=T_r(x)$, the fractional part of $b^{r-1}x$ (shifting a greedy expansion gives the greedy expansion of the shifted number). The map $T_r$ pulls null sets
-back to null sets: the preimage of an interval $I\subseteq[0,1[$ is the union of $b^{r-1}$ intervals of length $|I|b^{1-r}$, of total length $|I|$, so a cover of a set $Z$ by intervals of total
-length $<\varepsilon$ gives one of $T_r^{-1}(Z)$. By the first step in base $b^\ell$, for almost every $x$, the digit $w$ (read as a number) has frequency $b^{-\ell}$ among the base-$b^\ell$
-digits of $y_r$, for every $r$. The occurrences of $w$ at positions $j\le n$ are the sum over $r$ of the occurrences at positions $j\equiv r$; each sum has $\frac n\ell+O(1)$ positions and
-$\frac n\ell b^{-\ell}+o(n)$ occurrences, so the total is $nb^{-\ell}+o(n)$. Countably many $b$, $\ell$, $w$, $r$: a countable union of null sets is null.
+Blocks are reduced to single digits in a higher base.
+Fix $b$, a length $\ell\ge1$, a block $w$ of length $\ell$, and a residue $r\in\{1,\ldots,\ell\}$.
+The positions $j\equiv r\pmod{\ell}$ cut the expansion of $x$ into consecutive blocks of length $\ell$.
+Those blocks are the digits of $y_r=T_r(x)$ in the base $b^\ell$, where $T_r(x)$ is the fractional part of $b^{r-1}x$.
+Shifting a greedy expansion by $r-1$ places produces the greedy expansion of the shifted number.
+The map $T_r$ pulls null sets back to null sets.
+The preimage of an interval $I\subseteq[0,1)$ is a union of $b^{r-1}$ intervals, each of length $|I|\,b^{1-r}$, and the total length is $|I|$.
+A cover of a set $Z$ by intervals of total length less than $\varepsilon$ therefore pulls back to a cover of $T_r^{-1}(Z)$ of total length less than $\varepsilon$.
+
+Apply the single-digit case in the base $b^\ell$.
+For almost every $x$, the digit that represents the block $w$ has frequency $b^{-\ell}$ among the base-$b^\ell$ digits of $y_r$, and this holds for every residue $r$ after a countable intersection.
+The occurrences of $w$ at positions $j\le n$ are the sum, over the $\ell$ residues $r$, of the occurrences at positions $j\equiv r\pmod{\ell}$.
+Each residue class contributes $n/\ell+O(1)$ positions and $n b^{-\ell}/\ell+o(n)$ occurrences.
+The total is $n b^{-\ell}+o(n)$.
+A countable union, over $b$, $\ell$, $w$ and $r$, of null sets is null.
+Almost every $x\in[0,1)$ is therefore normal in every base, and the same statement for a general real is the statement for its fractional part.
 \end{proof}
 
 \begin{beauty}
-Borel's theorem is the strong law of large numbers in disguise, and it was the first: in 1909, before probability had
-axioms, Borel used Lebesgue's new measure to say that the digits of a ``random'' number behave like independent dice.
-Yet no specific classical constant is known to be normal in any base: not $\sqrt2$, not $\pi$, not $e$. Normal numbers
-are everywhere, and we can name almost none of them, apart from constructions such as Champernowne's $0.123456789101112\ldots$ (normal
-in base $10$, 1933). And by Proposition~\ref{prop:nonnormal}, in the sense of category, normal numbers are rare.
+Borel proved this frequency theorem in 1909, using Lebesgue measure to show that the digits of almost every number behave like independent rolls of a fair die.
+The classical constants are still undecided: there is no proof that $\sqrt2$, $\pi$ or $e$ is normal in any base.
+Champernowne's number $0.123456789101112\ldots$ is normal in base $10$, by the construction he published in 1933.
+Proposition~\ref{prop:nonnormal} gives the category counterpart: the set of binary normal numbers is meagre in $[0,1]$.
+Almost every number is normal, and a comeagre set of numbers fails to be normal in base $2$.
 \end{beauty}
 
 \section{What we proved, and what comes next}
 
-We now have a length for sets. Carath\'eodory's two theorems (Theorems~\ref{thm:caratheodory} and~\ref{thm:extension}) turn a countably additive
-function on boxes into a measure on all Borel sets, and Dynkin's theorem (Theorems~\ref{thm:dynkin6} and~\ref{thm:uniq6}) says the result is unique. Applied to the volume of boxes this gives Lebesgue measure
-(Theorem~\ref{thm:lebesgue}), and applied to the increments of a function $F$ it gives every probability law on the line (Theorem~\ref{thm:stieltjes}). Vitali's set shows that the
-restriction to Borel or Lebesgue measurable sets is forced (Theorem~\ref{thm:vitali6}). On $[0,1[$ with Lebesgue measure we built independent random variables with any laws
-(Theorem~\ref{thm:independent}), and proved that almost every number is normal in every base (Theorem~\ref{thm:borelnormal}).
+A length now exists on the Borel sets.
+Theorems~\ref{thm:caratheodory} and~\ref{thm:extension} turn a countably additive volume on the boxes into a measure on the generated $\sigma$-algebra, and Theorems~\ref{thm:dynkin6} and~\ref{thm:uniq6} say that the extension is the only one when the space is an increasing union of finite-measure sets from the $\pi$-system.
+Volume of boxes produces Lebesgue measure, which is Theorem~\ref{thm:lebesgue}.
+Increments of a non-decreasing right-continuous function $F$ produce every Borel probability on the line, which is Theorem~\ref{thm:stieltjes}.
+Theorem~\ref{thm:vitali6} shows that some sets have to be left out.
+On $[0,1)$ with Lebesgue measure, Theorem~\ref{thm:independent} builds independent random variables with any prescribed laws, and Theorem~\ref{thm:borelnormal} says that almost every real is normal in every base.
 
-Two things were used without proof, and both are stated as such where they occur: Solovay's model and the Banach--Tarski paradox are quoted for
-context, and no proof depends on them. The invariance of $\lambda_d$ under rotations, mentioned after Theorem~\ref{thm:lebesgue}, is proved in Chapter~\ref{ch:products}.
+Two stories were quoted and not proved.
+Solovay's model and the Banach--Tarski decomposition appear only as context, and no identity above depends on them.
+The invariance of $\lambda_d$ under rotations was named after Theorem~\ref{thm:lebesgue} and is proved in Chapter~\ref{ch:products}.
 
-A measure tells us the size of a set. The next question is the size of a function: what is the average of a function over a set, when the function is too irregular for
-Riemann's sums? Chapter~\ref{ch:integral} defines the integral by cutting the axis of values instead of the axis of the variable, and the three limit
-theorems that made Lebesgue's integral the standard one take a page each.
+A measure gives the size of a set.
+The next question is the size of a function: the average of a function that is too irregular for a Riemann sum.
+Chapter~\ref{ch:integral} defines the integral by cutting the range of the function into horizontal slices, and the monotone convergence theorem, Fatou's lemma and the dominated convergence theorem are the three limit theorems that come with that definition.
 
 \section{Exercises}
 
 \begin{exercise}[$\star$]\label{ex:atoms}
-Let $F$ be non-decreasing and right-continuous. Show that $\mu_F(\{a\})=F(a)-F(a^-)$ and $\mu_F(]a,b[)=F(b^-)-F(a)$. Deduce that $\mu_F$ has no atoms iff $F$ is continuous, and that a
-probability on $\R$ has at most countably many atoms.
+Suppose that $F:\R\to\R$ is non-decreasing and right-continuous.
+Show that $\mu_F(\{a\})=F(a)-F(a^-)$ and that $\mu_F(]a,b[)=F(b^-)-F(a)$.
+Deduce that $\mu_F$ has no atoms if and only if $F$ is continuous, and that a probability on $\R$ has at most countably many atoms.
 \end{exercise}
 
 \begin{exercise}[$\star$]\label{ex:fatcantor}
-\emph{A fat Cantor set.} From $[0,1]$ remove the open middle interval of length $\frac14$, then from each of the two remaining intervals the open middle interval of
-length $\frac1{16}$, and at step $n$ from each of the $2^{n-1}$ remaining intervals the middle interval of length $4^{-n}$. Show that what remains is a closed set with empty
-interior and measure $\frac12$. So a nowhere dense set can have positive measure.
+Build a fat Cantor set as follows.
+From $[0,1]$, remove the open middle interval of length $1/4$.
+From each of the two remaining closed intervals, remove the open middle interval of length $1/16$.
+At step $n$, from each of the $2^{n-1}$ remaining closed intervals, remove the open middle interval of length $4^{-n}$.
+Show that the set which remains is closed, has empty interior, and has measure $1/2$.
+A set with empty interior can therefore have positive measure.
 \end{exercise}
 
 \begin{exercise}[$\star\star$]\label{ex:cantorsum}
-Let $C$ be the Cantor set. Show that $\lambda(C)=0$ and that $C+C=\{x+y:x,y\in C\}$ is the whole interval $[0,2]$. (Use ternary digits, or the compactness of $C\times C$.)
+Let $C$ be the middle-thirds Cantor set.
+Show that $\lambda(C)=0$ and that $C+C=\{x+y:x,y\in C\}$ equals the interval $[0,2]$.
+Ternary digits are enough, and so is the compactness of $C\times C$ if you prefer a covering argument for the sum.
 \end{exercise}
 
 \begin{exercise}[$\star\star$]\label{ex:completion}
-Show that a set $A\subseteq\R^d$ is Lebesgue measurable iff there are an $F_\sigma$ set $F$ and a $G_\delta$ set $G$ with $F\subseteq A\subseteq G$ and $\lambda_d(G\setminus F)=0$. (So the Lebesgue sets are the
-\emph{completion} of the Borel $\sigma$-algebra: Borel sets modified by subsets of null sets.)
+Show that a set $A\subseteq\R^d$ is Lebesgue measurable if and only if there exist an $F_\sigma$ set $F$ and a $G_\delta$ set $G$ with $F\subseteq A\subseteq G$ and $\lambda_d(G\setminus F)=0$.
+The Lebesgue measurable sets are the completion of the Borel $\sigma$-algebra: start from a Borel set and alter it by a subset of a null set.
 \end{exercise}
 
 \begin{exercise}[$\star\star$]\label{ex:steinhaus}
-\emph{Steinhaus's theorem.} Let $A\subseteq\R$ be Borel with $\lambda(A)>0$. Show that $A-A=\{x-y:x,y\in A\}$ contains an interval $]-\delta,\delta[$. Deduce that a measurable additive function
-$f:\R\to\R$ is linear; compare with Exercise~\ref{ex:hamel}.
+Let $A\subseteq\R$ be a Borel set with $\lambda(A)>0$.
+Show that the difference set $A-A=\{x-y:x,y\in A\}$ contains an interval $]-\delta,\delta[$ for some $\delta>0$.
+Deduce that an additive function $f:\R\to\R$ which is Lebesgue measurable must be linear, and compare the conclusion with the Hamel basis of Exercise~\ref{ex:hamel}.
 \end{exercise}
 
 \begin{exercise}[$\star\star\star$]\label{ex:everywhere}
-Construct a Borel set $A\subseteq[0,1]$ such that $0<\lambda(A\cap I)<\lambda(I)$ for every interval $I\subseteq[0,1]$ of positive length. (Put fat Cantor sets inside the gaps of fat Cantor sets, in
-every interval with rational ends.)
+Construct a Borel set $A\subseteq[0,1]$ such that $0<\lambda(A\cap I)<\lambda(I)$ for every subinterval $I\subseteq[0,1]$ of positive length.
+The construction puts a fat Cantor set of $A$, and a fat Cantor set of the complement, into every interval with rational endpoints.
 \end{exercise}
 
 \begin{exercise}[$\star\star\star$]\label{ex:nonborel}
-\emph{A Lebesgue measurable set that is not Borel.} Let $c$ be the Cantor staircase (Exercise~\ref{ex:devil}) and $g(x)=x+c(x)$ on $[0,1]$. (a) Show that $g$ is a homeomorphism of $[0,1]$
-onto $[0,2]$ and that $\lambda(g(C))=1$. (b) Show that every Lebesgue measurable set $E$ with $\lambda(E)>0$ contains a non-measurable subset. (c) Take a non-measurable
-$V\subseteq g(C)$ and show that $g^{-1}(V)$ is Lebesgue measurable but not Borel.
+Let $c$ be the Cantor staircase of Exercise~\ref{ex:devil}, and set $g(x)=x+c(x)$ for $x\in[0,1]$.
+\begin{enumerate}[label=(\alph*)]
+\item Show that $g$ is a homeomorphism of $[0,1]$ onto $[0,2]$ and that $\lambda(g(C))=1$.
+\item Show that every Lebesgue measurable set $E$ with $\lambda(E)>0$ contains a subset that is not Lebesgue measurable.
+\item Choose a non-measurable set $V\subseteq g(C)$ and show that $g^{-1}(V)$ is Lebesgue measurable but not Borel.
+\end{enumerate}
 \end{exercise}
 
 \begin{exercise}[$\star$]\label{ex:dealing}
-\emph{Dealing the digits of $\frac15$.} (a) Write $\omega=\frac15$ in base $2$. (b) Compute the numbers $U_1(\omega)$, $U_2(\omega)$ and $U_3(\omega)$ of the proof of Theorem~\ref{thm:independent}.
-What is $U_k(\omega)$ for $k\ge3$, and where did the proof take care of such points? (c) Compute the quantile function $G$ of the exponential law, $F(t)=1-e^{-t}$ for $t\ge0$, and of a coin with
-$\mathbb P(1)=p$, $\mathbb P(0)=1-p$. With the exponential law for $\mu_1$, what is $X_1(\frac15)$?
+This exercise follows the proof of Theorem~\ref{thm:independent} on the single point $1/5$.
+\begin{enumerate}[label=(\alph*)]
+\item Write $\omega=1/5$ in base $2$.
+\item Compute $U_1(\omega)$, $U_2(\omega)$ and $U_3(\omega)$.
+What is $U_k(\omega)$ for every $k\ge3$, and where did the proof of Theorem~\ref{thm:independent} set such points aside?
+\item Compute the quantile function $G$ of the exponential law $F(t)=1-e^{-t}$ for $t\ge0$, and the quantile function of a coin with $\mathbb P(1)=p$ and $\mathbb P(0)=1-p$.
+If $\mu_1$ is the exponential law, what is $X_1(1/5)$?
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:v7c07a}
+Let $(x_n)_{n\ge1}$ be a sequence of real numbers.
+Show that for every $\varepsilon>0$ the set $\{x_n:n\ge1\}$ admits a cover by countably many intervals whose lengths add to $\varepsilon$, and conclude that its Lebesgue outer measure is $0$.
+Deduce that $\Q$ is a Borel null set and that $\lambda([0,1]\setminus\Q)=1$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:v7c07b}
+Let $\mu$ be a measure on a $\sigma$-algebra $\mathcal A$, and let $A_n\in\mathcal A$.
+Write $\liminf_n A_n=\bigcup_m\bigcap_{n\ge m}A_n$ and $\limsup_n A_n=\bigcap_m\bigcup_{n\ge m}A_n$.
+Show that $\mu(\liminf_n A_n)\le\liminf_n\mu(A_n)$.
+Show that $\mu(\bigcup_n A_n)<\infty$ implies $\limsup_n\mu(A_n)\le\mu(\limsup_n A_n)$.
+On $\R$ with Lebesgue measure, take $A_n=[n,n+1]$.
+Compute both sides of the second inequality and name the hypothesis that has failed.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:v7c07c}
+Show that $\lambda^*(A+c)=\lambda^*(A)$ for every $A\subseteq\R$ and every $c\in\R$.
+Show that $A$ is Lebesgue measurable if and only if $A+c$ is Lebesgue measurable, and that the two sets then have the same Lebesgue measure.
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:v7c07d}
+Let $A\subseteq\R$ be a Borel set with $0<\lambda(A)<\infty$, and let $\alpha\in[0,1)$.
+Show that some bounded open interval $I$ satisfies $\lambda(A\cap I)>\alpha\,\lambda(I)$.
+The dyadic intervals used for Littlewood's first principle are enough for the cover.
 \end{exercise}
 
 \section{Hints}
 
 \begin{hint}{ex:atoms}
-$\{a\}=\bigcap_n\,]a-\frac1n,a]$: continuity from above. For the last part, how many atoms can have mass more than $\frac1k$?
+The singleton $\{a\}$ equals $\bigcap_n\,]a-1/n,a]$, and continuity from above applies because the first interval has finite measure.
+For the count of atoms, fix $k$ and ask how many atoms can have mass greater than $1/k$ before their masses exceed $1$.
 \end{hint}
+
 \begin{hint}{ex:fatcantor}
-Total length removed: $\sum_n2^{n-1}4^{-n}$. Each remaining interval at step $n$ has length less than $2^{-n}$.
+The total length removed is $\sum_{n\ge1}2^{n-1}4^{-n}$.
+After step $n$, each surviving interval has length less than $2^{-n}$, which is what kills the interior.
 \end{hint}
+
 \begin{hint}{ex:cantorsum}
-$\frac x2$ for $x\in C$ has ternary digits $0$ and $1$ only, and every number of $[0,1]$ is a sum of two numbers with ternary digits in $\{0,1\}$ (digit by digit: $0=0+0$, $1=1+0$,
-$2=1+1$).
+If $x\in C$, then $x/2$ has a ternary expansion using only the digits $0$ and $1$.
+Every number in $[0,1]$ is a sum of two such expansions, added digit by digit, with $0=0+0$, $1=1+0$ and $2=1+1$, and with no carry.
 \end{hint}
+
 \begin{hint}{ex:completion}
-Use regularity: compact $K_n\subseteq A$ and open $U_n\supseteq A$ with measures within $\frac1n$, first for $A$ bounded. For a Lebesgue set, regularity holds too, with the same proof.
+Proposition~\ref{prop:regularity} puts a compact set inside $A$ and an open set around $A$, with measures within $1/n$, first while $A$ is bounded.
+The same sandwich works for a Lebesgue measurable set, because the proof of the proposition used outer measure and complements inside a box.
 \end{hint}
+
 \begin{hint}{ex:steinhaus}
-Take compact $K\subseteq A$ and open $U\supseteq K$ with $\lambda(U)<2\lambda(K)$. If $|t|$ is less than the distance from $K$ to the complement of $U$, then $K+t\subseteq U$, so $K$ and $K+t$ cannot be disjoint.
+Choose a compact set $K\subseteq A$ and an open set $U\supseteq K$ with $\lambda(U)<2\lambda(K)$.
+If $|t|$ is smaller than the distance from $K$ to the complement of $U$, then $K+t\subseteq U$, and $K$ cannot be disjoint from $K+t$.
 \end{hint}
+
 \begin{hint}{ex:everywhere}
-Enumerate the intervals $I_n$ with rational ends. Build disjoint fat Cantor sets $A_n,B_n$ inside $I_n$, avoiding the (nowhere dense, closed) sets built before, with
-$\lambda(A_n)$, $\lambda(B_n)$ small. Let $A=\bigcup_nA_n$.
+List the open intervals $I_n$ with rational endpoints.
+Inside $I_n$, and off the closed nowhere dense set built at earlier steps, place two disjoint fat Cantor sets $A_n$ and $B_n$ of small positive measure.
+The union of the sets $A_n$ is the set you want.
 \end{hint}
+
 \begin{hint}{ex:nonborel}
-(a) $g$ is continuous and strictly increasing; on each gap of $C$, $c$ is constant, so $g$ translates the gap. (b) Use Vitali's argument with $E$ in place of $[0,1]$: the sets
-$E\cap(V+r)$ cannot all be measurable. (c) A homeomorphism maps Borel sets to Borel sets; $g^{-1}(V)\subseteq C$ is null.
+The map $g$ is continuous and strictly increasing, and on each removed interval of $C$ the staircase $c$ is constant, so $g$ only translates that interval.
+For (b), run Vitali's selection inside $E$: the pieces $E\cap(V+r)$ cannot all be measurable.
+For (c), a homeomorphism sends Borel sets to Borel sets, and $g^{-1}(V)$ sits inside the null set $C$.
 \end{hint}
+
 \begin{hint}{ex:dealing}
-(a) The expansion is periodic with period $4$. (b) $U_k$ reads the digits at positions $2^{k-1},\ 3\cdot2^{k-1},\ 5\cdot2^{k-1},\ldots$; look at these positions modulo $4$.
+Doubling $1/5$ produces a binary expansion of period $4$.
+The number $U_k$ reads the digits in positions $2^{k-1}$, $3\cdot 2^{k-1}$, $5\cdot 2^{k-1}$, and so on, and those positions should be read modulo $4$.
+\end{hint}
+
+\begin{hint}{ex:v7c07a}
+Put the point $x_n$ in an interval of length $\varepsilon 2^{-n}$.
+The sum of a geometric series is the total length of the cover, and a set of outer measure $0$ is Lebesgue measurable by the observation before Theorem~\ref{thm:caratheodory}.
+\end{hint}
+
+\begin{hint}{ex:v7c07b}
+The sets $C_m=\bigcap_{n\ge m}A_n$ increase to the limit inferior, and $C_m\subseteq A_m$.
+The sets $B_m=\bigcup_{n\ge m}A_n$ decrease to the limit superior, and continuity from above needs a finite first set.
+The sliding intervals $[n,n+1]$ are disjoint, so a point lies in at most one of them.
+\end{hint}
+
+\begin{hint}{ex:v7c07c}
+A cover of $A$ by intervals translates, term by term, into a cover of $A+c$ by intervals of the same lengths.
+For measurability, test $A+c$ on a set $T$ by applying the splitting rule for $A$ to the shifted test set $T-c$.
+\end{hint}
+
+\begin{hint}{ex:v7c07d}
+If $\alpha=0$, inner regularity already puts a compact piece of positive measure inside some bounded interval.
+If $\alpha>0$ and every bounded open interval met $A$ in relative measure at most $\alpha$, an open cover $U\supseteq A$ with $\lambda(U)$ only slightly larger than $\lambda(A)$ would satisfy $\lambda(A)\le\alpha\lambda(U)$.
 \end{hint}
 
 \section{Solutions}
 
 \begin{solution}{ex:atoms}
-\idea Measures of intervals are increments of $F$; atoms are jumps; continuity from above turns ``closed at $a$'' into a left limit.
-\writeup $\{a\}=\bigcap_n\,]a-\frac1n,a]$, a decreasing intersection of sets of finite measure, so $\mu_F(\{a\})=\lim_n(F(a)-F(a-\frac1n))=F(a)-F(a^-)$, the left limit existing by monotonicity.
-Then $\mu_F(]a,b[)=\mu_F(]a,b])-\mu_F(\{b\})=F(b^-)-F(a)$. So $\mu_F$ has an atom at $a$ iff $F$ jumps at $a$; $F$ is right-continuous, so it is continuous iff it has no jumps. For a
-probability, at most $k$ atoms have mass $\ge\frac1k$ (their total is at most $1$), so the atoms form a countable union of finite sets.
+\idea The measure of a half-open interval is an increment of $F$, a singleton is a decreasing intersection of such intervals, and continuity from above turns the right endpoint into a left-hand limit.
+\writeup The singleton is the intersection $\{a\}=\bigcap_{n\ge1}\,]a-1/n,a]$.
+The intervals decrease, and the first one has finite measure $F(a)-F(a-1)$, so Proposition~\ref{prop:measureprops}(d) gives $\mu_F(\{a\})=\lim_n\bigl(F(a)-F(a-1/n)\bigr)$.
+Monotonicity of $F$ makes the left-hand limit $F(a^-)$ exist, and the difference is $F(a)-F(a^-)$.
+Subtract the atom at the right endpoint from a half-open interval:
+\[
+\mu_F(]a,b[)=\mu_F(]a,b])-\mu_F(\{b\})=F(b)-F(a)-\bigl(F(b)-F(b^-)\bigr)=F(b^-)-F(a).
+\]
+The measure $\mu_F$ charges $\{a\}$ if and only if $F$ jumps at $a$.
+Right-continuity is already in the hypothesis, so $F$ is continuous if and only if it has no jumps, which is the same as $\mu_F$ having no atoms.
+For a probability, the atoms of mass at least $1/k$ are finite in number, because their masses add to at most $1$.
+The full set of atoms is the union over $k\ge1$ of those finite sets, so it is countable.
 \end{solution}
 
 \begin{solution}{ex:fatcantor}
-\idea Remove intervals so short that their total length is only $\frac12$, but placed in every remaining interval, so that every interval is eventually cut.
-\writeup At step $n$, $2^{n-1}$ intervals of length $4^{-n}$ are removed, a total of $\sum_{n\ge1}2^{n-1}4^{-n}=\frac12\sum_{n\ge1}2^{-n}=\frac12$ (this is possible: by induction each of the $2^{n-1}$ remaining
-intervals before step $n$ has length $>4^{-n}$, as checked below). The remaining set $A$ is an intersection of finite unions of closed intervals, so closed, and $\lambda(A)=1-\frac12=\frac12$
-by additivity. Let $\ell_n$ be the length of each of the $2^n$ intervals remaining after step $n$. Then $\ell_0=1$ and $\ell_n=\frac12(\ell_{n-1}-4^{-n})<\frac12\ell_{n-1}$, so $\ell_n<2^{-n}$; also
-$2^n\ell_n=1-\sum_{k\le n}2^{k-1}4^{-k}>\frac12$, so $\ell_n>2^{-n-1}>4^{-n-1}$. An interval inside $A$ would lie in one remaining interval at each step, so has length $<2^{-n}$ for all $n$: $A$ has empty
-interior.
+\idea The removed intervals are placed so that every surviving piece is cut at the next step, while the lengths that are removed form a series equal to $1/2$.
+\writeup At step $n$ the construction removes $2^{n-1}$ open intervals of length $4^{-n}$.
+The total length removed, if the intervals fit, is
+\[
+\sum_{n\ge1}2^{n-1}4^{-n}=\frac12\sum_{n\ge1}2^{-n}=\frac12.
+\]
+The fit is checked by tracking the common length $\ell_n$ of the $2^n$ closed intervals that remain after step $n$.
+Then $\ell_0=1$ and $\ell_n=\frac12(\ell_{n-1}-4^{-n})$.
+In particular $\ell_n<\frac12\ell_{n-1}$, so $\ell_n<2^{-n}$.
+The total length still present after step $n$ is $2^n\ell_n=1-\sum_{k\le n}2^{k-1}4^{-k}$, which is greater than $1/2$ because the full series equals $1/2$.
+Hence $\ell_n>2^{-n-1}$.
+For the next removal one needs $\ell_n>4^{-(n+1)}$, and $2^{-n-1}>4^{-n-1}$ supplies it.
+By induction every interval that is about to be cut is longer than the open middle interval prescribed at that step.
+
+The remaining set $A$ is an intersection of finite unions of closed intervals, so $A$ is closed.
+Additivity gives $\lambda(A)=1-1/2=1/2$, because the removed intervals are disjoint and their measures sum to $1/2$.
+Any interval contained in $A$ would sit inside one surviving interval at every stage, and those intervals have length less than $2^{-n}$ for every $n$.
+The only possibility is a degenerate interval, so $A$ has empty interior.
 \end{solution}
 
 \begin{solution}{ex:cantorsum}
-\idea Halving the Cantor set gives the numbers with ternary digits $0$ and $1$; adding two such numbers digit by digit produces every digit $0$, $1$, $2$ without carries.
-\writeup $\lambda(C)\le\lambda(C_n)=(\frac23)^n$ for every $n$ (Proposition~\ref{prop:cantor}), so $\lambda(C)=0$. Let $z\in[0,2]$, so $\frac z2\in[0,1]$ has a ternary expansion $\sum_kt_k3^{-k}$ with $t_k\in\{0,1,2\}$
-(greedy, as for binary). Write $t_k=u_k+v_k$ with $u_k,v_k\in\{0,1\}$ ($0=0+0$, $1=1+0$, $2=1+1$). Then $x=\sum_k2u_k3^{-k}$ and $y=\sum_k2v_k3^{-k}$ are in $C$, and $x+y=2\sum_kt_k3^{-k}=z$. Conversely
-$C+C\subseteq[0,2]$. So a null set plus itself can be an interval: Steinhaus's theorem (Exercise~\ref{ex:steinhaus}) needs positive measure for $A-A$, and the Cantor set shows that
-it is not necessary.
+\idea Divide a point of the Cantor set by $2$ and the ternary digits become $0$ and $1$.
+Adding two expansions of that kind, digit by digit and without a carry, produces every ternary digit $0$, $1$ and $2$.
+\writeup Proposition~\ref{prop:cantor} gives $\lambda(C_n)=(2/3)^n$ and $C\subseteq C_n$, so $\lambda(C)\le(2/3)^n$ for every $n$ and $\lambda(C)=0$.
+Take $z\in[0,2]$, so $z/2\in[0,1]$ has a ternary expansion $\sum_{k\ge1}t_k 3^{-k}$ with digits $t_k\in\{0,1,2\}$.
+Write $t_k=u_k+v_k$ with $u_k,v_k\in\{0,1\}$, using $0=0+0$, $1=1+0$ and $2=1+1$.
+The sums $x=\sum_{k\ge1}2u_k 3^{-k}$ and $y=\sum_{k\ge1}2v_k 3^{-k}$ lie in $C$, and $x+y=z$.
+The opposite inclusion $C+C\subseteq[0,2]$ is immediate from $C\subseteq[0,1]$.
+The same identity shows that a null set can satisfy $A-A\supseteq]-1,1[$.
+Indeed $1-C=C$, because $1=\sum_{k\ge1}2\cdot 3^{-k}$ and replacing each ternary digit $2a_k$ by $2-2a_k$ stays inside $\{0,2\}$.
+Therefore $C-C=(C+C)-1=[-1,1]$.
+Exercise~\ref{ex:steinhaus} needs positive measure before it guarantees an interval inside $A-A$, and the Cantor set shows that positive measure is a sufficient hypothesis rather than a description of every set with that difference property.
 \end{solution}
 
 \begin{solution}{ex:completion}
-\idea Regularity sandwiches a set between a compact (or closed) set and an open set with small difference; countably many sandwiches give an $F_\sigma$ and a
-$G_\delta$ with null difference.
-\writeup The proof of Proposition~\ref{prop:regularity} used only that $A$ is $\lambda_d^*$-measurable (the outer part uses the definition of $\lambda_d^*$, the inner part
-complements inside a box), so it applies to Lebesgue sets. If $A$ is Lebesgue measurable and bounded, choose compact $K_n\subseteq A$ and open $U_n\supseteq A$ with
-$\lambda_d(U_n\setminus K_n)<\frac1n$; then $F=\bigcup_nK_n$ and $G=\bigcap_nU_n$ work. For unbounded $A$, do this in each $A\cap\,]-m,m]^d$ with error $\frac1n2^{-m}$ and take unions (a countable union of
-$F_\sigma$ sets is $F_\sigma$; for $G$, take $U_n=\bigcup_mU_{n,m}$ and $G=\bigcap_nU_n$). Conversely, if $F\subseteq A\subseteq G$ with $\lambda_d(G\setminus F)=0$, then $A\setminus F\subseteq G\setminus F$ is a subset of a null set,
-hence $\lambda_d^*$-measurable (completeness, Theorem~\ref{thm:caratheodory}), and $A=F\cup(A\setminus F)$ is measurable.
+\idea Outer regularity supplies an open set around $A$, inner regularity supplies a compact set inside $A$, and a countable family of these sandwiches shrinks the gap to a null set.
+\writeup The proof of Proposition~\ref{prop:regularity} uses the definition of $\lambda_d^*$ for the outer bound and a complement inside a box for the inner bound.
+Both steps work for a $\lambda_d^*$-measurable set, so every Lebesgue measurable set is regular in the same sense.
+Suppose $A$ is Lebesgue measurable and bounded.
+Choose a compact set $K_n\subseteq A$ and an open set $U_n\supseteq A$ with $\lambda_d(U_n\setminus K_n)<1/n$.
+The union $F=\bigcup_n K_n$ is an $F_\sigma$ set, the intersection $G=\bigcap_n U_n$ is a $G_\delta$ set, and $F\subseteq A\subseteq G$ with $\lambda_d(G\setminus F)=0$.
+If $A$ is unbounded, run the same construction on $A\cap\,]-m,m]^d$ with error $2^{-m}/n$, and take the union over $m$ of the inner sets.
+A countable union of $F_\sigma$ sets is an $F_\sigma$ set.
+For the outer set, take $U_n=\bigcup_m U_{n,m}$ and $G=\bigcap_n U_n$, which is a $G_\delta$ set, and the errors still sum to a null set.
+
+Conversely, suppose $F\subseteq A\subseteq G$ with $F$ an $F_\sigma$ set, $G$ a $G_\delta$ set and $\lambda_d(G\setminus F)=0$.
+Then $A\setminus F$ is contained in the null set $G\setminus F$.
+Theorem~\ref{thm:caratheodory} says that every subset of a null set is Lebesgue measurable, so $A\setminus F$ is measurable.
+The union $A=F\cup(A\setminus F)$ of two measurable sets is measurable.
 \end{solution}
 
 \begin{solution}{ex:steinhaus}
-\idea A set of positive measure is, by regularity, almost an open set; a small translate of it must overlap itself, since two disjoint copies would not fit in
-an open set barely larger.
-\writeup By regularity choose compact $K\subseteq A$ with $\lambda(K)>0$, and open $U\supseteq K$ with $\lambda(U)<2\lambda(K)$. The distance $\delta$ from the compact $K$ to the closed set $\R\setminus U$ is positive
-(it is attained, Corollary~\ref{cor:extreme}, and $K\cap(\R\setminus U)=\varnothing$). If $|t|<\delta$, then $K+t\subseteq U$. If $K$ and $K+t$ were disjoint, $\lambda(U)\ge\lambda(K)+\lambda(K+t)=2\lambda(K)$ by invariance,
-a contradiction. So some $x\in K$ and $y\in K$ have $x=y+t$: $t\in K-K\subseteq A-A$.
-For the consequence, let $f$ be additive and measurable. For some $n$, $A=\{|f|\le n\}$ has positive measure (the sets increase to $\R$). If $A$ is only Lebesgue measurable, replace it by an $F_\sigma$ subset of the same measure (Exercise~\ref{ex:completion}). By Steinhaus, every $t$ with $|t|<\delta$ is
-$x-y$ with $x,y\in A$, so $|f(t)|=|f(x)-f(y)|\le2n$: $f$ is bounded near $0$. Additivity gives $f(qt)=qf(t)$ for rational $q$, so $|f(t)|\le\frac{2n}q$ when $|t|<\frac\delta q$: $f$ is continuous at $0$,
-hence everywhere ($f(x+t)-f(x)=f(t)$), and a continuous additive function is $f(x)=f(1)x$ (equal on $\Q$, then by density). The Hamel-basis functions of
-Exercise~\ref{ex:hamel} are therefore not measurable.
+\idea Regularity replaces $A$ by a compact set that almost fills some open set.
+A small translate of that compact set still lies in the open set, so the translate has to meet the original compact set.
+\writeup Proposition~\ref{prop:regularity} supplies a compact set $K\subseteq A$ with $\lambda(K)>0$ and an open set $U\supseteq K$ with $\lambda(U)<2\lambda(K)$.
+The distance from $K$ to the closed set $\R\setminus U$ is positive.
+The distance is the minimum of a continuous function on the compact set $K$, so it is attained by Corollary~\ref{cor:extreme}, and it cannot be $0$ because $K$ does not meet $\R\setminus U$.
+Call the distance $\delta$.
+If $|t|<\delta$, then $K+t\subseteq U$.
+If $K$ and $K+t$ were disjoint, translation invariance and additivity would give $\lambda(U)\ge\lambda(K)+\lambda(K+t)=2\lambda(K)$, contradicting the choice of $U$.
+Some point of $K$ therefore equals a point of $K$ plus $t$, which means $t\in K-K\subseteq A-A$.
+
+Now let $f:\R\to\R$ satisfy $f(x+y)=f(x)+f(y)$ for all real $x,y$, and assume $f$ is Lebesgue measurable.
+The sets $A_n=\{|f|\le n\}$ increase to $\R$.
+If every $A_n$ were null, continuity from below would give $\lambda(\R)=0$, which is false, so some $A_n$ has positive measure.
+If $A_n$ is merely Lebesgue measurable, Exercise~\ref{ex:completion} replaces it by an $F_\sigma$ subset of the same positive measure, and that subset is Borel.
+The difference theorem just proved supplies $\delta>0$ such that every $t$ with $|t|<\delta$ equals $x-y$ for some $x,y$ in that subset.
+Additivity gives $|f(t)|=|f(x)-f(y)|\le 2n$, so $f$ is bounded on a neighbourhood of $0$.
+The same identity gives $f(qt)=qf(t)$ for every rational $q$, by induction on the integer numerator and denominator.
+If $|t|<\delta/|q|$ and $q\ne0$, then $|f(t)|\le 2n/|q|$.
+Thus $f(t)\to0$ as $t\to0$, so $f$ is continuous at $0$.
+Continuity everywhere follows, because $f(x+t)-f(x)=f(t)$.
+A continuous additive function agrees with $x\mapsto f(1)x$ on the rationals, and the rationals are dense, so $f(x)=f(1)x$ for every real $x$.
+Exercise~\ref{ex:cauchyfe} records the same conclusion from continuity.
+The additive functions built from a Hamel basis in Exercise~\ref{ex:hamel} are not of this form, so they are not Lebesgue measurable.
 \end{solution}
 
 \begin{solution}{ex:everywhere}
-\idea Every interval with rational ends receives two disjoint fat Cantor sets, one inside $A$ and one outside, each of positive measure. They must avoid what was
-built before, which is possible because closed nowhere dense sets leave room, and they must be small, so that the later ones do not fill any interval.
-\writeup Let $I_1,I_2,\ldots$ enumerate the open intervals with rational ends in $]0,1[$. A fat Cantor set can be built in any closed interval $J$, scaled (Exercise~\ref{ex:fatcantor}):
-it is closed, nowhere dense, and has measure $\frac12|J|$. Build closed nowhere dense sets $A_n,B_n$ by induction. The set $F_{n-1}=\bigcup_{k<n}(A_k\cup B_k)$ is closed and
-nowhere dense (a finite union of such sets), so $I_n\setminus F_{n-1}$ is a non-empty open set; choose two disjoint closed intervals $J,J'$ in it, of length at most $2^{-n}$, and let $A_n$, $B_n$ be
-fat Cantor sets in $J$ and $J'$. Let $A=\bigcup_nA_n$, a Borel set ($F_\sigma$). Any interval $I$ of positive length contains some $I_n$, so $\lambda(A\cap I)\ge\lambda(A_n)>0$. And $B_n\subseteq I\setminus A$:
-$B_n$ is disjoint from $A_k$ for $k\le n$ (by construction) and for $k>n$ (as $A_k$ avoids $F_{k-1}\supseteq B_n$). So $\lambda(I\setminus A)\ge\lambda(B_n)>0$, that is, $\lambda(A\cap I)<\lambda(I)$.
+\idea Every interval with rational endpoints receives two disjoint fat Cantor sets, one kept in $A$ and one kept in the complement.
+Each has positive measure, each avoids the closed nowhere dense set already built, and each is short enough that later pieces still have room.
+\writeup Let $I_1,I_2,\ldots$ be a list of the open intervals with rational endpoints that are contained in $]0,1[$.
+Exercise~\ref{ex:fatcantor} scales into any closed interval $J$: the affine image of the fat Cantor set is closed, has empty interior, and has measure $|J|/2$.
+Build closed nowhere dense sets $A_n$ and $B_n$ inductively.
+The union $F_{n-1}=\bigcup_{k<n}(A_k\cup B_k)$ is a finite union of closed nowhere dense sets, so it is closed and nowhere dense, and the open set $I_n\setminus F_{n-1}$ is nonempty.
+Choose two disjoint closed intervals $J,J'$ inside that open set, each of length at most $2^{-n}$, and let $A_n$ and $B_n$ be fat Cantor sets in $J$ and in $J'$.
+Both have positive measure.
+
+The union $A=\bigcup_n A_n$ is an $F_\sigma$ set, hence Borel.
+Any subinterval $I\subseteq[0,1]$ of positive length contains some $I_n$, so $\lambda(A\cap I)\ge\lambda(A_n)>0$.
+The companion set $B_n$ sits in $I_n\setminus A$.
+It is disjoint from $A_k$ for every $k\le n$ by the way the intervals were chosen, and it is disjoint from $A_k$ for every $k>n$ because $A_k$ was built off $F_{k-1}$, which contains $B_n$.
+Therefore $\lambda(I\setminus A)\ge\lambda(B_n)>0$, which is the inequality $\lambda(A\cap I)<\lambda(I)$.
 \end{solution}
 
 \begin{solution}{ex:nonborel}
-\idea The Cantor staircase squeezes the null Cantor set's complement and stretches $C$ itself to a set of measure $1$. A non-measurable set inside the stretched
-copy pulls back to a subset of $C$, measurable because it is null, yet not Borel because homeomorphisms preserve Borel sets.
-\writeup (a) $c$ is continuous and non-decreasing with $c(0)=0$, $c(1)=1$, so $g$ is continuous and strictly increasing from $0$ to $2$, hence a continuous bijection $[0,1]\to[0,2]$
-(intermediate value theorem), a homeomorphism by Proposition~\ref{prop:compactbasic}(d). On each open gap $]\alpha,\beta[$ of $C$, $c$ is constant, so $g$ maps it onto an interval of the same length. The
-gaps have total length $1-\lambda(C)=1$, and their images are disjoint, so $\lambda(g([0,1]\setminus C))=1$ and $\lambda(g(C))=2-1=1$.
-(b) Let $V$ be the Vitali set of Theorem~\ref{thm:vitali6}, and $V_r=V+r$ for $r\in\Q$; these are disjoint and cover $\R$ (every $x$ is equivalent to some $v\in V$ after an integer shift; let $V$
-contain one point of each class of $\R/\Q$, which is the same as before since every class meets $[0,1]$). If every $E\cap V_r$ were measurable, one of them would have positive
-measure, say $\lambda(E\cap V_r)>0$, and then $W=E\cap V_r$, a measurable subset of a translate of $V$, would contain an $F_\sigma$ set $F$ of the same positive measure (Exercise~\ref{ex:completion}), and $W-W\supseteq F-F$ would contain an interval
-(Exercise~\ref{ex:steinhaus}). But $W-W\subseteq V-V$ contains no non-zero rational, as two points of $V$ are never equivalent. Contradiction.
-(c) By (a) and (b), $g(C)$ contains a non-measurable $V$. The set $g^{-1}(V)\subseteq C$ is a subset of a null set, hence Lebesgue measurable. If it were Borel, then $V=g(g^{-1}(V))$ would
-be Borel, since the homeomorphism $g$ maps Borel sets to Borel sets (the sets $B$ with $g(B)$ Borel form a $\sigma$-algebra containing the open sets). But $V$ is not even measurable.
+\idea The Cantor staircase is constant on the complement of $C$ and climbs from $0$ to $1$ on $C$ itself, so $g(x)=x+c(x)$ stretches $C$ onto a set of measure $1$.
+A non-measurable set inside that image pulls back into $C$, where nullity gives Lebesgue measurability and the homeomorphism forbids the preimage to be Borel.
+\writeup For (a), Exercise~\ref{ex:devil} gives a continuous non-decreasing function $c$ with $c(0)=0$, $c(1)=1$, constant on each open interval removed in the construction of $C$.
+If $x<y$, then $g(y)-g(x)=(y-x)+(c(y)-c(x))\ge y-x>0$, so $g$ is strictly increasing.
+It is continuous, $g(0)=0$ and $g(1)=2$, so the intermediate-value theorem says that $g$ maps $[0,1]$ onto $[0,2]$.
+A continuous bijection from a compact set onto a Hausdorff space is a homeomorphism by Proposition~\ref{prop:compactbasic}(d).
+On each open gap $]\alpha,\beta[$ of $C$, the function $c$ is constant, so $g$ translates the gap onto an interval of the same length.
+Those image intervals are disjoint because $g$ is injective, and the gaps have total length $1-\lambda(C)=1$.
+Hence $\lambda(g([0,1]\setminus C))=1$.
+The image $g([0,1])$ has measure $2$, and the endpoints of the gaps form a null set, so $\lambda(g(C))=2-1=1$.
+
+For (b), let $V\subseteq[0,1]$ be the Vitali set of Theorem~\ref{thm:vitali6}, and extend the selection so that $V$ contains one point of each class of $\R/\Q$.
+Every class meets $[0,1]$, so this is the same selection.
+The translates $V_r=V+r$ for $r\in\Q$ are disjoint and cover $\R$.
+Suppose every intersection $E\cap V_r$ were Lebesgue measurable.
+Countable additivity and $\lambda(E)>0$ would force some intersection $W=E\cap V_r$ to have positive measure.
+Exercise~\ref{ex:completion} puts an $F_\sigma$ set $F\subseteq W$ with $\lambda(F)=\lambda(W)>0$.
+Exercise~\ref{ex:steinhaus}, applied to $F$, says that $F-F$ contains an open interval about $0$.
+On the other hand $W$ meets each rational class at most once, because $W$ sits in a single translate of $V$, so $W-W$ contains no nonzero rational.
+An open interval about $0$ contains nonzero rationals.
+This contradiction shows that some piece $E\cap V_r$ fails to be Lebesgue measurable.
+
+For (c), part (a) gives $\lambda(g(C))=1>0$, and part (b) puts a non-measurable set $V$ inside $g(C)$.
+The preimage $g^{-1}(V)$ is contained in $C$.
+The Cantor set is null, so Theorem~\ref{thm:caratheodory} says that this preimage is Lebesgue measurable.
+If the preimage were Borel, the direct image $V=g(g^{-1}(V))$ would be Borel.
+The sets $B$ for which $g(B)$ is Borel form a $\sigma$-algebra, and they include the open sets because $g$ is a homeomorphism.
+They therefore include every Borel set.
+The set $V$ is not even Lebesgue measurable, so $g^{-1}(V)$ is not Borel.
 \end{solution}
 
 \begin{solution}{ex:dealing}
-\idea Follow the construction on one point. The point $\frac15$ is chosen because its digits repeat, so every $U_k$ can be read off, and because it lands in the null set
-that the proof had to set aside.
-\writeup (a) Double repeatedly and record the integer parts: $\frac15\to\frac25\to\frac45\to\frac85=1+\frac35\to\frac65=1+\frac15$, and we are back at $\frac15$. The digits are $0,0,1,1$, repeated:
-$\frac15=0.0011\,0011\,0011\ldots$ in base $2$. Check: $0.0011_2=\frac3{16}$ and $\frac3{16}\cdot\frac1{1-1/16}=\frac3{15}=\frac15$. So $D_j=1$ exactly when $j\equiv3$ or $0\pmod4$.
+\idea The point $1/5$ has a periodic binary expansion, so every dealt subsequence $U_k$ can be read off, and the value $1$ that appears is one of the null-set exceptions in the proof of Theorem~\ref{thm:independent}.
+\writeup For (a), double the fractional part and record the integer part at each step.
+Starting from $1/5$, the doubles are $2/5$, $4/5$, $8/5=1+3/5$ and $6/5=1+1/5$, and the integer parts are $0,0,1,1$.
+The expansion then repeats, so $1/5=0.00110011\ldots$ in base $2$.
+As a check, $0.0011_2=3/16$ and the period-$4$ sum is $(3/16)/(1-1/16)=1/5$.
+The digit $D_j$ equals $1$ precisely when $j\equiv 0\pmod{4}$ or $j\equiv 3\pmod{4}$.
 
-(b) $U_1$ reads positions $1,3,5,7,\ldots$, where the digits are $0,1,0,1,\ldots$. So $U_1=0.0101\ldots_2=\frac14\cdot\frac1{1-1/4}=\frac13$. $U_2$ reads positions $2,6,10,\ldots$, all congruent
-to $2$ modulo $4$, where every digit is $0$: $U_2=0$. $U_3$ reads positions $4,12,20,\ldots$, all multiples of $4$, where every digit is $1$: $U_3=\sum_{j\ge1}2^{-j}=1$. For $k\ge3$ the
-positions $2^{k-1}(2j-1)$ are all multiples of $4$, so $U_k(\frac15)=1$. These values lie outside $[0,1[$. The proof allowed for it: the points where some $U_k$ has digits eventually
-all equal to $1$ form the null set $\bigcup_kZ_k$, and the proof notes $\lambda(U_k=1)=0$. One uniform number gives infinitely many uniform numbers for almost every $\omega$, not for every $\omega$, and
-$\frac15$ is one of the exceptions.
+For (b), the number $U_1$ reads positions $1,3,5,7,\ldots$, where the digits are $0,1,0,1,\ldots$.
+Thus $U_1=0.0101\ldots_2=\sum_{j\ge1}2^{-2j}=(1/4)/(1-1/4)=1/3$.
+The number $U_2$ reads positions $2,6,10,\ldots$, all congruent to $2$ modulo $4$, and every one of those digits is $0$, so $U_2=0$.
+The number $U_3$ reads positions $4,12,20,\ldots$, all multiples of $4$, and every one of those digits is $1$, so $U_3=\sum_{j\ge1}2^{-j}=1$.
+For $k\ge3$ the positions $2^{k-1}(2j-1)$ are multiples of $4$, and the digits there are $1$, so $U_k(1/5)=1$.
+These values $0$ and $1$ are the endpoints that the proof removed.
+The event $Z_k$ that the digits of $U_k$ are eventually all equal to $1$ is null, and the proof sets $X_k=0$ on $\{U_k\in\{0,1\}\}$.
+The identity $\lambda(U_k=1)=0$ is recorded in the same paragraph.
+One uniform number produces infinitely many uniform numbers for almost every $\omega$, and $1/5$ is one of the exceptional points.
 
-(c) For the exponential law, $F(t)\ge u$ means $1-e^{-t}\ge u$, that is $t\ge-\log(1-u)$. So $G(u)=-\log(1-u)$. For the coin, $F(t)=0$ for $t<0$, $F(t)=1-p$ for $0\le t<1$ and $F(t)=1$ for $t\ge1$.
-The smallest $t$ with $F(t)\ge u$ is $0$ when $u\le1-p$ and $1$ when $u>1-p$: $G=\mathbf 1_{]1-p,1[}$. Finally $X_1(\frac15)=G(U_1)=G(\frac13)=-\log\frac23=\log\frac32\approx0.405$.
+For (c), the exponential distribution function satisfies $F(t)\ge u$ precisely when $t\ge-\log(1-u)$, for $u\in\,]0,1[$ and $t\ge0$.
+The quantile is $G(u)=-\log(1-u)$.
+For the coin, $F(t)=0$ when $t<0$, $F(t)=1-p$ when $0\le t<1$, and $F(t)=1$ when $t\ge1$.
+The smallest $t$ with $F(t)\ge u$ equals $0$ when $u\le 1-p$, and it equals $1$ when $u>1-p$.
+Thus $G=\mathbf 1_{]1-p,1[}$.
+With the exponential law as $\mu_1$, the value is $X_1(1/5)=G(U_1)=G(1/3)=-\log(2/3)=\log(3/2)\approx 0.405$.
+\end{solution}
+
+\begin{solution}{ex:v7c07a}
+\idea A countable set is a sequence of points, and each point can be hidden in an interval whose length is a term of a geometric series.
+\writeup Fix $\varepsilon>0$ and cover the point $x_n$ by the interval $]x_n-\varepsilon 2^{-n-1},\,x_n+\varepsilon 2^{-n-1}]$, which has length $\varepsilon 2^{-n}$.
+These intervals cover $\{x_n:n\ge1\}$, and the sum of their lengths is $\varepsilon\sum_{n\ge1}2^{-n}=\varepsilon$.
+The outer measure is at most $\varepsilon$.
+The number $\varepsilon$ is arbitrary, so $\lambda^*(\{x_n:n\ge1\})=0$.
+The paragraph before Theorem~\ref{thm:caratheodory} says that a set of outer measure $0$ is Lebesgue measurable, and so is every subset of it.
+Each singleton is closed, hence Borel, and a countable union of Borel sets is Borel.
+The rationals are a countable union of singletons, so $\Q$ is a Borel set of measure $0$.
+Finite additivity on the measurable set $[0,1]$ then gives $\lambda([0,1]\setminus\Q)=\lambda([0,1])-\lambda(\Q\cap[0,1])=1$.
+\end{solution}
+
+\begin{solution}{ex:v7c07b}
+\idea The limit inferior is an increasing union of intersections, so continuity from below compares it with the measures of the sets $A_n$.
+The limit superior needs a finite measure before the decreasing intersection may be passed inside $\mu$.
+\writeup Write $C_m=\bigcap_{n\ge m}A_n$ and $L=\bigcup_m C_m$, so $L=\liminf_n A_n$ and the sets $C_m$ increase to $L$.
+Proposition~\ref{prop:measureprops}(c) gives $\mu(L)=\lim_m\mu(C_m)$.
+The inclusion $C_m\subseteq A_m$ and monotonicity give $\mu(C_m)\le\mu(A_m)$, so the limit of $\mu(C_m)$ is at most $\liminf_n\mu(A_n)$.
+
+Write $B_m=\bigcup_{n\ge m}A_n$ and $M=\bigcap_m B_m$, so $M=\limsup_n A_n$ and the sets $B_m$ decrease to $M$.
+The hypothesis $\mu(\bigcup_n A_n)<\infty$ says that $\mu(B_1)$ is finite.
+Proposition~\ref{prop:measureprops}(d) gives $\mu(M)=\lim_m\mu(B_m)$.
+The inclusion $A_m\subseteq B_m$ gives $\mu(A_m)\le\mu(B_m)$, so $\limsup_n\mu(A_n)\le\lim_m\mu(B_m)=\mu(M)$.
+
+For the sliding intervals, $\lambda(A_n)=\lambda([n,n+1])=1$, so $\limsup_n\lambda(A_n)=1$.
+A real number $x$ belongs to $A_n$ for at most one index $n$, namely the integer $n$ with $n\le x\le n+1$ when $x\ge1$, and for no index when $x<1$.
+The limit superior is empty, and $\lambda(\varnothing)=0$.
+The union $\bigcup_{n\ge1}[n,n+1]$ equals $[1,\infty)$, which has infinite Lebesgue measure, so the finiteness hypothesis of the second inequality is the one that fails.
+\end{solution}
+
+\begin{solution}{ex:v7c07c}
+\idea Translation moves a cover by intervals onto a cover of the shifted set and does not change any length.
+The Carath\'eodory splitting condition travels with the same shift.
+\writeup Let $A\subseteq\R$ and $c\in\R$.
+If intervals $]a_k,b_k]$ cover $A$, the intervals $]a_k+c,b_k+c]$ cover $A+c$ and have the same lengths.
+The infimum that defines $\lambda^*(A+c)$ is therefore at most $\lambda^*(A)$.
+The same argument with $-c$ gives the reverse inequality, so $\lambda^*(A+c)=\lambda^*(A)$.
+
+Suppose $A$ is Lebesgue measurable, and let $T\subseteq\R$ be any test set.
+Measurability of $A$ applied to $T-c$ gives
+\[
+\lambda^*(T-c)=\lambda^*\bigl((T-c)\cap A\bigr)+\lambda^*\bigl((T-c)\setminus A\bigr).
+\]
+Translation invariance of $\lambda^*$ rewrites the three terms as $\lambda^*(T)$, $\lambda^*(T\cap(A+c))$ and $\lambda^*(T\setminus(A+c))$.
+Thus $A+c$ is Lebesgue measurable.
+The converse is the same statement with $-c$ in place of $c$.
+On a measurable set the outer measure agrees with Lebesgue measure, so $\lambda(A+c)=\lambda^*(A+c)=\lambda^*(A)=\lambda(A)$.
+\end{solution}
+
+\begin{solution}{ex:v7c07d}
+\idea If $A$ met every interval in relative measure at most $\alpha$, a tight open cover of $A$ would be forced to have measure at least $\lambda(A)/\alpha$, which is more than the cover was allowed to have.
+\writeup Consider first $\alpha=0$.
+Proposition~\ref{prop:regularity} supplies a compact set $K\subseteq A$ with $\lambda(K)>0$.
+The set $K$ is bounded, so some bounded open interval $I$ contains $K$, and then $\lambda(A\cap I)\ge\lambda(K)>0$.
+Since $\alpha\lambda(I)=0$, this is the strict inequality the exercise asks for.
+
+Now take $\alpha\in\,]0,1[$, and suppose toward a contradiction that $\lambda(A\cap I)\le\alpha\lambda(I)$ for every bounded open interval $I$.
+Outer regularity supplies an open set $U\supseteq A$ with $\lambda(U)<\lambda(A)/\alpha$.
+The right-hand side is finite because $\lambda(A)$ is finite, and it is strictly larger than $\lambda(A)$ because $\alpha<1$.
+As in the paragraph on Littlewood's first principle, $U$ is the union of the maximal dyadic intervals contained in $U$.
+Two dyadic intervals are nested or disjoint, so those maximal intervals $I_k$ are pairwise disjoint.
+Each is bounded, of length a power of $1/2$.
+A half-open dyadic interval $]a,b]$ meets $A$ in the same measure as the open interval $]a,b[$, because the endpoints are null, so the supposed bound on open intervals passes to these dyadic intervals.
+The ascent from a small dyadic interval inside $U$ to a maximal one stops, because an interval longer than $\lambda(U)$ cannot fit inside $U$.
+Every point of $U$ lies in some dyadic interval contained in $U$, because $U$ is open, so the maximal intervals cover $U$.
+Countable additivity gives $\lambda(U)=\sum_k\lambda(I_k)$.
+The set $A$ is covered by the intervals $I_k$, and the supposed bound on each of them gives
+\[
+\lambda(A)\le\sum_k\lambda(A\cap I_k)\le\sum_k\alpha\lambda(I_k)=\alpha\lambda(U)<\lambda(A).
+\]
+The last step is the choice of $U$.
+A number cannot be strictly smaller than itself, so some bounded open interval $I$ satisfies $\lambda(A\cap I)>\alpha\lambda(I)$.
 \end{solution}
 
 \section*{Sources and further reading}
 \addcontentsline{toc}{section}{Sources and further reading}
 
 \begin{itemize}
-\item G.~B.~Folland, \emph{Real Analysis: Modern Techniques and Their Applications}, 2nd ed., Wiley, 1999, Chapter~1. Semirings, premeasures,
-Carath\'eodory's theorem and Lebesgue--Stieltjes measures, as here.
-\item T.~Tao, \emph{An Introduction to Measure Theory}, American Mathematical Society, 2011, Chapter~1. Lebesgue measure built from elementary
-measure and Jordan measure, with many exercises.
-\item P.~Billingsley, \emph{Probability and Measure}, 3rd ed., Wiley, 1995, Sections~1--3. Borel's normal number theorem first, then measure theory.
-\item H.~Lebesgue, \emph{Int\'egrale, longueur, aire}, Annali di Matematica Pura ed Applicata 7 (1902), 231--359; C.~Carath\'eodory, \emph{Vorlesungen \"uber
-reelle Funktionen}, Teubner, 1918.
-\item E.~Borel, \emph{Les probabilit\'es d\'enombrables et leurs applications arithm\'etiques}, Rendiconti del Circolo Matematico di Palermo 27 (1909),
-247--271.
-\item G.~Vitali, \emph{Sul problema della misura dei gruppi di punti di una retta}, Bologna, 1905; R.~M.~Solovay, \emph{A model of set theory in which every
-set of reals is Lebesgue measurable}, Annals of Mathematics 92 (1970), 1--56.
-\item H.~Steinhaus, \emph{Sur les distances des points dans les ensembles de mesure positive}, Fundamenta Mathematicae 1 (1920), 93--104; D.~G.~Champernowne,
-\emph{The construction of decimals normal in the scale of ten}, Journal of the London Mathematical Society 8 (1933), 254--260.
-\item \emph{For the stories in the introduction.} Lebesgue's question is in his thesis, cited above, and Vitali's answer in the 1905 pamphlet. F.~Hausdorff, \emph{Grundz\"uge der
-Mengenlehre}, Veit, 1914, and S.~Banach and A.~Tarski, ``Sur la d\'ecomposition des ensembles de points en parties respectivement congruentes'', \emph{Fundamenta Math.}
-6 (1924), 244--277, for the paradoxes; R.~M.~Robinson, ``On the decomposition of spheres'', \emph{Fundamenta Math.} 34 (1947), 246--260, for the five pieces; C.~Carath\'eodory, ``\"Uber das lineare Mass von Punktmengen'', \emph{Nachr.\ Ges.\ Wiss.\ G\"ottingen} (1914), 404--426, is where outer measures come from. Littlewood's three principles are in J.~E.~Littlewood, \emph{Lectures on the Theory of Functions}, Oxford University Press, 1944.
+\item The route through semirings, premeasures, Carath\'eodory's theorem and Lebesgue--Stieltjes measures is the one in G.~B.~Folland, \emph{Real Analysis: Modern Techniques and Their Applications}, second edition, Wiley, 1999, Chapter~1.
+\item Lebesgue measure built from elementary measure, together with a large exercise list, is the account in T.~Tao, \emph{An Introduction to Measure Theory}, American Mathematical Society, 2011, Chapter~1.
+\item Borel's normal-number theorem is placed before the general theory in P.~Billingsley, \emph{Probability and Measure}, third edition, Wiley, 1995, Sections~1--3.
+\item The thesis is H.~Lebesgue, \emph{Int\'egrale, longueur, aire}, Annali di Matematica Pura ed Applicata 7 (1902), 231--359, and the lectures that followed are C.~Carath\'eodory, \emph{Vorlesungen \"uber reelle Funktionen}, Teubner, 1918.
+\item The normal-number paper is E.~Borel, \emph{Les probabilit\'es d\'enombrables et leurs applications arithm\'etiques}, Rendiconti del Circolo Matematico di Palermo 27 (1909), 247--271.
+\item The non-measurable set is G.~Vitali, \emph{Sul problema della misura dei gruppi di punti di una retta}, Bologna, 1905, and the model without a full axiom of choice is R.~M.~Solovay, \emph{A model of set theory in which every set of reals is Lebesgue measurable}, Annals of Mathematics 92 (1970), 1--56.
+\item The difference theorem is H.~Steinhaus, \emph{Sur les distances des points dans les ensembles de mesure positive}, Fundamenta Mathematicae 1 (1920), 93--104, and the explicit normal number in base $10$ is D.~G.~Champernowne, \emph{The construction of decimals normal in the scale of ten}, Journal of the London Mathematical Society 8 (1933), 254--260.
+\item Lebesgue's question is the one in the thesis just cited, and Vitali's answer is the 1905 pamphlet.
+The further decompositions are F.~Hausdorff, \emph{Grundz\"uge der Mengenlehre}, Veit, 1914, together with S.~Banach and A.~Tarski, ``Sur la d\'ecomposition des ensembles de points en parties respectivement congruentes'', \emph{Fundamenta Math.} 6 (1924), 244--277.
+Five pieces are the result of R.~M.~Robinson, ``On the decomposition of spheres'', \emph{Fundamenta Math.} 34 (1947), 246--260.
+Outer measure, in the form used here, is the construction of C.~Carath\'eodory, ``\"Uber das lineare Mass von Punktmengen'', \emph{Nachr.\ Ges.\ Wiss.\ G\"ottingen} (1914), 404--426.
+The approximation named above sits among the three principles in J.~E.~Littlewood, \emph{Lectures on the Theory of Functions}, Oxford University Press, 1944.
 \end{itemize}
