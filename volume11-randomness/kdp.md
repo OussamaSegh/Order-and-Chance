@@ -22,4 +22,4 @@ large deviations, Cramer and Sanov theorems
 concentration of measure, Stein's method
 martingales, de Finetti, ergodic theorem
 random permutations, Poisson-Dirichlet law
-probabilistic number theory, card shuffling and cutoff
+probabilistic number theory, card shuffling
