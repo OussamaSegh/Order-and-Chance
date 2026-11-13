@@ -165,6 +165,8 @@ The second review, `docs/review/volume7-rewrite-second-review-2026-11-13.md` on 
 - Lemma `lem:monoivt` again says every value between \(f(a)\) and \(f(b)\), endpoints included. The proof takes the endpoints first, then the open interval, and reduces a decreasing map to \(-f\).
 - Theorem `thm:condexp` again says that \(X\ge 0\) almost surely forces \(\mathbb E[X\mid\mathcal G]\ge 0\) almost surely. The proof passes to \(\max(X,0)\).
 - The solution of `ex:v7c11b` cites `thm:continuum` for the uncountability of \(\R\).
+- Theorem `thm:dct6` now assumes that the pointwise limit \(f\) is measurable. Without that hypothesis the claim is false on Borel measure: the indicator of a non-Borel subset of a Borel null set is a dominated almost-everywhere limit of the zero sequence and is not integrable, because the integral is not defined. The proof builds a measurable \(\varphi\) that agrees with the limit off one null set, then uses the hypothesis to pass from \(\varphi\) to \(f\). Vitali's theorem is unchanged: convergence in measure is defined only for a measurable limit.
+- The cut plate labels \(\frac43\), not both \(\frac75\) and \(1.4\). The open-ball radius ends inside the circle. Banach and Tarski in 1924 are credited with a finite decomposition; five pieces, and the failure of four, are Robinson's 1947 result. The square-root step in `thm:uniqueR` now uses \(h(2s+1)<h(2s+2)<x-s^2\).
 
 A comparison of every numbered statement with `origin/main` found no other dropped hypothesis or quantifier. Replacements such as “for all” by “for every”, and “unique” by “exactly one”, keep the claim.
 
