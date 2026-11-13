@@ -6,38 +6,29 @@ and out of them, by this method of production, separate, as by a kind of instrum
 \upshape --- Nicomachus of Gerasa, \emph{Introduction to Arithmetic} (about 100 AD), Book~I, Chapter~13
 \end{center}
 
-Around 240 BC, Eratosthenes of Cyrene, who also measured the circumference of the Earth, described how to find the primes: write the numbers, strike out the
-multiples of $2$, then of $3$, then of $5$, and so on; what survives the multiples of every prime up to $\sqrt x$ is the primes up to $x$. It is an algorithm, not a theorem,
-and it gives no formula. In 1808 Legendre turned it into one. The number of survivors is an inclusion--exclusion sum, exact, and it looks like it should give the prime
-number theorem at once. It does not: the formula has $2^{\pi(\sqrt x)}$ terms, and the errors pile up beyond all control.
+Around 240 BC, Eratosthenes of Cyrene described how to list the primes. Write the integers in a row. Cross out the multiples of $2$, then of $3$, then of $5$, and so on. What survives every prime up to $\sqrt x$ is $1$ together with the primes up to $x$. The description is an algorithm. It does not by itself give a formula for $\pi(x)$.
 
-For another century nobody could make a sieve count anything. Then, between 1915 and 1919, a young Norwegian, Viggo Brun, found how to stop the inclusion--exclusion
-early, with an error that could be bounded. He applied it to the oldest unsolved question about primes: are there infinitely many twin primes, like $11,13$ or $101,103$? He
-could not answer it, and nobody can yet. But he proved something no one had suspected: the twin primes are so rare that the sum of their reciprocals converges,
+In 1808 Legendre turned the algorithm into an exact formula, an inclusion--exclusion over the primes up to $z$. The formula looks as if it should give the prime number theorem at once. It has $2^{\pi(z)}$ terms. When $z$ is as large as $\sqrt x$, those terms are too numerous for the error to be useful, and the main term is the wrong size.
+
+For another century, sieve upper bounds stayed out of reach. Between 1915 and 1919 Viggo Brun stopped the inclusion--exclusion early, with an error he could bound. He applied the truncated sum to twin primes, pairs such as $(11,13)$ and $(101,103)$. He did not prove that infinitely many such pairs exist. He proved that they are sparse enough for a series of reciprocals to converge:
 \[
 \begin{aligned}\Bigl(\frac13+\frac15\Bigr)&+\Bigl(\frac15+\frac17\Bigr)\eqbr+\Bigl(\frac1{11}+\frac1{13}\Bigr)+\cdots=B_2<\infty,\end{aligned}
 \]
-whereas $\sum\frac1p$ diverges (Chapter~\ref{ch:mertens}). The value $B_2=1.9021605\ldots$ has its own place in history: in 1994 Thomas Nicely, computing it on a new Pentium processor,
-noticed that the chip divided incorrectly. Intel replaced the processors, at a cost of about $475$ million dollars.
+while $\sum 1/p$ diverges (Chapter~\ref{ch:mertens}). A prime that sits in two twin pairs, such as $5$, appears twice. The value $B_2=1.9021605\ldots$ has a place in the history of computation as well. In 1994 Thomas Nicely, evaluating the constant, found that a new Pentium processor divided incorrectly. Intel's announced charge for replacing the processors was about $475$ million dollars. The note is in the sources.
 
-In 1947 Atle Selberg replaced Brun's combinatorics by a single idea: an upper bound for a count is a sum of squares, and the best sum of squares is the solution of a quadratic
-optimisation problem. Six years earlier, Yuri Linnik had found a sieve of a different kind, the \emph{large sieve}, which removes many residue classes for each prime and is really
-a statement about harmonic analysis. This chapter proves both, with their first applications: twin primes, primes in short intervals, and sets that look like squares.
-Selberg's weights are still at the heart of the subject: they are the starting point of Zhang's and Maynard's proofs (2013) that there are infinitely many pairs of primes at
-bounded distance.
+In 1947 Atle Selberg replaced Brun's bookkeeping by one idea. An upper bound for a count is a sum of squares, and the best sum of squares is the minimum of a quadratic form. Six years earlier, Yuri Linnik had found a sieve of a different shape, the large sieve, which removes many residue classes for each prime. Its modern form is an inequality for trigonometric polynomials. This chapter proves both sieves, at the strength written below, and gives the first applications: primes in short intervals, twin primes, and sets that look like the squares modulo every small prime. The same weights are the starting point of the proofs of Zhang and of Maynard (2013) that infinitely many pairs of primes lie at a bounded distance.
 
 \begin{think}
-If divisibility by different primes were independent events, the proportion of $n\le x$ with no prime factor $\le z$ would be $\prod_{p\le z}(1-\frac1p)$. For $z=\sqrt x$, the survivors
-are exactly $1$ and the primes in $]\sqrt x,x]$. By Mertens's theorem and the prime number theorem, compare the two. Which is wrong, and by how much?
+If divisibility by different primes were independent, the proportion of $n\le x$ with no prime factor $\le z$ would be $\prod_{p\le z}(1-1/p)$. For $z=\sqrt x$, the survivors are exactly $1$ and the primes in $]\sqrt x,x]$. Compare that count with the product, using Mertens's theorem and the prime number theorem. Which of the two is larger, and by what factor?
 \end{think}
 
 \section{Legendre's sieve, and why it fails}
 
-Let $P(z)=\prod_{p\le z}p$ and let $\Phi(x,z)$ be the number of integers $1\le n\le x$ with no prime factor $\le z$. Since $\sum_{d\mid m}\mu(d)$ is $1$ if $m=1$ and $0$ otherwise (Volume~2, Theorem~4.4),
+Let $P(z)=\prod_{p\le z}p$, and let $\Phi(x,z)$ be the number of integers $1\le n\le x$ with no prime factor $\le z$. Since $\sum_{d\mid m}\mu(d)$ equals $1$ if $m=1$ and equals $0$ otherwise (Volume~2, Theorem~4.4),
 \[
 \Phi(x,z)=\sum_{n\le x}\sum_{d\mid(n,P(z))}\mu(d)=\sum_{d\mid P(z)}\mu(d)\Bigl\lfloor\frac xd\Bigr\rfloor.
 \]
-This is Legendre's identity: inclusion--exclusion over the primes $\le z$. Writing $\lfloor\frac xd\rfloor=\frac xd-\{\frac xd\}$ separates a main term from an error.
+This is Legendre's identity: inclusion--exclusion over the primes $\le z$. Writing $\lfloor x/d\rfloor=x/d-\{x/d\}$ separates a main term from an error.
 
 \begin{proposition}[Legendre, 1808]\label{prop:legendre}
 For $x\ge1$ and $z\ge2$,
@@ -46,31 +37,45 @@ For $x\ge1$ and $z\ge2$,
 \]
 \end{proposition}
 \begin{proof}
-$\sum_{d\mid P(z)}\mu(d)\frac xd=x\prod_{p\le z}(1-\frac1p)$ by expanding the product, and each of the $2^{\pi(z)}$ fractional parts is in $[0,1[$.
+Expanding the product gives $\sum_{d\mid P(z)}\mu(d)\,x/d=x\prod_{p\le z}(1-1/p)$. Each of the $2^{\pi(z)}$ fractional parts lies in $[0,1[$.
 \end{proof}
 
-The main term is right only if the error is small, so $z$ must be tiny: $2^{\pi(z)}\le\sqrt x$ forces $z$ to be about $\log x$. With $z=\log x$, Mertens's theorem
-(Theorem~\ref{thm:mertens3}) gives $\pi(x)\le z+\Phi(x,z)=O(\frac x{\log\log x})$ (Exercise~\ref{ex:legendrepi}): true, and very weak.
+The main term is useful when the error is smaller than it is, so $z$ has to be small. The inequality $2^{\pi(z)}\le\sqrt x$ forces $z$ to be about $\log x$. With $z=\log x$, Mertens's theorem (Theorem~\ref{thm:mertens3}) gives $\pi(x)\le z+\Phi(x,z)=O(x/\log\log x)$ (Exercise~\ref{ex:legendrepi}). The bound is true, and it is weak.
 
-Worse, the main term is \emph{wrong} at $z=\sqrt x$. There $\Phi(x,\sqrt x)=\pi(x)-\pi(\sqrt x)+1\sim\frac x{\log x}$, while $x\prod_{p\le\sqrt x}(1-\frac1p)\sim\frac{2e^{-\gamma}x}{\log x}=\frac{1.1229\,x}{\log x}$. The
-$2^{\pi(\sqrt x)}$ fractional parts, each in $[0,1[$, conspire to remove about $11\%$ of the main term, which is $12\%$ of $\frac x{\log x}$ (Exercise~\ref{ex:legendrefail}). This is the factor already met in Chapter~\ref{ch:mertens}, and it is not a
-defect of Legendre's bookkeeping: a sieve that only knows how many $n$ lie in each residue class modulo small numbers cannot tell the primes from integers with exactly two large prime
-factors. Selberg made this precise as the \emph{parity problem}: sieve methods alone cannot distinguish integers with an even number of prime factors from those with an odd number.
-That is why sieves give upper bounds of the right order of magnitude, and lower bounds only for ``almost primes''.
+On a small range the formula can be exact. Take $x=30$ and $z=5$. The integers up to $30$ with no prime factor $\le5$ are
+\[
+1,7,11,13,17,19,23,29,
+\]
+eight numbers. The main term is $30\cdot\frac12\cdot\frac23\cdot\frac45=8$. The error bound is $2^{\pi(5)}=8$. Here the error happens to be $0$, and the allowance of $8$ is as large as the count itself.
+
+At $z=\sqrt x$ the main term has the wrong constant. There $\Phi(x,\sqrt x)=\pi(x)-\pi(\sqrt x)+1\sim x/\log x$, while
+\[
+x\prod_{p\le\sqrt x}\Bigl(1-\frac1p\Bigr)\sim\frac{2e^{-\gamma}x}{\log x}=\frac{1.1229\,x}{\log x}.
+\]
+The difference is about $12.3\%$ of $x/\log x$, which is $10.9\%$ of the main term (Exercise~\ref{ex:legendrefail}). The fractional parts, each in $[0,1[$, add up to a positive proportion of the main term. The same factor already appeared in Chapter~\ref{ch:mertens}. A sieve that only knows how many integers lie in each residue class modulo small numbers counts a product of two large primes in the same way that it counts a prime. Selberg called this the parity problem: sieve methods of this shape do not separate integers with an even number of prime factors from integers with an odd number. That is why the sieves below give upper bounds of the right order, and lower bounds for numbers with a bounded number of prime factors.
+
+Figure~\ref{fig:sieve60} runs the sieve up to $60$, crossing out multiples of $2$, of $3$ and of $5$.
+
+\begin{figure}[ht]
+\centering
+\fig{ch08-new-sieve}
+\caption{The integers from $1$ to $60$. Charcoal strokes cross out the multiples of $2$, other than $2$ itself. Coral strokes cross out the remaining multiples of $3$, and the other diagonal crosses out the remaining multiples of $5$. The coral rings mark $2$, $3$ and $5$, the primes doing the crossing. Sixteen numbers are left unmarked. Fifteen of them are $1$ or prime. The sixteenth is $49=7^2$.}
+\label{fig:sieve60}
+\end{figure}
 
 \section{Selberg's sieve}
 
 \subsection*{The setting}
 
-Let $\mathcal A$ be a finite list of positive integers (repetitions allowed), $\mathcal P$ a set of primes, $z\ge2$, and $P(z)=\prod_{p\in\mathcal P,\,p\le z}p$. We want an upper bound for
+Let $\mathcal A$ be a finite list of positive integers, repetitions allowed. Let $\mathcal P$ be a set of primes, let $z\ge2$, and let $P(z)=\prod_{p\in\mathcal P,\,p\le z}p$. The count to bound from above is
 \[
 S(\mathcal A,\mathcal P,z)=\#\{a\in\mathcal A:\gcd(a,P(z))=1\}.
 \]
-For $d\mid P(z)$ let $\mathcal A_d$ be the sublist of multiples of $d$. The only information we use is that $|\mathcal A_d|$ is roughly a proportion $g(d)$ of a total $X$:
+For $d\mid P(z)$ let $\mathcal A_d$ be the sublist of multiples of $d$. The only information used is that $|\mathcal A_d|$ is roughly a proportion $g(d)$ of a total $X$:
 \[
 |\mathcal A_d|=g(d)X+r_d\qquad(d\mid P(z)),
 \]
-where $g$ is multiplicative, $0<g(p)<1$ for $p\in\mathcal P$, and $r_d$ is a remainder we hope is small. For the integers in an interval of length $X$, $g(d)=\frac1d$ and $|r_d|\le1$. Let
+where $g$ is multiplicative, $0<g(p)<1$ for $p\in\mathcal P$, and $r_d$ is a remainder. For the integers in an interval of length $X$, one has $g(d)=1/d$ and $|r_d|\le1$. Let
 \[
 h(p)=\frac{g(p)}{1-g(p)},\qquad G(y)=\sum_{\substack{d\le y\\d\mid P(z)}}\mu^2(d)h(d),
 \]
@@ -84,53 +89,67 @@ S(\mathcal A,\mathcal P,z)\le\frac X{G(y)}+\sum_{\substack{d_1,d_2\le y\\d_1,d_2
 where $[d_1,d_2]$ is the least common multiple.
 \end{theorem}
 
-The idea fits in one line. If $\lambda_1=1$, then for every integer $m$, $\bigl(\sum_{d\mid m}\lambda_d\bigr)^2$ is $1$ when $m=1$ and \emph{at least $0$} otherwise. So any real weights with $\lambda_1=1$ give an upper
-bound, and we choose the weights that make the bound smallest. Brun had to engineer signs; Selberg's squares are positive for free.
+The idea is one line. If $\lambda_1=1$, then for every positive integer $m$ the square $\bigl(\sum_{d\mid m}\lambda_d\bigr)^2$ equals $1$ when $m=1$, and is at least $0$ otherwise. Any real weights with $\lambda_1=1$ give an upper bound. The weights are then chosen to make the bound as small as the quadratic form allows. Brun had to arrange signs. Selberg's squares are non-negative for every $m$.
 
 \begin{proof}
-\emph{Squares.} Let $(\lambda_d)$ be real numbers indexed by the $d\mid P(z)$ with $d\le y$, with $\lambda_1=1$. For $a\in\mathcal A$, $\bigl(\sum_{d\mid(a,P(z))}\lambda_d\bigr)^2$ is $1$ if $\gcd(a,P(z))=1$, and is $\ge0$ otherwise. So
+\emph{Squares.} Let $(\lambda_d)$ be real numbers indexed by the $d\mid P(z)$ with $d\le y$, and let $\lambda_1=1$. For $a\in\mathcal A$, the square $\bigl(\sum_{d\mid(a,P(z))}\lambda_d\bigr)^2$ equals $1$ if $\gcd(a,P(z))=1$, and is at least $0$ otherwise. So
 \[
 \begin{aligned}S&\le\sum_{a\in\mathcal A}\Bigl(\sum_{d\mid(a,P(z))}\lambda_d\Bigr)^2=\sum_{d_1,d_2}\lambda_{d_1}\lambda_{d_2}|\mathcal A_{[d_1,d_2]}|\\&=XQ+\sum_{d_1,d_2}\lambda_{d_1}\lambda_{d_2}r_{[d_1,d_2]},\end{aligned}
 \]
-since $d_1\mid a$ and $d_2\mid a$ means $[d_1,d_2]\mid a$, and where $Q=\sum_{d_1,d_2}\lambda_{d_1}\lambda_{d_2}g([d_1,d_2])$. We minimise the quadratic form $Q$, then check that the minimiser has $|\lambda_d|\le1$, which bounds the
-second sum by the remainder of the theorem.
+since $d_1\mid a$ and $d_2\mid a$ together mean $[d_1,d_2]\mid a$, and where $Q=\sum_{d_1,d_2}\lambda_{d_1}\lambda_{d_2}g([d_1,d_2])$. The quadratic form $Q$ is minimised first. The minimiser satisfies $|\lambda_d|\le1$, which bounds the second sum by the remainder in the theorem.
 
-\emph{Diagonalising $Q$.} For squarefree $d_1,d_2$, $g([d_1,d_2])=\frac{g(d_1)g(d_2)}{g((d_1,d_2))}$, by multiplicativity. Since $\frac1{g(p)}=1+\frac1{h(p)}$, for squarefree $m$ we have $\frac1{g(m)}=\prod_{p\mid m}\bigl(1+\frac1{h(p)}\bigr)=\sum_{e\mid m}\frac1{h(e)}$.
+\emph{Diagonalising $Q$.} For squarefree $d_1,d_2$, multiplicativity gives $g([d_1,d_2])=g(d_1)g(d_2)/g((d_1,d_2))$. Since $1/g(p)=1+1/h(p)$, for squarefree $m$ one has
+\[
+\frac1{g(m)}=\prod_{p\mid m}\Bigl(1+\frac1{h(p)}\Bigr)=\sum_{e\mid m}\frac1{h(e)}.
+\]
 Hence
 \[
 \begin{aligned}Q&=\sum_{d_1,d_2}\lambda_{d_1}g(d_1)\lambda_{d_2}g(d_2)\eqbr\quad\times\sum_{e\mid(d_1,d_2)}\frac1{h(e)}=\sum_e\frac{u_e^2}{h(e)},\end{aligned}
 \]
-where $u_e=\sum_{e\mid d}\lambda_dg(d)$, with $e$ and $d$ running over the divisors of $P(z)$ up to $y$. This change of variables is invertible: $\lambda_dg(d)=\sum_{d\mid e}\mu(\frac ed)u_e$, as one checks by substituting the definition of $u_e$ and using that $\sum_{d\mid e\mid k}\mu(\frac ed)$ is $1$ if $k=d$ and $0$ otherwise. The
-constraint $\lambda_1=1$ becomes $\sum_e\mu(e)u_e=1$.
+where $u_e=\sum_{e\mid d}\lambda_dg(d)$, and $e$ and $d$ run over the divisors of $P(z)$ up to $y$. The change of variables is invertible: $\lambda_dg(d)=\sum_{d\mid e}\mu(e/d)u_e$. Substituting the definition of $u_e$ and using that $\sum_{d\mid e\mid k}\mu(e/d)$ equals $1$ if $k=d$ and equals $0$ otherwise checks the inversion. The constraint $\lambda_1=1$ becomes $\sum_e\mu(e)u_e=1$.
 
 \emph{The minimum.} By Cauchy--Schwarz,
 \[
 \begin{aligned}1=\Bigl(\sum_e\mu(e)u_e\Bigr)^2&\le\Bigl(\sum_e\frac{u_e^2}{h(e)}\Bigr)\Bigl(\sum_eh(e)\Bigr)\eqbr=Q\cdot G(y),\end{aligned}
 \]
-with equality when $u_e=\frac{\mu(e)h(e)}{G(y)}$. With this choice, $Q=\frac1{G(y)}$.
+with equality when $u_e=\mu(e)h(e)/G(y)$. With this choice, $Q=1/G(y)$.
 
-\emph{The weights are at most $1$.} Write $e=dm$ in the inversion formula; $m$ is squarefree and coprime to $d$, $\mu(m)\mu(dm)=\mu(d)\mu(m)^2=\mu(d)$, and $h(dm)=h(d)h(m)$. So
+\emph{The weights are at most $1$.} Write $e=dm$ in the inversion formula. Then $m$ is squarefree and coprime to $d$, $\mu(m)\mu(dm)=\mu(d)\mu(m)^2=\mu(d)$, and $h(dm)=h(d)h(m)$. So
 \[
 \lambda_d=\frac{\mu(d)h(d)}{g(d)G(y)}\sum_{\substack{m\le y/d,\ m\mid P(z)\\(m,d)=1}}\mu^2(m)h(m).
 \]
-Now $\frac{h(d)}{g(d)}=\prod_{p\mid d}\frac1{1-g(p)}=\prod_{p\mid d}(1+h(p))=\sum_{k\mid d}h(k)$. Each product $km$ with $k\mid d$ and $m$ in the sum is a squarefree divisor of $P(z)$, at most $y$, and different pairs give
-different products ($k=(km,d)$). So $\bigl(\sum_{k\mid d}h(k)\bigr)\bigl(\sum_m\mu^2(m)h(m)\bigr)\le G(y)$, which is $|\lambda_d|\le1$. Then $|\lambda_{d_1}\lambda_{d_2}r_{[d_1,d_2]}|\le|r_{[d_1,d_2]}|$.
+Now $h(d)/g(d)=\prod_{p\mid d}1/(1-g(p))=\prod_{p\mid d}(1+h(p))=\sum_{k\mid d}h(k)$. Each product $km$ with $k\mid d$ and $m$ in the sum is a squarefree divisor of $P(z)$, at most $y$, and different pairs give different products, because $k=(km,d)$. So
+\[
+\Bigl(\sum_{k\mid d}h(k)\Bigr)\Bigl(\sum_m\mu^2(m)h(m)\Bigr)\le G(y),
+\]
+which is $|\lambda_d|\le1$. Then $|\lambda_{d_1}\lambda_{d_2}r_{[d_1,d_2]}|\le|r_{[d_1,d_2]}|$.
 \end{proof}
 
-To use the theorem we need a lower bound for $G(y)$. For the integers themselves it is a pleasant identity in disguise.
+Figure~\ref{fig:selweights} draws these weights for the integers themselves, with $y=10$. The value at $d=1$ is $1$. The value at $d=2$ is $-21/22$. Exercise~\ref{ex:weightten} computes the whole list as fractions.
+
+\begin{figure}[ht]
+\centering
+\fig{ch08-new-weights}
+\caption{The Selberg weights $\lambda_d$ for the integers, with level $y=10$. Coral bars are positive and charcoal bars are negative. The height at $d=1$ is $1$. The height at $d=2$ is $-21/22$. The seven values are $1,-21/22,-9/11,-15/22,9/11,-7/22,15/22$, in the order $d=1,2,3,5,6,7,10$.}
+\label{fig:selweights}
+\end{figure}
+
+To use the theorem one needs a lower bound for $G(y)$. For the integers the bound is a comparison with the harmonic series.
 
 \begin{lemma}\label{lem:Glog}
 For $y\ge1$, $\displaystyle\sum_{d\le y}\frac{\mu^2(d)}{\varphi(d)}\ge\log y$.
 \end{lemma}
 \begin{proof}
-For squarefree $d$, $\frac1{\varphi(d)}=\frac1d\prod_{p\mid d}\bigl(1-\frac1p\bigr)^{-1}=\frac1d\prod_{p\mid d}\sum_{k\ge0}p^{-k}=\sum_{\operatorname{rad}(m)=d}\frac1m$, where $\operatorname{rad}(m)$ is the product of the primes dividing $m$. Every $m\le y$
-has $\operatorname{rad}(m)\le m\le y$, so the sum is at least $\sum_{m\le y}\frac1m\ge\log y$.
+For squarefree $d$,
+\[
+\frac1{\varphi(d)}=\frac1d\prod_{p\mid d}\Bigl(1-\frac1p\Bigr)^{-1}=\frac1d\prod_{p\mid d}\sum_{k\ge0}p^{-k}=\sum_{\operatorname{rad}(m)=d}\frac1m,
+\]
+where $\operatorname{rad}(m)$ is the product of the distinct primes dividing $m$. Every $m\le y$ has $\operatorname{rad}(m)\le m\le y$, so the sum is at least $\sum_{m\le y}1/m\ge\log y$.
 \end{proof}
 
 \subsection*{Primes in short intervals}
 
-The first application counts primes in any interval of length $N$, wherever it is. The prime number theorem says nothing about $[x,x+N]$ when $N$ is much smaller than $x$; the sieve
-does not care where the interval is.
+The first application counts primes in an interval of length $N$, wherever the interval sits. The prime number theorem says nothing about $[x,x+N]$ when $N$ is much smaller than $x$. The sieve does not use the starting point, only the length.
 
 \begin{theorem}[Brun--Titchmarsh]\label{thm:bt}
 Uniformly for $x\ge0$ and $N\ge3$,
@@ -139,285 +158,327 @@ Uniformly for $x\ge0$ and $N\ge3$,
 \]
 \end{theorem}
 \begin{proof}
-Let $\mathcal A$ be the integers in $]x,x+N]$, $\mathcal P$ all primes, and $X=N$. For $d\ge1$, $|\mathcal A_d|=\frac Nd+r_d$ with $|r_d|\le1$; so $g(d)=\frac1d$ and $h(p)=\frac1{p-1}$, $h(d)=\frac1{\varphi(d)}$. Take
-$y=z=\frac{\sqrt N}{\log N}$ (for $N$ large; small $N$ go into the $O$). Every squarefree $d\le y$ divides $P(z)$, so by Lemma~\ref{lem:Glog}, $G(y)\ge\log y=\frac12\log N-\log\log N$. The remainder
-is at most the number of pairs $(d_1,d_2)$, that is $y^2=\frac N{\log^2N}$. A prime in $]x,x+N]$ is either $\le z$ or coprime to $P(z)$, so
+Let $\mathcal A$ be the integers in $]x,x+N]$, let $\mathcal P$ be all primes, and let $X=N$. For $d\ge1$, one has $|\mathcal A_d|=N/d+r_d$ with $|r_d|\le1$, so $g(d)=1/d$, $h(p)=1/(p-1)$ and $h(d)=1/\varphi(d)$. Take $y=z=\sqrt N/\log N$ for $N$ large; small $N$ go into the $O$. Every squarefree $d\le y$ divides $P(z)$, so Lemma~\ref{lem:Glog} gives $G(y)\ge\log y=\frac12\log N-\log\log N$. The remainder is at most the number of pairs $(d_1,d_2)$, which is at most $y^2=N/\log^2N$. A prime in $]x,x+N]$ is either $\le z$ or coprime to $P(z)$, so
 \[
 \begin{aligned}\pi(x+N)-\pi(x)&\le z+\frac N{\frac12\log N-\log\log N}\eqbr+\frac N{\log^2N},\end{aligned}
 \]
 which is the claim.
 \end{proof}
 
-By the prime number theorem, an interval $]x,x+N]$ with $N$ about $x$ contains about $\frac N{\log x}$ primes. Brun--Titchmarsh bounds every interval of length $N$ by $\frac{2N}{\log N}$, wherever the interval sits. If $x=N^k$, the ratio of this bound to $\frac N{\log x}$ is $2k$, not $2$. The same sieve, run on a progression, gives
-$\pi(x;q,a)\le\frac{2x}{\varphi(q)\log(x/q)}(1+o(1))$ (Exercise~\ref{ex:btap}). The constant $2$ there is famous. We quote, without proof, that lowering it to $2-\varepsilon$
-uniformly for moduli $q$ up to a small power of $x$ would rule out the ``Siegel zeros'' mentioned in Chapter~\ref{ch:characters} (Friedlander and Iwaniec, in the Sources, tell the
-story). The parity problem is the reason the sieve alone cannot do it.
+By the prime number theorem, an interval $]x,x+N]$ with $N$ about $x$ contains about $N/\log x$ primes. Theorem~\ref{thm:bt} bounds every interval of length $N$ by $2N/\log N$, wherever the interval sits. If the interval begins at $x=N^k$, then $\log x=k\log N$, so the ratio of $2N/\log N$ to the prime-number-theorem scale $N/\log x$ is exactly $2k$, before the secondary factor $1+O(\log\log N/\log N)$. For $k=2$ the interval has length $\sqrt x$ and begins near $x$, and the ratio is $4$. The constant $2$ in the short-interval bound is this leading factor. It is a different $2$ from the one in the next paragraph.
+
+The same sieve, run on a progression, gives
+\[
+\pi(x;q,a)\le\frac{2x}{\varphi(q)\log(x/q)}\bigl(1+o(1)\bigr)
+\]
+when $\gcd(a,q)=1$ and $x/q\to\infty$ (Exercise~\ref{ex:btap}). The leading factor $2$ in that progression bound is the constant tied to Siegel zeros. Lowering it to $2-\varepsilon$, uniformly for moduli $q$ up to a small power of $x$, would rule out the Siegel zeros mentioned in Chapter~\ref{ch:characters}. The argument is quoted from Friedlander and Iwaniec, in the sources, and is not proved here. The parity problem is why the sieve, by itself, does not remove that $\varepsilon$.
 
 \begin{remark}[Montgomery and Vaughan, 1973; quoted]
-Montgomery and Vaughan removed the secondary term: $\pi(x+N)-\pi(x)\le\frac{2N}{\log N}$ for all $N\ge2$. Nothing later uses this sharper form.
+Montgomery and Vaughan removed the secondary term: $\pi(x+N)-\pi(x)\le 2N/\log N$ for all $N\ge2$. Nothing later uses this sharper form.
 \end{remark}
 
 \subsection*{Twin primes}
 
-Let $\pi_2(x)$ be the number of primes $p\le x$ such that $p+2$ is also prime. To catch both, sieve the products $n(n+2)$: both factors are prime and larger than $z$ exactly when $n(n+2)$
-has no prime factor $\le z$ (and $n>z$).
+Let $\pi_2(x)$ be the number of primes $p\le x$ such that $p+2$ is also prime. To catch both members of the pair, sieve the products $n(n+2)$. Both factors are prime and larger than $z$ precisely when $n>z$ and $n(n+2)$ has no prime factor $\le z$.
 
 \begin{theorem}[Brun, 1919]\label{thm:twins}
-$\pi_2(x)=O\Bigl(\dfrac x{\log^2x}\Bigr)$.
+$\pi_2(x)=O\bigl(x/\log^2x\bigr)$.
 \end{theorem}
 \begin{proof}
-\emph{The data.} Let $\mathcal A=\{n(n+2):1\le n\le x\}$ and $\mathcal P$ all primes. For squarefree $d$, $d\mid n(n+2)$ is a condition on $n\bmod d$; by the Chinese remainder theorem, the number $\rho(d)$ of solutions modulo
-$d$ is multiplicative, with $\rho(2)=1$ and $\rho(p)=2$ for $p$ odd (the classes $0$ and $-2$). Counting $n\le x$ in $\rho(d)$ classes modulo $d$, $|\mathcal A_d|=\frac{\rho(d)}dx+r_d$ with $|r_d|\le\rho(d)$. So
-$g(d)=\frac{\rho(d)}d$, $h(2)=1$, and $h(p)=\frac{2}{p-2}$ for odd $p$.
+\emph{The data.} Let $\mathcal A=\{n(n+2):1\le n\le x\}$ and let $\mathcal P$ be all primes. For squarefree $d$, the condition $d\mid n(n+2)$ is a condition on $n$ modulo $d$. By the Chinese remainder theorem, the number $\rho(d)$ of solutions modulo $d$ is multiplicative, with $\rho(2)=1$ and $\rho(p)=2$ for odd $p$ (the classes $0$ and $-2$). Counting $n\le x$ in $\rho(d)$ classes modulo $d$ gives $|\mathcal A_d|=\rho(d)x/d+r_d$ with $|r_d|\le\rho(d)$. So $g(d)=\rho(d)/d$, $h(2)=1$, and $h(p)=2/(p-2)$ for odd $p$.
 
-\emph{The main term.} For odd $p$, $h(p)=\frac2p\cdot\frac1{1-2/p}=\sum_{k\ge1}\frac{2^k}{p^k}$. So for odd squarefree $d$, $h(d)=\sum_{\operatorname{rad}(m)=d}\frac{2^{\Omega(m)}}m\ge\sum_{\operatorname{rad}(m)=d}\frac{\tau(m)}m$, where
-$\Omega(m)$ counts prime factors with multiplicity and $\tau(m)\le2^{\Omega(m)}$. As in Lemma~\ref{lem:Glog}, taking $z\ge y$,
+\emph{The main term.} For odd $p$, $h(p)=\frac2p\cdot\frac1{1-2/p}=\sum_{k\ge1}2^k/p^k$. So for odd squarefree $d$,
+\[
+h(d)=\sum_{\operatorname{rad}(m)=d}\frac{2^{\Omega(m)}}m\ge\sum_{\operatorname{rad}(m)=d}\frac{\tau(m)}m,
+\]
+where $\Omega(m)$ counts prime factors with multiplicity and $\tau(m)\le2^{\Omega(m)}$. As in Lemma~\ref{lem:Glog}, taking $z\ge y$,
 \[
 \begin{aligned}G(y)&\ge\sum_{\substack{m\le y\\m\text{ odd}}}\frac{\tau(m)}m=\sum_{\substack{ab\le y\\a,b\text{ odd}}}\frac1{ab}\ge\Bigl(\sum_{\substack{a\le\sqrt y\\a\text{ odd}}}\frac1a\Bigr)^2.\end{aligned}
 \]
-The harmonic sum up to $Y$ is $\log Y+O(1)$, and the even terms are $\frac12\log(Y/2)+O(1)$, so the odd sum is $\frac12\log Y+O(1)$. With $Y=\sqrt y$ this is at least $\frac12\log\frac{\sqrt y}2$ for large $y$, and $G(y)\ge\frac1{16}\log^2y\,(1+o(1))$.
+The harmonic sum up to $Y$ is $\log Y+O(1)$, and the even terms are $\frac12\log(Y/2)+O(1)$, so the odd sum is $\frac12\log Y+O(1)$. With $Y=\sqrt y$ this is at least $\frac12\log(\sqrt y/2)$ for large $y$, and $G(y)\ge\frac1{16}\log^2y\,(1+o(1))$.
 
-\emph{The remainder.} $\rho([d_1,d_2])\le2^{\omega([d_1,d_2])}\le2^{\omega(d_1)}2^{\omega(d_2)}\le\tau(d_1)\tau(d_2)$, so the remainder is at most $\bigl(\sum_{d\le y}\tau(d)\bigr)^2$. And $\sum_{d\le y}\tau(d)=\sum_{a\le y}\lfloor\frac ya\rfloor\le y(1+\log y)$.
+\emph{The remainder.} One has $\rho([d_1,d_2])\le2^{\omega([d_1,d_2])}\le2^{\omega(d_1)}2^{\omega(d_2)}\le\tau(d_1)\tau(d_2)$, so the remainder is at most $\bigl(\sum_{d\le y}\tau(d)\bigr)^2$. And $\sum_{d\le y}\tau(d)=\sum_{a\le y}\lfloor y/a\rfloor\le y(1+\log y)$.
 
-\emph{The choice.} Take $y=z=\frac{\sqrt x}{\log^3x}$. Then the remainder is at most $\frac x{\log^4x}$ for large $x$, $\log y\sim\frac12\log x$, and
+\emph{The choice.} Take $y=z=\sqrt x/\log^3x$. Then the remainder is at most $x/\log^4x$ for large $x$, one has $\log y\sim\frac12\log x$, and
 \[
 \begin{aligned}\pi_2(x)&\le z+\frac{16x}{\log^2y}(1+o(1))+\frac x{\log^4x}\eqbr=O\Bigl(\frac x{\log^2x}\Bigr).\end{aligned}
 \]
+Since $\log^2y\sim\frac14\log^2x$, the coefficient $16$ in front of $x/\log^2y$ becomes $64$ in front of $x/\log^2x$.
 \end{proof}
 
 \begin{corollary}[Brun, 1919]\label{cor:brun}
-The series $\sum\frac1p$ over the primes $p$ such that $p+2$ is prime converges.
+The series $\sum 1/p$, summed over the primes $p$ such that $p+2$ is prime, converges.
 \end{corollary}
 \begin{proof}
-By Lemma~\ref{lem:abelint} with $a_p=1$ for these $p$ and $f(t)=\frac1t$, $\sum_{p\le x}\frac1p=\frac{\pi_2(x)}x+\int_2^x\frac{\pi_2(t)}{t^2}\dd t$, and $\int_2^\infty\frac{\mathrm dt}{t\log^2t}<\infty$.
+By Lemma~\ref{lem:abelint} with $a_p=1$ for these primes and $f(t)=1/t$,
+\[
+\sum_{p\le x}\frac1p=\frac{\pi_2(x)}x+\int_2^x\frac{\pi_2(t)}{t^2}\dd t,
+\]
+and $\int_2^\infty\mathrm dt/(t\log^2t)<\infty$.
 \end{proof}
+
+\begin{remark}[Brun, 1919]
+Viggo Brun published the convergence in the \emph{Bulletin des Sciences Math\'ematiques}, volume 43 (1919), pages 100--104 and 124--128. The title says the series is ``convergente ou finie'': convergent, or a finite sum. The argument gives an upper bound of the shape in Theorem~\ref{thm:twins}. A finite set of twin primes would have satisfied the title just as well. Corollary~\ref{cor:brun} is that upper bound turned into a convergent series. The paper does not decide whether the set of twin primes is infinite.
+\end{remark}
 
 \begin{figure}[ht]
 \centering
 \fig{ch08-twins}
-\caption{The count $\pi_2(x)$ of twin prime pairs (charcoal) for $x\le10^5$, against the Hardy--Littlewood prediction $2C_2\int_2^x\frac{\mathrm dt}{\log^2t}$ (coral, dashed), with $C_2=0.6601618\ldots$ At $10^7$ the
-prediction is $58\,754$, and $\pi_2(10^7)=58\,980$.}
+\caption{The count $\pi_2(x)$ of twin prime pairs (charcoal) for $x\le10^5$, against the Hardy--Littlewood prediction $2C_2\int_2^x\mathrm dt/\log^2t$ (coral, dashed), with $C_2=0.6601618\ldots$ At $10^7$ the prediction is $58\,754$, and $\pi_2(10^7)=58\,980$.}
 \label{fig:twins}
 \end{figure}
 
 \begin{remark}[how many twins?]
-The constant in our proof is about $64$; a more careful evaluation of $G(y)$ gives Selberg's $\pi_2(x)\le(16C_2+o(1))\frac x{\log^2x}$, where $C_2=\prod_{p>2}\bigl(1-\frac1{(p-1)^2}\bigr)=0.6601618\ldots$ is the \emph{twin prime constant}.
-Hardy and Littlewood conjectured in 1923 that $\pi_2(x)\sim2C_2\frac x{\log^2x}$, so this bound is $8$ times too large. Sifting the shifted primes $p+2$ instead of the integers $n(n+2)$, with the Bombieri--Vinogradov theorem (Remark~\ref{rem:bv} below) to control the remainders, Bombieri and Davenport (1966) brought the factor down to $4$; the best known factor is about $3.4$ (Wu, 2004). The conjecture comes from the same
-probabilistic heuristic as the think box, corrected prime by prime: Figure~\ref{fig:twins} and Exercise~\ref{ex:twinheuristic} explain it, and Chapter~\ref{ch:random} returns to it. As for a lower bound,
-the parity problem blocks the sieve; the best result is Chen's theorem (1973): there are infinitely many primes $p$ such that $p+2$ is a prime or a product of two primes.
+The constant in the proof above is $64$, up to the factor $1+o(1)$. A more careful evaluation of $G(y)$ gives Selberg's bound $\pi_2(x)\le(16C_2+o(1))x/\log^2x$, where
+\[
+C_2=\prod_{p>2}\Bigl(1-\frac1{(p-1)^2}\Bigr)=0.6601618\ldots
+\]
+is the twin prime constant. Hardy and Littlewood conjectured in 1923 that $\pi_2(x)\sim2C_2\,x/\log^2x$, so the bound $16C_2$ is $8$ times the conjectured main term. Sifting the shifted primes $p+2$ in place of the integers $n(n+2)$, and using the Bombieri--Vinogradov theorem (Remark~\ref{rem:bv}) to control the remainders, Bombieri and Davenport (1966) brought the factor down to $4$. The best published factor of this shape is about $3.4$ (Wu, 2004). The conjecture is the same probabilistic count as the think box, corrected one prime at a time. Figure~\ref{fig:twins} and Exercise~\ref{ex:twinheuristic} explain the constant, and Chapter~\ref{ch:random} returns to it. A matching lower bound is blocked by the parity problem. The best result in that direction is Chen's theorem (1973), quoted here: there are infinitely many primes $p$ such that $p+2$ is either prime or a product of two primes.
 \end{remark}
 
 \begin{beauty}
-Zhang (2013) proved that there are infinitely many pairs of primes at distance at most $70\,000\,000$. Months later Maynard, and independently Tao, found a simpler and stronger method:
-for every $m$, there are bounded intervals containing $m$ primes infinitely often. Their tool is a Selberg sieve in several variables, with weights $\lambda_{d_1,\dots,d_k}$ chosen,
-exactly as above, to optimise a quadratic form. A collaborative project (Polymath, 2014) brought the gap down to $246$. The twin prime conjecture is the gap $2$.
+Zhang (2013) proved that infinitely many pairs of primes differ by at most $70\,000\,000$. Months later Maynard, and independently Tao, found a simpler method that is stronger: for every $m$, some bounded interval contains $m$ primes infinitely often. The tool is a Selberg sieve in several variables. The weights $\lambda_{d_1,\dots,d_k}$ are chosen, by the same Cauchy--Schwarz step as above, to minimise a quadratic form. A collaborative project (Polymath, 2014) brought the gap down to $246$. The twin prime conjecture is the gap $2$.
 \end{beauty}
 
 \section{The large sieve}
 
-Selberg's sieve removes a few residue classes, one or two per prime. Sometimes we know much more: a set of integers that avoids \emph{half} of the classes modulo every prime, like
-the squares. Linnik discovered in 1941 that such a set must be tiny. The modern proof, due to Rényi, Roth, Bombieri, Davenport, Halberstam, Gallagher and Montgomery, is pure harmonic analysis:
-a set that is lopsided modulo $p$ has a large Fourier coefficient at the fractions $\frac ap$, and a trigonometric polynomial cannot be large at too many well-spaced points.
+Selberg's sieve removes one or two residue classes for each prime. Sometimes the set avoids many more classes. The squares, for example, meet only about half of the classes modulo an odd prime. Linnik found in 1941 that a set with that many missing classes has to be small. The proof used here, in the form shaped by R\'enyi, Roth, Bombieri, Davenport, Halberstam, Gallagher and Montgomery, is an $L^2$ inequality. A set that is lopsided modulo $p$ has a large Fourier coefficient at the fractions $a/p$, and a trigonometric polynomial cannot be large at too many well-spaced points.
 
-Write $e(\alpha)=e^{2\pi i\alpha}$ and $\|\alpha\|$ for the distance from $\alpha$ to the nearest integer. Points $\alpha_1,\dots,\alpha_R$ are \emph{$\delta$-spaced} if $\|\alpha_r-\alpha_s\|\ge\delta$ for $r\ne s$.
+Write $e(\alpha)=e^{2\pi i\alpha}$, and write $\|\alpha\|$ for the distance from $\alpha$ to the nearest integer. Points $\alpha_1,\dots,\alpha_R$ are \emph{$\delta$-spaced} if $\|\alpha_r-\alpha_s\|\ge\delta$ for $r\ne s$.
 
 \begin{lemma}[Gallagher]\label{lem:gallagher}
-Let $\delta>0$ and $f$ of class $C^1$ on $I=[\alpha-\frac\delta2,\alpha+\frac\delta2]$, with complex values. Then
+Let $\delta>0$ and let $f$ be of class $C^1$ on $I=[\alpha-\delta/2,\alpha+\delta/2]$, with complex values. Then
 \[
 |f(\alpha)|\le\frac1\delta\int_I|f|+\frac12\int_I|f'|.
 \]
 \end{lemma}
 \begin{proof}
-For $\beta\in I$, $f(\alpha)=f(\beta)-\int_\alpha^\beta f'$. Average over $\beta\in I$: $|f(\alpha)|\le\frac1\delta\int_I|f|+\frac1\delta\int_I\int_{[\alpha,\beta]}|f'(t)|\dd t\dd\beta$. In the double integral, a point $t>\alpha$ is counted for the $\beta\in[t,\alpha+\frac\delta2]$,
-a set of length at most $\frac\delta2$, and similarly for $t<\alpha$. So the double integral is at most $\frac\delta2\int_I|f'|$.
+For $\beta\in I$, one has $f(\alpha)=f(\beta)-\int_\alpha^\beta f'$. Average over $\beta\in I$:
+\[
+|f(\alpha)|\le\frac1\delta\int_I|f|+\frac1\delta\int_I\int_{[\alpha,\beta]}|f'(t)|\dd t\dd\beta.
+\]
+In the double integral, a point $t>\alpha$ is counted for the $\beta\in[t,\alpha+\delta/2]$, a set of length at most $\delta/2$, and the same holds for $t<\alpha$. So the double integral is at most $(\delta/2)\int_I|f'|$.
 \end{proof}
 
 \begin{theorem}[the large sieve inequality]\label{thm:largesieve}
-Let $a_n$ be complex numbers for the integers $M<n\le M+N$, $S(\alpha)=\sum_na_ne(n\alpha)$, and let $\alpha_1,\dots,\alpha_R$ be $\delta$-spaced with $0<\delta\le\frac12$. Then
+Let $a_n$ be complex numbers for the integers $M<n\le M+N$, let $S(\alpha)=\sum_na_ne(n\alpha)$, and let $\alpha_1,\dots,\alpha_R$ be $\delta$-spaced with $0<\delta\le\frac12$. Then
 \[
 \sum_{r=1}^R|S(\alpha_r)|^2\le\Bigl(\pi N+\frac1\delta\Bigr)\sum_n|a_n|^2.
 \]
 \end{theorem}
 \begin{proof}
-Let $c=M+\frac{N+1}2$, the centre of the range, and $T(\alpha)=e(-c\alpha)S(\alpha)=\sum_na_ne((n-c)\alpha)$, so $|T|=|S|$ and $|n-c|\le\frac{N-1}2$. Apply Lemma~\ref{lem:gallagher} to $f=T^2$, with $f'=2TT'$, at each $\alpha_r$.
-The intervals of length $\delta$ centred at the $\alpha_r$ do not overlap modulo $1$, and $|T|$ and $|T'|$ are $1$-periodic, so
+Let $c=M+(N+1)/2$, the centre of the range, and set $T(\alpha)=e(-c\alpha)S(\alpha)=\sum_na_ne((n-c)\alpha)$. Then $|T|=|S|$ and $|n-c|\le(N-1)/2$. Apply Lemma~\ref{lem:gallagher} to $f=T^2$, so that $f'=2TT'$, at each $\alpha_r$. The intervals of length $\delta$ centred at the $\alpha_r$ do not overlap modulo $1$, and $|T|$ and $|T'|$ are $1$-periodic, so
 \[
 \sum_r|S(\alpha_r)|^2\le\frac1\delta\int_0^1|T|^2+\int_0^1|T||T'|.
 \]
-By orthogonality, $\int_0^1e((n-c)\alpha)\overline{e((m-c)\alpha)}\dd\alpha=\int_0^1e((n-m)\alpha)\dd\alpha$ is $1$ if $n=m$ and $0$ otherwise. So $\int_0^1|T|^2=\sum|a_n|^2$, and since $T'(\alpha)=\sum2\pi i(n-c)a_ne((n-c)\alpha)$,
-$\int_0^1|T'|^2=4\pi^2\sum(n-c)^2|a_n|^2\le\pi^2N^2\sum|a_n|^2$. Cauchy--Schwarz bounds $\int|T||T'|$ by $\pi N\sum|a_n|^2$.
+By orthogonality, $\int_0^1 e((n-m)\alpha)\dd\alpha$ equals $1$ if $n=m$ and equals $0$ otherwise. So $\int_0^1|T|^2=\sum|a_n|^2$. Since $T'(\alpha)=\sum 2\pi i(n-c)a_ne((n-c)\alpha)$,
+\[
+\int_0^1|T'|^2=4\pi^2\sum(n-c)^2|a_n|^2\le\pi^2N^2\sum|a_n|^2.
+\]
+Cauchy--Schwarz bounds $\int|T||T'|$ by $\pi N\sum|a_n|^2$.
 \end{proof}
 
-What matters is the shape: $N$ is the number of coefficients, $\frac1\delta$ the number of points one can fit, and the inequality says these two effects add rather than multiply.
+The shape is the useful part. The length $N$ counts the coefficients, $1/\delta$ counts how many sample points fit on the circle, and the inequality adds the two contributions.
 
 \begin{remark}[the sharp constant; quoted]
-Montgomery and Vaughan (1973), and Selberg, obtained the constant $N-1+\frac1\delta$, which is sharp. Nothing later uses that constant.
+Montgomery and Vaughan (1973), and Selberg, obtained the constant $N-1+1/\delta$, which is sharp. Nothing later uses that constant.
 \end{remark}
 
-The fractions $\frac aq$ with $q\le Q$ and $\gcd(a,q)=1$, $1\le a\le q$, are distinct modulo $1$ and $\frac1{Q^2}$-spaced: $\bigl|\frac aq-\frac{a'}{q'}\bigr|=\frac{|aq'-a'q|}{qq'}\ge\frac1{qq'}$ when they differ. So, for $Q\ge2$,
+The fractions $a/q$ with $q\le Q$, $\gcd(a,q)=1$ and $1\le a\le q$ are distinct modulo $1$, and they are $1/Q^2$-spaced: if two such fractions differ, then
+\[
+\Bigl|\frac aq-\frac{a'}{q'}\Bigr|=\frac{|aq'-a'q|}{qq'}\ge\frac1{qq'}.
+\]
+So, for $Q\ge2$,
 \begin{equation}\label{eq:arithls}
 \sum_{q\le Q}\ \sum_{\substack{a=1\\(a,q)=1}}^q\Bigl|S\Bigl(\frac aq\Bigr)\Bigr|^2\le(\pi N+Q^2)\sum_n|a_n|^2.
 \end{equation}
 
-Now the sieve. A set that misses residue classes modulo $p$ is unevenly spread modulo $p$, and unevenness shows up in the Fourier coefficients.
+A set that misses residue classes modulo $p$ is unevenly spread modulo $p$, and the unevenness appears in the Fourier coefficients.
 
 \begin{lemma}\label{lem:lsprime}
-Let $\mathcal A$ be a finite set of integers, $c_n$ complex numbers for $n\in\mathcal A$, and $S(\alpha)=\sum_{n\in\mathcal A}c_ne(n\alpha)$. Suppose that for each prime $p$ in a set $\mathcal Q$, $\mathcal A$ meets at most $p-\omega(p)$ classes
-modulo $p$, with $0\le\omega(p)<p$. Then for every squarefree $q$ whose prime factors lie in $\mathcal Q$,
+Let $\mathcal A$ be a finite set of integers, let $c_n$ be complex numbers for $n\in\mathcal A$, and let $S(\alpha)=\sum_{n\in\mathcal A}c_ne(n\alpha)$. Suppose that for each prime $p$ in a set $\mathcal Q$, the set $\mathcal A$ meets at most $p-\omega(p)$ classes modulo $p$, with $0\le\omega(p)<p$. Then for every squarefree $q$ whose prime factors lie in $\mathcal Q$,
 \[
 \sum_{\substack{a=1\\(a,q)=1}}^q\Bigl|S\Bigl(\frac aq\Bigr)\Bigr|^2\ge|S(0)|^2\prod_{p\mid q}\frac{\omega(p)}{p-\omega(p)}.
 \]
 \end{lemma}
 \begin{proof}
-\emph{A prime $q=p$.} Let $Z_h=\sum_{n\in\mathcal A,\,n\equiv h\,(p)}c_n$, so $S(\frac ap)=\sum_{h=0}^{p-1}Z_he(\frac{ah}p)$. By orthogonality of the characters $h\mapsto e(\frac{ah}p)$, $\sum_{a=0}^{p-1}|S(\frac ap)|^2=p\sum_h|Z_h|^2$. At most $p-\omega(p)$ of the
-$Z_h$ are non-zero, so by Cauchy--Schwarz $|S(0)|^2=|\sum_hZ_h|^2\le(p-\omega(p))\sum_h|Z_h|^2$. Removing the term $a=0$:
+\emph{A prime $q=p$.} Let $Z_h=\sum_{n\in\mathcal A,\,n\equiv h\,(p)}c_n$, so $S(a/p)=\sum_{h=0}^{p-1}Z_he(ah/p)$. By orthogonality of the characters $h\mapsto e(ah/p)$,
+\[
+\sum_{a=0}^{p-1}\bigl|S(a/p)\bigr|^2=p\sum_h|Z_h|^2.
+\]
+At most $p-\omega(p)$ of the $Z_h$ are non-zero, so Cauchy--Schwarz gives $|S(0)|^2=|\sum_h Z_h|^2\le(p-\omega(p))\sum_h|Z_h|^2$. Removing the term $a=0$,
 \[
 \begin{aligned}\sum_{a=1}^{p-1}\Bigl|S\Bigl(\frac ap\Bigr)\Bigr|^2&\ge\Bigl(\frac p{p-\omega(p)}-1\Bigr)|S(0)|^2\eqbr=\frac{\omega(p)}{p-\omega(p)}|S(0)|^2.\end{aligned}
 \]
-\emph{Induction.} Let $q=q_1p$ with $p\nmid q_1$. By the Chinese remainder theorem, as $a_1$ runs over the reduced classes modulo $q_1$ and $a_2$ over those modulo $p$, $\frac{a_1}{q_1}+\frac{a_2}p$ runs over the
-reduced fractions $\frac aq$ modulo $1$. For fixed $a_1$, apply the prime case to the coefficients $c_ne(\frac{na_1}{q_1})$, which live on the same set $\mathcal A$: $\sum_{a_2}|S(\frac{a_1}{q_1}+\frac{a_2}p)|^2\ge\frac{\omega(p)}{p-\omega(p)}|S(\frac{a_1}{q_1})|^2$.
+\emph{Induction.} Let $q=q_1p$ with $p\nmid q_1$. By the Chinese remainder theorem, as $a_1$ runs over the reduced classes modulo $q_1$ and $a_2$ over those modulo $p$, the sums $a_1/q_1+a_2/p$ run over the reduced fractions $a/q$ modulo $1$. For fixed $a_1$, apply the prime case to the coefficients $c_ne(na_1/q_1)$, which live on the same set $\mathcal A$:
+\[
+\sum_{a_2}\Bigl|S\Bigl(\frac{a_1}{q_1}+\frac{a_2}p\Bigr)\Bigr|^2\ge\frac{\omega(p)}{p-\omega(p)}\Bigl|S\Bigl(\frac{a_1}{q_1}\Bigr)\Bigr|^2.
+\]
 Sum over $a_1$ and use the induction hypothesis for $q_1$.
 \end{proof}
 
 \begin{theorem}[the arithmetic large sieve, Montgomery 1968]\label{thm:arithls}
-Let $\mathcal A$ be a set of integers in $]M,M+N]$, $Q\ge2$, and suppose that for every prime $p\le Q$, $\mathcal A$ meets at most $p-\omega(p)$ classes modulo $p$. Then
+Let $\mathcal A$ be a set of integers in $]M,M+N]$, let $Q\ge2$, and suppose that for every prime $p\le Q$ the set $\mathcal A$ meets at most $p-\omega(p)$ classes modulo $p$. Then
 \[
 \begin{gathered}|\mathcal A|\le\frac{\pi N+Q^2}L,\qq L=\sum_{q\le Q}\mu^2(q)\prod_{p\mid q}\frac{\omega(p)}{p-\omega(p)}.\end{gathered}
 \]
 \end{theorem}
 \begin{proof}
-Take $c_n=1$ on $\mathcal A$, so $S(0)=|\mathcal A|$. Sum Lemma~\ref{lem:lsprime} over squarefree $q\le Q$ (the term $q=1$ is $|S(0)|^2$ on both sides) and compare with \eqref{eq:arithls}: $|\mathcal A|^2L\le(\pi N+Q^2)|\mathcal A|$.
+Take $c_n=1$ on $\mathcal A$, so $S(0)=|\mathcal A|$. Sum Lemma~\ref{lem:lsprime} over squarefree $q\le Q$ (the term $q=1$ is $|S(0)|^2$ on both sides) and compare with \eqref{eq:arithls}. Then $|\mathcal A|^2 L\le(\pi N+Q^2)|\mathcal A|$.
 \end{proof}
 
 \begin{proposition}\label{prop:squares}
 Let $\mathcal A\subset[1,N]$ be a set of integers such that, for every prime $p\le\sqrt N$, every element of $\mathcal A$ is a square modulo $p$. Then $|\mathcal A|=O(\sqrt N\log N)$.
 \end{proposition}
 \begin{proof}
-For odd $p$ there are $\frac{p+1}2$ squares modulo $p$, counting $0$ (Volume~2, Chapter~6), so $\mathcal A$ misses $\omega(p)=\frac{p-1}2$ classes, and $\frac{\omega(p)}{p-\omega(p)}=\frac{p-1}{p+1}\ge\frac12$. Keeping only the prime terms $q=p$ in $L$,
-$L\ge\frac12(\pi(Q)-1)$. With $Q=\sqrt N$ and $\pi(Q)\sim\frac Q{\log Q}$ (Chapter~\ref{ch:pnt}), Theorem~\ref{thm:arithls} gives $|\mathcal A|\le\frac{(\pi+1)N}{L}=O(\sqrt N\log N)$.
+For odd $p$ there are $(p+1)/2$ squares modulo $p$, counting $0$ (Volume~2, Chapter~6), so $\mathcal A$ misses $\omega(p)=(p-1)/2$ classes, and
+\[
+\frac{\omega(p)}{p-\omega(p)}=\frac{p-1}{p+1}\ge\frac12.
+\]
+Keeping only the prime terms $q=p$ in $L$ gives $L\ge\frac12(\pi(Q)-1)$. With $Q=\sqrt N$ and $\pi(Q)\sim Q/\log Q$ (Chapter~\ref{ch:pnt}), Theorem~\ref{thm:arithls} gives $|\mathcal A|\le(\pi+1)N/L=O(\sqrt N\log N)$.
 \end{proof}
 
-The squares themselves satisfy the hypothesis and number $\sqrt N$, so the bound is sharp up to the logarithm (Gallagher's ``larger sieve'' removes it). Is anything else in $\mathcal A$? Not much,
-in practice: the integers $n\le10^6$ that are squares modulo every prime $p\le1000$ are exactly the $1000$ squares. Whether a large set that looks like the squares modulo
-every prime must essentially be the values of a quadratic polynomial is an open problem, the \emph{inverse sieve problem}.
+The squares themselves satisfy the hypothesis, and there are $\lfloor\sqrt N\rfloor$ of them up to $N$, so the bound is sharp up to the logarithm. Gallagher's larger sieve removes the logarithm. Up to $10^6$, the integers that are squares modulo every prime $p\le1000$ are exactly the $1000$ squares $1^2,\dots,1000^2$. Whether a large set that looks like the squares modulo every prime must be essentially the set of values of a quadratic polynomial is open. It is called the inverse sieve problem.
 
 \begin{remark}[Bombieri--Vinogradov, quoted]\label{rem:bv}
-The large sieve has a version with Dirichlet characters, obtained from Theorem~\ref{thm:largesieve} through Gauss sums (Chapter~\ref{ch:characters}). Its most famous consequence is the Bombieri--Vinogradov theorem (1965):
-let $E(x;q)=\max_{(a,q)=1}\bigl|\psi(x;q,a)-\frac x{\varphi(q)}\bigr|$; for every $A>0$ there is $B$ such that
+The large sieve has a version with Dirichlet characters, obtained from Theorem~\ref{thm:largesieve} through Gauss sums (Chapter~\ref{ch:characters}). Its most famous consequence is the Bombieri--Vinogradov theorem (1965). Let $E(x;q)=\max_{(a,q)=1}\bigl|\psi(x;q,a)-x/\varphi(q)\bigr|$. For every $A>0$ there is a $B$ such that
 \[
 \sum_{q\le\sqrt x/\log^Bx}E(x;q)=O\Bigl(\frac x{\log^Ax}\Bigr).
 \]
-On average over the moduli, primes in progressions are as well distributed as the generalized Riemann hypothesis predicts. This ``GRH on average'' is the fuel of Chen's theorem and of Zhang's
-and Maynard's bounded gaps. We do not prove it; see Davenport, Chapters~27--28.
+On average over the moduli, primes in progressions are as well distributed as the generalized Riemann hypothesis predicts for each modulus separately. This average form of the hypothesis is the input to Chen's theorem and to the bounded-gap theorems of Zhang and of Maynard. It is not proved here. Davenport, Chapters~27 and~28, gives a proof.
 \end{remark}
 
 \section{What we proved, and what comes next}
 
-Sieves give upper bounds of the right size. Selberg's sieve, a quadratic form minimised by Cauchy--Schwarz, gave Brun--Titchmarsh: at most $\frac{2N}{\log N}(1+o(1))$
-primes in any interval of length $N$. It gave Brun's theorem: $\pi_2(x)=O(\frac x{\log^2x})$, so the reciprocals of the twin primes have a finite sum. The large sieve, a
-statement about trigonometric polynomials at well-spaced points, showed that a set which looks like the squares modulo every small prime has $O(\sqrt N\log N)$ elements up to $N$.
-Legendre's exact formula showed why lower bounds are hard: the fractional parts conspire, and the parity problem stands in the way.
+The sieves in this chapter are upper bounds of the right order of magnitude. Theorem~\ref{thm:selberg} minimises a quadratic form by Cauchy--Schwarz. From it, Theorem~\ref{thm:bt} says that any interval of length $N$ contains at most $(2N/\log N)(1+O(\log\log N/\log N))$ primes. If that interval begins at $N^k$, the ratio of this bound to $N/\log(N^k)$ is $2k$. The factor $2$ that bears on Siegel zeros is the leading factor in the progression bound of Exercise~\ref{ex:btap}. Theorem~\ref{thm:twins} says $\pi_2(x)=O(x/\log^2x)$, and Corollary~\ref{cor:brun} turns that bound into a convergent series of reciprocals of twin primes. Theorem~\ref{thm:largesieve} bounds a trigonometric polynomial at well-spaced points, and Theorem~\ref{thm:arithls} concludes that a set which is made of squares modulo every prime $p\le\sqrt N$ has $O(\sqrt N\log N)$ elements up to $N$. Proposition~\ref{prop:legendre} is exact, and it shows why a lower bound of the same strength is harder: at $z=\sqrt x$ the fractional parts remove about $10.9\%$ of the main term.
 
-We used the coin model throughout, and corrected it prime by prime. It got the twin prime constant $2C_2$ and the $\frac6{\pi^2}$ of squarefree numbers right. It got the count of
-primes wrong by the factor $2e^{-\gamma}$ when the sieve went up to $\sqrt x$.
+The model of independent primes, corrected one prime at a time, produces the twin prime constant $2C_2$ and the density $6/\pi^2$ of the squarefree integers. The same model, pushed up to $\sqrt x$, miscounts the primes by the factor $2e^{-\gamma}$.
 
-Chapter~\ref{ch:erdoskac} asks the model a different question. Not ``is $n$ divisible by no small prime?'', but ``by how many primes is $n$ divisible?''. The answer is a sum of nearly
-independent coins, one for each prime, and the central limit theorem of Volume~4 comes out of the integers.
+Problem~\ref{pb:buchstab} computes the proportion of integers up to $x$ with no prime factor below $x^{1/u}$, for $1<u\le3$. The equation that continues the proportion past $u=3$ is taken up in Volume~15. It is not a theorem of this chapter.
+
+Chapter~\ref{ch:erdoskac} asks a different question of the same primes. The question is not whether $n$ is divisible by a small prime. It is how many distinct prime factors $n$ has. The answer is a sum of nearly independent indicators, one for each prime, and the central limit theorem of Volume~4 appears inside the integers.
 
 \section{Exercises}
 
 \begin{exercise}[$\star$]\label{ex:legendrepi}
-Use Proposition~\ref{prop:legendre} with $z=\log x$ to show that $\pi(x)=O\bigl(\frac x{\log\log x}\bigr)$.
+Use Proposition~\ref{prop:legendre} with $z=\log x$ to show that $\pi(x)=O\bigl(x/\log\log x\bigr)$.
 \end{exercise}
 
 \begin{exercise}[$\star$]\label{ex:legendrefail}
-Show that $\sum_{d\mid P(\sqrt x)}\mu(d)\bigl\{\frac xd\bigr\}\sim(2e^{-\gamma}-1)\frac x{\log x}$. So the fractional parts in Legendre's formula, which look like noise, add up to about $11\%$ of the main term, and to $12\%$ of $\frac x{\log x}$.
+Show that $\displaystyle\sum_{d\mid P(\sqrt x)}\mu(d)\bigl\{\tfrac xd\bigr\}\sim(2e^{-\gamma}-1)\dfrac x{\log x}$. So the fractional parts in Legendre's formula add up to about $10.9\%$ of the main term, and to about $12.3\%$ of $x/\log x$.
 \end{exercise}
 
 \begin{exercise}[$\star$]\label{ex:sophie}
-A prime $p$ is a Sophie Germain prime if $2p+1$ is also prime. Show that there are $O\bigl(\frac x{\log^2x}\bigr)$ of them up to $x$.
+A prime $p$ is a Sophie Germain prime if $2p+1$ is also prime. Show that there are $O\bigl(x/\log^2x\bigr)$ of them up to $x$.
 \end{exercise}
 
 \begin{exercise}[$\star\star$]\label{ex:btap}
-Let $\gcd(a,q)=1$ and $x/q\ge3$. Show that $\pi(x;q,a)\le\frac{2x}{\varphi(q)\log(x/q)}\bigl(1+O\bigl(\frac{\log\log(x/q)}{\log(x/q)}\bigr)\bigr)$, uniformly in such $q$ and $a$. For $1<x/q<e$ the logarithm $\log\log(x/q)$ is negative, and the displayed factor is an asymptotic as $x/q\to\infty$.
+Let $\gcd(a,q)=1$ and $x/q\ge3$. Show that
+\[
+\pi(x;q,a)\le\frac{2x}{\varphi(q)\log(x/q)}\Bigl(1+O\Bigl(\frac{\log\log(x/q)}{\log(x/q)}\Bigr)\Bigr),
+\]
+uniformly in such $q$ and $a$. For $1<x/q<e$ the logarithm $\log\log(x/q)$ is negative, and the displayed factor is an asymptotic as $x/q\to\infty$.
 \end{exercise}
 
 \begin{exercise}[$\star\star$]\label{ex:goldbachup}
-For even $N\ge4$, let $r(N)$ be the number of primes $p\le N$ such that $N-p$ is prime. Show that $r(N)=O\Bigl(\bigl(\frac N{\varphi(N)}\bigr)^2\frac N{\log^2N}\Bigr)$.
+For even $N\ge4$, let $r(N)$ be the number of primes $p\le N$ such that $N-p$ is prime. Show that
+\[
+r(N)=O\Bigl(\Bigl(\frac N{\varphi(N)}\Bigr)^2\frac N{\log^2N}\Bigr).
+\]
 \end{exercise}
 
 \begin{exercise}[$\star\star$, the signature exercise]\label{ex:twinheuristic}
-(a) Show that the sum of $\frac1p+\frac1{p+2}$ over twin pairs with $p>x$ is $O(\frac1{\log x})$.
-(b) Explain the Hardy--Littlewood prediction: for $n$ random near $x$, the ``probability'' that $n$ and $n+2$ are both prime is $\frac1{\log^2x}$ if the events were independent; show that correcting for each
-prime $p$ (the chance that $p\nmid n(n+2)$ is $1-\frac{\rho(p)}p$ instead of $(1-\frac1p)^2$) multiplies this by $2C_2$.
-(c) Assuming $\pi_2(x)\sim2C_2\frac x{\log^2x}$, show that the tail in (a) is $\sim\frac{4C_2}{\log x}$, and use the partial sum $1.7383570$ up to $10^7$ to estimate Brun's constant $B_2$.
+(a) Show that the sum of $\frac1p+\frac1{p+2}$ over twin pairs with $p>x$ is $O(1/\log x)$.
+(b) Explain the Hardy--Littlewood prediction. For $n$ near $x$, the model in which ``$n$ is prime'' and ``$n+2$ is prime'' are independent gives the chance $1/\log^2x$. Show that correcting for each prime $p$ --- the proportion of $n$ with $p\nmid n(n+2)$ is $1-\rho(p)/p$, in place of $(1-1/p)^2$ --- multiplies this by $2C_2$.
+(c) Assuming $\pi_2(x)\sim2C_2\,x/\log^2x$, show that the tail in (a) is $\sim4C_2/\log x$, and use the partial sum $1.7383570$ up to $10^7$ to estimate Brun's constant $B_2$.
 \end{exercise}
 
 \begin{exercise}[$\star$]\label{ex:lsprimes}
-Apply Theorem~\ref{thm:arithls} to the primes in $]M,M+N]$ to show $\pi(M+N)-\pi(M)\le\frac{2\pi N}{\log N}(1+o(1))$. Where is the constant lost compared with Theorem~\ref{thm:bt}?
+Apply Theorem~\ref{thm:arithls} to the primes in $]M,M+N]$ to show $\pi(M+N)-\pi(M)\le\frac{2\pi N}{\log N}(1+o(1))$. Where does the constant $\pi$ enter, beside the constant $2$ of Theorem~\ref{thm:bt}?
 \end{exercise}
 
 \begin{exercise}[$\star\star\star$]\label{ex:nsq1}
-Show that the number of $n\le x$ such that $n^2+1$ is prime is $O\bigl(\frac x{\log x}\bigr)$. (Whether it tends to infinity is Landau's fourth problem, open since 1912.)
+Show that the number of $n\le x$ such that $n^2+1$ is prime is $O(x/\log x)$. (Whether the count tends to infinity is Landau's fourth problem, open since 1912.)
 \end{exercise}
 
 \begin{exercise}[$\star$]\label{pb:bonferroni}
 \emph{Bonferroni's inequalities.} Let $A_1,\dots,A_m$ be events and $S_j=\sum_{i_1<\dots<i_j}P(A_{i_1}\cap\dots\cap A_{i_j})$.
 \begin{enumerate}[label=(\alph*)]
 \item Show that $P(A_1\cup\dots\cup A_m)\le\sum_{j=1}^t(-1)^{j-1}S_j$ for $t$ odd, and $\ge$ for $t$ even.
-\item Deduce that the probability $D_n/n!$ that a random permutation of $[n]$ has no fixed point differs from $\sum_{j=0}^t\frac{(-1)^j}{j!}$ by at
-most $\frac1{(t+1)!}$, for $0\le t\le n$.
+\item Deduce that the probability $D_n/n!$ that a random permutation of $[n]$ has no fixed point differs from $\sum_{j=0}^t(-1)^j/j!$ by at most $1/(t+1)!$, for $0\le t\le n$.
 \end{enumerate}
 \end{exercise}
 
 \begin{exercise}[$\star\star\star$]\label{pb:buchstab}
-\emph{Rough numbers and Buchstab's function.}
+\emph{Rough numbers and Buchstab's function, for $u\le3$.}
 \begin{enumerate}[label=(\alph*)]
 \item Show that $\Phi(x,y)=1+\pi(x)-\pi(y)$ for $\sqrt x\le y\le x$, and that for $x^{1/3}\le y<\sqrt x$,
 \[
 \Phi(x,y)=1+\pi(x)-\pi(y)+\#\{(p,q):y<p\le q,\ pq\le x\}.
 \]
-\item Let $1<u\le3$. Show that $\frac{\log y}x\Phi(x,y)\to\omega(u)$ when $y=x^{1/u}$, where $\omega(u)=\frac1u$ for $1<u\le2$ and $\omega(u)=\frac{1+\log(u-1)}u$ for $2\le u\le3$.
-\item Check that $(u\omega(u))'=\omega(u-1)$ for $2<u<3$ (Buchstab's equation, which defines $\omega$ for all $u>1$). Show that $\omega(2)<e^{-\gamma}<\omega(3)$.
-\item Independent sieving by the primes up to $y$ would predict $\Phi(x,y)\approx x\prod_{p\le y}(1-\frac1p)\sim e^{-\gamma}\frac x{\log y}$, that is $\omega\equiv e^{-\gamma}$. Where on $]1,3]$ is $\omega$ smallest, and by what factor
-does the prediction overestimate there? Relate this to Legendre's failure (Exercise~\ref{ex:legendrefail}).
+\item Let $1<u\le3$. Show that $\frac{\log y}x\Phi(x,y)\to\omega(u)$ when $y=x^{1/u}$, where $\omega(u)=1/u$ for $1<u\le2$ and $\omega(u)=(1+\log(u-1))/u$ for $2\le u\le3$.
+\item Check that $(u\omega(u))'=\omega(u-1)$ for $2<u<3$. This is Buchstab's equation on that interval; the equation for $u>3$ is taken up in Volume~15, and it is not proved in this chapter. Show that $\omega(2)<e^{-\gamma}<\omega(3)$.
+\item Independent sieving by the primes up to $y$ would predict $\Phi(x,y)\approx x\prod_{p\le y}(1-1/p)\sim e^{-\gamma}x/\log y$, that is $\omega\equiv e^{-\gamma}$. Where on $]1,3]$ is $\omega$ smallest, and by what factor does the prediction overshoot there? Relate this to Legendre's failure (Exercise~\ref{ex:legendrefail}).
 \end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:sievehand}
+Take $x=30$ and $z=5$. List $\Phi(30,5)$, compute the main term of Proposition~\ref{prop:legendre}, and compare both with the error bound $2^{\pi(5)}$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:weightten}
+For the integers, and for $y=10$, compute
+\[
+G(10)=\sum_{d\le10}\frac{\mu^2(d)}{\varphi(d)}
+\]
+as a fraction. Then compute the Selberg weight $\lambda_2$ from the formula in the proof of Theorem~\ref{thm:selberg}, and check that it equals $-21/22$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:tworatio}
+Let $N\ge3$ and let the interval of length $N$ begin at $x=N^k$, with $k\ge1$ fixed.
+\begin{enumerate}[label=(\alph*)]
+\item Show that the ratio of $2N/\log N$ to $N/\log x$ equals $2k$.
+\item For $k=2$ and $N=100$, compute the two quantities and the ratio.
+\item The leading factor $2$ in Exercise~\ref{ex:btap} is the factor which, if it could be lowered to $2-\varepsilon$ for moduli up to a small power of $x$, would rule out Siegel zeros. Say which bound that sentence refers to, the short-interval bound of Theorem~\ref{thm:bt} or the progression bound.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:sift60}
+Using Figure~\ref{fig:sieve60}, list the integers $n\le60$ with no prime factor among $2,3,5$. How many are there, and which of them is not $1$ and not prime? Compare the count with $60\prod_{p\le5}(1-1/p)$, and with the error allowance $2^{\pi(5)}$.
 \end{exercise}
 
 \begin{figure}[ht]
 \centering
 \fig{ch13-buchstab}
-\caption{Buchstab's function $\omega(u)$ (charcoal), computed from $\omega(u)=\frac1u$ on $[1,2]$ and Buchstab's equation, with the proportions $\frac{\log y}x\Phi(x,y)$ for
-$x=10^8$ and $y=x^{1/u}$, $u=1.5,2,2.5,3,4$ (ochre), and the level $e^{-\gamma}$ predicted by independent sieving (rust, dashed). The function crosses $e^{-\gamma}$
-at $u=e^\gamma=1.78$, between $2$ and $3$ (at $2.48$), again near $3.23$ and $4.00$, and is within $10^{-4}$ of it from $u=4$ on; the data are off by a term of order $\frac1{\log y}$ (Problem~\ref{pb:buchstab}).}
+\caption{Buchstab's function $\omega(u)$ (charcoal) on the range drawn from the values in Problem~\ref{pb:buchstab}: $\omega(u)=1/u$ on $(1,2]$ and $\omega(u)=(1+\log(u-1))/u$ on $[2,3]$. The dashed line is $e^{-\gamma}=0.56146$. On $(2,3]$ the curve crosses that line at $u=2.483$. The same delay equation continues the curve past $3$; Volume~15 takes up that range. The ochre dots are the proportions $(\log y/x)\Phi(x,y)$ at $x=10^8$.}
 \label{fig:buchstab}
 \end{figure}
 
 \section{Hints}
 
 \begin{hint}{ex:legendrepi}
-$2^{\pi(z)}\le2^z$, and $\prod_{p\le z}(1-\frac1p)=O(\frac1{\log z})$.
+$2^{\pi(z)}\le2^z$, and $\prod_{p\le z}(1-1/p)=O(1/\log z)$.
 \end{hint}
 \begin{hint}{ex:legendrefail}
 Subtract Legendre's identity from its main term and use $\Phi(x,\sqrt x)=\pi(x)-\pi(\sqrt x)+1$.
 \end{hint}
 \begin{hint}{ex:sophie}
-Sieve $\{n(2n+1):n\le x\}$, with $\rho(2)=1$ and $\rho(p)=2$ for $p$ odd.
+Sieve $\{n(2n+1):n\le x\}$, with $\rho(2)=1$ and $\rho(p)=2$ for odd $p$.
 \end{hint}
 \begin{hint}{ex:btap}
-Sieve $\{a+qm:m\le\frac{x-a}q\}$ by the primes not dividing $q$. Show $\sum_{d\le y,\,(d,q)=1}\frac{\mu^2(d)}{\varphi(d)}\ge\frac{\varphi(q)}q\log y$ by multiplying by $\sum_{k\mid q}\frac{\mu^2(k)}{\varphi(k)}=\frac q{\varphi(q)}$.
+Sieve $\{a+qm:m\le(x-a)/q\}$ by the primes not dividing $q$. Show $\sum_{d\le y,\,(d,q)=1}\mu^2(d)/\varphi(d)\ge(\varphi(q)/q)\log y$ by multiplying by $\sum_{k\mid q}\mu^2(k)/\varphi(k)=q/\varphi(q)$.
 \end{hint}
 \begin{hint}{ex:goldbachup}
-Sieve $\{n(N-n):n\le N\}$. Show that $\sum_{a\le Y,\,(a,N)=1}\frac1a\ge\frac{\varphi(N)}N\log Y$.
+Sieve $\{n(N-n):n\le N\}$. Show that $\sum_{a\le Y,\,(a,N)=1}1/a\ge(\varphi(N)/N)\log Y$.
 \end{hint}
 \begin{hint}{ex:twinheuristic}
-(a) Abel summation as in Corollary~\ref{cor:brun}. (b) Compute $\frac{1-2/p}{(1-1/p)^2}$ and $\frac{1-1/2}{(1-1/2)^2}$. (c) $\int_x^\infty\frac{2\,\mathrm d\pi_2(t)}t$.
+(a) Abel summation as in Corollary~\ref{cor:brun}. (b) Compute $(1-2/p)/(1-1/p)^2$ and $(1-1/2)/(1-1/2)^2$. (c) $\int_x^\infty 2\,\mathrm d\pi_2(t)/t$.
 \end{hint}
 \begin{hint}{ex:lsprimes}
-$\omega(p)=1$ for $p\le Q$, so $L=\sum_{q\le Q}\frac{\mu^2(q)}{\varphi(q)}$. Remove the primes $\le Q$ first.
+Here $\omega(p)=1$ for $p\le Q$, so $L=\sum_{q\le Q}\mu^2(q)/\varphi(q)$. Remove the primes $\le Q$ first.
 \end{hint}
 \begin{hint}{ex:nsq1}
-$\rho(p)=1+\chi_{-4}(p)$ for odd $p$. For the lower bound of $G$, compare with $\sum_{m\le y}\frac{(1*\chi_{-4})(m)}m=L(1,\chi_{-4})\log y+O(1)$, which follows from Dirichlet's hyperbola method (Lemma~\ref{lem:hyperbola}).
+One has $\rho(p)=1+\chi_{-4}(p)$ for odd $p$. For the lower bound of $G$, compare with $\sum_{m\le y}(1*\chi_{-4})(m)/m=L(1,\chi_{-4})\log y+O(1)$, which follows from Dirichlet's hyperbola method (Lemma~\ref{lem:hyperbola}).
 \end{hint}
 
 \begin{hint}{pb:bonferroni}
@@ -425,165 +486,247 @@ A point lying in exactly $r$ of the events contributes $\sum_{j\le t}(-1)^{j-1}\
 \end{hint}
 
 \begin{hint}{pb:buchstab}
-(a) A $y$-rough $n\le x$ with $y\ge x^{1/3}$ has at most two prime factors. (b) Count the pairs as $\sum_{y<p\le\sqrt x}(\pi(\frac xp)-\pi(p)+1)$, and turn
-$\sum_{x^a<p\le x^b}\frac1pF(\frac{\log p}{\log x})$ into $\int_a^bF(t)\frac{\mathrm dt}t$ with Mertens's second theorem.
+(a) A $y$-rough $n\le x$ with $y\ge x^{1/3}$ has at most two prime factors. (b) Count the pairs as $\sum_{y<p\le\sqrt x}(\pi(x/p)-\pi(p)+1)$, and turn $\sum_{x^a<p\le x^b}(1/p)F(\log p/\log x)$ into $\int_a^b F(t)\,\mathrm dt/t$ with Mertens's second theorem.
+\end{hint}
+
+\begin{hint}{ex:sievehand}
+The survivors are $1$ and the primes from $7$ to $29$. The product $(1-1/2)(1-1/3)(1-1/5)$ equals $4/15$.
+\end{hint}
+\begin{hint}{ex:weightten}
+The squarefree $d\le10$ are $1,2,3,5,6,7,10$. For $d=2$ the inner sum in the formula for $\lambda_d$ runs over odd squarefree $m\le5$.
+\end{hint}
+\begin{hint}{ex:tworatio}
+If $x=N^k$, then $\log x=k\log N$. Part (c) is the sentence after Theorem~\ref{thm:bt}.
+\end{hint}
+\begin{hint}{ex:sift60}
+Cross out multiples of $2$, $3$ and $5$. The unmarked numbers are the survivors, and $49$ is one of them. The product $(1-1/2)(1-1/3)(1-1/5)$ equals $4/15$.
 \end{hint}
 
 \section{Solutions}
 
 \begin{solution}{ex:legendrepi}
-\idea Sieve only by the primes up to a tiny $z$, so that the $2^{\pi(z)}$ error is harmless, and accept the weak main term $\frac x{\log z}$.
-\writeup Every prime $p\le x$ is either $\le z$ or has no prime factor $\le z$, so $\pi(x)\le z+\Phi(x,z)\le z+x\prod_{p\le z}(1-\frac1p)+2^z$. With $z=\log x$, $2^z=x^{\log2}$ and, by Theorem~\ref{thm:mertens3},
-$\prod_{p\le z}(1-\frac1p)=O(\frac1{\log z})=O(\frac1{\log\log x})$. All three terms are $O(\frac x{\log\log x})$.
+\idea Sieve only by the primes up to a tiny $z$, so that the $2^{\pi(z)}$ error is smaller than the main term you are willing to accept, namely $x/\log z$.
+\writeup Every prime $p\le x$ is either $\le z$ or has no prime factor $\le z$, so $\pi(x)\le z+\Phi(x,z)\le z+x\prod_{p\le z}(1-1/p)+2^z$. With $z=\log x$, one has $2^z=x^{\log2}$, and Theorem~\ref{thm:mertens3} gives $\prod_{p\le z}(1-1/p)=O(1/\log z)=O(1/\log\log x)$. All three terms are $O(x/\log\log x)$.
 \end{solution}
 
 \begin{solution}{ex:legendrefail}
-\idea Legendre's identity is exact, so the error is whatever separates the true count from the main term, and both are known asymptotically.
-\writeup Legendre's identity says that the sum in question equals $x\prod_{p\le\sqrt x}(1-\frac1p)-\Phi(x,\sqrt x)$. By Theorem~\ref{thm:mertens3}, the first term is $\sim\frac{e^{-\gamma}x}{\log\sqrt x}=\frac{2e^{-\gamma}x}{\log x}$. The survivors are $1$ and
-the primes in $]\sqrt x,x]$, so $\Phi(x,\sqrt x)=\pi(x)-\pi(\sqrt x)+1\sim\frac x{\log x}$ by the prime number theorem. The difference is $\sim(2e^{-\gamma}-1)\frac x{\log x}$, that is $0.1229\frac x{\log x}$. The convergence
-is slow: the ratio of main term to count is $0.998$ at $x=10^4$ and $1.034$ at $10^6$, on its way to $1.1229$.
+\idea Legendre's identity is exact, so the error is the gap between the true count and the main term. Both of those have known asymptotics.
+\writeup Legendre's identity says that the sum in question equals $x\prod_{p\le\sqrt x}(1-1/p)-\Phi(x,\sqrt x)$. By Theorem~\ref{thm:mertens3}, the first term is
+\[
+\sim\frac{e^{-\gamma}x}{\log\sqrt x}=\frac{2e^{-\gamma}x}{\log x}.
+\]
+The survivors are $1$ and the primes in $]\sqrt x,x]$, so $\Phi(x,\sqrt x)=\pi(x)-\pi(\sqrt x)+1\sim x/\log x$ by the prime number theorem. The difference is $\sim(2e^{-\gamma}-1)x/\log x$. Since $2e^{-\gamma}-1=0.1229$, this is $12.3\%$ of $x/\log x$. Dividing by the main term $2e^{-\gamma}=1.1229$ gives $10.9\%$ of the main term. The approach to the limit is slow: the ratio of the main term to the count is $0.998$ at $x=10^4$ and $1.034$ at $x=10^6$, on the way to $1.1229$.
 \end{solution}
 
 \begin{solution}{ex:sophie}
-\idea Exactly the twin prime sieve, with $2n+1$ in place of $n+2$: only the number of classes removed per prime matters.
-\writeup Let $\mathcal A=\{n(2n+1):n\le x\}$. For odd $p$, $p\mid n(2n+1)$ for $n\equiv0$ and $n\equiv-\frac12\pmod p$, two classes; for $p=2$, only $n\equiv0$. So $\rho$ is the same as in Theorem~\ref{thm:twins}, and so are $g$,
-$h$, the lower bound for $G(y)$ and the remainder. A Sophie Germain prime $p>z$ gives an element $p(2p+1)$ coprime to $P(z)$. The proof of Theorem~\ref{thm:twins} applies word for word.
+\idea The same sieve as for the twins, with $2n+1$ in place of $n+2$. Only the number of classes removed by each prime enters the quadratic form.
+\writeup Let $\mathcal A=\{n(2n+1):n\le x\}$. For odd $p$, the congruence $p\mid n(2n+1)$ holds for $n\equiv0$ and $n\equiv-\frac12\pmod p$, two classes. For $p=2$, only $n\equiv0$. So $\rho$ is the same function as in Theorem~\ref{thm:twins}, and so are $g$, $h$, the lower bound for $G(y)$ and the remainder. A Sophie Germain prime $p>z$ gives an element $p(2p+1)$ coprime to $P(z)$. The proof of Theorem~\ref{thm:twins} applies with the same choices of $y$ and $z$.
 \end{solution}
 
 \begin{solution}{ex:btap}
-\idea The progression is an interval in disguise, of length $\frac xq$, and the primes dividing $q$ are not to be sieved. Their absence costs exactly the factor $\frac q{\varphi(q)}$ in $G$.
-\writeup Let $\mathcal A=\{a+qm:0\le m\le\frac{x-a}q\}$, $X=\frac xq$, and $\mathcal P$ the primes not dividing $q$. For $d$ squarefree and coprime to $q$, $d\mid a+qm$ is one class of $m$ modulo $d$, so
-$|\mathcal A_d|=\frac Xd+r_d$, $|r_d|\le1$: $g(d)=\frac1d$, $h(d)=\frac1{\varphi(d)}$. Every squarefree $d\le y$ factors uniquely as $kd'$ with $k\mid q$ and $(d',q)=1$, and $\frac1{\varphi(d)}=\frac1{\varphi(k)\varphi(d')}$. Hence
+\idea The progression is an arithmetic progression of length about $x/q$, and the primes that divide $q$ are left out of the sieve. Their absence multiplies $G$ by $\varphi(q)/q$.
+\writeup Let $\mathcal A=\{a+qm:0\le m\le(x-a)/q\}$, let $X=x/q$, and let $\mathcal P$ be the primes not dividing $q$. For $d$ squarefree and coprime to $q$, the condition $d\mid a+qm$ is one class of $m$ modulo $d$, so $|\mathcal A_d|=X/d+r_d$ with $|r_d|\le1$. Thus $g(d)=1/d$ and $h(d)=1/\varphi(d)$. Every squarefree $d\le y$ factors uniquely as $kd'$ with $k\mid q$ and $(d',q)=1$, and $1/\varphi(d)=1/(\varphi(k)\varphi(d'))$. Hence
 \[
 \begin{aligned}\frac q{\varphi(q)}\sum_{\substack{d'\le y\\(d',q)=1}}\frac{\mu^2(d')}{\varphi(d')}&=\sum_{k\mid q}\frac{\mu^2(k)}{\varphi(k)}\sum_{\substack{d'\le y\\(d',q)=1}}\frac{\mu^2(d')}{\varphi(d')}\eqbr\ge\sum_{d\le y}\frac{\mu^2(d)}{\varphi(d)}\ge\log y\end{aligned}
 \]
-by Lemma~\ref{lem:Glog}, using $\sum_{k\mid q}\frac{\mu^2(k)}{\varphi(k)}=\prod_{p\mid q}(1+\frac1{p-1})=\frac q{\varphi(q)}$. Take $y=z=\frac{\sqrt X}{\log X}$. Then
+by Lemma~\ref{lem:Glog}, using $\sum_{k\mid q}\mu^2(k)/\varphi(k)=\prod_{p\mid q}(1+1/(p-1))=q/\varphi(q)$. Take $y=z=\sqrt X/\log X$. Then
 \[
 \begin{aligned}\pi(x;q,a)&\le z+\frac{X}{G(y)}+y^2\\&\le z+\frac q{\varphi(q)}\frac{x/q}{\frac12\log X-\log\log X}\eqbr+\frac X{\log^2X},\end{aligned}
 \]
-which is the claim since $\frac{X}{\log^2X}$ and $z$ are $O\bigl(\frac{x}{\varphi(q)\log^2(x/q)}\bigr)$, using $\varphi(q)\le q$.
+which is the claim, since $X/\log^2X$ and $z$ are $O\bigl(x/(\varphi(q)\log^2(x/q))\bigr)$, using $\varphi(q)\le q$. The leading factor is $2$, because $\log y$ is about $\frac12\log(x/q)$. This is the factor discussed after Theorem~\ref{thm:bt}.
 \end{solution}
 
 \begin{solution}{ex:goldbachup}
-\idea Sieve $n$ and $N-n$ at once. A prime dividing $N$ divides $n$ and $N-n$ together, so it removes one class instead of two; that is where $\frac N{\varphi(N)}$ comes from.
-\writeup Let $\mathcal A=\{n(N-n):1\le n\le N\}$. For $p\nmid N$, $p\mid n(N-n)$ for two classes of $n$; for $p\mid N$, one class. So $g(p)=\frac2p$ or $\frac1p$, and $h(p)=\frac2{p-2}$ or $\frac1{p-1}$. Restricting $G$ to odd $d$ coprime to $N$ and arguing as
-in Theorem~\ref{thm:twins}, $G(y)\ge\bigl(\sum_{a\le\sqrt y,\,(a,2N)=1}\frac1a\bigr)^2$. Every $n\le Y$ is uniquely $kb$ with $k$ composed of primes dividing $2N$ and $(b,2N)=1$, $b\le Y$, so
-$\prod_{p\mid2N}(1-\frac1p)^{-1}\sum_{b\le Y,(b,2N)=1}\frac1b\ge\sum_{n\le Y}\frac1n\ge\log Y$. As $N$ is even, $\frac{\varphi(2N)}{2N}=\frac{\varphi(N)}N$, so $G(y)\ge\bigl(\frac{\varphi(N)}N\bigr)^2\frac{\log^2y}4$. The remainder is bounded as for twins. With
-$y=z=\frac{\sqrt N}{\log^3N}$, $r(N)\le z+\frac N{G(y)}+\frac N{\log^4N}$, which is the claim. (Since $\frac N{\varphi(N)}=O(\log\log N)$, this is $O\bigl(\frac{N(\log\log N)^2}{\log^2N}\bigr)$; Hardy and Littlewood predicted $r(N)\sim2C_2\prod_{p\mid N,\,p>2}\frac{p-1}{p-2}\cdot\frac N{\log^2N}$.)
+\idea Sieve $n$ and $N-n$ together. A prime that divides $N$ divides one of them whenever it divides the other, so it removes one class in place of two. That is where $N/\varphi(N)$ enters.
+\writeup Let $\mathcal A=\{n(N-n):1\le n\le N\}$. For $p\nmid N$, the condition $p\mid n(N-n)$ is two classes of $n$. For $p\mid N$, it is one class. So $g(p)=2/p$ or $1/p$, and $h(p)=2/(p-2)$ or $1/(p-1)$. Restricting $G$ to odd $d$ coprime to $N$, and arguing as in Theorem~\ref{thm:twins},
+\[
+G(y)\ge\Bigl(\sum_{a\le\sqrt y,\,(a,2N)=1}\frac1a\Bigr)^2.
+\]
+Every $n\le Y$ is uniquely $kb$ with $k$ composed of primes dividing $2N$ and $(b,2N)=1$, so
+\[
+\prod_{p\mid2N}\Bigl(1-\frac1p\Bigr)^{-1}\sum_{\substack{b\le Y\\(b,2N)=1}}\frac1b\ge\sum_{n\le Y}\frac1n\ge\log Y.
+\]
+Since $N$ is even, $\varphi(2N)/(2N)=\varphi(N)/N$, and $G(y)\ge(\varphi(N)/N)^2(\log^2y)/4$. The remainder is bounded as for the twins. With $y=z=\sqrt N/\log^3N$,
+\[
+r(N)\le z+\frac N{G(y)}+\frac N{\log^4N},
+\]
+which is the claim. Since $N/\varphi(N)=O(\log\log N)$, the bound is $O\bigl(N(\log\log N)^2/\log^2N\bigr)$. Hardy and Littlewood predicted
+\[
+r(N)\sim2C_2\prod_{\substack{p\mid N\\p>2}}\frac{p-1}{p-2}\cdot\frac N{\log^2N}.
+\]
 \end{solution}
 
 \begin{solution}{ex:twinheuristic}
-\idea A sum over a thin set converges as fast as the set thins: with density $\frac1{\log^2t}$, the tail of $\sum\frac1t$ is $\int_x^\infty\frac{\mathrm dt}{t\log^2t}=\frac1{\log x}$.
-\writeup (a) By Abel summation, $\sum_{p>x}\frac1p\le\int_x^\infty\frac{\pi_2(t)}{t^2}\dd t=O\bigl(\int_x^\infty\frac{\mathrm dt}{t\log^2t}\bigr)=O(\frac1{\log x})$ (the boundary term $-\frac{\pi_2(x)}x$ is negative), and the same for $\frac1{p+2}<\frac1p$.
+\idea A sum over a set of density about $1/\log^2t$ converges as fast as $\int_x^\infty\mathrm dt/(t\log^2t)=1/\log x$.
+\writeup (a) By Abel summation,
+\[
+\sum_{p>x}\frac1p\le\int_x^\infty\frac{\pi_2(t)}{t^2}\dd t=O\Bigl(\int_x^\infty\frac{\mathrm dt}{t\log^2t}\Bigr)=O\Bigl(\frac1{\log x}\Bigr).
+\]
+The boundary term $-\pi_2(x)/x$ is negative, and the same bound holds for $1/(p+2)<1/p$.
 
-(b) For an odd prime $p$, independence would give $\Pr(p\nmid n)\Pr(p\nmid n+2)=(1-\frac1p)^2$, while the true proportion of $n$ with $p\nmid n(n+2)$ is $1-\frac2p$. For $p=2$: $(1-\frac12)^2=\frac14$ against the true $\frac12$. The
-correction factor is $\frac{1/2}{1/4}\prod_{p>2}\frac{1-2/p}{(1-1/p)^2}=2\prod_{p>2}\frac{p(p-2)}{(p-1)^2}=2\prod_{p>2}\Bigl(1-\frac1{(p-1)^2}\Bigr)=2C_2$. The product converges absolutely. This is the same
-correction, prime by prime, that Chapter~\ref{ch:mertens} found missing in the naive sieve heuristic; here it is applied only to the ratio of two sieve problems, where the troublesome factor $2e^{-\gamma}$ cancels.
+(b) For an odd prime $p$, independence would give $\Pr(p\nmid n)\Pr(p\nmid n+2)=(1-1/p)^2$, while the true proportion of $n$ with $p\nmid n(n+2)$ is $1-2/p$. For $p=2$, the independent model gives $(1-1/2)^2=1/4$, and the true proportion is $1/2$. The correction factor is
+\[
+\frac{1/2}{1/4}\prod_{p>2}\frac{1-2/p}{(1-1/p)^2}=2\prod_{p>2}\frac{p(p-2)}{(p-1)^2}=2\prod_{p>2}\Bigl(1-\frac1{(p-1)^2}\Bigr)=2C_2.
+\]
+The product converges absolutely. This is the same prime-by-prime correction that Chapter~\ref{ch:mertens} found in the comparison of two sieve problems. The factor $2e^{-\gamma}$, which appears when a single sieve runs all the way to $\sqrt x$, cancels in the ratio.
 
-(c) Abel summation with $\pi_2(t)\sim\frac{2C_2t}{\log^2t}$ gives $\sum_{p>x}\frac1p\sim\int_x^\infty\frac{2C_2}{t\log^2t}\dd t=\frac{2C_2}{\log x}$, and the same for $\frac1{p+2}$: total $\frac{4C_2}{\log x}$. At $x=10^7$, $\frac{4C_2}{\log x}=0.16383$, and
-$1.7383570+0.1638312=1.90219$, against $B_2=1.9021605\ldots$ The same estimate from $10^5$ gives $1.90216$: the convergence of Brun's series itself is hopelessly slow, but the extrapolation is excellent.
+(c) Abel summation with $\pi_2(t)\sim2C_2 t/\log^2t$ gives
+\[
+\sum_{p>x}\frac1p\sim\int_x^\infty\frac{2C_2}{t\log^2t}\dd t=\frac{2C_2}{\log x},
+\]
+and the same for $1/(p+2)$, so the tail of $B_2$ is $4C_2/\log x$. At $x=10^7$, one has $4C_2/\log x=0.16383$, and
+\[
+1.7383570+0.16383=1.90219,
+\]
+beside $B_2=1.9021605\ldots$. The same extrapolation from the partial sum $1.67280$ up to $10^5$, adding $4C_2/\log(10^5)=0.22936$, gives $1.90216$. The series of Brun converges slowly. The extrapolation from the conjectured main term is much closer.
 \end{solution}
 
 \begin{solution}{ex:lsprimes}
-\idea Primes avoid one class, $0$, modulo every small prime, which is exactly what the large sieve needs, and then $L$ is the same sum $G$ as in Selberg's sieve.
-\writeup Let $Q=\frac{\sqrt N}{\log N}$ and $\mathcal A$ the primes in $]M,M+N]$ that are $>Q$. They avoid the class $0$ modulo each $p\le Q$, so $\omega(p)=1$, $\frac{\omega(p)}{p-\omega(p)}=\frac1{p-1}$, $L=\sum_{q\le Q}\frac{\mu^2(q)}{\varphi(q)}\ge\log Q$. Theorem~\ref{thm:arithls} gives
-$|\mathcal A|\le\frac{\pi N+Q^2}{\log Q}=\frac{\pi N(1+o(1))}{\frac12\log N}$, and the primes $\le Q$ add $O(\sqrt N)$. The loss is entirely in the constant of Theorem~\ref{thm:largesieve}: with the sharp $N-1+Q^2$ the large sieve gives $\frac{2N}{\log N}$,
-exactly like Selberg's sieve. That the two methods agree is no accident: Selberg's sieve and the large sieve are dual to each other.
+\idea The primes avoid the single class $0$ modulo every small prime, which is the input the large sieve asks for. The sum $L$ is then the same sum that appears as $G(y)$ in Selberg's sieve.
+\writeup Let $Q=\sqrt N/\log N$, and let $\mathcal A$ be the primes in $]M,M+N]$ that are greater than $Q$. They avoid the class $0$ modulo each $p\le Q$, so $\omega(p)=1$, $\omega(p)/(p-\omega(p))=1/(p-1)$, and
+\[
+L=\sum_{q\le Q}\frac{\mu^2(q)}{\varphi(q)}\ge\log Q.
+\]
+Theorem~\ref{thm:arithls} gives $|\mathcal A|\le(\pi N+Q^2)/\log Q=\pi N(1+o(1))/(\frac12\log N)$, and the primes $\le Q$ add $O(\sqrt N)$. The factor $\pi$ is the constant in Theorem~\ref{thm:largesieve}. With the sharp constant $N-1+Q^2$ in place of $\pi N+Q^2$, the same argument gives $2N/\log N$, the leading factor of Theorem~\ref{thm:bt}.
 \end{solution}
 
 \begin{solution}{ex:nsq1}
-\idea The polynomial $n^2+1$ has $\rho(p)$ roots modulo $p$, and $\rho(p)$ is $2$ or $0$ according to $p\bmod4$; on average it is $1$, so we sieve ``one class per prime'', and $G(y)$ grows like $\log y$, with the constant $L(1,\chi_{-4})=\frac\pi4$.
-\writeup Let $\mathcal A=\{n^2+1:n\le x\}$ and $\mathcal P=\{2\}\cup\{p\equiv1\ (4)\}$; primes $p\equiv3\pmod4$ never divide $n^2+1$ (Volume~2, Chapter~6), so sieving by them is pointless. For $p\in\mathcal P$ let $\rho(p)$ be the number of roots of $n^2+1$ modulo
-$p$: $\rho(2)=1$, $\rho(p)=2$. Then $|\mathcal A_d|=\frac{\rho(d)}dx+r_d$, $|r_d|\le\rho(d)\le\tau(d)$, and the remainder is handled as in Theorem~\ref{thm:twins}. As there, for squarefree odd $d$ composed of primes $\equiv1\pmod4$,
-$h(d)\ge\sum_{\operatorname{rad}(m)=d}\frac{\tau(m)}m$, so $G(y)\ge\sum'_{m\le y}\frac{\tau(m)}m$, the sum over $m$ composed of primes $\equiv1\pmod4$.
+\idea The polynomial $n^2+1$ has $\rho(p)$ roots modulo $p$, and $\rho(p)$ is $2$ or $0$ according to $p\bmod4$. On average it is $1$, so the sieve removes about one class per prime, and $G(y)$ grows like $\log y$, with constant coming from $L(1,\chi_{-4})=\pi/4$.
+\writeup Let $\mathcal A=\{n^2+1:n\le x\}$ and let $\mathcal P=\{2\}\cup\{p\equiv1\ (4)\}$. Primes $p\equiv3\pmod4$ never divide $n^2+1$ (Volume~2, Chapter~6), so sieving by them removes nothing. For $p\in\mathcal P$ let $\rho(p)$ be the number of roots of $n^2+1$ modulo $p$: one has $\rho(2)=1$ and $\rho(p)=2$. Then $|\mathcal A_d|=\rho(d)x/d+r_d$ with $|r_d|\le\rho(d)\le\tau(d)$, and the remainder is handled as in Theorem~\ref{thm:twins}. As there, for squarefree odd $d$ composed of primes $\equiv1\pmod4$,
+\[
+h(d)\ge\sum_{\operatorname{rad}(m)=d}\frac{\tau(m)}m,
+\]
+so $G(y)\ge\sum'_{m\le y}\tau(m)/m$, the sum over $m$ composed of primes $\equiv1\pmod4$.
 
-Now compare with $f=1*\chi_{-4}$, which is multiplicative with $f(p^k)=k+1$ for $p\equiv1$, $f(2^k)=1$, and $f(p^k)=1$ or $0$ ($k$ even or odd) for $p\equiv3\pmod4$. So every $m\le y$ with $f(m)\ne0$ is $m'k$ with $m'$ composed of primes
-$\equiv1\pmod4$, $f(m)=\tau(m')$, and $k=2^jl^2$ with $l$ composed of primes $\equiv3\pmod4$. Hence
+Compare with $f=1*\chi_{-4}$, which is multiplicative, with $f(p^k)=k+1$ for $p\equiv1$, $f(2^k)=1$, and $f(p^k)=1$ or $0$ according as $k$ is even or odd, for $p\equiv3\pmod4$. Every $m\le y$ with $f(m)\ne0$ is $m'k$ with $m'$ composed of primes $\equiv1\pmod4$, $f(m)=\tau(m')$, and $k=2^jl^2$ with $l$ composed of primes $\equiv3\pmod4$. Hence
 \[
 \begin{aligned}\sum_{m\le y}\frac{f(m)}m&\le\sum'_{m'\le y}\frac{\tau(m')}{m'}\sum_{j\ge0}\frac1{2^j}\sum_{l\ge1}\frac1{l^2}\eqbr=2\zeta(2)\sum'_{m'\le y}\frac{\tau(m')}{m'}.\end{aligned}
 \]
-By the hyperbola method, $\sum_{m\le y}\frac{f(m)}m=\sum_{ab\le y}\frac{\chi_{-4}(b)}{ab}=L(1,\chi_{-4})\log y+O(1)$, with $L(1,\chi_{-4})=\frac\pi4$ (Chapter~\ref{ch:characters}). So $G(y)\ge\frac{\pi/4}{2\zeta(2)}\log y(1+o(1))=\frac3{4\pi}\log y\,(1+o(1))$.
-Take $y=z=\frac{\sqrt x}{\log^2x}$: the remainder is at most $\bigl(y(1+\log y)\bigr)^2=O(\frac x{\log^2x})$, and
-$\#\{n\le x:n^2+1\text{ prime}\}\le z+\frac x{G(y)}+O(\frac x{\log^2x})=O(\frac x{\log x})$. (The conjectured count is $\sim C\frac x{\log x}$ with $C=\frac12\prod_{p>2}\bigl(1-\frac{\chi_{-4}(p)}{p-1}\bigr)=0.6864\ldots$, the
-Hardy--Littlewood constant for $n^2+1$; the sieve gets the right order of magnitude, and the parity problem forbids more.)
+By the hyperbola method, $\sum_{m\le y}f(m)/m=\sum_{ab\le y}\chi_{-4}(b)/(ab)=L(1,\chi_{-4})\log y+O(1)$, with $L(1,\chi_{-4})=\pi/4$ (Chapter~\ref{ch:characters}). So
+\[
+G(y)\ge\frac{\pi/4}{2\zeta(2)}\log y\,(1+o(1))=\frac3{4\pi}\log y\,(1+o(1)).
+\]
+Take $y=z=\sqrt x/\log^2x$. The remainder is at most $\bigl(y(1+\log y)\bigr)^2=O(x/\log^2x)$, and
+\[
+\#\{n\le x:n^2+1\text{ is prime}\}\le z+\frac x{G(y)}+O\Bigl(\frac x{\log^2x}\Bigr)=O\Bigl(\frac x{\log x}\Bigr).
+\]
+The conjectured count is $\sim Cx/\log x$ with $C=\frac12\prod_{p>2}\bigl(1-\chi_{-4}(p)/(p-1)\bigr)=0.6864\ldots$, the Hardy--Littlewood constant for $n^2+1$. The sieve gives the order of magnitude. The parity problem stands in the way of an asymptotic formula.
 \end{solution}
 
 \begin{solution}{pb:bonferroni}
-\idea Look at one outcome at a time. If it lies in $r$ of the events, the truncated alternating sum counts it $1-(-1)^t\binom{r-1}t$ times,
-which is above or below $1$ depending on the parity of $t$.
+\idea Look at one outcome at a time. If it lies in $r$ of the events, the truncated alternating sum counts it $1-(-1)^t\binom{r-1}t$ times, which lies above or below $1$ according to the parity of $t$.
 
-\writeup (a) For an outcome $\omega$ in exactly $r\ge1$ events, the indicator of the union is $1$, and $\omega$ contributes $\binom rj$ to $S_j$ (it lies in
-$\binom rj$ of the intersections of $j$ events). By induction on $t$ from Pascal's rule,
-$\sum_{j=1}^t(-1)^{j-1}\binom rj=1-(-1)^t\binom{r-1}t$. This is $\ge1$ for $t$ odd and $\le1$ for $t$ even, and for $r=0$ every term is $0$.
-Taking expectations of these pointwise inequalities gives (a).
+\writeup (a) For an outcome in exactly $r\ge1$ events, the indicator of the union is $1$, and the outcome contributes $\binom rj$ to $S_j$, because it lies in $\binom rj$ of the intersections of $j$ events. By induction on $t$ from Pascal's rule,
+\[
+\sum_{j=1}^t(-1)^{j-1}\binom rj=1-(-1)^t\binom{r-1}t.
+\]
+This is at least $1$ for $t$ odd and at most $1$ for $t$ even, and for $r=0$ every term is $0$. Taking expectations of these inequalities, which hold at every outcome, gives (a).
 
-(b) Let $A_i$ be the event that $i$ is a fixed point. An intersection of $j$ of them has probability $\frac{(n-j)!}{n!}$, so $S_j=\binom nj\frac{(n-j)!}{n!}=\frac1{j!}$.
-Then $\frac{D_n}{n!}=1-P(\bigcup A_i)$ lies between $\sum_{j=0}^t\frac{(-1)^j}{j!}$ and $\sum_{j=0}^{t+1}\frac{(-1)^j}{j!}$, which differ by $\frac1{(t+1)!}$ (for $t<n$;
-for $t=n$ it is exact inclusion--exclusion).
+(b) Let $A_i$ be the event that $i$ is a fixed point. An intersection of $j$ of them has probability $(n-j)!/n!$, so $S_j=\binom nj(n-j)!/n!=1/j!$. Then $D_n/n!=1-P(\bigcup A_i)$ lies between $\sum_{j=0}^t(-1)^j/j!$ and $\sum_{j=0}^{t+1}(-1)^j/j!$, which differ by $1/(t+1)!$ when $t<n$. For $t=n$ the sum is exact inclusion--exclusion.
 
 \tools Volume~1, Chapter~2 (inclusion--exclusion, derangements).
-\leads Brun's sieve (1915) is a clever truncation of inclusion--exclusion over primes, using Bonferroni at a well-chosen $t$; it gave
-the first upper bound for twin primes, the bound of Theorem~\ref{thm:twins}, which this chapter proved with Selberg's simpler sieve.
+\leads Brun's sieve of 1915 truncates inclusion--exclusion over the primes and uses a Bonferroni inequality at a chosen $t$. That truncation gave the first upper bound of the shape of Theorem~\ref{thm:twins}. This chapter proved the same shape with Selberg's quadratic form.
 \end{solution}
 
 \begin{solution}{pb:buchstab}
-\idea A rough number below $x$ with no prime factor below $x^{1/3}$ is $1$, a prime, or a product of two primes; counting the products with the prime number theorem gives
-$\int\frac{\mathrm dt}{t(1-t)}$. Independent sieving would give $e^{-\gamma}$ everywhere, and the actual answer is far from it when $y$ is a large power of $x$.
+\idea A number below $x$ with no prime factor below $x^{1/3}$ is $1$, a prime, or a product of two primes. Counting the products with the prime number theorem produces $\int\mathrm dt/(t(1-t))$. The case $u\le3$ is the whole of this problem. Volume~15 takes up Buchstab's equation for larger $u$.
 
-\writeup (a) A $y$-rough $n\le x$ with $n>1$ and $y\ge x^{1/3}$ has at most two prime factors, since three would multiply to more than $y^3\ge x$. If $y\ge\sqrt x$ it cannot have two
-either, so it is a prime in $]y,x]$. If $x^{1/3}\le y<\sqrt x$, it is a prime in $]y,x]$ or a product $pq$ with $y<p\le q$, $pq\le x$.
+\writeup (a) A $y$-rough $n\le x$ with $n>1$ and $y\ge x^{1/3}$ has at most two prime factors, since three would multiply to more than $y^3\ge x$. If $y\ge\sqrt x$ it cannot have two either, so it is a prime in $]y,x]$. If $x^{1/3}\le y<\sqrt x$, it is a prime in $]y,x]$ or a product $pq$ with $y<p\le q$ and $pq\le x$.
 
-(b) For $1<u\le2$, $\Phi(x,y)=1+\pi(x)-\pi(y)$, which is $\sim\frac x{\log x}$ since $\pi(x^{1/u})=o(\pi(x))$. Multiplying by $\frac{\log y}x=\frac{\log x}{ux}$ gives $\frac1u$.
-For $2<u\le3$, the pairs number
+(b) For $1<u\le2$, one has $\Phi(x,y)=1+\pi(x)-\pi(y)$, which is $\sim x/\log x$ since $\pi(x^{1/u})=o(\pi(x))$. Multiplying by $\log y/x=(\log x)/(ux)$ gives $1/u$. For $2<u\le3$, the pairs number
 \[
 \sum_{y<p\le\sqrt x}\Bigl(\pi\Bigl(\frac xp\Bigr)-\pi(p)+1\Bigr),
 \]
-which is $\sum_{y<p\le\sqrt x}\pi(\frac xp)+O(\pi(\sqrt x)^2)$.
-Since $\frac xp\ge\sqrt x$, $\pi(\frac xp)=(1+o(1))\frac{x}{p\log(x/p)}$ uniformly, and the sum is
+which is $\sum_{y<p\le\sqrt x}\pi(x/p)+O(\pi(\sqrt x)^2)$. Since $x/p\ge\sqrt x$, one has $\pi(x/p)=(1+o(1))x/(p\log(x/p))$ uniformly, and the sum is
 \[
-(1+o(1))\frac x{\log x}\sum_{y<p\le\sqrt x}\frac1pF\Bigl(\frac{\log p}{\log x}\Bigr)\qquad\text{with }F(t)=\frac1{1-t}.
-\] By Mertens's
-second theorem (Theorem~\ref{thm:mertens2}), $\sum_{x^a<p\le x^b}\frac1p\to\log\frac ba$ for fixed $0<a<b$; cutting $[\frac1u,\frac12]$ into small intervals and using the continuity of $F$, Riemann sums give
-\[
-\sum_{x^{1/u}<p\le x^{1/2}}\frac1pF\Bigl(\frac{\log p}{\log x}\Bigr)\to\int_{1/u}^{1/2}\frac{\mathrm dt}{t(1-t)}=\Bigl[\log\frac t{1-t}\Bigr]_{1/u}^{1/2}=\log(u-1).
+(1+o(1))\frac x{\log x}\sum_{y<p\le\sqrt x}\frac1p\,F\Bigl(\frac{\log p}{\log x}\Bigr)\qquad\text{with }F(t)=\frac1{1-t}.
 \]
-So $\Phi(x,y)=(1+\log(u-1)+o(1))\frac x{\log x}$ and $\frac{\log y}x\Phi(x,y)\to\frac{1+\log(u-1)}u$. (At $u=2$ both formulas give $\frac12$.)
+By Mertens's second theorem (Theorem~\ref{thm:mertens2}), $\sum_{x^a<p\le x^b}1/p\to\log(b/a)$ for fixed $0<a<b$. Cutting $[1/u,1/2]$ into small intervals and using the continuity of $F$, Riemann sums give
+\[
+\sum_{x^{1/u}<p\le x^{1/2}}\frac1p\,F\Bigl(\frac{\log p}{\log x}\Bigr)\to\int_{1/u}^{1/2}\frac{\mathrm dt}{t(1-t)}=\Bigl[\log\frac t{1-t}\Bigr]_{1/u}^{1/2}=\log(u-1).
+\]
+So $\Phi(x,y)=(1+\log(u-1)+o(1))x/\log x$ and $(\log y/x)\Phi(x,y)\to(1+\log(u-1))/u$. At $u=2$ both formulas give $1/2$.
 
-(c) For $2<u<3$, $(u\omega(u))'=\frac1{u-1}=\omega(u-1)$, as $u-1\in\left]1,2\right[$. So $\omega(2)=0.5<e^{-\gamma}=0.56146<\omega(3)=\frac{1+\log2}3=0.56438$.
+(c) For $2<u<3$, one has $(u\omega(u))'=1/(u-1)=\omega(u-1)$, because $u-1\in\left]1,2\right[$. So $\omega(2)=0.5<e^{-\gamma}=0.56146<\omega(3)=(1+\log2)/3=0.56438$. The identity $(u\omega(u))'=\omega(u-1)$ for $u>3$, and the limit of $\omega(u)$, are not proved in this chapter. Volume~15 takes up that range.
 
-(d) $\omega$ decreases from $1$ to $\frac12$ on $]1,2]$; on $[2,3]$, $\omega(u)\ge\frac12$ because $2+2\log(u-1)-u$ vanishes at $u=2$ and has derivative $\frac2{u-1}-1\ge0$. So the minimum on $]1,3]$ is
-$\omega(2)=\frac12$, where independent sieving overestimates by the factor $2e^{-\gamma}=1.1229$. This is Legendre's failure: sieving the integers up to $x$ by the primes up to $\sqrt x$
-leaves the primes of $]\sqrt x,x]$, about $\frac x{\log x}$ of them, not $x\prod_{p\le\sqrt x}(1-\frac1p)\sim2e^{-\gamma}\frac x{\log x}$ (Exercise~\ref{ex:legendrefail}). As $u\to1$, on the other hand, the prediction
-underestimates by a factor tending to $e^\gamma$.
+(d) The function $\omega$ decreases from $1$ to $1/2$ on $]1,2]$. On $[2,3]$, one has $\omega(u)\ge1/2$, because $2+2\log(u-1)-u$ vanishes at $u=2$ and has derivative $2/(u-1)-1\ge0$. So the minimum on $]1,3]$ is $\omega(2)=1/2$. There the independent-sieve prediction $e^{-\gamma}$ overshoots by the factor $2e^{-\gamma}=1.1229$. This is Legendre's failure at $z=\sqrt x$: sieving the integers up to $x$ by the primes up to $\sqrt x$ leaves the primes of $]\sqrt x,x]$, about $x/\log x$ of them, while $x\prod_{p\le\sqrt x}(1-1/p)\sim2e^{-\gamma}x/\log x$ (Exercise~\ref{ex:legendrefail}). As $u\to1$, the prediction $e^{-\gamma}$ is smaller than $\omega(u)=1/u$ by a factor that tends to infinity.
 
 \tools{Theorems~\ref{thm:mertens2} and~\ref{thm:pnt}, Exercise~\ref{ex:legendrefail}.}
-\leads Buchstab (1937) found the equation $(u\omega(u))'=\omega(u-1)$, and de Bruijn (1950) proved that $\omega(u)\to e^{-\gamma}$, the difference oscillating and decaying faster than any exponential
-(Figure~\ref{fig:buchstab}). So independent sieving is right exactly when the primes used are a small power of the range: for $y=x^{1/u}$ with $u$ large. This is Legendre's failure at $z=\sqrt x$, and
-the success of his sieve for tiny $z$, seen from the exact side.
+\leads This problem is the case $1<u\le3$. Buchstab (1937) wrote the delay equation $(u\omega(u))'=\omega(u-1)$ for all $u>1$, and de Bruijn (1950) proved that $\omega(u)\to e^{-\gamma}$. Those results, and the range $u>3$, are taken up in Volume~15. They are not theorems of this chapter. Figure~\ref{fig:buchstab} draws the function from the formulas in (b) and continues the curve past $3$ by the delay equation.
+\end{solution}
+
+\begin{solution}{ex:sievehand}
+\idea On a range this small you can list the survivors, multiply out the main term, and see the error bound sit as large as the count.
+\writeup The integers $n\le30$ not divisible by $2$, $3$ or $5$ are $1,7,11,13,17,19,23,29$. There are $8$ of them, so $\Phi(30,5)=8$. The main term is
+\[
+30\Bigl(1-\frac12\Bigr)\Bigl(1-\frac13\Bigr)\Bigl(1-\frac15\Bigr)=30\cdot\frac12\cdot\frac23\cdot\frac45=8.
+\]
+And $\pi(5)=3$, so the error allowance is $2^3=8$. The error in this example is $0$, and the proposition allows an error as large as the main term.
+\end{solution}
+
+\begin{solution}{ex:weightten}
+\idea The sum $G(10)$ is a finite sum of unit fractions. The weight $\lambda_2$ is then one application of the formula from the proof, with the inner sum running over three terms.
+\writeup The squarefree positive integers up to $10$ are $1,2,3,5,6,7,10$, with
+\[
+\varphi(1),\varphi(2),\varphi(3),\varphi(5),\varphi(6),\varphi(7),\varphi(10)=1,1,2,4,2,6,4.
+\]
+So
+\[
+\begin{aligned}G(10)&=1+1+\frac12+\frac14+\frac12+\frac16+\frac14\eqbr=2+1+\frac12+\frac16=\frac72+\frac16=\frac{22}6=\frac{11}3.\end{aligned}
+\]
+For $d=2$ and $y=10$, the formula in the proof of Theorem~\ref{thm:selberg} reads
+\[
+\lambda_2=\mu(2)\cdot\frac{2}{\varphi(2)G(10)}\sum_{\substack{m\le5\\(m,2)=1}}\frac{\mu^2(m)}{\varphi(m)}.
+\]
+The odd squarefree $m\le5$ are $1,3,5$, and the inner sum is $1+\frac12+\frac14=\frac74$. Since $\mu(2)=-1$ and $\varphi(2)=1$,
+\[
+\lambda_2=(-1)\cdot\frac{2}{(11/3)}\cdot\frac74=-2\cdot\frac3{11}\cdot\frac74=-\frac{21}{22}.
+\]
+Figure~\ref{fig:selweights} draws this value, together with the other six weights at the same level $y=10$.
+\end{solution}
+
+\begin{solution}{ex:tworatio}
+\idea When the interval starts at $N^k$, the logarithm in the prime-number-theorem scale is $k$ times $\log N$. The short-interval bound still has $\log N$ in the denominator, so the ratio of the two expressions is $2k$. The factor tied to Siegel zeros is the leading $2$ in the progression bound.
+\writeup (a) If $x=N^k$, then $\log x=k\log N$, and
+\[
+\frac{2N/\log N}{N/\log x}=\frac{2N}{\log N}\cdot\frac{k\log N}N=2k.
+\]
+(b) For $k=2$ and $N=100$, one has $x=10^4$, $\log100=4.60517$ and $\log(10^4)=9.21034$. Then $2N/\log N=200/4.60517=43.43$ and $N/\log x=100/9.21034=10.86$. The ratio is $4$, which is $2k$.
+(c) The sentence after Theorem~\ref{thm:bt} refers to the progression bound of Exercise~\ref{ex:btap}. That is the factor $2$ which, lowered to $2-\varepsilon$ for moduli up to a small power of $x$, would rule out Siegel zeros. The short-interval ratio in (a) equals $2k$, and for $k>1$ it is larger than $2$.
+\end{solution}
+
+\begin{solution}{ex:sift60}
+\idea The picture crosses out every multiple of $2$, $3$ or $5$. What remains is a list you can count, and Legendre's main term matches it exactly.
+\writeup The unmarked numbers in Figure~\ref{fig:sieve60} are
+\[
+1,7,11,13,17,19,23,29,31,37,41,43,47,49,53,59.
+\]
+There are $16$ of them. The one that is neither $1$ nor prime is $49=7^2$. The main term is
+\[
+60\Bigl(1-\frac12\Bigr)\Bigl(1-\frac13\Bigr)\Bigl(1-\frac15\Bigr)=60\cdot\frac4{15}=16.
+\]
+The error is $0$. The allowance in Proposition~\ref{prop:legendre} is $2^{\pi(5)}=8$, which is large enough to cover an error of $0$ and would also have covered an error of several units.
 \end{solution}
 
 \section*{Sources and further reading}
 
 \begin{itemize}
-\item Nicomachus of Gerasa, \emph{Introduction to Arithmetic}, translated by M.~L.~D'Ooge, Macmillan, New York, 1926, Book~I, Chapter~13 (the epigraph, and the oldest surviving description of
-the sieve of Eratosthenes).
-\item A.-M.~Legendre, \emph{Essai sur la théorie des nombres}, 2nd ed., Paris, 1808.
+\item Nicomachus of Gerasa, \emph{Introduction to Arithmetic}, translated by M.~L.~D'Ooge, Macmillan, New York, 1926, Book~I, Chapter~13 (the epigraph, and the oldest surviving description of the sieve of Eratosthenes).
+\item A.-M.~Legendre, \emph{Essai sur la th\'eorie des nombres}, 2nd ed., Paris, 1808.
 \item E.~C.~Titchmarsh, \emph{A divisor problem}, Rendiconti del Circolo Matematico di Palermo 54 (1930), 414--429 (the inequality named after Brun and him).
-\item V.~Brun, \emph{La série $\frac15+\frac17+\frac1{11}+\frac1{13}+\cdots$ où les dénominateurs sont nombres premiers jumeaux est convergente ou finie}, Bulletin des Sciences Mathématiques 43 (1919), 100--104 and 124--128.
+\item V.~Brun, \emph{La s\'erie $\frac15+\frac17+\frac1{11}+\frac1{13}+\cdots$ o\`u les d\'enominateurs sont nombres premiers jumeaux est convergente ou finie}, Bulletin des Sciences Math\'ematiques 43 (1919), 100--104 and 124--128.
 \item A.~Selberg, \emph{On an elementary method in the theory of primes}, Det Kongelige Norske Videnskabers Selskabs Forhandlinger 19 (1947), 64--67.
 \item Yu.~V.~Linnik, \emph{The large sieve}, Doklady Akademii Nauk SSSR 30 (1941), 292--294.
 \item P.~X.~Gallagher, \emph{The large sieve}, Mathematika 14 (1967), 14--20.
 \item H.~L.~Montgomery, \emph{A note on the large sieve}, Journal of the London Mathematical Society 43 (1968), 93--98.
 \item H.~L.~Montgomery and R.~C.~Vaughan, \emph{The large sieve}, Mathematika 20 (1973), 119--134.
 \item G.~H.~Hardy and J.~E.~Littlewood, \emph{Some problems of ``Partitio numerorum'' III}, Acta Mathematica 44 (1923), 1--70.
-\item T.~R.~Nicely, \emph{Enumeration to $10^{14}$ of the twin primes and Brun's constant}, Virginia Journal of Science 46 (1995), 195--204. Nicely tells there how the computation exposed the Pentium division error; the
-$475$ million dollars is the charge Intel announced for replacing the processors, in January 1995.
-\item A.~A.~Buchstab, \emph{Asymptotic estimates of a general number-theoretic function}, Matematicheskii Sbornik 2 (44) (1937), 1239--1246; N.~G.~de Bruijn, \emph{On the number of uncancelled
-elements in the sieve of Eratosthenes}, Indagationes Mathematicae 12 (1950), 247--256.
+\item T.~R.~Nicely, \emph{Enumeration to $10^{14}$ of the twin primes and Brun's constant}, Virginia Journal of Science 46 (1995), 195--204. Nicely records there how the computation exposed the Pentium division error. The $475$ million dollars is the charge Intel announced, in January 1995, for replacing the processors.
+\item A.~A.~Buchstab, \emph{Asymptotic estimates of a general number-theoretic function}, Matematicheskii Sbornik 2 (44) (1937), 1239--1246; N.~G.~de Bruijn, \emph{On the number of uncancelled elements in the sieve of Eratosthenes}, Indagationes Mathematicae 12 (1950), 247--256. The delay equation for $u>3$, and de Bruijn's limit, are the part taken up in Volume~15.
 \item J.-R.~Chen, \emph{On the representation of a larger even integer as the sum of a prime and the product of at most two primes}, Scientia Sinica 16 (1973), 157--176.
 \item Y.~Zhang, \emph{Bounded gaps between primes}, Annals of Mathematics 179 (2014), 1121--1174; J.~Maynard, \emph{Small gaps between primes}, Annals of Mathematics 181 (2015), 383--413.
 \item H.~Halberstam and H.-E.~Richert, \emph{Sieve Methods}, Academic Press, 1974. The classical reference.
-\item E.~Bombieri and H.~Davenport, Small differences between prime numbers, \emph{Proc. Roy. Soc. London Ser. A} 293 (1966), 1--18 (the factor $4$ for twin primes). J.~Wu, Chen's double sieve, Goldbach's conjecture and the twin prime problem, \emph{Acta Arith.} 114 (2004), 215--273 (the factor $3.4$).
-\item J.~Friedlander and H.~Iwaniec, \emph{Opera de Cribro}, AMS Colloquium Publications 57, 2010. The modern one, witty and complete.
+\item E.~Bombieri and H.~Davenport, Small differences between prime numbers, \emph{Proc.\ Roy.\ Soc.\ London Ser.\ A} 293 (1966), 1--18 (the factor $4$ for twin primes). J.~Wu, Chen's double sieve, Goldbach's conjecture and the twin prime problem, \emph{Acta Arith.} 114 (2004), 215--273 (the factor about $3.4$).
+\item J.~Friedlander and H.~Iwaniec, \emph{Opera de Cribro}, AMS Colloquium Publications 57, 2010. The account of the constant $2$ in the progression form of Brun--Titchmarsh, and of its relation to Siegel zeros, is the one quoted after Theorem~\ref{thm:bt}.
 \item H.~Davenport, \emph{Multiplicative Number Theory}, 3rd ed., Springer GTM~74, 2000, Chapters~23 and~27--28 (the large sieve, Bombieri--Vinogradov).
 \end{itemize}
