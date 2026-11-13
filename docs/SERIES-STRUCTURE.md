@@ -87,7 +87,7 @@ A few part names were adjusted so the part matches the chapters that actually si
 | 13 | Adeles and Tate's Thesis | Tate’s thesis and class field theory |
 | 13 | Elliptic Curves and Modular Forms | Curves through modular forms |
 | 14 The Primes | Zeros and Sieves | Zeros through exponential sums. The requested name was “Sieves”; the book opens with zeros. |
-| 14 | Additive Problems and Bounded Gaps | Three primes and bounded gaps. The part name stays Additive Problems and Bounded Gaps. Partitions are in Volume 5, Chapter 12. The Waring chapter file is in this volume's directory since the Volume 5 rewrite and is not yet printed: it becomes Chapter 6 when Volume 14 is rewritten. |
+| 14 | Additive Problems and Bounded Gaps | Waring (Chapter 6), three primes and bounded gaps, with the explicit bound 4580 proved. Partitions are in Volume 5, Chapter 12. |
 | 14 | Structure in the Primes | Halász through the critical line |
 | 15 Order and Chance | The Question | Order in the integers, models of the primes, independent prime divisors |
 | 15 | Arithmetic Statistics | Multiplicative functions through ranks of elliptic curves |
