@@ -18,6 +18,26 @@ The portraits are Jacob Bernoulli, John Wallis, Leonhard Euler, Joseph Fourier, 
 
 The preface, the back-cover blurb, and `kdp.md` were rewritten to the thirteen-chapter book. The paperback ISBN is still unset. `common/cover-notes.json` was not edited. The blurb does not use the macro `\Z`, which the cover wrap does not define.
 
+## Chapter-by-chapter mathematics
+
+Each row is a check of the flagship claim, not a line-by-line audit of every old exercise. The 13 November independent re-read had already followed the skeletons. This note records what this pass re-checked.
+
+| Ch | Claim checked | Result |
+| --- | --- | --- |
+| 1 | Falling basis of \(x^3\), sum of cubes, \(B_4\), \(\sum k c^k\) | Identities hold; \(n=4\) cubes give 36; \(B_4=-1/30\); \(c=3,n=3\) gives 21. Von Staudt–Clausen argument left intact. |
+| 2 | Pentagonal signs, \(p(5)=7\), coin count \(\lfloor n/2\rfloor+1\), merge-sort inequality, derangement tail \(<1/2\), \(\rho_0\approx0.73025\) | Kept. Franklin’s exceptional families were not weakened. |
+| 3 | \(\zeta(2k)\) formula, product \(\prod(1-1/n^2)=(N+1)/(2N)\), even/odd Basel split, Viète’s first two factors \(\approx0.653\) | Hold. \(\zeta(5)\) stays a 2026 preprint, not a theorem of this volume. Niven’s proof that \(\pi^2\) is irrational was not altered in its estimates. |
+| 4 | BBP digits, Borwein deficit \(2.31\times10^{-11}\), \(\int_0^1 x\ln x\,dx=-1/4\), Frullani at rates 2 and 3 equals \(\ln(3/2)\) | Hold. Tonelli remains admitted (Volume 7, Theorem 9.5). |
+| 5 | \(\Gamma(3/2)=\sqrt\pi/2\), \(V_2=\pi\), \(V_3=4\pi/3\), log-convex integrals pass to the limit because both sides are non-negative | Hold. No Fubini–Tonelli proof was added. Fulton–Harris stays quoted. |
+| 6 | Square-wave coefficient \(2/(i\pi)\), Gibbs constant, Weyl as the theorem Volume 6 quotes, \(e(t)=e^{2\pi it}\) | Hold. Independence is Volume 4, Chapter 2. Siegel still admits Volume 7, Theorem 7.11. |
+| 7 | DFT of \((1,0,-1,0)\) is \((0,2,0,2)\). \(M(8)=12\). Newman sum is \(\frac23 N^{\log 3/\log 4}\) | Hold. Four eigenvalues of the normalised transform are claimed for \(n\ge5\). |
+| 8 | Unitary convention, self-dual Gaussian, \(\vartheta(1/t)=\sqrt t\,\vartheta(t)\), Gauss sum | Hold. Inversion class remains written down. |
+| 9 | \(\int(1+x^4)^{-1}=\pi/\sqrt2\), poles \(e^{i\pi/4}\) and \(e^{i3\pi/4}\), arc bound as \(R\to\infty\) for fixed \(n\ge2\), Rouché on \(\|z\|=2\) | Hold. Star-shaped Cauchy still includes \(F'=f\). |
+| 10 | \(\xi(s)=\frac12+\frac12 s(s-1)I(s)\), \(\zeta(-1)=-1/12\), \(\zeta(-3)=1/120\), trivial zeros from \(1/\Gamma(s/2+1)\) | Hold. The smooth-cutoff claim stays unproved. |
+| 11 | \(H_{10}\) partial sum \(2.928968253927\ldots\) is smaller than \(7381/2520\) by \(4.1\times10^{-11}\). \(\ln10+\gamma+1/20\approx2.9298\) | Hold. |
+| 12 | \(\eta\) branch, \(O(n^{-1/4})\) honesty, \(p(100)=190569292\), log gaps \(0.136,0.099,0.063,0.045\), \(N'\)-main term about \(198301300\) | Hold. Rademacher stays quoted. |
+| 13 | AGM of \(1\) and \(1/\sqrt2\): \(a_1\approx0.8536\), \(b_1\approx0.8409\), \(a_2\approx b_2\approx0.8472\). Order \(a_1>b_1\) from \(((a-b)/2)^2\) | Hold. Brent–Salamin digit bounds were not loosened. |
+
 ## Mathematics checked in this pass
 
 Numbers below were recomputed in Python while the new exercises and figures were written.

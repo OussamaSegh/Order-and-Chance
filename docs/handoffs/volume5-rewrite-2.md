@@ -8,9 +8,28 @@ Branch `cursor/volume5-complete-rewrite-a791`. Do not edit Volume 6 or Volumes 1
 
 **Local build, finished.** `./build.sh volume5-calculation` exited 0. Reading PDF, print PDF (413 interior pages), layout check (434 whole boxes, max height 383 pt, no unresolved references), print cover, and EPUB (31 MB, 64 plates at 1800 px, full width, inline math on the em baseline). The blurb must not use `\Z`: the cover wrap does not define that macro. A quicksort example that overflowed the text height was split; the formula \(C_n=2(n+1)H_n-4n\) stays in the box `ex:quicksortexact`, and the derivation is the prose after it.
 
-**In progress.** Opening the pull request titled “Volume 5: complete rewrite”, then CI until list, debs, build matrix, site and publish have finished.
+**In progress.** A second prose pass. The first pass rewrote openings, closings, and many bridges, and appended figures and exercises, but a paragraph count against `origin/main` showed large blocks of old English still in place. Share of old English paragraphs (at least twelve words outside the mathematics) that had already changed, measured before this second pass:
 
-**Remains.** A hostile re-read of every new exercise solution against the chapter it cites. The long problem warehouse in `ch12-agm.tex` was not retyped line by line; its tasks are unchanged and new AGM exercises sit after it. If the EPUB fails, read `/tmp/v5build/full.log` first.
+| Chapter | File | Old English paragraphs rewritten |
+| --- | --- | --- |
+| Preface | `preface.tex` | 100% |
+| 1 | `ch01-finite.tex` | 39% |
+| 2 | `ch02-generating.tex` | 23% |
+| 3 | `ch03-series.tex` | 26% |
+| 4, BBP section | `ch04-integrals.tex`, `bbp-borwein.tex` | 37%, 90% |
+| 5 | `ch05-gamma.tex` | 36% |
+| 6 | `ch06-fourier.tex` | 73% |
+| 7 | `ch07-fft.tex` | 75% |
+| 8 | `ch08-transform.tex` | 86% |
+| 9 | `ch09-complex.tex` | 62% |
+| 10 | `ch10-zeta.tex` | 53% |
+| 11 | `ch11-asymptotics.tex` | 50% |
+| 12 | `hardy-ramanujan.tex` | 64% |
+| 13 | `ch12-agm.tex` | 27% |
+
+Formal statement boxes that are already the shortest correct claim stay. Everything else that still matches `origin/main` is being rewritten. The handoff will be updated with the new shares after that pass, then the book will be rebuilt and CI watched on PR #233.
+
+**Remains after the share table above.** Rewrite the unchanged English, especially Chapters 2 and 13. Rebuild PDF and EPUB. Push. Poll CI.
 
 **Open math questions.** None that block the build. Checks already recomputed, and recorded in the review note: the cube sum via falling powers (the middle term is \(n^{\underline 3}\), not \(\tfrac32 n^{\underline 3}\)); \(p(5)=7\); DFT of \((1,0,-1,0)=(0,2,0,2)\); \(\log p(n)\) gaps at \(n=10,20,50,100\); AGM of \(1\) and \(1/\sqrt2\) through two steps; trivial zeros via \(1/\Gamma(s/2+1)\) in Corollary 10, not a different Gamma factor. The proved Hardy–Ramanujan error is still \(O(n^{-1/4})\).
 
