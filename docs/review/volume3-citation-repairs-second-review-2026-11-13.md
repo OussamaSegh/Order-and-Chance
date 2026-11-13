@@ -123,3 +123,46 @@ The tools lines are citation lists. The Volume 8 parenthetical, “orthonormal, 
 ## What clears the verdict
 
 Rewrite the primitive-descent sentence in the Volume 13 reminder so that it matches Proposition 6.17: the primitive polynomial lies in \(R[y]\) and has degree at least 1, the polynomial it divides lies in \(R[y]\), and the given division is the one read in \(K[y]\). The citation number can stay Proposition 6.17.
+
+## Recheck at e4c2e75c
+
+**Verdict: APPROVE**
+
+**Head:** [`e4c2e75c3738aa0298f99e1e5a2254b904555216`](https://github.com/OussamaSegh/Order-and-Chance/commit/e4c2e75c3738aa0298f99e1e5a2254b904555216) on `cursor/volume3-apply-scored-read`, pull request [#235](https://github.com/OussamaSegh/Order-and-Chance/pull/235). The pulls API still returned that SHA when this section was written. This recheck does not edit that branch, and it does not merge.
+
+The range `939f6eac..e4c2e75c` is two commits, `513768f2` and `e4c2e75c`. Each commit, and the net diff, changes only `volume13-arithmetic/chapters/ch11-curves.tex`. The pull-request description was updated with the same head: it names `e4c2e75c`, points at run 43489447516, and restates the V3-2 row as the divisibility sentence below. No other path moves.
+
+## The reminder and Proposition 6.17
+
+Proposition 6.17 is `prop:gaussirr` in `volume3-symmetry/chapters/ch06-rings.tex`. The shared counter assigns it 6.17. Lemma 6.16 is the content formula, and Theorem 6.18 is the polynomial UFD. The proposition says: let \(R\) be a UFD with fraction field \(K\), and let \(f\in R[X]\) be primitive of degree at least 1. Then \(f\) is irreducible in \(R[X]\) exactly when it is irreducible in \(K[X]\). If \(f\) divides \(g\in R[X]\) in \(K[X]\), then \(f\) divides \(g\) in \(R[X]\).
+
+The reminder now reads:
+
+> Let \(R\) be a UFD with fraction field \(K\), and let \(f\in R[y]\) be primitive of degree at least 1. If \(f\) divides \(g\in R[y]\) in \(K[y]\), then \(f\) already divides \(g\) in \(R[y]\) (Volume 3, Proposition 6.17). If two polynomials in \(R[y]\) have a common factor of positive degree in \(K[y]\), scale that factor to a primitive polynomial of degree at least 1 in \(R[y]\). By the proposition, that polynomial divides both in \(R[y]\).
+
+The indeterminate is \(y\) because the chapter works in \(R[y]\). The four hypotheses of the divisibility sentence are the ones in the proposition: \(R\) is a UFD, \(f\in R[y]\) is primitive of degree at least 1, \(g\in R[y]\), and the given division is the one read in \(K[y]\). The citation sits on that sentence. The irreducibility sentence of the same proposition stays in Volume 3; the two curves use the divisibility sentence. The old counterexample, \(X\) dividing \(\frac12 X\) in \(\mathbb Q[y]\), is excluded because the dividend is required to lie in \(R[y]\).
+
+## The curves argument
+
+Volume 3, in the paragraph before Lemma 6.16, writes every nonzero polynomial of \(K[X]\) as \(\lambda f_0\) with \(\lambda\in K^*\) and \(f_0\in R[X]\) primitive: clear a common denominator, then divide by the content. Multiplication by \(\lambda\) keeps the degree. A common factor of positive degree in \(K[y]\) therefore scales to a primitive polynomial \(f\in R[y]\) of degree at least 1. Since \(\lambda\) is a unit of \(K[y]\), \(f\) divides that factor in \(K[y]\), and so \(f\) divides each of the two polynomials in \(K[y]\). Both polynomials lie in \(R[y]\). Proposition 6.17 then says \(f\) divides both in \(R[y]\).
+
+Lemma `lem:finite` uses that step with \(R=k[x]\) and \(K=k(x)\). Theorem 6.18 makes \(k[x]\) a UFD. \(F\) and \(G\) lie in \(k[x,y]=R[y]\). A divisor in \(R[y]\) of positive degree in \(y\) is a non-unit of \(k[x,y]\), because the units are the nonzero constants of \(k\). That would be a common factor of \(F\) and \(G\). The lemma assumes there is none, so there is no common factor of positive degree in \(K[y]\), and the Bézout step in the PID \(K[y]\) is available. The lemma’s own sentence is unchanged from `939f6eac`. It already said the factor is scaled to a primitive polynomial of \(R[y]\) which would divide both there. The reminder now states the degree hypothesis in the same place.
+
+## Tests, the Volume 13 build, and the voice
+
+From `tools/` on this head, `python3 -m unittest test_cross_volume_citations` ran 14 tests in 1.968s and exited 0.
+
+`./build.sh --pdf-only volume13-arithmetic` on this head exited 0. The final log has no `Overfull \hbox`, no `Overfull \vbox`, and no undefined reference. The layout check reported 534 whole boxes, maximum height 316.1 pt, and no overflow or unresolved reference. The print interior is 359 pages, page size 513 × 738 pt. The reading PDF is 360 pages at the 7 × 10 trim, the cover plus those 359 pages. That print count is the count the pull-request description lists for Volume 13.
+
+Read aloud, the new sentences name the rings, the degree, and the two polynomials. The first is the proposition’s own sentence, with “already” taken from the last line of its proof. The next two are the scaling step and the division. There is no stock opener, no hollow intensifier, and no sentence that only announces a change of topic.
+
+## CI on this SHA
+
+Checks were polled on the commit until both workflow runs were completed and a second read, twenty seconds later, showed the same completed set.
+
+| Run | Workflow | Conclusion |
+| --- | --- | --- |
+| [43489447516](https://github.com/OussamaSegh/Order-and-Chance/actions/runs/43489447516) | Volume 4 native production QA | success |
+| [43489447614](https://github.com/OussamaSegh/Order-and-Chance/actions/runs/43489447614) | Build books | success |
+
+The commit has 20 check runs. Nineteen concluded success: `list`, `debs`, `site`, `volume4-native`, and the fifteen `build (volume…)` jobs. One concluded skipped: `publish`. No other workflow run was present on this SHA.
