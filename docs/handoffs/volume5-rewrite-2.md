@@ -28,9 +28,11 @@ Branch `cursor/volume5-complete-rewrite-a791`. Do not edit Volume 6 or Volumes 1
 | 12 | `hardy-ramanujan.tex` | 95% (58/61) |
 | 13 | `ch12-agm.tex` | 100% (261/262) |
 
-**In progress.** Rebuilding the PDF and EPUB locally after this pass, then pushing, then watching CI on PR #233 until list, debs, the build matrix, site and publish have finished.
+**Local rebuild after the second pass.** `./build.sh volume5-calculation` exited 0. Layout check: 435 whole boxes, maximum height 364.7 pt, no overflow and no unresolved references. Print PDF: 417 interior pages. EPUB passed the full-width plate check and the em baseline check.
 
-**Remains.** Confirm the rebuild exits 0. Fix anything it reports. Poll CI and fix failures on this branch only.
+**CI.** Run [43468735367](https://github.com/OussamaSegh/Order-and-Chance/actions/runs/43468735367) on `0805de76` finished success: list, debs, `build (volume5-calculation)`, and site succeeded. Publish is skipped on pull requests; `.github/workflows/build.yml` runs it only on `main`.
+
+**Remains.** None for the manuscript. A later docs commit, if pushed, starts a new CI run that must be watched the same way.
 
 **Open math questions.** None that block the build. Checks already recomputed, and recorded in the review note: the cube sum via falling powers (the middle term is \(n^{\underline 3}\), not \(\tfrac32 n^{\underline 3}\)); \(p(5)=7\); DFT of \((1,0,-1,0)=(0,2,0,2)\); \(\log p(n)\) gaps at \(n=10,20,50,100\); AGM of \(1\) and \(1/\sqrt2\) through two steps; trivial zeros via \(1/\Gamma(s/2+1)\) in Corollary 10, not a different Gamma factor. The proved Hardy–Ramanujan error is still \(O(n^{-1/4})\).
 
