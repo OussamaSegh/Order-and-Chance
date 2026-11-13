@@ -35,8 +35,8 @@ Gate B of the master plan (independent verification records) is not this pass.
 | 8 | Random Walks on Networks and Groups | `ch08-networks.tex` | Done |
 | 9 | Random Matrices I: The Semicircle | `ch09-semicircle.tex` | Done |
 | 10 | Random Matrices II: Unitary Matrices and the Zeros of Zeta | `ch10-cue.tex` | Done |
-| 11 | Log-Correlated Fields and the Largest Values | `ch12-logcorrelated.tex` (to be renamed `ch11-`), `brw-halfmoment.tex` | To do |
-| A | Spectral Graph Theory | `spectral.tex` | To do |
+| 11 | Log-Correlated Fields and the Largest Values | `ch11-logcorrelated.tex` (renamed from `ch12-`), `brw-halfmoment.tex` | Done |
+| A | Spectral Graph Theory | `spectral.tex` | Done |
 | — | `moments.tex` (not printed): written check, then removal | | To do |
 | — | Preface, blurb, `kdp.md` | | To do |
 
