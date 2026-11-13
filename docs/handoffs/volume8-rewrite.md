@@ -1,107 +1,81 @@
-# Handoff: Volume 8 rewrite
+# Volume 8 rewrite — handoff
 
-Volume 8, *Analysis: Operators, Spectra and Transforms*, is being rewritten to `docs/plan/MASTER-PLAN-V5-V15.md` and `docs/plan/book-08.md`. Read this file first. It is updated after every chapter.
+Branch: `cursor/volume8-complete-rewrite-3faf`. Base: `main` at `e9711ffe`. The folder is `volume8-analysis`. Do not edit any other volume. Do not merge, and do not edit, PR #157. Read the blueprint with `git show origin/claude/project-thread-khh5pi:docs/plan/book-08.md`. The structural pass (sixteen chapters, six appendices, random-matrix chapters in Volume 12) is already on `main`. Where the blueprint disagrees with the older `docs/plan/book-08.md` on `main`, the blueprint wins. This pass does not renumber.
 
-**Branch and pull request.** Branch `claude/project-thread-hngezv`, one pull request for the whole volume, as Volumes 5, 6 and 7 each landed on their own pull request. The master plan and the blueprints stay on PR #157 (branch `claude/project-thread-khh5pi`), which remains open and is not merged. Read the blueprint with `git show origin/claude/project-thread-khh5pi:docs/plan/book-08.md`. The copy of `docs/plan/book-08.md` on `main` is the older ten-chapter specification; where the two differ, the blueprint on PR #157 wins.
+## What “rewritten” means
 
-## What "rewrite" means here
+A sentence counts when it has at least 40 characters and at least 25 characters outside mathematics. It is rewritten when it is not identical to the sentence in `origin/main`. Target: at least 90% in every chapter, in the main text and again from the exercises onward (hints and solutions included). Quotations inside quotation marks may stay. A displayed formula that was already checked may stay. The English around it may not.
 
-The blueprint keeps every chapter that stays ("Preserve. Every chapter that stays, as written") and asks for structure: decisions D-16 (the two random-matrix chapters go to Volume 12), D-17 (Haar measure on $\mathbb Q_p$ stays, built on Volume 7), D-18 (a main path of sixteen chapters and six appendices), D-19 (length accepted). So the work is the restructure, then one pass per chapter with the list used for Volumes 5, 6 and 7:
+## Style
 
-1. **Voice.** `docs/WRITING-STYLE.md`, Sound human. Opens with a question, ends with "What we proved, and what comes next".
-2. **Proof read.** Every proof re-read as a hostile examiner.
-3. **Numbers.** Every printed number that is not proved on the page is recomputed by a script in `review/volume8-rewrite/`, one per chapter (`check_chNN_*.py`, helper `common.py`).
-4. **History.** Every date, quotation and attribution has a source in the chapter's "Sources" section.
-5. **References.** Hand-typed numbers inside the volume become `\ref`. Every chapter has a label (table below). The hand-typed numbers were written against three different orders (the ten-chapter book, the twenty-four-chapter book, and Volume 3's old appendices), so each one was resolved by reading, not by a table.
-6. **Plan items** of the blueprint for that chapter.
-7. **R1.** No proof or solution uses a later chapter or a later volume as a premise. The appendices are premises (D-18).
-8. **Build.** The volume builds with no undefined reference.
+`docs/WRITING-STYLE.md`, Sound human. Short sentences. A small case before the general claim. “You” when the reader should check a case. No “delve”, “robust”, “landscape”, “tapestry”, “journey”, “it is important to note”, “in this section we will”, “in conclusion”. The volume already has that voice. This pass still rewrites the sentences. It does not replace the voice with a generic textbook.
 
-Gate B of the master plan (independent verification) is not this pass.
+## Numbering lock
 
-## Structure (done)
+Do not insert a theorem, proposition, lemma, corollary, definition, or example except nothing: no new numbered statement in the middle. Four new exercises go at the **end** of each chapter’s exercise list. Keep every `\label`. Keep the order of numbered environments. Later volumes cite Volume 8 by hand-typed numbers. A new statement in the middle would shift those numbers. New exercises use fresh labels `ex:v8c01a` through `ex:v8c16d` for the sixteen chapters and `ex:v8cAa` through `ex:v8cFd` for the appendices.
 
-`main.tex` equals the blueprint's table. Chapter numbers changed for every chapter after Chapter 2:
+No proof or solution may use a later chapter or a later volume as a premise. A forward pointer is a preview. Proofs use only what Volumes 1–8 have already taught, in the printed order of `main.tex`. Numerical checks are not proofs. Do not weaken a theorem.
 
-| Now | Title | File | Label | Before |
-| --- | --- | --- | --- | --- |
-| 1 | Banach Spaces | `ch01-banach.tex` | `ch:banach` | 1 |
-| 2 | Hilbert Spaces | `ch02-hilbert.tex` | `ch:hilbert` | 2 |
-| 3 | The Spectral Theorem and Its Relatives | `linear-ch05-spectral.tex` | `linear:ch:spectral` | 7 |
-| 4 | Singular Values | `linear-ch06-svd.tex` | `linear:ch:svd` | 8 |
-| 5 | Graphs through Their Eigenvalues | `linear-ch08-graphs.tex` | `linear:ch:graphs` | 9 |
-| 6 | Cuts, Mixing and Expansion | `spectral-expansion.tex` | `ch:cheeger` | 10 |
-| 7 | Expanders and Ramanujan Graphs | `ch09-expanders.tex` | `ch:expanders` | 11 |
-| 8 | Operators, Spectra and Banach Algebras | `ch03-operators.tex` | `ch:operators` | 16 |
-| 9 | The Spectral Theorem for Compact Operators | `ch04-spectral.tex` | `ch:spectral` | 17 |
-| 10 | The Fourier Transform | `ch05-fourier.tex` | `ch:fourier` | 18 |
-| 11 | Distributions and Sobolev Spaces | `ch06-distributions.tex` | `ch:distributions` | 19 |
-| 12 | Fourier Analysis on Finite Abelian Groups | `ch07-finite.tex` | `ch:finite` | 20 |
-| 13 | Haar Measure, Duality and the $p$-adic Numbers | `ch08-haar.tex` | `ch:haar` | 21 |
-| 14 | Cauchy's Theorem, Growth and Mellin Inversion | `ch09-complex.tex` | `ch:complex` | 22 |
-| 15 | Tauberian Theorems | `ch10-tauberian.tex` | `ch:tauberian` | 23 |
-| 16 | The Values of Zeta (problems) | `ch11-harder.tex` | `ch:harder` | 24 |
-| A | Spaces, Quotients and Duality | `linear-ch01-duality.tex` | `linear:ch:duality` | 3 |
-| B | Determinants as Volume | `linear-ch02-volume.tex` | `linear:ch:volume` | 4 |
-| C | Eigenvalues and Invariant Subspaces | `linear-ch03-eigen.tex` | `linear:ch:eigen` | 5 |
-| D | Inner Products and Projections | `linear-ch04-inner.tex` | `linear:ch:inner` | 6 |
-| E | Inequalities between Matrices | `linear-ch11-inequalities.tex` | `linear:ch:inequalities` | 14 |
-| F | Linear Dynamics | `linear-ch12-dynamics.tex` | `linear:ch:dynamics` | 15 |
+Do not change fonts, sizes, or the text inside an existing diagram. New figures are new files. Do not regenerate cover motifs or lettering. The paperback ISBN stays blank.
 
-Numbering inside each chapter is preserved (new statements and exercises go at the end of a list), so a citation "Volume 8, Theorem 17.6" becomes "Volume 8, Theorem 9.6": only the chapter number moves. `review/volume8-rewrite/baseline-numbering.txt` is the printed order before the rewrite.
+## Portraits
 
-**Moved to Volume 12 (D-16).** "Random Matrices I: The Semicircle" and "Random Matrices II: Unitary Matrices and the Zeros of Zeta" are now `volume12-random-motion/chapters/ch09-semicircle.tex` and `ch10-cue.tex`, with the figure `moments-ch05-semicircle.tex`. They are wired into Volume 12's `main.tex` in the blueprint's final order: networks 8, semicircle 9, unitary matrices 10, log-correlated fields 11 (moved from Part II to the end of Part III), all in the part "Networks and Random Matrices". The figures `ch10-laws.tex` and `ch11-zeta.tex` moved with them. Every citation of those chapters and of the log-correlated chapter in Volumes 8, 14 and 15 was renumbered (for example Keating–Snaith is Volume 12, Theorem 10.10; `prop:cuelogcorr` is Proposition 11.3). Volume 12's preface, blurb and `docs/SERIES-STRUCTURE.md` say so. **Still owed by the Volume 12 rewrite:** the file names (`ch09-semicircle.tex`, `ch10-cue.tex` against the blueprint's `ch10-`, `ch11-`), and a full pass of the two chapters' citations of Volumes 4, 9 and 11 (only the Volume 8 ones and the internal numbers were fixed here).
+`\portrait` is defined in `volume8-analysis/main.tex`, the same macro Volumes 5 and 7 use. Credits live in `volume8-analysis/photos/CREDITS.md`. Place a portrait at the first real mention. Caption pattern repeats the credit. Short photographs are capped so the print height keeps the short side at about 300 ppi.
 
-## Chapter progress
+## Figures
 
-| Ch. | Title | State |
-| --- | --- | --- |
-| — | Structure (D-16, D-18) | Done |
-| 1 | Banach Spaces | Done |
-| 2 | Hilbert Spaces | Done |
-| 3 | The Spectral Theorem and Its Relatives | Done |
-| 4 | Singular Values | Done |
-| 5 | Graphs through Their Eigenvalues | Done |
-| 6 | Cuts, Mixing and Expansion | Done |
-| 7 | Expanders and Ramanujan Graphs | Done |
-| 8 | Operators, Spectra and Banach Algebras | Done |
-| 9 | The Spectral Theorem for Compact Operators | Done |
-| 10 | The Fourier Transform | Done |
-| 11 | Distributions and Sobolev Spaces | Done |
-| 12 | Fourier Analysis on Finite Abelian Groups | Done |
-| 13 | Haar Measure, Duality and the $p$-adic Numbers | Done |
-| 14 | Cauchy's Theorem, Growth and Mellin Inversion | Done |
-| 15 | Tauberian Theorems | Done |
-| 16 | The Values of Zeta (problems) | Done |
-| A–F | Appendices | Done |
-| — | Preface, blurb, `kdp.md`, citations of Volume 8 in other volumes | Done |
+Each chapter includes two new TikZ figures, colours `MidnightBlue` and `BurntOrange` (and `BrickRed` where a third ink helps), by `\fig{...}` inside `\begin{figure}[ht]`. Captions state the takeaway. No existing figure file is overwritten. No pixel width is set. New files are named `chNN-rw-*.tex` or `appX-rw-*.tex`.
 
-## What changed, chapter by chapter
+## Exercises
 
-- **1.** The complex case of the $L^p$ dual is written out in four steps (blueprint item, risk 4). The old paragraph tested the norm with $|g|^{q-1}\operatorname{sgn}g$ without the conjugate and did not treat $p=1$. Lebesgue constants are printed (1.436, 2.223, 3.139, 4.070) in place of "a direct computation gives them". Closing section. Citations of Volumes 5 and 7 checked: Volume 5's Fourier series are its Chapter 6. Sources added for Kolmogorov 1926, Riesz 1910, Steinhaus 1919, Wright 1973, Garnir 1974.
-- **2.** The Radon–Nikodym section is headed "A second proof" and says so (blueprint). Closing section. Citations of Volume 5 moved to its new chapters (6, 5, 9); the Gaussian kernel cites Volume 5, Theorem 8.3.
-- **3.** A reminder of what the chapter assumes (Appendices C and D). Closing section.
-- **4.** The photograph keeps 24 singular triples (24 cost 48,024 numbers, a 25th would exceed 50,000); caption fractions checked against the figure. Closing section.
-- **5.** Volume 3 Perron theory cited precisely (Appendix A: Theorems A.1, A.6, Exercise A.2). History corrected: Aschbacher 1971 excluded rank three, not vertex-transitivity (Higman; Mačaj–Širáň 2010 added); Graham–Pollak has had a counting proof since Vishwanathan 2013; the unsupported "no proof of the friendship theorem without counting" removed. Closing section.
-- **6.** The Laplacian is now defined before it is used; Fiedler named; the hypercube's h = 1 follows from the theorem itself. LPS needs d − 1 ≡ 1 mod 4. A Sources section added (there was none). Opening question, closing section.
-- **7.** R1: the reminder no longer imports Kesten's theorem from Volume 12 (the chapter proves its own Kesten 1959 statement, and the text compares it with Volume 12's `thm:kesten`, blueprint item 7); the Catalan moments of the semicircle are now proved in the solution instead of cited from the moved chapter. LPS girth corrected (about (4/3) log_p N in the bipartite case). Hoeffding cited as Volume 4, Theorem 4.2. Closing section. **Note for Volume 12:** the text says Volume 12, Chapter 9 (networks, `thm:kesten`) and Chapter 10 (semicircle), the current printed order; if the Volume 12 rewrite applies the blueprint order (networks 8, semicircle 9), these two numbers in `ch09-expanders.tex` must move with it.
-- **8.** All hand-typed internal numbers became `\ref`. Liouville and Laurent cited as Volume 5, Theorems 9.16 and 9.22; Fubini for series as Volume 7, Theorem 9.6. Wiener–Lévy marked as not developed. Opening question, closing section.
-- **9.** All hand-typed internal numbers became `\ref` (they were in the ten-chapter order: 3.x = Chapter 8, 1.x, 2.x). The full spectral theorem stays a remark, and the closing section says it was not proved (blueprint). Opening question, closing section.
+Four new exercises per chapter, after the last existing exercise, each with a hint and a solution (`\idea` then `\writeup`). Solvable from this chapter and earlier volumes. Stars as in the series.
 
-- **10–11.** Hand-typed numbers became `\ref`; Volume 5 and Volume 7 citations moved to their rewritten numbers. Closing sections.
-- **12.** Volume 5 citations fixed (Chapter 7, Theorems 7.9, 8.9, 8.16). Pontryagin duality is stated in Chapter 13 and proved there for $\mathbb Q_p$. Chebotarev is proved in Volume 13 in its Dirichlet density form. Closing section.
-- **13.** $\mathbb Q_p$ now comes from Volume 7 (Theorem 2.10, Corollary 2.11). Uniqueness of measures is Volume 7, Theorem 7.5. Exercise `ex:squareszp` moved to Volume 13, `ch12-padic.tex`, where it cites Proposition 13.12 and `cor:squares`. Closing section.
-- **14.** A sentence on the division of labour with Volume 5, Chapter 9 (blueprint), and the matching sentence in Volume 5. Volume 7 winding number and Jordan curve citations made exact. Error fixed in the Phragmén–Lindelöf exercise ($\exp(e^{t_0})$, not $e^e$). Closing section.
-- **15.** Label `sec:wienerlemma` added in Chapter 8. Tauber was 75 when deported, not 76. The Littlewood remark rewritten with Wielandt (1952) as source. The corollary is "the prime number theorem, second proof", importing Volume 6, Theorem 5.2. Closing section.
-- **16.** Retitled "The Values of Zeta". The limiting distribution is proved in Volume 15, Chapter 11; no problem uses it. False claims about a Beurling–Selberg chapter removed. The Bergman problem (d) is now proved with Volume 5 (identity theorem, Rouché) instead of a Volume 9 lemma (R1). New closing section "Where this leads".
-- **Appendices.** Each opens with one line saying what it assumes and who uses it. Appendix F's Lyapunov uniqueness used Sylvester's equation from Volume 10 (R1): now proved in two lines from the stability theorem. Self-references "Volume 8" became `\ref`. Dependency check: no main chapter uses an appendix whose proof uses a later main chapter (Appendix D only mentions Cauchy interlacing of Chapter 3 in a remark).
-- **Other volumes.** Every "Volume 8, ..." citation in Volumes 5, 9–15 was moved from the twenty-four-chapter order to the new one (for example Theorem 21.11 → 13.11, Theorem 3.8 → A.8, Theorem 14.5 → E.5); random-matrix citations now point to Volume 12. `tools/cross_volume_citations.py` reports no mismatch involving Volume 8 or Volume 12.
-- **Preface, blurb, `kdp.md`.** No longer claim the semicircle, the sine kernel, the unbounded spectral theorem, the Jordan curve theorem or the Riemann mapping theorem; they name the appendices and the problem chapter.
+## Scope of files
 
-## Tools
+- `volume8-analysis/`
+- `docs/handoffs/volume8-rewrite.md`
+- the Volume 8 sentence in `common/cover-notes.json`, and the hashes `tools/series_cover.py --check` needs (`volume8-analysis/about-the-cover.tex`, `docs/COVER-NOTES.md`, `tools/assets/series/manifest.json`)
+- if the cover-note hash moves, the Volume 3 inventory and conceptual snapshot get a hash-only refresh, because `inventory.py --check` and `registers.py` compare those hashes
 
-`review/volume8-rewrite/statements.py volume8-analysis` prints every numbered statement in printed order. `resolve_citations.py <chapter file>` prints each numbered citation of another volume beside the statement that number has today. `internal_numbers.py` lists hand-typed numbers inside the volume against the old order. `list_citations.py` lists every citation of another volume.
+## Chapter map
 
-## How to build
+| Ch. | Title | File | Label |
+| --- | --- | --- | --- |
+| 1 | Banach Spaces | `ch01-banach.tex` | `ch:banach` |
+| 2 | Hilbert Spaces | `ch02-hilbert.tex` | `ch:hilbert` |
+| 3 | The Spectral Theorem and Its Relatives | `linear-ch05-spectral.tex` | `linear:ch:spectral` |
+| 4 | Singular Values | `linear-ch06-svd.tex` | `linear:ch:svd` |
+| 5 | Graphs through Their Eigenvalues | `linear-ch08-graphs.tex` | `linear:ch:graphs` |
+| 6 | Cuts, Mixing and Expansion | `spectral-expansion.tex` | `ch:cheeger` |
+| 7 | Expanders and Ramanujan Graphs | `ch09-expanders.tex` | `ch:expanders` |
+| 8 | Operators, Spectra and Banach Algebras | `ch03-operators.tex` | `ch:operators` |
+| 9 | The Spectral Theorem for Compact Operators | `ch04-spectral.tex` | `ch:spectral` |
+| 10 | The Fourier Transform | `ch05-fourier.tex` | `ch:fourier` |
+| 11 | Distributions and Sobolev Spaces | `ch06-distributions.tex` | `ch:distributions` |
+| 12 | Fourier Analysis on Finite Abelian Groups | `ch07-finite.tex` | `ch:finite` |
+| 13 | Haar Measure, Duality and the p-adic Numbers | `ch08-haar.tex` | `ch:haar` |
+| 14 | Cauchy's Theorem, Growth and Mellin Inversion | `ch09-complex.tex` | `ch:complex` |
+| 15 | Tauberian Theorems | `ch10-tauberian.tex` | `ch:tauberian` |
+| 16 | The Values of Zeta | `ch11-harder.tex` | `ch:harder` |
+| A | Spaces, Quotients and Duality | `linear-ch01-duality.tex` | `linear:ch:duality` |
+| B | Determinants as Volume | `linear-ch02-volume.tex` | `linear:ch:volume` |
+| C | Eigenvalues and Invariant Subspaces | `linear-ch03-eigen.tex` | `linear:ch:eigen` |
+| D | Inner Products and Projections | `linear-ch04-inner.tex` | `linear:ch:inner` |
+| E | Inequalities between Matrices | `linear-ch11-inequalities.tex` | `linear:ch:inequalities` |
+| F | Linear Dynamics | `linear-ch12-dynamics.tex` | `linear:ch:dynamics` |
 
-`./build.sh --pdf-only volume8-analysis`, or `xelatex` in `volume8-analysis/` as `build.sh` does. The cloud container has no TeX by default: install the packages listed in `.github/workflows/build.yml`. The checks need `pip install mpmath numpy scipy sympy networkx`.
+## Progress
+
+| Ch. | State |
+| --- | --- |
+| — | Contract written. Draft pull request opened. Chapters not yet rewritten. |
+
+## Build
+
+Not yet. When the manuscript is in, `./build.sh --pdf-only volume8-analysis` and the EPUB. No overfull boxes, no undefined references. Page count must stay between 300 and 600.
+
+## Remains
+
+Every chapter, the preface, the blurb, `kdp.md`, the About the Cover note, portraits, two new figures per chapter, four new exercises per chapter. Then the local build, then CI.
+
+The independent review is a separate agent. This file does not contain that review.
