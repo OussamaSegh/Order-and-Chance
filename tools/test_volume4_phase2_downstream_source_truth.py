@@ -75,7 +75,7 @@ class TestDownstreamSourceTruth(unittest.TestCase):
         modular = source("volume6-crossroads/chapters/ch12-modular.tex")
         spectral = source("volume12-random-motion/chapters/spectral.tex")
         euler = source("volume15-order-and-chance/chapters/ch11-values.tex")
-        logcorr = source("volume12-random-motion/chapters/ch12-logcorrelated.tex")
+        logcorr = source("volume12-random-motion/chapters/ch11-logcorrelated.tex")
         self.assertNotIn("Volume~4, Theorems~4.11 and~6.10", modular)
         self.assertIn("Volume~4, Theorems~4.4 and~6.10", modular)
         self.assertNotIn("Cayley's formula again (Volume~4, Chapter~12)", spectral)
