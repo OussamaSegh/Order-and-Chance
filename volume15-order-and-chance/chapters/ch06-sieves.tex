@@ -1,8 +1,15 @@
 \chapter{Sieves as probability}\label{ch:oc-sieves}
 
+\begin{center}\itshape
+Toss a coin for each small prime: heads, it divides $n$.\\
+How long do the coins tell the truth about the integers up to $x$, and what does a sieve see when they stop?
+\end{center}
+
 Pick an integer $n$ at random and ask for the chance that it has no prime factor below $z$. If the events $2\mid n$, $3\mid n$, $5\mid n,\dots$ were independent, the answer would be $\prod_{p<z}(1-1/p)$. Modulo the product of those primes they are exactly independent, and inclusion--exclusion computes the answer. The trouble starts when $n$ only runs up to $x$ and the moduli are larger than $x$: then the events stop being independent, and a sieve has to make do with the divisibility events it can still see.
 
-This chapter reads a sieve in that language. Inclusion--exclusion is an expectation, and Bonferroni's inequalities say where to stop it. Selberg's sieve, proved in Volume~6 (Theorem~8.2), turns out to be an orthogonal projection: its optimal weight is the indicator of the sifted integers, projected onto the divisibility events of small modulus. The parity barrier of Volume~14 is the case where that projection cannot see the one thing that matters, the sign of the Liouville function. The same barrier is why the factor $2$ in Selberg's bound for the primes cannot be improved by a sieve.
+In 1919 the Norwegian mathematician Viggo Brun found the first way out. He cut inclusion--exclusion short at a well-chosen depth, kept the error under control, and proved that the twin primes are so rare that the sum of their reciprocals converges. Twenty-eight years later Atle Selberg, also Norwegian, replaced Brun's combinatorics by a quadratic form and minimised it, in a four-page note published in Trondheim.
+
+This chapter reads a sieve in the language of probability. Brun's pure sieve says that the coins are honest as long as the primes stay below $x^{1/(10\log\log x)}$ (Theorem~\ref{thm:brunpure}). Buchstab's function from Chapter~\ref{ch:oc-models} says exactly how they lie beyond that point (Proposition~\ref{prop:sievefail}). Inclusion--exclusion is an expectation, and Bonferroni's inequalities say where to stop it. Selberg's sieve, proved in Volume~6 (Theorem~8.2), turns out to be an orthogonal projection: its optimal weight is the indicator of the sifted integers, projected onto the divisibility events of small modulus. The parity barrier of Volume~14 is the case where that projection cannot see the one thing that matters, the sign of the Liouville function. The same barrier is why the factor $2$ in Selberg's bound for the primes cannot be improved by a sieve.
 
 \section{Bonferroni}
 
@@ -29,6 +36,82 @@ They swing above and below the true value $\frac8{30}=0.267$, the proportion of 
 \end{examplex}
 
 For $n\le x$ and many primes, the terms $S_k$ with $k$ large involve moduli bigger than $x$. Their main terms are then meaningless, and stopping early is not a choice. Brun's sieve is the art of stopping early in the right places. His theorem that the reciprocals of the twin primes have a finite sum is Volume~6, Corollary~8.6, proved there with Selberg's sieve instead.
+
+\section{Brun's pure sieve: when the coins are honest}
+
+Fix $z\ge2$, let $P(z)=\prod_{p<z}p$, and, as in Chapter~\ref{ch:oc-models}, let $\Phi(x,z)$ be the number of $n\le x$ with no prime factor $p<z$. Put
+\[
+W(z)=\prod_{p<z}\Bigl(1-\frac1p\Bigr),\qquad L(z)=\sum_{p<z}\frac1p.
+\]
+If the events $\{p\mid n\}$, $p<z$, were independent with probabilities $\frac1p$, the proportion of survivors would be $W(z)$. For $n$ uniform modulo $P(z)$ they are, and the proportion is exactly $W(z)$. For $n\le x$ the question is how far $\frac{\Phi(x,z)}x$ is from $W(z)$.
+
+\begin{theorem}[Brun's pure sieve]\label{thm:brunpure}
+Let $x\ge1$, $z\ge2$, and let $r\ge0$ be an integer with $2r+2\ge L(z)$. Then
+\[
+\bigl|\Phi(x,z)-xW(z)\bigr|\le x\frac{L(z)^{2r+1}}{(2r+1)!}+3z^{2r+1}.
+\]
+\end{theorem}
+\begin{proof}
+\emph{Two probability spaces.} Let $s_k=\sum\frac1d$ over the divisors $d$ of $P(z)$ with exactly $k$ prime factors. For $n$ uniform modulo $P(z)$ and $A_p=\{p\mid n\}$, the event $A_{p_1}\cap\dots\cap A_{p_k}$ is $\{p_1\cdots p_k\mid n\}$, of probability $\frac1{p_1\cdots p_k}$, so the Bonferroni sums of Theorem~\ref{thm:bonferroni} are exactly the $s_k$, and $P(\bigcap A_p^c)=W(z)$. Write $T_J(s)=\sum_{k\le J}(-1)^ks_k$. Theorem~\ref{thm:bonferroni} gives $T_{2r+1}(s)\le W(z)\le T_{2r+2}(s)$ and $T_{2r+1}(s)\le W(z)\le T_{2r}(s)$, hence
+\[
+T_{2r}(s)\le W(z)+s_{2r+1},\qquad T_{2r+1}(s)\ge W(z)-s_{2r+2}.
+\]
+Now let $N=\lfloor x\rfloor$, so that $\Phi(x,z)=\Phi(N,z)$, and let $n$ be uniform in $\{1,\dots,N\}$. The Bonferroni sums are $S_k=\frac1N\sum\lfloor\frac Nd\rfloor$ over the same $d$. Since $|\lfloor\frac Nd\rfloor-\frac Nd|<1$ and there are at most $\binom{\pi(z)}k\le z^k$ such $d$, $|S_k-s_k|\le\frac{z^k}N$.
+
+\emph{The upper bound.} By Theorem~\ref{thm:bonferroni} for $n\le N$,
+\[
+\frac{\Phi(N,z)}N\le T_{2r}(S)\le T_{2r}(s)+\sum_{k\le2r}\frac{z^k}N\le W(z)+s_{2r+1}+\frac{2z^{2r}}N,
+\]
+because $\sum_{k\le m}z^k\le2z^m$ for $z\ge2$.
+
+\emph{The lower bound.} In the same way $\frac{\Phi(N,z)}N\ge T_{2r+1}(S)\ge W(z)-s_{2r+2}-\frac{2z^{2r+1}}N$.
+
+\emph{The size of $s_k$.} Expanding $L(z)^k=(\sum_{p<z}\frac1p)^k$, each product of $k$ distinct primes appears $k!$ times, so $s_k\le\frac{L(z)^k}{k!}$. Since $L(z)\le2r+2$, $s_{2r+2}\le\frac{L^{2r+1}}{(2r+1)!}\cdot\frac L{2r+2}\le\frac{L^{2r+1}}{(2r+1)!}$. Multiply by $N$: $|\Phi(x,z)-NW(z)|\le N\frac{L^{2r+1}}{(2r+1)!}+2z^{2r+1}$. Finally $|xW(z)-NW(z)|<1\le z^{2r+1}$ and $N\le x$.
+\end{proof}
+
+The theorem is a statement about the law of $\omega_z(n)$, the number of primes below $z$ that divide $n$. Truncating inclusion--exclusion at depth $2r$ ignores the event $\omega_z(n)>2r$, and in the coin model that event has probability at most $s_{2r+1}$, the Poisson-like tail $\frac{L^{2r+1}}{(2r+1)!}$. The term $3z^{2r+1}$ is the price of the integers: the moduli $d$ that are used must stay well below $x$.
+
+\begin{corollary}[the coins are honest]\label{cor:brunpure}
+Uniformly for $2\le z\le x^{1/(10\log\log x)}$,
+\[
+\Phi(x,z)=xW(z)\Bigl(1+O\Bigl(\frac1{(\log x)^2}\Bigr)\Bigr)\qquad(x\to\infty).
+\]
+\end{corollary}
+\begin{proof}
+Let $x$ be large, $\ell=\log\log x$ and $r=\lfloor3\ell\rfloor$. By Mertens (Volume~6, Theorem~1.5), $L(z)\le L(x)\le\ell+1$, so $2r+2\ge6\ell-4\ge L(z)$ and Theorem~\ref{thm:brunpure} applies. Since $k!\ge(\frac ke)^k$ and $2r+1\ge6\ell-5\ge5.5\ell$,
+\[
+\frac{L^{2r+1}}{(2r+1)!}\le\Bigl(\frac{e(\ell+1)}{5.5\ell}\Bigr)^{2r+1}\le\Bigl(\frac e5\Bigr)^{5.5\ell}=(\log x)^{-5.5\log(5/e)}\le(\log x)^{-3.3}
+\]
+once $\frac{\ell+1}\ell\le1.1$. And $z^{2r+1}\le x^{(6\ell+1)/(10\ell)}\le x^{0.7}$. By Mertens's product (Volume~6, Theorem~1.6), $W(z)\ge W(x)\ge\frac1{2\log x}$ for $x$ large. So both error terms of Theorem~\ref{thm:brunpure} are $O(xW(z)(\log x)^{-2})$.
+\end{proof}
+
+So below $x^{1/(10\log\log x)}$ the sieve is the coin model, with a relative error of $(\log x)^{-2}$. Volume~14's fundamental lemma (Theorem~3.4) pushes the same statement to $z=x^{1/s}$ for any fixed large $s$, with a relative error that decays like $e^{-s}$. Neither reaches a fixed power of $x$, and for a good reason.
+
+\section{Where the coins fail}
+
+For $z=x^{1/u}$ with $u$ fixed, the answer is no longer $W(z)$. Buchstab's theorem from Chapter~\ref{ch:oc-models} computes it.
+
+\begin{proposition}[the coins at a fixed power]\label{prop:sievefail}
+For every fixed $u>1$,
+\[
+\frac{\Phi(x,x^{1/u})}{x\,W(x^{1/u})}\longrightarrow e^\gamma\omega(u)\qquad(x\to\infty),
+\]
+where $\omega$ is Buchstab's function. In particular the limit is $\frac{e^\gamma}u$ for $1<u\le2$, it is $\frac{e^\gamma}2=0.8905$ at $u=2$, and it tends to $1$ as $u\to\infty$, crossing $1$ infinitely often.
+\end{proposition}
+\begin{proof}
+Put $z=x^{1/u}$. By Theorem~\ref{thm:buchstab}, $\Phi(x,z)=\frac{x\omega(u)-z}{\log z}+O_u(\frac x{\log^2z})$, and $\frac zx=x^{1/u-1}\to0$. By Mertens (Volume~6, Theorem~1.6), $\prod_{p\le z}(1-\frac1p)=\frac{e^{-\gamma}}{\log z}(1+O(\frac1{\log z}))$, and $W(z)$ differs from this product by at most the factor $(1-\frac1z)^{-1}$. So the ratio is $e^\gamma\omega(u)(1+o(1))$. On $]1,2]$, $\omega(u)=\frac1u$ by definition. The limit as $u\to\infty$ is Corollary~\ref{cor:buchstablimit}, and the sign changes are Proposition~\ref{prop:buchstabsign}.
+\end{proof}
+
+\begin{center}
+\begin{tabular}{rcccccc}
+$u$ & $1.5$ & $2$ & $2.5$ & $3$ & $4$ & $\infty$\\\hline
+$e^\gamma\omega(u)$ & $1.187$ & $0.891$ & $1.001$ & $1.005$ & $1.000$ & $1$
+\end{tabular}
+\end{center}
+
+Read the table as a verdict on the model. At $u=2$, the integers up to $x$ without a prime factor below $\sqrt x$ are $1$ and the primes in $[\sqrt x,x]$, about $\frac x{\log x}$ of them, while the coins predict $2e^{-\gamma}\frac x{\log x}$: they overshoot by $12\%$. At $u=1.5$ they undershoot by $16\%$. From $u=3$ on, the error is below one percent, and by $u=4$ it is invisible at three decimals. The coins fail exactly where the moduli $d$ that inclusion--exclusion needs are comparable to $x$, and the failure is not noise: it is a definite function of $u$, computed by Buchstab in 1937.
+
+
 
 \section{Selberg's sieve as a projection}
 
@@ -86,29 +169,101 @@ The squarefree divisors of $30$ up to $6$ are $1,2,3,5,6$, so $G(6)=1+1+\frac12+
 Now return from $\Z/P\Z$ to the integers up to $x$. The divisibility events of level $D$ are still nearly exact there: $\#\{n\le x:d\mid n\}=x/d+O(1)$. That is the whole reason to keep $D$ small.
 
 \begin{corollary}[Selberg's upper bound for the primes]\label{cor:selbergtwo}
-Let $\Phi(x,D)$ be the number of $n\le x$ with no prime factor $p\le D$. Then for $x\ge D\ge2$,
+Let $R(x,D)$ be the number of $n\le x$ with no prime factor $p\le D$. Then for $x\ge D\ge2$,
 \[
-\Phi(x,D)\le\frac x{\log D}+D^2.
+R(x,D)\le\frac x{\log D}+D^2.
 \]
 With $D=\sqrt x/\log x$ this gives $\pi(x)\le(2+o(1))\,x/\log x$.
 \end{corollary}
 \begin{proof}
-Take $z$ just above $D$, so that $P$ is the product of the primes $p\le D$. Volume~6, Theorem~8.2 with $\mathcal A=\{1,\dots,x\}$, $X=x$, $g(d)=1/d$ and remainders $|r_d|\le1$, gives $\Phi(x,D)\le x/G(D)+\sum_{d_1,d_2\le D}1\le x/G(D)+D^2$. By Volume~6, Lemma~8.3, $G(D)\ge\log D$. (That lemma sums over all squarefree $d\le D$; every squarefree $d\le D$ divides $P$, so it is our $G(D)$.)
+Take $z$ just above $D$, so that $P$ is the product of the primes $p\le D$. Volume~6, Theorem~8.2 with $\mathcal A=\{1,\dots,x\}$, $X=x$, $g(d)=1/d$ and remainders $|r_d|\le1$, gives $R(x,D)\le x/G(D)+\sum_{d_1,d_2\le D}1\le x/G(D)+D^2$. By Volume~6, Lemma~8.3, $G(D)\ge\log D$. (That lemma sums over all squarefree $d\le D$; every squarefree $d\le D$ divides $P$, so it is our $G(D)$.)
 
-For the primes, a prime $p\le x$ is either at most $D$ or counted by $\Phi(x,D)$, so $\pi(x)\le D+\Phi(x,D)$. With $D=\sqrt x/\log x$, $\log D=\frac12\log x-\log\log x$, so $x/\log D=(2+o(1))x/\log x$, while $D+D^2=O(x/\log^2x)$.
+For the primes, a prime $p\le x$ is either at most $D$ or counted by $R(x,D)$, so $\pi(x)\le D+R(x,D)$. With $D=\sqrt x/\log x$, $\log D=\frac12\log x-\log\log x$, so $x/\log D=(2+o(1))x/\log x$, while $D+D^2=O(x/\log^2x)$.
 \end{proof}
 
-The prime number theorem says $\pi(x)\sim x/\log x$, so the sieve has lost a factor $2$. The bound is $xP(A)/\alpha$, and the loss splits in two. At level $D=x^{1/2-o(1)}$ the projection loses $1/\alpha\to e^\gamma\approx1.78$, because $G(D)=\log D+O(1)$ while $P(A)\sim e^{-\gamma}/\log D$ by Mertens. The model probability itself overshoots: $xP(A)\sim2e^{-\gamma}x/\log x$, the Mertens factor $1.1229$ that Volume~6 met in Legendre's sieve (Chapter~8). The product is $2$, which is $\log x/\log D$. The level is the square root of $x$ because the remainders come in pairs $d_1,d_2$, so the factor $2$ is $1\big/\tfrac12$. Volume~6, Theorem~8.4, gives the factor $2$ for a short interval. The remark there that a factor $2$ cannot be improved to $2-\varepsilon$ is about the progression inequality of Exercise~8.4, where the constant bears on Siegel zeros; if a short interval starts at $N^k$, the ratio of that bound to $N/\log x$ is $2k$, not $2$.
+The prime number theorem says $\pi(x)\sim x/\log x$, so the sieve has lost a factor $2$. The bound is $xP(A)/\alpha$, and the loss splits in two. At level $D=x^{1/2-o(1)}$ the projection loses $1/\alpha\to e^\gamma\approx1.78$, because $G(D)=\log D+O(1)$ while $P(A)\sim e^{-\gamma}/\log D$ by Mertens. The model probability itself overshoots: $xP(A)\sim2e^{-\gamma}x/\log x$, the Mertens factor $1.1229$ that Volume~6 met in Legendre's sieve (Chapter~8), the reciprocal of the limit $\frac{e^\gamma}2$ of Proposition~\ref{prop:sievefail} at $u=2$. The product is $2$, which is $\log x/\log D$. The level is the square root of $x$ because the remainders come in pairs $d_1,d_2$, so the factor $2$ is $1\big/\tfrac12$. Volume~6, Theorem~8.4, gives the factor $2$ for a short interval. The remark there that a factor $2$ cannot be improved to $2-\varepsilon$ is about the progression inequality of Exercise~8.4, where the constant bears on Siegel zeros; if a short interval starts at $N^k$, the ratio of that bound to $N/\log x$ is $2k$, not $2$.
 
 \section{Parity, retold}
 
 Here is why the projection cannot do better. Volume~14 proves Selberg's parity example (Theorem~3.11). Let $\mathcal A^+$ and $\mathcal A^-$ be the integers $n\le x$ with $\lambda(n)=+1$ and $\lambda(n)=-1$, where $\lambda$ is the Liouville function. For every $d$, both lists have about $x/(2d)$ multiples of $d$, and for $D\le x^{1-\varepsilon}$ the errors, summed over $d<D$, are $\ll_\varepsilon x\exp(-c(\varepsilon)(\log x)^{1/10})$, even with the weight $\tau(d)$. In the language of this chapter: every function in $V_D$ has almost the same average over $\mathcal A^+$ as over $\mathcal A^-$. A sieve of level below $x$ sees only those averages. But $\mathcal A^-$ contains every prime, and $\mathcal A^+$ contains none. A method that cannot tell the two lists apart cannot show that either one contains a prime. The same comparison works for upper bounds. A sieve bound must hold for $\mathcal A^-$ too, and $\mathcal A^-$ holds every prime up to $x$ inside a list of only about $x/2$ numbers. Volume~14, Corollary~3.12, turns this into a precise statement: no sieve upper bound for the primes up to $x$ beats $(2+o(1))x/\log x$. The $2$ of Corollary~\ref{cor:selbergtwo} is the best a sieve can do.
 
-For the twin primes the same obstruction is believed, and it is not proved. Volume~14 states Chen's theorem (Theorem~3.13): every large even number is a prime plus an integer with at most two prime factors, and there are infinitely many primes $p$ with $p+2$ of that kind. Chen accepts the barrier: he finds integers with at most two prime factors, not primes. His switching principle bounds the ones with three prime factors by sifting a second list, $N-p_1p_2p_3$, in which the roles of prime and almost-prime are exchanged. The Bombieri--Vinogradov theorem (Volume~14, Theorem~4.7) raises the level for primes in progressions to $x^{1/2-\varepsilon}$, the same square root as in Corollary~\ref{cor:selbergtwo}, and Maynard's weights (Volume~14, Theorem~9.5) use it to prove bounded gaps between primes. Vinogradov's three-primes theorem (Volume~14, Corollary~7.5) is not a sieve theorem at all: it needs exponential sums. In 1930 Schnirelmann had already used a sieve upper bound to show that every integer greater than $1$ is a sum of a bounded number of primes. The sieve gave a bounded number. Exponential sums gave three.
+For the twin primes the same obstruction is believed, and it is not proved. Volume~14 states Chen's theorem (Theorem~3.13): every large even number is a prime plus an integer with at most two prime factors, and there are infinitely many primes $p$ with $p+2$ of that kind. Chen accepts the barrier: he finds integers with at most two prime factors, not primes. His switching principle bounds the ones with three prime factors by sifting a second list, $N-p_1p_2p_3$, in which the roles of prime and almost-prime are exchanged. The Bombieri--Vinogradov theorem (Volume~14, Theorem~4.7) raises the level for primes in progressions to $x^{1/2-\varepsilon}$, the same square root as in Corollary~\ref{cor:selbergtwo}, and Maynard's weights (Volume~14, Theorem~9.5) use it to prove bounded gaps between primes. Vinogradov's three-primes theorem (Volume~14, Corollary~7.5) is not a sieve theorem at all: it needs exponential sums. Long before, in 1930, Schnirelmann had used a sieve \emph{upper} bound to reach the primes additively, and the next section shows how.
 
-A sieve sees the divisibility events of small modulus, and its best bet is the projection onto them. A class group, in the next chapter, is modelled by a random group whose moments are the only data, and the question is again how much those data determine.
+\section{Schnirelmann: an upper bound is enough}
+
+A sieve cannot prove that a set contains primes, but it can prove that primes are \emph{not too concentrated}. In 1930 Lev Schnirelmann, a young mathematician in Moscow, turned that weakness into a theorem: every integer greater than $1$ is a sum of a bounded number of primes. Goldbach's conjecture asks for at most three. Schnirelmann's bound was enormous, but it was the first bound at all, and its proof is a piece of probability: a second-moment argument and an inequality about densities.
+
+\begin{definition}\label{def:schnirelmann}
+For a set $A$ of non-negative integers let $A(n)=\#\{a\in A:1\le a\le n\}$. The \emph{Schnirelmann density} of $A$ is $\sigma(A)=\inf_{n\ge1}\frac{A(n)}n$. For sets $A,B$, $A+B=\{a+b:a\in A,b\in B\}$, and $hA=A+\dots+A$ ($h$ times).
+\end{definition}
+
+The infimum is over all $n$, not a limit, so $\sigma(A)>0$ forces $1\in A$; and $\sigma(A)=1$ means that $A$ contains every positive integer.
+
+\begin{lemma}[Schnirelmann's inequality]\label{lem:schnirelmann}
+If $0\in A$ and $0\in B$, then $\sigma(A+B)\ge\sigma(A)+\sigma(B)-\sigma(A)\sigma(B)$.
+\end{lemma}
+\begin{proof}
+Let $\alpha=\sigma(A)$, $\beta=\sigma(B)$, $n\ge1$, and let $a_1<\dots<a_k$ be the elements of $A$ in $[1,n]$, so $k=A(n)$. Put $a_0=0$ and $a_{k+1}=n+1$, and let $g_i=a_{i+1}-a_i-1\ge0$ be the number of integers strictly between $a_i$ and $a_{i+1}$, for $0\le i\le k$. Then $\sum_ig_i=n-k$. Every $a_i$ with $i\ge1$ lies in $A+B$, as $a_i+0$. In the gap after $a_i$, the integers $a_i+b$ with $b\in B$, $1\le b\le g_i$, lie in $A+B$ and in $[1,n]$, are distinct, and are not elements of $A$; there are $B(g_i)\ge\beta g_i$ of them. So
+\[
+(A+B)(n)\ge k+\beta(n-k)=k(1-\beta)+\beta n\ge\alpha n(1-\beta)+\beta n.
+\]
+Divide by $n$ and take the infimum.
+\end{proof}
+
+Read $1-\sigma$ as the probability of missing the set: the lemma says $1-\sigma(A+B)\le(1-\sigma(A))(1-\sigma(B))$, as if the two sets were missed independently.
+
+\begin{lemma}\label{lem:schnirelmannhalf}
+If $0\in A\cap B$ and $\sigma(A)+\sigma(B)\ge1$, then $A+B$ contains every non-negative integer.
+\end{lemma}
+\begin{proof}
+$0=0+0$. Let $n\ge1$. If $n\in A$ or $n\in B$, then $n=n+0$ or $0+n$. Otherwise $A(n-1)=A(n)\ge\sigma(A)n$ and $B(n-1)=B(n)\ge\sigma(B)n$, so the sets $\{a\in A:1\le a\le n-1\}$ and $\{n-b:b\in B,1\le b\le n-1\}$, both inside $\{1,\dots,n-1\}$, have at least $n$ elements together. They meet: $a=n-b$.
+\end{proof}
+
+\begin{theorem}[Schnirelmann, 1930]\label{thm:schnirelmannbasis}
+If $0\in A$ and $\sigma(A)>0$, there is $h$ such that every non-negative integer is a sum of $h$ elements of $A$.
+\end{theorem}
+\begin{proof}
+By Lemma~\ref{lem:schnirelmann} and induction, $1-\sigma(jA)\le(1-\sigma(A))^j$ (each $jA$ contains $0$). Choose $j$ with $(1-\sigma(A))^j\le\frac12$. Then $\sigma(jA)\ge\frac12$, and Lemma~\ref{lem:schnirelmannhalf} with $A$ and $B$ both equal to $jA$ gives the claim with $h=2j$.
+\end{proof}
+
+The primes have Schnirelmann density $0$, so the theorem cannot be applied to them directly. Schnirelmann applied it to $S=\{0,1\}\cup\{p+q:p,q\text{ prime}\}$. The sieve enters through one inequality, which we quote.
+
+\medskip\noindent\textbf{The sieve bound for Goldbach representations (quoted).} \emph{Let $r(N)$ be the number of ordered pairs of primes $(p,q)$ with $p+q=N$. There is an absolute constant $C$ such that, for every $N\ge4$,
+\[
+r(N)\le C\frac N{(\log N)^2}\prod_{p\mid N}\Bigl(1+\frac1p\Bigr).
+\]}
+It is proved in the same way as the upper bound for twin primes in Volume~6 (Theorem~8.5), sifting the list $n(N-n)$ instead of $n(n+2)$; see the Sources.
+
+\begin{proposition}\label{prop:goldbachdensity}
+Assume the sieve bound above. Then $\sigma(S)>0$, and there is an absolute constant $K$ such that every integer $n\ge2$ is a sum of at most $K$ primes.
+\end{proposition}
+\begin{proof}
+\emph{The second moment.} Let $x$ be large. All pairs of primes $p,q\le\frac x2$ give $\sum_{N\le x}r(N)\ge\pi(\frac x2)^2\ge c_1\frac{x^2}{(\log x)^2}$, by the prime number theorem (Volume~6, Theorem~5.5). Next, $(1+\frac1p)^2\le1+\frac3p$, so $\prod_{p\mid N}(1+\frac1p)^2\le\sum_{d\mid N}\frac{\mu^2(d)3^{\omega(d)}}d$ and
+\[
+\sum_{N\le x}\prod_{p\mid N}\Bigl(1+\frac1p\Bigr)^2\le\sum_d\frac{\mu^2(d)3^{\omega(d)}}d\cdot\frac xd=x\prod_p\Bigl(1+\frac3{p^2}\Bigr)=c_2x.
+\]
+For $\sqrt x<N\le x$, $\log N\ge\frac12\log x$, and for $N\le\sqrt x$, $r(N)\le N\le\sqrt x$. So $\sum_{N\le x}r(N)^2\le x^{3/2}+16C^2c_2\frac{x^3}{(\log x)^4}\le c_3\frac{x^3}{(\log x)^4}$. By the Cauchy--Schwarz inequality over the $N\le x$ with $r(N)>0$,
+\[
+\#\{N\le x:r(N)>0\}\ge\frac{\bigl(\sum_Nr(N)\bigr)^2}{\sum_Nr(N)^2}\ge\frac{c_1^2}{c_3}\,x.
+\]
+
+\emph{Schnirelmann density.} So $S(n)\ge\frac{c_1^2}{c_3}n$ for $n\ge n_0$, and $S(n)\ge1$ for every $n\ge1$ because $1\in S$. Hence $\sigma(S)\ge\min(\frac{c_1^2}{c_3},\frac1{n_0})>0$.
+
+\emph{Primes.} By Theorem~\ref{thm:schnirelmannbasis}, every $m\ge0$ is a sum of $h$ elements of $S$. For $n\ge2$ write $n-2$ that way: $n=2+(\text{at most }h\text{ sums }p+q)+j\cdot1$ with $0\le j\le h$. The number $2+j\ge2$ is a sum of at most $\frac{j+2}2$ numbers each equal to $2$ or $3$, which are primes. So $n$ is a sum of at most $K=2h+\frac{h+2}2$ primes.
+\end{proof}
+
+This is where a sieve is strong: it bounds $r(N)$ from above by the coin-model prediction times a constant, and the second moment turns ``not too concentrated'' into ``present for a positive proportion of $N$''. It is also where a sieve is weak: the constant $K$ it gives is huge. Vinogradov's theorem (Volume~14, Corollary~7.5) gives three primes for every large odd $n$, with exponential sums and not with a sieve.
+
 
 \section{Exercises}
+
+\begin{exercise}[$\star$]\label{ex:brunsmall}
+Compute $\Phi(1000,11)$, the number of $n\le1000$ prime to $210$, and compare it with $1000\,W(11)$ and with the bound of Theorem~\ref{thm:brunpure} for $r=1$.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:buchstabcross}
+Show that $e^\gamma\omega(u)=1$ has exactly one solution $u_0$ in $]2,3]$, and compute it to three decimals. (On $[2,3]$, $\omega(u)=\frac{1+\log(u-1)}u$.)
+\end{exercise}
 
 \begin{exercise}[$\star$]\label{ex:weights30}
 For $P=30$ and $D=6$, check that the weights of the example give $\mathbb E[f^*\mathbf 1_{2\mid n}]=0$ and $\mathbb E[f^{*2}]=\frac4{13}$.
@@ -122,8 +277,22 @@ Show that when $D\ge P$ the Selberg weights are $\lambda_d=\mu(d)$, and that the
 Show that $m_D=P(A)$ if and only if $D\ge P$. Deduce that $\alpha<1$ when $D<P$.
 \end{exercise}
 
+\begin{exercise}[$\star$]\label{ex:squaresdensity}
+Show that the set $Q=\{0,1,4,9,\dots\}$ of squares has Schnirelmann density $0$, although every non-negative integer is a sum of four squares (Lagrange). Which $n\le10$ are not sums of two squares? Why does none of this contradict Theorem~\ref{thm:schnirelmannbasis}?
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:schnirelmannsharp}
+Let $A=\{0\}\cup\{n\ge1:n\equiv1\pmod3\}$. Compute $\sigma(A)$, $\sigma(A+A)$ and $\sigma(A+A+A)$, and compare each with the lower bound of Lemma~\ref{lem:schnirelmann}.
+\end{exercise}
+
 \section{Hints}
 
+\begin{hint}{ex:brunsmall}
+$1000=4\cdot210+160$, and a full period of $210$ contains $\varphi(210)=48$ survivors. $L(11)=\frac12+\frac13+\frac15+\frac17$.
+\end{hint}
+\begin{hint}{ex:buchstabcross}
+Differentiate $\frac{1+\log(u-1)}u$ and look at the sign of $\frac1{u-1}-\log(u-1)$.
+\end{hint}
 \begin{hint}{ex:weights30}
 $\mathbb E[\mathbf 1_{d\mid n}\mathbf 1_{e\mid n}]=1/\operatorname{lcm}(d,e)$.
 \end{hint}
@@ -134,7 +303,24 @@ Inclusion--exclusion writes $\mathbf 1_A$ in $V_D$.
 The functions $\mathbf 1_{d\mid n}$, $d\mid P$, are linearly independent, and the coefficient of $\mathbf 1_{P\mid n}$ in $\mathbf 1_A$ is $\mu(P)\ne0$.
 \end{hint}
 
+\begin{hint}{ex:squaresdensity}
+$Q(n)\le\sqrt n$. The theorem has a hypothesis, not a converse.
+\end{hint}
+\begin{hint}{ex:schnirelmannsharp}
+Look at $n=3$ for each set.
+\end{hint}
+
 \section{Solutions}
+
+\begin{solution}{ex:brunsmall}
+\idea Count by periods of $210$, then compare the three numbers.
+\writeup A period of $210$ consecutive integers contains $\varphi(210)=48$ integers prime to $210$. Four periods cover $[1,840]$ and give $192$. In $]840,1000]$, that is $840+m$ with $1\le m\le160$, the survivors are the $m\le160$ prime to $210$: these are $1$, the $33$ primes from $11$ to $157$, and $121=11^2$ and $143=11\cdot13$: $36$ in all. So $\Phi(1000,11)=228$. The coin model gives $1000\,W(11)=1000\cdot\frac{48}{210}=228.6$. With $L=1.176$ and $r=1$, Theorem~\ref{thm:brunpure} bounds the error by $1000\cdot\frac{L^3}6+3\cdot11^3=4264$, and with $r=0$ by $1000L+33=1209$. The model is excellent here, but the theorem cannot show it: at this scale the term $3z^{2r+1}$, the price of using moduli up to $z^{2r+1}$, dominates. Brun's sieve is an asymptotic statement, and its proof needs $z^{2r+1}$ far below $x$.
+\end{solution}
+
+\begin{solution}{ex:buchstabcross}
+\idea On $[2,3]$ the function is explicit, so study its variation.
+\writeup Let $f(u)=\frac{1+\log(u-1)}u$ on $[2,3]$. Then $f'(u)=\frac{g(u-1)}{u^2}$ with $g(t)=\frac1t-\log t$, which is decreasing, with $g(1)=1>0$ and $g(2)=\frac12-\log2<0$. So $f$ increases up to the zero $t_0=1.763$ of $g$, that is $u=2.763$, and decreases after. Now $f(2)=\frac12<e^{-\gamma}=0.5615$ and $f(3)=\frac{1+\log2}3=0.5644>e^{-\gamma}$, so $f>e^{-\gamma}$ on $[2.763,3]$, and on $[2,2.763]$ the increasing $f$ crosses $e^{-\gamma}$ exactly once. Bisection gives $u_0=2.483$, the second sign change listed in Chapter~\ref{ch:oc-models}. At $u=2.763$ the excess $e^\gamma\omega(u)-1$ is largest: $1.0101-1$, about $1\%$.
+\end{solution}
 
 \begin{solution}{ex:weights30}
 \idea Expand $f^*$ and use $\mathbb E[\mathbf 1_{d\mid n}\mathbf 1_{e\mid n}]=1/\operatorname{lcm}(d,e)$.
@@ -151,12 +337,30 @@ The functions $\mathbf 1_{d\mid n}$, $d\mid P$, are linearly independent, and th
 \writeup If $D\ge P$, Exercise~\ref{ex:muweights} gives $m_D=P(A)$. Conversely, $\mathbb E[f^{*2}]\ge\mathbb E[f^{*2}\mathbf 1_A]=P(A)$, with equality only if $f^*=0$ off $A$, that is, $f^*=\mathbf 1_A$. Then $\mathbf 1_A\in V_D$. The functions $\mathbf 1_{d\mid n}$ for $d\mid P$ are linearly independent: if $\sum_dc_d\mathbf 1_{d\mid n}=0$, evaluate at $n=d$, for $d$ in increasing order of its number of prime factors: the value is $\sum_{e\mid d}c_e$, so each $c_d$ in turn is $0$. So the expansion $\mathbf 1_A=\sum_{d\mid P}\mu(d)\mathbf 1_{d\mid n}$ is the only one, and it uses $d=P$ with coefficient $\mu(P)\ne0$. So $P\le D$. Finally $m_D=P(A)/\alpha$, so $m_D>P(A)$ means $\alpha<1$.
 \end{solution}
 
+\begin{solution}{ex:squaresdensity}
+\idea Schnirelmann density is a uniform lower bound, and the squares thin out.
+\writeup The positive squares up to $n$ are $1,4,\dots,\lfloor\sqrt n\rfloor^2$, so $\frac{Q(n)}n\le\frac1{\sqrt n}\to0$ and $\sigma(Q)=0$. The $n\le10$ that are not sums of two squares are $3$, $6$ and $7$; so $2Q$ misses $3$, and $\frac{(2Q)(n)}n$ also tends to $0$ (Landau proved that the sums of two squares up to $n$ number about $\frac{cn}{\sqrt{\log n}}$; Chapter~\ref{ch:oc-divisors} proves it). Lagrange's theorem says $4Q$ contains every non-negative integer. Theorem~\ref{thm:schnirelmannbasis} says that positive density implies a basis; it does not say that a basis has positive density, and the squares show that the converse is false.
+\end{solution}
+
+\begin{solution}{ex:schnirelmannsharp}
+\idea Each set is a union of residue classes modulo $3$, and the worst $n$ is $3$.
+\writeup The positive elements of $A$ up to $n$ number $\lfloor\frac{n+2}3\rfloor\ge\frac n3$, with equality at $n=3$, so $\sigma(A)=\frac13$. A sum of two elements of $A$ is $0$, $\equiv1$ or $\equiv2\pmod3$, and all of these occur ($n\equiv2$ is $1+(n-1)$); the positive multiples of $3$ are missed. So $(A+A)(n)=n-\lfloor\frac n3\rfloor$, and $\sigma(A+A)=\frac23$, at $n=3$. Lemma~\ref{lem:schnirelmann} gives only $\frac13+\frac13-\frac19=\frac59$. Finally $3=1+1+1$, and every positive $n$ is a sum of three elements of $A$, so $\sigma(3A)=1$, against the bound $\frac13+\frac23-\frac29=\frac79$ from the lemma with $B=A+A$.
+\end{solution}
+
+\section{What we proved, and what comes next}
+
+The epigraph asked how long the coins tell the truth. Below $x^{1/(10\log\log x)}$ they do, up to a relative error $(\log x)^{-2}$ (Corollary~\ref{cor:brunpure}), and Volume~14's fundamental lemma extends this to $x^{1/s}$ with an error $e^{-s}$. At a fixed power $x^{1/u}$ they are wrong by the definite factor $e^\gamma\omega(u)$ (Proposition~\ref{prop:sievefail}), which oscillates around $1$ and settles only as $u\to\infty$. What a sieve sees when the coins stop is the projection of the sifted set onto the divisibility events of small modulus (Theorem~\ref{thm:selbergproj}), and Selberg's parity example shows that this projection cannot tell the integers with an even number of prime factors from those with an odd number. That is why the sieve proves $\pi(x)\le(2+o(1))\frac x{\log x}$ and no better (Corollary~\ref{cor:selbergtwo}), and why its natural victories are upper bounds: Brun's twin primes, and Schnirelmann's bounded number of primes (Proposition~\ref{prop:goldbachdensity}), where an upper bound and a second moment are enough.
+
+The next chapter moves from integers to groups. A class group is modelled by a random abelian group whose moments are the only data, and the question is again how much those data determine.
+
 \section*{Sources and further reading}
 
 \begin{itemize}
+\item \emph{Brun.} V.~Brun, ``La série $\frac15+\frac17+\frac1{11}+\frac1{13}+\cdots$ où les dénominateurs sont nombres premiers jumeaux est convergente ou finie'', \emph{Bull.\ Sci.\ Math.}\ 43 (1919), 100--104 and 124--128.
 \item \emph{Selberg's sieve.} A.~Selberg, ``On an elementary method in the theory of primes'', \emph{Norske Vid.\ Selsk.\ Forh.\ (Trondheim)} 19 (1947), 64--67.
 \item \emph{Parity.} A.~Selberg, ``Sieve methods'', in \emph{Proc.\ Sympos.\ Pure Math.}\ 20, American Mathematical Society, 1971, 311--351.
 \item \emph{Chen.} J.~R.~Chen, ``On the representation of a larger even integer as the sum of a prime and the product of at most two primes'', \emph{Sci.\ Sinica} 16 (1973), 157--176.
 \item \emph{Schnirelmann.} L.~G.~Schnirelmann, ``On additive properties of numbers'' (in Russian), \emph{Izv.\ Donsk.\ Politekh.\ Inst.}\ 14 (1930), 3--28.
+\item \emph{Goldbach representations and Schnirelmann's theorem.} M.~B.~Nathanson, \emph{Additive Number Theory: The Classical Bases}, Graduate Texts in Mathematics 164, Springer, 1996, Chapter~7, for the sieve bound on $r(N)$ and a complete proof of Schnirelmann's theorem. H.~Halberstam and H.-E.~Richert, \emph{Sieve Methods}, Academic Press, 1974.
 \item \emph{The whole subject.} J.~B.~Friedlander and H.~Iwaniec, \emph{Opera de Cribro}, American Mathematical Society Colloquium Publications 57, 2010.
 \end{itemize}
