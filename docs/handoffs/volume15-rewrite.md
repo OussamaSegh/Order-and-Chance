@@ -39,7 +39,7 @@ Removed in the first commit after the written check `review/volume15-rewrite/unr
 
 | Ch. | Title | Files | State |
 | --- | --- | --- | --- |
-| 1 | Order and Chance in the Integers | `ch01-integers.tex`, `ra-anatomy.tex` | to do |
+| 1 | Order and Chance in the Integers | `ch01-integers.tex`, `ra-anatomy.tex` | done: question epigraph, opening count of squarefree windows (too regular for coins), glossary kept, stale section numbers replaced by labels, the use of Chapter 3's `cor:bigomegasd` declared (no circle), closing section; captions corrected (Rankin factor 2.7–21; arcsine gap; Ford curve 4e14); `check_ch01_integers.py` |
 | 2 | Models of the Primes | `ch02-cramer.tex`, `ra-largemoduli.tex`, `ra-gaps.tex` | to do |
 | 3 | Independent Prime Divisors | `ch03-divisors.tex`, `ra-additive.tex`, `ra-selbergdelange.tex`, `ra-erdoskac.tex` | to do |
 | 4 | Random Multiplicative Functions | `ch04-multiplicative.tex`, `ra-randommult.tex`, `ra-polynomials.tex` | to do |
