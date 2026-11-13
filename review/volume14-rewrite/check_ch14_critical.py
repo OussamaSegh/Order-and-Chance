@@ -22,4 +22,33 @@ for x in (0, 0.5, 1):
 check("2 gamma - 1", float(2 * euler - 1), 0.1544, 1e-4)
 check("N(5000)", int(nzeros(5000)), 4520, 0)
 check_true("0.47 pi / 4 > 0.36", 0.47 * math.pi / 4 > 0.36)
+# Montgomery's explicit formula, as an exact identity in the proof of lem:montexplicit, at x=10, t=100.
+# The first 2000 zeros (computed with mpmath.zetazero, stored next to this script).
+import numpy as np
+from common import primes_upto
+from mpmath import mpc
+g = np.array([float(l) for l in open(pathlib.Path(__file__).parent / 'zeta_zeros_2000.txt')])
+check("2000 zeros stored", len(g), 2000, 0)
+check("zero 2000 (mpmath.zetazero)", float(__import__('mpmath').zetazero(2000).imag), g[-1], 1e-9)
+x, t = 10.0, 100.0
+G = np.concatenate([g, -g])
+L = 2 * np.sum(np.exp(1j * G * math.log(x)) / (1 + (t - G) ** 2))
+s1 = 0j; s2 = 0j; N = 10**7
+for p in primes_upto(N):
+    p = int(p); lp = math.log(p); q = p
+    while q <= N:
+        y = x / q
+        if q <= x: s1 += lp * y ** complex(-0.5, t)
+        else: s2 += lp * y ** complex(1.5, t)
+        q *= p
+s = mpc(0.5, t)
+gw = lambda w: x ** (w - 0.5) / ((1 + w - s) * (1 + s - w))
+w = mpc(-0.5, t)
+exact = complex(2 * gw(1) - x ** complex(-1, t) * (zeta(w, derivative=1) / zeta(w)) - 2 * sum(gw(-2 * k) for k in range(1, 60))) - x**-0.5 * (s1 + s2)
+main = -x**-0.5 * (s1 + s2) + x ** complex(-1, t) * math.log(abs(t) + 2)
+for name, v in [("zero side", L), ("prime side, exact", exact)]:
+    check(f"explicit formula {name} real", v.real, 0.8285, 6e-5)
+    check(f"explicit formula {name} imag", v.imag, 1.3374, 6e-5)
+check("difference to the lemma's main terms, real", (exact - main).real, 0.13, 0.005)
+check("difference to the lemma's main terms, imag", (exact - main).imag, 0.17, 0.005)
 finish()
