@@ -37,7 +37,14 @@ The word “Journey” on some exercises is the existing long-exercise tag, not 
 
 ## In progress
 
-Portraits and a second prose pass are in the working tree and not yet committed. Fourteen photographs sit in `volume6-crossroads/photos/`, with sources and licences in `photos/CREDITS.md`. The macro `\portrait` in `main.tex` matches the Volume 5 rewrite. Print height is 1.65 in, or pixel-height/300 for Erdős, Mertens, Selberg, Kac, and Brun, so the short side stays at least 300 ppi.
+Main has been merged (`932bc285`, Volume 5 rewrite). Every Volume 6 citation of Volume 5 was checked against that book: 101 numbered citations, and every one matches the kind and the number. Nothing in Volume 6 was changed for this.
+
+- Theorem 10.8 is `thm:functional`: \(\xi(s)=\frac12 s(s-1)\pi^{-s/2}\Gamma(s/2)\zeta(s)=\frac12+\frac12 s(s-1)I(s)\), entire, \(\xi(1-s)=\xi(s)\).
+- Theorem 12.4 is `thm:eta`: \(\eta(-1/\tau)=\sqrt{-i\tau}\,\eta(\tau)\).
+- Theorem 8.6 is Fourier inversion. The class is a continuous integrable function whose transform is integrable. A jump is outside the class. Volume 6 says so in Chapter 9 and does not apply the theorem to a jump.
+- Proposition 10.6, Corollary 10.9, Theorems 9.15, 9.18 and 9.26, Theorem 9.36, Exercises 5.7 and 6.5, and the Gauss-sum citations Theorem 8.14 and Proposition 7.13, are the statements Volume 6 uses.
+
+Local `./build.sh volume6-crossroads` passed after the portraits: 381 print pages, no undefined reference, EPUB with 14 portrait JPEGs. Colour originals stayed RGB. Hadamard and Mertens are monochrome in the source files.
 
 ## Share of prose rewritten
 
@@ -63,18 +70,14 @@ Chapter 12’s main text is rewritten. The closing-problem solutions keep their 
 
 ## Remains
 
-1. Commit the portraits and the proof rewrites. Build Volume 6 locally, including the EPUB, and check that the JPEGs stay colour (or their original monochrome) and are readable.
-2. Push and poll CI until `list`, `debs`, `build`, and `site` finish. `publish` runs only on `main`.
+Push the merge and poll CI until `list`, `debs`, `build`, and `site` finish. `publish` runs only on `main`.
 
 ## Open math questions
 
-- Volume 5 citations in this book are hand-typed. A parallel rewrite of Volume 5 may renumber them. Re-check every “Volume 5, Theorem/Proposition/Exercise/Corollary”, especially Theorem 10.8 (\(\xi\), label `thm:functional`), Theorem 12.4 (\(\eta\), label `thm:eta`), Proposition 10.6, Corollary 10.9, Theorems 9.15, 9.18, 9.26 and 9.36, and Exercises 5.7 and 6.5.
+- The Volume 5 citations were re-checked against `932bc285` and left as they stand. A later edit of Volume 5 would need the same check again.
 - Volume 8, `volume8-analysis/chapters/ch09-expanders.tex`, still cites Volume 6, Chapter 5 for an error \(O(\sqrt x\log x)\) under the Riemann hypothesis. Chapter 5 gives no error term. The right pointer is Theorem 7.10. Do not edit Volume 8 in this pull request.
-- No cross-volume `\ref` exists, so those citations cannot be made label-based from Volume 6 alone.
 
 ## Exact next steps
 
-1. Commit, then run `./build.sh volume6-crossroads`.
-2. If the layout check fails, grep `build/volume6-crossroads/main.log` for `Overfull`.
-3. Confirm the EPUB still passes `tools/check_epub_media.py` and that the portrait JPEGs are inside it, not converted to grey.
-4. Push and poll the Actions run until `list`, `debs`, `build`, and `site` have finished.
+1. Push `cursor/volume6-complete-rewrite-5aa1`.
+2. Poll the Actions run until `list`, `debs`, `build`, and `site` have finished.
