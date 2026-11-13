@@ -1,216 +1,160 @@
-# Book 8 — Analysis
+# Volume 8 — Analysis
 
-*Operators, Spectra and Transforms.* The on-disk subtitle is "Limits, Measures and Transformations".
+*Operators, Spectra and Transforms.*
 
-**Element.** The beams. A function is a point. A beam of infinite dimension has a spectrum, and the spectrum is not always a list of eigenvalues.
+**Status of this file.** Blueprint of Volume 8 under the [master plan](MASTER-PLAN-V5-V15.md), 2026-11-10. It replaces the earlier specification, which described ten chapters; the manuscript prints twenty-four. Chapter numbers below are the numbers after decisions D-16 and D-18 are applied. No proof named here has been verified.
 
-**Source.** `volume8-analysis` (this directory name becomes valid once step 2 in [PROGRESS.md](PROGRESS.md) merges). Ten chapters plus `chapters/ch11-harder.tex`, the former Machinery chapter on Hilbert space, input from `main.tex`. About 178 pages before that chapter. The October review scored the ten chapters 7. Wiener's local inverse now uses \(e^{+2\pi i\xi_0 x}\) in `ch10-tauberian.tex`. The blurb still has to be checked against the compact spectral theorem: the review found it claiming the unbounded case.
+**Series part.** III. Analysis and Geometry. **Directory.** `volume8-analysis`.
 
-## Promise
+## Central question
 
-Book 7 built the rooms. This floor asks what lives in them. Hahn–Banach and the three consequences of Baire, Hilbert space, compact operators, the Fourier transform, distributions, finite abelian Fourier analysis, Haar measure and the adèles, a second complex-analysis course, and tauberian theorems. Ikehara's theorem is a second proof of the prime number theorem, carried by a different beam from Book 6's. The zeros are not yet a spectrum. The book says so.
+What lives in a space of functions? A matrix has eigenvalues. An operator has a spectrum, and a group has a Fourier transform. The volume follows the word "spectrum" from a symmetric matrix, through a graph, to a compact operator, and then follows "transform" from the line to a finite group, to \(\mathbb Q_p\), to the prime number theorem.
 
 ## Prerequisites
 
-Book 7 entire. Book 5's Fourier series and complex analysis. Book 3's groups, for finite Fourier analysis and Haar measure. Book 6's zero-free line, quoted and not reproved.
+| From | What is used |
+| --- | --- |
+| Volume 7 | All of it. In particular Baire, \(L^p\), Fubini, Radon–Nikodym, Riesz representation, and \(\mathbb Q_p\) with \(\mathbb Z_p\) compact (Chapter 2) |
+| Volume 5 | Fourier series, the Fourier transform of Chapter 8, residues and the identity theorem, the functional equation of \(\zeta\) |
+| Volume 3 | Groups, characters of finite abelian groups, the linear algebra of its appendices |
+| Volume 6 | The zero-free line `thm:line`, as the input of Chapter 15. Zero counts, in the problems of Chapter 16 |
+| Volume 1 | Linear algebra |
 
-## How the subtitle is delivered
+No statement of Volumes 9–15 is used as a premise. Today the volume uses Volume 9 (Weyl integration) and Volume 11 (Stein's lemma, Gaussian concentration, Lyapunov's theorem) in the two random-matrix chapters; those chapters leave.
 
-The parts keep their catalog names. *Operators, Spectra and Transforms* is what they do.
+## Structure
 
-Banach and Hilbert Spaces delivers the operators: Hahn–Banach, the duals, and the geometry of a Hilbert space. Spectral Theory delivers the spectra. It holds the compact spectral theorem, and it receives the matrix spectral theorem, the singular-value decomposition, the graph spectra, the semicircle, and the sine kernel. Those are spectra. They are not the geometry of a path. Fourier and Tauberian Methods delivers the transforms: Fourier analysis on the line and on finite abelian groups, Haar measure and Pontryagin duality as the measure that makes a group Fourier transform, Mellin inversion, and Ikehara's theorem. The problem chapter on zeta off the line stays here. It does not prove Bohr–Jessen. No part is renamed.
+| Ch. | Title | File | Action |
+| --- | --- | --- | --- |
+| | **Part I. Banach and Hilbert Spaces** | | |
+| 1 | Banach Spaces | `ch01-banach.tex` | Keep |
+| 2 | Hilbert Spaces | `ch02-hilbert.tex` | Keep |
+| | **Part II. Spectral Theory** | | |
+| 3 | The Spectral Theorem and Its Relatives | `linear-ch05-spectral.tex` | Keep, moved to the head of the part |
+| 4 | Singular Values | `linear-ch06-svd.tex` | Keep |
+| 5 | Graphs through Their Eigenvalues | `linear-ch08-graphs.tex` | Keep |
+| 6 | Cuts, Mixing and Expansion | `spectral-expansion.tex` | Keep |
+| 7 | Expanders and Ramanujan Graphs | `ch09-expanders.tex` | Keep |
+| 8 | Operators, Spectra and Banach Algebras | `ch03-operators.tex` | Keep |
+| 9 | The Spectral Theorem for Compact Operators | `ch04-spectral.tex` | Keep. Title made distinct from Chapter 3 |
+| | **Part III. Fourier and Tauberian Methods** | | |
+| 10 | The Fourier Transform | `ch05-fourier.tex` | Keep |
+| 11 | Distributions and Sobolev Spaces | `ch06-distributions.tex` | Keep |
+| 12 | Fourier Analysis on Finite Abelian Groups | `ch07-finite.tex` | Keep |
+| 13 | Haar Measure, Duality and the \(p\)-adic Numbers | `ch08-haar.tex` | Keep here (D-17). Rewrite one section opening |
+| 14 | Cauchy's Theorem, Growth and Mellin Inversion | `ch09-complex.tex` | Keep |
+| 15 | Tauberian Theorems | `ch10-tauberian.tex` | Keep |
+| 16 | The Values of Zeta (problems) | `ch11-harder.tex` | Keep; audit against rule R1 |
+| | **Appendices** | | |
+| A | Spaces, Quotients and Duality | `linear-ch01-duality.tex` | Becomes an appendix |
+| B | Determinants as Volume | `linear-ch02-volume.tex` | Becomes an appendix |
+| C | Eigenvalues and Invariant Subspaces | `linear-ch03-eigen.tex` | Becomes an appendix |
+| D | Inner Products and Projections | `linear-ch04-inner.tex` | Becomes an appendix |
+| E | Inequalities between Matrices | `linear-ch11-inequalities.tex` | Becomes an appendix |
+| F | Linear Dynamics | `linear-ch12-dynamics.tex` | Becomes an appendix |
 
-**Moves out.**
+**Leaves the volume.** "Random Matrices I: The Semicircle" (`ch10-semicircle.tex`) and "Random Matrices II: Unitary Matrices and the Zeros of Zeta" (`ch11-cue.tex`) go to Volume 12, Chapters 9 and 10 (D-16).
 
-| Material | File | Where it goes |
+**The appendices are premises.** They are part of the volume and may be cited by any chapter and by later volumes (rule R1). Appendices A–D hold the linear algebra Chapters 3–9 assume beyond Volume 1; Appendices E and F are cited by Volumes 9, 10 and 12. Each appendix opens with one line saying what it assumes and who uses it. A reader who knows linear algebra reads the main path of sixteen chapters.
+
+**Why the graphs stay.** The three graph chapters need only the finite-dimensional spectral theorem and Courant–Fischer. A Ramanujan graph is one whose spectrum satisfies a Riemann hypothesis, with a zeta function and a prime number theorem. It is the volume's subtitle in miniature, and it prepares the reader for the infinite-dimensional case that follows.
+
+## Essential definitions and results
+
+Banach space, dual, weak topologies. Hilbert space, orthonormal basis, reproducing kernel. Spectrum, resolvent, compact operator. Schwartz space, tempered distribution, Sobolev space. Dual group, Haar measure. Order of an entire function, Mellin transform. Summability methods.
+
+## Flagship theorems, proved in this volume
+
+| Theorem | Label | Chapter |
 | --- | --- | --- |
-| Construction of \(\mathbb Q_p\) and the adèles, beyond Haar measure and the dual | `ch08-haar.tex` | Book 13, Chapters 6 and 9. Haar measure and Pontryagin duality stay in Fourier and Tauberian Methods. |
-| Jordan's curve theorem | `ch09-complex.tex` | Book 7, Metric and Topological Spaces. |
-| The Riemann mapping theorem | `ch09-complex.tex` | Book 9, Groups and Geometry. A conformal map is a connection of shapes. |
-| Phragmén–Lindelöf, Hadamard factorisation, Dixon | the same file | KEEP in Fourier and Tauberian Methods. They are the engine of Dirichlet series and Mellin inversion. |
+| Hahn–Banach; uniform boundedness; open mapping; closed graph; the dual of \(L^p\); Banach–Alaoglu | | 1 |
+| Projection theorem; Riesz–Fréchet; von Neumann's mean ergodic theorem | | 2 |
+| Spectral theorem for normal matrices; Courant–Fischer; Cauchy interlacing; Weyl's inequalities; Hoffman–Wielandt | | 3 |
+| Singular value decomposition; Eckart–Young | | 4 |
+| Hoffman's ratio bound; Huang's theorem | | 5 |
+| Cheeger's inequality; Alon–Boppana | | 6 |
+| Expander mixing; Ihara–Bass; the prime number theorem for graphs | | 7 |
+| Fredholm alternative; Gelfand's spectral radius formula; Wiener's lemma | | 8 |
+| Spectral theorem for compact self-adjoint operators; Sturm–Liouville; Mercer; the continuous functional calculus | `thm:spectralcompact` | 9 |
+| Fourier inversion; Plancherel; Hausdorff–Young; Poisson summation for lattices | | 10 |
+| Sobolev embedding; Rellich; Lax–Milgram | | 11 |
+| Duality for finite abelian groups; uncertainty (Donoho–Stark, Tao); quadratic reciprocity by Fourier analysis; Meshulam's bound | `thm:qr`, `thm:meshulam` | 12 |
+| Existence and uniqueness of Haar measure in the cases the chapter constructs; Haar measure on \(\mathbb Q_p\); \(\mathbb Q_p\) is self-dual; Fourier inversion on \(\mathbb Q_p\) | `prop:haarqp`, `thm:qpselfdual`, `thm:qpfourier` | 13 |
+| Cauchy's theorem in homology form; Phragmén–Lindelöf; Hadamard factorisation; Mellin inversion | `thm:hadamardgen`, `thm:mellininv` | 14 |
+| Tauber; Hardy–Littlewood–Karamata; Wiener's tauberian theorem; Wiener–Ikehara; the prime number theorem, second proof | `thm:ikehara`, `cor:pntikehara` | 15 |
 
-## Parts
+## Stated without proof
 
-| Part | Name | Chapters |
-| --- | --- | --- |
-| I | Banach and Hilbert Spaces | 1–2 |
-| II | Spectral Theory | 3–4, the spectral appendices from Book 3, and the random-matrix and graph spectra from Book 12 |
-| III | Fourier and Tauberian Methods | 5–7, Haar and Pontryagin from Chapter 8, Mellin and the tauberian theorems from Chapters 9–10, and the zeta problems |
+| Statement | Heading must say |
+| --- | --- |
+| The spectral theorem for general bounded or unbounded self-adjoint operators | Quoted. The blurb and preface must not claim it |
+| The converse direction of Bochner's theorem | Not proved here |
+| Existence of Ramanujan graphs of every degree; Friedman's theorem | Quoted |
+| Kesten's theorem; the matrix-tree theorem | Preview of Volume 12 |
+| Bohr–Jessen's limiting distribution (Chapter 16) | Preview of Volume 15. No problem may assert it |
+| Carleson's theorem | Quoted |
 
----
+## Climax
 
-The chapter notes follow the manuscript's file order. The part names are the table above. Material marked MOVE leaves Fourier and Tauberian Methods.
+Part II ends on the compact spectral theorem: the vibrating string has a list of frequencies for the same reason a symmetric matrix has eigenvalues. Part III ends on Wiener–Ikehara: the prime number theorem a second time, from the same zero-free line and a different machine.
 
-### Part I. Banach and Hilbert Spaces
+## Motivation and history
 
-#### Chapter 1. Banach Spaces
+Banach's Lwów school, Hilbert's 1906 spectral theory, von Neumann, Schwartz, Wiener's 1932 tauberian memoir and Ikehara, Hensel and Tate for the \(p\)-adic dual, Lubotzky–Phillips–Sarnak and Margulis for Ramanujan graphs, Harald Bohr for the values of \(\zeta\).
 
-**Status.** REVISE — `volume8-analysis/chapters/ch01-banach.tex` (476 lines). Write the complex \(L^p\) dual with the real-part reconstruction already used for Hahn–Banach. The real proof is complete. The sentence "apply the real case to the real and imaginary parts" is not that reconstruction.
+## Examples and exercises
 
-**Hook.** In infinite dimension the unit ball is not compact, a linear map can be discontinuous, and a sequence of unit vectors can converge weakly to zero.
+A discontinuous linear map; weak convergence without norm convergence; the Petersen graph's spectrum; a string's modes; the Gaussian and the Hermite functions; a corner differentiated as a distribution; a cap set; the measure of the squares in \(\mathbb Z_p\) (moved, see below); a Mellin inversion that recovers a sum; an Abel summable series that does not converge.
 
-**Synopsis.** Normed spaces, bounded operators, analytic and geometric Hahn–Banach, the three consequences of Baire, the duals of the classical spaces, and weak topologies. Infinite dimension is not more of the same. That sentence is the floor's thesis, and the chapter proves the three ways it fails.
+Three levels of exercises in each chapter and each appendix. Chapter 16 is the problem chapter.
 
-**Proved.** Hahn–Banach. Uniform boundedness, the open mapping theorem, and the closed graph theorem. \(L^p\) duality for \(1\le p<\infty\), real and, after the revision, complex. Riesz–Markov for real \(C(K)\), or the citation to Book 7 if that is where the positive theorem lives.
+## Figures and experiments
 
-**Examples.** A discontinuous linear functional using a Hamel basis, with the axiom of choice named. The dual of \(c_0\).
+Spectra of a random regular graph against the Ramanujan interval; eigenfunctions of a string; the cloud of values \(\zeta(2+it)\). Each from a script in the repository and listed in the ledger.
 
-**Figures.** Two.
+## Changes from the current manuscript
 
-#### Chapter 2. Hilbert Spaces
+**Preserve.** Every chapter that stays, as written.
 
-**Status.** KEEP — `chapters/ch02-hilbert.tex` (412 lines).
+**Relocate.** The two random-matrix chapters to Volume 12. Six linear-algebra chapters to the appendices. Within Part II, the order of the table above.
 
-**Hook.** Pythagoras holds for functions. Fourier coefficients are coordinates.
+**Rewrite.** Chapter 13, section on \(\mathbb Q_p\): the sentences "Volume 13 constructs \(\mathbb Q_p\)" are wrong. The construction is Volume 7, Chapter 2, which is all the section needs. The exercise that computes the measure of the squares in \(\mathbb Z_p\) uses the criterion for squares, which is Volume 13; it moves to Volume 13, Chapter 8, as an exercise there.
 
-**Synopsis.** Inner products, the projection theorem, Riesz representation, orthonormal bases, Fourier series as Hilbert expansions, orthogonal polynomials, averages along orbits, von Neumann's proof of Radon–Nikodym, and reproducing-kernel Hilbert spaces. The reproducing kernel is the member the Machinery cover once pointed at, and this chapter is its home. Book 12's Gaussian processes use the same geometry.
+**Remove.** Citations of Volumes 9 and 11 that leave with the matrix chapters. "Perron's formula" from the preface if the name is not used. Any claim of the unbounded spectral theorem in the blurb.
 
-**Proved.** Orthogonal projection. Riesz representation. The existence of an orthonormal basis. Parseval for a Hilbert basis. Von Neumann's proof of Radon–Nikodym, as a second proof beside Book 7's, and the text should say it is a second proof.
+**Missing.** The opening line of each appendix. One sentence in Chapter 14 and one in Volume 5, Chapter 9, saying which complex analysis each owns. In Chapter 1, the complex case of the \(L^p\) dual written out if it is still a one-line reduction.
 
-**Examples.** The Fourier basis of \(L^2(\mathbb T)\). One projection onto a subspace of polynomials.
+## Links
 
-**Figures.** Three.
+**From Volume 7.** The spaces.
+**To Volume 9.** Haar measure and the complex analysis the Riemann mapping theorem uses. Nothing flows back.
+**To Volume 10.** Compact operators, for compact groups.
+**To Volume 11.** The mean ergodic theorem and compact operators, for Furstenberg's proof of Roth's theorem.
+**To Volume 12.** Hoffman–Wielandt and the graph spectra, for the semicircle and for walks on networks.
+**To Volume 13.** Haar measure, self-duality and Fourier inversion on \(\mathbb Q_p\), cited by the chapter on Tate's thesis (D-23).
+**To Volumes 14 and 15.** Meshulam's bound; Mellin inversion; Hadamard factorisation.
 
-### Part II. Spectral Theory
+## Size
 
-#### Chapter 3. Operators, Spectra and Banach Algebras
+About 12,870 source lines after the matrix chapters leave: about 8,700 in the main path and about 4,160 in the appendices. **Estimates, not measured:** 250–280 printed pages for the main path, 110–130 for the appendices, 360–400 in all. This will be the longest volume of the series. That is accepted (D-19): no theorem is removed for length, and the reader's path is of ordinary length.
 
-**Status.** KEEP — `chapters/ch03-operators.tex` (372 lines).
+## Mathematical risks
 
-**Hook.** A matrix is understood through its eigenvalues. An operator on an infinite-dimensional space may have none, and it still has a spectrum.
+1. A main chapter may use an appendix result whose own proof uses a later main chapter. The dependency checker must show there is none. The likeliest place is Appendix D against Chapters 3–4.
+2. Chapter 13 re-read against Volume 7 only: every property of \(\mathbb Q_p\) used must be in `thm:Qp` or its corollary.
+3. Wiener's tauberian theorem and the local inverse lemma, repaired once already.
+4. The \(L^p\) dual in the complex case.
+5. Chapter 16's solutions: 22 problems citing Volumes 5, 6 and 7 heavily and Volumes 14 and 15 a few times. Each forward citation must be a preview.
+6. Ihara–Bass and the graph prime number theorem: the counting of primitive cycles.
+7. Chapter 7 states a theorem of Kesten that Volume 12, Chapter 8 also proves (`thm:kesten`). Compare the two statements. The home is Volume 12; here it is a preview, or a distinct statement with its own name.
+8. Von Neumann's mean ergodic theorem appears in Chapter 2 and again in Volume 11, Chapter 10. The home is here; Volume 11 cites it.
 
-**Synopsis.** Adjoints, compact operators, the Fredholm alternative, the spectrum, Gelfand's theory of commutative Banach algebras, and Wiener's lemma in its first form. The spectrum is a beam's stiffness, not a list. Emptiness of the point spectrum is the surprise.
+## Acceptance requirements
 
-**Proved.** The Fredholm alternative for compact operators. Non-emptiness of the spectrum of an element of a Banach algebra. Gelfand–Mazur. Wiener's lemma for absolutely convergent Fourier series, or the form the chapter proves before Chapter 10's tauberian Wiener theorem.
-
-**Examples.** The shift, with no eigenvalues and a spectrum the unit disc or the circle, as the chapter computes it. A compact integral operator.
-
-**Figures.** Two.
-
-#### Chapter 4. The Spectral Theorem
-
-**Status.** REVISE — `chapters/ch04-spectral.tex` (559 lines). The compact self-adjoint theorem and the continuous functional calculus are proved. The projection-valued measure and the unbounded theorem are sent to Reed–Simon. The public blurb must say that, and it must not say "every theorem is proved in full" if the blurb still claims the unbounded case. Courant–Fischer's "word for word" sentence should match the min-max orientation the proof uses. Exercise 5.3 on Bochner, if it lives in the next chapter, states that the converse is not proved; keep that honesty next to whatever this chapter says about functional calculus.
-
-**Hook.** A symmetric matrix is a list of stretches in the right axes. The same is true of a compact self-adjoint operator, and one can hear a string.
-
-**Synopsis.** Self-adjoint operators, the compact spectral theorem, min-max, Sturm–Liouville, Hilbert–Schmidt operators, Mercer, and the continuous functional calculus. The vibrating string is the picture. The unbounded spectral theorem is not this floor's load. Book 12's Itô integral is an \(L^2\) limit and does not need it.
-
-**Proved.** The spectral theorem for compact self-adjoint operators. Courant–Fischer. The continuous functional calculus for bounded self-adjoint operators. Mercer's theorem for the kernels the chapter treats.
-
-**Examples.** The Dirichlet Laplacian on an interval, eigenvalues \((n\pi)^2\). One Hilbert–Schmidt kernel and its singular values.
-
-**Figures.** Two.
-
-### Part III. Fourier Analysis
-
-#### Chapter 5. The Fourier Transform
-
-**Status.** REVISE — `chapters/ch05-fourier.tex` (503 lines). Exercise 5.3 proves that Fourier transforms of finite positive measures are positive definite, then names the converse of Bochner's theorem. The solution's last sentence must keep saying the converse is not proved. Lévy's continuity theorem is Book 11 and does not depend on that converse.
-
-**Hook.** Every signal is a chord. In the right space the listing of its notes loses nothing.
-
-**Synopsis.** The transform on \(L^1\), the Schwartz space, Plancherel, the Hermite basis, Riesz–Thorin and Hausdorff–Young, measures and characteristic functions, band-limited functions, and Poisson summation on lattices. The convention \(\hat f(\xi)=\int f(x)e^{-2\pi ix\xi}\,\mathrm dx\) is the series convention. Book 5's transform matches it, or this chapter says where it differs.
-
-**Proved.** Inversion when \(\hat f\in L^1\). Plancherel. The Hermite functions as a basis of \(L^2(\mathbb R)\). Riesz–Thorin. Poisson summation on lattices.
-
-**Examples.** The Gaussian, again, as its own transform. Shannon sampling for a band-limited function.
-
-**Figures.** Two.
-
-#### Chapter 6. Distributions and Sobolev Spaces
-
-**Status.** KEEP — `chapters/ch06-distributions.tex` (441 lines). Sobolev space in dimension \(d>1\) stops at the remark that the embedding threshold is \(s>d/2\). That remark stays a remark.
-
-**Hook.** How do you differentiate a corner, a jump, or a continuous nowhere differentiable function? You ask how it acts, not what it equals.
-
-**Synopsis.** Test functions, distributional derivatives, smoothing, tempered distributions, fundamental solutions, \(H^1\) on an interval, and Lax–Milgram. A fundamental solution of \(\Delta\) in \(\mathbb R^3\) is the theorem a reader can compute. The Laplacian's fundamental solution is the beam's response to a point load.
-
-**Proved.** The distributional derivative. The fundamental solution of the Laplacian in \(\mathbb R^3\). Lax–Milgram. Rellich's theorem on an interval, if the file contains it.
-
-**Examples.** The derivative of a jump is a Dirac mass. The Newtonian potential of a point mass.
-
-**Figures.** Two.
-
-#### Chapter 7. Fourier Analysis on Finite Abelian Groups
-
-**Status.** KEEP — `chapters/ch07-finite.tex` (627 lines). This is the return of Book 3's abelian characters, now as a change of basis with no convergence questions.
-
-**Hook.** On a finite group there are no null sets and no distributions. The Fourier transform is a change of basis.
-
-**Synopsis.** Characters and duality, a fast transform, uncertainty, quadratic reciprocity from the Fourier analysis of \((\mathbb Z/n\mathbb Z)^\times\) or from Gauss sums, the cap-set bound, and linearity testing. Quadratic reciprocity proved again is a return, and the chapter should name Book 2's proof. The cap-set argument is the home of the Crossroads Journey if that Journey uses this Fourier analysis. One home only.
-
-**Proved.** Pontryagin duality for finite abelian groups. Inversion. Quadratic reciprocity by the method the chapter actually finishes. The cap-set bound of the strength the file proves. Meshulam's bound is the one Book 14 cites as a numbered theorem; keep that number stable.
-
-**Examples.** The dual of \(\mathbb Z/n\mathbb Z\). A cap set in \(\mathbb F_3^n\) for small \(n\), and the bound.
-
-**Figures.** Two.
-
-### Part IV. Haar Measure, the Complex Plane and Tauberian Theorems
-
-#### Chapter 8. Haar Measure, Duality and the \(p\)-adic Numbers
-
-**Status.** KEEP — `chapters/ch08-haar.tex` (575 lines). Book 2 built \(\mathbb Q_p\) by hand. This chapter gives it a Haar measure and sets it beside \(\mathbb R\) in the adèles. Book 13's Tate thesis starts from here.
-
-**Hook.** Lebesgue measure does not care where you stand. Every reasonable group has such a measure, and its characters form a second group.
-
-**Synopsis.** Topological groups, Haar measure on a compact or locally compact group of the class the chapter constructs, invariant means, Pontryagin duality in the cases proved, \(\mathbb Q_p\), and the adèles of \(\mathbb Q\). General Haar existence on a compact metrizable abelian group is proved. The abstract existence theorem is marked unused if that is what the file says. The adèles are the joint into the concealed storeys.
-
-**Proved.** Existence and uniqueness of Haar measure in the cases the chapter claims. The dual of \(\mathbb Q_p\) and of the adèles, at the level Book 13 quotes. Ostrowski may be cited back to Book 2 rather than reproved.
-
-**Examples.** Haar measure on the circle, and on \(\mathbb Z_p\). One additive character of \(\mathbb Q_p\).
-
-**Figures.** Two.
-
-#### Chapter 9. Curves, Growth and Conformal Maps
-
-**Status.** KEEP — `chapters/ch09-complex.tex` (753 lines). Delete "Perron's formula" from the preface if the name never appears again. What is proved is Mellin inversion and one rectangular shift. Book 5 owns the computational residue theorem. This chapter owns the topological one.
-
-**Hook.** A closed curve that does not cross itself has an inside and an outside. The proof took a century.
-
-**Synopsis.** Winding numbers, the Jordan curve theorem, Cauchy's theorem in Dixon's homology form, Phragmén–Lindelöf, Hadamard factorisation, Montel, the Riemann mapping theorem, and the Mellin transform. Carathéodory's boundary theorem is not claimed. Mellin inversion is the contour tool Book 15's Selberg–Delange argument is allowed to quote.
-
-**Proved.** The Jordan curve theorem. Dixon's theorem and the global residue theorem. Phragmén–Lindelöf. The Riemann mapping theorem. Mellin inversion for the class stated.
-
-**Examples.** A polygonal Jordan curve, whose elementary proof returns in Book 15's workshop as a writing exercise, a different proof. One Mellin inversion that recovers a sum.
-
-**Figures.** Two.
-
-#### Chapter 10. Tauberian Theorems
-
-**Status.** KEEP — `chapters/ch10-tauberian.tex` (743 lines). The sign in the local inverse is repaired. Ikehara's Fejér-kernel proof does not use that lemma, and it was already in order. The zero-free line is imported from Book 6 and not reproved.
-
-**Hook.** A series can have a sum without converging. Abel, Cesàro, and Borel assign one, and each way is faithful when the series does converge.
-
-**Synopsis.** Abel and Cesàro summation, Tauber's \(o(1/n)\) theorem, Karamata, Wiener's tauberian theorem, Wiener–Ikehara, and the prime number theorem again. Counting sums of two squares by a tauberian theorem is the coda, and it points at Book 15's Selberg–Delange treatment of the same sums. Ikehara is the second beam under the prime number theorem. The chapter should say "second proof" in the heading.
-
-**Proved.** Tauber's theorem. Karamata. Wiener–Ikehara. The deduction \(\psi(x)\sim x\) from the zero-free line. The local inverse lemma, with the repaired modulation.
-
-**Examples.** The prime number theorem's tauberian input, one line of the Laplace transform. A series that is Abel summable and not convergent, and Tauber's extra hypothesis that restores convergence.
-
-**Figures.** Two.
-
-#### Chapter 11. Zeta off the Line, as Problems
-
-**Status.** REVISE — `chapters/ch11-harder.tex` (about 1220 lines). Retitle. The file opens on Harald Bohr and the values of \(\zeta(\sigma+it)\) for \(\sigma>1\), which is Bohr's question and the problem-face of Book 15's Bohr–Jessen theorem. The chapter keeps its problems, hints, and solutions. It does not prove Bohr–Jessen. The last page points to Book 15, Chapter 11, where the limiting distribution is a theorem. "Harder problems" is not the title.
-
-**Hook.** Bohr, in 1911: for fixed \(\sigma>1\), which values does \(\zeta(\sigma+it)\) take as \(t\) runs?
-
-**Synopsis.** The Euler product makes the question geometric: the points \(p^{-it}\) on the circle. The problems use Hilbert space, almost periodic functions, and the mean-square theory this book and Book 5 have made legitimate. A problem may compute a mean square. It may not claim the existence of the Bohr–Jessen measure as a theorem of this floor.
-
-**Proved.** Whatever each problem's write-up proves, and nothing beyond it.
-
-**Examples.** One almost-periodic polynomial in the primes, and its mean. A numerical cloud of \(\zeta(2+it)\).
-
-**Figures.** Three, already in the file.
-
-## Owns, defers, hands forward
-
-**Owns.** Hahn–Banach and the three Baire theorems for Banach spaces. The compact self-adjoint spectral theorem and the continuous functional calculus. Plancherel. Finite abelian Fourier analysis and a Fourier proof of quadratic reciprocity. Haar measure and the adèles of \(\mathbb Q\). Jordan, Dixon, the Riemann mapping theorem, Mellin inversion. Wiener–Ikehara and a second proof of the prime number theorem.
-
-**Defers.** The spectral theorem for a general bounded or unbounded self-adjoint operator. The converse of Bochner. Lévy's continuity theorem (Book 11). Carleson's theorem. The value distribution of \(\log\zeta\) (Book 15).
-
-**Hands forward.** The beams. Book 9 integrates on manifolds with the measure and the inverse-function theorem it may reprove locally. Book 12 quotes Plancherel. Book 13 quotes the adèles. Book 6's prime number theorem now has a second, independent member under it.
-
-## Pages and effort
-
-Baseline 178 pages plus the problem chapter. Target 200–230. Effort: moderate. The Wiener sign is repaired. The work is the blurb, the complex \(L^p\) dual, the Bochner sentence, the Perron-preface line, the part split, and the retitle.
+- Structure equals the table above. The catalog part names are unchanged.
+- No premise from Volumes 9–15. The dependency ledger shows none.
+- Verification records for: Hahn–Banach, the three Baire theorems, `thm:spectralcompact`, Plancherel, `thm:qr`, `thm:meshulam`, `prop:haarqp`, `thm:qpselfdual`, `thm:qpfourier`, `thm:hadamardgen`, `thm:mellininv`, `thm:ikehara`, `cor:pntikehara`, Cheeger, Alon–Boppana, Hoffman–Wielandt.
+- Every citation of this volume from Volumes 9–15 resolves by label after the reorder.
+- Measured pages recorded for the main path and for the appendices separately.
+- Blurb and preface checked against the list of statements not proved.
+- The ten editorial standards of the master plan, section 6.5.
