@@ -47,3 +47,28 @@ Gate B of the master plan (independent verification records) is not this pass.
 ## How to build
 
 `./build.sh --pdf-only volume12-random-motion`. The cloud container has no TeX by default: install the packages listed in `.github/workflows/build.yml`. The checks need `pip install mpmath numpy scipy sympy networkx`. Before the pull request, also run `python3 tools/listing.py volume12-random-motion /tmp/x.md` (CI fails on a `kdp.md` keyword over 50 characters).
+
+## What changed (summary)
+
+- Every chapter: an epigraph that asks the chapter's question, a closing section "What we proved, and what comes next", a number-check script in `review/volume12-rewrite/` (all pass), sources added for every new date or attribution.
+- Ch 1: nonexistent Volume 4 Theorem 6.15(d) replaced by an argument; Karhunen–Loève cited as Volume 8, Example 9.15.
+- Ch 2: Lévy modulus lower-bound inequality corrected; the zero-set Hausdorff remark corrected (Taylor–Wendel, Perkins).
+- Ch 5: Volume 7 Theorem 9.10 (polar coordinates); Euler's product via Volume 5 Theorems 3.5 and 9.18.
+- Ch 7: the Lévy–Itô measurability step (jumps read off the values at rational times) written out in full.
+- Ch 8: Kesten's theorem compared with Volume 8, Theorem 7.5 (Kesten–McKay); Alon–Boppana is Volume 8, Theorem 6.4; the F_2 vs Z^2 return-probability solution corrected (six orders of magnitude, not four); a sentence on Chapter 8 ↔ Appendix A.
+- Ch 9: Tracy–Widom tails corrected (β = 1: left e^{-|s|^3/24}, right e^{-2s^{3/2}/3}), unverifiable sample values removed from a caption.
+- Ch 10: every zero–eigenvalue comparison typed (theorem / conjecture / observation); Montgomery is Volume 14, Theorem 13.15, quoted for comparison only.
+- Ch 11: file renamed `ch11-logcorrelated.tex`; reminders now cite Chapter 10 internally; `thm:cuemax` heading "admitted, with source"; new last exercise `ex:twovariances` (11.9); closing paragraph hands the question to Volume 13. `brw-halfmoment.tex`: Volume 15 analogy made explicit, nothing depends on it.
+- Appendix A: sources for Borchardt, Flye Sainte-Marie, de Bruijn, Smith–Tutte; which-cites-which sentence.
+- `moments.tex` removed after the written check `review/volume12-rewrite/moments-removal-check.md` (all content lives in Volume 15's `moments-zeta.tex`).
+- Preface, `blurb.tex`, `kdp.md`: part structure matches `main.tex`; expanders/Ihara (now Volume 8) removed from the listing; "one exception" (thm:cuemax).
+
+## Numbering changes for Volumes 13–15
+
+None among existing statements: `statements.py` against `baseline-numbering.txt` differs only by the new Exercise 11.9 (`ex:twovariances`) at the end of Chapter 11's list. Keating–Snaith 10.10, `thm:logclt` 10.11, `prop:cuelogcorr` 11.3, `thm:gmc` 11.4, matrix-tree A.4 are unchanged. The chapter file `ch12-logcorrelated.tex` is now `ch11-logcorrelated.tex` (printed number was already 11).
+
+For Volume 15: its `moments-zeta.tex` says "Volume 6, the zero-counting formula" and "Volume 8" for Plancherel; the removed Volume 12 copy had "Volume 6, Theorem 6.9" and "Volume 8, Theorem 10.4" — check these against the printed order before using them.
+
+## Build
+
+`./build.sh --pdf-only volume12-random-motion`: 233 pages, no undefined reference; `tools/listing.py` passes; `tools/cross_volume_citations.py` reports only the known Volume 14 mismatch; `python3 -m unittest discover -s tools -p 'test_*.py'` passes.
