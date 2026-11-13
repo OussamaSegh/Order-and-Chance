@@ -127,14 +127,23 @@ The index is a list of statement names. Its one introductory sentence was rewrit
 
 The four repairs above are later than this count. They change a few sentences and do not pull any chapter under 90%.
 
+## Build
+
+Local `./build.sh volume7-spaces` finished with exit 0.
+
+- Print interior: **407 pages**, 513 × 738 pt (7.125 × 10.25 in). Spine 0.9576 in. Two pages flattened at 600 ppi. KDP interior and cover checks passed.
+- Reading PDF: 408 pages, cover plus the same body.
+- Layout: 394 whole boxes, maximum height 288.5 pt, no overflow, no unresolved references.
+- `main.log`: no overfull boxes, no undefined references.
+- EPUB: 25 MB. 58 plates at 1800 px, full width, colour. Inline mathematics carries an em baseline. The three unincluded plates are not in the EPUB.
+
 ## In progress
 
-Local `./build.sh volume7-spaces`, then CI.
+Push, mark PR #237 ready, and wait for CI (`list`, `debs`, `build`, `site`).
 
 ## Remains
 
-1. Local PDF and EPUB build. Zero undefined references. Layout checks pass. Record the print page count.
-2. Push, mark the pull request ready, and poll CI until `list`, `debs`, `build`, and `site` pass. `publish` is skipped on a pull request.
+CI on the final head. `publish` is skipped on a pull request.
 
 The independent review is a separate agent. This file does not contain that review.
 
@@ -148,6 +157,6 @@ The independent review is a separate agent. This file does not contain that revi
 
 ## Exact next steps
 
-1. Finish `./build.sh volume7-spaces` and record the print page count, undefined references, and overfull boxes in this file.
-2. Push `cursor/volume7-complete-rewrite-8161`.
-3. Mark PR #237 ready and poll the Actions run until `list`, `debs`, `build`, and `site` have finished.
+1. Push `cursor/volume7-complete-rewrite-8161`.
+2. Mark PR #237 ready and poll the Actions run until `list`, `debs`, `build`, and `site` have finished.
+3. Report the head SHA and the run IDs on the pull request. Do not push again just to record them.
