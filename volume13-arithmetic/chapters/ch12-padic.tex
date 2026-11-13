@@ -2,14 +2,14 @@
 
 \begin{center}\itshape
 In the $2$-adic world, $1+2+4+8+\cdots=-1$, and $-7$ has a square root.\\
-Both statements are true, and they say that ``being close'' can mean ``being congruent modulo a high power of $p$''.
+What does ``close'' have to mean for both statements to be true, and what can such a world tell us about equations over $\Q$?
 \end{center}
 
 In 1897 Kurt Hensel had an idea that looked like a joke: a polynomial can be expanded in powers of $x-a$ around a point, so why not expand an integer in
 powers of a prime $p$, and allow the expansion to go on forever? The result, the $p$-adic numbers, turned out to be no joke at all: they are now as basic
 to number theory as the real numbers, and the rule ``think about each prime separately, then glue'' runs through all of modern arithmetic.
 
-Fix a prime $p$. Volume~2 taught us to solve equations modulo $p$, then modulo $p^2,p^3,\dots$ by Hensel's lemma (Volume~2, Theorem~3.8). The $p$-adic numbers are what you get when you never stop: a $5$-adic integer is a coherent list of residues modulo $5,25,125,\dots$, just as a real number is a coherent list of decimal approximations. In this chapter we build them, compute with them, and see why there are no other ways to measure size on $\Q$.
+Fix a prime $p$. Volume~2 taught us to solve equations modulo $p$, then modulo $p^2,p^3,\dots$ by Hensel's lemma (Volume~2, Theorem~3.8). The $p$-adic numbers are what you get when you never stop: a $5$-adic integer is a coherent list of residues modulo $5,25,125,\dots$, just as a real number is a coherent list of decimal approximations. Volume~7 built them as a metric space, the completion of $\Q$ for $|\cdot|_p$. In this chapter we recall that construction briefly, then do arithmetic with them: Hensel's lemma, the squares, Ostrowski's theorem that there are no other ways to measure size on $\Q$, and the first local obstructions.
 
 \begin{reminder}[How to read an infinite digit string]
 We list $p$-adic digits starting at $p^0$, then $p^1$, then $p^2$.
@@ -102,7 +102,7 @@ coming respectively from the usual absolute value and the primes $2,3,5,7$.
 
 % t1-pass2 examples 11a826ac
 \begin{examplex}[distances from powers of $3$]
-One has $|9|_3=3^{-2}=1/9$, $|6|_3=|2\cdot 3|_3=1/3$ and $|7|_3=1$. So $9$ is closer to $0$ than $6$ is, which is the opposite of the archimedean order. Also $|9+6|_3=|15|_3=1$, equal to the larger of $|9|_3$ and $|6|_3$ only after noting they differ: the larger is $1/3$, and $15=3\cdot 5$ has valuation $1$, so $|15|_3=1/3$. The sum of two numbers of different valuations has the larger valuation's absolute value.
+One has $|9|_3=3^{-2}=1/9$, $|6|_3=|2\cdot 3|_3=1/3$ and $|7|_3=1$. So $9$ is closer to $0$ than $6$ is, which is the opposite of the archimedean order. Also $15=3\cdot5$, so $|9+6|_3=|15|_3=1/3$, the larger of $|9|_3=1/9$ and $|6|_3=1/3$: the sum of two numbers of different sizes has the size of the larger one.
 \end{examplex}
 
 \begin{examplex}[the product formula for $12$]
@@ -111,129 +111,61 @@ Factor $12=2^2\cdot 3$. Then $|12|_\infty=12$, $|12|_2=1/4$, $|12|_3=1/3$, and e
 
 \section{The \texorpdfstring{$p$}{p}-adic integers}
 
-% t1-pass2 motive 63faee29
-A $p$-adic integer is an infinite coherent string of residues modulo $p$, $p^2$, $p^3$, and so on. Ordinary integers embed as eventually constant strings in the $p$-adic sense of finite sums, and they are dense. Figure~\ref{fig:t1-minusone} shows the string for $-1$, every digit equal to $p-1$. Compactness of $\Z_p$ is the fact Chapter~9 will use whenever an infinite family of local conditions must have a simultaneous solution.
-
-A real number is determined by its decimal approximations. A $p$-adic integer is determined by its residues.
+Volume~7 built $\Q_p$ as the completion of $(\Q,|\cdot|_p)$ and proved what we need about it as a space (Volume~7,
+Theorem~2.10 and Corollary~2.11). Here we recall the picture in the form this volume uses, a $p$-adic integer as an infinite
+coherent string of residues, and go on to arithmetic. Figure~\ref{fig:t1-minusone} shows the string for $-1$, every digit equal
+to $p-1$. Compactness of $\Z_p$ is the fact Chapter~9 will use whenever an infinite family of local conditions must have a
+simultaneous solution.
 
 \begin{definition}
-A \emph{$p$-adic integer} is a sequence $x=(x_n)_{n\ge1}$ with $x_n\in\Z/p^n\Z$ and $x_{n+1}\equiv x_n\pmod{p^n}$ for all $n$. They form a ring $\Z_p$ under termwise addition and multiplication (the compatibility is preserved, since reduction modulo $p^n$ is a ring morphism). The integer $m$ is identified with $(m\bmod p^n)_n$; this embeds $\Z$ in $\Z_p$, since only $0$ is divisible by every $p^n$.
+A \emph{$p$-adic integer} is a sequence $x=(x_n)_{n\ge1}$ with $x_n\in\Z/p^n\Z$ and $x_{n+1}\equiv x_n\pmod{p^n}$ for all $n$.
+They form a ring $\Z_p$ under termwise addition and multiplication. The integer $m$ is identified with $(m\bmod p^n)_n$; this
+embeds $\Z$ in $\Z_p$, since only $0$ is divisible by every $p^n$. By Volume~7, Theorem~2.10, this ring is the closed unit
+ball $\{x\in\Q_p:|x|_p\le1\}$ of the completion, and we use the two descriptions interchangeably.
 \end{definition}
 
-For each $x\in\Z_p$, let $m_n\in\{0,\dots,p^n-1\}$ represent $x_n$. Compatibility says $m_{n+1}=m_n+a_np^n$ with a \emph{digit} $a_n\in\{0,\dots,p-1\}$, so $x$ is the same thing as an infinite sequence of digits $a_0,a_1,a_2,\dots$, with $m_n=a_0+a_1p+\dots+a_{n-1}p^{n-1}$. We will justify the notation $x=\sum_{i\ge0}a_ip^i$ in a moment. The \emph{valuation} $v(x)$ of $x\ne0$ is the index of its first non-zero digit, that is, the largest $v$ with $x_v=0$ (and $v=0$ if $x_1\ne0$); set $|x|_p=p^{-v(x)}$ and $|0|_p=0$. For $x\in\Z$ this is the old $v_p$, because $x_n=0$ means $p^n\mid x$.
-
-A sequence is \emph{Cauchy} if for every $\epsilon>0$ its sufficiently
-late terms have pairwise distance less than $\epsilon$; it converges to $x$
-if its distance from $x$ tends to zero. A space is \emph{complete} when
-every Cauchy sequence has a limit in the space. These are the same definitions
-as over $\R$, with the declared metric replacing ordinary distance.
-
-For clarity, \emph{compact} means that every cover by open sets has a finite
-subcover. A set is open when each of its points has a sufficiently small
-metric ball contained in it. We will prove both this covering property and
-the subsequence property directly, rather than assume a topology course.
+For each $x\in\Z_p$, let $m_n\in\{0,\dots,p^n-1\}$ represent $x_n$. Compatibility says $m_{n+1}=m_n+a_np^n$ with a \emph{digit}
+$a_n\in\{0,\dots,p-1\}$, so $x$ is the same thing as an infinite sequence of digits $a_0,a_1,a_2,\dots$, with
+$m_n=a_0+a_1p+\dots+a_{n-1}p^{n-1}$. The \emph{valuation} $v(x)$ of $x\ne0$ is the index of its first non-zero digit, that is,
+the largest $v$ with $x_v=0$ (and $v=0$ if $x_1\ne0$). Then $|x|_p=p^{-v(x)}$: indeed $x_n=0$ means that $x$ is within
+$p^{-n}$ of $0$.
 
 \begin{proposition}\label{prop:Zp}
 \begin{enumerate}[label=(\alph*)]
 \item $x\in\Z_p$ is a unit if and only if its first digit is non-zero. Every $x\ne0$ is $p^{v(x)}u$ for a unique unit $u$.
 \item $\Z_p$ is an integral domain, $|xy|_p=|x|_p|y|_p$ and $|x+y|_p\le\max(|x|_p,|y|_p)$.
-\item $\Z$ is dense: $|x-m_n|_p\le p^{-n}$, so $m_n\to x$, which justifies $x=\sum_ia_ip^i$.
+\item $\Z$ is dense: $|x-m_n|_p\le p^{-n}$, so $m_n\to x$, and $x=\sum_ia_ip^i$.
 \item $\Z_p$ is complete: every Cauchy sequence converges.
 \item $\Z_p$ is compact: every sequence has a convergent subsequence.
 \end{enumerate}
 \end{proposition}
 \begin{proof}
-(a) If $xy=1$ then $x_1y_1=1$ in $\Z/p\Z$, so $x_1\ne0$. Conversely, if $x_1\ne0$, every $m_n$ is prime to $p$, hence invertible modulo $p^n$; the inverses $y_n$ are compatible (the inverse of $x_{n+1}$, reduced modulo $p^n$, is an inverse of $x_n$, and inverses are unique), and $y=(y_n)$ is the inverse of $x$. Now let $x\ne0$ with $v=v(x)$. For each $n$, the first $v$ digits vanish, so $x_{n+v}\equiv0\pmod{p^v}$ (also when $v=0$), and $m_{n+v}=p^vw_n$ with $w_n$ an integer determined modulo $p^n$; let $u_n=w_n\bmod p^n$. These are compatible, $u_1\ne0$ because $x_{v+1}\ne0$, and $(p^vu)_n=p^vw_n\bmod p^n=m_{n+v}\bmod p^n=x_n$. So $x=p^vu$ with $u$ a unit.
+(b)--(e) are Volume~7: $\Z_p$ is a subring of the field $\Q_p$, hence a domain, and the absolute value is multiplicative and
+ultrametric (Theorem~2.10); $(x-m_n)_n=0$ gives (c), and the digit expansion is part of the same theorem; $\Z_p$ is a closed
+ball in the complete space $\Q_p$, which gives (d); and (e) is Corollary~2.11(b).
 
-(b) If $u$ is a unit, $p^ku\ne0$: its residue modulo $p^{k+1}$ is $p^ku_1\ne0$; and its first non-zero digit is at index $k$, so $v(p^ku)=k$. Hence for $x=p^vu$, $y=p^wu'$ non-zero, $xy=p^{v+w}uu'\ne0$ with $uu'$ a unit, so $v(xy)=v(x)+v(y)$. In particular the decomposition in (a) is unique: $p^vu=p^wu'$ forces $v=w$ (compare valuations), then $p^v(u-u')=0$ and $u=u'$. For the inequality, if $x_n=y_n=0$ then $(x+y)_n=0$, so $v(x+y)\ge\min(v(x),v(y))$.
-
-(c) $(x-m_n)_n=x_n-x_n=0$, so $v(x-m_n)\ge n$.
-
-(d) Let $(x^{(k)})$ be Cauchy. For each $n$ there is $K_n$ with $|x^{(k)}-x^{(l)}|_p<p^{-n}$ for $k,l\ge K_n$, in particular $x^{(k)}_n=x^{(l)}_n$; we may take $K_1\le K_2\le\cdots$. Put $x_n=x^{(K_n)}_n$. Then $x_{n+1}=x^{(K_{n+1})}_{n+1}\equiv x^{(K_{n+1})}_n=x^{(K_n)}_n=x_n\pmod{p^n}$, so $x\in\Z_p$, and for $k\ge K_n$, $x^{(k)}_n=x_n$, i.e.\ $|x^{(k)}-x|_p\le p^{-n}$.
-
-(e) Among the terms of a sequence, infinitely many have the same first digit; among those, infinitely many have the same second digit; and so on. Choosing the $j$-th term of the subsequence among those agreeing in the first $j$ digits (diagonal extraction) gives a subsequence that is Cauchy, hence convergent by (d).
-
-For the covering property, suppose an open cover of $\Z_p$ has no finite
-subcover. Of the $p$ first-digit classes, at least one has no finite subcover;
-inside it choose a second-digit class with the same property, and continue.
-The nested classes specify compatible residues, hence an element $x\in\Z_p$.
-An open set of the cover containing $x$ contains a small ball around $x$.
-For sufficiently large $n$, the selected class modulo $p^n$ lies in that
-ball, since any two of its elements have distance at most $p^{-n}$.
-One set then covers that class, contradicting its construction.
+(a) If $xy=1$ then $x_1y_1=1$ in $\Z/p\Z$, so $x_1\ne0$. Conversely, if $x_1\ne0$, every $m_n$ is prime to $p$, hence
+invertible modulo $p^n$; the inverses $y_n$ are compatible (the inverse of $x_{n+1}$, reduced modulo $p^n$, is an inverse of
+$x_n$, and inverses are unique), and $y=(y_n)$ is the inverse of $x$. Now let $x\ne0$ with $v=v(x)$, so $|x|_p=p^{-v}$. Then
+$u=p^{-v}x\in\Q_p$ has $|u|_p=1$, so $u\in\Z_p$ with first digit non-zero: a unit. Uniqueness: $p^vu=p^wu'$ with units $u,u'$
+gives $v=w$ by comparing absolute values, and then $u=u'$.
 \end{proof}
 
-A series $\sum c_n$ of $p$-adic integers converges if and only if $c_n\to0$. Indeed, the condition is necessary as for real series, and it is sufficient because, by the ultrametric inequality, $\left|\sum_{l<n\le m}c_n\right|_p\le\max_{l<n\le m}|c_n|_p$, so the partial sums are Cauchy. Thus no series whose terms tend to zero can diverge here.
+A series $\sum c_n$ of $p$-adic integers converges if and only if $c_n\to0$. Indeed, the condition is necessary as for real
+series, and it is sufficient because, by the ultrametric inequality, $\left|\sum_{l<n\le m}c_n\right|_p\le\max_{l<n\le m}|c_n|_p$, so
+the partial sums are Cauchy. Thus no series whose terms tend to zero can diverge here. The ordinary harmonic series
+$\sum_{n\ge1}1/n$ still diverges: $|1/n|_p\ge1$ for every positive integer $n$, so its terms do not tend to $0$.
 
 \begin{example}
-In $\Z_p$, $(1-p)(1+p+\dots+p^{n-1})=1-p^n\to1$, so $\displaystyle\frac1{1-p}=\sum_{i\ge0}p^i$. Multiplying by $p-1$: $-1=\sum_{i\ge0}(p-1)p^i$, the number whose digits are all $p-1$. For $p=2$: $1+2+4+8+\cdots=-1$. Your computer agrees: in two's complement arithmetic, $-1$ is stored as $\dots11111111$.
+In $\Z_p$, $(1-p)(1+p+\dots+p^{n-1})=1-p^n\to1$, so $\displaystyle\frac1{1-p}=\sum_{i\ge0}p^i$. Multiplying by $p-1$:
+$-1=\sum_{i\ge0}(p-1)p^i$, the number whose digits are all $p-1$. For $p=2$: $1+2+4+8+\cdots=-1$. Your computer agrees: in
+two's complement arithmetic, $-1$ is stored as $\dots11111111$.
 \end{example}
 
-\subsection*{From a domain to its fraction field}
-
-The ring $\Z_p$ has no zero divisors, but $p$ has no inverse in it.
-To obtain a field, consider pairs $(a,b)$ with $a,b\in\Z_p$, $b\ne0$,
-and declare
-\[
-(a,b)\sim(c,d)\quad\Longleftrightarrow\quad ad=bc.
-\]
-This is an equivalence relation. For transitivity, $ad=bc$ and $cf=de$
-give $d(af-be)=0$; since $d\ne0$ in a domain, $af=be$.
-The equivalence class is written $a/b$. Define
-\[
-\frac ab+\frac cd=\frac{ad+bc}{bd},\qquad
-\frac ab\frac cd=\frac{ac}{bd}.
-\]
-The denominators remain nonzero. Cross-multiplication shows that replacing
-either fraction by an equivalent pair leaves these answers equivalent;
-for instance $ab'=a'b$ implies
-$(ad+bc)b'd=(a'd+b'c)bd$.
-The ring laws follow by the same finite expansions as for ordinary fractions.
-The embedding $a\mapsto a/1$ is injective, and every nonzero $a/b$
-has inverse $b/a$. This constructs the field $\Q_p$ without assuming
-a field-of-fractions theorem.
-
-For $a,b\ne0$, write $a=p^ru$, $b=p^sv$ with units $u,v$.
-Then $a/b=p^{r-s}uv^{-1}$. Hence every nonzero $x\in\Q_p$ is uniquely
-$p^ku$ with $k\in\Z$ and $u\in\Z_p^\times$.
-The integer $k$ is independent of the representation: equality of fractions
-gives equality of the valuations of their cross-products.
-Set $v_p(x)=k$ and $|x|_p=p^{-k}$, with $v_p(0)=+\infty$.
-These extend the rational valuation and absolute value.
-Products add valuations, and taking a common denominator extends the
-ultrametric inequality. Its equality case for unequal sizes follows too:
-if $|x|>|y|$ but $|x+y|<|x|$, then
-$|x|=|(x+y)-y|\le\max(|x+y|,|y|)<|x|$, impossible.
-
-In particular
-\[
-\Z_p=\{x\in\Q_p:|x|_p\le1\}.
-\]
-Its digit expansions extend to $\Q_p$ with finitely many negative powers:
-multiply by a sufficiently large power of $p$ to enter $\Z_p$, expand,
-then shift back. For example $1/p$ is in $\Q_p$ and has valuation $-1$;
-its first residue modulo $p$ as a $p$-adic integer does not exist.
-
-\subsection*{Density and completeness of the field}
-
-For $x=p^{-k}z$ with $z\in\Z_p$, $k\ge0$, let $m_n$ be the first
-$n$ digits of $z$. Then $p^{-k}m_n\in\Q$ and
-$|x-p^{-k}m_n|_p\le p^{k-n}\to0$. Thus $\Q$ is dense in $\Q_p$.
-This also explains precisely why $\Z$ is dense in $\Z_p$.
-
-Let $(x_j)$ be Cauchy in $\Q_p$. It is bounded:
-after some index $J$, $|x_j-x_J|_p\le1$, so
-$|x_j|_p\le\max(1,|x_J|_p)$ there; the finitely many earlier sizes
-can be included in a common bound. Choose $k\ge0$ with
-$|p^kx_j|_p\le1$ for all $j$. This scaled Cauchy sequence lies in
-the complete ring $\Z_p$ and has a limit $y$ there.
-Therefore $x_j\to p^{-k}y$ in $\Q_p$.
-We have proved completeness, not just adjoined a name to formal digits.
-
-In this complete field, the same ultrametric tail estimate proves
-$\sum c_n$ converges if and only if $c_n\to0$.
-The ordinary harmonic series $\sum_{n\ge1}1/n$ still diverges:
-$|1/n|_p\ge1$ for every positive integer $n$, so its terms do not vanish.
+The field $\Q_p$ is the fraction field of $\Z_p$. Every nonzero $x\in\Q_p$ has $|x|_p=p^{-k}$ for some $k\in\Z$ (Volume~7,
+Theorem~2.10), so $p^{-k}x$ has absolute value $1$ and is a unit of $\Z_p$: every nonzero $x$ is uniquely $p^ku$ with
+$u\in\Z_p^\times$, and we write $v_p(x)=k$. The digit expansions extend to $\Q_p$ with finitely many negative powers: multiply by
+a power of $p$ to enter $\Z_p$, expand, then shift back.
 
 \subsection*{Arithmetic with a declared precision}
 Writing $x=\cdots+a_2p^2+a_1p+a_0$ is a compact way of storing compatible
@@ -257,7 +189,7 @@ not a unit. Integer congruences are exact; finite precision does not mean
 floating-point rounding.
 
 \subsection*{Why compactness is useful}
-Proposition~\ref{prop:Zp}(e) proves both compactness and the convergent-subsequence property directly. Here is a consequence of the latter.
+Proposition~\ref{prop:Zp}(e), the convergent-subsequence property, has a consequence that we will use more than once.
 Suppose $f\in\Z_p[X]$ has a root modulo $p^n$ for every $n$, with no promise
 that the roots you picked are compatible. Choose a representative $b_n\in\Z$
 of each root. A convergent subsequence $b_{n_j}\to b\in\Z_p$ exists. Since
@@ -378,7 +310,7 @@ A square has even valuation, and the unit part must be a square in $\Z_p$. For o
 $\Z_p$ contains exactly $p-1$ roots of the polynomial $X^{p-1}-1$, one congruent to each $a\in\{1,\dots,p-1\}$ modulo $p$.
 \end{corollary}
 \begin{proof}
-For $f=X^{p-1}-1$ and $a\in\{1,\dots,p-1\}$: $f(a)\equiv0\pmod p$ by Fermat, and $f'(a)=(p-1)a^{p-2}$ is a unit, so Theorem~\ref{thm:henselnewton} gives a root $\omega(a)\equiv a\pmod p$, the unique one in $B(a,p^{-1})$. Roots in different classes are different, and a polynomial of degree $p-1$ over the integral domain $\Z_p$ has at most $p-1$ roots (the argument of Volume~1, the polynomial root-bound proposition, works in any integral domain).
+For $f=X^{p-1}-1$ and $a\in\{1,\dots,p-1\}$: $f(a)\equiv0\pmod p$ by Fermat, and $f'(a)=(p-1)a^{p-2}$ is a unit, so Theorem~\ref{thm:henselnewton} gives a root $\omega(a)\equiv a\pmod p$, the unique one in $B(a,p^{-1})$. Roots in different classes are different, and a polynomial of degree $p-1$ over the integral domain $\Z_p$ has at most $p-1$ roots (the argument of Volume~1, Proposition~6.2, works in any integral domain).
 \end{proof}
 
 So $\Q_5$ contains $i$ and $\Q_7$ contains $e^{2i\pi/3}$, in the algebraic sense: roots of $X^2+1$ and $X^2+X+1$. The numbers $\omega(a)$ are the \emph{Teichm\"uller representatives}; Exercise~\ref{ex:teich} computes them as limits.
@@ -434,7 +366,9 @@ Consequently, up to equivalence of non-trivial absolute values, the completions 
 
 % t1-pass2 examples 89f845ac
 \begin{examplex}[a false absolute value]
-Declare two rationals close when their difference has a large power of $10$ in the denominator of its decimal expansion, without requiring multiplicativity. The resulting notion of closeness need not satisfy $|xy|=|x||y|$. Ostrowski's first move is to derive, from the axioms, that the value of every integer is governed by a single prime or by size. A definition that is not multiplicative never enters the proof.
+Try a ``$10$-adic'' size: $\|x\|=10^{-k}$ for a nonzero integer $x$, where $10^k$ is the largest power of $10$ dividing $x$. Then
+$\|2\|=\|5\|=1$ but $\|2\cdot5\|=\frac1{10}$, so $\|\cdot\|$ is not multiplicative and is not an absolute value. Base $10$
+gives nothing new: by the theorem, the only candidates come from the primes $2$ and $5$ separately.
 \end{examplex}
 
 \begin{examplex}[powers do not give new places]
@@ -444,7 +378,7 @@ The function $|x|_5^2$ is an absolute value, since the exponent $2$ preserves th
 \section{Local and global}
 
 % t1-pass2 motive 1e195763
-A conic can have points over $\R$ and over every $\Q_p$ and still, for cubics, fail over $\Q$. For quadrics the local conditions are sufficient: that is the Hasse--Minkowski theorem, proved in Chapter~10. This section gives the elementary half, an obstruction that is visible in $\Q_3$ and therefore visible in $\Q$.
+An equation can have solutions over $\R$ and over every $\Q_p$ and still none over $\Q$; Selmer's cubic below is the classical example. For quadratic forms the local conditions are sufficient: that is the Hasse--Minkowski theorem, proved in Chapter~10. This section gives the elementary half, an obstruction that is visible in $\Q_3$ and therefore visible in $\Q$.
 
 \begin{think}
 If an equation with integer coefficients has a rational solution, it has solutions in $\R$ and in every $\Q_p$. What about the converse? Look at $x^2+y^2=3z^2$ modulo $9$ before reading on.
@@ -490,13 +424,13 @@ For quadratic forms the converse holds: by the \emph{Hasse--Minkowski theorem} (
 Real points exist. In $\Q_3$, a primitive solution of $X^2+Y^2=3Z^2$ would have $X$ and $Y$ not both divisible by $3$, but squares modulo $3$ are $0$ or $1$, so the left side is $0,1$ or $2$ modulo $3$ and equals $0$ only if both squares vanish. Thus $3$ divides $X$ and $Y$, then $3$ divides $Z$. There is no primitive local solution, hence no rational solution.
 \end{examplex}
 
-\begin{examplex}[a square that exists locally everywhere and globally]
-The integer $2$ is a square in $\R$ and, by the criterion of this chapter, one can ask in which $\Q_p$ it is a square. It is a square in $\Q_7$ because $\bigl(\frac{2}{7}\bigr)=1$ ($7\equiv \pm 1\pmod 8$? $7\equiv -1\pmod 8$, yes). Globally $2$ is not a square in $\Q$. There is no contradiction: being a square in $\Q$ demands a rational root of $X^2-2$, which is a stronger equation than the local solubility of a conic. The Hasse principle is a theorem about quadratic forms, not about every polynomial.
+\begin{examplex}[a polynomial with a root everywhere locally and none in $\Q$]
+Let $f=(X^2-2)(X^2-17)(X^2-34)$. It has no rational root, since $2$, $17$, $34$ are not squares. It has a real root. For
+an odd prime $p\ne17$, the Legendre symbols satisfy $\bigl(\frac2p\bigr)\bigl(\frac{17}p\bigr)=\bigl(\frac{34}p\bigr)$, so one of
+$2,17,34$ is a square modulo $p$, and Corollary~\ref{cor:squares} makes it a square in $\Q_p$. In $\Q_{17}$, $2\equiv6^2\pmod{17}$
+is a square, and in $\Q_2$, $17\equiv1\pmod8$ is a square. So $f$ has a root in $\R$ and in every $\Q_p$, but not in $\Q$: the
+Hasse principle is a theorem about quadratic forms, not about every polynomial.
 \end{examplex}
-
-\begin{beauty}
-Where this leads. Chapter~9 takes $\Q_p$ as the local field at $p$, Chapter~10 proves the Hasse--Minkowski theorem, and Chapter~12 builds Tate's thesis on the same absolute values. The square classes computed in the exercises are the local input of class field theory. Ostrowski's list is the reason there is one Euler factor for each prime and one for the real place, and no others.
-\end{beauty}
 
 \section{Exercises}
 
@@ -669,6 +603,21 @@ For $p=3$ this is $\frac38$. For $p=2$, a unit $u$ is a square if and only if $u
 $\frac14\cdot2^{-v-1}$ for even $v$, and the total is $\frac18\cdot\frac1{1-\frac14}=\frac16$.
 \end{solution}
 
+\section{What we proved, and what comes next}
+
+The epigraph asked what ``close'' must mean for $1+2+4+\cdots=-1$ and $\sqrt{-7}\in\Q_2$ to be true. It must mean
+``congruent modulo a high power of $p$''. With that absolute value, $\Q$ has a completion $\Q_p$ (built in Volume~7), whose
+integers are the coherent strings of residues (Proposition~\ref{prop:Zp}); geometric series in $p$ converge, so $-1$ is the
+string of digits $p-1$; and Newton's method converges whenever $|f(a)|_p<|f'(a)|_p^2$ (Theorem~\ref{thm:henselnewton}), which
+decides the squares of $\Q_p$ (Corollary~\ref{cor:squares}) and puts $\sqrt{-7}$ in $\Z_2$. Ostrowski's theorem
+(Theorem~\ref{thm:ostrowski}) says these are all the absolute values on $\Q$, together with the real one. As for equations
+over $\Q$: a solution in $\Q$ gives one in every completion, so a single failed local test, like that of
+Proposition~\ref{prop:noconic}, proves that there is no rational solution.
+
+The converse is the question of Chapter~10, where Hasse and Minkowski answer it for quadratic forms. First, Chapter~9 does for
+a number field $K$ what this chapter did for $\Q$: its completions at the primes of $\mathcal O_K$, their rings of integers, and
+the way $e$ and $f$ of Chapter~4 become local invariants.
+
 \section*{Sources and further reading}
 
 \begin{itemize}
@@ -678,5 +627,6 @@ $\frac14\cdot2^{-v-1}$ for even $v$, and the total is $\frac18\cdot\frac1{1-\fra
 \item S.~Katok, \emph{$p$-adic Analysis Compared with Real}, Student Mathematical Library~37, AMS, 2007. Real and $p$-adic analysis side by side.
 \item J.~W.~S.~Cassels, \emph{Local Fields}, London Mathematical Society Student Texts~3, Cambridge University Press, 1986. Includes Skolem--Mahler--Lech and many applications.
 \item E.~S.~Selmer, ``The Diophantine equation $ax^3+by^3+cz^3=0$'', \emph{Acta Mathematica} 85 (1951), 203--362. The counterexample to the Hasse principle for cubics.
+\item A.~Ostrowski, ``\"Uber einige L\"osungen der Funktionalgleichung $\varphi(x)\cdot\varphi(y)=\varphi(xy)$'', \emph{Acta Math.}\ 41 (1916), 271--284. The classification of absolute values on $\Q$.
 \item K.~Hensel, \emph{\"Uber eine neue Begr\"undung der Theorie der algebraischen Zahlen}, Jahresber.\ Deutsch.\ Math.-Verein.\ 6 (1897), 83--88.
 \end{itemize}
