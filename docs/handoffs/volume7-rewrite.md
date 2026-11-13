@@ -1,10 +1,10 @@
 # Volume 7 rewrite — handoff
 
-Branch: `cursor/volume7-complete-rewrite-8161`. Base: `main` at `87b07362` (Volume 6 rewrite, PR #234). Do not edit Volumes 1–6 or Volumes 11–15. Do not merge or edit PR #157. Read the blueprint with `git show origin/claude/project-thread-khh5pi:docs/plan/book-07.md`. The blueprint keeps thirteen chapters and the existing statement numbers. Where it disagrees with the older `docs/plan/book-07.md` on `main`, the blueprint wins. The sentence-level rewrite does not renumber.
+Branch: `cursor/volume7-complete-rewrite-8161`. Base: `main` at `87b07362` (Volume 6 rewrite, PR #234). `origin/main` has since moved by the Volume 3 review commits `1e85f6ff` and `68c03cb0`; those commits do not touch Volume 7. Do not edit Volumes 1–6 or Volumes 11–15. Do not merge or edit PR #157. Read the blueprint with `git show origin/claude/project-thread-khh5pi:docs/plan/book-07.md`. The blueprint keeps thirteen chapters and the existing statement numbers. Where it disagrees with the older `docs/plan/book-07.md` on `main`, the blueprint wins. The sentence-level rewrite does not renumber.
 
 ## What “rewritten” means
 
-A sentence counts when it has at least 40 characters and at least 25 characters outside mathematics. It is rewritten when it is not identical to the sentence in `origin/main`. Target: at least 90% in every chapter, in the main text and again from the exercises onward (hints and solutions included). Quotations inside quotation marks may stay. A displayed formula that was already checked may stay. The English around it may not.
+A sentence counts when it has at least 40 characters and at least 25 characters outside mathematics. It is rewritten when it is not identical to the sentence in `origin/main` (the Volume 7 files are unchanged between `87b07362` and current `origin/main`). Target: at least 90% in every chapter, in the main text and again from the exercises onward (hints and solutions included). Quotations inside quotation marks may stay. A displayed formula that was already checked may stay. The English around it may not.
 
 ## Style
 
@@ -13,6 +13,8 @@ A sentence counts when it has at least 40 characters and at least 25 characters 
 ## Numbering lock
 
 Do not insert a theorem, proposition, lemma, corollary, or exercise except four new exercises at the **end** of each chapter’s exercise list. Keep every `\label`. Keep the order of numbered environments. Later volumes cite Volume 7 by hand-typed numbers (Banach is Theorem 2.12, Jordan is Theorem 6.10, Carathéodory extension is Theorem 7.10, Fubini is Theorem 9.6, conditional expectation is Theorem 11.16, the tower property is cited elsewhere as Theorem 11.17, Riesz representation is Theorem 12.3). A new statement in the middle would shift those numbers. New exercises use fresh labels `ex:v7cNNa` through `ex:v7cNNd`.
+
+Counted from the shared theorem counter (definitions and examples included), those seven labels are still 2.12, 6.10, 7.10, 9.6, 11.16, 11.17 and 12.3. No numbered environment was inserted except the four exercises at the end of each list. No label is duplicated. Every exercise has a hint and a solution.
 
 No proof or solution may use a later chapter or a later volume as a premise. A forward pointer is a preview.
 
@@ -44,61 +46,108 @@ Caption pattern, credits exactly as in `photos/CREDITS.md`. Example:
 
 Banach, Nikodym, Khinchin and Riesz were not included. The Commons files were a monument, a tomb, or a portrait whose public-domain claim had no source.
 
+Short photographs are capped in `main.tex` so the print height keeps the short side at about 300 ppi. The KDP image check rejects a placement below 299.5 ppi.
+
 ## Figures
 
-Each chapter gains at least two new TikZ figures, files `volume7-spaces/figures/chNN-rw-*.tex`, colours `MidnightBlue` and `BurntOrange`, included by `\fig{...}` inside `\begin{figure}[ht]`. Captions state the takeaway. Do not overwrite an existing figure file. Do not set a pixel width.
+Each chapter includes at least two new TikZ figures, colours `MidnightBlue` and `BurntOrange`, by `\fig{...}` inside `\begin{figure}[ht]`. Captions state the takeaway. No existing figure file was overwritten. No pixel width was set.
+
+| Chapter | Included figures |
+| --- | --- |
+| 1 | `ch01-rw-cut`, `ch01-rw-reals` |
+| 2 | `ch02-rw-open`, `ch02-rw-ultra` |
+| 3 | `ch03-rw-openclosed`, `ch03-rw-ends` |
+| 4 | `ch04-rw-subcover`, `ch04-rw-escape` |
+| 5 | `ch05-rw-fatcantor`, `ch05-rw-lines` |
+| 6 | `jordan-rw-winding`, `jordan-rw-vertex` (the vertex plate is in `jordan-polygon.tex`) |
+| 7 | `ch07-rw-intervals`, `ch07-rw-cantor` |
+| 8 | `ch08-rw-slices`, `ch08-rw-nodom` |
+| 9 | `ch09-rw-slices`, `ch09-rw-det` |
+| 10 | `ch10-rw-split`, `ch10-rw-conv` |
+| 11 | `ch11-rw-hahn`, `ch11-rw-vitali` |
+| 12 | `ch12-rw-slide`, `ch12-rw-tight` |
+| 13 | `ch13-rw-approximants`, `ch13-rw-borel` |
+
+Three earlier plates, `ch01-rw-cauchy`, `ch03-rw-cut` and `ch03-rw-product`, remain in `figures/` and are not included. The build compiles every file in that directory. Do not delete them in passing.
 
 ## Exercises
 
-Four new exercises per chapter, after the last existing exercise, each with a hint and a solution (`\idea` then `\writeup`). Solvable from this chapter and earlier. Stars as in the series.
+Four new exercises per chapter, after the last existing exercise, each with a hint and a solution (`\idea` then `\writeup`). Solvable from this chapter and earlier. Stars as in the series. Labels `ex:v7c01a`–`ex:v7c13d`.
 
 ## Done
 
-- Branch created.
-- Portrait macro, eighteen photographs, `photos/CREDITS.md`.
-- About the Cover rewritten (112 words, inside the 80–150 check). Only the Volume 7 string in `common/cover-notes.json` changed, plus the generated `about-the-cover.tex`, the Volume 7 paragraph in `docs/COVER-NOTES.md`, and the two hashes in `tools/assets/series/manifest.json`. Motifs and lettering were not regenerated.
-- `blurb.tex` rewritten (194 words, the same length as before). `kdp.md` rewritten. ISBN left blank. Riesz representation is claimed only for positive functionals. Prokhorov is claimed only for tight laws on Euclidean space. Hausdorff measure as a Borel measure is marked quoted.
+| Commit | What |
+| --- | --- |
+| `9bfef5e5` | Portraits, credits, blurb, listing, About the Cover |
+| `8ffe7fb2` | Preface. The debts table stayed. The index introductory sentence was rewritten; the index entries were not |
+| `b1e0447f`, `3e6f392a` | Chapter 1 |
+| `7d86c23c` | Chapter 2 |
+| `2be5e1f2`, `a144e00f` | Chapter 3 |
+| `304904d8` | Chapter 4 |
+| `ff654555` | Chapter 5 |
+| `c81b3aa1` | Chapter 6, Jordan |
+| `53a03872` | Chapter 7, measures |
+| `c30155bf` | Chapter 8, the integral |
+| `5500a88d` | Chapter 9, products |
+| `777fb90d` | Chapter 10, \(L^p\) |
+| `80bf00c0` | Chapter 11, differentiation and Radon–Nikodym |
+| `46f0f8f6` | Chapter 12, measures on metric spaces |
+| `2c8286b5` | Chapter 13, the problem chapter |
+| `d66b19de` | Cleared a duplicated figure label |
 
-## Done
+Checked while continuing from `d66b19de`:
 
-- Setup commit `9bfef5e5`: portraits, credits, blurb, listing, About the Cover.
-- Preface and index introduction: `8ffe7fb2`.
-- Chapter 1, `ch01-sets.tex`, commit `b1e0447f`. Labels preserved in order. New figures `ch01-rw-cut`, `ch01-rw-cauchy`. New exercises `ex:v7c01a`–`ex:v7c01d`. Measured rewrite share against `origin/main`: 99% before the exercises, 96% from the exercises on, 98% whole file (sentences of at least 40 characters with at least 25 outside math).
+- The shared counter still prints Banach 2.12, Jordan 6.10, Carathéodory extension 7.10, Tonelli 9.5, Fubini 9.6, conditional expectation 11.16, the tower property 11.17, Riesz 12.3, Prokhorov 12.7.
+- Volume 5, Theorem 6.13, cited for Weyl’s criterion, is `thm:weyl`.
+- Recomputed: the four convergents of \(\sqrt2-1\) are \(1/2\), \(2/5\), \(5/12\), \(12/29\), and the two windows in `ch13-rw-approximants` place them where the caption says. The golden-ratio histogram for \(1\le n\le 4000\) puts 1997 samples in each end bin of width \(0.05\). Newton’s bounds for \(\sqrt2\) from \(x_0=2\), rounded up at each step, are the printed ones, and the true error at step 5 is \(8.99\times 10^{-25}\). The Dottie number begins \(0.7390851332\), and \(\sin\) of it is about \(0.674\). The Calkin–Wilf index of \(13/5\) is 43. The 5-adic check \(57^2+1=3250=26\cdot 125\) holds. The unit ball in dimension 4 has volume \(\pi^2/2\), matching the new exercise.
+- Four sentences in the new solutions were repaired after that reading. The positive square root now spells why the shift \(2s+2\) beats the factor \(2s+1\). The truncated metric states the two cases of the triangle inequality. The \(\varepsilon\)-net of \((0,1]\) uses the point \(1\) when \(\varepsilon\ge 1\). The sliding intervals \([n,n+1]\) meet an integer in two sets, not one, and the limit superior is still empty.
 
-## Done, continued
+## Share of prose rewritten
 
-- Chapter 2, commit `7d86c23c`. Share about 98% before the exercises, 93% from the exercises on.
-- Chapter 3, this commit. Labels preserved. New figures `ch03-rw-product`, `ch03-rw-cut`. New exercises `ex:v7c03a`–`ex:v7c03d`. Portraits: Hausdorff, Urysohn.
+Measured against `87b07362`. A sentence is counted when it has at least 40 characters and at least 25 characters outside mathematics. “Rewritten” means the sentence is not identical to one in that file.
+
+| Chapter | Whole file | Before the exercises | From the exercises on |
+| --- | --- | --- | --- |
+| Preface | 96% | 96% | — |
+| 1 Sets | 99% | 100% | 97% |
+| 2 Metric spaces | 97% | 98% | 94% |
+| 3 Topology | 99% | 100% | 98% |
+| 4 Compactness | 99% | 100% | 97% |
+| 5 Baire | 99% | 100% | 97% |
+| 6 Jordan | 99% | 100% | 98% |
+| 7 Measures | 99% | 100% | 98% |
+| 8 Integral | 100% | 100% | 99% |
+| 9 Products | 98% | 98% | 98% |
+| 10 \(L^p\) | 99% | 100% | 98% |
+| 11 Radon–Nikodym | 96% | 97% | 94% |
+| 12 Metric measures | 98% | 99% | 97% |
+| 13 Almost every number | 97% | 100% | 97% |
+
+The index is a list of statement names. Its one introductory sentence was rewritten. The entries were left, so the file as a whole is not a 90% rewrite, and it was not meant to be. Chapter 13’s prose before the problems is short because the chapter is a problem chapter; those sentences are rewritten. `jordan-polygon.tex` is rewritten with the Jordan chapter.
+
+The four repairs above are later than this count. They change a few sentences and do not pull any chapter under 90%.
 
 ## In progress
 
-Chapter 4, `ch04-compact.tex`.
+Local `./build.sh volume7-spaces`, then CI.
 
 ## Remains
 
-Chapters 2–13, then the independent review, the local PDF and EPUB build, marking the PR ready, and CI.
+1. Local PDF and EPUB build. Zero undefined references. Layout checks pass. Record the print page count.
+2. Push, mark the pull request ready, and poll CI until `list`, `debs`, `build`, and `site` pass. `publish` is skipped on a pull request.
 
-## Remains
-
-1. Rewrite every chapter, including proofs, exercises, hints, solutions, and the sources section’s English. Commit after each chapter.
-2. Add the portraits, two figures, and four exercises in each chapter as above.
-3. Rewrite `chapters/preface.tex` (the debts table stays; the prose changes). The index is a list of statement names. Rewrite its one introductory sentence only. Do not change index numbers.
-4. Independent review. Write `docs/review/volume7-rewrite-findings-<date>.md`.
-5. Measure the rewrite share against `origin/main` and put the table in this file.
-6. `./build.sh volume7-spaces`. Zero undefined references. Layout checks pass. EPUB plates full width and in colour. Portraits at least 300 ppi.
-7. Push and poll CI until `list`, `debs`, `build`, and `site` pass. `publish` is skipped on a pull request.
+The independent review is a separate agent. This file does not contain that review.
 
 ## Open math questions
 
 - Chapter 12 quotes, and must keep quoting: that Hausdorff measure is a Borel measure, the general Prokhorov theorem on Polish spaces, and Moran–Hutchinson. The proved Prokhorov theorem is the Euclidean form.
-- Chapter 13 must not use the ergodic theorem or Lévy’s constant as a premise. The existing elementary bound for Khinchin stays.
+- Chapter 13 must not use the ergodic theorem or Lévy’s constant as a premise. The existing elementary bound for Khinchin stays. Both constants are named as previews.
 - Fréchet’s file is marked public domain on Commons, with no photographer and no date. It is included with that note. Drop it if a later check rejects the claim.
 - Volume 8 still cites Volume 6, Chapter 5, for an error term that chapter does not give (recorded in the Volume 6 handoff). Not this pull request.
-- Later volumes cite Volume 7 by hand-typed numbers. This pass must not shift them. Do not edit those volumes. List any citation that is already wrong, and leave it.
+- Later volumes cite Volume 7 by hand-typed numbers. This pass did not shift them. Those volumes were not edited.
 
 ## Exact next steps
 
-1. Rewrite `volume7-spaces/chapters/ch01-sets.tex` in place. Preserve labels and order. Add `\portrait{dedekind}` and `\portrait{cantor}` with the captions in `photos/CREDITS.md`. Add two figures `figures/ch01-rw-*.tex` and four exercises `ex:v7c01a`–`ex:v7c01d` at the end of the exercise list, with hints and solutions.
-2. Commit that chapter. Update this file: chapter 1 done, chapter 2 next.
-3. Repeat for chapters 2–13 and the preface, one commit each.
-4. Do not start the build until the sentence rewrite of every chapter is committed.
+1. Finish `./build.sh volume7-spaces` and record the print page count, undefined references, and overfull boxes in this file.
+2. Push `cursor/volume7-complete-rewrite-8161`.
+3. Mark PR #237 ready and poll the Actions run until `list`, `debs`, `build`, and `site` have finished.
