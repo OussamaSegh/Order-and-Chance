@@ -43,14 +43,14 @@ Gate B of the master plan (independent verification records) is not this pass.
 | 8 | The p-adic Numbers | `ch12-padic.tex` | done: construction cited from Volume 7, broken examples replaced |
 | 9 | Local Fields | `ch06-local.tex` | done |
 | 10 | Quadratic Forms and the Local–Global Principle | `ch07-hasse.tex` | done: self-citations now `\ref` |
-| 11 | Zeta Functions and Densities | `ch08-zeta.tex` | |
-| 12 | Adèles, Idèles and Tate's Thesis | `ch09-tate.tex` | |
-| 13 | Class Field Theory | `ch10-cft.tex` | |
-| 14 | Algebraic Curves | `ch11-curves.tex` | |
-| 15 | Elliptic Curves | `ch12-elliptic.tex` | |
-| 16 | Curves over Finite Fields | `ch13-finite.tex` | |
-| 17 | Modular Forms and L-functions | `ch14-modular.tex` | |
-| — | Preface, blurb, `kdp.md` | | |
+| 11 | Zeta Functions and Densities | `ch08-zeta.tex` | done: epigraph signs fixed, Chebotarev headed "in Dirichlet density", natural density quoted |
+| 12 | Adèles, Idèles and Tate's Thesis | `ch09-tate.tex` | done: Haar measure and Fourier inversion cited from Volume 8 (D-23), see `d23-equivalence.md`; Hecke's functional equation a sketch |
+| 13 | Class Field Theory | `ch10-cft.tex` | done: `thm:xnyy`, `cor:principalsplit` headed "assuming the Hilbert class field" |
+| 14 | Algebraic Curves | `ch11-curves.tex` | done: `prop:goppa` (14.23, the last statement) became Exercise 14.8 |
+| 15 | Elliptic Curves | `ch12-elliptic.tex` | done: Mordell headed "both halves proved here for every curve"; Mazur quoted; heights and Selmer named, not developed |
+| 16 | Curves over Finite Fields | `ch13-finite.tex` | done: Weil for every curve and Sato–Tate quoted; prime count of the Sato–Tate figure corrected (78 496 odd primes) |
+| 17 | Modular Forms and L-functions | `ch14-modular.tex` | done: Theorem 17.1(a) cites Volume 6 Theorem 12.2(b), part (b) proved; Eichler–Shimura, modularity, Fermat, CM quoted; Shimura source |
+| — | Preface, blurb, `kdp.md` | | done: Volume 12 link paragraph, four parts, the admitted and quoted list matches D-25 |
 
 ## Tools
 
@@ -62,8 +62,23 @@ Gate B of the master plan (independent verification records) is not this pass.
 
 ## What changed (summary)
 
-(filled in chapter by chapter)
+- Every chapter: an epigraph that asks the chapter's question, a closing section "What we proved, and what comes next", a hostile proof read, and a check script (`check_ch01_quadratic.py` … `check_ch17_modular.py`, all passing).
+- D-22: Chapter 4 factorises ideals by Volume 10 (`d22-equivalence.md`); Chapter 2 keeps its proof as a second proof.
+- D-23: Chapter 12 cites Volume 8 Chapter 13 for Haar measure, self-duality and inversion on Q_p (`d23-equivalence.md`: same measure, conjugate character).
+- D-24: `polyfermat.tex` is the last section of Chapter 7; the file is deleted.
+- D-25 headings: Artin reciprocity, existence, Hilbert class field admitted; results that rest on them say "assuming"; Chebotarev in Dirichlet density; Hecke's functional equation for zeta_K a sketch; Mazur, Weil for every curve, Sato–Tate, Eichler–Shimura, modularity, Fermat's second case quoted; canonical heights and Selmer named; three cubes heuristic labelled; Mordell proved for every curve.
+- Errors corrected along the way: the Chapter 11 epigraph series, the Chapter 8 "square everywhere locally" example, the Chapter 9 Q_p vs Q_q solution, Chapter 14's claim that Mordell needs 2-torsion, the x^2+14y^2 range (2·10^4), the regular-prime count (181 of 302 below 2000), the Sato–Tate prime count.
 
 ## Numbering changes for Volumes 14–15
 
-(filled in at the end)
+Compared with `baseline-numbering.txt`. Every numbered statement of Chapters 1–17 keeps its number, with three exceptions, none cited elsewhere:
+
+- Chapter 4: number 4.3 is now `lem:okdedekind` (O_K is Dedekind, from Volume 10) instead of `lem:containsprod`; 4.4 `lem:missing` now states P P^{-1} = O.
+- Chapter 7: new Theorem 7.14 (Mason), Corollary 7.15, Propositions 7.16–7.18 (the old Chapter 18), new Exercises 7.8, 7.9. Old Chapter 18 no longer exists.
+- Chapter 14: Proposition 14.23 (Goppa codes) removed; it is Exercise 14.8. Chapter 1: new Exercises 1.6–1.8.
+
+`resolve_citations.py` on all of Volumes 14 and 15 resolves every Volume 13 citation to the intended statement. Owed to Volume 15: `ra-polynomials.tex` quotes Chebotarev (Theorem 11.23) as "density"; Volume 13 proves it in Dirichlet density, so that reminder should say so.
+
+`tools/cross_volume_citations.py` reports one mismatch, not in this volume and already on `main`: `volume14-primes/chapters/ch14-critical.tex` cites "Volume 5, Corollary 10.10", which is a theorem. Owed to the Volume 14 rewrite.
+
+Full build: 359 pages, no undefined references; `tools/listing.py` passes; tool tests 639 OK.
