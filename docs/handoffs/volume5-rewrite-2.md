@@ -6,19 +6,18 @@ Branch `cursor/volume5-complete-rewrite-a791`. Do not edit Volume 6 or Volumes 1
 
 **Done in the working tree, committed chapter by chapter.** All thirteen chapter files, `bbp-borwein.tex`, the blurb, the preface, `kdp.md`, twelve portraits in `volume5-calculation/photos/` with `CREDITS.md`, and the new TikZ plates under `figures/*rewrite*`. Each chapter has a rewritten opening and closing, new figures, and new exercises appended at the end of the exercise list (four each, three in Chapters 2 and 13), each with `\idea` and `\writeup`. Numbered theorems were not inserted or removed in the middle. `thm:functional` is still Chapter 10. `thm:eta` and the Hardy–Ramanujan formula are still Chapter 12. Waring is still not in this volume. The paperback ISBN is still blank.
 
-**Local build, in progress when this note was pushed.** `./build.sh volume5-calculation` had already passed the reading PDF, the print PDF (413 pages), the layout check (434 whole boxes, max height 383 pt, no unresolved references) and the print cover. The EPUB was rendering formula images (past batch 3200 of about 10080) when the commits were made. An earlier EPUB attempt failed only because `oxipng` was missing; it is now installed at `/usr/local/bin/oxipng` 9.1.5. The blurb must not use `\Z`: the cover wrap does not define that macro. A quicksort example that overflowed the text height was split; the formula \(C_n=2(n+1)H_n-4n\) stays in the box `ex:quicksortexact`, and the derivation is the prose after it.
+**Local build, finished.** `./build.sh volume5-calculation` exited 0. Reading PDF, print PDF (413 interior pages), layout check (434 whole boxes, max height 383 pt, no unresolved references), print cover, and EPUB (31 MB, 64 plates at 1800 px, full width, inline math on the em baseline). The blurb must not use `\Z`: the cover wrap does not define that macro. A quicksort example that overflowed the text height was split; the formula \(C_n=2(n+1)H_n-4n\) stays in the box `ex:quicksortexact`, and the derivation is the prose after it.
 
-**In progress.** Waiting on that EPUB, then `tools/check_epub_media.py` if the build script does not already run it. Then the self-review note `docs/review/volume5-rewrite-2-2026-11-13.md`, the pull request titled “Volume 5: complete rewrite”, and CI until list, debs, build matrix, site and publish have finished.
+**In progress.** Opening the pull request titled “Volume 5: complete rewrite”, then CI until list, debs, build matrix, site and publish have finished.
 
 **Remains.** A hostile re-read of every new exercise solution against the chapter it cites. The long problem warehouse in `ch12-agm.tex` was not retyped line by line; its tasks are unchanged and new AGM exercises sit after it. If the EPUB fails, read `/tmp/v5build/full.log` first.
 
 **Open math questions.** None that block the build. Checks already recomputed, and recorded in the review note: the cube sum via falling powers (the middle term is \(n^{\underline 3}\), not \(\tfrac32 n^{\underline 3}\)); \(p(5)=7\); DFT of \((1,0,-1,0)=(0,2,0,2)\); \(\log p(n)\) gaps at \(n=10,20,50,100\); AGM of \(1\) and \(1/\sqrt2\) through two steps; trivial zeros via \(1/\Gamma(s/2+1)\) in Corollary 10, not a different Gamma factor. The proved Hardy–Ramanujan error is still \(O(n^{-1/4})\).
 
 **Next steps for a resuming agent.**
-1. If `./build.sh volume5-calculation` is still running, do not start a second one. When it exits, confirm `EXIT:0` at the end of `/tmp/v5build/full.log` and that `dist/` contains the reading PDF, the print PDF and the EPUB, and that the EPUB is under 50 MB.
-2. If it failed, fix only Volume 5, commit, push, and rerun the build.
-3. Open the PR with `ManagePullRequest` (`action` `create_pr`, title `Volume 5: complete rewrite`, `branch_name` `cursor/volume5-complete-rewrite-a791`, base `main`). Do not merge it. Do not merge PR #157.
-4. Poll CI until every check has finished. Fix failures on this branch only.
+1. The local build already exited 0. Do not rebuild unless a later commit changes the book.
+2. Open the PR with `ManagePullRequest` (`action` `create_pr`, title `Volume 5: complete rewrite`, `branch_name` `cursor/volume5-complete-rewrite-a791`, base `main`) if it is not open yet. Do not merge it. Do not merge PR #157.
+3. Poll CI until every check has finished. Fix failures on this branch only.
 
 The contract below still binds.
 
