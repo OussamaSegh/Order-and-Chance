@@ -33,7 +33,7 @@ Gate B of the master plan (independent verification) is not this pass.
 | 6 | Homology | `ch06-homology.tex` | Done |
 | 7 | Matrix Lie Groups | `ch07-liegroups.tex` | Done |
 | 8 | Haar Measure and Weyl Integration | `ch08-haar.tex` | Done |
-| 9 | The Hyperbolic Plane and the Modular Group | `ch09-hyperbolic.tex` | To do |
+| 9 | The Hyperbolic Plane and the Modular Group | `ch09-hyperbolic.tex` | Done |
 | 10 | The Riemann Mapping Theorem | `riemann-mapping.tex` | To do |
 | 11 | Integral Geometry | `ch10-integral.tex` | To do |
 | A–K | Appendices | `geometry-ch02` … `geometry-ch12` | To do |
@@ -49,6 +49,7 @@ Gate B of the master plan (independent verification) is not this pass.
 - **6.** Blueprint item: one paragraph after Borsuk–Ulam states the homology of real projective space mod 2, read off the transfer sequence actually printed. The remark on Radó and the classification of surfaces now says both are quoted (blueprint "Stated without proof"). Hopf 1927. Opening question; closing section (end of Part II). Check: `check_ch06_homology.py` (the 3×3 torus triangulation, its Betti numbers, the Klein bottle).
 - **7.** Opening question; closing section. Citations of Volume 8 (Proposition C.13, Theorems 3.2, 4.3) and Volume 3 (Lemma 12.3) checked. Check: `check_ch07_liegroups.py`.
 - **8.** Blueprint item: the modular function is now $\delta$ and the Vandermonde product $V$ (both were $\Delta$); the uniform variable in the solution of `ex:su2weyl` is now $R$. The Vandermonde determinant is Volume 1, Proposition 7.4 (the text said Volume 3; `statements.py` prints Volume 1 one chapter too high because Volume 1 starts at Chapter 0). Andréief's lemma is dated 1886, the year the Bordeaux volume appeared (Forrester 2019 added to the sources); Mehta–Gaudin 1960 added to the sources. Closing section. Check: `check_ch08_haar.py` (Haar sampling, Weyl's formula, trace moments, gap probability, Dyson's limit).
+- **9.** Blueprint items: the tiling by $F$ now rests on Volume 6, Theorem 12.2(b) (it cited Volume 13, Theorem 17.1); the pointer to Volume 13, Chapter 5 is gone; Hopf's ergodicity theorem is stated as quoted, with what it says. The reminder and the area computations cited Appendix I by stale hand-typed numbers ("Proposition J.4", "Lemma 10.5", "Theorem J.8 of Volume 9"): now `\ref`s to Appendix I. Gauss's 1812 letter to Laplace added to the sources. Opening question; closing section. Check: `check_ch09_hyperbolic.py` (including cutting sequences computed by walking the Farey triangles).
 
 ## Tools
 
