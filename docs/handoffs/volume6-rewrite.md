@@ -37,7 +37,7 @@ The word “Journey” on some exercises is the existing long-exercise tag, not 
 
 ## In progress
 
-Local build of Volume 6. The first `./build.sh volume6-crossroads` typeset the book and then failed `tools/check_book_layout.py`: one overfull hbox, `ch12-modular.tex` around the product for \(\tau(n)\) up to \(q^3\) (the old line 2579). That display is now broken across lines in the Chapter 12 commit. A second build has not finished.
+Second local build. The layout check passed: 335 whole boxes, maximum height 391.1 pt, no overfull box, no undefined reference. The reading PDF and the KDP print interior (377 pages) and paperback cover passed their checks. EPUB generation then stopped because `oxipng` was not installed. Install oxipng 9.1.5 as `.github/workflows/build.yml` does, then run `./build.sh volume6-crossroads` again.
 
 ## Remains
 
