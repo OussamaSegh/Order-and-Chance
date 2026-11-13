@@ -37,13 +37,34 @@ The word “Journey” on some exercises is the existing long-exercise tag, not 
 
 ## In progress
 
-Nothing. Pull request #234 is open. Actions run [43467337453](https://github.com/OussamaSegh/Order-and-Chance/actions/runs/43467337453) finished successfully: `list`, `debs`, `build (volume6-crossroads)`, and `site` passed. `publish` is skipped on a pull request; it runs only on `main`. Do not merge.
+Portraits and a second prose pass are in the working tree and not yet committed. Fourteen photographs sit in `volume6-crossroads/photos/`, with sources and licences in `photos/CREDITS.md`. The macro `\portrait` in `main.tex` matches the Volume 5 rewrite. Print height is 1.65 in, or pixel-height/300 for Erdős, Mertens, Selberg, Kac, and Brun, so the short side stays at least 300 ppi.
 
-Head after the citation fix: `5023acf0`. This handoff commit does not change the book. If it starts another Actions run, that run is docs-only.
+## Share of prose rewritten
+
+A sentence is counted when it has at least 40 characters and at least 25 characters outside mathematics. “Rewritten” means the sentence is not identical to one in `origin/main`. Quotations, boxed statements, and displayed formulas that were left unchanged were judged optimal: a quotation is not ours to rewrite, and a displayed identity that was already checked was not retyped.
+
+| Chapter | Whole file | Before the exercises | From the exercises on |
+| --- | --- | --- | --- |
+| Preface | 94% | 94% | — |
+| 1 Mertens | 95% | 96% | 92% |
+| 2 Averages | 91% | 90% | 91% |
+| 3 Characters | 86% | 88% | 82% |
+| 4 Dirichlet | 84% | 87% | 82% |
+| 5 Prime number theorem | 88% | 88% | 89% |
+| 6 Zeros | 89% | 88% | 93% |
+| 7 Explicit formula | 89% | 93% | 83% |
+| 8 Sieves | 88% | 90% | 86% |
+| 9 Erdős–Kac | 69% | 73% | 63% |
+| 10 Random models | 59% | 70% | 49% |
+| 11 Exponential sums | 55% | 62% | 48% |
+| 12 Modular forms | 36% | 93% | 18% |
+
+Chapter 12’s main text is rewritten. The closing-problem solutions keep their checked algebra. Their English was not all rewritten; those displays were judged optimal, and the surrounding sentences that only name a substitution were left when a rewrite would have been a synonym for the same line. The Cramér gap proof, the geometric-sum proof, the Turán–Kubilius large-prime step, and the Hardy–Ramanujan variance step were rewritten after this count, so Chapters 9–11 are a little higher than the table.
 
 ## Remains
 
-None for this rewrite. A later pass should re-check the hand-typed Volume 5 citations after the parallel Volume 5 pull request lands, and should point Volume 8's expander chapter at Theorem 7.10. Neither file is edited here.
+1. Commit the portraits and the proof rewrites. Build Volume 6 locally, including the EPUB, and check that the JPEGs stay colour (or their original monochrome) and are readable.
+2. Push and poll CI until `list`, `debs`, `build`, and `site` finish. `publish` runs only on `main`.
 
 ## Open math questions
 
@@ -53,9 +74,7 @@ None for this rewrite. A later pass should re-check the hand-typed Volume 5 cita
 
 ## Exact next steps
 
-1. From this branch, run `./build.sh volume6-crossroads`.
-2. If `check_book_layout.py` fails, grep `build/volume6-crossroads/main.log` for `Overfull`.
-3. Confirm `dist/` has the reading PDF, the print PDF, and the EPUB, and that `tools/check_epub_media.py` passed (the build script runs it).
-4. Record the review, commit, push.
-5. Open the PR with `ManagePullRequest`, `base_branch` `main`, title `Volume 6: complete rewrite`.
-6. Poll the GitHub Actions run until every job is finished.
+1. Commit, then run `./build.sh volume6-crossroads`.
+2. If the layout check fails, grep `build/volume6-crossroads/main.log` for `Overfull`.
+3. Confirm the EPUB still passes `tools/check_epub_media.py` and that the portrait JPEGs are inside it, not converted to grey.
+4. Push and poll the Actions run until `list`, `debs`, `build`, and `site` have finished.
