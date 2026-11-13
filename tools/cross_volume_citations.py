@@ -578,6 +578,72 @@ def volume3_misplaced_subject(text: str, source: str = "") -> list[str]:
     return problems
 
 
+_VOLUME4_CITE = re.compile(
+    r"Volume~?4,\s+"
+    r"(Theorems?|Propositions?|Lemmas?|Corollar(?:y|ies)|Exercises?|Chapters?)~?"
+    r"([0-9]+(?:\.[0-9]+)?|[A-Z](?:\.[0-9]+)?)"
+)
+
+
+def _volume4_scope(text: str, start: int, end: int) -> str:
+    before = text[max(0, start - 180):start]
+    cut = max(before.rfind(";"), before.rfind("Volume~"), before.rfind("Volume "))
+    if cut != -1:
+        before = before[cut + 1:]
+    after = text[end:end + 120]
+    stop = after.find("Volume~")
+    if stop != -1:
+        after = after[:stop]
+    return before + " " + after
+
+
+def volume4_subject_mismatches(text: str, source: str = "") -> list[str]:
+    """Flag a Volume 4 citation whose nearby words name a different fact.
+
+    The cited number can exist and still be the wrong statement.
+    """
+    text = strip_comments(text)
+    problems = []
+    where = f"{source}: " if source else ""
+    for match in _VOLUME4_CITE.finditer(text):
+        word = match.group(1).lower()
+        number = match.group(2)
+        scope = _volume4_scope(text, match.start(), match.end())
+        low = scope.lower()
+        detail = scope[:90]
+
+        def flag(message: str) -> None:
+            problems.append(f"{where}Volume 4 subject: {message} ({detail})")
+
+        if word.startswith("chapter") and number == "8":
+            if "diffusion on the circle" in low:
+                flag("diffusion on the circle is not the walk chapter")
+            if "cone condition" in low:
+                flag("the cone condition is not a promise of Chapter 8")
+            if "markov property" in low:
+                flag("the restart used here is Theorem 8.6, not a chapter label")
+        if word.startswith("proposition") and number == "8.4":
+            if "any markov chain" in low:
+                flag("Proposition 8.4 is the simple walk, not an arbitrary chain")
+        if word.startswith("proposition") and number == "2.3":
+            if "inclusion" in low:
+                flag("Proposition 2.3 counts fixed points by derangements")
+        if word.startswith("chapter") and number == "5":
+            if "variance of sums" in low or "independence and variance" in low:
+                flag("the variance of a sum is Chapter 2")
+        if word.startswith("theorem") and number == "8.2" and re.search(r"\bsteps\b", scope):
+            flag("the mean duration ab is Proposition 8.3")
+        if word.startswith("proposition") and number == "9.11":
+            # The one-step formula belongs to the model that chooses one card.
+            # Proposition 9.11 chooses two, so its exponent is 2t. The formula
+            # may sit in the parenthesis after the number; a correct note puts
+            # the one-step formula in the previous sentence.
+            after = text[match.end():match.end() + 160]
+            if re.search(r"\\frac2n\)\^t", after):
+                flag("Proposition 9.11 chooses two cards, so the exponent is 2t")
+    return problems
+
+
 def gloss_mismatches() -> list[str]:
     found = []
     for directory in VOLUMES.values():
@@ -590,6 +656,7 @@ def gloss_mismatches() -> list[str]:
             found.extend(volume1_chapter_gloss_mismatches(text, source))
             found.extend(volume2_subject_mismatches(text, source))
             found.extend(volume3_misplaced_subject(text, source))
+            found.extend(volume4_subject_mismatches(text, source))
     return found
 
 
