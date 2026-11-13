@@ -11,15 +11,16 @@ check("sin 1 < 0.85", float(mp.sin(1)), 0.8415, 1e-4)
 check("sin x* about 0.67", float(mp.sin(x)), 0.67, 5e-3)
 check("steps per decimal digit about six", float(1 / -mp.log10(mp.sin(x))), 6, 0.3)
 check("cos 2 <= -1/3", float(mp.cos(2)) <= -1/3 and 1, 1, 0)
-# Newton for sqrt 2 from 2: bounds printed in the solution of Exercise 2.2
-e = 2 - mp.sqrt(2); bounds = []
-for _ in range(5): e = e * e / (2 * mp.sqrt(2)); bounds.append(e)
-for b, pr in zip(bounds, [0.12, 5.2e-3, 9.6e-6, 3.3e-11, 3.8e-22]):
-    check_true(f"bound {pr}", b <= pr * 1.02 and b >= pr * 0.9)
+# Newton for sqrt 2 from 2. The printed caps start at 0.586 and round each step up.
+caps = [mp.mpf('0.586'), mp.mpf('0.122'), mp.mpf('0.0053'), mp.mpf('1.0e-5'), mp.mpf('3.6e-11'), mp.mpf('4.6e-22')]
+e = caps[0]
+for cap in caps[1:]:
+    e = e * e / (2 * mp.sqrt(2))
+    check_true(f"printed cap {cap} dominates the rounded chain", e <= cap)
 xs = mp.mpf(2)
 for _ in range(5): xs = (xs + 2 / xs) / 2
 err = xs - mp.sqrt(2)
-check_true("x_5 has 24 correct digits", mp.mpf(10) ** -25 < err < mp.mpf(10) ** -24)
+check_true("x_5 has 23 matching decimals", mp.mpf(10) ** -25 < err < mp.mpf(10) ** -24 and -mp.log10(err) < mp.mpf('24.1'))
 check("e_1 = 3/2 - sqrt 2", float(mp.mpf(3) / 2 - mp.sqrt(2)), 0.086, 1e-3)
 # Hensel, Exercise 2.7
 T = lambda v: v - 4 * (v * v + 1)
