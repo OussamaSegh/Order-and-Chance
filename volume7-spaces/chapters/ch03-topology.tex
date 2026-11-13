@@ -1,413 +1,734 @@
 \chapter{Topological Spaces}\label{ch:topology}
 
 \begin{center}\itshape
-Glue opposite sides of a square and the result is a doughnut. Glue them with a twist and the surface cannot be mirrored in three dimensions. Pull one point out of a line and the line falls into two pieces. Pull one point out of a plane and the plane stays in one piece. What is left when distances are forgotten, and why is that enough to tell spaces apart?
+Tie both pairs of opposite edges of a square and you have a doughnut. Reverse one pair and the surface will not sit in three-dimensional space without cutting itself.\\
+Take one point out of a line and the line splits. Take one point out of a plane and you can still walk around the hole.\\
+Which of these facts can be said without ever mentioning a length?
 \end{center}
 
-In 1736 Leonhard Euler heard, through Carl Ehler, the mayor of Danzig, of a puzzle from K\"onigsberg: can one walk through the town and cross each of the seven bridges exactly once? Euler's answer was no. He noticed something odd about the proof. The lengths of the bridges, the shape of the river, and the size of the islands played no role. Only the way things were \emph{connected} mattered. Leibniz had hoped for a ``geometry of position''. Euler's short paper was its first theorem. The name topology came later, from Johann Listing (1847).
+The seven bridges of K\"onigsberg posed a local puzzle: is there a walk that crosses each bridge exactly once? On 9~March 1736, Carl Leonhard Gottlieb Ehler, mayor of Danzig, asked Leonhard Euler for a proof. Euler showed that no such walk exists. The lengths of the bridges, the bends of the river, and the sizes of the islands never enter. The argument uses only the list of which bank is joined to which bank. Leibniz had asked for a \emph{geometria situs}, a geometry of position. Euler's paper, published in 1741, is the first theorem in that geometry. Johann Benedict Listing gave the subject its name, topology, in 1847.
 
-The joke says a topologist cannot tell a doughnut from a coffee mug, because one can be deformed into the other without a tear. The joke is the definition. Topology keeps what survives stretching and bending, and that is exactly what continuity needs. Chapter~\ref{ch:metric} showed that continuity depends only on which sets are open, not on the distance that produced them. A topology is a declaration of which sets are open, and nothing more. Hausdorff axiomatised spaces in 1914 by neighbourhoods, and his axioms included a separation condition. The open-set axioms below do not.
+There is a standard joke. A topologist cannot tell a doughnut from a coffee mug, because one lump of clay can be stretched into the other without a tear. The joke is the definition. Topology keeps what stretching and bending do not destroy, and that turns out to be exactly the information continuity uses. Chapter~\ref{ch:metric} showed that a map between metric spaces is continuous precisely when preimages of open sets are open. The distance can be forgotten once those open sets are known.
+
+A \emph{topology} is a choice of which sets will be called open, and nothing more. Felix Hausdorff's \emph{Grundz\"uge der Mengenlehre} (1914) axiomatised spaces by neighbourhoods, and separation of points was part of that definition. The open-set rules written below do not include separation. The cofinite topology and the Sierpi\'nski space are allowed here. They were not spaces under the 1914 axioms.
 
 \portrait{hausdorff}{Felix Hausdorff (1868--1942). Photograph, between 1913 and 1921. Public domain, via Wikimedia Commons.}
 
-Many spaces that arise naturally have open sets and no natural distance: infinite products, spaces glued from squares such as the torus and the projective plane, the spaces of algebraic geometry (Volume~10), and spaces of measures (Chapter~\ref{ch:metricmeasures}). This chapter builds them, together with the universal properties that characterise the constructions. It proves the intermediate value theorem in its natural setting, which is connectedness, and it meets a curve that is connected but cannot be walked along. One exercise puts a topology on the integers and concludes that there are infinitely many primes, an argument Hillel Furstenberg published in 1955 while he was still an undergraduate.
+Some spaces come with open sets and with no natural distance: infinite products, a square with edges glued, the spaces of algebraic geometry in Volume~10, and spaces of measures in Chapter~\ref{ch:metricmeasures}. Those later spaces are named here as a preview. No proof below takes them as a premise. This chapter builds subspaces, products, and quotients, and records the continuous maps that characterise each one. It proves the intermediate value theorem in the place it belongs, connectedness, and it meets a curve that is connected and still cannot be walked. In the exercises, a topology on the integers shows that there are infinitely many primes, the argument Hillel Furstenberg published in the American Mathematical Monthly in 1955, while he was an undergraduate at Yeshiva University.
 
 \section{Topologies}
 
-\begin{definition}
-A \emph{topology} on a set $X$ is a family $\mathcal T$ of subsets, called the \emph{open sets}, that contains $\varnothing$ and $X$ and is stable under arbitrary unions and under finite intersections. A set is \emph{closed} when its complement is open. A \emph{neighbourhood} of a point $x$ is a set that contains an open set containing $x$. The \emph{interior} $\mathring A$ is the largest open set contained in $A$. The \emph{closure} $\bar A$ is the smallest closed set that contains $A$. The set $A$ is \emph{dense} when $\bar A=X$. A map $f:X\to Y$ between topological spaces is \emph{continuous} when $f^{-1}(V)$ is open for every open $V$. It is a \emph{homeomorphism} when it is a continuous bijection whose inverse is continuous.
-\end{definition}
-
-A point $x$ lies in $\bar A$ if and only if every neighbourhood of $x$ meets $A$. Otherwise an open neighbourhood that misses $A$ would have a closed complement containing $A$ but not $x$. Compositions of continuous maps are continuous. A map is continuous if and only if preimages of closed sets are closed.
-
-\begin{example}\label{ex:topologies}
-\begin{enumerate}[label=(\alph*)]
-\item The open sets of a metric space, from Chapter~\ref{ch:metric}, form the \emph{metric topology}. A topology that comes from some metric is \emph{metrizable}.
-\item In the \emph{discrete} topology every set is open. In the \emph{indiscrete} topology the only open sets are $\varnothing$ and $X$. Every map out of a discrete space is continuous, and every map into an indiscrete space is continuous.
-\item In the \emph{cofinite} topology the open sets are $\varnothing$ and the complements of finite sets. On an infinite set, any two non-empty open sets meet.
-\item The \emph{Sierpi\'nski space} is $\{0,1\}$ with open sets $\varnothing$, $\{1\}$ and $\{0,1\}$. The continuous maps $X\to\{0,1\}$ are exactly the indicators of open sets. The open sets of $X$ are the ``observable'' properties, an idea computer scientists use for what a program can semi-decide.
-\end{enumerate}
-\end{example}
-
-If $\mathcal T\subseteq\mathcal T'$, one says $\mathcal T'$ is \emph{finer}. It has more open sets, so more continuous maps leave it, and fewer sequences converge. A topology is usually specified by a family of basic open sets.
-
-\begin{proposition}\label{prop:basis}
-Let $\mathcal B$ be a family of subsets of $X$ that covers $X$, and suppose that whenever $x\in B_1\cap B_2$ with $B_1,B_2\in\mathcal B$, some $B_3\in\mathcal B$ satisfies $x\in B_3\subseteq B_1\cap B_2$. Then the unions of members of $\mathcal B$ form a topology, the topology \emph{generated} by the \emph{basis} $\mathcal B$. A set $U$ is open for this topology if and only if each $x\in U$ lies in some $B\in\mathcal B$ with $B\subseteq U$. A map $f$ into $X$ is continuous if and only if $f^{-1}(B)$ is open for every $B\in\mathcal B$.
-\end{proposition}
-\begin{proof}
-The set $X$ is a union of members of $\mathcal B$, because they cover $X$. The empty set is the empty union. A union of unions is a union. If $U=\bigcup B_i$ and $V=\bigcup B'_j$, every $x\in U\cap V$ lies in some $B_i\cap B'_j$, hence in some $B_3\subseteq U\cap V$. So $U\cap V$ is the union of those sets $B_3$. The description of the open sets is a restatement of the definition, and preimages commute with unions.
-\end{proof}
-
-The open balls are a basis of a metric topology. The open intervals with rational endpoints are a basis of $\R$. More generally, any family $\mathcal S$ generates a topology, the coarsest one that contains $\mathcal S$. A basis for it is the family of finite intersections of members of $\mathcal S$. That family is a \emph{subbasis}.
-
-\section{Subspaces, products and quotients}
-
-Each of the three constructions is the coarsest topology, or the finest, that makes certain maps continuous. Each is characterised by a \emph{universal property}: a statement about all continuous maps into the new space, or out of it.
-
-\paragraph{Subspaces.} For $A\subseteq X$, the \emph{subspace topology} has open sets $U\cap A$ with $U$ open in $X$. It is the coarsest topology that makes the inclusion continuous. A map $f:Z\to A$ is continuous if and only if it is continuous as a map into $X$, because $f^{-1}(U\cap A)=f^{-1}(U)$. On a metric space this is the topology of the restricted metric.
-
-\paragraph{Products.} Let $(X_i)_{i\in I}$ be topological spaces, and let $X=\prod_i X_i$ be the set of families $(x_i)$ with $x_i\in X_i$. Write $p_i$ for the projections.
-
-\begin{definition}
-The \emph{product topology} on $\prod X_i$ is generated by the \emph{cylinders} $p_i^{-1}(U_i)$, with $U_i$ open in $X_i$. A basic open set is a finite intersection $\prod_i U_i$ in which each $U_i$ is open in $X_i$ and $U_i=X_i$ for all but finitely many indices $i$.
-\end{definition}
+Look at $A=\mathopen]0,1]$ on the line before the axioms. The point $\frac12$ has a small open interval that stays inside $A$. The point $1$ does not: every open interval about $1$ contains numbers larger than $1$. The point $0$ is not in $A$, but every open interval about $0$ hits $A$. Figure~\ref{fig:ch03-openclosed} draws the three sets.
 
 \begin{figure}[ht]
 \centering
-\fig{ch03-rw-product}
-\caption{A basic open set in a product constrains only finitely many coordinates. In the plane, a vertical strip is a cylinder: the first coordinate lies in an open interval, and the second coordinate is free.}
-\label{fig:rwproduct}
+\fig{ch03-rw-openclosed}
+\caption{The set $A=\mathopen]0,1]$ on the line, then its interior, then its closure. The endpoint $1$ is kept and still has no ball inside $A$, so $A$ is not open. The point $0$ is missing from $A$ and every ball about $0$ meets $A$, so $A$ is not closed. The interior drops $1$. The closure puts $0$ back, drawn in coral.}
+\label{fig:ch03-openclosed}
 \end{figure}
+
+\begin{definition}
+A \emph{topology} on a set $X$ is a family $\mathcal T$ of subsets of $X$, the \emph{open sets}, such that $\varnothing$ and $X$ belong to $\mathcal T$, every union of members of $\mathcal T$ belongs to $\mathcal T$, and every finite intersection of members of $\mathcal T$ belongs to $\mathcal T$. A set is \emph{closed} when its complement is open. A \emph{neighbourhood} of a point $x$ is any set that contains an open set containing $x$. The \emph{interior} $\mathring A$ is the largest open set contained in $A$, and the \emph{closure} $\bar A$ is the smallest closed set containing $A$. The set $A$ is \emph{dense} when $\bar A=X$. A map $f:X\to Y$ between topological spaces is \emph{continuous} when $f^{-1}(V)$ is open in $X$ for every open $V\subseteq Y$. It is a \emph{homeomorphism} when it is a bijection and both $f$ and $f^{-1}$ are continuous.
+\end{definition}
+
+The union of all open sets contained in $A$ is open, by the union rule, and it is the largest one, so that union is $\mathring A$. The intersection of all closed sets containing $A$ is closed, because its complement is a union of opens, and it is the smallest one, so that intersection is $\bar A$.
+
+A point $x$ lies in $\bar A$ exactly when every neighbourhood of $x$ meets $A$. If some open neighbourhood of $x$ misses $A$, its complement is closed, contains $A$, and excludes $x$. If every open neighbourhood of $x$ meets $A$, then $x$ belongs to every closed set that contains $A$. A composite of continuous maps is continuous, because $(g\circ f)^{-1}(V)=f^{-1}(g^{-1}(V))$. A map is continuous exactly when the preimage of every closed set is closed: complements pass inside the preimage.
+
+Say that a sequence $(x_n)$ \emph{converges} to $x$ when every open neighbourhood of $x$ contains $x_n$ for all sufficiently large $n$. In a metric space this is the same rule as $d(x_n,x)\to0$, because the open balls are the neighbourhoods that matter.
+
+\begin{example}\label{ex:topologies}
+\begin{enumerate}[label=(\alph*)]
+\item The open sets of a metric space, in the sense of Chapter~\ref{ch:metric}, form a topology. It is called the \emph{metric topology}. A topology that arises from at least one metric is \emph{metrizable}.
+\item In the \emph{discrete} topology, every subset is open. In the \emph{indiscrete} topology, the only open sets are $\varnothing$ and $X$. Every map out of a discrete space is continuous, and every map into an indiscrete space is continuous.
+\item In the \emph{cofinite} topology, the open sets are $\varnothing$ and the complements of finite sets. On an infinite set, any two nonempty open sets meet: the union of two finite sets cannot exhaust $X$.
+\item The \emph{Sierpi\'nski space} is $\{0,1\}$ with open sets $\varnothing$, $\{1\}$, and $\{0,1\}$. A map $f:X\to\{0,1\}$ into this space is continuous exactly when $f^{-1}(\{1\})$ is open. So the continuous maps $X\to\{0,1\}$ are the indicators of the open sets of $X$. One reading, developed for computation, is that an open set is a property a procedure may confirm and need not be able to refute.
+\end{enumerate}
+\end{example}
+
+If $\mathcal T\subseteq\mathcal T'$, one says that $\mathcal T'$ is \emph{finer} than $\mathcal T$. The finer family has more open sets. Every map that is continuous out of $(X,\mathcal T)$ stays continuous out of $(X,\mathcal T')$, because a preimage that lies in $\mathcal T$ still lies in $\mathcal T'$. A map into the finer space has more open sets to pull back, so fewer maps into it are continuous. A sequence has more neighbourhoods it must enter, so fewer sequences converge.
+
+Open sets are often built from a smaller stock.
+
+\begin{proposition}\label{prop:basis}
+Let $\mathcal B$ be a family of subsets of $X$ that covers $X$, and suppose that whenever $x\in B_1\cap B_2$ with $B_1,B_2\in\mathcal B$, some $B_3\in\mathcal B$ satisfies $x\in B_3\subseteq B_1\cap B_2$. The unions of members of $\mathcal B$ then form a topology, called the topology \emph{generated} by the \emph{basis} $\mathcal B$. A set $U$ is open in that topology exactly when every $x\in U$ lies in some $B\in\mathcal B$ with $B\subseteq U$. A map into $X$ is continuous exactly when the preimage of every member of $\mathcal B$ is open.
+\end{proposition}
+\begin{proof}
+The members of $\mathcal B$ cover $X$, so $X$ is a union of them. The empty set is the union of no sets. A union of unions of members of $\mathcal B$ is again such a union.
+
+Let $U$ and $V$ be unions of members of $\mathcal B$, and take $x\in U\cap V$. Then $x$ lies in some $B_1\subseteq U$ and some $B_2\subseteq V$ from $\mathcal B$, hence in some $B_3\subseteq B_1\cap B_2\subseteq U\cap V$. These sets $B_3$ cover $U\cap V$, so the intersection is a union of basis elements. Two open sets therefore have open intersection. A finite intersection follows by induction on the number of sets: the intersection of the first $n$ is open, and one more intersection uses the case of two sets.
+
+The test for open sets is the same description read twice. If $U$ is a union of basis elements, each of its points lies in one of those elements. If each $x\in U$ has a basis element $B_x$ with $x\in B_x\subseteq U$, then $U$ is the union of the sets $B_x$.
+
+Preimages preserve unions. If the preimage of every basis element is open, the preimage of a union of them is a union of opens. The other direction is immediate, because every basis element is itself open.
+\end{proof}
+
+The open balls of a metric are a basis for its topology. If $x$ lies in $B(a,r)\cap B(b,s)$, the radius $\min\bigl(r-d(x,a),\,s-d(x,b)\bigr)$ gives a ball about $x$ inside the intersection. Chapter~\ref{ch:metric} already checked that an open ball is open. On $\R$, the open intervals with rational endpoints are a basis. They cover $\R$. The intersection of two of them is again such an interval, or empty.
+
+Any family $\mathcal S$ of subsets of $X$ generates a topology, the coarsest topology that contains $\mathcal S$. Take as a basis all finite intersections of members of $\mathcal S$, and include the empty intersection, which is $X$, so that the basis covers $X$. A finite intersection of finite intersections is a finite intersection, so the basis rule holds. This family $\mathcal S$ is called a \emph{subbasis}. The cylinders in a product, below, are the example to keep in mind.
+
+\section{Subspaces, products and quotients}
+
+Each of the next three topologies is the coarsest or the finest choice that makes a given list of maps continuous. Each one is pinned down by a test on all continuous maps into the new space, or out of it.
+
+\paragraph{Subspaces.}
+For $A\subseteq X$, the \emph{subspace topology} on $A$ has open sets $U\cap A$ with $U$ open in $X$. It is the coarsest topology on $A$ for which the inclusion $A\to X$ is continuous: any coarser choice would make some $U\cap A$ fail to be open while $U$ is open. A map $f:Z\to A$ is continuous into this subspace exactly when it is continuous as a map $Z\to X$, because $f^{-1}(U\cap A)=f^{-1}(U)$. If $X$ is metric, the subspace topology is the metric topology of the restricted distance.
+
+The closed sets of the subspace are the sets $F\cap A$ with $F$ closed in $X$. The complement in $A$ of $U\cap A$ is $(X\setminus U)\cap A$.
+
+\paragraph{Products.}
+Let $(X_i)_{i\in I}$ be topological spaces, and let $X=\prod_i X_i$ be the set of all families $(x_i)$ with $x_i\in X_i$. Write $p_i:X\to X_i$ for the projection onto the $i$th coordinate.
+
+\begin{definition}
+The \emph{product topology} on $\prod_i X_i$ is the topology generated by the \emph{cylinders} $p_i^{-1}(U_i)$, where $U_i$ is open in $X_i$. A basis is given by the finite intersections of cylinders. Such a basic open set is a product $\prod_i U_i$ in which every $U_i$ is open in $X_i$ and $U_i=X_i$ for all but finitely many indices $i$.
+\end{definition}
 
 \begin{proposition}\label{prop:product}
 \begin{enumerate}[label=(\alph*)]
-\item A map $f:Z\to\prod X_i$ is continuous if and only if every composite $p_i\circ f$ is continuous. A sequence converges if and only if every coordinate converges.
-\item The product topology on $\R^n$ is the topology of any of the norms of Chapter~\ref{ch:metric}.
-\item If $(X_k,d_k)_{k\ge1}$ are metric spaces, the product topology on $\prod_k X_k$ is metrizable, by the metric
+\item A map $f:Z\to\prod_i X_i$ is continuous exactly when every composite $p_i\circ f$ is continuous. A sequence in the product converges exactly when every coordinate sequence converges.
+\item The product topology on $\R^n$ is the metric topology of each of the three norms in Example~\ref{ex:metrics}(a) of Chapter~\ref{ch:metric}.
+\item If $(X_k,d_k)_{k\ge1}$ are metric spaces, the product topology on $\prod_{k\ge1} X_k$ is metrizable. One metric is
 \[d(x,y)=\sum_{k\ge1}2^{-k}\min\bigl(1,d_k(x_k,y_k)\bigr).\]
 \end{enumerate}
 \end{proposition}
 \begin{proof}
-(a) If $f$ is continuous, so is each $p_i\circ f$. Conversely, the preimage of a cylinder is $f^{-1}(p_i^{-1}(U_i))=(p_i\circ f)^{-1}(U_i)$, which is open, and the cylinders generate the topology. A sequence $x^{(n)}$ converges to $x$ if and only if it eventually enters every basic open set about $x$. Such a set constrains only finitely many coordinates, so the condition holds if and only if each coordinate converges. (b) An open box $\prod\,]a_i,b_i[$ is open for $\|\cdot\|_\infty$, and it contains a $\|\cdot\|_\infty$-ball about each of its points. A $\|\cdot\|_\infty$-ball is itself an open box. The two topologies therefore have the same open sets. The norms of Chapter~\ref{ch:metric} are Lipschitz equivalent. (c) The function $d$ is a metric: each term is a metric, up to the factor $2^{-k}$, and $\min(1,\cdot)$ preserves the triangle inequality. Let $B$ be a $d$-ball about $x$ of radius $r$. Choose $K$ with $2^{-K}<\frac r2$. The basic set $\prod_{k\le K}B_{d_k}(x_k,\frac r2)\times\prod_{k>K}X_k$ lies in $B$, because $d(x,y)<\sum_{k\le K}2^{-k}\frac r2+2^{-K}<r$. Conversely, a basic open set about $x$ constrains finitely many coordinates, each to a ball $B_{d_k}(x_k,\varepsilon)$ with $\varepsilon<1$. If $K$ is the largest constrained index, the $d$-ball of radius $2^{-K}\varepsilon$ lies inside that basic set, because $d(x,y)<2^{-K}\varepsilon$ forces $d_k(x_k,y_k)<\varepsilon$ for every $k\le K$.
+(a) Each projection $p_i$ is continuous, because the preimage of an open set is a cylinder, and cylinders are open. A composite of continuous maps is continuous, so $p_i\circ f$ is continuous whenever $f$ is. In the other direction, the preimage under $f$ of a cylinder $p_i^{-1}(U_i)$ is $(p_i\circ f)^{-1}(U_i)$. If each $p_i\circ f$ is continuous, those preimages are open. The cylinders are a subbasis, so $f$ is continuous.
+
+A sequence $x^{(n)}$ converges to $x$ when it eventually lies in every basic open neighbourhood of $x$. A basic neighbourhood constrains only finitely many coordinates. The sequence enters all of them exactly when each coordinate sequence eventually enters the corresponding open set in its own factor. So $x^{(n)}\to x$ exactly when $x^{(n)}_i\to x_i$ for every $i$.
+
+(b) An open box $\prod_{i=1}^n\,\mathopen]a_i,b_i[$ is open for $\|\cdot\|_\infty$: about any of its points there sits a small $\|\cdot\|_\infty$-ball, and that ball is itself an open box. A $\|\cdot\|_\infty$-ball is an open box, so every $\|\cdot\|_\infty$-open set is a union of boxes. The two topologies have the same open sets. Example~\ref{ex:metrics}(a) gives
+\[
+\|x\|_\infty\le\|x\|_2\le\|x\|_1\le n\|x\|_\infty,
+\]
+so the three norms are Lipschitz equivalent and determine the same open sets. The proof that every norm on $\R^n$ is equivalent to these three is in Chapter~\ref{ch:compact}. It is not used here.
+
+(c) Write $d_k'(a,b)=\min(1,d_k(a,b))$. This is a metric. The zero and symmetry rules are the same as for $d_k$. For the triangle inequality, $\min(1,u+v)\le\min(1,u)+\min(1,v)$: if $u\ge1$ or $v\ge1$ the right side is at least $1$, and if both are smaller than $1$ the right side is $u+v$. Each term $2^{-k}d_k'$ is then a metric, up to the harmless factor $2^{-k}$. The series for $d(x,y)$ converges, because each term is at most $2^{-k}$. The sum of the series is a metric: the triangle inequality adds term by term, and $d(x,y)=0$ forces every term to vanish, hence $x_k=y_k$ for every $k$.
+
+Let $B$ be the open $d$-ball of radius $r>0$ about $x$. Choose an integer $K\ge1$ with $2^{-K}<r/2$. The basic set
+\[
+\prod_{k\le K}B_{d_k}\bigl(x_k,\tfrac r2\bigr)\times\prod_{k>K}X_k
+\]
+is contained in $B$. Indeed, if $y$ lies in that set, then
+\[
+d(x,y)<\sum_{k\le K}2^{-k}\cdot\frac r2+ \sum_{k>K}2^{-k}
+<\frac r2\cdot 1 + 2^{-K}<r,
+\]
+where the tail $\sum_{k>K}2^{-k}=2^{-K}$ was used, and $\sum_{k=1}^{K}2^{-k}<1$.
+
+Conversely, take a basic open neighbourhood of $x$. It constrains finitely many coordinates, say those with $k\le K$, and the $k$th constraint contains a ball $B_{d_k}(x_k,\varepsilon)$ with $0<\varepsilon<1$. The open $d$-ball of radius $2^{-K}\varepsilon$ lies inside the basic set. If $d(x,y)<2^{-K}\varepsilon$, then for each $k\le K$
+\[
+2^{-k}\min\bigl(1,d_k(x_k,y_k)\bigr)\le d(x,y)<2^{-K}\varepsilon,
+\]
+so $\min(1,d_k(x_k,y_k))<2^{k-K}\varepsilon\le\varepsilon<1$. The minimum is therefore the distance itself, and $d_k(x_k,y_k)<\varepsilon$.
 \end{proof}
 
-The product $\{0,1\}^\N$, called the \emph{Cantor space}, and the product $[0,1]^\N$, called the \emph{Hilbert cube}, are therefore metrizable. An uncountable product of spaces with at least two points is not metrizable. Exercise~\ref{ex:cocountable} shows the flavour of the obstruction: sequences do not see everything.
+The product $\{0,1\}^\N$, called the \emph{Cantor space}, and the product $[0,1]^\N$, called the \emph{Hilbert cube}, are metrizable by part~(c). An uncountable product of spaces with at least two points is not metrizable. Exercise~\ref{ex:cocountable} shows a related failure: there, sequences do not detect the closure.
 
-\paragraph{Quotients.} Let $\sim$ be an equivalence relation on $X$, and let $\pi:X\to X/{\sim}$ be the quotient map.
+\paragraph{Quotients.}
+Let $\sim$ be an equivalence relation on $X$, and let $\pi:X\to X/{\sim}$ send each point to its class.
 
 \begin{definition}
-The \emph{quotient topology} on $X/{\sim}$ declares a set $V$ open if and only if $\pi^{-1}(V)$ is open in $X$. It is the finest topology that makes $\pi$ continuous.
+The \emph{quotient topology} on $X/{\sim}$ declares a set $V$ open exactly when $\pi^{-1}(V)$ is open in $X$. It is the finest topology on the quotient for which $\pi$ is continuous.
 \end{definition}
 
 \begin{proposition}[universal property of quotients]\label{prop:quotient}
-A map $g:X/{\sim}\to Z$ is continuous if and only if $g\circ\pi$ is continuous. So a continuous map $f:X\to Z$ that is constant on classes factors as $f=\bar f\circ\pi$ with $\bar f$ continuous.
+A map $g:X/{\sim}\to Z$ is continuous exactly when $g\circ\pi$ is continuous. Therefore a continuous map $f:X\to Z$ that is constant on equivalence classes factors as $f=\bar f\circ\pi$ with $\bar f$ continuous.
 \end{proposition}
 \begin{proof}
-The preimage $(g\circ\pi)^{-1}(W)$ equals $\pi^{-1}(g^{-1}(W))$, and that set is open if and only if $g^{-1}(W)$ is open, by the definition of the quotient topology.
+For an open set $W\subseteq Z$,
+\[
+(g\circ\pi)^{-1}(W)=\pi^{-1}\bigl(g^{-1}(W)\bigr).
+\]
+By the definition of the quotient topology, the right-hand side is open in $X$ exactly when $g^{-1}(W)$ is open in the quotient. If $f$ is constant on classes, it determines a unique map $\bar f$ on the quotient with $f=\bar f\circ\pi$. The criterion just proved says that $\bar f$ is continuous.
 \end{proof}
+
+The next picture is the smallest gluing. The open-arc calculation that makes it a circle is short, and it is used again for the square.
+
+Let $f:\R\to S^1$ be $f(t)=e^{2i\pi t}$, with $S^1=\{z\in\C:|z|=1\}$. Theorem~\ref{thm:exp}(e) says that $f(t)=f(s)$ exactly when $t-s$ is an integer, and that $f$ is surjective. Theorem~\ref{thm:exp}(a) gives the chord identity. For real $\alpha$ and $\beta$,
+\begin{equation}
+\label{eq:ch03chord}
+|e^{i\alpha}-e^{i\beta}|^2=2-2\cos(\alpha-\beta)=4\sin^2\frac{\alpha-\beta}2.
+\end{equation}
+The second step is $1-\cos\theta=2\sin^2(\theta/2)$. Let $\varphi=\alpha-\beta$ be chosen in $(-\pi,\pi]$. If the chord is shorter than $2\sin(\delta/2)$, with $0<\delta\le\pi$, then $|\sin(\varphi/2)|<\sin(\delta/2)$. On $[0,\pi/2]$ the sine is strictly increasing, because its derivative $\cos$ is positive on $[0,\pi/2)$: Theorem~\ref{thm:exp}(d) defines $\pi/2$ as the first positive zero of $\cos$, and $\cos0=1$. So $|\varphi|<\delta$.
+
+Thus a point of $S^1$ that is sufficiently close, in the plane, to a point $e^{i\theta_0}$ of an open arc has its angle inside that arc. The arc is open in the subspace topology of $S^1$. Every open set in $\R$ is a union of open intervals of length less than $1$, and $f$ carries each of those intervals onto an open arc. So $f$ sends open sets to open sets.
+
+\begin{figure}[ht]
+\centering
+\fig{ch03-rw-ends}
+\caption{Glue the two ends of the segment $[0,1]$. Both orange points become the single orange point of the circle, and the midpoint $\frac12$ travels to the opposite side. A neighbourhood of the orange point on the circle has to take a piece of the segment at each end: otherwise the preimage on the segment would contain one endpoint and miss the other, and would not be open.}
+\label{fig:ch03-ends}
+\end{figure}
+
+The quotient map $\pi:\R\to\R/\Z$ is an open map. If $U\subseteq\R$ is open, the preimage of $\pi(U)$ is $\bigcup_{n\in\Z}(U+n)$, a union of open sets, so $\pi(U)$ is open in the quotient. Combined with the previous paragraph, $\bar f\circ\pi=f$ sends open sets to open sets, and every open set of the quotient is $\pi(U)$ for $U=\pi^{-1}$ of that set. So $\bar f$ itself sends open sets to open sets.
 
 \begin{figure}[ht]
 \centering
 \fig{ch03-gluing}
-\caption{Three surfaces from the square $[0,1]^2$, with edges glued as the arrows show. The torus glues both pairs of sides with the same orientation. The Klein bottle reverses one pair. The projective plane reverses both pairs. The Klein bottle and the projective plane cannot be embedded in $\R^3$. That fact is quoted here and is not proved in this volume.}
+\caption{A square with edges glued as the arrows show. Both pairs matched, without a reversal, give the torus. One pair reversed gives the Klein bottle. Both pairs reversed give the projective plane. The Klein bottle and the projective plane do not embed in $\R^3$. That non-embedding is quoted here, and it is not proved in this volume.}
 \label{fig:gluing}
 \end{figure}
+% MATHFIX: The Klein bottle and the projective plane are not embedded in $\R^3$; that fact is quoted and is not proved here.
 
 \begin{example}\label{ex:quotients}
 \begin{enumerate}[label=(\alph*)]
-\item The circle. The quotient $\R/\Z$, which identifies $x$ and $y$ when $x-y\in\Z$, maps to $S^1=\{z\in\C:|z|=1\}$ by $\bar f([x])=e^{2i\pi x}$. Proposition~\ref{prop:quotient} and Theorem~\ref{thm:exp}(e) make this a continuous bijection. The inverse is continuous as well, because $\pi$ is an \emph{open} map: the image of an open set $U$ has preimage $\bigcup_{n\in\Z}(U+n)$, which is open, and $f$ sends small open intervals onto open arcs. So $\R/\Z\cong S^1$.
-\item The torus. The same argument, coordinate by coordinate, gives $\R^2/\Z^2\cong S^1\times S^1$. The square with opposite sides glued is the same space. Chapter~\ref{ch:compact} shows that a continuous bijection from a compact space onto a Hausdorff space is a homeomorphism, which makes such identifications automatic. Pac-Man lives on this torus.
-\item A bad quotient. On $\R/\Q$, which identifies $x$ and $y$ when $x-y\in\Q$, a non-empty open set $V$ has an open non-empty preimage that is stable under rational translations, hence dense. Its complement is closed, stable under rational translations, and has empty interior. One checks that such a non-empty open set must be all of $\R$ (Exercise~\ref{ex:RmodQ}). So $\R/\Q$ is indiscrete: the quotient remembers nothing. This is the topological face of Vitali's non-measurable set (Chapter~\ref{ch:measures}).
+\item The circle. The formula $\bar f([x])=e^{2i\pi x}$ is a continuous bijection from $\R/\Z$ onto $S^1$, by Proposition~\ref{prop:quotient} and Theorem~\ref{thm:exp}(e). The arc argument above shows that $\bar f$ is an open map, so the inverse is continuous. Thus $\R/\Z$ is homeomorphic to $S^1$. Figure~\ref{fig:ch03-ends} is the same identification, restricted to the segment $[0,1]$.
+\item The torus. The same argument in each coordinate gives a homeomorphism $\R^2/\Z^2\cong S^1\times S^1$. The square $[0,1]^2$, with opposite edges glued, is the same space. The check is the half-disc argument in the next paragraph. Chapter~\ref{ch:compact} will show that a continuous bijection from a compact space onto a Hausdorff space is a homeomorphism, which makes several gluings automatic. Nothing proved in this chapter uses that shortcut.
+\item A quotient that forgets everything. On $\R/\Q$, declare $x\sim y$ when $x-y\in\Q$. A nonempty open set in the quotient has a nonempty open preimage in $\R$, and that preimage is stable under every rational translation. Exercise~\ref{ex:RmodQ} shows that any such set equals $\R$. The quotient is therefore indiscrete. This is the shape of Vitali's non-measurable set, which Chapter~\ref{ch:measures} constructs. That construction is not used here.
 \end{enumerate}
 \end{example}
 
+Here is the half-disc check for the square. Let $S=[0,1]^2$, and let $Q$ be the quotient of $S$ in which $(0,y)\sim(1,y)$ and $(x,0)\sim(x,1)$. The map $\varphi(x,y)=(e^{2i\pi x},e^{2i\pi y})$ is continuous on $S$, and it takes the same value on equivalent points, so Proposition~\ref{prop:quotient} supplies a continuous $\bar\varphi:Q\to S^1\times S^1$. It is bijective: Theorem~\ref{thm:exp}(e) hits every point of the circle, and two points of the square have the same image exactly when their coordinates differ by integers, which on $[0,1]$ means that they are the same point or a glued pair of boundary points.
+
+The open arcs form a basis of $S^1$, because $\bar f$ in part~(a) is a homeomorphism and the open intervals form a basis of $\R$. Products of open arcs therefore form a basis of $S^1\times S^1$. Take a point of the square and a small product of arcs about its image.
+
+If the point lies in the open square $(0,1)^2$, a small open rectangle about it maps onto that product of arcs, and the rectangle meets no edge, so it is saturated. Its image in $Q$ is open.
+
+If the point lies on an edge and is not a corner, the class consists of two points. Two half-rectangles, one at each, form a saturated open set in $S$, and $\varphi$ sends their union onto a product of open arcs. At a corner, the class consists of all four corners, and four quarter-rectangles do the same job. In each case $\bar\varphi$ sends an open neighbourhood in $Q$ onto a basic neighbourhood of the image. So $\bar\varphi$ is an open map, and the inverse is continuous.
+
+Leaving the right edge of the square and returning on the left edge, at the same height, is one pair of gluings. Leaving the top and returning on the bottom is the other pair. Both pairs together are the torus.
+
 \section{Connectedness}
 
-In 1817 Bernard Bolzano, a priest in Prague, published a short paper with a long title: \emph{Purely analytic proof of the theorem that between any two values which give results of opposite sign, there lies at least one real root of the equation.} Everyone ``knew'' that a continuous curve passing from below the axis to above it must cross the axis. Bolzano insisted that a picture is not a proof, and that the reason lives in the real numbers themselves. He was right. The reason has a name. The line is \emph{connected}: it cannot be split into two non-empty open pieces.
+In 1817 Bernard Bolzano, a priest in Prague, published a short paper with a long title: \emph{Purely analytic proof of the theorem that between any two values which give results of opposite sign, there lies at least one real root of the equation.} A drawing of a curve that starts below the axis and ends above it is not a proof. Bolzano asked for a reason inside the real numbers. The reason has a name. The line is connected: it cannot be written as the union of two nonempty disjoint open sets.
 
 \begin{definition}
-A space $X$ is \emph{connected} when it is not the union of two disjoint non-empty open sets. Equivalently, the only subsets that are both open and closed are $\varnothing$ and $X$. Equivalently, every continuous map from $X$ to the discrete space $\{0,1\}$ is constant. A subset is connected when it is connected in the subspace topology.
+A space $X$ is \emph{connected} when it is not the union of two disjoint nonempty open sets. Equivalently, the only subsets of $X$ that are both open and closed are $\varnothing$ and $X$. Equivalently, every continuous map from $X$ to the discrete space $\{0,1\}$ is constant. A subset of a space is connected when it is connected in the subspace topology.
 \end{definition}
 
-The equivalences are short. A set $U$ that is both open and closed gives the partition $X=U\cup(X\setminus U)$ into open sets, and the indicator of $U$ is a continuous map to $\{0,1\}$. Conversely, the preimages of $0$ and of $1$ under a continuous map to $\{0,1\}$ are open, disjoint, and cover $X$.
+The three tests match. If $U$ is open and closed, and $U$ is neither empty nor all of $X$, then $X=U\cup(X\setminus U)$ splits $X$ into two nonempty open sets, and the indicator of $U$ is a continuous map onto $\{0,1\}$. In the other direction, the preimages of $\{0\}$ and of $\{1\}$ under a continuous map to the discrete two-point space are open, disjoint, and cover $X$. If both are nonempty, the space splits.
 
-\begin{figure}[ht]
-\centering
-\fig{ch03-rw-cut}
-\caption{Removing one point splits the line into two open pieces. The two pieces are the reason an interval is the only connected subset of $\R$, and the reason $\R$ is not homeomorphic to the plane.}
-\label{fig:rwcut}
-\end{figure}
+Try this on two subsets of $\R$ before the theorem. The set $\mathopen]0,1]\cup[2,3]$ contains $1$ and $2$, and it misses $1.5$, which lies between them. The pieces $\mathopen]0,1]$ and $[2,3]$ are open in the subspace and split it. The set $\mathopen]0,1]$ contains every point that lies between two of its points. The theorem says that this interval test is exactly connectedness, for subsets of the line.
 
 \begin{theorem}\label{thm:intervals}
 A subset of $\R$ is connected if and only if it is an interval: a set $I$ such that $a<c<b$ with $a,b\in I$ forces $c\in I$.
 \end{theorem}
 \begin{proof}
-If $I$ is not an interval, there exist $a<c<b$ with $a,b\in I$ and $c\notin I$. Then $I\cap\,]-\infty,c[$ and $I\cap\,]c,+\infty[$ separate $I$ into two non-empty relatively open pieces. Figure~\ref{fig:rwcut} is that split. Conversely, let $I$ be an interval and let $f:I\to\{0,1\}$ be continuous. Suppose $f(a)=0$ and $f(b)=1$ with $a<b$. The case $a>b$ is the same with the ends swapped. Let $s=\sup\{x\in[a,b]:f=0\text{ on }[a,x]\}$. Then $s\in[a,b]\subseteq I$. Continuity makes $f$ constant on a neighbourhood $]s-\eta,s+\eta[\,\cap\,[a,b]$ of $s$ inside $[a,b]$. If $f(s)=0$, then $f=0$ on $[a,s]$, because points to the left of $s$ lie in some $[a,x]$ where $f$ vanishes, and $f(s)=0$. Hence $f=0$ on $[a,\min(s+\eta/2,b)]$, so maximality forces $s=b$, which contradicts $f(b)=1$. If $f(s)=1$, then $s>a$ and $f=1$ on $]s-\eta,s]$, but $f=0$ on $[a,x]$ for some $x>s-\eta$. That is a contradiction.
+Suppose $I$ is not an interval. Then there exist $a<c<b$ with $a,b\in I$ and $c\notin I$. The sets $I\cap\mathopen]-\infty,c[$ and $I\cap\mathopen]c,+\infty[$ are open in the subspace $I$, nonempty, disjoint, and their union is $I$. So $I$ is not connected.
+
+Conversely, let $I$ be an interval, and let $f:I\to\{0,1\}$ be continuous, with $\{0,1\}$ discrete. Suppose $f(a)=0$ and $f(b)=1$. The case $b<a$ is the same argument with the labels swapped, so assume $a<b$. Let
+\[
+S=\{x\in[a,b]:f\text{ equals }0\text{ at every point of }[a,x]\},
+\]
+and let $s=\sup S$. The point $a$ belongs to $S$, and $S$ is bounded above by $b$, so the least upper bound $s$ exists by Theorem~\ref{thm:reals}, and $a\le s\le b$. In particular $s\in I$.
+
+The singleton $\{f(s)\}$ is open in the discrete codomain, so its preimage is an open neighbourhood of $s$ in $I$. There is therefore an $\eta>0$ such that $f$ is equal to the constant $f(s)$ throughout $\mathopen]s-\eta,s+\eta[\,\cap[a,b]$.
+
+Suppose $f(s)=0$. If $a\le t<s$, then some $x\in S$ has $t\le x$, so $f$ is $0$ on $[a,t]$. Together with $f(s)=0$, the function $f$ is $0$ on $[a,s]$. It is also $0$ on the piece of the neighbourhood to the right of $s$, hence on $[a,\min(s+\eta/2,b)]$. If $s<b$, that right-hand endpoint is strictly larger than $s$ and belongs to $S$, which contradicts the choice of the supremum. So $s=b$, and $f(b)=0$. But $f(b)=1$.
+
+Suppose instead $f(s)=1$. Then $s>a$, because $f(a)=0$. Some $x\in S$ satisfies $x>s-\eta$, so $f$ is $0$ on $[a,x]$, hence at points of $\mathopen]s-\eta,s]$. The neighbourhood says that $f$ equals $1$ on that same piece. Both cannot hold.
+
+Thus no such pair $a$, $b$ exists, and $f$ is constant. The interval $I$ is connected.
 \end{proof}
 
 \begin{proposition}\label{prop:connected}
 \begin{enumerate}[label=(\alph*)]
-\item A continuous image of a connected space is connected.
+\item The continuous image of a connected space is connected.
 \item A union of connected sets that all contain one common point is connected. The closure of a connected set is connected.
 \item A product of connected spaces is connected.
 \end{enumerate}
 \end{proposition}
 \begin{proof}
-(a) If $f:X\to Y$ is surjective and $g:Y\to\{0,1\}$ is continuous, then $g\circ f$ is constant, so $g$ is constant. (b) A continuous map $g:\bigcup A_i\to\{0,1\}$ is constant on each $A_i$, with the value it takes at the common point. If $A$ is connected and $g:\bar A\to\{0,1\}$ is continuous, then $g$ is constant on $A$, equal to some value $c$. The preimage $g^{-1}(c)$ is closed in $\bar A$ and contains $A$, so it equals $\bar A$. (c) If some factor is empty, the product is empty. The empty space is connected: the only function from it to $\{0,1\}$ is the empty function, which is continuous, and there are not two points at which it could take different values. Now assume every factor is non-empty. For two factors, fix $(a,b)\in X\times Y$. For each $x$, the set $(\{x\}\times Y)\cup(X\times\{b\})$ is a union of two connected sets, homeomorphic to $Y$ and to $X$, and they meet at $(x,b)$, so the union is connected. These sets all contain $(a,b)$ and cover $X\times Y$. Apply (b). Induction gives finite products. For an arbitrary product, fix $a\in\prod X_i$. The points that differ from $a$ in only finitely many coordinates form a union of finite products, each homeomorphic to a finite product of factors times a point, and all of them contain $a$. The union $D$ is connected. It is dense: a basic open set constrains finitely many coordinates and contains a point of $D$. Part (b) says $\prod X_i=\bar D$ is connected.
+(a) Let $f:X\to Y$ be continuous and surjective, and let $g:Y\to\{0,1\}$ be continuous, with discrete codomain. Then $g\circ f$ is constant, so $g$ is constant.
+
+(b) Let $g$ be a continuous map from $\bigcup_i A_i$ to the discrete space $\{0,1\}$, and suppose every $A_i$ contains a point $p$. Then $g$ is constant on each $A_i$, and the constant equals $g(p)$. So $g$ is constant on the union.
+
+Now let $A$ be connected, and let $g:\bar A\to\{0,1\}$ be continuous. Then $g$ is constant on $A$, say equal to $c$. The preimage $g^{-1}(\{c\})$ is closed in $\bar A$, because $\{c\}$ is closed in the discrete codomain, and it contains $A$. The smallest closed subset of $\bar A$ that contains $A$ is $\bar A$ itself. So the preimage is $\bar A$, and $g$ is constant.
+
+(c) If some factor is empty, the product is empty. The empty space is connected: it cannot be written as a union of two nonempty sets. Now assume every factor is nonempty.
+
+First take two factors, and fix a point $(a,b)\in X\times Y$. For each $x\in X$, the slice $\{x\}\times Y$ is homeomorphic to $Y$: the map $y\mapsto(x,y)$ is continuous by part~(a) of Proposition~\ref{prop:product}, because its components are a constant map and the identity, and the inverse is the restriction of the projection. The slice $X\times\{b\}$ is homeomorphic to $X$ in the same way. Those two slices meet at $(x,b)$, so their union is connected by part~(b). As $x$ varies, these unions all contain $(a,b)$, and every point $(x,y)$ lies in the union for that $x$. Part~(b) says that the whole product is connected.
+
+A finite product follows by induction. The product of $n+1$ factors is the product of the first $n$, which is connected, with the last factor.
+
+For an arbitrary index set, fix a point $a=(a_i)$ in the product. For each finite set $F$ of indices, let $D_F$ be the set of points that equal $a_i$ for every $i\notin F$. The obvious coordinate map is a homeomorphism from $D_F$ onto $\prod_{i\in F}X_i$, which is connected by the finite case, and $D_F$ contains $a$. Let $D$ be the union of the sets $D_F$ over all finite $F$. Part~(b) says that $D$ is connected.
+
+The set $D$ is dense. A basic open set in the product constrains finitely many coordinates, say those in $F$, to open sets $U_i$. Each $U_i$ is nonempty, because a basic open set that appears is nonempty only if each constrained factor meets the corresponding $U_i$. Choose $x_i\in U_i$ for $i\in F$, and set $x_i=a_i$ for $i\notin F$. That point lies in $D_F$ and in the basic open set. So $D$ meets every nonempty basic open set.
+
+Part~(b) gives $\overline D=\prod_i X_i$, and the closure of the connected set $D$ is connected.
 \end{proof}
 
 \begin{corollary}[intermediate value theorem]\label{cor:ivt}
-If $X$ is connected and $f:X\to\R$ is continuous, then $f(X)$ is an interval. In particular, a continuous function on an interval takes every value between any two of its values.
+If $X$ is connected and $f:X\to\R$ is continuous, then $f(X)$ is an interval. In particular, a continuous real function on an interval attains every value that lies between two of its values.
 \end{corollary}
 \begin{proof}
-Proposition~\ref{prop:connected}(a) says $f(X)$ is connected, and Theorem~\ref{thm:intervals} says a connected subset of $\R$ is an interval.
+Proposition~\ref{prop:connected}(a) says that $f(X)$ is connected. Theorem~\ref{thm:intervals} says that a connected subset of $\R$ is an interval.
 \end{proof}
 
-This is the intermediate value theorem that Volume~1 proved for an interval of real numbers. Lemma~\ref{lem:monoivt} of Chapter~\ref{ch:metric} was a special case. The \emph{connected components} of $X$ are the maximal connected subsets. By Proposition~\ref{prop:connected}(b), the union of all connected sets containing a given point $x$ is connected, and these unions partition $X$ into closed sets. The components of $\Q$ are its points, and so are the components of the Cantor set. Such spaces are \emph{totally disconnected}.
+Volume~1 proved the intermediate value theorem for a continuous function on an interval of real numbers, from the least upper bound property. Lemma~\ref{lem:monoivt} in Chapter~\ref{ch:metric} was a special case used to build the logarithm. The argument above is that same property, read as connectedness of intervals. The proof just given does not call the Volume~1 argument as a lemma. It rebuilds the step.
+
+The \emph{connected component} of a point $x$ is the union of all connected subsets that contain $x$. Proposition~\ref{prop:connected}(b) says that this union is connected, and it is the largest connected set containing $x$. If the component of $x$ meets the component of $y$, their union is connected and contains both points, so the two components are equal. Distinct components are therefore disjoint, and the components partition $X$.
+
+Each component is closed. The closure of the component of $x$ is connected, by Proposition~\ref{prop:connected}(b), and it contains $x$, so maximality forces the closure to equal the component.
+
+The components of $\Q$ are single points: any two rationals have an irrational between them, so no connected subset of $\Q$ has two points, by Theorem~\ref{thm:intervals}. The same holds for the Cantor set. A space whose components are single points is called \emph{totally disconnected}.
 
 \begin{definition}
-A space $X$ is \emph{path-connected} when any two points are joined by a \emph{path}: a continuous map $\gamma:[0,1]\to X$ with $\gamma(0)=x$ and $\gamma(1)=y$.
+A space $X$ is \emph{path-connected} when, for any two points $x,y\in X$, some continuous $\gamma:[0,1]\to X$ has $\gamma(0)=x$ and $\gamma(1)=y$. The map $\gamma$ is a \emph{path} from $x$ to $y$.
 \end{definition}
 
-A path-connected space is connected. The images $\gamma([0,1])$ of paths that start at a fixed point are connected, by Theorem~\ref{thm:intervals} and Proposition~\ref{prop:connected}(a), and they all contain that point. Convex subsets of $\R^n$ are path-connected, by straight segments. Spheres $S^{n-1}$ for $n\ge2$ are path-connected, by great circles.
+A path-connected space is connected. Fix a point $p$. The image of a path starting at $p$ is connected, because $[0,1]$ is an interval and Proposition~\ref{prop:connected}(a) preserves connectedness. Those images all contain $p$, and if the space is path-connected they cover it. Proposition~\ref{prop:connected}(b) says the union is connected.
+
+A subset of $\R^n$ is \emph{convex} when it contains the segment between any two of its points. The segment from $x$ to $y$ is $\gamma(t)=(1-t)x+ty$. Each coordinate of $\gamma$ is a polynomial in $t$, hence continuous, so $\gamma$ is continuous as a map into $\R^n$ by Proposition~\ref{prop:product}. A convex set is therefore path-connected.
+
+The sphere $S^{n-1}=\{x\in\R^n:\|x\|_2=1\}$ is path-connected for every $n\ge2$. Take two unit vectors $x$ and $y$. If $y\ne -x$, the segment $(1-t)x+ty$ never hits $0$: a relation $(1-t)x+ty=0$ would force $y$ to be a negative multiple of $x$, and both vectors have length $1$, so $y=-x$. The normalised path
+\[
+\gamma(t)=\frac{(1-t)x+ty}{\|(1-t)x+ty\|_2}
+\]
+is continuous and stays on the sphere. If $y=-x$, the hypothesis $n\ge2$ supplies a third unit vector $z$ different from both, for instance a standard basis vector orthogonal to $x$. Travel from $x$ to $z$ and then from $z$ to $y$ by two normalised segments. The picture of either piece is an arc of a great circle.
 
 \begin{proposition}\label{prop:openconnected}
 \begin{enumerate}[label=(\alph*)]
-\item An open connected subset $U$ of a normed space is path-connected, and the paths may be taken polygonal.
-\item The \emph{topologist's sine curve} $T=\{(x,\sin\frac1x):0<x\le1\}\cup(\{0\}\times[-1,1])$ is connected, and it is not path-connected.
+\item An open connected subset of a normed space is path-connected. The paths may be taken to be polygonal, that is, finite chains of straight segments.
+\item The \emph{topologist's sine curve}
+\[
+T=\Bigl\{\Bigl(x,\sin\frac1x\Bigr):0<x\le1\Bigr\}\cup\bigl(\{0\}\times[-1,1]\bigr)
+\]
+is connected and not path-connected.
 \end{enumerate}
 \end{proposition}
 \begin{proof}
-(a) Fix $a\in U$, and let $P$ be the set of points of $U$ that can be joined to $a$ by a polygonal path in $U$. If $x\in U$, some ball $B(x,r)\subseteq U$ is convex, so either the whole ball lies in $P$ (when $x\in P$, or when any point of the ball does) or none of it does. Thus $P$ and $U\setminus P$ are both open. The set $P$ contains $a$, so it is non-empty, and connectedness forces $P=U$. (b) The graph $G$ is connected, being a continuous image of $]0,1]$. The set $T$ equals $\bar G$, because $\sin\frac1x$ takes every value in $[-1,1]$ on every interval $]0,\varepsilon[$. Proposition~\ref{prop:connected}(b) says $T$ is connected. Suppose $\gamma=(\gamma_1,\gamma_2)$ were a path in $T$ from $(0,0)$ to $(1,\sin1)$. Let $t_0=\sup\{t:\gamma_1(t)=0\}$. Continuity gives $\gamma_1(t_0)=0$, and $\gamma_1(t)>0$ for $t>t_0$. Continuity of $\gamma_2$ at $t_0$ supplies $\delta>0$ with $|\gamma_2(t)-\gamma_2(t_0)|<\frac12$ on $[t_0,t_0+\delta]$. But $\gamma_1([t_0,t_0+\delta])$ is an interval $[0,c]$ with $c>0$, by Corollary~\ref{cor:ivt}, and on that interval $\sin\frac1x$ takes both the values $1$ and $-1$, at points $x=\gamma_1(t)$ where $\gamma_2(t)=\sin\frac1{\gamma_1(t)}$. Those two values cannot both lie within $\frac12$ of $\gamma_2(t_0)$.
+(a) Fix $a\in U$, and let $P$ be the set of points of $U$ that can be joined to $a$ by a polygonal path lying in $U$. The point $a$ belongs to $P$.
+
+Balls in a normed space are convex. If $\|u-x\|<r$ and $\|v-x\|<r$, then
+\[
+\|(1-t)u+tv-x\|\le(1-t)\|u-x\|+t\|v-x\|<r.
+\]
+So if $B(x,r)\subseteq U$ and any one point of the ball lies in $P$, the straight segment inside the ball joins that point to every other point of the ball, and the whole ball lies in $P$. Applied to $x$ itself: if $x\in P$, the ball lies in $P$. If the ball misses $P$, it lies in $U\setminus P$. Both $P$ and $U\setminus P$ are therefore open in $U$. The set $P$ is nonempty, and $U$ is connected, so $P=U$.
+
+(b) Let $G$ be the graph $\{(x,\sin(1/x)):0<x\le1\}$. The domain $\mathopen]0,1]$ is an interval, hence connected. The map $x\mapsto\bigl(x,\sin(1/x)\bigr)$ is continuous on that domain: the first coordinate is the identity, and the second is a composite of continuous functions from Theorem~\ref{thm:exp}. Proposition~\ref{prop:product} puts the map into $\R^2$. The image $G$ is connected.
+
+The values of sine fill $[-1,1]$ on every interval of length $2\pi$. Indeed $\sin(\pi/2)=1$ and $\sin(3\pi/2)=-1$, because $e^{i\pi/2}=i$ and $e^{3i\pi/2}=-i$ by Theorem~\ref{thm:exp}(d), and Corollary~\ref{cor:ivt} says that the continuous image $\sin([ \pi/2,\, 3\pi/2])$ is an interval containing both values. Sine takes values in $[-1,1]$ only, by $\cos^2+\sin^2=1$. Periodicity, from $e^{2i\pi}=1$, repeats this on every $[2\pi n+\pi/2,\, 2\pi n+3\pi/2]$.
+
+Consequently, on every interval $\mathopen]0,\varepsilon[$, the quantity $1/x$ runs through infinitely many of those periods, and $\sin(1/x)$ attains every value in $[-1,1]$. Every point $(0,y)$ with $|y|\le1$ is therefore a limit of points of $G$: choose $x\in\mathopen]0,\varepsilon[$ with $\sin(1/x)=y$, and the distance from $(x,y)$ to $(0,y)$ is $x<\varepsilon$.
+
+The set $T$ is exactly the closure of $G$. Points of $G$ lie in the closure. The segment $\{0\}\times[-1,1]$ was just shown to lie in the closure. In the other direction, suppose $(x_n,\sin(1/x_n))\to(x,y)$ with $0<x_n\le1$. If $x>0$, then eventually $x_n>x/2$, and continuity of sine gives $y=\sin(1/x)$, so the limit lies on $G$. If $x=0$, then $|y|\le1$, because $|\sin|\le1$. If $x<0$, then eventually $x_n<0$, which does not happen. So every limit point lies in $T$. Proposition~\ref{prop:connected}(b) says that $T=\bar G$ is connected.
+
+Suppose, for a contradiction, that $\gamma=(\gamma_1,\gamma_2):[0,1]\to T$ is a path with $\gamma(0)=(0,0)$ and $\gamma(1)=(1,\sin1)$. Let
+\[
+t_0=\sup\{t\in[0,1]:\gamma_1(t)=0\}.
+\]
+The set of such $t$ is $\gamma_1^{-1}(\{0\})$. It is closed, because $\{0\}$ is closed and $\gamma_1$ is continuous, and it is nonempty because $\gamma_1(0)=0$. A closed nonempty subset of $[0,1]$ contains its supremum, so $\gamma_1(t_0)=0$. Also $t_0<1$, because $\gamma_1(1)=1$. For $t>t_0$ one has $\gamma_1(t)\ne0$. The set $T$ has no points with negative first coordinate, so $\gamma_1(t)>0$, and the point $\gamma(t)$ lies on the graph. Thus $\gamma_2(t)=\sin\bigl(1/\gamma_1(t)\bigr)$ for all $t\in\mathopen]t_0,1]$.
+
+Continuity of $\gamma_2$ at $t_0$ gives $\delta>0$ such that $|\gamma_2(t)-\gamma_2(t_0)|<\frac12$ for every $t\in[t_0,t_0+\delta]\cap[0,1]$. Shrink $\delta$ so that $t_0+\delta\le1$. The image $\gamma_1([t_0,t_0+\delta])$ is connected, hence an interval, by Corollary~\ref{cor:ivt}. It contains $0$ and the positive number $\gamma_1(t_0+\delta)$. An interval that contains both contains the whole segment between them. So some $p>0$ has $[0,p]$ inside that image.
+
+On $\mathopen]0,p]$, the function $\sin(1/x)$ attains both $1$ and $-1$, as shown above. Each such $x$ equals $\gamma_1(t)$ for some $t\in\mathopen]t_0,t_0+\delta]$, and at that time $\gamma_2(t)$ equals $1$ or $-1$. Both values would then lie within $\frac12$ of $\gamma_2(t_0)$. No number in $[-1,1]$ is within $\frac12$ of both $1$ and $-1$, because those two targets are distance $2$ apart.
 \end{proof}
 
 \begin{figure}[ht]
 \centering
 \fig{ch03-sine}
-\caption{The topologist's sine curve. The graph of $\sin\frac1x$ on $]0,1]$, drawn in charcoal, accumulates on the segment $\{0\}\times[-1,1]$, drawn in coral. The union is connected. No path can leave the segment and enter the graph, because near $x=0$ the graph oscillates without end.}
+\caption{The topologist's sine curve. The graph of $\sin(1/x)$ on $\mathopen]0,1]$ oscillates between $-1$ and $1$ infinitely often as $x$ approaches $0$, and the oscillations accumulate on the whole segment $\{0\}\times[-1,1]$. The union is connected. A path that has just left the segment would have to keep its height almost constant, while the graph is still hitting both $1$ and $-1$.}
 \label{fig:sine}
 \end{figure}
 
 \begin{think}
-Is $\R$ homeomorphic to $\R^2$? Both are path-connected. What happens to each space when one point is removed?
+Are $\R$ and $\R^2$ homeomorphic? Both are path-connected. Delete one point from each, and compare what is left.
 \end{think}
 
-Removing a point disconnects $\R$, and it does not disconnect $\R^2$: a punctured plane is path-connected. A homeomorphism $\R\to\R^2$ would restrict to a homeomorphism of the punctured spaces. So $\R\not\cong\R^2$ (Exercise~\ref{ex:notR2}). The comparison $\R^2\not\cong\R^3$ is harder. It needs the fundamental group, or the homology, of Volume~9, in the form of Brouwer's invariance of domain.
+Deleting a point disconnects $\R$ and does not disconnect $\R^2$. A punctured plane is path-connected: the polygonal paths of Proposition~\ref{prop:openconnected}(a) stay in the complement of one point. A homeomorphism $\R\to\R^2$ would restrict to a homeomorphism of the complements of a point and of its image. Exercise~\ref{ex:notR2} writes the details. So $\R$ and $\R^2$ are not homeomorphic.
+
+The same question for $\R^2$ and $\R^3$ is not settled by deleting a point. Both complements stay path-connected. The tools that separate them are in Volume~9. They are not used in this volume.
 
 \section{Separation and sequences}
 
-Topology is generous. It allows spaces so coarse that no open set can tell two points apart, and sequences that converge to several limits at once. Such spaces do occur, for instance in algebraic geometry. Analysis asks for a minimum of separation: distinct points should have disjoint neighbourhoods. Hausdorff built this axiom into his definition of a topological space in 1914. The axiom now carries his name.
+The axioms so far allow a space in which no open set separates two given points, and they allow a sequence with two limits. Such spaces are not curiosities only. They occur, for example, in the topologies previewed for Volume~10. Analysis asks for a smaller class. Distinct points should have disjoint neighbourhoods. Hausdorff put that demand into the definition of a space in 1914. The condition now carries his name.
 
 \begin{definition}
-A space is \emph{Hausdorff} when any two distinct points have disjoint neighbourhoods. It is \emph{normal} when, in addition, points are closed and any two disjoint closed sets have disjoint open neighbourhoods.
+A space is \emph{Hausdorff} when any two distinct points have disjoint neighbourhoods. It is \emph{normal} when, in addition, singletons are closed, and any two disjoint closed sets have disjoint open neighbourhoods.
 \end{definition}
 
-In a Hausdorff space a sequence has at most one limit, and each singleton $\{x\}$ is closed. Metric spaces are Hausdorff: take balls of radius $\frac{d(x,y)}2$. Subspaces of Hausdorff spaces are Hausdorff, and so are products: a basic open set can separate a coordinate on which two points differ. Quotients need not be Hausdorff. The quotient $\R/\Q$ is not. Neither is the \emph{line with two origins}, the space $\R\times\{0,1\}$ with $(x,0)\sim(x,1)$ for $x\ne0$. The two origins cannot be separated.
+In a Hausdorff space a sequence has at most one limit. If $x_n\to x$ and $x_n\to y$ with $x\ne y$, disjoint open neighbourhoods $U$ of $x$ and $V$ of $y$ would both contain all but finitely many terms, which is impossible. Singletons are closed: if $y\ne x$, some open neighbourhood of $y$ misses $x$, so $y$ is not in the closure of $\{x\}$.
+
+A metric space is Hausdorff. If $x\ne y$, the open balls of radius $d(x,y)/2$ about the two points are disjoint, by the triangle inequality. A subspace of a Hausdorff space is Hausdorff: intersect the disjoint neighbourhoods with the subspace. A product of Hausdorff spaces is Hausdorff. If two points of the product differ in the $i$th coordinate, separate those two coordinates by disjoint open sets $U$ and $V$, and pull them back by $p_i$. The cylinders $p_i^{-1}(U)$ and $p_i^{-1}(V)$ are disjoint neighbourhoods in the product.
+
+Quotients of Hausdorff spaces need not be Hausdorff. The quotient $\R/\Q$ of Example~\ref{ex:quotients}(c) is indiscrete, and an indiscrete space with two points is not Hausdorff. Another example is the \emph{line with two origins}. Start with $\R\times\{0,1\}$, two copies of the line, and identify $(x,0)$ with $(x,1)$ for every $x\ne0$. The two origins, the classes of $(0,0)$ and of $(0,1)$, cannot be separated. Any open neighbourhood of either origin has a saturated preimage that contains a punctured interval about $0$ in both copies, so the two neighbourhoods meet on that punctured interval.
+
+Pavel Urysohn's separation lemma for normal spaces appeared in Mathematische Annalen in 1925. In a metric space the same separation is given by an explicit formula.
 
 \portrait{urysohn}{Pavel Urysohn (1898--1924). Photograph, author unknown. Public domain, via Wikimedia Commons.}
 
 \begin{proposition}[Urysohn functions in metric spaces]\label{prop:urysohn}
-Let $A$ and $B$ be disjoint closed subsets of a metric space $X$. Then
+Let $A$ and $B$ be disjoint closed subsets of a metric space $X$. The function
 \[
 f(x)=\frac{d(x,A)}{d(x,A)+d(x,B)}
 \]
-is a continuous map $X\to[0,1]$, equal to $0$ exactly on $A$ and equal to $1$ exactly on $B$. Hence every metric space is normal.
+is continuous from $X$ to $[0,1]$, it equals $0$ exactly on $A$, and it equals $1$ exactly on $B$. In particular, every metric space is normal.
 \end{proposition}
 \begin{proof}
-Proposition~\ref{prop:closure} says $d(x,A)=0$ if and only if $x\in\bar A=A$, and the same holds for $B$. Since $A\cap B=\varnothing$, the denominator never vanishes. Distance functions are $1$-Lipschitz, so $f$ is continuous. The open sets $\{f<\frac12\}$ and $\{f>\frac12\}$ separate $A$ from $B$.
+Proposition~\ref{prop:closure}(a) says that $d(x,A)=0$ exactly when $x\in\bar A$. Since $A$ is closed, that is exactly the condition $x\in A$, and likewise for $B$. The two sets are disjoint, so the denominator is never zero: it cannot happen that both distances vanish.
+
+Chapter~\ref{ch:metric} records that $x\mapsto d(x,A)$ is $1$-Lipschitz, hence continuous. In a metric space, a quotient of continuous real functions is continuous wherever the denominator does not vanish. One way to see it is sequential. If $x_n\to x$, then $d(x_n,A)\to d(x,A)$ and $d(x_n,B)\to d(x,B)$, and the denominator tends to a positive number, so the quotients converge. Thus $f$ is continuous. The values lie in $[0,1]$ because both distances are nonnegative.
+
+The numerator vanishes exactly on $A$, so $f$ equals $0$ exactly there. The equality $f(x)=1$ rearranges to $d(x,B)=0$, which holds exactly on $B$.
+
+The space is Hausdorff, so singletons are closed. For the two closed sets, the sets $\{x:f(x)<\frac12\}$ and $\{x:f(x)>\frac12\}$ are open, because they are preimages of open subsets of $\R$. The first contains $A$, the second contains $B$, and they are disjoint.
 \end{proof}
 
+Check the formula on the line. Take $A=\{0\}$ and $B=\{1\}$ in $\R$. Then
+\[
+f(x)=\frac{|x|}{|x|+|x-1|}.
+\]
+So $f(0)=0$, $f(1)=1$, and $f(2)=\frac23$. The function is continuous on $\R$, and it separates the two points.
+
 \begin{remark}
-Urysohn's lemma of 1925 says that in any normal space there is a continuous function of this kind, with $A\subseteq f^{-1}(0)$ and $B\subseteq f^{-1}(1)$, although there is no formula. The proof builds the level sets $\{f<r\}$ for dyadic rationals $r$, one after another (J.~Munkres, \emph{Topology}, \S33). Compact Hausdorff spaces are normal (Chapter~\ref{ch:compact}). This series needs only the metric case.
+Urysohn's lemma, in the form published in 1925, produces a continuous function $f:X\to[0,1]$ on any normal space, with $A\subseteq f^{-1}(0)$ and $B\subseteq f^{-1}(1)$. There is no distance formula in that generality. The construction builds the sets $\{f<r\}$ one dyadic rational at a time. Munkres, \emph{Topology}, \S33, gives the details. Compact Hausdorff spaces are normal. That fact is proved in Chapter~\ref{ch:compact}, and it is not used here. This series needs only the metric formula above.
 \end{remark}
 
-In a metric space, sequences decide everything (Proposition~\ref{prop:closure}). The reason is that each point has a countable family of neighbourhoods $B(x,\frac1n)$ that are small enough.
+In a metric space, sequences determine closures and continuity. Proposition~\ref{prop:closure} is that fact. The reason it works is a countable stock of neighbourhoods. The balls $B(x,1/n)$ shrink towards $x$, and every neighbourhood of $x$ contains one of them.
 
 \begin{definition}
-A space $X$ is \emph{first countable} when each point has a countable family of neighbourhoods $V_1,V_2,\ldots$ such that every neighbourhood of the point contains some $V_n$. It is \emph{second countable} when the topology has a countable basis. It is \emph{separable} when it has a countable dense subset.
+A space is \emph{first countable} when each point $x$ has a countable family of neighbourhoods $V_1,V_2,\ldots$ such that every neighbourhood of $x$ contains some $V_n$. It is \emph{second countable} when some countable family of open sets is a basis. It is \emph{separable} when some countable set is dense.
 \end{definition}
 
 \begin{proposition}\label{prop:sequences}
 \begin{enumerate}[label=(\alph*)]
-\item In a first countable space, $x\in\bar A$ if and only if some sequence of points of $A$ converges to $x$, and a map $f:X\to Y$ is continuous if and only if it preserves limits of sequences.
-\item A metric space is second countable if and only if it is separable. The space $\R^n$ is separable, and so is a countable product $\prod_k X_k$ of separable metric spaces $X_k$.
+\item Let $X$ be first countable. A point $x$ lies in $\bar A$ exactly when some sequence of points of $A$ converges to $x$. A map $f:X\to Y$ is continuous exactly when $x_n\to x$ in $X$ implies $f(x_n)\to f(x)$ in $Y$.
+\item A metric space is second countable exactly when it is separable. The spaces $\R^n$, and countable products $\prod_k X_k$ of separable metric spaces $X_k$, are separable.
 \end{enumerate}
 \end{proposition}
 \begin{proof}
-(a) Replacing $V_n$ by $V_1\cap\cdots\cap V_n$, one may assume the neighbourhoods decrease. If $x\in\bar A$, pick $a_n\in A\cap V_n$. Every neighbourhood contains some $V_N$, hence contains $a_n$ for all $n\ge N$, so $a_n\to x$. Conversely, a limit of points of $A$ has every neighbourhood meeting $A$. If $f$ preserves limits and $F$ is closed in $Y$, take $x\in\overline{f^{-1}(F)}$ and a sequence $a_n\to x$ with $f(a_n)\in F$. Then $f(x)=\lim f(a_n)\in F$. So $f^{-1}(F)$ is closed. The converse, that a continuous map preserves sequential limits, holds in any space. (b) If $\{U_n\}$ is a countable basis, one point from each non-empty $U_n$ is a dense set. If $D=\{d_k\}$ is dense, the balls $B(d_k,\frac1m)$ form a basis. For $x\in U$ open, take $B(x,\frac2m)\subseteq U$ and $d_k\in B(x,\frac1m)$. Then $x\in B(d_k,\frac1m)\subseteq B(x,\frac2m)\subseteq U$. For $\R^n$, take $\Q^n$. For a countable product, take the points whose coordinates lie in the countable dense sets $D_k$ and equal a fixed $a_k$ for all large $k$. That set is countable by Proposition~\ref{prop:countable}, and dense by Proposition~\ref{prop:product}.
+(a) Replace $V_n$ by $V_1\cap\cdots\cap V_n$. A finite intersection of neighbourhoods of $x$ is a neighbourhood: each contains an open set about $x$, and a finite intersection of those open sets is open. The new family is still a countable neighbourhood basis, and it is decreasing.
+
+If $x\in\bar A$, every neighbourhood of $x$ meets $A$. Choose $a_n\in A\cap V_n$. Let $W$ be any neighbourhood of $x$. Some $V_N$ is contained in $W$, and then $a_n\in V_n\subseteq V_N\subseteq W$ for all $n\ge N$. So $a_n\to x$.
+
+Conversely, if $a_n\in A$ and $a_n\to x$, then every neighbourhood of $x$ contains some $a_n$, hence meets $A$, and $x\in\bar A$.
+
+Suppose $f$ preserves limits of sequences, and let $F\subseteq Y$ be closed. Take $x$ in the closure of $f^{-1}(F)$. The first paragraph gives $a_n$ in $f^{-1}(F)$ with $a_n\to x$. Then $f(a_n)\in F$ and $f(a_n)\to f(x)$. The converse direction already proved, applied inside $Y$ only as a sequential test for membership in a closure, needs a sequence, which we have. More directly: every neighbourhood of $f(x)$ meets $F$, so $f(x)\in\bar F=F$, whether or not $Y$ is first countable. Thus $x\in f^{-1}(F)$, and that preimage is closed. A map whose preimages of closed sets are closed is continuous.
+
+The converse does not need first countability. If $f$ is continuous and $x_n\to x$, and if $V$ is an open neighbourhood of $f(x)$, then $f^{-1}(V)$ is an open neighbourhood of $x$, so eventually $x_n$ lies in it and $f(x_n)$ lies in $V$.
+
+(b) Suppose $\{U_n\}$ is a countable basis. Pick a point $d_n$ from each nonempty $U_n$. Every nonempty open set contains some $U_n$, hence contains $d_n$. The set of chosen points is dense.
+
+Conversely, suppose $D=\{d_k\}$ is dense in a metric space. The balls $B(d_k,1/m)$, with $k\ge1$ and $m\ge1$, form a countable basis. There are countably many of them because $\N\times\N$ is countable, by Proposition~\ref{prop:countable}. Let $U$ be open and let $x\in U$. Choose $r>0$ with $B(x,r)\subseteq U$, then an integer $m$ with $2/m<r$, then a point $d_k\in B(x,1/m)$, using density. The triangle inequality gives $B(d_k,1/m)\subseteq B(x,2/m)\subseteq U$, and $x$ lies in $B(d_k,1/m)$. So these balls form a basis.
+
+For $\R^n$, the set $\Q^n$ is dense, and it is countable by Proposition~\ref{prop:countable} and induction on $n$. For a countable product of separable metric spaces, choose a countable dense set $D_k$ in each factor and a point $a_k\in X_k$. Let $E$ be the set of points whose $k$th coordinate lies in $D_k$ for every $k$, and which equal $a_k$ for all sufficiently large $k$. For each fixed $N$, the points that equal $a_k$ for all $k>N$ and lie in $D_k$ for $k\le N$ form a countable set, a finite product of countable sets. The set $E$ is a countable union of these, hence countable by Proposition~\ref{prop:countable}(c). It is dense by the description of basic open sets in Proposition~\ref{prop:product}: a basic open set constrains finitely many coordinates, and $E$ can match those constraints and equal $a_k$ afterwards.
 \end{proof}
 
-The space $C([0,1])$ with the sup norm is separable as well. The polynomials with rational coefficients are a countable dense set. That fact needs Weierstrass's approximation theorem, proved in Chapter~\ref{ch:compact} as Corollary~\ref{cor:weierstrass}. Nothing before that corollary uses the fact.
+The space $C([0,1])$ of continuous real functions on $[0,1]$, with the supremum norm, is separable as well. The polynomials with rational coefficients are a countable dense subset. Density is Weierstrass's approximation theorem, Corollary~\ref{cor:weierstrass} in Chapter~\ref{ch:compact}. No argument before that corollary uses this separability.
 
-When neighbourhoods are not countable, sequences may fail to detect closures (Exercise~\ref{ex:cocountable}). The repair is to use \emph{nets}, families indexed by directed sets, or \emph{filters}. This volume avoids both, and it proves Tychonoff's theorem directly in Chapter~\ref{ch:compact}.
+If the neighbourhoods of a point refuse to admit a countable basis, a sequence may miss a point of the closure. Exercise~\ref{ex:cocountable} is the standard specimen. Nets, indexed by directed sets, and filters repair the gap. This volume does not use them. Tychonoff's theorem is proved directly in Chapter~\ref{ch:compact}.
 
-Urysohn's functions do more than separate two closed sets. They extend a continuous function from a closed set to the whole space, and Chapter~\ref{ch:jordan} needs exactly that extension.
+The formula of Proposition~\ref{prop:urysohn} does more than separate two closed sets. It extends a continuous real function from a closed subset to the whole metric space. Chapter~\ref{ch:jordan} calls on that extension. The proof below stands on its own and does not use that chapter.
 
 \begin{proposition}[Tietze's extension theorem for metric spaces]\label{prop:tietze}
-Let $A$ be a closed subset of a metric space $X$, and let $f:A\to[-1,1]$ be continuous. Then there is a continuous $F:X\to[-1,1]$ with $F=f$ on $A$.
+Let $A$ be a closed subset of a metric space $X$, and let $f:A\to[-1,1]$ be continuous. Then there is a continuous $F:X\to[-1,1]$ such that $F(x)=f(x)$ for every $x\in A$.
 \end{proposition}
 \begin{proof}
-If $A$ is empty, take $F=0$. Otherwise the argument has two steps.
+If $A$ is empty, the function $F=0$ is an extension. Assume $A$ is nonempty. The argument has two moves.
 
-\emph{Step 1: one approximation.} Let $c>0$, and let $\phi:A\to[-c,c]$ be continuous. A continuous function $g:X\to[-\frac c3,\frac c3]$ will be built so that $|\phi-g|\le\frac{2c}3$ on $A$. Let $B=\{x\in A:\phi(x)\le-\frac c3\}$ and $C=\{x\in A:\phi(x)\ge\frac c3\}$. Both are closed in $A$, hence closed in $X$ because $A$ is closed, and they are disjoint. If both are non-empty, let $u$ be the function of Proposition~\ref{prop:urysohn}, equal to $0$ on $B$ and to $1$ on $C$, and set $g=\frac{2c}3 u-\frac c3$. If $B$ is empty and $C$ is not, set $g=\frac c3$. If $C$ is empty and $B$ is not, set $g=-\frac c3$. If both are empty, set $g=0$. Check the bound on each piece of $A$. On $B$ one has $g=-\frac c3$ and $\phi\in[-c,-\frac c3]$. On $C$ one has $g=\frac c3$ and $\phi\in[\frac c3,c]$. At the remaining points of $A$, both $\phi$ and $g$ lie in $[-\frac c3,\frac c3]$. In every case $|\phi-g|\le\frac{2c}3$, and the constant choices are covered by the same three comparisons.
+\emph{One correction.} Let $c>0$, and let $\phi:A\to[-c,c]$ be continuous. A continuous $g:X\to[-c/3,c/3]$ will be built so that $|\phi(x)-g(x)|\le 2c/3$ for every $x\in A$.
 
-\emph{Step 2: iterate.} Apply Step~1 to $f$ with $c=1$. This produces $g_1$ with $|g_1|\le\frac13$ and $|f-g_1|\le\frac23$ on $A$. Suppose $g_1,\ldots,g_n$ have been built, continuous on $X$, with $|f-\sum_{k\le n}g_k|\le(\frac23)^n$ on $A$. Apply Step~1 to $\phi=f-\sum_{k\le n}g_k$ on $A$, with $c=(\frac23)^n$. The result is a function $g_{n+1}$ satisfying
+Let $B=\{x\in A:\phi(x)\le -c/3\}$ and $C=\{x\in A:\phi(x)\ge c/3\}$. Both are closed in $A$, because they are preimages of closed subsets of $\R$. They are closed in $X$, because a closed subset of the closed set $A$ is an intersection of two closed sets. They are disjoint.
+
+If $B$ and $C$ are both nonempty, let $u$ be the function of Proposition~\ref{prop:urysohn} with $u=0$ on $B$ and $u=1$ on $C$, and set $g=(2c/3)u-c/3$. If $B$ is empty and $C$ is not, set $g=c/3$. If $C$ is empty and $B$ is not, set $g=-c/3$. If both are empty, set $g=0$. In every case $g$ is continuous and takes values in $[-c/3,c/3]$.
+
+Check the error on $A$. On $B$, one has $g=-c/3$ and $\phi\in[-c,-c/3]$, so $|\phi-g|\le 2c/3$. On $C$, one has $g=c/3$ and $\phi\in[c/3,c]$, so the same bound holds. At every remaining point of $A$, both $\phi$ and $g$ lie in $[-c/3,c/3]$, so their difference is at most $2c/3$. The constant choices of $g$ fall under the same three sentences: where $B$ is empty one has $\phi>-c/3$ everywhere on $A$, and where $C$ is empty one has $\phi<c/3$.
+
+\emph{Repeat the correction.} Apply the first move to $f$, with $c=1$. The result is a continuous $g_1$ with $|g_1|\le 1/3$ on $X$ and $|f-g_1|\le 2/3$ on $A$. Suppose $g_1,\ldots,g_n$ have been built, each continuous on $X$, and
+\[
+\Bigl|f-\sum_{k\le n}g_k\Bigr|\le\Bigl(\frac23\Bigr)^n\qquad\text{on }A.
+\]
+Apply the first move to $\phi=f-\sum_{k\le n}g_k$ on $A$, with $c=(2/3)^n$. The new function $g_{n+1}$ satisfies
 \[|g_{n+1}|\le\tfrac13\bigl(\tfrac23\bigr)^n\ \text{on }X,\qquad\Bigl|f-\sum_{k\le n+1}g_k\Bigr|\le\bigl(\tfrac23\bigr)^{n+1}\ \text{on }A.\]
-The series $F=\sum_k g_k$ converges uniformly on $X$, because its terms are dominated by a geometric series. So $F$ is continuous, by Proposition~\ref{prop:complete}(c), and $|F|\le\frac13\sum_{k\ge1}(\frac23)^{k-1}=1$. On $A$, the second bound gives $F=f$.
+
+The comparison $|g_k|\le\frac13\bigl(\frac23\bigr)^{k-1}$ shows that $\sum g_k$ converges uniformly on $X$: the scalar series is geometric. Proposition~\ref{prop:complete}(c) says that a uniform limit of continuous functions is continuous, so $F=\sum_{k\ge1}g_k$ is continuous. The same comparison gives
+\[
+|F|\le\frac13\sum_{k\ge1}\Bigl(\frac23\Bigr)^{k-1}=1,
+\]
+because the geometric sum equals $1/(1-2/3)=3$. On $A$, the error bound $(2/3)^n$ tends to $0$, so $F=f$ on $A$.
 \end{proof}
 
+The extension is not unique. On $X=\R$, with $A=[-1,1]$ and $f(x)=x$, one extension is the truncation that equals $-1$ for $x\le -1$ and equals $1$ for $x\ge 1$. The series in the proof may build a different function. Both agree on $[-1,1]$, and both take values in $[-1,1]$.
+
 \begin{beauty}
-Topology keeps exactly the information continuity needs, and it forgets the rest. That is why the same language reaches so far: number theory, in Furstenberg's proof that there are infinitely many primes (Exercise~\ref{ex:furstenberg}) and in the profinite integers; algebraic geometry, where the Zariski topology has very few open sets and still separates irreducible varieties; logic and computer science, where open sets are semi-decidable properties; and geometry, where gluing squares produces every closed surface. The intermediate value theorem, proved in Volume~1 on an interval, is a statement about the connectedness of intervals, and that connectedness is a reformulation of the least upper bound property of $\R$.
+Continuity of a map $f:X\to Y$ asks only which sets in $Y$ are open, and whether their preimages are open in $X$. Once those sets are named, the distance that produced them is no longer in the proofs. The same rules cover the cofinite topology, the glued square, and the topology Furstenberg puts on the integers in Exercise~\ref{ex:furstenberg}. Volume~10 and Chapter~\ref{ch:metricmeasures} use further spaces of this kind. Neither is a premise above.
+
+The intermediate value theorem says that a continuous image of an interval is an interval. By Theorem~\ref{thm:intervals}, that sentence is also the description of the connected subsets of $\R$, and the proof of the theorem is the least upper bound property of $\R$ applied to one auxiliary set.
 \end{beauty}
 
-\section{What we proved, and what comes next}
+\section{A question connectedness does not answer}
 
-Drop the distance and keep the open sets. Continuity survives, by definition. So do three ways of building spaces, each pinned down by the continuous maps into it or out of it: subspaces, products (Proposition~\ref{prop:product}), and quotients (Proposition~\ref{prop:quotient}). Gluing the sides of a square is a quotient, and that is where the torus and the Klein bottle of the opening come from. The line falls apart when a point is removed, and the plane does not. A homeomorphism would carry one situation onto the other, so $\R$ and $\R^2$ are different spaces (Exercise~\ref{ex:notR2}).
+Drop the distance and keep the open sets. Continuity is then part of the definition. Three constructions survive with it, each described by the continuous maps into the new space or out of it. Subspaces take the intersection of an open set with the subset. Products are tested coordinatewise, in Proposition~\ref{prop:product}. Quotients are tested by composition with the quotient map, in Proposition~\ref{prop:quotient}. The torus in the opening is a square with opposite edges glued, and the Klein bottle is the same square with one pair of arrows reversed.
 
-The idea behind that comparison is connectedness. The connected subsets of $\R$ are the intervals (Theorem~\ref{thm:intervals}). Continuous maps preserve connectedness (Proposition~\ref{prop:connected}). The two facts together are the intermediate value theorem (Corollary~\ref{cor:ivt}). A space can be connected without being walkable (Proposition~\ref{prop:openconnected}). In a metric space, sequences see everything, and disjoint closed sets can be separated by a continuous function (Propositions~\ref{prop:urysohn} and~\ref{prop:sequences}).
+The line splits when a point is deleted. The plane does not. A homeomorphism would have to preserve the splitting, so $\R$ and $\R^2$ are not homeomorphic. Exercise~\ref{ex:notR2} records the three comparisons of this kind.
 
-One theorem of Volume~1 has not yet found its home. A continuous function on $[a,b]$ is bounded and attains its maximum. On $]a,b[$ it may do neither. Connectedness cannot be the reason, because both intervals are connected. What property of $[a,b]$ does the work? Chapter~\ref{ch:compact} names it.
+The name of the splitting is connectedness. The connected subsets of $\R$ are the intervals, by Theorem~\ref{thm:intervals}. Continuous images keep connectedness, by Proposition~\ref{prop:connected}, and the two statements together are the intermediate value theorem, Corollary~\ref{cor:ivt}. Proposition~\ref{prop:openconnected} gives a space that is connected and still has two points with no path between them. In a metric space, sequences see the closure, and disjoint closed sets are the zero set and the one set of a continuous function. Those are Propositions~\ref{prop:sequences} and~\ref{prop:urysohn}.
+
+One theorem from Volume~1 has not yet been given its property in this language. A continuous real function on a closed bounded interval $[a,b]$ is bounded, and it attains its maximum. On the open interval $\mathopen]a,b[$ it may do neither. The function $1/x$ on $\mathopen]0,1[$ is continuous and unbounded. The function $x$ on $\mathopen]0,1[$ is continuous and bounded, and it has no maximum. Both domains are connected. Connectedness is not the reason the closed interval behaves better.
+
+What does $[a,b]$ have that $\mathopen]a,b[$ does not? Chapter~\ref{ch:compact} names that property.
 
 \section{Exercises}
 
 \begin{exercise}[$\star$]\label{ex:cofinite}
-Take an infinite set $X$ with the cofinite topology. Prove that $X$ is connected, that a map $X\to X$ with finite fibres is continuous, and that a sequence of distinct points converges to every point of $X$. Is $X$ Hausdorff?
+Let $X$ be an infinite set, equipped with the cofinite topology. Show that $X$ is connected, that every map $X\to X$ whose fibres are finite is continuous, and that every sequence of distinct points converges to every point of $X$. Is $X$ Hausdorff?
 \end{exercise}
 
 \begin{exercise}[$\star$]\label{ex:RmodQ}
-Show that the quotient $\R/\Q$ of Example~\ref{ex:quotients}(c) is indiscrete. A non-empty open subset of $\R$ that is stable under every rational translation must be all of $\R$. Use that the set is open and that $\Q$ is dense.
+Show that the quotient $\R/\Q$ of Example~\ref{ex:quotients}(c) is indiscrete. Precisely: if a nonempty open subset of $\R$ is stable under translation by every rational, then the subset is $\R$. Use openness, and use that $\Q$ is dense in $\R$.
 \end{exercise}
 
 \begin{exercise}[$\star\star$]\label{ex:notR2}
-Show that $\R$ and $\R^2$ are not homeomorphic, and that $[0,1]$ and $[0,1]^2$ are not homeomorphic. Show also that the circle $S^1$ is not homeomorphic to any interval.
+Show that $\R$ is not homeomorphic to $\R^2$, and that $[0,1]$ is not homeomorphic to $[0,1]^2$. Show also that the circle $S^1$ is not homeomorphic to any interval.
 \end{exercise}
 
 \begin{exercise}[$\star\star$]\label{ex:monotone}
-Let $I$ be an interval, and let $f:I\to\R$ be continuous and injective. Show that $f$ is strictly monotone, that $J=f(I)$ is an interval, and that the inverse $f^{-1}:J\to I$ is continuous.
+Let $I\subseteq\R$ be an interval, and let $f:I\to\R$ be continuous and injective. Show that $f$ is strictly monotone, that $J=f(I)$ is an interval, and that the inverse $f^{-1}:J\to I$ is continuous.
 \end{exercise}
 
 \begin{exercise}[$\star\star$]\label{ex:furstenberg}
-\emph{Furstenberg revisited.} For $n\in\Z\setminus\{0\}$, let $v(n)$ be the largest $k$ such that $k!$ divides $n$, and set $v(0)=+\infty$. (a) Show that $d(m,n)=2^{-v(m-n)}$ is an ultrametric on $\Z$, and that its topology is the one of Volume~2, Exercise~2.8: the open sets are the unions of arithmetic progressions $a+b\Z$ with $b\ge1$. (b) Show that every progression $a+b\Z$ is both open and closed, so $\Z$ is totally disconnected. (c) Deduce Furstenberg's proof: if there were only finitely many primes, the set $\{-1,1\}$ would be open.
+\emph{Furstenberg's metric on the integers.} For $n\in\Z\setminus\{0\}$, let $v(n)$ be the largest integer $k\ge0$ such that $k!$ divides $n$, and set $v(0)=+\infty$. (a)~Show that $d(m,n)=2^{-v(m-n)}$, where $2^{-\infty}$ is read as $0$, is an ultrametric on $\Z$, and that its topology is the topology of Volume~2, Exercise~2.8: the open sets are the unions of arithmetic progressions $a+b\Z$ with $b\ge1$. (b)~Show that every progression $a+b\Z$ is open and closed, and deduce that $\Z$ is totally disconnected in this topology. (c)~Deduce Furstenberg's argument: if only finitely many primes existed, the set $\{-1,1\}$ would be open.
 \end{exercise}
 
 \begin{exercise}[$\star\star$]\label{ex:finite}
-Show that the topologies on a finite set $X$ correspond bijectively to the preorders on $X$, that is, the reflexive transitive relations, by the rule $x\preceq y$ if and only if $x\in\overline{\{y\}}$. Which preorders give $T_0$ spaces, spaces in which any two distinct points are distinguished by some open set? How many topologies are there on a set of three elements?
+Show that the topologies on a finite set $X$ are in bijection with the preorders on $X$, that is, the reflexive transitive relations, under the rule $x\preceq y$ exactly when $x\in\overline{\{y\}}$. Which preorders are the $T_0$ spaces, meaning that for any two distinct points some open set contains one and not the other? How many topologies are there on a set of three elements?
 \end{exercise}
 
 \begin{exercise}[$\star\star$]\label{ex:cocountable}
-On $\R$, declare $\varnothing$ open, and declare open the complements of countable sets. This is the \emph{cocountable} topology. Show that a sequence converges only when it is eventually constant, that $0$ lies in the closure of $A=\R\setminus\{0\}$, and that no sequence of points of $A$ converges to $0$. Deduce that the space is not first countable, and that the identity map from it to $\R$ with the discrete topology preserves limits of sequences without being continuous.
+On $\R$, declare $\varnothing$ to be open, and declare a set open when its complement is countable. This is the \emph{cocountable} topology. Show that a sequence converges only if it is eventually constant, that $0$ lies in the closure of $A=\R\setminus\{0\}$, and that no sequence of points of $A$ converges to $0$. Deduce that the space is not first countable, and that the identity map from this space to $\R$ with the discrete topology preserves limits of sequences and is not continuous.
 \end{exercise}
 
 \begin{exercise}[$\star\star\star$]\label{ex:tietzeR}
-\emph{Tietze for unbounded functions.} Let $A$ be a non-empty closed subset of a metric space $X$. (a) Let $f:A\to\R$ be continuous, bounded or not. Prove that some continuous $F:X\to\R$ agrees with $f$ on $A$. Proposition~\ref{prop:tietze} extends $\frac f{1+|f|}$ with values in $[-1,1]$. The difficulty is that this extension may take the values $\pm1$. (b) Show that the hypothesis ``closed'' cannot be dropped. On $A=(0,1]$ inside $X=[0,1]$, the bounded continuous function $f(x)=\sin\frac1x$ has no continuous extension to $X$.
+\emph{Extending an unbounded function.} Let $A$ be a nonempty closed subset of a metric space $X$. (a)~Let $f:A\to\R$ be continuous, whether or not it is bounded. Show that $f$ extends to a continuous $F:X\to\R$. Proposition~\ref{prop:tietze} extends $f/(1+|f|)$, which takes values in $[-1,1]$. The point that needs care is that an extension of this bounded function may take the values $\pm1$. (b)~Show that the hypothesis that $A$ is closed cannot be omitted. On $A=\mathopen]0,1]$ inside $X=[0,1]$, the bounded continuous function $f(x)=\sin(1/x)$ has no continuous extension to $X$.
 \end{exercise}
 
 \begin{exercise}[$\star$]\label{ex:v7c03a}
-Show that the indiscrete space on a set with at least two points is connected, and that it is not Hausdorff. Show that a continuous image of a connected space is connected, by using only the definition with maps to $\{0,1\}$.
+In $\R$ with the metric topology, let $A=\mathopen]0,1]$. Find $\mathring A$ and $\bar A$. Decide whether $A$ is open, closed, both, or neither. Is $A$ connected?
 \end{exercise}
 
-\begin{exercise}[$\star$]\label{ex:v7c03b}
-Show that a product of Hausdorff spaces is Hausdorff. Show that a subspace of a Hausdorff space is Hausdorff.
+\begin{exercise}[$\star\star$]\label{ex:v7c03b}
+Let $X$ be a topological space, and let $\Delta=\{(x,x):x\in X\}$ be the diagonal in $X\times X$, with the product topology. Show that $X$ is Hausdorff if and only if $\Delta$ is closed.
 \end{exercise}
 
 \begin{exercise}[$\star\star$]\label{ex:v7c03c}
-Let $X$ be the line with two origins: start with $\R\times\{0,1\}$ and identify $(x,0)$ with $(x,1)$ for every $x\ne0$. Show that the two origins have no disjoint neighbourhoods, so $X$ is not Hausdorff. Show that every neighbourhood of either origin is dense in a neighbourhood of the other.
+Let $X=C\cup D$, where $C$ and $D$ are closed in $X$, and let $g:X\to Y$ be a map whose restrictions to $C$ and to $D$ are continuous. Show that $g$ is continuous. Then show that the closedness hypothesis cannot be dropped: define a function on $\R$ that is continuous on $\mathopen]-\infty,0[$ and continuous on $[0,+\infty[$, and that is not continuous on $\R$.
 \end{exercise}
 
-\begin{exercise}[$\star\star$]\label{ex:v7c03d}
-Show that a finite product of path-connected spaces is path-connected. Deduce that $\R^n$ is path-connected, and that removing one point from $\R^n$ for $n\ge2$ leaves a path-connected space.
+\begin{exercise}[$\star\star\star$]\label{ex:v7c03d}
+Let $A$ be a connected subset of a space $X$, and let $B$ be a set with $A\subseteq B\subseteq\bar A$. Show that $B$ is connected. Deduce that every connected component of $X$ is closed.
 \end{exercise}
 
 \section{Hints}
 
 \begin{hint}{ex:cofinite}
-Any two non-empty open sets meet. A neighbourhood of a point $x$ misses only finitely many points of $X$.
+Any two nonempty open sets meet. A neighbourhood of a point excludes only finitely many points of $X$.
 \end{hint}
 \begin{hint}{ex:RmodQ}
-If $U$ is open, stable under translation by $\Q$, and contains $x$, then $U$ contains an interval about $x$, and it contains the rational translates of that interval.
+Openness puts an interval around any point of the set. Stability under $\Q$ translates that interval by every rational.
 \end{hint}
 \begin{hint}{ex:notR2}
-Remove one point. For the circle, remove two, or remove an interior point of the interval. Deleting the corresponding points, a homeomorphism still restricts to a homeomorphism of what remains.
+Delete one point. For the circle, delete a non-endpoint of the interval. A homeomorphism restricts to a homeomorphism of what remains.
 \end{hint}
 \begin{hint}{ex:monotone}
-Pairs $(x,y)$ with $x<y$ in $I$ form a convex set, and $f(y)-f(x)$ has no zero there. For the inverse, trap $f^{-1}(y)$ between $x_0-\varepsilon$ and $x_0+\varepsilon$.
+The set of pairs $(x,y)$ in $I\times I$ with $x<y$ is convex, and $f(y)-f(x)$ has no zero there. For the inverse, trap $f^{-1}(y)$ between two points where the values of $f$ bracket $y$.
 \end{hint}
 \begin{hint}{ex:furstenberg}
-The inequality $v(m+n)\ge\min(v(m),v(n))$ is the ultrametric inequality. The ball of radius $2^{-k}$ about $a$ is $a+(k+1)!\,\Z$, and $a+b\Z$ is a union of such balls once $b$ divides $k!$.
+The inequality $v(m+n)\ge\min(v(m),v(n))$ is the ultrametric rule. The open ball of radius $2^{-k}$ about $a$ equals $a+(k+1)!\,\Z$. If $b$ divides $k!$, the progression $a+b\Z$ is a union of such balls.
 \end{hint}
 \begin{hint}{ex:finite}
-Recover the open sets as the sets that are closed upwards for $\preceq$. Count preorders on three points by the shape of the relation.
+On a finite space, each point has a smallest open neighbourhood. The open sets are the sets that are closed upwards for $\preceq$. Count the preorders on three labelled points by the sizes of the equivalence classes $x\preceq y\preceq x$.
 \end{hint}
 \begin{hint}{ex:cocountable}
-The set of terms different from the limit is countable, hence closed, and its complement is a neighbourhood of the limit.
+The set of terms of the sequence that differ from the proposed limit is countable, hence closed. Its complement is an open neighbourhood of the limit.
 \end{hint}
 \begin{hint}{ex:tietzeR}
-(a) The set where the extension $G$ satisfies $|G|=1$ is closed and misses $A$. Multiply $G$ by a Urysohn function that equals $1$ on $A$ and $0$ on that set. (b) Look at the points $x_n=\frac1{n\pi+\pi/2}$.
+(a)~Where the bounded extension $G$ satisfies $|G|=1$, the set is closed and misses $A$. Multiply $G$ by a Urysohn function that equals $1$ on $A$ and equals $0$ on that set. (b)~Test the points $x_n=1/(n\pi+\pi/2)$.
 \end{hint}
 \begin{hint}{ex:v7c03a}
-A continuous map to the discrete space $\{0,1\}$ has open preimages. In the indiscrete space the only open sets are empty or everything.
+Every point of $\mathopen]0,1[$ has a ball inside $A$. Every ball about $1$ meets $\mathopen]1,+\infty[$. The points $1/n$ converge to $0$.
 \end{hint}
 \begin{hint}{ex:v7c03b}
-If two points of a product differ in the coordinate $i$, separate them by open sets in the factor $X_i$, and pull those sets back by the projection.
+If $x\ne y$, disjoint open sets $U$ and $V$ give a basic open rectangle $U\times V$ that misses the diagonal. The same rectangle, read from a closed diagonal, separates $x$ and $y$.
 \end{hint}
 \begin{hint}{ex:v7c03c}
-A neighbourhood of an origin contains a punctured interval that is identified with the same punctured interval about the other origin.
+The preimage of a closed set is the union of the two preimages under the restrictions. A closed subset of a closed set is closed in $X$. For the counterexample, send the negative numbers to $0$ and the rest to $1$.
 \end{hint}
 \begin{hint}{ex:v7c03d}
-Travel one coordinate at a time. In $\R^n$ with one point removed, a straight segment that hits the missing point can be bent around it by one extra corner.
+Inside $B$, the closure of $A$ is all of $B$. A continuous map from $B$ to $\{0,1\}$ is constant on $A$, and the preimage of that value is closed in $B$.
 \end{hint}
 
 \section{Solutions}
 
 \begin{solution}{ex:cofinite}
-\idea Open sets are large: each of them misses only finitely many points. They all meet, and a neighbourhood is hard to avoid.
-\writeup Two non-empty open sets $X\setminus F_1$ and $X\setminus F_2$ meet, because $X$ is infinite and $F_1\cup F_2$ is finite. So $X$ is not a disjoint union of two non-empty open sets. It is connected, and it is not Hausdorff. If $g:X\to X$ has finite fibres, the preimage of a finite set is finite, so preimages of closed sets are closed and $g$ is continuous. If the terms $x_n$ are distinct and $U=X\setminus F$ is a neighbourhood of a point $x$, then at most $|F|$ terms lie in $F$, so $x_n\in U$ for all large $n$. Thus $x_n\to x$, for every $x\in X$.
+\idea Each nonempty open set excludes only finitely many points, so two of them cannot be disjoint, and a sequence of distinct points can avoid that finite exclusion only for a while.
+\writeup Let $U_1=X\setminus F_1$ and $U_2=X\setminus F_2$ be nonempty and open, so $F_1$ and $F_2$ are finite. Their intersection is $X\setminus(F_1\cup F_2)$. The union $F_1\cup F_2$ is finite, and $X$ is infinite, so the intersection is nonempty. Therefore $X$ is not a union of two disjoint nonempty open sets: $X$ is connected. The same meeting shows that $X$ is not Hausdorff.
+
+Let $g:X\to X$ have finite fibres, and let $F\subseteq X$ be finite. Then $g^{-1}(F)$ is a finite union of finite fibres, hence finite. The closed sets of the cofinite topology are the finite sets, together with $X$. Preimages of closed sets are therefore closed, and $g$ is continuous.
+
+Let $(x_n)$ be a sequence of distinct points, and let $x\in X$. A neighbourhood of $x$ contains a cofinite open set $X\setminus F$. At most $|F|$ terms of the sequence lie in $F$, because the terms are distinct. So $x_n\in X\setminus F$ for all large $n$. The sequence converges to $x$. The point $x$ was arbitrary.
 \end{solution}
 
 \begin{solution}{ex:RmodQ}
-\idea Openness supplies an interval. Stability under rational translation spreads that interval over the whole line, because the rational translates cover $\R$.
-\writeup Let $U\subseteq\R$ be open, non-empty, and satisfy $U+q=U$ for every rational $q$. Take $x\in U$, so some interval $]x-\varepsilon,x+\varepsilon[$ lies in $U$. For an arbitrary $y\in\R$, density of $\Q$ supplies $q$ with $|y-x-q|<\varepsilon$. Then $y-q$ lies in $]x-\varepsilon,x+\varepsilon[\subseteq U$, so $y\in U+q=U$. Hence $U=\R$. An open set of the quotient $\R/\Q$ is a set $V$ whose preimage is open, and that preimage is stable under $\Q$. So $V$ is empty or $V$ is the whole quotient.
+\idea Openness supplies an interval. Translating that interval by a dense set of rationals covers the line.
+\writeup Let $U\subseteq\R$ be open and nonempty, and assume $U+q=U$ for every $q\in\Q$. Pick $x\in U$ and $\varepsilon>0$ with $\mathopen]x-\varepsilon,x+\varepsilon[\,\subseteq U$. Let $y\in\R$. Density of $\Q$ gives a rational $q$ with $|y-x-q|<\varepsilon$. Then $y-q$ lies in $\mathopen]x-\varepsilon,x+\varepsilon[$, hence in $U$, and $y=(y-q)+q$ lies in $U+q=U$. So $U=\R$.
+
+An open set $V$ in $\R/\Q$ has open preimage, and that preimage is a union of classes, hence stable under rational translations. The preimage is either empty or all of $\R$. So $V$ is either empty or the whole quotient.
 \end{solution}
 
 \begin{solution}{ex:notR2}
-\idea Homeomorphisms preserve connectedness, and they preserve what happens when points are deleted. Count the pieces.
-\writeup If $h:\R\to\R^2$ were a homeomorphism, it would restrict to a homeomorphism from $\R\setminus\{0\}$ onto $\R^2\setminus\{h(0)\}$. The first space is not connected, by Theorem~\ref{thm:intervals}. The second is path-connected: join two points by a polygonal path with one corner that avoids the deleted point. A path-connected space is connected. That is impossible. The same comparison works for $[0,1]$ and $[0,1]^2$, after deleting the point $\frac12$ and its image. A square minus one point is path-connected, by the same polygonal paths. For the circle: deleting any one point of $S^1$ leaves a connected set, an open arc, the image of an interval. Deleting an interior point of an interval disconnects the interval. If $h:S^1\to I$ were a homeomorphism, the interval $I$ would have at least two points, hence an interior point $c$, and $S^1\setminus\{h^{-1}(c)\}$ would be homeomorphic to the disconnected set $I\setminus\{c\}$.
+\idea Homeomorphisms preserve connectedness, and they preserve the effect of deleting a point. Count the pieces that remain.
+\writeup Suppose $h:\R\to\R^2$ were a homeomorphism. Then $h$ would restrict to a homeomorphism from $\R\setminus\{0\}$ onto $\R^2\setminus\{h(0)\}$. The domain is not connected, by Theorem~\ref{thm:intervals}. The codomain is path-connected. Given two points of the punctured plane, the straight segment joins them if it misses $h(0)$. If the segment hits $h(0)$, choose a third point off that line and travel by two segments. Proposition~\ref{prop:connected}(a) would then make the punctured plane connected, after the path-connected space is known to be connected. This is impossible.
+
+The same deletion works for $[0,1]$ and $[0,1]^2$. The set $[0,1]\setminus\{\frac12\}$ is disconnected. A square minus one point $p$ is path-connected. The square is convex, so a segment between two of its points stays in the square. If that segment hits $p$, choose $z$ in the square off the line through the two points. The square is not contained in a line, so such a $z$ exists, and the two segments through $z$ miss $p$.
+
+For the circle, fix any point of $S^1$. Its complement is the image of $\mathopen]0,2\pi[$ under $\theta\mapsto(\cos\theta,\sin\theta)$, up to a rotation of the angle. That map is continuous, the domain is connected, and the image is all of the punctured circle. So deleting one point of $S^1$ leaves a connected set.
+
+An interval $I$ that is a continuous image of $S^1$ has at least two points. If $a<b$ lie in $I$, the interval test puts every $c$ with $a<c<b$ into $I$. Then
+\[
+I\setminus\{c\}=\bigl(I\cap\mathopen]-\infty,c[\bigr)\cup\bigl(I\cap\mathopen]c,+\infty[\bigr)
+\]
+is a split into two nonempty sets, both open in the subspace. If $h:S^1\to I$ were a homeomorphism, the punctured circle $S^1\setminus\{h^{-1}(c)\}$ would be homeomorphic to the disconnected set $I\setminus\{c\}$.
 \end{solution}
 
 \begin{solution}{ex:monotone}
-\idea Continuity and injectivity on an interval forbid turning back. The set of all pairs $x<y$ is connected, and on a connected set a continuous function that never vanishes keeps a constant sign.
-\writeup Let $\Delta=\{(x,y)\in I\times I:x<y\}$. The set is convex: if $x<y$ and $x'<y'$, then $(1-t)x+tx'<(1-t)y+ty'$. So $\Delta$ is path-connected, hence connected. On $\Delta$ the difference $g(x,y)=f(y)-f(x)$ is continuous, and injectivity of $f$ says it has no zero. Corollary~\ref{cor:ivt} says $g(\Delta)$ is an interval that does not contain $0$. So either $g>0$ on all of $\Delta$, or $g<0$ on all of $\Delta$. The function $f$ is strictly increasing or strictly decreasing. Say it increases. Then $J=f(I)$ is an interval, again by Corollary~\ref{cor:ivt}. The inverse is increasing. For continuity at $y_0=f(x_0)$, take $\varepsilon>0$ with $x_0\pm\varepsilon\in I$, using one side if $x_0$ is an endpoint. Then $f(x_0-\varepsilon)<y_0<f(x_0+\varepsilon)$, and for $y$ between those two values the inverse $f^{-1}(y)$ lies between $x_0-\varepsilon$ and $x_0+\varepsilon$.
+\idea An injective continuous function on an interval cannot turn back. All pairs $x<y$ at once form a connected set, and a continuous function on that set which never hits $0$ keeps a constant sign.
+\writeup Let $\Delta=\{(x,y)\in I\times I:x<y\}$. If $(x,y)$ and $(x',y')$ lie in $\Delta$ and $t\in[0,1]$, then
+\[
+(1-t)(y-x)+t(y'-x')>0,
+\]
+so the segment between the two pairs stays in $\Delta$. Thus $\Delta$ is convex in $\R^2$, hence path-connected, hence connected.
+
+The function $g(x,y)=f(y)-f(x)$ is continuous on $\Delta$. It has no zero, because $f$ is injective. Corollary~\ref{cor:ivt} says that $g(\Delta)$ is an interval, and that interval does not contain $0$. An interval in $\R\setminus\{0\}$ lies entirely in the positive reals or entirely in the negative reals. So either $f(y)>f(x)$ whenever $x<y$, or else $f(y)<f(x)$ whenever $x<y$. The function $f$ is strictly increasing or strictly decreasing.
+
+The image $J=f(I)$ is an interval by Corollary~\ref{cor:ivt}. It remains to check the inverse. The decreasing case is the increasing case applied to $-f$, so assume $f$ is strictly increasing. Then $f^{-1}$ is strictly increasing as well.
+
+Let $y_0=f(x_0)$, and let $\varepsilon>0$. If $I$ contains both $x_0-\varepsilon$ and $x_0+\varepsilon$, or contains them after $\varepsilon$ is replaced by a smaller positive number, then $f(x_0-\varepsilon)<y_0<f(x_0+\varepsilon)$. Any $y\in J$ strictly between those two values has $f^{-1}(y)$ strictly between $x_0-\varepsilon$ and $x_0+\varepsilon$.
+
+If $x_0$ is the left endpoint of $I$, then $y_0$ is the left endpoint of $J$, because $f$ is increasing. Neighbourhoods of $y_0$ in $J$ only see values $y\ge y_0$. Choose a point of $I$ in $\mathopen]x_0,x_0+\varepsilon[$, call it $x_0+\eta$ after shrinking, with $\eta>0$. For $y\in J$ with $y_0\le y<f(x_0+\eta)$, the inverse lies in $[x_0,x_0+\eta]$, hence within $\varepsilon$ of $x_0$. The right endpoint is the same argument from the other side. If $I=\{x_0\}$, the inverse is a map on a one-point space, and it is continuous.
 \end{solution}
 
 \begin{solution}{ex:furstenberg}
-\idea From some point on, the factorials are divisible by every fixed integer. Balls for $d$ are therefore progressions with factorial steps, and every arithmetic progression is a union of such balls. In this topology a non-empty open set is infinite, while a finite union of progressions is closed.
-\writeup (a) If $k!$ divides both $m$ and $n$, it divides $m+n$, so $v(m+n)\ge\min(v(m),v(n))$ and $d$ is an ultrametric. Also $d(m,n)=0$ if and only if $m=n$, because a non-zero integer has finite $v$. The open ball $B(a,2^{-k})$ is $\{n:v(n-a)>k\}$. Since $(k+1)!$ divides $j!$ for every $j\ge k+1$, this ball is $\{n:(k+1)!\mid n-a\}=a+(k+1)!\Z$. If $n\in a+b\Z$ and $b$ divides $k!$, then $n+k!\Z\subseteq a+b\Z$. Progressions are therefore open for $d$, and $d$-balls are progressions. The two topologies coincide. (b) The progression $a+b\Z$ is open, and its complement is the union of the progressions $a+j+b\Z$ for $1\le j<b$, which are open as well. Two distinct integers are separated by a progression and its complement, both open, so the connected components are single points. (c) Every integer other than $\pm1$ has a prime factor, so $\Z\setminus\{-1,1\}=\bigcup_p p\Z$. If there were only finitely many primes, this would be a finite union of closed sets, hence closed, and $\{-1,1\}$ would be open. A non-empty open set contains a progression, and a progression is infinite.
+\idea From some point on, $k!$ is a multiple of any fixed integer. Balls for $d$ are therefore progressions with factorial steps, and every arithmetic progression is a union of those balls. Nonempty open sets are infinite, while a finite union of progressions is closed.
+\writeup (a) If $k!$ divides both $m$ and $n$, then $k!$ divides $m+n$, so $v(m+n)\ge\min(v(m),v(n))$. For the differences, $m-n=(m-p)+(p-n)$, and the same inequality gives
+\[
+v(m-n)\ge\min\bigl(v(m-p),v(p-n)\bigr).
+\]
+Passing to $d=2^{-v}$, with the convention $2^{-\infty}=0$, yields the ultrametric inequality $d(m,n)\le\max\bigl(d(m,p),d(p,n)\bigr)$. Also $d(m,n)=d(n,m)$. If $m\ne n$, then $m-n$ is a nonzero integer, so $v(m-n)$ is finite: $k!$ eventually exceeds $|m-n|$ and cannot divide it. Thus $d(m,n)>0$, while $d(m,m)=0$. The function $d$ is an ultrametric.
+
+The positive values of $d$ are $2^{-1},2^{-2},2^{-3},\ldots$, because $v$ on a nonzero integer is a positive integer: $1!=1$ divides every nonzero integer. Every open ball is therefore equal to $B(a,2^{-k})$ for some integer $k\ge0$, or equal to all of $\Z$ if the radius exceeds $1/2$. For $k\ge0$,
+\[
+B(a,2^{-k})=\{n:v(n-a)>k\}=\{n:(k+1)!\text{ divides }n-a\}=a+(k+1)!\,\Z,
+\]
+since $(k+1)!$ divides $j!$ for every $j\ge k+1$. Each metric ball is a progression.
+
+Conversely, fix $b\ge1$ and a point $n\in a+b\Z$. Then $b$ divides $b!$. The ball $B(n,2^{-(b-1)})$ equals $n+b!\,\Z$ when $b\ge1$, and this ball is contained in $a+b\Z$, because $b!$ is a multiple of $b$ and $n$ already lies in $a+b\Z$. For $b=1$ the ball of radius $1$ is all of $\Z$, which equals $a+\Z$. Every progression is therefore open in the metric topology. The two topologies have the same open sets: metric-open sets are unions of balls, hence unions of progressions, and every union of progressions is metric-open.
+
+(b) The progression $a+b\Z$ is open. Its complement is the union of $a+j+b\Z$ for $1\le j\le b-1$. For $b=1$ that union is empty. Each of those progressions is open, so the complement is open, and $a+b\Z$ is closed.
+
+Let $m$ and $n$ be distinct integers, and set $b=|m-n|+1$. Then $m\in m+b\Z$ and $n\notin m+b\Z$. The progression is open and closed. Its intersection with a subset, and the complement of that intersection, would split any subset that contained both $m$ and $n$. Components are therefore single points, and $\Z$ is totally disconnected.
+
+(c) Every integer other than $\pm1$ lies in $p\Z$ for some prime $p$. The integer $0$ lies in every $p\Z$. If $|n|\ge2$, then $|n|$ has a prime factor, by the factorisation in Volume~2, and that prime divides $n$. So
+\[
+\Z\setminus\{-1,1\}=\bigcup_p p\Z.
+\]
+Each $p\Z$ is closed. If there were only finitely many primes, the union would be a finite union of closed sets. A finite union of closed sets is closed, because its complement is a finite intersection of open sets. Then $\{-1,1\}$ would be open. A nonempty open set contains a metric ball, hence contains a progression $a+b\Z$ with $b\ge1$, and every such progression is infinite. The set $\{-1,1\}$ is finite. It cannot be open.
 \end{solution}
 
 \begin{solution}{ex:finite}
-\idea On a finite set, the intersection of the open sets that contain a point is still open, so each point has a smallest open neighbourhood $U_x$. The topology is determined by these neighbourhoods, and the relation ``$y\in U_x$'' is a preorder.
-\writeup Given a topology, let $U_x$ be the intersection of the finitely many open sets that contain $x$. That intersection is open. Then $x\in\overline{\{y\}}$ if and only if every open set containing $x$ contains $y$, if and only if $y\in U_x$. The relation is reflexive. It is transitive: $y\in U_x$ and $z\in U_y$ give $U_y\subseteq U_x$, so $z\in U_x$. A set $V$ is open if and only if it contains $U_x$ for each $x\in V$, if and only if it is closed upwards: $x\in V$ and $x\preceq y$ imply $y\in V$. Conversely, for a preorder the upward-closed sets are stable under unions and under intersections, so they form a topology. The closure of $\{y\}$ is $\{x:x\preceq y\}$, the complement of the largest upward-closed set that misses $y$. The two constructions invert each other. The space is $T_0$ if and only if $\preceq$ is antisymmetric, that is, a partial order: $x\preceq y\preceq x$ means $x$ and $y$ lie in exactly the same open sets. On three labelled points there are $29$ topologies. Up to relabelling there are $9$. One counts preorders by the partition into classes of mutual equivalence $x\preceq y\preceq x$ and a partial order on the classes. For instance there are $19$ partial orders on three labelled points, $9$ preorders with one class of two points and one singleton, and $1$ preorder in which all three points are equivalent.
+\idea A finite space has a smallest open neighbourhood of each point, namely the intersection of the finitely many open sets that contain the point. Membership in that neighbourhood is a preorder, and the open sets are the upward-closed sets for it.
+\writeup Let $\mathcal T$ be a topology on a finite set $X$. For each $x$, let $U_x$ be the intersection of all open sets that contain $x$. There are finitely many subsets, so this is a finite intersection, and $U_x$ is open. Then $x\in\overline{\{y\}}$ exactly when every open set containing $x$ contains $y$, which is exactly the condition $y\in U_x$. Define $x\preceq y$ by that condition.
+
+The relation is reflexive because $x\in U_x$. It is transitive: if $y\in U_x$ and $z\in U_y$, every open neighbourhood of $y$ contains $z$, and $U_x$ is one open set containing $y$, so $U_y\subseteq U_x$ and $z\in U_x$.
+
+A set $V$ is open exactly when $U_x\subseteq V$ for every $x\in V$. Indeed, if $V$ is open and $x\in V$, then $U_x\subseteq V$ by construction of $U_x$. If $V$ contains $U_x$ for each of its points, then $V=\bigcup_{x\in V}U_x$, a union of opens. In the language of $\preceq$, the condition $U_x\subseteq V$ for every $x\in V$ says that $x\in V$ and $x\preceq y$ imply $y\in V$. The open sets are the upward-closed sets.
+
+Conversely, start with a preorder $\preceq$. The upward-closed sets are stable under unions and under intersections, they include $\varnothing$ and $X$, and they form a topology. In that topology, the closure of $\{y\}$ is $\{x:x\preceq y\}$. A point $x$ fails to lie in the closure exactly when some open set contains $x$ and misses $y$, and the largest upward-closed set that misses $y$ is the complement of $\{x:x\preceq y\}$. The two constructions invert each other.
+
+The space is $T_0$ exactly when $\preceq$ is antisymmetric, that is, a partial order. The relations $x\preceq y$ and $y\preceq x$ mean that every open set contains $x$ if and only if it contains $y$. Distinct points are then not distinguished by any open set. If the relation is antisymmetric, $x\preceq y\preceq x$ forces $x=y$, so distinct points are distinguished.
+
+On a set of three elements the preorders are counted by the equivalence relation $x\sim y$, meaning $x\preceq y$ and $y\preceq x$, together with a partial order on the classes. There are nine shapes, and the labelled counts are as follows.
+
+If there are three classes, the preorder is a partial order. The antichain contributes $1$ labelling. A single comparable pair, with the third point incomparable to both, contributes $3\times 2=6$. A least element below two incomparable elements contributes $3$. A greatest element above two incomparable elements contributes $3$. A chain of three elements contributes $3!=6$. These shapes are pairwise non-isomorphic, and every partial order on three points is one of them. The labelled total is $1+6+3+3+6=19$.
+
+If there is one class of two points and one singleton, there are $\binom{3}{2}=3$ choices for the pair. The two classes may be incomparable, the pair may lie strictly below the singleton, or the singleton may lie strictly below the pair. That is $3\times 3=9$ preorders.
+
+If all three points are equivalent, there is $1$ preorder.
+
+The total is $19+9+1=29$. Up to relabelling there is one topology for each of the five partial-order shapes, three topologies for the doubleton-and-singleton shapes, and one indiscrete topology, which is $9$.
 \end{solution}
 
 \begin{solution}{ex:cocountable}
-\idea Countable sets are closed. The tail of a sequence that avoids its limit is a closed set, and a neighbourhood can avoid it. The closure of a large set, by contrast, is the whole line.
-\writeup Suppose $x_n\to x$. The set $S$ of terms other than $x$ is countable, so $U=\R\setminus S$ is an open neighbourhood of $x$, and membership $x_n\in U$ means $x_n=x$ from some index on. Every non-empty open set is cocountable, hence meets the uncountable set $A$. So $0\in\bar A$. A sequence of points of $A$ that converged to $0$ would be eventually equal to $0$, which is not in $A$. Proposition~\ref{prop:sequences}(a) says the space is not first countable. The identity map onto the discrete topology preserves sequential limits: the only convergent sequences are the eventually constant ones, and those converge in every topology. The identity is not continuous. The singleton $\{0\}$ is open in the discrete topology and not open in the cocountable topology.
+\idea Countable sets are closed, so the terms of a sequence that avoid the limit form a closed set, and a neighbourhood can exclude them. A set whose complement is countable still meets every cocountable set.
+\writeup Suppose $x_n\to x$. Let $S$ be the set of terms $x_n$ that differ from $x$. The set $S$ is countable, so $U=\R\setminus S$ is open and contains $x$. Eventually $x_n\in U$, which means $x_n=x$. A convergent sequence is eventually constant.
+
+Let $A=\R\setminus\{0\}$. Every nonempty open set is the complement of a countable set, so it is not contained in $\{0\}$. The only subsets of $\{0\}$ are $\varnothing$ and $\{0\}$, and $\{0\}$ is not open, because its complement is uncountable. Every nonempty open set therefore meets $A$, and $0\in\bar A$.
+
+A sequence in $A$ that converged to $0$ would be eventually equal to $0$. The value $0$ is not in $A$. No such sequence exists. Proposition~\ref{prop:sequences}(a) says that a first countable space detects the closure by sequences. This space does not, so it is not first countable.
+
+Let $\iota$ be the identity map from the cocountable topology to the discrete topology. The sequences that converge in the cocountable topology are the eventually constant sequences, and an eventually constant sequence converges in every topology. So $\iota$ preserves limits of sequences. It is not continuous: $\{0\}$ is open in the discrete topology, and $\{0\}$ is not open in the cocountable topology.
 \end{solution}
 
 \begin{solution}{ex:tietzeR}
-\idea Compress $\R$ into $(-1,1)$, extend the compressed function, and come back. The extension may touch $\pm1$, where there is no inverse, but only away from $A$. A Urysohn function pushes the extension off $\pm1$ without changing its values on $A$.
-\writeup (a) Squashing by $h(t)=\frac t{1+|t|}$ is a homeomorphism of $\R$ onto $(-1,1)$. The inverse is $s\mapsto\frac s{1-|s|}$. So $g=h\circ f:A\to(-1,1)$ is continuous, and Proposition~\ref{prop:tietze} extends it to a continuous $G:X\to[-1,1]$. Let $C=\{x\in X:|G(x)|=1\}$. The set $C$ is closed, and it misses $A$ because $|g|<1$ on $A$. When $C$ is empty, the composite $F=h^{-1}\circ G$ is already the extension. When $C$ is not empty, take the function $u:X\to[0,1]$ of Proposition~\ref{prop:urysohn} that equals $1$ on $A$ and $0$ on $C$. Then $|uG|<1$ everywhere: on $C$ the product is $0$, and off $C$ one has $|uG|\le|G|<1$. Also $uG=g$ on $A$. The composite $F=h^{-1}\circ(uG)$ is therefore continuous on $X$, and its restriction to $A$ is $h^{-1}\circ h\circ f=f$. (b) Set $x_n=\frac1{n\pi+\pi/2}$. Then $x_n\to0$ and $f(x_n)=\sin(n\pi+\frac\pi2)=(-1)^n$. A continuous extension $F$ would satisfy $F(x_n)\to F(0)$, but the sequence $(-1)^n$ has no limit.
+\idea Compress $\R$ into $\mathopen]-1,1[$, extend by Proposition~\ref{prop:tietze}, and invert the compression. The extension may touch $\pm1$, but only off $A$. A Urysohn function pulls those points back into $\mathopen]-1,1[$ and stays equal to $1$ on $A$.
+\writeup (a) The map $h(t)=t/(1+|t|)$ is a continuous bijection from $\R$ onto $\mathopen]-1,1[$. Its inverse is $s\mapsto s/(1-|s|)$, which is continuous on $\mathopen]-1,1[$. Both statements are the usual arithmetic of absolute values: if $s=t/(1+|t|)$, then $|s|<1$ and $t=s/(1-|s|)$. So $g=h\circ f$ is a continuous map from $A$ into $\mathopen]-1,1[$.
+
+Proposition~\ref{prop:tietze} extends $g$ to a continuous $G:X\to[-1,1]$. Let $C=\{x\in X:|G(x)|=1\}$. This set is closed, being the preimage of the closed set $\{-1,1\}$, and it misses $A$, because $|g|<1$ on $A$. If $C$ is empty, then $F=h^{-1}\circ G$ is a continuous extension of $f$.
+
+If $C$ is nonempty, Proposition~\ref{prop:urysohn} supplies a continuous $u:X\to[0,1]$ with $u=1$ on $A$ and $u=0$ on $C$. The product $uG$ equals $0$ on $C$. Off $C$ one has $|G|<1$, and $|u|\le1$, so $|uG|\le|G|<1$. Thus $|uG|<1$ everywhere, and $h^{-1}$ may be applied. On $A$ one has $uG=g$, so
+\[
+F=h^{-1}\circ(uG)
+\]
+equals $h^{-1}\circ h\circ f=f$ on $A$, and $F$ is continuous on $X$.
+
+(b) Let $x_n=1/(n\pi+\pi/2)$ for integers $n\ge0$. Then $0<x_n\le 2/\pi$, so $x_n\in A$ for every $n$, and $x_n\to0$. Also
+\[
+f(x_n)=\sin\Bigl(n\pi+\frac\pi2\Bigr)=(-1)^n.
+\]
+If a continuous $F:[0,1]\to\R$ agreed with $f$ on $A$, then $F(x_n)\to F(0)$. The sequence $(-1)^n$ does not converge. There is no such extension.
 \end{solution}
 
 \begin{solution}{ex:v7c03a}
-\idea In the indiscrete space the only way to split the space into open sets is the trivial split. A map to $\{0,1\}$ that is continuous has to be constant, and that is the definition of connectedness.
-\writeup The only open sets are $\varnothing$ and the whole space, so the space is not a union of two non-empty disjoint open sets. It is connected. Two distinct points have no disjoint neighbourhoods, because the only neighbourhood of either point is the whole space. The space is not Hausdorff. If $f:X\to Y$ is continuous and surjective and $X$ is connected, a continuous map $g:Y\to\{0,1\}$ makes $g\circ f$ continuous, hence constant, and surjectivity of $f$ forces $g$ itself to be constant. So $Y$ is connected. This is Proposition~\ref{prop:connected}(a), written from the definition.
+\idea The point $1$ is in the set and every ball about it spills past $1$. The point $0$ is not in the set, and the sequence $1/n$ from the set converges to it. Between any two points of $A$ the segment stays in $A$.
+\writeup Let $x\in\mathopen]0,1[$, and set $r=\min(x,1-x)>0$. The ball $\mathopen]x-r,x+r[$ is contained in $\mathopen]0,1[$, hence in $A$. So $x$ is an interior point. The point $1$ is not interior: for every $r>0$ the number $1+r/2$ lies in the ball about $1$ and not in $A$. A point outside $A$ is not an interior point of $A$. Therefore $\mathring A=\mathopen]0,1[$.
+
+The complement of $[0,1]$ is $\mathopen]-\infty,0[\,\cup\,\mathopen]1,+\infty[$, a union of two open sets, so $[0,1]$ is closed. It contains $A$, and the closure is the smallest closed set containing $A$, so $\bar A\subseteq[0,1]$. The sequence $1/n$ lies in $A$ and converges to $0$, so Proposition~\ref{prop:closure}(a) puts $0$ in $\bar A$. Every point of $A$ lies in $\bar A$. Hence $\bar A=[0,1]$.
+
+The set $A$ is not equal to its interior, so $A$ is not open. It is not equal to its closure, so $A$ is not closed.
+
+If $a,b\in A$ and $a<c<b$, then $0<a$ fails or not: in any case $0<c<b\le1$, wait, more carefully. Since $a\in A$ one has $a>0$, so $c>a>0$, and $c<b\le1$, so $c\in\mathopen]0,1]\subseteq A$. Thus $A$ is an interval. Theorem~\ref{thm:intervals} says that $A$ is connected.
 \end{solution}
 
 \begin{solution}{ex:v7c03b}
-\idea Separation in a product happens in one coordinate. Separation in a subspace is the separation already present in the big space, cut down by the subspace.
-\writeup Let $x$ and $y$ be distinct points of $\prod X_i$, and suppose they differ in the coordinate $i$. The factor $X_i$ is Hausdorff, so $x_i$ and $y_i$ have disjoint open neighbourhoods $U$ and $V$. The cylinders $p_i^{-1}(U)$ and $p_i^{-1}(V)$ are disjoint open neighbourhoods of $x$ and $y$. If $A\subseteq X$ and $X$ is Hausdorff, two distinct points of $A$ have disjoint open neighbourhoods $U$ and $V$ in $X$. Then $U\cap A$ and $V\cap A$ are disjoint neighbourhoods in the subspace topology.
+\idea A pair of disjoint open neighbourhoods is a basic open rectangle in the product that misses the diagonal. Closing the diagonal is the same sentence read in the other direction.
+\writeup Suppose $X$ is Hausdorff, and take $(x,y)\notin\Delta$, so $x\ne y$. Disjoint open sets $U\ni x$ and $V\ni y$ exist. The rectangle $U\times V$ is the intersection of the cylinders $p_1^{-1}(U)$ and $p_2^{-1}(V)$, hence open in the product, and it contains $(x,y)$. It misses $\Delta$: a point $(z,z)$ in the rectangle would lie in $U\cap V$. The complement of $\Delta$ is therefore open, and $\Delta$ is closed.
+
+Suppose conversely that $\Delta$ is closed, and take $x\ne y$. Then $(x,y)$ lies in the open complement of $\Delta$. Proposition~\ref{prop:basis} supplies a basic open set $U\times V$ with
+\[
+(x,y)\in U\times V\subseteq (X\times X)\setminus\Delta.
+\]
+The sets $U$ and $V$ are open neighbourhoods of $x$ and of $y$. They are disjoint: a common point $z$ would give $(z,z)\in U\times V$, hence a point of $\Delta$ in the rectangle.
 \end{solution}
 
 \begin{solution}{ex:v7c03c}
-\idea Away from the origins the two copies of the line have been glued. Any open piece about one origin therefore contains points that are also points of every open piece about the other origin.
-\writeup Write $0_0$ and $0_1$ for the two origins, the classes of $(0,0)$ and $(0,1)$. A neighbourhood of $0_0$ contains the image of $(-\varepsilon,\varepsilon)\times\{0\}$ for some $\varepsilon>0$. The punctured interval $(-\varepsilon,\varepsilon)\setminus\{0\}$ is identified with the same punctured interval in the other copy, so that image meets every neighbourhood of $0_1$. The two origins have no disjoint neighbourhoods. The space is not Hausdorff. The same punctured interval is dense in a neighbourhood of $0_1$, because every neighbourhood of $0_1$ contains points of that interval.
+\idea Closed sets may be tested instead of open sets. On each closed piece the preimage is closed in that piece, and a closed subset of a closed set is closed in $X$. The counterexample jumps at $0$.
+\writeup Let $F\subseteq Y$ be closed. Then
+\[
+g^{-1}(F)=\bigl(g|_C\bigr)^{-1}(F)\cup\bigl(g|_D\bigr)^{-1}(F).
+\]
+Continuity of the restriction says that $(g|_C)^{-1}(F)$ is closed in $C$. A set closed in $C$ has the form $C\cap H$ with $H$ closed in $X$. Since $C$ itself is closed, $C\cap H$ is closed in $X$. The same holds for $D$. A union of two closed sets is closed, because the complement is an intersection of two open sets, and finite intersections of open sets are open. So $g^{-1}(F)$ is closed, and $g$ is continuous.
+
+For the counterexample, let $Y=\{0,1\}$ with the discrete topology, and define $g:\R\to Y$ by $g(x)=0$ for $x<0$ and $g(x)=1$ for $x\ge0$. The restriction of $g$ to $\mathopen]-\infty,0[$ is constant, hence continuous. The restriction to $[0,+\infty[$ is constant, hence continuous. The preimage $g^{-1}(\{1\})=[0,+\infty[$ is not open in $\R$, while $\{1\}$ is open in $Y$. So $g$ is not continuous on $\R$. The piece $\mathopen]-\infty,0[$ is not closed.
 \end{solution}
 
 \begin{solution}{ex:v7c03d}
-\idea Move one coordinate at a time. Each step is a path in a path-connected factor, with the other coordinates held fixed. In dimension at least $2$, a straight line that hits a deleted point can be replaced by a path with one extra corner.
-\writeup Let $X$ and $Y$ be path-connected, and take $(a,b)$ and $(a',b')$ in the product. A path $\gamma$ in $X$ from $a$ to $a'$, with the second coordinate held at $b$, joins $(a,b)$ to $(a',b)$. A path $\eta$ in $Y$ from $b$ to $b'$, with the first coordinate held at $a'$, joins $(a',b)$ to $(a',b')$. The concatenation is a path in the product. Induction gives finite products. In particular $\R^n$ is path-connected, being a product of copies of $\R$. If $n\ge2$ and $p\in\R^n$ is deleted, take two points $x$ and $y$ in the complement. The straight segment from $x$ to $y$ meets $p$ in at most one point. If it misses $p$, it is already a path in the complement. If it hits $p$, choose a point $z$ off the line, which exists because $n\ge2$, and travel $x$ to $z$ to $y$. Both segments can be chosen to miss $p$.
+\idea On the subspace $B$, there is no room past the closure of $A$. A map to $\{0,1\}$ that is constant on $A$ has a closed preimage, and that preimage is forced to be all of $B$.
+\writeup The closed sets of the subspace $B$ are the sets $F\cap B$ with $F$ closed in $X$. The set $\bar A\cap B$ is therefore closed in $B$, and it contains $A$. If $F\cap B$ is any closed set of $B$ that contains $A$, then $F$ is a closed set of $X$ containing $A$, so $\bar A\subseteq F$ and $\bar A\cap B\subseteq F\cap B$. Thus $\bar A\cap B$ is the closure of $A$ computed inside $B$. The hypothesis $B\subseteq\bar A$ says that this closure equals $B$.
+
+Let $g:B\to\{0,1\}$ be continuous, with discrete codomain. The restriction of $g$ to $A$ is continuous, and $A$ is connected, so $g$ equals some constant $c$ on $A$. The preimage $g^{-1}(\{c\})$ is closed in $B$ and contains $A$. By the previous paragraph it equals $B$. So $g$ is constant, and $B$ is connected.
+
+Let $C$ be the connected component of a point $x$. Then $C$ is connected and $C\subseteq\bar C$. The result just proved, applied to $B=\bar C$, says that $\bar C$ is connected. The component is the largest connected set containing $x$, so $\bar C\subseteq C$. Hence $C=\bar C$, and $C$ is closed.
 \end{solution}
 
 \section*{Sources and further reading}
 \addcontentsline{toc}{section}{Sources and further reading}
 
 \begin{itemize}
-\item Munkres's \emph{Topology}, 2nd ed., Prentice Hall, 2000, Chapters~2--4, is the standard first course: products, quotients, connectedness, and the countability and separation axioms, together with a proof of Urysohn's lemma.
-\item Hausdorff's \emph{Grundz\"uge der Mengenlehre}, Veit, Leipzig, 1914, defines topological spaces by neighbourhoods and states the separation axiom that carries his name.
-\item L.~A.~Steen and J.~A.~Seebach, \emph{Counterexamples in Topology}, 2nd ed., Springer, 1978 (Dover, 1995), collects the cofinite space, the cocountable space, the Sierpi\'nski space, the topologist's sine curve, and $139$ further examples.
-\item Furstenberg's note is \emph{On the infinitude of primes}, American Mathematical Monthly 62 (1955), 353.
-\item S.~Vickers, \emph{Topology via Logic}, Cambridge University Press, 1989, treats open sets as observable properties, for computer scientists.
-\item J.~Stillwell, \emph{Classical Topology and Combinatorial Group Theory}, 2nd ed., Springer, 1993, builds surfaces by gluing polygons.
-\item \emph{For the opening stories.} Euler's paper is ``Solutio problematis ad geometriam situs pertinentis'', \emph{Commentarii Academiae Scientiarum Petropolitanae} 8 (1741), 128--140. B.~Hopkins and R.~J.~Wilson, ``The truth about K\"onigsberg'', \emph{College Math. J.} 35 (2004), 198--207, discuss Ehler's letters and Leibniz's \emph{geometria situs}. Listing's name for the subject is ``Vorstudien zur Topologie'', \emph{G\"ottinger Studien} (1847).
+\item J.~Munkres, \emph{Topology}, 2nd ed., Prentice Hall, 2000, Chapters~2--4. Products, quotients, connectedness, and the countability and separation axioms are developed there, with a proof of Urysohn's lemma for normal spaces in \S33.
+\item F.~Hausdorff, \emph{Grundz\"uge der Mengenlehre}, Veit, Leipzig, 1914. Spaces are introduced through neighbourhoods, and the separation axiom that now carries Hausdorff's name is part of the definition.
+\item L.~A.~Steen and J.~A.~Seebach, \emph{Counterexamples in Topology}, 2nd ed., Springer, 1978 (Dover, 1995). A catalogue of spaces that fail one axiom and keep another, including the cofinite space, the cocountable space, the Sierpi\'nski space, and the topologist's sine curve.
+\item H.~Furstenberg, \emph{On the infinitude of primes}, American Mathematical Monthly 62 (1955), 353. The note is one page. Furstenberg was an undergraduate at Yeshiva University.
+\item S.~Vickers, \emph{Topology via Logic}, Cambridge University Press, 1989. Open sets are treated as properties a computation can confirm.
+\item J.~Stillwell, \emph{Classical Topology and Combinatorial Group Theory}, 2nd ed., Springer, 1993. Closed surfaces are built by gluing sides of polygons.
+\item \emph{For the opening stories.} L.~Euler, ``Solutio problematis ad geometriam situs pertinentis'', \emph{Commentarii Academiae Scientiarum Petropolitanae} 8 (1741), 128--140. B.~Hopkins and R.~J.~Wilson, ``The truth about K\"onigsberg'', \emph{College Math. J.} 35 (2004), 198--207, document Ehler's letters and Leibniz's \emph{geometria situs}. J.~B.~Listing, ``Vorstudien zur Topologie'', \emph{G\"ottinger Studien} (1847), is where the word topology is introduced. The English title used above for Bolzano's paper is the translation of \emph{Rein analytischer Beweis} (Prague, 1817).
 \end{itemize}
