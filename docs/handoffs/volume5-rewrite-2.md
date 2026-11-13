@@ -8,35 +8,36 @@ Branch `cursor/volume5-complete-rewrite-a791`. Do not edit Volume 6 or Volumes 1
 
 **Local build, finished.** `./build.sh volume5-calculation` exited 0. Reading PDF, print PDF (413 interior pages), layout check (434 whole boxes, max height 383 pt, no unresolved references), print cover, and EPUB (31 MB, 64 plates at 1800 px, full width, inline math on the em baseline). The blurb must not use `\Z`: the cover wrap does not define that macro. A quicksort example that overflowed the text height was split; the formula \(C_n=2(n+1)H_n-4n\) stays in the box `ex:quicksortexact`, and the derivation is the prose after it.
 
-**In progress.** A second prose pass. The first pass rewrote openings, closings, and many bridges, and appended figures and exercises, but a paragraph count against `origin/main` showed large blocks of old English still in place. Share of old English paragraphs (at least twelve words outside the mathematics) that had already changed, measured before this second pass:
+**Second prose pass, done.** Counted again against `origin/main`: an English paragraph (at least twelve words outside the mathematics) counts as rewritten when it is no longer the same block. What remains identical is a formal statement already in its shortest correct form, a citation line, or a one-line computation. Those were left on purpose.
 
-| Chapter | File | Old English paragraphs rewritten |
+| Chapter | File | English paragraphs rewritten |
 | --- | --- | --- |
-| Preface | `preface.tex` | 100% |
-| 1 | `ch01-finite.tex` | 39% |
-| 2 | `ch02-generating.tex` | 23% |
-| 3 | `ch03-series.tex` | 26% |
-| 4, BBP section | `ch04-integrals.tex`, `bbp-borwein.tex` | 37%, 90% |
-| 5 | `ch05-gamma.tex` | 36% |
-| 6 | `ch06-fourier.tex` | 73% |
-| 7 | `ch07-fft.tex` | 75% |
-| 8 | `ch08-transform.tex` | 86% |
-| 9 | `ch09-complex.tex` | 62% |
-| 10 | `ch10-zeta.tex` | 53% |
-| 11 | `ch11-asymptotics.tex` | 50% |
-| 12 | `hardy-ramanujan.tex` | 64% |
-| 13 | `ch12-agm.tex` | 27% |
+| Preface | `preface.tex` | 100% (5/5) |
+| 1 | `ch01-finite.tex` | 92% (59/64) |
+| 2 | `ch02-generating.tex` | 99% (189/190) |
+| 3 | `ch03-series.tex` | 98% (53/54) |
+| 4 | `ch04-integrals.tex` | 100% (65/65) |
+| 4, BBP | `bbp-borwein.tex` | 90% (9/10) |
+| 5 | `ch05-gamma.tex` | 100% (73/73) |
+| 6 | `ch06-fourier.tex` | 93% (76/82) |
+| 7 | `ch07-fft.tex` | 93% (86/92) |
+| 8 | `ch08-transform.tex` | 98% (55/56) |
+| 9 | `ch09-complex.tex` | 95% (124/130) |
+| 10 | `ch10-zeta.tex` | 94% (68/72) |
+| 11 | `ch11-asymptotics.tex` | 92% (93/101) |
+| 12 | `hardy-ramanujan.tex` | 95% (58/61) |
+| 13 | `ch12-agm.tex` | 100% (261/262) |
 
-Formal statement boxes that are already the shortest correct claim stay. Everything else that still matches `origin/main` is being rewritten. The handoff will be updated with the new shares after that pass, then the book will be rebuilt and CI watched on PR #233.
+**In progress.** Rebuilding the PDF and EPUB locally after this pass, then pushing, then watching CI on PR #233 until list, debs, the build matrix, site and publish have finished.
 
-**Remains after the share table above.** Rewrite the unchanged English, especially Chapters 2 and 13. Rebuild PDF and EPUB. Push. Poll CI.
+**Remains.** Confirm the rebuild exits 0. Fix anything it reports. Poll CI and fix failures on this branch only.
 
 **Open math questions.** None that block the build. Checks already recomputed, and recorded in the review note: the cube sum via falling powers (the middle term is \(n^{\underline 3}\), not \(\tfrac32 n^{\underline 3}\)); \(p(5)=7\); DFT of \((1,0,-1,0)=(0,2,0,2)\); \(\log p(n)\) gaps at \(n=10,20,50,100\); AGM of \(1\) and \(1/\sqrt2\) through two steps; trivial zeros via \(1/\Gamma(s/2+1)\) in Corollary 10, not a different Gamma factor. The proved Hardy–Ramanujan error is still \(O(n^{-1/4})\).
 
 **Next steps for a resuming agent.**
-1. The local build already exited 0. Do not rebuild unless a later commit changes the book.
-2. Open the PR with `ManagePullRequest` (`action` `create_pr`, title `Volume 5: complete rewrite`, `branch_name` `cursor/volume5-complete-rewrite-a791`, base `main`) if it is not open yet. Do not merge it. Do not merge PR #157.
-3. Poll CI until every check has finished. Fix failures on this branch only.
+1. The second prose pass is committed. Rebuild with `./build.sh volume5-calculation` if that rebuild is not already running. Oxipng 9.1.5 must be on `PATH`.
+2. The PR is https://github.com/OussamaSegh/Order-and-Chance/pull/233. Do not merge it. Do not merge PR #157.
+3. Poll CI until list, debs, the build matrix, site and publish have finished. Fix failures on this branch only.
 
 The contract below still binds.
 
