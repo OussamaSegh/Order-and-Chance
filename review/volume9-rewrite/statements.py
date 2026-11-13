@@ -37,11 +37,13 @@ def walk(text):
         body = re.sub(r"\\label\{[^}]+\}", "", rest).strip().replace("\n", " ")[:110]
         line = f"{name}.{n:<3} {kind:11} {lab.group(1) if lab else '-':22} {m.group(2) or ''} {body}"
         if pat is None or pat.search(line): print(line)
-for m in re.finditer(r"\\appendix\b|\\(?:input|include)\{([^}]+)\}", main):
+for m in re.finditer(r"\\appendix\b|\\setcounter\{chapter\}\{(-?\d+)\}|\\(?:input|include)\{([^}]+)\}", main):
     if m.group(0).startswith("\\appendix"):
         app, ch = True, 0; continue
-    p = vol / (m.group(1) + ("" if m.group(1).endswith(".tex") else ".tex"))
-    if p.exists() and "chapters" in m.group(1):
+    if m.group(0).startswith("\\setcounter"):
+        ch = int(m.group(1)); continue
+    p = vol / (m.group(2) + ("" if m.group(2).endswith(".tex") else ".tex"))
+    if p.exists() and "chapters" in m.group(2):
         t = p.read_text()
         # nested inputs (a chapter that inputs a section file)
         t = re.sub(r"\\input\{(chapters/[^}]+)\}", lambda k: (vol / (k.group(1) + ".tex")).read_text() if (vol / (k.group(1) + ".tex")).exists() else "", t)
