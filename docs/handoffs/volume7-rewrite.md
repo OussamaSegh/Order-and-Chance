@@ -61,7 +61,12 @@ Four new exercises per chapter, after the last existing exercise, each with a hi
 
 ## In progress
 
-Chapters 1–13, preface. Not yet rewritten at sentence level.
+Preface and the index introduction are rewritten locally and not yet the whole story of the chapters. Chapters 1–13 are being rewritten in parallel, each agent limited to its own file and to new `figures/*-rw-*.tex` plates. Do not commit a chapter until its labels have been checked against `origin/main`.
+
+## Done since the setup commit
+
+- Preface rewritten (`chapters/preface.tex`). Debts table and theorem references unchanged.
+- Index introduction rewritten. Statement numbers in the index unchanged.
 
 ## Remains
 
