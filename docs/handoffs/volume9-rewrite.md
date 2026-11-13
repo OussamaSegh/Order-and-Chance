@@ -27,9 +27,9 @@ Gate B of the master plan (independent verification) is not this pass.
 | --- | --- | --- | --- |
 | 1 | Smooth Manifolds | `ch01-manifolds.tex` | Done |
 | 2 | Vector Fields and Flows | `ch02-flows.tex` | Done |
-| 3 | Differential Forms and Stokes' Theorem | `ch03-forms.tex` | To do |
-| 4 | Curvature | `ch04-curvature.tex` | To do |
-| 5 | The Fundamental Group and Coverings | `ch05-coverings.tex` | To do |
+| 3 | Differential Forms and Stokes' Theorem | `ch03-forms.tex` | Done |
+| 4 | Curvature | `ch04-curvature.tex` | Done |
+| 5 | The Fundamental Group and Coverings | `ch05-coverings.tex` | Done |
 | 6 | Homology | `ch06-homology.tex` | To do |
 | 7 | Matrix Lie Groups | `ch07-liegroups.tex` | To do |
 | 8 | Haar Measure and Weyl Integration | `ch08-haar.tex` | To do |
@@ -43,6 +43,9 @@ Gate B of the master plan (independent verification) is not this pass.
 
 - **1.** Opening question; closing section. The null-set lemma cited Carathéodory's extension theorem (Volume 7, Theorem 7.10) for a cover by cubes: now outer regularity (Volume 7, Proposition 7.12) and the dyadic cubes of its proof. Check: `check_ch01_manifolds.py`.
 - **2.** Opening question; closing section. Equidistribution of $k\alpha$ now cites Volume 5, Corollary 6.14 (it cited Volume 6, Chapter 11). The escape lemma no longer restarts at a negative time when $\beta<\tau/2$. Check: `check_ch02_flows.py`.
+- **3.** Opening question; closing section. Brouwer for the disc is Volume 7, Theorem 6.7 (the text said Volume 8); the dog on a leash is Volume 7, Proposition 6.6; Fubini cited as Volume 7, Theorem 9.6. Check: `check_ch03_forms.py`.
+- **4.** Blueprint item: the two statements without a proof on the page, Corollary `cor:gaussbonnet` and Corollary `cor:chimorse`, now have proofs (the first says why it does not use itself through Theorem `thm:morseexists`; the second classifies non-degenerate critical points of a surface). Gauss's field seasons are 1821–1825 (the text said 1818–1832). Hopf's paper is 1927. The pseudosphere's volume is $\pi/3$, half the unit hemisphere (the text said half the ball, attributed to Huygens without a source). Circle problem: Volume 6, Chapter 2. Opening question; closing section. Check: `check_ch04_curvature.py`.
+- **5.** The winding number is Volume 7's, not Volume 8's; $F_2$ in Volume 8, Chapter 13 is the Banach–Tarski free group. Opening question; closing section. Check: `check_ch05_coverings.py`.
 
 ## Tools
 
