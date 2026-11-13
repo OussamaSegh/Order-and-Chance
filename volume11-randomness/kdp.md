@@ -8,7 +8,7 @@ The second part is about approximation and rare events. Stein's method measures 
 
 The third part leaves independence behind. Martingales return in full strength: uniform integrability, backward martingales, de Finetti's theorem on exchangeable sequences, Kakutani's dichotomy, and Ville's inequality behind the anytime-valid tests of modern A/B testing. Birkhoff's ergodic theorem computes the statistics of the continued fraction of almost every real number, and Furstenberg's method proves that every set of integers of positive density contains three terms in arithmetic progression.
 
-The book ends where probability meets arithmetic. Mod-phi convergence sharpens the central limit theorem until it sees the same factor, one over the Gamma function, in the cycles of a random permutation and in the prime factors of a random integer. Finally, the Poisson-Dirichlet law: the cycle lengths of a random permutation and the sizes of the prime factors of a random integer, on a logarithmic scale, follow the same broken stick, and Dickman's function counts the smooth numbers behind modern factoring algorithms.
+The book ends where probability meets arithmetic. Mod-phi convergence sharpens the central limit theorem until it sees the same factor, one over the Gamma function, in the cycles of a random permutation and in the prime factors of a random integer. Finally, the Poisson-Dirichlet law: the cycle lengths of a random permutation and the sizes of the prime factors of a random integer, on a logarithmic scale, follow the same broken stick, and Dickman's function counts the smooth numbers behind modern factoring algorithms. Then a deck of cards: the characters of the symmetric group and the Bayer-Diaconis count of rising sequences show why a deck goes from ordered to random abruptly, after a handful of riffle shuffles. A last chapter of problems takes the central limit theorem to permutations, tilings, lucky tickets, random series over the primes and the real roots of random polynomials.
 
 Every result is proved in full, with one clearly marked exception from analytic number theory. Each chapter opens with the story behind its ideas, checked against the original sources, and has pause-and-think questions, figures, and graded exercises, each with a hint and a complete solution that first explains how to find the idea.
 
@@ -22,4 +22,4 @@ large deviations, Cramer and Sanov theorems
 concentration of measure, Stein's method
 martingales, de Finetti, ergodic theorem
 random permutations, Poisson-Dirichlet law
-probabilistic number theory, random permutations
+probabilistic number theory, card shuffling and cutoff
