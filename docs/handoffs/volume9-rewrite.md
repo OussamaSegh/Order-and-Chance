@@ -37,7 +37,7 @@ Gate B of the master plan (independent verification) is not this pass.
 | 10 | The Riemann Mapping Theorem | `riemann-mapping.tex` | Done |
 | 11 | Integral Geometry | `ch10-integral.tex` | Done |
 | A–K | Appendices | `geometry-ch02` … `geometry-ch12` | Done |
-| — | Preface, blurb, `kdp.md`, citations of Volume 9 in other volumes | | To do |
+| — | Preface, blurb, `kdp.md`, citations of Volume 9 in other volumes | | Done |
 
 ## What changed, chapter by chapter
 
@@ -54,6 +54,10 @@ Gate B of the master plan (independent verification) is not this pass.
 - **11.** Hand-typed appendix numbers were stale ("Corollary K.6" for Barbier, which is J.6; "isoperimetric inequality of Volume 9"): now `\ref`s to Appendix J. Bertrand's three answers cite Volume 4, Theorem 5.11; Buffon Volume 4, Theorem 5.12; uniqueness of measures Volume 7, Theorem 7.5. The kinematic formula is marked as quoted. Closing section (end of the chapters). Check: `check_ch11_integral.py` (Bertrand, Crofton and Buffon by Monte Carlo, Laplace's grid, the cube's shadows, Poincaré's formula, Crofton on the sphere).
 - **Appendices A–K.** Each opens with a paragraph "What this appendix connects, and what it assumes" (blueprint). F: Bézout's heading says the multiplicity is relative to an auxiliary point and the intrinsic form is Volume 13, Chapter 14; the choice of the point is now part of the definition. G: the associativity theorem's heading says nine distinct points; the solutions no longer use associativity for all triples (the converse of `ex:collinear` is proved directly; `ex:twotorsion`, `ex:torsionsix`, `ex:countfive` compute with the chord rule; `ex:changeorigin` and `ex:sixonconic` now ask for the statements that hold without associativity and point to Volume 13 for the rest); the Nagell–Lutz remark is a forward pointer, not a proof. H: the Hermite solution already proved its two facts; `ex:index` now cites Volume 3, Lemma 7.5; the pointer to "Volume 13, Chapter 5" is now "Volume 13". I: "Volume 9 studies this group" is now Chapter 9. The citations "Volume 1, Theorems 7.9 and 7.10" in E are correct: `statements.py` printed Volume 1 one chapter too high (it ignored `\setcounter{chapter}{-1}`); fixed. Check: `check_appendices.py`.
 - **8 (later).** The remark after Dyson's formula now says that the sine-kernel limit for the Hermitian ensembles is not proved here and is a preview of Volume 12 (blueprint table "Stated without proof").
+
+## Build and citations
+
+Full build passes with no undefined reference: 377 pages (2026-11-13). Numbering inside the volume is identical to `baseline-numbering.txt`, so the citations of Volume 9 in Volumes 10, 12 and 15 still resolve (checked by hand: V10 Theorems 7.9, 8.3, 8.8, Exercise 8.3, Lemma 6.2, Exercise 6.1; V12 Theorems 8.3, 8.13, 8.15, 10.5, Corollary 8.16; V15 Theorem 8.8). Owed by Volume 10: its `ch11-compact.tex` attributes the Vandermonde determinant to Volume 3; the proof is Volume 1, Proposition 7.4.
 
 ## Tools
 
