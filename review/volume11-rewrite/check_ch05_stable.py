@@ -28,8 +28,9 @@ for k in range(1, K + 1):
 ok = all(abs(first[k] - n / k * (math.comb(k, (k + n) // 2) / 2 ** k if (k + n) % 2 == 0 else 0)) < 1e-14 for k in range(1, 1200))
 check_true("P(tau_20 = k) = (20/k) P(S_k = 20), k < 1200", ok)
 # Cauchy Levy measure and kappa_1
-import mpmath
-k1 = float(mpmath.quadosc(lambda u: (1 - mpmath.cos(u)) / u ** 2, [0, mpmath.inf], period=2 * mpmath.pi))
+from scipy.special import sici
+A = 10.0  # int_A^oo (1-cos u)/u^2 = 1/A - cos(A)/A + (pi/2 - Si(A))
+k1 = integrate.quad(lambda u: (1 - math.cos(u)) / u ** 2, 0, A, limit=200)[0] + 1 / A - math.cos(A) / A + (math.pi / 2 - sici(A)[0])
 check("int (1-cos u)/u^2 over R = pi", 2 * k1, math.pi, 1e-10)
 check("kappa_1 = pi/2", k1, math.pi / 2, 1e-10)
 for lam in [0.5, 2.0]:
