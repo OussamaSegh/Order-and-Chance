@@ -37,17 +37,13 @@ The word “Journey” on some exercises is the existing long-exercise tag, not 
 
 ## In progress
 
-CI on pull request #234. The first Actions run failed in `list`: two citation checks.
+Nothing. Pull request #234 is open. Actions run [43467337453](https://github.com/OussamaSegh/Order-and-Chance/actions/runs/43467337453) finished successfully: `list`, `debs`, `build (volume6-crossroads)`, and `site` passed. `publish` is skipped on a pull request; it runs only on `main`. Do not merge.
 
-- `ch03-characters.tex` named primitive roots in the same sentence as Volume 2, Chapter 4. Chapter 4 is the arithmetic-function identity for \(\varphi\). The words were moved apart.
-- `ch05-pnt.tex` must keep the clause \(\sim\pi x\) (Volume 2, Theorem 7.5, or a direct count). That clause is restored.
-
-Local `tools/test_cross_volume_citations.py` passes (14 tests). The next Actions run is the one to watch: `list`, then `debs`, `build`, `site`. `publish` stays skipped on a pull request.
+Head after the citation fix: `5023acf0`. This handoff commit does not change the book. If it starts another Actions run, that run is docs-only.
 
 ## Remains
 
-1. Poll run after the citation fix is pushed.
-2. If `build` fails, read the log, fix, push, and wait again. Do not merge.
+None for this rewrite. A later pass should re-check the hand-typed Volume 5 citations after the parallel Volume 5 pull request lands, and should point Volume 8's expander chapter at Theorem 7.10. Neither file is edited here.
 
 ## Open math questions
 
