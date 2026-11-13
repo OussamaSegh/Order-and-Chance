@@ -132,3 +132,118 @@ The workflow run for Volume 4 native production QA is `43501380206`, conclusion 
 ## What closes this review
 
 Repair the Lindeberg product so the written bound tends to 0, add the annulus layer in Box–Muller, correct the midpoint multiplier, split the cone-condition parenthesis from Proposition 8.7, and retarget the canonical-notation sentence. The other 42 IDs, the other retargeted citations, the Volume 1 ledger line, the tests, the five builds, and the CI record on this head do not need another change for this review.
+
+## Recheck at `f96b2a64`
+
+**Verdict: APPROVE**
+
+**Head reviewed:** `f96b2a64f461ef853dbd3bed566065df91819cb3` on `cursor/v4-scored-read-final-b140`, pull request [#239](https://github.com/OussamaSegh/Order-and-Chance/pull/239).
+
+This note is a second reading of that head, after the repairs named above. The manuscript branch was not edited. The range `123f44e4..f96b2a64` is two commits: `b048bdff` rewrites the two bounds, and `f96b2a64` records the Chapter 5 and Chapter 6 source pins. The diff is 8 files, 41 insertions and 12 deletions.
+
+## Issue log
+
+| ID | Location | Result |
+| --- | --- | --- |
+| V4-02 | `volume4-chance/chapters/ch06-clt.tex`, Lindeberg, the clip of the other blocks, lines 452–479 | Closed. The product with the clipped factor is a sum of tails `E[Q_j^2 1_{|Q_j|>K}]`, and the square is factored so the error is a constant times `(1/K)` times that sum. Both tend to 0 with the row held fixed. |
+| V4-03 | `volume4-chance/chapters/ch05-continuous.tex`, Box–Muller, lines 363–371 | Closed. Grid squares on `r=ρ` and `r=T` are charged to strips of width `h`. The two strips have probability at most `η`, and the rectangle comparison carries `2η` for that layer. |
+| midpoint leads | `volume5-calculation/chapters/ch07-fft.tex`, leads of `pb:midpoint`, line 530 | Closed. The multiplier is `e^{iπ j/n} cos(π j/n)`, and the modulus is `|cos(π j/n)|`. |
+| cone parenthesis | `volume12-random-motion/chapters/ch05-analysis.tex`, chapter opening, line 24 | Closed. The cone condition is proved in this chapter. Proposition 8.7 is named on its own for the finite-graph hitting probabilities. |
+| Prop. 6.13 gloss | `volume11-randomness/chapters/ch12-permutations.tex`, the reminder, lines 18–19 | Closed. Proposition 6.13 is the Bernoulli sum for the number of cycles. The canonical lengths point at `prop:firstcycle`. |
+
+No row stays open.
+
+### V4-02
+
+The clip comparison `|Q-Q^{(K)}| ≤ Q^2/K` on `{|Q|>K}` is the one already proved for Proposition `prop:indepproduct`. For a fixed row only finitely many other blocks appear, so
+
+`E|A-A^{(K)}| ≤ Σ_j (1/K) E[Q_j^2 1_{|Q_j|>K}]`.
+
+`Q^{(K)}` is at most `K` in absolute value, and `H` is Lipschitz with a constant `L` taken from the bounded second and third derivatives. The product of those two bounds cancels `K`:
+
+`|E[(H(A)-H(A^{(K)})) Q^{(K)}]| ≤ L Σ_j E[Q_j^2 1_{|Q_j|>K}]`.
+
+Each `Q_j` is a centred quantile, hence monotone, so `{|Q_j|>K}` is a union of at most two tails of `(0,1)`. The integral of the integrable function `Q_j^2` over those tails tends to 0, by the same comparison the proof already used for the single block `Q`. A finite sum of those tails tends to 0. The dyadic step still has a factor `K` in front of `E|H(A^{(K)})-H_m|`, and that term tends to 0 as `m→∞` with `K` held fixed.
+
+The square cannot keep a factor `K^2` in front of `E|A-A^{(K)}|`, because that product is `K` times a sum of tails and the tails have no rate. The proof splits `|Q_j-Q_j^{(K)}|` into `(Q_j-K)` on `{Q_j>K}` and `(-Q_j-K)` on `{Q_j<-K}`. Each piece is monotone. Clipping a piece at height `M` makes it bounded, and Proposition `prop:indepproduct` factors a bounded monotone function of one block against a bounded monotone function of another. The square `(Q^{(K)})^2` is the sum of the squares of its nonnegative and nonpositive parts. That splitting is in the proof of the product proposition, and each square is bounded and monotone. Linearity gives the product with the whole square.
+
+On `{piece > M}` one has `|Q_j-Q_j^{(K)}| ≤ Q_j^2/K`, and `(Q^{(K)})^2 ≤ K^2`, so the missing product is at most `K` times the integral of `Q_j^2` over `{Q_j^2 > KM}`. That integral tends to 0 as `M→∞` with `K` fixed, because `Q_j^2` is integrable. Sending `M→∞` factors
+
+`E[|Q_j-Q_j^{(K)}| (Q^{(K)})^2] = E|Q_j-Q_j^{(K)}| E[(Q^{(K)})^2] ≤ (1/K) E[Q_j^2 1_{|Q_j|>K}] E[Q^2]`.
+
+`(Q^{(K)})^2 ≤ Q^2` pointwise, and `E[Q^2]` is a variance in the row, hence finite. Sum on `j` and multiply by `L`. The error is a constant times `(1/K)` times a sum of tails. It tends to 0 as `K→∞`. The dyadic step for the square uses `K^2` in place of `K`, which still tends to 0 for each fixed `K`.
+
+The collection sentence names the sum of tails. The display two paragraphs earlier carries the fixed Lipschitz factor `L`. Either way the bound tends to 0 before the remainder is sent to the Lindeberg limit. The theorem statement is unchanged. The argument uses the product proposition, the monotone tail comparison, and the Lipschitz bound from the mean value theorem. It does not use a later theorem, and the source pins are identity hashes, not the proof.
+
+### V4-03
+
+The arc-length cover of the four sides is unchanged: probability at most `9 e^{-1/2} η/(2π)`, and it contains every grid square that meets `∂E` inside the annulus. The new sentences say that a grid square on `r=ρ` or `r=T` need not meet `∂E`.
+
+The grid side is `h=L/n`. After shrinking `h` so that `e^{-1/2} h ≤ η/2`, a grid square that meets `r=ρ` and the annulus meets the annulus only inside `ρ ≤ r ≤ ρ+h`. The outer circle gives `T-h ≤ r ≤ T`. Each strip has area `2π h`. The product density is at most `e^{-1/2}/(2π)`, the bound already proved from the maximum of `r e^{-r^2/2}`. Each strip therefore has probability at most `e^{-1/2} h ≤ η/2`. For fixed `ρ` and `T` the two strips together have probability at most `η`.
+
+Inside the annulus, both the probability of `E` and the integral of the product density differ from the value on `U_in` by at most the side cover plus the two strips. They differ from each other by at most twice that, which is `18 e^{-1/2} η/(2π) + 2η`. Adding `P(R>T)=e^{-T^2/2}` and `P(R<ρ)≤ρ^2/2` gives the displayed bound. Send `η↓0` with `ρ` and `T` fixed, then `ρ↓0` and `T→∞`. The rectangle identity follows. The polar cutoff of the indicator, and the bound `φ ≤ 1/√(2π)`, are the ones already in the proof.
+
+### Midpoint leads
+
+The solution's map is `(z_k+z_{k+1})/2`. On the mode `ω^{jk}` the multiplier is `(1+ω^j)/2`. With `ω=e^{2π i/n}`,
+
+`(1+e^{2π i j/n})/2 = e^{iπ j/n} cos(π j/n)`.
+
+The leads state that factor, and they state that its modulus is `|cos(π j/n)|`. After `t` steps the slowest non-constant modes, `j=1` and `j=n-1`, have been multiplied by a complex number of modulus `cos^t(π/n)`. The solution computes the same eigenvalue. Volume 4, Chapter 8, is no longer cited for it.
+
+### Cone condition and Proposition 8.7
+
+The opening is two sentences. The cone condition is Theorem `thm:cone` in this chapter: an exterior cone makes the boundary point regular. Proposition 8.7 is `prop:harmonic`, the unique function on a finite connected graph with boundary values 0 and 1 that equals the average of its neighbours off `{a,b}`. The parenthesis that hung that proposition on the cone condition is gone.
+
+### Proposition 6.13
+
+Proposition 6.13, `prop:cyclebern`, states that the number of cycles has the law of `Σ B_k` with independent `P(B_k=1)=1/k`. The proof builds the sum by inserting `n` into a uniform slot. The reminder now says that. The lengths in the order used in this chapter, first the cycle through 1 and then the cycle through the smallest remaining element, are Proposition `prop:firstcycle`: `P(L_1=k)=1/n`, and the product formula for the first `r` lengths. The canonical-notation sentence no longer gives that job to Proposition 6.13.
+
+## The diff
+
+`git diff 123f44e4..f96b2a64` touches the three chapter sentences above, the two proofs, and three test files. A search of the added and deleted TeX lines found no `\label`, no `\caption`, no `\fig`, no TikZ, no font-size command, and no new theorem, proposition, lemma, corollary, or exercise environment. The numbered statements did not move. `git hash-object` of the two chapter files is `73617646dcb3dbad985ce9df7b4a4536fae28aad` for Chapter 5 and `41197f55044d2d813d364c0a2cfcae7750763ab6` for Chapter 6, which are the pins in the source-identity tests. Those pins record the bytes. They are not the proofs.
+
+The Lindeberg and Box–Muller statements are the same theorems. The new bounds are the ones that tend to 0. Nothing in the range weakens a hypothesis or drops a case from a statement.
+
+## Citations the pull request changes
+
+The numbers are the ones `tools/cross_volume_citations.py` assigns. Each changed sentence was read against that statement.
+
+| Place | Cited statement | Does it state the fact? |
+| --- | --- | --- |
+| Volume 11, independence reminder | Chapter 4, in the Borel–Cantelli argument: mutual independence means that every finite subcollection has probability equal to the product of the probabilities. | Yes. The density formula in the same reminder is Theorem 6.8(b). |
+| Volume 11, variance tools | Chapter 2 states `Var(X+Y)=Var X+Var Y+2 Cov(X,Y)`, and says the covariance of independent variables is zero. | Yes. |
+| Volume 11, fixed points | The proof of Proposition 2.3 writes `P(F_n=m)=(1/m!) D_{n-m}/(n-m)!`. Volume 1, Proposition 2.3, is the derangement count, and the chapter writes `D_r/r! = Σ_{j=0}^r (-1)^j/j!`. | Yes. |
+| Volume 11, planar returns | The proof of Theorem 8.5, Pólya, splits a planar step into two independent one-dimensional walks. The proof of Theorem 8.6, the last-visit law, says the steps after time `2k` are a fresh block of fair bits. The solution uses that factorization at fixed times. | Yes. The gloss names the step in the proof. |
+| Volume 11, cycle reminder | Proposition 6.13 is the Bernoulli sum. `prop:firstcycle` is the length law. | Yes. See the issue log. |
+| Volume 12, exit from an interval | Theorem 8.2 gives `h_k=k/N` for a fair walk, so the exit probability from `a` on `{0,…,a+b}` is `a/(a+b)`. Proposition 8.3 gives mean duration `k(N-k)`, which is `ab`. | Yes. |
+| Volume 12, networks | The sentence that gave Proposition 8.4's proof to every Markov chain is gone. Proposition 8.4 remains the expected number of visits of the simple walk. The proof now says recurrence means `P_a(τ_a^+<∞)=1`, which is the escape probability the theorem computes. | Yes. |
+| Volume 12, analysis | Proposition 8.7 is the finite-graph hitting probability. The cone condition is Theorem `thm:cone` in Volume 12, Chapter 5. | Yes. See the issue log. |
+| Volume 15, random-to-top | The solution computes the one-card covariance from `(1-2/n) ≤ (1-1/n)^2`. Proposition 9.11 is the random-transposition count: two cards at a step, mean `n(1-1/n)^{2t}`, and the same comparison with exponent `2t`. | Yes. |
+| Volume 5, midpoint leads | The multiplier is the eigenvalue in the same solution. | Yes. See the issue log. |
+
+## House voice
+
+The new sentences name the object and the bound. "The factor `K` has cancelled, and the bound is a sum of tails." "A grid square that meets the circle `r=ρ` or the circle `r=T` need not meet `∂E`." "The cone condition is proved in this chapter." "The midpoint map sends `z_k` to `(z_k+z_{k+1})/2`." None of them uses the filler the style sheet bans, and none announces a section instead of teaching the step.
+
+## Tests and the Volume 4 build
+
+Run on `f96b2a64f461ef853dbd3bed566065df91819cb3`.
+
+`python3 -m unittest test_cross_volume_citations.py`, from `tools/`, ran 16 tests and exited 0. Together with the two Chapter 5 and Chapter 6 source-pin modules, the same command ran 22 tests and exited 0.
+
+`python3 tools/cross_volume_citations.py` printed `Cross-volume citations match 4851 numbered statements.`
+
+`python3 review/volume3-internal/registers.py` printed `{"accepted-internal": 1177, "pending": 19}` and exited 0.
+
+`./build.sh --pdf-only volume4-chance` exited 0. The layout check reported 285 whole boxes, maximum height 465.0 pt, no overflow and no unresolved references. `main.log` has 0 lines containing `Overfull` and 0 lines containing `undefined`. XeLaTeX wrote 327 pages. The print file is `dist/kdp/Volume 4 - Chance - Print.pdf`: 327 pages, page size 513 × 738 pt, PDF 1.3. The preflight report has `"flattened_pages": []`.
+
+## CI on this head
+
+`list_check_runs_for_ref` on `f96b2a64f461ef853dbd3bed566065df91819cb3` returned `total_count` 20, every run with that SHA: 19 conclusions `success` and 1 `skipped`. The skipped check is `publish`. The success checks are `list`, `debs`, `volume4-native`, the fifteen `build (volume…)` jobs, and `site`.
+
+The Build books run is `43516797594`, conclusion `success`. Its 19 jobs are on the same SHA: 18 `success` and `publish` `skipped`. The Volume 4 native production QA run is `43516797555`, conclusion `success`. Its one job, `volume4-native`, is `success` on the same SHA, including the step that builds the reading PDF, the print PDF, and the EPUB.
+
+## What this recheck closes
+
+The five repairs hold, the diff does not move a number or a diagram, the changed citations name the statements they use, and the Volume 4 build and the CI record on this head are clean. Nothing in this recheck asks for another change.
