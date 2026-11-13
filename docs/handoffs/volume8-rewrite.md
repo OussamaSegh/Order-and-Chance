@@ -68,7 +68,13 @@ Four new exercises per chapter, after the last existing exercise, each with a hi
 
 | Ch. | State |
 | --- | --- |
-| — | Contract written. Draft pull request opened. Chapters not yet rewritten. |
+| — | Draft pull request opened: https://github.com/OussamaSegh/Order-and-Chance/pull/242 |
+| — | Preface, blurb, `kdp.md`, About the Cover, portrait macro and credits | Done |
+| 1–16, A–F | Sentence rewrite, two figures, four exercises | In progress |
+
+Portraits on disk, not yet placed in the chapters: Banach, Hilbert, Cayley, Kirchhoff, Fredholm, Fourier, Poisson, Gauss, Haar, Hadamard, Cauchy, Tauber, Riemann, Jordan, Frobenius, Schwarz, Lyapunov. Credits are in `volume8-analysis/photos/CREDITS.md`. Place each at the first real mention. Do not invent a caption.
+
+The Volume 8 cover note changed `common/cover-notes.json`. `tools/series_cover.py --check` passes. The Volume 3 inventory and conceptual snapshot were restamped for that one hash. No Volume 3 anchor or status changed.
 
 ## Build
 

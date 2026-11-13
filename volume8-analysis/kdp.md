@@ -1,18 +1,18 @@
 # Description
 
-In finite dimensions, a bounded sequence has a convergent subsequence, every linear map is continuous, and every operator has an eigenvalue. In infinite dimensions all three fail, and the repairs built between 1900 and 1935 are among the most useful ideas in mathematics. This book proves them, and then uses them.
+In finite dimension a bounded sequence has a convergent subsequence, every linear map is continuous, and every operator has an eigenvalue. In infinite dimension all three fail. The repairs built between 1900 and 1935 are among the most useful ideas in mathematics. This book proves them, and then uses them.
 
-It opens with the pillars of functional analysis: Hahn-Banach, which produces linear forms out of nothing; Banach-Steinhaus, which turns pointwise bounds into uniform ones and shows that some continuous function has a divergent Fourier series; the open mapping and closed graph theorems; and weak compactness, where bounded sequences recover their subsequences. Hilbert spaces follow, with orthogonal projections and bases.
+It opens with the pillars of functional analysis. Hahn-Banach produces a linear form that meets a prescribed bound. Banach-Steinhaus turns a pointwise bound into a uniform one, and shows that some continuous function has a divergent Fourier series. The open mapping theorem and the closed graph theorem follow. Weak compactness is the place where a bounded sequence recovers a convergent subsequence. Hilbert spaces come next, with orthogonal projections and orthonormal bases.
 
-Then spectral theory, from the concrete to the infinite: the spectral theorem for matrices, singular values, graphs heard through their eigenvalues, cuts and mixing, expanders and the Riemann hypothesis for graphs, Banach algebras and Wiener's lemma, and the spectral theorem for compact self-adjoint operators, which hears the shape of a vibrating string.
+Spectral theory then runs from the finite to the infinite. The spectral theorem for matrices, singular values, and a graph heard through its eigenvalues. Cuts, mixing, and expansion. Expanders, and the Riemann hypothesis for graphs. Banach algebras and Wiener's lemma. The spectral theorem for a compact self-adjoint operator, which hears the shape of a vibrating string.
 
-Then Fourier analysis, in every setting at once: on the line, with the inversion theorem, Plancherel's identity, the Poisson summation formula and Shannon's sampling theorem; on distributions, where differentiation is always possible and the Dirac delta is a function like any other; on finite groups, where it becomes the fast Fourier transform and proves quadratic reciprocity; and on locally compact groups, with Haar measure, amenability and the p-adic numbers, which are self-dual.
+Fourier analysis is treated in each setting the series needs. On the line: inversion, Plancherel, Poisson summation, and Shannon's sampling theorem. On distributions, where differentiation is always possible and the Dirac delta is a continuous linear form. On finite abelian groups, where the transform is a fast algorithm and proves quadratic reciprocity. On locally compact groups: Haar measure, amenability, and the p-adic numbers, which are isomorphic to their own dual.
 
-Complex analysis in earnest closes the main path. Cauchy's theorem in its final form, in Dixon's one-page proof. The Phragmen-Lindelof principle and Hadamard's factorisation of entire functions. The Mellin transform, which measures the cost of algorithms and reveals the microscopic oscillations hidden in them. Tauberian theorems, from Tauber's own to Wiener's and Wiener-Ikehara, which recover a sequence from its transform and deliver the prime number theorem with no contour integral in sight. A last chapter of problems turns these tools on the values of the zeta function. Six appendices hold the linear algebra the book uses: duality, determinants as volume, eigenvalues, inner products, matrix inequalities and linear dynamics.
+Complex analysis closes the main path. Cauchy's theorem in Dixon's form. The Phragmén-Lindelöf principle, and Hadamard's factorisation of an entire function of finite order. The Mellin transform. Tauberian theorems, from Tauber's own theorem to Wiener's and to Wiener-Ikehara, which recover a sequence from its transform and prove the prime number theorem with no contour integral in the argument. A last chapter of problems turns these tools on the values of the zeta function. Six appendices hold the linear algebra the book uses: duality, determinants as volume, eigenvalues, inner products, inequalities between matrices, and linear dynamics.
 
-Every theorem is proved in full. Every chapter opens with the story and the people behind the idea, and ends with exercises chosen for their beauty, each with a hint and a solution that explains how the argument is found.
+Every theorem is proved. Every chapter ends with exercises, each with a hint and a solution that shows how the argument is found.
 
-Written for the reader who wants to understand, not to pass an examination.
+Written for the reader who wants to see why the statement is true.
 
 # Keywords
 
