@@ -37,14 +37,21 @@ The word “Journey” on some exercises is the existing long-exercise tag, not 
 
 ## In progress
 
-Second local build. The layout check passed: 335 whole boxes, maximum height 391.1 pt, no overfull box, no undefined reference. The reading PDF and the KDP print interior (377 pages) and paperback cover passed their checks. EPUB generation then stopped because `oxipng` was not installed. Install oxipng 9.1.5 as `.github/workflows/build.yml` does, then run `./build.sh volume6-crossroads` again.
+Pull request and CI. The local build succeeded on 13 November 2026.
+
+- Reading PDF: `dist/Volume 6 - Crossroads.pdf`
+- Print PDF: 377 pages, `dist/kdp/Volume 6 - Crossroads - Print.pdf`
+- EPUB: 28 MB, 48 plates at 1800 px, em baseline on formulas. `tools/check_epub_media.py` passed.
+- Layout: 335 boxes, maximum height 391.1 pt, no overfull line, no undefined reference.
+- Findings: `docs/review/volume6-rewrite-findings-2026-11-13.md`
+
+`publish` in `.github/workflows/build.yml` runs only on `main`, so a pull request finishes at `site`. Do not merge.
 
 ## Remains
 
-1. Rebuild Volume 6 (reading PDF, print PDF, EPUB). Zero LaTeX errors, no undefined references, no overfull boxes.
-2. Write the self-review in `docs/review/` (math and voice findings, including this overflow).
-3. Open the pull request titled “Volume 6: complete rewrite”.
-4. Poll CI until list, debs, build matrix, site, and publish have finished. Fix failures. Do not merge.
+1. Open the pull request titled “Volume 6: complete rewrite”, base `main`.
+2. Poll the Actions run until `list`, `debs`, `build`, and `site` have finished. `publish` is skipped on a pull request.
+3. If a job fails, fix it on this branch, push, and wait again. Do not merge.
 
 ## Open math questions
 
