@@ -65,9 +65,14 @@ Four new exercises per chapter, after the last existing exercise, each with a hi
 - Preface and index introduction: `8ffe7fb2`.
 - Chapter 1, `ch01-sets.tex`, commit `b1e0447f`. Labels preserved in order. New figures `ch01-rw-cut`, `ch01-rw-cauchy`. New exercises `ex:v7c01a`–`ex:v7c01d`. Measured rewrite share against `origin/main`: 99% before the exercises, 96% from the exercises on, 98% whole file (sentences of at least 40 characters with at least 25 outside math).
 
+## Done, continued
+
+- Chapter 2, commit `7d86c23c`. Share about 98% before the exercises, 93% from the exercises on.
+- Chapter 3, this commit. Labels preserved. New figures `ch03-rw-product`, `ch03-rw-cut`. New exercises `ex:v7c03a`–`ex:v7c03d`. Portraits: Hausdorff, Urysohn.
+
 ## In progress
 
-Chapter 2, `ch02-metric.tex`. No other chapter file has been rewritten yet.
+Chapter 4, `ch04-compact.tex`.
 
 ## Remains
 
