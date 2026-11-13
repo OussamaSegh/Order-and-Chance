@@ -70,7 +70,7 @@ Chapter 12’s main text is rewritten. The closing-problem solutions keep their 
 
 ## Remains
 
-Push the merge and poll CI until `list`, `debs`, `build`, and `site` finish. `publish` runs only on `main`.
+None for this pass. Actions run [43480584632](https://github.com/OussamaSegh/Order-and-Chance/actions/runs/43480584632) on `3e22729e` passed `list`, `debs`, `build` for Volumes 5 and 6, and `site`. `publish` is skipped on a pull request.
 
 ## Open math questions
 
