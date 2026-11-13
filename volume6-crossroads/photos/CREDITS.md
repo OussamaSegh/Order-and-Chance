@@ -1,6 +1,6 @@
 # Volume 6 portraits
 
-Every photograph in this volume is stored here. Nothing is hotlinked. Each chapter caption repeats the credit. Print height is the series cap of 1.65 in, or pixel-height/300 when that is shorter, so the short side stays at least 300 pixels per inch. The shorter caps are set in `main.tex`: Erdős 0.93 in, Mertens 1.09 in, Selberg and Kac 1.33 in, Brun 1.46 in.
+Every photograph in this volume is stored here. Nothing is hotlinked. Each chapter caption repeats the credit. Print height is the series cap of 1.65 in, or pixel-height/300 when that is shorter, so the short side stays at least 300 pixels per inch. The shorter caps are set in `main.tex`: Erdős 0.92 in, Mertens 1.08 in, Selberg and Kac 1.30 in, Brun 1.44 in.
 
 Seven files are copies of portraits already used in Volume 1 or, for Ramanujan, in the Volume 5 rewrite. The hashes below are of the files in this directory. No scene was edited.
 
