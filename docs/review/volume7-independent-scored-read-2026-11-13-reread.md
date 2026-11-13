@@ -2,7 +2,7 @@
 
 Independent scored read of *Order and Chance*, Volume 7, *Spaces: Topology, Measure and Limits*, as it stands on `main` at `f10e4c99` (13 November 2026). The published files used are the GitHub release `books` (published 2026-11-13T01:47:12Z): reading PDF `Volume.7.-.Spaces.pdf` (276 pages, 7 × 10 in, PDF 1.5, created 2026-11-13) and print PDF `Volume.7.-.Spaces.-.Print.pdf` (275 pages, 7.125 × 10.25 in, PDF 1.3), together with the EPUB (18.8 MB). Printed folios in the body sit 13 below the reading-PDF page index: reading page 15 is printed page 2, the opening of Chapter 1.
 
-This scorecard and issue log were written before any Volume 7 review note, handoff, or earlier pull-request discussion was opened.
+The scorecard and the issue log were written, and committed, before any Volume 7 review note, handoff, or earlier pull-request discussion was opened. The comparison at the end was written after that commit.
 
 The reader assumed here is someone who has worked through Volumes 1–6. The prose is aimed at that reader, not at a student opening this book from high-school mathematics alone.
 
@@ -122,3 +122,70 @@ Sources actually used for the checks: the source of Volumes 2, 3, 4, 5, 6, 8, 9,
 - The sixteen-digit value \(0.5312805062772051\ldots\) given for \(\dim_H E_{\{1,2\}}\) as a spectral radius. The two bounds around it were checked; the eigenvalue was not.
 - Richardson’s table behind “\(D\approx 1.25\)” for the west coast of Britain. The sentence is the standard citation of Mandelbrot’s 1967 paper, which the sources name; the table was not recomputed.
 - `docs/plan/MASTER-PLAN-V5-V15.md` was read from the head of PR #157 for scope only (the Volume 7 paragraph, decisions D-14, D-15, D-17). `docs/plan/book-07.md` was read for scope. Against that scope the book does the following, and the mismatches are the plan’s, not silent omissions: Jordan is Chapter 6, so Fubini, Radon–Nikodym, Riesz, Prokhorov, and Kolmogorov are numbered 9.6, 11.4, 12.3, 12.7, and 12.8 rather than the 8.6, 10.4, 11.3, 11.7, and 11.8 of the blueprint; conditional expectation and the tower property are Theorems 11.16 and 11.17; the infinite outer-measure case is separated; Hausdorff’s Borel property is quoted and unused; the ergodic problems are named as living in Volume 11 and are not premises here; \(\mathbb Z_p\) is compact; the last chapter is titled “Almost every number”. The blueprint’s sentence that the cover is the Sierpiński carpet is stale: the approved cover, the colophon, and the preface are the Cantor function over the Cantor set, and the carpet is Figure 12.1 and Exercise 12.2, with dimension \(\frac{\log 8}{\log 3}\).
+
+## Comparison with the earlier report
+
+Written after the scorecard and the issue log above were committed. The documents opened for this section are the report on draft PR #207 (`docs/review/volume7-independent-scored-read-2026-11-12.md`, branch `cursor/volume7-independent-scored-read-2709`) and `docs/review/volume7-fixes-review-2026-11-12.md` on `main`. The fix pull requests #208–#215 were not used as a source of mathematical claims; the book was.
+
+The 12 November report scored the book 8, with preparation for later volumes at 7 and front matter at 6, and logged 38 issues: six major (V7-01 through V7-06) and thirty-two minor (V7-07 through V7-38). The fixes note marks every one of them Accept. Each was checked again against the current manuscript.
+
+### Really fixed
+
+All six majors are gone.
+
+- V7-01. The third column of the debts table is `\raggedright` in every row (`preface.tex:35–42`). The numbers are no longer justified into the next row.
+- V7-02. The layer-cake identity is proved in the text immediately before the portmanteau theorem (`ch11-metricmeasures.tex:96–99`), for a simple function and then by monotone convergence. The step \((e)\Rightarrow(a)\) cites that paragraph. The exercise remains, and it is no longer the only proof.
+- V7-03. Haar uniqueness cites Volume 7, Theorem 7.5 (`volume8-analysis/chapters/ch08-haar.tex:67`), which is uniqueness on a \(\pi\)-system.
+- V7-04. Hausdorff–Young cites Proposition 10.6 for the density of simple functions (`volume8-analysis/chapters/ch05-fourier.tex:201` and `:209`). Proposition 9.6 remains Fubini.
+- V7-05. The winding number in Volume 9 is “Definition 6.5, after Lemma 6.4” (`volume9-shapes/chapters/ch03-forms.tex:347`). Item 6.1 is still the polygonal theorem.
+- V7-06. `chapters/index.tex` is input from `main.tex`. The printed numbers were regenerated from the source, including the three statements in `jordan-polygon.tex`, and they match the index.
+
+The minors are gone as specified, and the repairs that were re-derived are right.
+
+- V7-07, V7-23, V7-24, V7-25. Square roots in the uniqueness proof name \(h=\min\bigl(1,(x-s^2)/(2s+2)\bigr)\) and the symmetric estimate; \(x=0\) is the zero of a field morphism. Density shifts by a natural number \(N\) with \(N+nx>0\). The Cauchy approximation uses \(1/(k+1)\). “Finite” and “infinite” are proved before the enumeration of an infinite subset of \(\mathbb N\).
+- V7-08. Part (f) of Theorem 2.16 now says the integral is the one Volume 1 admitted and that Theorem 8.10 builds it, and that (a)–(e) do not use it. That is one of the two repairs the report allowed. The clause is still stated in Chapter 2. That residual is V7-1 above; it is not a new false formula.
+- V7-09. The nine pairs, including \((6,2)\), were recomputed. The next convergent of the same shape has ratio \(1.07>1\). Legendre does not delete \(6/2\), because \(\lvert e-3\rvert>1/8\).
+- V7-10. The value-net is a \(2\varepsilon\)-net, and the three terms are \(<\varepsilon\), \(<2\varepsilon\), and \(<\varepsilon\), so the display \(<4\varepsilon\) is the sum of those three. The converse, from an \(\varepsilon\)-net of functions, is still \(<3\varepsilon\).
+- V7-11. \(\operatorname{Log}\) on \(\{\operatorname{Re}>0\}\) is defined from Theorem 2.16(e), with argument in \((-\pi/2,\pi/2)\).
+- V7-12. Injectivity of \((m,n)\mapsto 2^m3^n\) is proved from “\(3^t\) is odd”, without Volume 2.
+- V7-13. The coordinate hyperplane is covered. The rotation is named as a fact of Chapter 9 and is not used for the faces.
+- V7-14. Hardy’s \(ab\ge 1\) is marked quoted. The figure is \(a=\frac12\), \(b=3\).
+- V7-15. All thirteen source lists have `\addcontentsline`.
+- V7-16. Problems 13.4 and 13.8 are marked with three stars.
+- V7-17. The text prints \(0.9^{100}\approx 2.7\times 10^{-5}\). The value is \(2.656\times 10^{-5}\).
+- V7-18. The manifold chapter cites Theorem 7.10 for a cover by cubes.
+- V7-19. The interval containing \(a\) is cut at its right endpoint.
+- V7-20. The homeomorphism is the bijection from the compact quotient \(\mathbb R/\mathbb Z\) onto \(S^1\). The maps from \([0,1]\) are said not to be bijective.
+- V7-21. The winding proof of the fundamental theorem of algebra uses both \(R>1\) and \(R>\sum\lvert c_j\rvert\), which the hypothesis supplies.
+- V7-22. The first step of the curve \(c=0\) in `figures/ch04-equicont.tex` runs from \((1.500,0)\) to \((1.520,0.010)\), slope \(\frac12\).
+- V7-26. The Calkin–Wilf solution says “the first ten nodes”, and that four levels would be fifteen.
+- V7-27. The Babylonian caps are rounded up: \(0.122\), \(0.0053\), \(1.0\times 10^{-5}\), \(3.6\times 10^{-11}\), \(4.6\times 10^{-22}\). The text says 23 matching decimals.
+- V7-28. The thick arrows off \(C\) run downward, and the label is \(h=g^{-1}\).
+- V7-29. An empty factor makes the product empty, and the proof stops.
+- V7-30. The polyline passes through \((\pm 1,\frac12)\) and sits at height \(1\) on the open interval. The caption says so. The value \(\frac1{|x|+1}\) for \(\lvert x\rvert\ge 1\) was recomputed.
+- V7-31. Nonnegativity is applied to \(\lvert X\rvert+X\) and to \(\lvert X\rvert-X\).
+- V7-32. Ulam’s proof writes \(\mu\bigl(A\setminus(C\cap K)\bigr)<2\varepsilon\).
+- V7-33. The rays \(]a,\infty[\) and \(]-\infty,b[\) are in the distribution-function argument.
+- V7-34. \(\psi(1)=1/\log 3\) and \(\psi(2)=1/(4\log 3)\), so \(f(1)=f(2)=f(3)\).
+- V7-35. The Jarník measure is the equal-mass assignment, extended by Carathéodory. The write-up says why normalised Lebesgue measure on \(E_k\) does not give equal masses.
+- V7-36. Both values of the typewriter are claimed from generation \(k\ge 2\).
+- V7-37. Either norm zero is the case \(0\cdot\infty=0\).
+- V7-38. The marker \(2\) is no longer at \((0.62,0.62)\). It is at \((0.52,0.78)\) in `figures/ch09-balls.tex`.
+
+The fixes note’s Accept on V7-08 is fair relative to the option that report allowed. It is the one item I would not call gone without a remainder.
+
+### Not introduced by the fixes
+
+No repaired argument that was re-derived is now false. The \(4\varepsilon\) sum, the nine approximations to \(e\), the equal-mass measure, the swapped values of \(\psi(1)\) and \(\psi(2)\), the logarithm on the half-plane, and the maximal-function polyline were checked as mathematics, not only as text that had changed. The new index does not carry a wrong printed number among the entries compared with the counters.
+
+The name Prokhorov in the tools line of the Jarník solution (V7-3) was already in that line before the November edits. The edit of 12 November only changed “Volume 7, Chapter 12” to a chapter reference. It is an old loose tag, not a regression.
+
+### What the 12 November report did not log
+
+These were in the book before the fixes as well. They are the four items in the issue log above, of which V7-1 is the remainder of V7-08.
+
+- The cylinder length \(\frac1{q_n(q_n+q_{n-1})}\) is attributed to Problem 13.3(a). The problem asks for the distortion inequality. The length is proved in the solution, and Volume 11 cites the problem for it (V7-2).
+- The Jarník tools line names Prokhorov, which that write-up does not use (V7-3).
+- Chapter 5 still calls the Cantor set a set of “length zero” before length is a measure (V7-4). Chapter 4 already says that Chapter 7 makes the phrase precise; Chapter 5 does not point there.
+
+The 12 November report’s own comparison, with the October review and the rewrite handoff, is about the book before these fixes. The three wrong citations and the missing index it said those documents had missed are the majors above, and they are fixed. I did not reopen that October review or the handoff for a second census.
