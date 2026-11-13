@@ -40,7 +40,7 @@ Removed in the first commit after the written check `review/volume15-rewrite/unr
 | Ch. | Title | Files | State |
 | --- | --- | --- | --- |
 | 1 | Order and Chance in the Integers | `ch01-integers.tex`, `ra-anatomy.tex` | done: question epigraph, opening count of squarefree windows (too regular for coins), glossary kept, stale section numbers replaced by labels, the use of Chapter 3's `cor:bigomegasd` declared (no circle), closing section; captions corrected (Rankin factor 2.7–21; arcsine gap; Ford curve 4e14); `check_ch01_integers.py` |
-| 2 | Models of the Primes | `ch02-cramer.tex`, `ra-largemoduli.tex`, `ra-gaps.tex` | to do |
+| 2 | Models of the Primes | `ch02-cramer.tex`, `ra-largemoduli.tex`, `ra-gaps.tex` | done: question epigraph; new Section "Cramér's coins" (`lem:chernoffcoins`, `prop:cramershort`: the model predicts the share for λ>2 a.s., and fluctuates by a factor 2 for λ<2); `thm:gallagher` restated unconditionally with the exceptional term (D-29: its only zero input is `lem:onezero`, proved from Volume 14 Theorems 2.3–2.4), so Maier is unconditional; `lem:localL` now has its own proof (it pointed forward to Chapter 13's `thm:explicitchi`); section epigraphs removed; Maier's λ>2 framing fixed; one Sources section (added Pan 1957, Chowla 1934, Cramér 1920, Cramér 1936), solutions in order; closing; `check_ch02_models.py` (Buchstab sign changes, Maier figure recomputed, least-prime figure) |
 | 3 | Independent Prime Divisors | `ch03-divisors.tex`, `ra-additive.tex`, `ra-selbergdelange.tex`, `ra-erdoskac.tex` | to do |
 | 4 | Random Multiplicative Functions | `ch04-multiplicative.tex`, `ra-randommult.tex`, `ra-polynomials.tex` | to do |
 | 5 | Primes in Short Intervals | `ch05-short.tex` | to do |
