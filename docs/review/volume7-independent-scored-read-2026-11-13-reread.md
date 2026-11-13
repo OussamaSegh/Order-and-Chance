@@ -21,7 +21,7 @@ Columns: (a) mathematical correctness, (b) rigor, (c) prerequisite discipline, (
 | 7 Measures | 9 | 8 | 8 | 8 | 8 | 7 | 8 | 8 | 8 | 8 |
 | 8 The Lebesgue Integral | 8 | 8 | 8 | 8 | 8 | 7 | 7 | 8 | 8 | 8 |
 | 9 Product Measures and Change of Variables | 9 | 8 | 8 | 7 | 8 | 7 | 8 | 8 | 8 | 8 |
-| 10 \(L^p\) Spaces | 8 | 8 | 8 | 8 | 8 | 7 | 7 | 8 | 8 | 8 |
+| 10 \(L^p\) Spaces | 8 | 8 | 8 | 8 | 8 | 6 | 7 | 8 | 8 | 8 |
 | 11 Differentiation and Radon–Nikodym | 9 | 8 | 8 | 8 | 8 | 8 | 8 | 8 | 8 | 8 |
 | 12 Measures on Metric Spaces | 8 | 8 | 8 | 7 | 8 | 7 | 8 | 8 | 8 | 8 |
 | 13 Almost every number | 8 | 8 | 8 | 7 | 7 | 8 | 8 | 8 | 8 | 8 |
@@ -48,7 +48,7 @@ There is no appendix. `jordan-polygon.tex` is the first section of Chapter 6, an
 
 **Chapter 9.** Tonelli and Fubini, for \(\sigma\)-finite measures, are the standard reductions to indicators, simple functions, and monotone convergence; the hypotheses are stated and used. The matrix with \(1\) on the diagonal and \(-1\) on the superdiagonal has row sums \(0\) and iterated column sum \(1\). The diagonal against counting measure gives \(1\) one way and \(0\) the other. The elementary-matrix proof that \(\lambda(T(A))=|\det T|\,\lambda(A)\), the cube estimate, and the four steps of the change-of-variables theorem were checked; the Jacobian identity for polar coordinates in the plane is \(r\). The ball volumes \(2\), \(\pi\), \(\frac43\pi\), \(\frac{\pi^2}2\) in dimensions \(1\) through \(4\) match \(\pi^{d/2}/\Gamma(\frac d2+1)\). In dimension \(100\), \(\pi^{50}/50!\approx 2.37\times 10^{-40}\) (the text’s \(2.4\times 10^{-40}\)), the cube \([-1,1]^{100}\) has volume \(2^{100}\approx 1.27\times 10^{30}\), the ball’s fraction of that cube is about \(1.9\times 10^{-70}\) (the text’s \(2\times 10^{-70}\)), \(0.9^{100}\approx 2.66\times 10^{-5}\), and \(\sqrt{100/3}\approx 5.77\). The Gaussian density formula was re-derived from the change of variables. Clarity is 7 because the dyadic decomposition and the passage from cubes to Borel sets are packed into two paragraphs.
 
-**Chapter 10.** Young, Hölder, and Minkowski were sampled at the normalisation step. Riesz–Fischer (Theorem 10.4) includes the almost-everywhere subsequence, which is the fact Volume 8’s Bergman-space solution cites as “Chapter 10”. Convolution and approximate identities were not re-proved.
+**Chapter 10.** Young, Hölder, and Minkowski were sampled at the normalisation step. Riesz–Fischer (Theorem 10.4) includes the almost-everywhere subsequence, which is the fact Volume 8’s Bergman-space solution cites as “Chapter 10”. Theorem 10.10 states norm convergence of an approximate identity only for \(1\le p<\infty\). Exercise 10.2(b) and its solution drop that restriction (V7-5). The sentence after Theorem 10.5 applies Jensen’s inequality to \(t\mapsto t^{q/p}\) at the endpoint \(0\), which the stated hypotheses exclude; the norm comparison itself is the Hölder inclusion already proved (V7-6). The exercise score is 6 because the solution asserts a false limit.
 
 **Chapter 11.** Hahn, Radon–Nikodym (the \(\varepsilon\)-improvement of a maximal density), Lebesgue decomposition, the three-part corollary, Vitali covering with the factor \(3^d\), the maximal inequality, differentiation of measures, Lebesgue’s theorem on monotone functions, the fundamental theorem for absolute continuity, conditional expectation, and the tower property were checked. The die example is right: odds average to \(3\), evens to \(4\), and the mean is \(\frac72\). The maximal function of \(\mathbf 1_{[-1,1]}\) is \(1\) on \((-1,1)\), \(\frac12\) at the endpoints, and \(\frac1{|x|+1}\) for \(|x|\ge 1\), as the caption says. Girsanov is named as belonging to Volume 12 and is not used.
 
@@ -76,7 +76,7 @@ c=2\sum_{k\ge 1}\frac1{k\sqrt{k+1}}=4.368019\ldots
 
 **8.** The book does what its preface promises: it builds the line, pays the named debts of Volumes 4, 5, and 6, and leaves conditional expectation, Fubini, Prokhorov, and Kolmogorov in the forms later volumes cite. The theorems that were re-proved — the reals, Zorn, \(\mathbb Q_p\), \(\pi\), Baire, Takagi, Jordan’s polygonal case and Maehara’s argument, Carathéodory, the Lebesgue sandwich, Tonelli and Fubini, the ball, Radon–Nikodym, the tower property, Kolmogorov, the Cantor dimension, and Khinchin’s constants — are correct. The faults found are small and local. Clarity drops in the change-of-variables proof, in Maehara’s path-chasing, and in the Jarník construction, which is why the score is not 9.
 
-I would recommend the book, as it stands, to a reader who has finished Volume 6. The four items below are worth repairing; none of them makes a stated theorem false.
+I would recommend the book, as it stands, to a reader who has finished Volume 6. The six items below are worth repairing. One of them, in an exercise solution, asserts a false limit. None of them makes a numbered theorem false.
 
 ## Issue log
 
@@ -86,6 +86,8 @@ I would recommend the book, as it stands, to a reader who has finished Volume 6.
 | V7-2 | `volume7-spaces/chapters/ch12-harder.tex:45–46`, problem statement at `:85–89`, solution at `:483–487`. Problem 13.3(a), printed p. 229. Also `volume11-randomness/chapters/from-volume7-problems.tex` (the length \(1/(q_n(q_n+q_{n-1}))\)). | Citation | minor | The introduction says Problem 13.3(a) proves the cylinder length. The problem asks for the distortion inequality \(\frac12\lambda(B)\le\lambda(I\cap G^{-n}B)/\lambda(I)\le 2\lambda(B)\). The length is derived in the solution, as \(\int_0^1\lvert\psi'\rvert=1/(q_n(q_n+q_{n-1}))\), and it is correct, but it is not a question the problem asks. Volume 11 cites “Problem 13.3(a)” for that length. | Add one sentence to Problem 13.3(a) asking for the endpoints and the length, which the solution already proves. |
 | V7-3 | `volume7-spaces/chapters/ch12-harder.tex:639`. Solution of Problem 13.7 (Jarník–Besicovitch), printed p. 245. | Citation | minor | The tools line names “mass distribution principle, Prokhorov”. The write-up uses the mass distribution principle, Carathéodory’s extension, and Volume 6, Theorem 5.5. It does not use Prokhorov. | Delete Prokhorov from that tools line. |
 | V7-4 | `volume7-spaces/chapters/ch05-baire.tex:37`. Printed p. 86. | Prerequisite | minor | The Cantor set is called nowhere dense because it has “length zero”, before length is a defined measure. Chapter 4 does say that \(C_n\) has total length \((2/3)^n\) and that Chapter 7 makes “length zero” precise, but Chapter 5 does not point there. | Replace the parenthesis with “it contains no interval; Chapter 4” or with a pointer to that sentence. |
+| V7-5 | `volume7-spaces/chapters/ch09-lp.tex:267` and the solution at `:347`. Exercise 10.2(b). | Exercises | minor | The exercise asks, for \(f\in L^p(\mathbb R)\), that \(f*G_t\to f\) in \(L^p\) as \(t\to 0\). The solution cites Theorem 10.10. That theorem gives the norm limit only for \(1\le p<\infty\). At \(p=\infty\) it fails: if \(f=\mathbf 1_{[0,\infty)}\), then \(f*G_t\) is the distribution function of \(\mathcal N(0,2t)\), and \(\|f*G_t-f\|_\infty=\frac12\) for every \(t>0\). The heat equation in the same part is unaffected. | Restrict the norm limit to \(1\le p<\infty\). |
+| V7-6 | `volume7-spaces/chapters/ch09-lp.tex:126`, the sentence after Theorem 10.5. | Rigor | minor | Jensen is stated for a convex function on an open interval, and for integrands with values in that interval. The next sentence applies it to \(\varphi(t)=t^{q/p}\) and to \(\lvert f\rvert^p\), which takes the value \(0\). The comparison \(\|f\|_p\le\|f\|_q\) on a probability space is true: it is the case \(\mu(E)=1\) of the Hölder inclusion a few lines earlier. | Apply the theorem to \(\lvert f\rvert^p+\varepsilon\) and let \(\varepsilon\downarrow 0\), or cite the inclusion already proved. |
 
 No critical or major fault was found in the statements and proofs that were re-derived. That is a claim about those arguments, not about the pages listed under Not reviewed.
 
@@ -116,7 +118,7 @@ Sources actually used for the checks: the source of Volumes 2, 3, 4, 5, 6, 8, 9,
 ## Not reviewed
 
 - Line-by-line reading of every exercise solution in Chapters 2–12. Chapters 1 and 13 were read in full, including solutions of the problems named above; the remaining solutions of Chapter 13 (in particular Eggleston, Koksma’s integral estimate, and the Bernstein set) were not re-derived.
-- Arzelà–Ascoli’s proof, the proof of Borel normality, the proofs of monotone convergence, Fatou, and dominated convergence as written, the section lemmas that feed Tonelli, the whole of the \(L^p\) approximation theory, and Prokhorov’s argument past the tightness reduction.
+- Arzelà–Ascoli’s proof, the proof of Borel normality, the proofs of monotone convergence, Fatou, and dominated convergence as written, the section lemmas that feed Tonelli, and Prokhorov’s argument past the tightness reduction. A second pass of Chapter 10, after the scorecard was committed, checked Theorem 10.10 and Exercises 10.1 and 10.2; that pass is what produced V7-5 and V7-6. The remaining \(L^p\) exercise solutions were not all re-derived.
 - Every later-volume citation. The search covered Volumes 8–15 for “Volume 7” and “Volume~7”; the numbered sample above was checked, not the whole hit list.
 - A page-by-page visual pass of all 276 reading pages and all 275 print pages. Sampled: the cover, the three part openers (reading pages 14, 130, 206, all full charcoal), the Chapter 1 opener, print page 13 (charcoal at the bleed edge), and a text-block scan that found no line within \(0.5\) in of the trim. EPUB structure, plate sizes, and CSS were checked; a Kindle device was not.
 - The sixteen-digit value \(0.5312805062772051\ldots\) given for \(\dim_H E_{\{1,2\}}\) as a spectral radius. The two bounds around it were checked; the eigenvalue was not.
@@ -182,10 +184,12 @@ The name Prokhorov in the tools line of the Jarník solution (V7-3) was already 
 
 ### What the 12 November report did not log
 
-These were in the book before the fixes as well. They are the four items in the issue log above, of which V7-1 is the remainder of V7-08.
+These were in the book before the fixes as well. V7-1 is the remainder of V7-08. V7-2, V7-3 and V7-4 were already in the manuscript the 12 November report read. V7-5 and V7-6 were also already there: the heat-kernel sentence is from the rewrite of 12 November (`604f29ea`), before the scored-read repairs, and the Jensen sentence is older. Neither was introduced by those repairs, and neither was in that issue log.
 
 - The cylinder length \(\frac1{q_n(q_n+q_{n-1})}\) is attributed to Problem 13.3(a). The problem asks for the distortion inequality. The length is proved in the solution, and Volume 11 cites the problem for it (V7-2).
 - The Jarník tools line names Prokhorov, which that write-up does not use (V7-3).
 - Chapter 5 still calls the Cantor set a set of “length zero” before length is a measure (V7-4). Chapter 4 already says that Chapter 7 makes the phrase precise; Chapter 5 does not point there.
+- Exercise 10.2(b) asks for \(L^p\) convergence of the heat kernel for every \(p\), including \(p=\infty\), where the limit fails (V7-5).
+- The sentence after Theorem 10.5 applies Jensen on a closed endpoint the theorem excludes (V7-6). The inequality it wants is already proved by Hölder.
 
 The 12 November report’s own comparison, with the October review and the rewrite handoff, is about the book before these fixes. The three wrong citations and the missing index it said those documents had missed are the majors above, and they are fixed. I did not reopen that October review or the handoff for a second census.
