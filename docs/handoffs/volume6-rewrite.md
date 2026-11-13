@@ -1,52 +1,62 @@
-# Volume 6 rewrite plan
+# Volume 6 rewrite — handoff
 
-Volume 6 is *Crossroads: Arithmetic Meets Analysis* (`volume6-crossroads`). This pass rewrites every chapter in the voice of Volumes 1–4. The curriculum stays the one in `docs/plan/book-06.md` and `docs/SERIES-STRUCTURE.md`: twelve chapters, three parts, no new topic and no deleted theorem.
+Branch: `cursor/volume6-complete-rewrite-5aa1`. Base: `main`. Do not edit Volume 5, Volumes 1–4, or Volumes 11–15. Do not merge or edit PR #157.
 
-Branch: `cursor/volume6-complete-rewrite-5aa1`. One pull request, one commit per chapter. PR #157 is not merged and not edited. Volume 5 is not edited.
+## Done
 
-## Voice, from Volumes 1–4 and the style sheet
+All twelve chapters and the preface are rewritten and committed, one commit per chapter, plus the preface.
 
-The reader is a serious beginner who has finished Volumes 1–5. The voice is a friend with a pencil, not a lecture and not a chatbot (`docs/WRITING-STYLE.md`, Sound human).
-
-- Open on a picture or a small number, then the question. The epigraph stays a real quotation.
-- One concrete case before the general statement. Name the object and the job in one plain sentence. Do not announce the outline.
-- Short sentences. “You” when the reader should check a case. “We” when the argument is shared.
-- Proofs keep every algebraic step. Connective sentences say why the step is there.
-- A chapter ends by naming what was proved, by label, and the one question the next chapter answers.
-- No “in this section we will”, no “it is important to note”, no “in conclusion”, no hollow intensifiers.
-- First-edition copy: the book is not described as a revision. No notebooks.
-- Humour only when it teaches. History only when the fact is checked, and the source sits in that chapter’s Sources list.
-
-## Structure that does not move
-
-| Part | Chapters |
+| Commit | Chapter |
 | --- | --- |
-| Counting Primes | 1 Mertens, 2 averages, 3 characters, 4 Dirichlet, 5 prime number theorem |
-| Zeros and Explicit Formulas | 6 zeros, 7 explicit formula |
-| Sieves and Randomness | 8 sieves, 9 Erdős–Kac, 10 random models, 11 exponential sums, 12 modular forms |
+| `81d3356a` | 1 Mertens |
+| `0d434175` | 2 Averages |
+| `bfe11354` | 3 Characters |
+| `2ceeb074` | 4 Dirichlet |
+| `00c8a386` | 5 Prime number theorem |
+| `63f43a66` | 6 Zeros |
+| `583c71d7` | 7 Explicit formula |
+| `81a8ed30` | 8 Sieves |
+| `b585152d` | 9 Erdős–Kac |
+| `11841305` | 10 Random models |
+| `98c00e79` | 11 Exponential sums |
+| `eb37cbf2` | 12 Modular forms |
+| `5f837b99` | Preface |
 
-Numbered environments stay in their present order, so theorem numbers that Volumes 7–15 cite do not shift. New exercises go at the end of the exercise list, with hints and solutions after the existing ones. Existing `\label` names stay. Displayed formulas keep their constants, hypotheses, indices and signs. `\log` is natural, \(p\) is prime, \(\mathrm{Li}(x)=\int_2^x dt/\log t\).
+Each chapter gained two TikZ figures (charcoal `MidnightBlue`, coral `BurntOrange`) and four exercises at the end of the exercise list, each with a hint and a solution. Old `\label` names are present and in the same order. The numbered-environment prefix matches the pre-rewrite order, so theorem and exercise numbers that later volumes cite did not shift. The four new exercises are the only environments added, and they sit last.
 
-The letter \(\tau\) is the divisor function in Chapter 2 and Ramanujan’s function in Chapter 12. Chapter 12 says so on the first page. The completed zeta is \(\xi\) (Volume 5, Theorem 10.8): \(\xi(s)=\frac12 s(s-1)\pi^{-s/2}\Gamma(s/2)\zeta(s)=\frac12+\frac12 s(s-1)I(s)\), entire, \(\xi(1-s)=\xi(s)\). Jacobi’s theta is \(\vartheta\). The Riemann–Siegel phase is \(\alpha\). Volume 5’s Fourier inversion (Chapter 8) needs a continuous integrable function whose transform is integrable. A jump is not in that class. Volume 6 does not use that theorem as a premise; if a remark mentions Poisson summation, it names the class. Chapter 12 cites the transformation of \(\eta\) as Volume 5, Theorem 12.4 (label `thm:eta` in `hardy-ramanujan.tex`). A parallel rewrite of Volume 5 may renumber that theorem. The citation is listed for a re-check when that pull request lands.
+Checked while integrating:
 
-## What each chapter gains
+- Chapter 7 display in the proof of `thm:pnterror` uses \(\log(T+2)\), matching the zero-free bound.
+- Chapter 10 states the almost-sure short-interval law only for \(\lambda>2\), and says the gap theorem forces liminf \(0\) for \(1<\lambda\le 2\), in the narrative and in `ex:shortmodel` / `ex:lambdaless`.
+- Chapter 12 still warns that Ramanujan's \(\tau\) is not the divisor function of Chapter 2. Both halves of `thm:fundamental` remain. The primitive-root solution says \(\varphi(d)/\sqrt d\) is multiplicative. Rankin's quotient stays \(19.5\).
+- Lemma `lem:momentslaw` still names the Gaussian moments.
+- Recomputed: \(\prod_{p\le 1000}(1-1/p)=0.080965\), printed \(0.0810\); \(\tau(n)\) for \(n\le 12\) matches Figure `fig:newtau`; the three Cramér windows at \(x=e^{10}\) have means \(3.200\), \(9.998\), \(99.78\).
+- No duplicate labels in the volume. Every exercise has a hint and a solution.
 
-Two new TikZ figures, in the series palette (charcoal `MidnightBlue`, coral `BurntOrange`), with a caption that states the takeaway. Four new exercises at the end, graded, each with a hint and a solution that teaches. One worked numerical check before the main theorem, recomputed rather than copied. One historical aside with a source. The known defects below are fixed in the same pass.
+The word “Journey” on some exercises is the existing long-exercise tag, not a buzzword.
 
-## Defects this pass still has to catch
+## In progress
 
-Several items in `docs/review/volume6-independent-scored-read-2026-11-13-reread.md` are already repaired on `main` (the \(\tau\) warning, the Piltz quotation, the cotangent comparison, the \(\lambda>2\) restriction in the Chapter 10 narrative, the jacket’s conditional \(99.59\%\), the index entries for the fundamental domain and the congruence, the Volume 14 handoff, Rankin’s quotient \(19.5\), and the Gaussian-moment clause in Lemma 9.6). The rewrite must not undo them.
+Local build of Volume 6. The first `./build.sh volume6-crossroads` typeset the book and then failed `tools/check_book_layout.py`: one overfull hbox, `ch12-modular.tex` around the product for \(\tau(n)\) up to \(q^3\) (the old line 2579). That display is now broken across lines in the Chapter 12 commit. A second build has not finished.
 
-Still to check while rewriting:
+## Remains
 
-- Chapter 7, proof of the error term: the displayed exponential must use \(\log(T+2)\), matching the sentence above it.
-- Chapter 7: the passage from the \(\theta\)-race to the \(\pi\)-race, and the solution of the bias exercise, must not claim more than the identity proves.
-- Chapter 10: the solution of the short-interval exercise must say the almost-sure asymptotic is proved for \(\lambda>2\) and is false for \(1<\lambda\le 2\).
-- Chapter 12: the solution that uses \(\varphi(d)\ge\sqrt{d/2}\) must say the ratio is multiplicative, not only check prime powers.
-- Chapter 1: the comparison of Mertens’s product with \(1/\log n\) waits for Chapter 5, and the discrepancy is about \(12.3\%\).
+1. Rebuild Volume 6 (reading PDF, print PDF, EPUB). Zero LaTeX errors, no undefined references, no overfull boxes.
+2. Write the self-review in `docs/review/` (math and voice findings, including this overflow).
+3. Open the pull request titled “Volume 6: complete rewrite”.
+4. Poll CI until list, debs, build matrix, site, and publish have finished. Fix failures. Do not merge.
 
-## Continuity this pass does not edit
+## Open math questions
 
-Volumes 1–4 and 11–15 stay untouched, and so does Volume 5. Later volumes cite Volume 6 by hand-typed numbers (Theorem 1.3, 1.5, 4.1, 5.5, 6.9, 7.5, 7.8, 7.10, 7.11, 8.2, 8.4, 8.5, 9.1, 9.7, 10.1, 10.7, 11.11, 12.2, equation (8.1), and others). Those numbers are frozen. Volume 8’s expander chapter still cites Chapter 5 for an error term that Chapter 5 does not prove; the right pointer is Theorem 7.10. That sentence is listed here and is not edited.
+- Volume 5 citations in this book are hand-typed. A parallel rewrite of Volume 5 may renumber them. Re-check every “Volume 5, Theorem/Proposition/Exercise/Corollary”, especially Theorem 10.8 (\(\xi\), label `thm:functional`), Theorem 12.4 (\(\eta\), label `thm:eta`), Proposition 10.6, Corollary 10.9, Theorems 9.15, 9.18, 9.26 and 9.36, and Exercises 5.7 and 6.5.
+- Volume 8, `volume8-analysis/chapters/ch09-expanders.tex`, still cites Volume 6, Chapter 5 for an error \(O(\sqrt x\log x)\) under the Riemann hypothesis. Chapter 5 gives no error term. The right pointer is Theorem 7.10. Do not edit Volume 8 in this pull request.
+- No cross-volume `\ref` exists, so those citations cannot be made label-based from Volume 6 alone.
 
-Volume 5 citations inside Volume 6 are hand-typed (there is no cross-volume `\ref`). After the parallel Volume 5 rewrite, re-check every “Volume 5, Theorem/Proposition/Exercise/Corollary” in this book against the new chapter order, especially Theorem 10.8 (\(\xi\)), Theorem 12.4 (\(\eta\)), Proposition 10.6, Corollary 10.9, Theorems 9.15, 9.18, 9.26 and 9.36, and Exercises 5.7 and 6.5.
+## Exact next steps
+
+1. From this branch, run `./build.sh volume6-crossroads`.
+2. If `check_book_layout.py` fails, grep `build/volume6-crossroads/main.log` for `Overfull`.
+3. Confirm `dist/` has the reading PDF, the print PDF, and the EPUB, and that `tools/check_epub_media.py` passed (the build script runs it).
+4. Record the review, commit, push.
+5. Open the PR with `ManagePullRequest`, `base_branch` `main`, title `Volume 6: complete rewrite`.
+6. Poll the GitHub Actions run until every job is finished.
