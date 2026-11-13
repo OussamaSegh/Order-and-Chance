@@ -33,16 +33,16 @@ Gate B of the master plan (independent verification records) is not this pass.
 
 | Ch. | Title | File | State |
 | --- | --- | --- | --- |
-| 1 | Quadratic Fields and Their Integers | `ch11-algebraic.tex` | |
-| 2 | Ideals, Prime Splitting and Class Groups in Quadratic Fields | `ch12-ideals-quadratic.tex` | |
-| 3 | Number Fields and Their Integers | `ch01-number-fields.tex` | |
-| 4 | Ideals and the Splitting of Primes | `ch02-ideals.tex` | |
-| 5 | The Geometry of Numbers | `ch03-geometry.tex` | |
-| 6 | Units | `ch04-units.tex` | |
-| 7 | Cyclotomic Fields and Fermat (+ `polyfermat.tex` as last section) | `ch05-cyclotomic.tex` | |
-| 8 | The p-adic Numbers | `ch12-padic.tex` | |
-| 9 | Local Fields | `ch06-local.tex` | |
-| 10 | Quadratic Forms and the Local–Global Principle | `ch07-hasse.tex` | |
+| 1 | Quadratic Fields and Their Integers | `ch11-algebraic.tex` | done: three exercises, closing section, Dirichlet source |
+| 2 | Ideals, Prime Splitting and Class Groups in Quadratic Fields | `ch12-ideals-quadratic.tex` | done: second-proof heading (D-22), closing section |
+| 3 | Number Fields and Their Integers | `ch01-number-fields.tex` | done |
+| 4 | Ideals and the Splitting of Primes | `ch02-ideals.tex` | done: `thm:ufi` from Volume 10 (D-22), numbering kept, see `d22-equivalence.md` |
+| 5 | The Geometry of Numbers | `ch03-geometry.tex` | done: Minkowski portrait moved here, Viazovska corrected |
+| 6 | Units | `ch04-units.tex` | done: Siegel beauty box corrected, determinant 0.5255 |
+| 7 | Cyclotomic Fields and Fermat (+ `polyfermat.tex` as last section) | `ch05-cyclotomic.tex` | done: `polyfermat.tex` folded in as last section (D-24), heuristic labelled, two exercises appended |
+| 8 | The p-adic Numbers | `ch12-padic.tex` | done: construction cited from Volume 7, broken examples replaced |
+| 9 | Local Fields | `ch06-local.tex` | done |
+| 10 | Quadratic Forms and the Local–Global Principle | `ch07-hasse.tex` | done: self-citations now `\ref` |
 | 11 | Zeta Functions and Densities | `ch08-zeta.tex` | |
 | 12 | Adèles, Idèles and Tate's Thesis | `ch09-tate.tex` | |
 | 13 | Class Field Theory | `ch10-cft.tex` | |
