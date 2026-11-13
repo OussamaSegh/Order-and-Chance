@@ -79,6 +79,6 @@ Compared with `baseline-numbering.txt`. Every numbered statement of Chapters 1â€
 
 `resolve_citations.py` on all of Volumes 14 and 15 resolves every Volume 13 citation to the intended statement. Owed to Volume 15: `ra-polynomials.tex` quotes Chebotarev (Theorem 11.23) as "density"; Volume 13 proves it in Dirichlet density, so that reminder should say so.
 
-`tools/cross_volume_citations.py` reports one mismatch, not in this volume and already on `main`: `volume14-primes/chapters/ch14-critical.tex` cites "Volume 5, Corollary 10.10", which is a theorem. Owed to the Volume 14 rewrite.
+`tools/cross_volume_citations.py` reports no mismatch after merging `main` (PR #226 fixed the one Volume 14 citation of Volume 5).
 
 Full build: 359 pages, no undefined references; `tools/listing.py` passes; tool tests 639 OK.
