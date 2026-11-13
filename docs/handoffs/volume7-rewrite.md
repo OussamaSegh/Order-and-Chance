@@ -141,7 +141,7 @@ Local `./build.sh volume7-spaces` finished with exit 0.
 
 ## In progress
 
-Push, mark PR #237 ready, and wait for CI (`list`, `debs`, `build`, `site`).
+The review repairs through V7-23 are in the working tree, on top of the 409-page interior. CI on that head is the remaining check.
 
 ## Remains
 
@@ -159,19 +159,35 @@ The independent review is a separate agent. This file does not contain that revi
 
 ## Repairs after the second review
 
-The second review, `docs/review/volume7-rewrite-second-review-2026-11-13.md` on PR #241, asked for four repairs at `a17a4d18`. They are in the following commit.
+The second review is `docs/review/volume7-rewrite-second-review-2026-11-13.md` on PR #241, read at `19a6165f`. It lists V7-1 through V7-23. None of the repairs weakens a numbered statement. Labels and statement numbers are unchanged. The only figure file edited in this pass is `figures/jordan-rw-winding.tex`, which this rewrite added. The convolution caption was changed; the trapezoid plate was left as drawn.
 
-- Exercise `ex:v7c08c` now bounds \(f_m(x)=me^{-mx}\) by \(m/e\ge 1/(2ex)\), using \(mx<1\).
-- Lemma `lem:monoivt` again says every value between \(f(a)\) and \(f(b)\), endpoints included. The proof takes the endpoints first, then the open interval, and reduces a decreasing map to \(-f\).
-- Theorem `thm:condexp` again says that \(X\ge 0\) almost surely forces \(\mathbb E[X\mid\mathcal G]\ge 0\) almost surely. The proof passes to \(\max(X,0)\).
-- The solution of `ex:v7c11b` cites `thm:continuum` for the uncountability of \(\R\).
-- Theorem `thm:dct6` now assumes that the pointwise limit \(f\) is measurable. Without that hypothesis the claim is false on Borel measure: the indicator of a non-Borel subset of a Borel null set is a dominated almost-everywhere limit of the zero sequence and is not integrable, because the integral is not defined. The proof builds a measurable \(\varphi\) that agrees with the limit off one null set, then uses the hypothesis to pass from \(\varphi\) to \(f\). Vitali's theorem is unchanged: convergence in measure is defined only for a measurable limit.
-- The cut plate labels \(\frac43\), not both \(\frac75\) and \(1.4\). The open-ball radius ends inside the circle. Banach and Tarski in 1924 are credited with a finite decomposition; five pieces, and the failure of four, are Robinson's 1947 result. The square-root step in `thm:uniqueR` now uses \(h(2s+1)<h(2s+2)<x-s^2\).
+- V7-1. Exercise `ex:v7c08c` bounds \(f_m(x)=me^{-mx}\) by \(m/e\ge 1/(2ex)\).
+- V7-2. Lemma `lem:monoivt` says every value between \(f(a)\) and \(f(b)\), endpoints included.
+- V7-3. Theorem `thm:condexp` says that \(X\ge 0\) almost surely forces \(\mathbb E[X\mid\mathcal G]\ge 0\) almost surely. Before monotone convergence the proof replaces \(X\) by \(X\mathbf 1_{\{X\ge 0\}}\). The product equals \(X\) almost surely, so the integrals agree by Proposition `prop:markov`(d).
+- V7-4. The solution of `ex:v7c11b` cites `thm:continuum` for the uncountability of \(\R\).
+- V7-5. Theorem `thm:dct6` assumes the pointwise limit \(f\) is measurable. The proof builds a measurable \(\varphi\) off one null set, then uses that hypothesis.
+- V7-6 through V7-9. The cut plate labels \(\frac43\). The open-ball radius ends inside the circle. Banach and Tarski in 1924 are credited with finitely many pieces; five pieces, and the failure of four, are Robinson's 1947 result. The square-root step uses \(h(2s+1)<h(2s+2)<x-s^2\).
+- V7-10. A uniform limit on a compact space, metric or not, moves by less than \(3\varepsilon\) once a continuous approximant is within \(\varepsilon\) and is \(\varepsilon\)-steady on a neighbourhood.
+- V7-11. Corollary `cor:bairecor`(a) requires the complete metric space to be nonempty.
+- V7-12. Corollary `cor:bairecor`(c) is stated for an interval that contains two points. A singleton is an interval and is countable.
+- V7-13. A cover of \([a,b]\) is enlarged to a finite open cover before the length induction. The cases \(c>b\), \(c=b\), and an infinite end are separate.
+- V7-14. The solution of `ex:polynomial` treats an empty intersection \(J\cap G\), and runs the endpoint argument on every component, using an endpoint that lies in \(J\).
+- V7-15. \(|\operatorname{Re} z|\le 1\) is proved from the two discs before \(J\subset R\).
+- V7-16. The exit time may equal \(1\). That case puts \(c(1)\) on \(\partial W\). The case \(t^*<1\) either extends the path or lands on \(\partial W\).
+- V7-17. The coral arrow in `jordan-rw-winding` is a full turn.
+- V7-18. The typewriter indicator satisfies \(\|f_n\|_2^2=\|f_n\|_1=2^{-k}\), so \(\|f_n\|_2=2^{-k/2}\).
+- V7-19. If every \(\{g\ge 1/n\}\) is null, then \(\{g>0\}\) is null. That set is \(E\), because \(g>0\) at every point.
+- V7-20. Jensen is applied to \(\min(|f|^p,n)+\varepsilon\), dominated by \(2^{q/p}(|f|^q+1)\). Letting \(n\to\infty\) puts \(|f|^p\) in \(L^1\) before the inequality is used again.
+- V7-21. The convolution caption says the jumps become a continuous piecewise-linear graph, which still has corners.
+- V7-22. A function measurable for \(\{\varnothing,\Omega\}\) is constant at every point. The constant \(\mathbb E[X]\) is still a version of the conditional expectation.
+- V7-23. The comeagre sets in `pb:typicalcf` and `ex:v7c13d` are unions of the open intervals spanned by the closures of cylinders. The hint at the same problem uses that description. The measure half of `ex:v7c13d` does not use those interiors.
 
-A comparison of every numbered statement with `origin/main` found no other dropped hypothesis or quantifier. Replacements such as “for all” by “for every”, and “unique” by “exactly one”, keep the claim.
+A comparison of every numbered statement with `origin/main`, made with the first four repairs, found no other dropped hypothesis or quantifier. Replacements such as “for all” by “for every”, and “unique” by “exactly one”, keep the claim. Adding “\(f\) measurable” to dominated convergence, and “nonempty” or “two points” to the Baire corollary, corrects false statements.
+
+Local `./build.sh --pdf-only volume7-spaces` after these repairs: exit 0, print interior **409 pages**, no overfull box, no undefined reference. Layout: 394 whole boxes, maximum height 288.5 pt, no overflow. `registers.py` printed `{"accepted-internal": 1177, "pending": 19}`. The fourteen cross-volume citation tests passed.
 
 ## Exact next steps
 
 1. Push `cursor/volume7-complete-rewrite-8161`.
-2. Mark PR #237 ready and poll the Actions run until `list`, `debs`, `build`, and `site` have finished.
-3. Report the head SHA and the run IDs on the pull request. Do not push again just to record them.
+2. Poll the Actions run on that head until `list`, `debs`, `build`, and `site` have finished. `publish` is skipped on a pull request.
+3. Report the head SHA, the page count, and which commit fixes each V7 id. Do not push again just to record the run.
