@@ -135,3 +135,63 @@ Outside sources actually consulted: the AFP entry *Zeta_5_Irrational* (26 Octobe
 The manuscript matches the master plan’s decisions for this volume (the copy of `MASTER-PLAN-V5-V15.md` on the open plan PR, read only for structure): thirteen chapters, Hardy–Ramanujan as Chapter 12 in Part III with the eta transformation proved here, Waring removed, the BBP series left inside integration, a saddle-point example in the asymptotics chapter, \(\xi\) rather than \(\Lambda\) for the completed zeta, and \(\vartheta\) for Jacobi. Theorem 12.4 is what Volume 6 cites, and Volume 6 says its own argument is a second proof.
 
 `docs/plan/book-05.md` on `main` is an older blueprint: twelve chapters, the partition asymptotic in Part I, and Waring still in this volume. The printed book does not follow that file. It follows the later decision.
+
+## Comparison with the earlier scored read
+
+This section was written after the scores and the issue log above were committed. The earlier report is the draft pull request #206, `docs/review/volume5-independent-scored-read-2026-11-12.md`, read at `8d2cab36`. It judged `604f29ea`. The fixes it asked for were reviewed in `docs/review/volume5-volume6-fixes-review-2026-11-12.md`. Each line below was checked in the current source, not taken from that second review’s “Accept.”
+
+The earlier overall score was 7, with preparation for later volumes at 4, because the inversion theorem was boxed without continuity, the BBP digits were indexed wrong, and later volumes still used the pre-rewrite numbers, including a proof step in Volume 8 that cited Laplace’s method for the derivative of a path integral. Those three are repaired. This reading’s 8 is that repair, not a softer scale. Chapters 9 and 12 are still the hard ones, and the last chapter is still a coda with a problem warehouse attached.
+
+### Earlier issues that are really fixed
+
+| Earlier ID | What was wrong | Current state |
+| --- | --- | --- |
+| V5-C1 | Volume 8 cited Theorem 11.9 for \(F'=f\). That number was Laplace’s method. | `volume8-analysis/chapters/ch09-complex.tex` cites Theorem 9.9. That box is Cauchy’s theorem on a star-shaped set, and it includes \(F'=f\). |
+| V5-M2 | Volume 15’s heuristics file cited Theorem 5.7 for Waring. There is no such theorem. | The sentence now says Waring’s problem is not a theorem of Volume 5. The file is still not in Volume 15’s `main.tex`. |
+| V5-M3 | Volume 14 said this volume proves Hua’s lemma and uses it for Waring. | The sentence is gone from `ch05-expsums.tex`. |
+| V5-M4 | `polyfermat.tex` said Volume 5 proved the Waring asymptotic. | It now says Waring is not a theorem of Volume 5. |
+| V5-M5 | Volume 14 said this volume counts sums of powers by the circle method. | `three-primes.tex` says partitions only. |
+| V5-M6 | Volume 9 cited “Appendix F” for Hurwitz. There is no appendix. | It cites Theorem 6.17, which is the isoperimetric inequality. |
+| V5-M7 | Homology Cauchy and its neighbours were placed in “Volume 8, Chapter 14,” which that day was matrix inequalities. The subjects were Chapter 22. | On 13 November, pull request #212 made Volume 8 sixteen chapters and six appendices. Those subjects are now Chapter 14, `ch09-complex.tex`, and both sentences in this volume say Chapter 14. The pointer matches the book a reader can open. The intermediate repair to “Chapter 22” would be wrong today; it is not what is printed. |
+| V5-M8 | The approximate-identity lemma and the inversion box omitted continuity, which the proof used. | Both now require continuity, and both say a jump is not in the class. Plancherel calls that inversion. |
+| V5-M9 | The sentence after Heisenberg read the bound as a statement about variances. | The moments are said to be about the origin. The centred form is a separate shift, applied to \(g(x)=e^{-2\pi i\nu x}f(x+m)\). |
+| V5-M10 | \(d=10^6\) was paired with the digit string `26C65E52`. | \(d=999999\) gives `26C65E52`, and \(d=10^6\) begins `6C65E52`. Recomputed. |
+| V5-M11 | The parameter proof of the Gaussian integral was called the third, and Volume 4, Chapter 5, was said to have evaluated it by polar coordinates. | The text calls this the second proof and says Volume 4 takes the value from Volume 1. |
+| V5-m1 | The FFT history named Juno’s orbit. | The orbit is Pallas. Juno’s eccentricity is kept as a dating clue. |
+| V5-m2 | The Glaisher solution said the original partition had multiplicities at most 2. | It now says the original has multiplicities 4 and 3. |
+| V5-m3 | \(H_0\) was used and not defined. | \(H_0=0\) is in the definition. |
+| V5-m4 | \([n=0]\) was not defined. | The sentence that uses it defines it. |
+| V5-m5 | The two pentagonal families were said to be disjoint with no check. | The rearrangement \((r+s)(3(r-s)-1)=0\) is in the proof. |
+| V5-m6 | The Weyl caption stated the three-gap theorem. | That sentence is gone. |
+| V5-m8 | Exercise `ex:eta` included the pole. | The identity is asked for \(\operatorname{Re}s>0\) with \(s\ne 1\). |
+| V5-m9 | The ratio curve was labelled \(0.4432\) and the caption said \(0.4433\). | The curve node is \(0.4433\). |
+| V5-m10 | The convex-volume admission named no theorem. | It names Volume 7, Theorem 7.11, which is Lebesgue measure. |
+| V5-m11 | The blurb and the KDP text said every result is proved in full, and the KDP list skipped partitions. | Both say quoted results are marked, name Rademacher, and the KDP list names the Hardy–Ramanujan formula. |
+| V5-m12 | The dominated-convergence counterexample mentioned only the missing dominant. | The solution says both hypotheses fail, and that the convergence is not uniform on \([0,1]\). |
+| V5-m13 | The list \(i^{-n}=1,-i,-1,i\) was not in the order of the four cases. | The list is \(-i,-1,i,1\), in the order \(n\equiv 1,2,3,0\). |
+| V5-m14 | No index and no collected bibliography. | There is an index (folio 338) and a Sources chapter (folio 344). The four index entries checked point at the right folios. |
+
+V5-M1, the off-by-two in later volumes, is fixed in the printed reminders that were opened: Volume 6’s list in the verified section, Volume 8’s Theorem 9.9 and Theorem 10.10, Volume 9’s Theorem 6.17, Volume 13’s \(2\pi\) convention, and Volume 14’s formula for \(\Lambda_\zeta\). It is not fixed everywhere. The retarget itself wrote one wrong number into a printed book. That is V5-1.
+
+V5-m7 is fixed in the sense the earlier report asked. The sentence no longer says the irrationality of \(\zeta(5)\) is unknown. It names Fauzan’s 2026 argument and Hyman’s formalisation of 26 October 2026, and it says this volume does not reproduce the argument. V5-5 is what that repair still does not say: the source is an unrefereed preprint, and the formalisation discharges numeric inequalities by approximation.
+
+### Earlier issues that are not fixed
+
+None of V5-C1 through V5-m14 is still present in the form the earlier report wrote down, except the two partials just named: V5-M1 left one printed wrong number, and V5-m7 left the caveat in V5-5.
+
+### New problems the fixes introduced
+
+Both lines were written by `df9b594d` on 12 November, “Retarget Volume 5 and Volume 6 citations in later volumes” (pull request #210). They were not in the manuscript the earlier report read.
+
+- **V5-1**, printed. Volume 14’s critical-line reminder calls the theta law “Corollary 10.10.” The retarget’s own spot check had the right number for a different sentence: the theta transformation that makes a divisor error exponential is Corollary 8.10. Number 10.10 is \(\zeta(1-2k)=-B_{2k}/(2k)\).
+- **V5-3**, not printed. The same commit states Theorem 8.6 in the convention \(F(t)=\frac1{2\pi}\int f(u)e^{itu}\,du\). Theorem 8.6 is the \(2\pi\) convention. Volume 13’s reminder, also part of that retarget, states the \(2\pi\) convention correctly.
+
+### What the earlier report missed
+
+- **V5-2.** `conjectures-ch01-born.tex:229` has cited Theorem 6.11 for \(\int(\sin u)/u\,du=\pi/2\) since 31 October. Theorem 6.11 is Parseval. The integral is Theorem 4.11. The file is not in Volume 15’s `main.tex`. The earlier report said it did not open every one of the 311 citations. The fix pass did not open this line either. It is not a new defect.
+- **V5-6.** “By independence (Volume 4, Chapter 8)” in the random-walk example. Independence is Volume 4, Chapter 2. The return formula is in Chapter 8. The earlier chapter note on Fourier series did not flag it.
+- **V5-7.** Exercise `pb:ncycles` quotes Fulton and Harris for the irreducibility of exterior powers. The earlier report did not re-solve that exercise, and the preface’s list of admissions still does not name it. V5-4 is the same preface sentence, which the earlier report called accurate after V5-m10 was only about the missing convex-volume number. Mertens, admitted in `pb:dickmanint`, is still outside that sentence. The earlier chapter note on the AGM recorded the admission and did not log it.
+
+The earlier report’s comparison also said the handoff had missed the inversion class, the BBP index, Juno, the Glaisher sentence, \(H_0\), \([n=0]\), the pentagonal disjointness line, the three-gap caption, and the polar-coordinate attribution. Those are the items in the fixed table. It was right about them on 12 November. They are not still open.
+
+The second review of the fixes accepted the retarget on a spot check and did not catch Corollary 10.10 or the \(1/2\pi\) formula. That is the gap between its “Accept” on V5-M1 and the current printed reminder in Volume 14.
