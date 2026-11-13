@@ -550,6 +550,34 @@ def volume2_subject_mismatches(text: str, source: str = "") -> list[str]:
     return problems
 
 
+# These subjects are not in Volume 3. A nearby citation still has to name the book
+# that states them. Vandermonde and the trace of a matrix are Volume 1.
+_VOLUME3_ABSENT = (
+    "Vandermonde",
+    "eigenvalues and traces",
+)
+_VOLUME3_MENTION = re.compile(r"Volume~?3(?!\d)")
+
+
+def volume3_misplaced_subject(text: str, source: str = "") -> list[str]:
+    """Flag a Volume 3 citation whose nearby words name a fact from another book."""
+    text = strip_comments(text)
+    problems = []
+    where = f"{source}: " if source else ""
+    for match in _VOLUME3_MENTION.finditer(text):
+        scope = text[max(0, match.start() - 80):match.end() + 40]
+        for phrase in _VOLUME3_ABSENT:
+            if phrase in scope:
+                problems.append(
+                    f"{where}Volume 3 does not contain {phrase} ({scope[:70]})"
+                )
+        if "Volume~3 or Volume~4" in scope or "Volume 3 or Volume 4" in scope:
+            problems.append(
+                f"{where}Volume 3 is not the home of this fact ({scope[:70]})"
+            )
+    return problems
+
+
 def gloss_mismatches() -> list[str]:
     found = []
     for directory in VOLUMES.values():
@@ -561,6 +589,7 @@ def gloss_mismatches() -> list[str]:
             source = str(path.relative_to(ROOT))
             found.extend(volume1_chapter_gloss_mismatches(text, source))
             found.extend(volume2_subject_mismatches(text, source))
+            found.extend(volume3_misplaced_subject(text, source))
     return found
 
 
