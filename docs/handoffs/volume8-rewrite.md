@@ -70,8 +70,8 @@ Four new exercises per chapter, after the last existing exercise, each with a hi
 | --- | --- |
 | — | Draft pull request opened: https://github.com/OussamaSegh/Order-and-Chance/pull/242 |
 | — | Preface, blurb, `kdp.md`, About the Cover, portrait macro and credits | Done |
-| 1–7 | Sentence rewrite, two figures, four exercises | Done; final review and full-format validation pending |
-| 8–16, A–F | Sentence rewrite, two figures, four exercises | In progress |
+| 1–8 | Sentence rewrite, two figures, four exercises | Done; final review and full-format validation pending |
+| 9–16, A–F | Sentence rewrite, two figures, four exercises | In progress |
 
 Portraits on disk, not yet placed in the chapters: Banach, Hilbert, Cayley, Kirchhoff, Fredholm, Fourier, Poisson, Gauss, Haar, Hadamard, Cauchy, Tauber, Riemann, Jordan, Frobenius, Schwarz, Lyapunov. Credits are in `volume8-analysis/photos/CREDITS.md`. Place each at the first real mention. Do not invent a caption.
 
@@ -136,3 +136,9 @@ The random-graph claim was checked against Huang–McKenzie–Yau, arXiv:2412.20
 Explicit corrections: `ex:amplify` originally demanded an exact fractional-bit budget for arbitrary degree, and its solution's ceiling did not produce an exact uniform sample. The exact budget now specifies power-of-two degree; the exercise also asks for the obstruction and a rejection sampler at other degrees, whose expected cost is proved. The point-start condition is made explicit when claiming a bipartite walk fails to converge; a uniform start is stationary. Bass's determinant identity retains graphs with m < n by explaining removable factors, while the subsequent extra-eigenvalue list assumes degree at least two. The cycle-zeta hint uses polynomial factorisation rather than a complex-modulus formula invalid for complex u. The SL_2 remark excludes p=2 from its four-regular assertion; the group generation exercise retains all primes.
 
 The checkpoint PDF through Chapter 6 exits 0 at 451 print pages, 603 whole boxes, with no overflow or unresolved references. The Chapter 7 checkpoint build is running; this handoff does not claim its result.
+
+Chapter 8 is rewritten, with two new plates on the shift/adjoint and Fredholm orthogonality. New exercises `ex:v8c08a`–`d` treat a step multiplier, a diagonal compact map with nonclosed range, an explicit convolution inverse and a compact weighted shift with no eigenvalues. All original labels, statement order and frozen figure environments pass; the prose audit finds every eligible narrative and exercise-side sentence rewritten. Cross-volume citations pass at 4935 numbered statements. The one remaining unchanged eligible sentence in the preface has also been rewritten without changing its meaning.
+
+The Hilbert–Schmidt example makes its section measurability explicit. Fredholm's proof keeps the range-closure normalisation, strict range chain, and finite-rank nullity correction. Spectral nonemptiness uses the correct sign at the zero resolvent parameter, and explicitly excludes the zero operator algebra by its norm-one unit. The multiplication exercise separately handles the zero measure, whose Hilbert space has empty spectrum, while retaining its original essential-range assertion. The Laurent-series/UBP proof keeps both prerequisites and derives the full infimum formula. Characters are explicitly complex-linear. The Wiener algebra identification proves uniqueness of coefficients by integration. The Jacobi exercise now states the required invertibility of its diagonal and convergence to the same unique solution, and its proof establishes existence before using the error equation.
+
+The checkpoint PDF through Chapter 7 exits 0 at 455 print pages with no overflow or unresolved references. The Chapter 8 checkpoint build is running. No final EPUB or final-head CI claim is made at this stage.
