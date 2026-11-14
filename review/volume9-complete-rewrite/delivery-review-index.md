@@ -11,7 +11,7 @@ printed labels and numbered structure remain protected by the baseline audits.
 These are writer findings and repairs. The separate-reader requirement is still
 open; this file is not a mathematical verification certificate. Full details,
 including proof repairs, equality cases and validation limits, are in each linked
-unit record. The fresh post-draft pass is in postrewrite-writer-audit.md; R01–R12
+unit record. The fresh post-draft pass is in postrewrite-writer-audit.md; R01–R14
 are tracked separately in postrewrite-review-findings.md.
 
 | Printed unit | Rewrite and principal mathematical repairs | Fixing commit | Detailed writer record |
@@ -54,3 +54,5 @@ R12 in `1017fbd8` requires the new builds currently running. The exact final PR
 head, green required CI, ready state, merge SHA, publication run and published
 page count remain to be recorded after independent review and acceptance.
 No Amazon KDP upload has occurred.
+
+Final wording repairs in `835800ac`: Appendix K now calls its possibly zero Hessian expression the quadratic Taylor term; the new Hesse caption explicitly requires a primitive cube root. Both required build commands are running against these fixed book sources.

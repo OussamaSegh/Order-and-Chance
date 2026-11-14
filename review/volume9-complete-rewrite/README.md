@@ -6,6 +6,35 @@ starting main; current work and unresolved findings are recorded separately.
 
 Current checkpoint: all 22 units have full drafts, with 44 added figures, 88 fully solved exercises and two credited photographs. The combined PDF-only build exits 0 at 511 print pages. Source additions and preservation pass. The full all-unit build on book sources 612854ac exits 0: EPUB 31,551,162 bytes, 99 full-width plates and 16,412 resolved local references. The subsequent mathematical clarifications on 30cbe592 pass PDF-only export at 511 pages; their full rebuild is running. Separate final review, exact-head green CI, ready PR, normal merge and exact-merge publication are not yet complete. See the unit writer checks and current handoff.
 
+## Current checkpoint — post-writer review
+
+Book sources are fixed at `835800aca433da221024fac3b0735ac75d5c2253`.
+All 22 units have complete rewrite drafts and a fresh writer follow-up. R01–R14
+are recorded, including the final vanishing-Hessian and primitive-root wording
+fixes. The 302-statement comparison packet and independent-review instructions
+now refer to this book source snapshot. No independent verification is claimed.
+
+The last completed full build is on book sources `30cbe592`: 511 print pages,
+31,553,132-byte EPUB, 99 1800-pixel plates and 16,416 resolved local references.
+The R12 PDF-only build on `1017fbd8` also exits 0 at 511 pages and its repaired
+solution was visually inspected. Its full export was deliberately stopped with
+exit 143 after print checks to batch R13/R14; that partial EPUB is not accepted.
+Both required commands are now running sequentially on `835800ac`, with logs
+`/tmp/v9-final-pdf-build.log` and `/tmp/v9-final-full-build.log` and corresponding
+`.exit` files. Their results must be collected rather than assumed.
+
+On `835800ac`, all 20 citation tests, cross-volume citations (5,118 statements),
+the Volume 3 register (1,177 accepted, 19 unchanged pending), source additions,
+short-prose coverage and diff whitespace checks pass. Final built preservation,
+EPUB/media/link checks and current rendered inspections remain to be collected.
+
+PR #243 stays draft. The author has been asked to authorize separate review
+agents because master-plan §6.4 requires a reviewer who is not the writer and
+current instructions prohibit delegation without explicit authorization. No
+answer has arrived, so no review agent has been spawned. After that review and
+all fixes, still required: exact-final-head green CI, ready PR, normal merge,
+and exact-merge publication/published-page-count verification. No KDP upload.
+
 ## Provenance
 
 - Starting main: `9cd86c15bd386d59e7a1c6f96fb0ea5ed808c26b`.

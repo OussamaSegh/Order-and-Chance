@@ -8,7 +8,7 @@ Read root AGENTS.md, docs/WRITING-STYLE.md, docs/agents/mathematician-writer.md,
 docs/SERIES-STRUCTURE.md and volume9-shapes/main.tex before reviewing. The
 controlling blueprint/master plan are on PR #157, fetched at
 `d9a1c8245fb07ba96cd81e96300b97995d014df1`. The immutable starting source is
-`9cd86c15bd386d59e7a1c6f96fb0ea5ed808c26b`. Current book sources are `1017fbd8`.
+`9cd86c15bd386d59e7a1c6f96fb0ea5ed808c26b`. Current book sources are `835800aca433da221024fac3b0735ac75d5c2253`.
 Use postrewrite-statement-comparison.json for all 302 original numbered formal
 environments, including unlabelled statements; inspect complete proofs and
 solutions in the source and the corresponding built PDF as well.
