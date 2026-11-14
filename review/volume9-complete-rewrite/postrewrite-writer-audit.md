@@ -85,3 +85,63 @@ Source SHA-256: e017e1f6d94673ca247f65c5e13ac229a1572ed48f59ba7c361848603babc92f
 The whole current source was freshly reread, including ten formal statements and twenty exercise/hint/solution sets. Checked dimension-zero affine isometry, omitted reflection steps, identity versus genuine glides, finite orbit averages and n=1 cyclic/dihedral groups, all seven frieze sign/coset cases and closure, affine lattice rotations, shortest-vector basis arguments, reflection sublattice index and Fagnano lower bound before attainment. All solutions were checked, including ideal glyph assumptions, arbitrary rotation axes, billiard parity with zero velocity components, finite pole counts, signed Ceva with parallel alternatives and finite denominator conditions, Euler coincident centres, correct Routh edge vectors, invariant positive affine forms, glide fundamental domains, all ellipse maximum cases and the two four-dimensional order-five planes. No additional mathematical gap was found. This remains a writer check; independent review is pending.
 
 Source SHA-256: 24d6dce9ef69ecbbf4d154864e461032a614a930e342ef030ec4c1b06acf3086
+
+## Appendix B
+
+The complete source was freshly reread, including seventeen formal statements and sixteen exercise/hint/solution sets. Checked circle coefficient signs, reciprocal charts, coincident-point Ptolemy equality and cyclic order, inverse power and concentric limiting points including already concentric circles, gap-preserving forward chains and winding, fixed-circle Pappus inversion, real Gram identities and swap-line positivity, zero-curvature coefficients, Mobius infinity and identity cases, signed area, nine-point construction and Feuerbach equilateral/excentre signs. Every solution was checked, including actual arbelos containment for twins, both Steiner directions, all radius and swap generations, disc image side, trace classification, stereographic degeneracies, generalized-sphere hexlet finiteness, line contacts, image-charge derivative and oriented flux, and quantitative Ptolemy equality. No additional mathematical gap was found. This remains a writer check; independent review is pending.
+
+Source SHA-256: dc2a7196d5ace068af30d0e5f2f318e5cb0bcc465637c67255b2f8ec65e17127
+
+## Appendix C
+
+The entire source was freshly reread, including fourteen formal statements and sixteen exercise/hint/solution sets. Checked nondegenerate pairing over all fields, projective frames and scalar kernels, the Desargues rescaling and explicit spatial lift with dual hypotheses, field Pappus cancellation and quoted division-ring extensions, homogeneous cross-ratios with repeated fourth point, harmonic characteristic-two collapse, all-zero arithmetic constructions in the fundamental theorem, real-order rigidity and semilinear scope, finite-plane counts and quoted obstructions. All solutions were checked, including characteristic-dependent six-value coincidences, finite midpoint construction, exact dual-Pappus coordinates, frame count, abstract-plane existence lemmas, complex nine-point counterexample, calibration inverse and vanishing points, Frobenius fixed subplane and group order, perfect Hamming decoding and two-error failure, and factorization into projections even over F2. No additional mathematical gap was found. This remains a writer check; independent review is pending.
+
+Source SHA-256: 15a6ea4fbaa3bd56e9b799d2c93b147f04d9ccaba28534dcfa04cc90ab0c6dec
+
+## Appendix D
+
+The entire source was freshly reread, including twelve formal statements and sixteen exercise/hint/solution sets. Checked the binary root at infinity and tangent exceptions, independence of five-point conditions, point-dependent normal form, empty real conics, focus-directrix determinant and sign cases, pencil cross-ratios, Pascal projection hypotheses, dual Brianchon and harmonic polar when secants exist. Checked the smooth tangent-normal formula, inverse construction, derivative signs and invariant arc coordinate in the circle porism; broader complex-conic statements remain quoted. All solutions were checked, including directed parabola reflection, rational parameters at tangent/infinity, cone chart cases, polar construction, clockwise star steps, triangular existence, finite odd-field tangent counts, Pell descent, irrational rotation averages and Fuss necessity/sufficient kite contact on actual side segments. No additional mathematical gap was found. This remains a writer check; independent review is pending.
+
+Source SHA-256: e995fea4c8c2960c1b743723d5f8b741b7643d64d63052ad793404dd805512dc
+
+## Appendix E
+
+The entire source was freshly reread, including eleven formal statements and sixteen exercise/hint/solution sets. Checked zero-dimensional orthogonal bases and radicals, inertia including zero directions, projective empty/nonempty types, affine rank-two quadratic parts and connected hyperboloid distinction, Segre uniqueness and all lines over every field, hyperbolic splitting, reflection transitivity even for degenerate ambient forms, cancellation including zero-dimensional summands, Witt uniqueness and finite square pigeonhole counts. All solutions were checked, including zero Hessian dimension, Sylvester induction, binary root at infinity, empty Gram determinant and k greater than n, Lorentz equality, rank-three cone lines and infinite-field uniqueness for three skew lines, zero-sized Schur blocks, maximal zero subspaces with radical, tangent quotient counts and scalar/ruling-swapping maps. No additional mathematical gap was found. This remains a writer check; independent review is pending.
+
+Source SHA-256: d197400ab0d92755bd20a849b9a4da496652dbe6d2fcfa0b90073cb850f3f77b
+
+## Appendix F
+
+The entire source was freshly reread, including ten formal statements and sixteen exercise/hint/solution sets. Checked ring adjugate signs and actual-degree resultant hypotheses, homogeneous degree counting, coprimality after field extension, finiteness before choosing a separating projection, relative multiplicity scope, singular/shared-tangent orders for admissible O in every characteristic, infinite smooth points before singular-count construction, independent five/eight-point evaluations and all nine Pascal intersections. All solutions were checked, including derivative degree loss, universal root-product factors, circular shared tangents, homogeneous node/cusp parameters, actual irreducibility of the lemniscate, nonzero complex polar for each point, distinct Pappus intersections, degree-drop infinity roots, the explicit cusp resultant for all a, sharp finite-field interpolation weights, and smooth positive-characteristic counterexamples. No additional mathematical gap was found. This remains a writer check; independent review is pending.
+
+Source SHA-256: 1040473e064f57c0dd341f9976e89f0fbfecb49436f12ea29700eab8ee49469e
+
+## Appendix G
+
+The entire source was freshly reread, including nine formal statements and sixteen exercise/hint/solution sets. Checked geometric smoothness and irreducibility, tangent binary multiplicity in every characteristic, the involution with all repetitions, neutral and unique inverse without associativity, the exact nine-distinct association hypothesis, rational-flex/characteristic restrictions in short normal form, all slope exceptions and the elementary doubling infinitude. Checked flex quartic simple roots, real derivative signs, the quoted Hesse group interpretation versus direct pencil proof, odd-prime counts and singular p=2 exception. All solutions were checked, including the characteristic-two polar argument and singleton neutral counterexample, exact Bachet identity, direct four-point and recursive six/nine-point tables, real infinity arc, Fermat flex coordinates, parenthesized changes of origin, explicit Hesse factors/lines, twist count, valuation induction and nodal multiplicative law including vertical and tangent cases. No additional mathematical gap was found. This remains a writer check; independent review is pending.
+
+Source SHA-256: 9462d27ebb107fcfec03d088f8166f96d7fbb240bbc1d96d2b841243c60ea60e
+
+## Appendix H
+
+The complete source was freshly reread, including all twelve formal statements and sixteen exercise/hint/solution sets. Checked basis invariance and dimension zero, bounded convex measurability, strict versus compact boundary Minkowski, two/four-square congruence lattices, reduced-basis existence and shortest/equality cases, finite-index overgroup bases before root constructions, even integral E8 and all 240 roots. Checked every solution including tie-safe termination, deep-hole density by dimension, small-radius circle counting, primitive shortest direction and projection in the Hermite induction, the dimension-zero counterexample to the new boundary exercise, dual finite index, Gaussian-integer scaling and modular-domain equality. No additional mathematical gap was found. This is a writer check; independent review remains pending.
+
+Source SHA-256: 802e618f7d53c5e387dd9f3fa71c1b60b8a7d68a1c296ffefa0887dc4b16a094
+
+## Appendix I
+
+The complete source was freshly reread, including both formal statements and sixteen exercise/hint/solution sets. Checked spherical hemisphere/short-arc hypotheses and six-lune multiplicities, cosine-law denominators, prior hyperbolic proofs versus quoted reflection tiling and Hurwitz results, Klein line transformation and polygon fans. Checked all solutions including tetrahedral tiling, every distance/arc comparison, circular and ideal endpoints, signed determinant normalization, parallel angle, reciprocal-sum equality cases, fixed-x horocycle limit, cap/ball expansions, off-axis circle centres and angle rigidity. One local prerequisite repair was found: the small-side spherical error bound invoked distance versus path length without a local proof. R12 replaces it with a direct monotonicity consequence of the cosine law. That repair awaits rebuilt export. This is a writer check; independent review remains pending.
+
+Source SHA-256: 422d821455d961c454c8a9216a8a8da4277a737180e3524bd1fa93c4fa5dfeb3
+
+## Appendix J
+
+The complete source was freshly reread, including all seven formal statements and sixteen exercise/hint/solution sets. Checked Radon index partitions and zero dimension, Helly finite-family induction and small-set assumptions, traversal versus hit probability, degenerate perimeters and uniform polygon width convergence, the full nonconvex box-cutting induction and zero-volume compact approximation in Brunn-Minkowski, surface-content hypotheses and the exact stated equality scope. Checked every solution including open interval endpoints, empty/small disk-cover sets, Caratheodory zero weights, exact throw counts, all-position square criterion, Steiner fixed-epsilon limit without differentiating approximations, noncompact finite-area slices, long-needle asymptotics, degenerate parallel continuity, support-line existence and smooth-width area, and the nonconvex concavity counterexample. No additional mathematical gap was found. This is a writer check; independent review remains pending.
+
+Source SHA-256: 50f90c03cb0686737e67296ff2c9ed058a9bfc6c64add382ea6abe1e28c99598
+
+## Appendix K
+
+The complete source was freshly reread, including all seven formal statements and fifteen exercise/hint/solution sets. Checked tangent-angle construction, curvature uniqueness and periodic derivatives, non-strict/infinite-extremum four-vertex cases, Gauss-map determinant and rank-zero/one area estimate, convex normal bijection, boundaryless Gauss-Bonnet scope, Schlegel drawing and earlier polygonal separation in Euler. Checked every solution including vertical regularity, signed figure-eight cancellation, Gaussian-damped Fresnel tails, zero-Hessian nonplanarity, torus signs, Platonic restriction versus realization, football incidence without equal defects, arbitrarily small median obstruction, regular offset factors, turning without closure, pyramid defect limits and all noncompact Gauss-map cases. No additional mathematical gap was found. This is a writer check; independent review remains pending.
+
+Source SHA-256: 73c66ba32ec50eaaae38d1ca5345231a1fdeebfd566e525aba6df099f37ee2bb

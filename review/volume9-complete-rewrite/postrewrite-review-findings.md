@@ -20,3 +20,5 @@ These are findings from a fresh pass after all 22 unit drafts exist. They are no
 | R11 | The unnumbered Euler-characteristic comparison says a closed orientable surface has value 2-2g, without repeating connectedness. | State the formula on each connected component and explain additivity for disconnected compact surfaces. | Connectedness and component additivity clarified; PDF-only rebuild on 30cbe592 exits 0 at 511 pages; current full rebuild pending. |
 
 The final pass must still cover every original numbered statement, all solutions, prerequisites, citations, figure/photo placement and the EPUB. The source audit establishes counts/order/labels/required solution structure only. Do not treat its success as a proof check.
+
+| R12 | Appendix I’s small-side error estimate invoked spherical distance versus path length, while the appendix deliberately avoids a global shortest-path theorem. | Derive c at most a+b directly from the right-triangle cosine formula and monotonicity on [0,pi], for the small sides in the limit. No theorem is weakened. | Local prerequisite step supplied; rebuilt PDF/full EPUB pending. |

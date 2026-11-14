@@ -4,7 +4,7 @@ This is a baseline for the newly requested complete rewrite, **not a completion
 or review certificate**. Manuscript work has begun. The immutable baseline files below still describe
 starting main; current work and unresolved findings are recorded separately.
 
-Current checkpoint: all 22 units have full drafts, with 44 added figures, 88 fully solved exercises and two credited photographs. The combined PDF-only build exits 0 at 511 print pages. Source additions and preservation pass. The separate final review, full EPUB, exact-head green CI, ready PR, normal merge and exact-merge publication are not yet complete. See the unit writer checks and current handoff.
+Current checkpoint: all 22 units have full drafts, with 44 added figures, 88 fully solved exercises and two credited photographs. The combined PDF-only build exits 0 at 511 print pages. Source additions and preservation pass. The full all-unit build on book sources 612854ac exits 0: EPUB 31,551,162 bytes, 99 full-width plates and 16,412 resolved local references. The subsequent mathematical clarifications on 30cbe592 pass PDF-only export at 511 pages; their full rebuild is running. Separate final review, exact-head green CI, ready PR, normal merge and exact-merge publication are not yet complete. See the unit writer checks and current handoff.
 
 ## Provenance
 
@@ -68,7 +68,7 @@ solutions. Counts below are the starting counts, not additions.
 | 7 | Matrix Lie Groups | 6 | 1 | Draft rewritten; PDF/preservation/figures checked |
 | 8 | Haar Measure and Weyl Integration | 6 | 1 | Draft rewritten; intermediate PDF/figures checked |
 | 9 | The Hyperbolic Plane and the Modular Group | 6 | 3 | Draft rewritten; PDF/preservation/figures checked |
-| 10 | The Riemann Mapping Theorem | 3 | 1 | Draft rewritten; validation pending |
+| 10 | The Riemann Mapping Theorem | 3 | 1 | Draft rewritten; PDF/preservation/figures checked |
 | 11 | Integral Geometry | 6 | 1 | Draft rewritten; PDF/preservation/figures checked |
 | A | Transformations | 16 | 4 | Draft rewritten; PDF/preservation/figures checked |
 | B | Inversion | 12 | 3 | Draft rewritten; PDF/preservation/figures checked |
@@ -78,14 +78,15 @@ solutions. Counts below are the starting counts, not additions.
 | F | Plane curves | 12 | 3 | Draft rewritten; PDF/preservation/figures checked |
 | G | Cubic curves | 12 | 4 | Draft rewritten; PDF/preservation/figures checked |
 | H | Lattices and sphere packings | 12 | 4 | Draft rewritten; PDF/preservation/figures checked |
-| I | Non-Euclidean geometry | 12 | 2 | Draft rewritten; validation pending |
+| I | Non-Euclidean geometry | 12 | 2 | Draft rewritten; PDF/preservation/figures checked |
 | J | Convex bodies | 12 | 3 | Draft rewritten; PDF/preservation/figures checked |
 | K | Curvature of Curves and Polyhedra | 11 | 2 | Draft rewritten; PDF/preservation/figures checked |
 
-Totals: 22 units, 200 original exercises, 55 original figures. Required additions:
-88 exercises and 44 illustrations. Chapters 1–11 and Appendices A, E, H, I, J and K have full draft rewrites, each with two added illustrations and four new exercises, hints and full solutions: thirty-four diagrams and sixty-eight exercises so far. Two photographs are credited: Riemann's portrait (inspected 1892 publication evidence) and Shukhov's tower (attributed to Karelin, published in 1897). Source metadata and public-domain evidence are preserved. All thirty-four diagrams and both photographs have been inspected in rendered pages.
+Totals: all 22 units have complete drafts, retaining 200 original exercises and 55 original figures and adding 88 exercises and 44 illustrations. Each unit has two added figures and four added exercises, with unique labels, difficulty, hints and complete idea/writeup solutions. Two photographs have adjacent credits, native resolution and public-domain source evidence. All added figure pages and both photograph placements have now been inspected in the current 511-page print build. The original 544 labels/captions, 213 structural numbers, 57 figure files and two cover-art sources pass preservation.
 
-The six-unit full build on 66ca56fd exited 0 at 413 print pages. Its EPUB is 29,554,897 bytes; media checks and all 18,245 local links pass. The subsequent seven-unit PDF-only build exits 0 at 419 pages, with preservation and layout checks passing. Preface, blurb, KDP copy and canonical cover note are rewritten; their rendered pages/wrap have been inspected. The eight-unit PDF-only build exits 0 at 425 pages, again with layout and preservation passing; both J figures were inspected. The nine-unit PDF-only build exits 0 at 433 pages; both K figures were inspected, with one label relocation awaiting the next build. The ten-unit PDF-only build exits 0 at 441 pages with preservation/layout passing; both Ch11 figures and the K label relocation were inspected. The full ten-unit build on 5c094ef0 exits 0 at 441 pages; EPUB 30,384,213 bytes, media checks passing and all 18,350 local links resolved. The eleven-unit PDF-only build exits 0 at 445 pages, with preservation/layout passing and both Chapter 4 diagrams inspected. The twelve-unit PDF-only build exits 0 at 451 pages, with preservation/layout passing and both Chapter 3 diagrams inspected. The thirteen-unit PDF-only build exits 0 at 455 pages, with preservation/layout passing and both Chapter 2 diagrams inspected. A wording clarification in the new escape caption awaits the next build. The fourteen-unit PDF-only build exits 0 at 463 pages, with preservation/layout passing and both Chapter 5 diagrams inspected. Its new b-loop enlargement awaits the next build. The fifteen-unit PDF-only build exits 0 at 471 pages, with preservation/layout passing and both Chapter 6 diagrams plus the enlarged Chapter 5 loop inspected. All 20 citation tests and the Volume 3 register pass after integrating current main cfc7b20a by ordinary merge. The clean fifteen-unit full build on 57f9e4ee exits 0 at 471 pages, EPUB 30,607,901 bytes, 85 full-width plates, all 17,666 local links resolved; actual homology EPUB diagrams/exercises/hints/solutions were inspected. The sixteen-unit PDF-only build exits 0 at 477 pages with preservation/layout passing and both Chapter 1 diagrams and the portrait relocation inspected. All eleven chapters now have full drafts. The seventeen-unit PDF-only build exits 0 at 483 pages, with preservation/layout passing and both Appendix A diagrams inspected. The remaining 5 appendices, final EPUB validation and separate final review remain outstanding. See ci-shared-note-dependency.md for the CI fingerprint reconciliation; no failed run is claimed green.
+Production checkpoint details, including earlier failed attempts, are in the corresponding build logs and the handoff. All twelve existing numerical illustration scripts, twenty citation tests, the cross-volume checker (5,118 statements) and the Volume 3 register pass on book sources 30cbe592. The register's nineteen pending entries are unchanged. Numerical experiments are illustrations, not proofs. The current EPUB rerun and independent review are still pending; no failed or cancelled CI run is called green.
+
+The fresh writer pass after all drafts covers all 22 units. Its findings and source hashes are recorded in postrewrite-writer-audit.md and postrewrite-review-findings.md. The 302-statement comparison packet includes unlabelled original statements and explicitly marks them as not independently reviewed. It is a comparison aid, not a verification certificate. The author has been asked to authorize a separate reviewer, as required by the master plan.
 
 ## Validation scope
 
@@ -152,3 +153,5 @@ for this request. The additions gate is still failed. At that earlier checkpoint
 `git diff --check` passed after removing trailing whitespace from captured text.
 No new figures, exercises or photographs were added; no new mathematical
 correction is claimed. No Amazon KDP upload was made.
+
+Post-review checkpoint: the full build on book sources 30cbe592 exits 0 at 511 print pages. Its EPUB is 31,553,132 bytes, has 99 1800-pixel plates, passes the media check and resolves all 16,416 local references. The writer follow-up covers all 22 units. R12 supplies a direct cosine-law step in Appendix I and requires a new PDF/full rebuild; it does not change any statement, label or figure. Independent review and final CI/merge/publication remain pending.
