@@ -10,6 +10,13 @@ These are findings from a fresh pass after all 22 unit drafts exist. They are no
 | R04 | Appendix G's closing paragraph was split around its new figure batch. | Add a local float barrier after the new batch so the closing paragraph follows the illustrations. | Source repaired; next rendered inspection pending. |
 | R05 | The common default prints an unassigned ISBN placeholder. The user requires a blank field. | Override only Volume 9 bookisbnprint to empty; preserve every assigned identifier and shared default. | Source override applied; next build pending. |
 | R06 | The straightening example reuses y for two coordinates, then explains the naming conflict. | Use a transverse parameter eta and remove the process sentence. | Source repaired with transverse eta; next build pending. |
-| R07 | The all-unit EPUB build failed on braceless hat-C after formula normalization. PDF export passed, but no EPUB acceptance is claimed. | Brace the two accent arguments in Appendix B; preserve the failed log. | Source repaired; full rebuild required. |
+| R07 | The all-unit EPUB build failed on braceless hat-C after formula normalization. PDF export passed, but no EPUB acceptance is claimed. | Brace the two accent arguments in Appendix B; preserve the failed log. | Full rebuild on book sources 612854ac exits 0: 511 pages, 31,551,162-byte EPUB, 99 plates, all 16,412 local links resolved. |
+
+| R08 | The genus-handle height construction is a standard quoted comparison, but its status could be clearer than the nearby classification sentence. | Explicitly identify that construction as quoted and add its standard reading source. | Source clarification applied; no change to the value or hypotheses; next build pending. |
+| R09 | The sphere field uses w=1/z after Chapter 1 used a reflected stereographic transition. | Name the reflected opposite-pole chart and connect the length example to the explicit stereographic height coordinate. | Source clarification applied; next build pending. |
+
+| R10 | The new root exercise says exactly n roots on a path-connected Y. An empty domain has just one function, so that count needs nonemptiness. | State Y nonempty explicitly; retain all divisibility and logarithm conclusions. | Nonempty hypothesis added; next build pending. |
+
+| R11 | The unnumbered Euler-characteristic comparison says a closed orientable surface has value 2-2g, without repeating connectedness. | State the formula on each connected component and explain additivity for disconnected compact surfaces. | Connectedness and component additivity clarified; next build pending. |
 
 The final pass must still cover every original numbered statement, all solutions, prerequisites, citations, figure/photo placement and the EPUB. The source audit establishes counts/order/labels/required solution structure only. Do not treat its success as a proof check.

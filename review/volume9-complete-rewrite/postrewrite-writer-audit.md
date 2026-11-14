@@ -25,3 +25,27 @@ The entire source was freshly reread, including all 21 formal statements, ten ex
 No additional mathematical gap was found. The final independent review and rendered revised-prose inspection remain pending.
 
 Source SHA-256: 1fad60274864380d2430ec7540211163886bc9e1b117742a57bdb10d435aeece
+
+## Chapter 4
+
+The complete source was freshly reread: 19 formal statements and ten exercise/hint/solution sets. Checked connection/coframe signs under local rotations and orientation reversal, orthogonal curvature, metric/torsion identities, smooth exponential data and the local Gauss lemma. Checked the ambient moving-frame derivation and principal-curvature sign, index chart independence, every boundary sign in the index-sum theorem, and generic-height existence/measurability before Euler characteristic is defined. Checked Hessian indices, Green's complex-eigenfunction argument and full Fourier-basis/multiplicity count. Solutions checked include the precise Girard lune hypotheses, pseudosphere signs/cover/volume, sphere-chart field transformation, farthest-point curvature, curves exiting normal charts and equality, explicit half-plane exponential without Chapter 9, conformal signs, rectangular multiplicities and degenerate index splitting.
+
+No new numerical or proof gap was found in those proved results. Two editorial clarifications are queued: explicitly quote the standard genus-handle height construction rather than leaving its status to the surrounding classification paragraph, and identify the reflected opposite-pole chart in the complex coordinate example. The stereographic length example can also cite the explicit Chapter 1 height coordinate. Independent review remains pending.
+
+Source SHA-256: 89bb8e67e0fe0c4ee038c77b6448e3569455a438b71dab541a992f19c5a4f305
+
+## Chapter 5
+
+The whole source was freshly reread, including 24 formal statements and ten exercise/hint/solution sets. Checked based reparametrizations and homotopy-inverse basepoint types, empty-sheet convention, grid lifting and fixed lifted endpoints, right cosets and deck composition order, both normalizer inclusions and the path-class topology construction. Checked the van Kampen grid connectors on all boundary factors, the local bouquet proof before surface presentations, disc-attachment open sets, finite graph basis and finite-index n=0 case. Checked the countable locally finite compactness proof and the separate arbitrary-rank star/grid/Zorn argument. All original/new solutions were checked, including the caption basis change, integer-grid basis, explicit two-diamond retraction, three-nail word, all Schreier walks, integer Smith reduction and Hawaiian-earring retractions/no-cover obstruction.
+
+A new boundary finding is queued: the new logarithm/root exercise needs Y explicitly nonempty for the assertion of exactly n roots; on the empty domain all candidate functions coincide. The connected-graph nonempty convention is already repaired in the current source. No other new gap was found. Independent review remains pending.
+
+Source SHA-256: 464c688ed33e5f2cca5772b896bcff68b666b9a9151c8db5686f12014d156e5a
+
+## Chapter 6
+
+The entire source was freshly reread, including 21 formal statements and ten exercise/hint/solution sets. Checked exact-sequence chases, the Smith splitting/torsion formula, direct-sum H0 and empty augmented degree minus one, prism signs, the subdivision/cone homotopy with a geometric fixed depth, Mayer–Vietoris signs and excision. Checked sphere degree zero-dimensional endpoints, local relative groups, simplex comparison for empty complexes and isolated vertices, bounded full-dimensional polyhedra and explicit surface sequences. Checked Jordan–Brouwer's nested-cube/finite-chain argument, invariance-of-domain component decomposition, every transfer-map qualification at the projective top class, and null/empty ham-sandwich cases. All original/new solutions were checked, including lifted common faces, compact realization homeomorphism, empty closed cover sets, discrete pancake limits, degree-zero attachments, boundary stars, coefficient reduction for odd degree and exact Smith factors 2,6.
+
+A prose-level hypothesis clarification is queued: the final genus-comparison sentence must say connected closed surfaces; disconnected compact surfaces require the sum over components. Independent review remains pending.
+
+Source SHA-256: 826164403b8828b228ce31fca560bd166693927bbe921b019148669696d05fc1
