@@ -6,68 +6,50 @@ least $\sqrt n$.
 \upshape(Hao Huang, opening of the abstract of his 2019 paper in the \emph{Annals of Mathematics})
 \end{center}
 
-Here is a puzzle that Paul Erd\H{o}s, Alfr\'ed R\'enyi and Vera T.~S\'os solved in 1966. At a party, every two guests have
-exactly one common friend among the guests. Prove that some guest is a friend of everybody. (Friendship is mutual, and
-nobody is their own friend.) The answer, the \emph{friendship theorem}, is a little surprising, and its proof is even more so:
-the decisive step is that a certain number would have to be the square root of an integer and rational at the same time.
-The party is a graph, and the argument runs through the eigenvalues of its adjacency matrix. Martin Aigner and G\"unter
-Ziegler put it in \emph{Proofs from THE BOOK} under the title ``Of friends and politicians'': the guest who knows everybody
-is the politician.
+At a party, every pair of guests has exactly one common friend. Friendship goes both ways, and nobody counts as their own friend. Must somebody know everyone? Try drawing the friendships. Three guests can form a triangle; five can form two triangles sharing a centre. The friendship theorem says that every finite example has this shape: triangles joined at a single guest.
 
-Fifty-three years later, on 1 July 2019, Hao Huang of Emory University posted a six-page preprint proving the
-\emph{sensitivity conjecture}, a question about Boolean functions that had resisted computer scientists since 1992 and
-that many experts expected to need heavy machinery. The proof fits on a page. It builds a $2^n\times2^n$ matrix with entries
-$0,\pm1$ whose square is $n$ times the identity, and applies Cauchy's interlacing theorem from Chapter~\ref{linear:ch:spectral}.
-The next day, the computer scientist Scott Aaronson, who had called the conjecture ``one of the most frustrating and
-embarrassing open problems in all of combinatorics and theoretical computer science'', wrote that reading and understanding
-the ``elementary 1.5-page argument'' had taken him about half an hour.
+Erd\H{o}s, R\'enyi and S\'os proved the theorem in 1966. Its spectral proof turns the friendship rule into a matrix identity. A trace then forces a rational square root to be an integer. Aigner and Ziegler call the central guest the politician in \emph{Proofs from THE BOOK}.
 
-This chapter is about such arguments. The adjacency matrix of a graph is symmetric, so it has real eigenvalues and an
-orthonormal eigenbasis, and every theorem of Chapter~\ref{linear:ch:spectral} and of the Perron theory in Volume~3 becomes a statement about graphs.
-The Perron theory is Appendix~A of Volume~3: Perron's and Frobenius's theorems for non-negative matrices (Volume~3, Theorems~A.1 and~A.6) and the row-sum bound (Volume~3, Exercise~A.2).
-We compute the spectra of the basic families, prove the friendship theorem, classify the possible Moore graphs (a story with
-an unsolved case), prove Hoffman's bound for independent sets, the Graham--Pollak theorem, and Huang's theorem. Other parts
-of spectral graph theory are proved nearby: Cheeger's inequality in Chapter~\ref{ch:cheeger}, expanders and Ramanujan graphs in Chapter~\ref{ch:expanders}, and the matrix-tree theorem later in the series, in Volume~12, Appendix~A.
+A much larger matrix settled another problem in 2019. Huang assigned signs to the edges of the $n$-cube so that the resulting matrix squares to $nI$. Interlacing then forces a vertex of high degree in any induced subgraph containing more than half the cube. His paper connected this bound to the sensitivity conjecture for Boolean functions. The matrix argument itself needs only the spectral tools already proved here.
+
+A graph's adjacency matrix is real symmetric. We may therefore compare eigenvalues, count dimensions of eigenspaces and test Rayleigh quotients. We also use the non-negative-matrix theory from Volume~3, Appendix~A: Perron's theorem (Theorem~A.1), Frobenius's theorem (Theorem~A.6), and the row-sum bound (Exercise~A.2). The arithmetic restrictions they reveal will rule out some graphs altogether.
+
+\portrait{frobenius}{Ferdinand Georg Frobenius (1849--1917). Photograph from the album for Weierstrass, between 1870 and 1885. Public domain, via Wikimedia Commons.}
+
+Other graph questions need different pieces of the spectrum. Chapter~\ref{ch:cheeger} relates a spectral gap to cuts and walks; Chapter~\ref{ch:expanders} studies families with a uniform gap. The matrix-tree theorem, which counts spanning trees by a determinant, belongs to Volume~12, Appendix~A. Kirchhoff's connection between electrical networks and trees is another early example of graphs yielding to linear algebra.
+
+\portrait{kirchhoff}{Gustav Robert Kirchhoff (1824--1887). Nineteenth-century photograph, artist unknown; Smithsonian Libraries. Public domain, via Wikimedia Commons.}
 
 \begin{think}
-Try the party puzzle on small cases before reading on. With three guests, a triangle works. Can you find a party with five
-guests? With seven? Do all your examples have a guest who knows everybody? Is there any example with no such guest and with
-everybody having the same number of friends?
+Draw friendship examples on three, five and seven vertices. After drawing one triangle, how can you add two guests without giving any pair a second common friend? What obstruction would you expect if all guests had the same number of friends and none knew everybody?
 \end{think}
 
 \section{Adjacency matrices and walks}
 
-A graph $G$ has a finite vertex set $V$, $|V|=n$, and a set of edges, unordered pairs of distinct vertices; we write $i\sim j$ for
-an edge. Its \emph{adjacency matrix} $A$ has $a_{ij}=1$ if $i\sim j$ and $0$ otherwise. It is real symmetric with zero diagonal,
-so its eigenvalues are real, $\lambda_1\ge\dots\ge\lambda_n$, and their sum is $\operatorname{tr}A=0$. The spectrum does not
-depend on the numbering of the vertices, since renumbering conjugates $A$ by a permutation matrix.
+Our graphs are finite, simple and undirected, with a nonempty vertex set $V$ of size $n$. An edge is an unordered pair of distinct vertices; write $i\sim j$ when it is present. The \emph{adjacency matrix} has entries $a_{ij}=1$ for edges and $0$ otherwise. Symmetry gives real eigenvalues $\lambda_1\ge\cdots\ge\lambda_n$. Its zero diagonal gives $\sum_i\lambda_i=\operatorname{tr}A=0$. Changing vertex names conjugates $A$ by a permutation matrix, so its spectrum is a property of the graph.
 
-As in Volume~3, Appendix~A, $(A^k)_{ij}$ counts the walks of length $k$ from $i$ to $j$. Hence $\operatorname{tr}A^2=\sum_i\deg i
-=2|E|$ and $\operatorname{tr}A^3=6\,t(G)$, where $t(G)$ is the number of triangles (each triangle gives six closed walks of length
-$3$). The spectrum therefore knows the number of vertices, edges and triangles.
+Matrix multiplication counts walks: $(A^k)_{ij}$ is the number of length-$k$ walks from $i$ to $j$, as proved in Volume~3, Appendix~A. A closed walk of length two chooses a neighbour and returns. A closed walk of length three travels around a triangle, choosing one of three starting vertices and either direction. Thus
+\[
+\sum_i\lambda_i^2=2|E|,\qquad \sum_i\lambda_i^3=6t(G),
+\]
+where $t(G)$ counts triangles. The spectrum already determines the numbers of vertices, edges and triangles.
 
-If $G$ is \emph{$k$-regular} (all degrees equal $k$), then $A\mathbf 1=k\mathbf 1$, and by the row-sum bound (Volume~3, Exercise~A.2), $k=\lambda_1$
-is the largest eigenvalue; the Frobenius theorem (Volume~3, Theorem~A.6) says that $G$ is connected if and only if $k$ is a
-simple eigenvalue (a disconnected graph has an eigenvector $\mathbf 1_C$ for each component $C$). For regular graphs, the other
-eigenvectors can be taken orthogonal to $\mathbf 1$, on which the all-ones matrix $J$ acts as $0$: this is why regular graphs are
-so much easier.
+If every degree is $k$, call the graph \emph{$k$-regular}. Then $A\mathbf1=k\mathbf1$, and the row-sum bound from Volume~3, Exercise~A.2, says that $k$ is the largest eigenvalue. If the graph is connected, Frobenius's theorem (Volume~3, Theorem~A.6) makes that eigenvalue simple. Conversely, each connected component of a regular graph supplies its own eigenvector $\mathbf1_C$ with eigenvalue $k$, so simplicity forces connectedness. The other eigenvectors may be chosen in $\mathbf1^\perp$. The all-ones matrix $J$ vanishes there, a useful simplification in the coming identities.
 
 \begin{example}[basic spectra]\label{linear:exa:spectra}
+Four families admit explicit eigenbases.
 \begin{enumerate}[label=(\alph*)]
-\item The complete graph $K_n$ has $A=J-I$, with eigenvalues $n-1$ (once) and $-1$ ($n-1$ times).
-\item The cycle $C_n$ has $A=S+S^{-1}$ with $S$ the cyclic shift, so its eigenvalues are $\omega^j+\omega^{-j}=2\cos\frac{2\pi j}n$,
-$j=0,\dots,n-1$, with eigenvectors $(\omega^{jm})_m$, $\omega=e^{2\pi i/n}$.
-\item The path $P_n$ has eigenvalues $2\cos\frac{j\pi}{n+1}$, $j=1,\dots,n$ (Exercise~\ref{linear:ex:pathgraph}).
-\item The hypercube $Q_n$, with vertex set $\{0,1\}^n$ and edges between words differing in one coordinate, has eigenvalues
-$n-2j$ with multiplicity $\binom nj$, $j=0,\dots,n$ (Exercise~\ref{linear:ex:hypercube}).
+\item For the complete graph $K_n$, $A=J-I$. The constant direction has eigenvalue $n-1$, and its orthogonal complement has eigenvalue $-1$, with multiplicity $n-1$.
+\item For a cycle $C_n$ ($n\ge3$), write $A=S+S^{-1}$ using cyclic shift. With $\omega=e^{2\pi i/n}$, the vectors $(\omega^{jm})_m$ give eigenvalues $2\cos(2\pi j/n)$, for $j=0,\ldots,n-1$.
+\item A path $P_n$ has eigenvalues $2\cos(j\pi/(n+1))$, for $j=1,\ldots,n$; the sine eigenvectors appear in Exercise~\ref{linear:ex:pathgraph}.
+\item The cube $Q_n$ joins binary words differing in one coordinate. Its eigenvalues are $n-2j$, with multiplicities $\binom nj$, for $j=0,\ldots,n$. Exercise~\ref{linear:ex:hypercube} constructs the eigenvectors directly.
 \end{enumerate}
 \end{example}
 
 \section{The friendship theorem}
 
 \begin{theorem}[Erd\H{o}s--R\'enyi--S\'os, 1966]\label{linear:thm:friendship}
-Let $G$ be a finite graph in which every two distinct vertices have exactly one common neighbour. Then $G$ is a
-\emph{windmill}: $n=2m+1$ and $G$ consists of $m$ triangles sharing one common vertex.
+Suppose every two distinct vertices of a finite nonempty graph have exactly one common neighbour. Then the graph is a \emph{windmill}: it has $2m+1$ vertices and consists of $m$ triangles sharing one central vertex. The case $m=0$ is a single vertex.
 \end{theorem}
 
 \begin{figure}[ht]
@@ -79,52 +61,34 @@ politician.}
 \end{figure}
 
 \begin{proof}
-\emph{Step 1: non-adjacent vertices have the same degree.} Let $u\not\sim v$. For each neighbour $x$ of $u$, let $f(x)$ be the
-unique common neighbour of $x$ and $v$; it is a neighbour of $v$. If $f(x)=f(x')=y$ for neighbours $x\ne x'$ of $u$, then $u$ and
-$y$ have the two common neighbours $x$ and $x'$ (and $y\ne u$, since $y\sim v$ and $u\not\sim v$), which is forbidden. So $f$ is
-injective and $\deg u\le\deg v$; by symmetry, $\deg u=\deg v$.
+A single vertex already has the required description. Assume there are at least two vertices.
 
-\emph{Step 2: if no vertex is adjacent to all others, $G$ is regular.} By Step~1, the degree is constant on each connected component
-of the complementary graph $\bar G$ (where $u,v$ are joined when $u\not\sim v$ in $G$). If $\bar G$ is disconnected, split $V=V_1\sqcup
-V_2$ with no edge of $\bar G$ between $V_1$ and $V_2$: every vertex of $V_1$ is adjacent in $G$ to every vertex of $V_2$. If both parts
-had at least two vertices, two vertices of $V_1$ would have two common neighbours in $V_2$. So one part is a single vertex, adjacent
-to all others. Hence, if there is no such vertex, $\bar G$ is connected and $G$ is regular.
+\emph{Compare non-neighbours.} If $u\not\sim v$, assign to each neighbour $x$ of $u$ the unique common neighbour $f(x)$ of $x$ and $v$. This lies in the neighbourhood of $v$. If distinct $x,x'$ had the same image $y$, then $u$ and $y$ would have common neighbours $x,x'$. Here $y\ne u$, since $y\sim v$ while $u\not\sim v$. Thus the assignment is injective. Reversing $u,v$ shows that they have equal degrees.
 
-\emph{Step 3: the regular case is impossible.} Let $G$ be $k$-regular. The hypothesis says $(A^2)_{uv}=1$ for $u\ne v$, and
-$(A^2)_{uu}=k$, so
+\emph{Assume there is no central vertex.} In the complement graph, degrees in the original graph are constant along edges, and hence along connected components. If the complement were disconnected, none of its components could be a singleton: that vertex would be adjacent to everyone in the original graph. Choose two components, each with at least two vertices. Two vertices of one would share every vertex of the other as a neighbour in the original graph, contrary to the hypothesis. Thus the complement is connected and $G$ is $k$-regular. Every vertex has a neighbour, and the ends of an edge must have a common neighbour, so $k\ge2$.
+
+\emph{Use the trace.} Off the diagonal, the entries of $A^2$ are all $1$; on the diagonal they are $k$. Hence
 \[
 A^2=(k-1)I+J.
 \]
-Counting walks of length $2$ from a vertex, $k(k-1)=n-1$ (every other vertex is reached exactly once, and each walk
-$u\to x\to y$ with $y\ne u$ reaches a vertex other than $u$). The matrix $A^2$ has eigenvalue $k-1+n=k^2$ on $\mathbf 1$ and $k-1$ on
-$\mathbf 1^\perp$. So $A$ has the eigenvalue $k$ on $\mathbf 1$ and eigenvalues $\pm\sqrt{k-1}$ on $\mathbf 1^\perp$, say $+\sqrt{k-1}$
-with multiplicity $r$ and $-\sqrt{k-1}$ with multiplicity $s$. The trace is zero:
+Applying this identity to $\mathbf1$ gives $k^2=k-1+n$, or $n-1=k(k-1)$. On $\mathbf1^\perp$, the eigenvalues of $A$ are $\sqrt{k-1}$ and $-\sqrt{k-1}$. Write their multiplicities as $r,s$. The trace gives
 \[
 k+(r-s)\sqrt{k-1}=0.
 \]
-Here $k\ge1$, since two vertices need a common neighbour, so the equation forces $r\ne s$. Then
-$\sqrt{k-1}=\frac k{s-r}$ is rational, hence an integer $h$ (a rational square root of an integer is an integer). Then $h(s-r)=h^2+1$,
-so $h$ divides $1$, $h=1$, $k=2$ and $n=k(k-1)+1=3$: $G$ is a triangle. But in a triangle every vertex is adjacent to all others,
-contradicting the assumption of Step 3.
+Since $k>0$, $r\ne s$, so the square root is rational. A rational square root of an integer is an integer: reducing a fraction to lowest terms and squaring shows its denominator must be $1$. Put $h=\sqrt{k-1}\ge1$. The trace identity becomes $h(s-r)=h^2+1$, so $h$ divides $1$. It follows that $h=1$, $k=2$ and $n=3$. But this graph is a triangle, with a central vertex after all. The assumption was impossible.
 
-\emph{Step 4: the structure.} So some vertex $w$ is adjacent to all others. For any other vertex $u$, the common neighbour of $u$
-and $w$ is a vertex $u'\ne w$ adjacent to $u$; and $u$ has no other neighbour besides $w$ and $u'$, for a second one $u''$ would be
-a second common neighbour of $u$ and $w$. So $V\setminus\{w\}$ is partitioned into pairs $\{u,u'\}$, each forming a triangle with $w$.
+\emph{Pair the remaining vertices.} Choose a vertex $w$ adjacent to everyone else. For each $u\ne w$, the unique common neighbour of $u,w$ is a vertex $u'$ adjacent to $u$. There can be no other neighbour of $u$ besides $w,u'$, since it would be a second common neighbour of $u,w$. Thus all vertices other than $w$ split into pairs, each completing a triangle with $w$.
 \end{proof}
 
-Compare the proof with the statement: the conclusion is a structure, but the obstacle in Step~3 is arithmetic, the irrationality
-of $\sqrt{k-1}$. This pattern, ``the eigenvalues would have to be integers, and they are not'', returns twice below. Finiteness is essential: the theorem fails for infinite graphs, where
-friendship graphs without a politician exist (Exercise~\ref{linear:ex:infinitefriends}).
+The last pairing argument did not use finiteness. The trace did. Exercise~\ref{linear:ex:infinitefriends} constructs an infinite friendship graph with no central vertex and shows exactly where this finite proof stops applying.
 
 \section{Strongly regular graphs and Moore graphs}
 
 \begin{definition}\label{linear:def:srg}
-A $k$-regular graph on $n$ vertices is \emph{strongly regular} with parameters $(n,k,\lambda,\mu)$ if every two adjacent
-vertices have exactly $\lambda$ common neighbours and every two non-adjacent distinct vertices have exactly $\mu$.
+A $k$-regular graph with $n$ vertices is \emph{strongly regular with parameters $(n,k,\lambda,\mu)$} when an adjacent pair has exactly $\lambda$ common neighbours and a distinct non-adjacent pair has exactly $\mu$ common neighbours.
 \end{definition}
 
-The friendship hypothesis would be $\lambda=\mu=1$. The \emph{Petersen graph} (Figure~\ref{linear:fig:petersen}) is strongly regular with
-parameters $(10,3,0,1)$; so is the pentagon, $(5,2,0,1)$. In matrix form the definition says
+The definition allows complete graphs, for which the non-adjacent-pair requirement is vacuous. We will separate that case when computing spectra. For noncomplete examples, the pentagon has parameters $(5,2,0,1)$ and the Petersen graph has $(10,3,0,1)$. Counting common neighbours in each matrix position gives
 \begin{equation}\label{linear:eq:srg}
 A^2=kI+\lambda A+\mu(J-I-A).
 \end{equation}
@@ -139,145 +103,140 @@ $2$-element subsets of $\{1,\dots,5\}$, adjacent when disjoint.}
 \end{figure}
 
 \begin{theorem}[eigenvalues of strongly regular graphs]\label{linear:thm:srg}
-Let $G$ be connected and strongly regular with parameters $(n,k,\lambda,\mu)$, $\mu>0$. Its eigenvalues are $k$ (simple) and the
-two roots $\theta>\tau$ of $x^2-(\lambda-\mu)x-(k-\mu)=0$, with multiplicities
+Let $G$ be connected and strongly regular with parameters $(n,k,\lambda,\mu)$ and $\mu>0$. If $G$ is complete, its spectrum is $k=n-1$ once and $-1$ with multiplicity $n-1$. Otherwise its spectrum consists of the simple eigenvalue $k$ and the roots $\theta>\tau$ of
 \[
-m_{\theta},m_\tau=\frac12\Bigl((n-1)\mp\frac{2k+(n-1)(\lambda-\mu)}{\sqrt{(\lambda-\mu)^2+4(k-\mu)}}\Bigr).
+x^2-(\lambda-\mu)x-(k-\mu)=0.
 \]
-In particular these two numbers must be non-negative integers.
+The respective root multiplicities are
+\[
+m_\theta,m_\tau=\frac12\left((n-1)\mp
+\frac{2k+(n-1)(\lambda-\mu)}{\sqrt{(\lambda-\mu)^2+4(k-\mu)}}\right).
+\]
+In particular these expressions must be non-negative integers.
 \end{theorem}
 \begin{proof}
-On $\mathbf 1^\perp$, which is invariant and spanned by eigenvectors, $J=0$ and~\eqref{linear:eq:srg} reads $A^2=(k-\mu)I+(\lambda-\mu)A$. So
-every eigenvalue $x$ of $A$ on $\mathbf 1^\perp$ satisfies $x^2-(\lambda-\mu)x-(k-\mu)=0$. The multiplicities satisfy $m_\theta+m_\tau=n-1$
-and, since the trace is $0$, $k+m_\theta\theta+m_\tau\tau=0$. With $\theta+\tau=\lambda-\mu$ and $\theta-\tau=\sqrt\Delta$,
-$\Delta=(\lambda-\mu)^2+4(k-\mu)$, the second equation becomes $k+(n-1)\frac{\lambda-\mu}2+(m_\theta-m_\tau)\frac{\sqrt\Delta}2=0$,
-which gives the formula.
+The complete case was computed in Example~\ref{linear:exa:spectra}. Otherwise connectedness makes $k$ simple, and every other eigenvector lies in $\mathbf1^\perp$. There $J=0$, so~\eqref{linear:eq:srg} forces the displayed quadratic. Nonadjacent vertices exist, so $\mu\le k$. Also $k>0$ and $\lambda\le k-1$. Consequently $\Delta=(\lambda-\mu)^2+4(k-\mu)>0$: if both terms vanished, we would have $\lambda=\mu=k$, a contradiction. The roots are distinct.
+
+Their multiplicities satisfy $m_\theta+m_\tau=n-1$ and $k+m_\theta\theta+m_\tau\tau=0$. Substitute $\theta+\tau=\lambda-\mu$ and $\theta-\tau=\sqrt\Delta$ into the latter equation to obtain
+\[
+0=k+\frac{(n-1)(\lambda-\mu)}2+
+\frac{(m_\theta-m_\tau)\sqrt\Delta}2.
+\]
+Solving the sum and difference equations gives the formulas. Multiplicities count eigenspace dimensions, so they must be non-negative integers.
 \end{proof}
 
-A \emph{Moore graph} of diameter $2$ is a $k$-regular graph of diameter $2$ with the largest possible number of vertices: from a
-vertex, there are $k$ neighbours and at most $k(k-1)$ vertices at distance $2$, so $n\le k^2+1$, and equality means that there are no
-triangles and no $4$-cycles (Exercise~\ref{linear:ex:moorebound}). Then two adjacent vertices have no common neighbour, and two non-adjacent
-ones have exactly one: a Moore graph is strongly regular with parameters $(k^2+1,k,0,1)$.
+Starting at a vertex of degree $k$, we can reach at most $k$ vertices in one step and $k(k-1)$ more in two. A graph of diameter $2$ and maximum degree $k$ therefore has at most $k^2+1$ vertices. A regular graph attaining this bound is a \emph{Moore graph of diameter $2$}. Equality leaves no room for triangles, four-cycles or repeated second neighbours; Exercise~\ref{linear:ex:moorebound} proves these assertions. Its strongly regular parameters are $(k^2+1,k,0,1)$.
 
 \begin{theorem}[Hoffman--Singleton, 1960]\label{linear:thm:moore}
-A Moore graph of diameter $2$ and degree $k$ exists only if $k\in\{2,3,7,57\}$.
+A Moore graph of diameter $2$ can have only one of the degrees $2,3,7,57$.
 \end{theorem}
 \begin{proof}
-Here $\lambda-\mu=-1$, $k-\mu=k-1$, $\Delta=4k-3$, and the equations of the proof of Theorem~\ref{linear:thm:srg} read $m_\theta+m_\tau=k^2$
-and
+Its parameters give $\Delta=4k-3$ and $m_\theta+m_\tau=k^2$. The trace equation from the previous proof reads
 \[
 (m_\theta-m_\tau)\sqrt{4k-3}=k^2-2k.
 \]
-If $\sqrt{4k-3}$ is irrational, then $m_\theta=m_\tau$ and $k^2=2k$, so $k=2$: the pentagon. Otherwise $4k-3=s^2$ with $s$ a positive
-odd integer, $k=\frac{s^2+3}4$, and substituting, $16(m_\theta-m_\tau)s=(s^2+3)(s^2-5)=s^4-2s^2-15$. So $s$ divides $15$:
-$s\in\{1,3,5,15\}$ and $k\in\{1,3,7,57\}$. For $k=1$ the graph is a single edge, of diameter $1$, not $2$.
+If the square root is irrational, its integer coefficient must vanish. Then $k^2=2k$, and diameter $2$ rules out $k=0$, leaving $k=2$.
+If the square root is rational, it is an integer $s>0$, necessarily odd. Substituting $k=(s^2+3)/4$ gives
+\[
+16(m_\theta-m_\tau)s=(s^2+3)(s^2-5)=s^4-2s^2-15.
+\]
+Thus $s\mid15$, so $s$ is $1,3,5$ or $15$, and $k$ is $1,3,7$ or $57$. A degree-one connected graph is a single edge, of diameter $1$. Removing that case gives the list.
 \end{proof}
 
-The case $k=3$ is the Petersen graph, and $k=7$ is the \emph{Hoffman--Singleton graph}, on $50$ vertices, unique, which can be
-built from five pentagons and five pentagrams. Whether a Moore graph of degree $57$ exists, with $3250$ vertices, is one of the
-famous open problems of algebraic combinatorics; Aschbacher (1971) proved that its automorphism group cannot be of rank three, Graham Higman
-showed that it cannot be vertex-transitive, and Ma\v caj and \v Sir\'a\v n (2010) proved that it would have at most $375$
-automorphisms. Neither a construction nor a proof of impossibility is in sight.
+The pentagon supplies degree $2$, the Petersen graph degree $3$, and the Hoffman--Singleton graph degree $7$ on $50$ vertices. The degree-$57$ case would have $3250$ vertices; its existence remains open. Strong restrictions on its possible symmetries are known: Aschbacher ruled out rank-three automorphism groups, Higman ruled out vertex transitivity, and Ma\v caj and \v Sir\'a\v n bounded the automorphism group by $375$. These restrictions do not settle existence. The cited papers give their precise hypotheses and proofs.
 
 \section{Independent sets and colourings}
 
-A set of vertices is \emph{independent} if it contains no edge; $\alpha(G)$ is the largest size of an independent set. Computing
-$\alpha$ is NP-hard in general, so bounds computable in polynomial time are precious.
+An \emph{independent set} contains no adjacent pair; write $\alpha(G)$ for its largest possible size. Finding that size is hard in general. An eigenvalue bound may rule out a large set without requiring a search through all subsets.
 
 \begin{theorem}[Hoffman's ratio bound]\label{linear:thm:hoffman}
-Let $G$ be $k$-regular on $n$ vertices with smallest eigenvalue $\lambda_n<0$. Then
+Suppose $G$ is $k$-regular with $n$ vertices and least eigenvalue $\lambda_n<0$. Its independence number satisfies
 \[
-\alpha(G)\le n\,\frac{-\lambda_n}{k-\lambda_n}.
+\alpha(G)\le n\frac{-\lambda_n}{k-\lambda_n}.
 \]
 \end{theorem}
 \begin{proof}
-Let $S$ be independent, $|S|=s$, and $x=\mathbf 1_S-\frac sn\mathbf 1$, orthogonal to $\mathbf 1$. Since $\mathbf 1_S^{\mathsf T}A\mathbf 1_S=2\,
-|E(S)|=0$ and $A\mathbf 1=k\mathbf 1$,
+Take an independent set $S$ of size $s$. The claim is automatic for $s=0$, so assume $s>0$. Centre its indicator by setting $x=\mathbf1_S-(s/n)\mathbf1$. Independence gives $\mathbf1_S^{\mathsf T}A\mathbf1_S=0$, and regularity gives $A\mathbf1=k\mathbf1$. Expanding both quadratic expressions yields
 \[
-x^{\mathsf T}Ax=0-2\frac sn\,\mathbf 1_S^{\mathsf T}A\mathbf 1+\frac{s^2}{n^2}\mathbf 1^{\mathsf T}A\mathbf 1=-2\frac{s^2k}n+\frac{s^2k}n=-\frac{s^2k}n,
+x^{\mathsf T}Ax=-\frac{ks^2}{n},\qquad
+\|x\|^2=s-\frac{s^2}{n}=\frac{s(n-s)}n.
 \]
-and $\|x\|^2=s-\frac{s^2}n=\frac{s(n-s)}n$. The Rayleigh quotient is at least $\lambda_n$, so $-\frac{s^2k}n\ge\lambda_n\frac{s(n-s)}n$,
-that is $s(k-\lambda_n)\le-\lambda_nn$.
+The least-eigenvalue bound holds for every vector, including zero, so
+$-ks^2/n\ge\lambda_ns(n-s)/n$.
+Divide by $s/n>0$ and rearrange to get $s(k-\lambda_n)\le-\lambda_nn$. The denominator $k-\lambda_n$ is positive, giving the result.
 \end{proof}
 
-For the Petersen graph, the bound is $10\cdot\frac2{3+2}=4$, attained by the four $2$-subsets of $\{1,\dots,5\}$ containing $1$.
-That example generalises.
+For the Petersen graph the bound is $10\cdot2/(3+2)=4$. Four pairs containing a fixed element of $\{1,\ldots,5\}$ form an independent set in its disjoint-pair description, so equality occurs. That calculation extends to pairs on a larger set.
 
 \begin{example}[Erd\H{o}s--Ko--Rado for pairs]\label{linear:exa:ekr}
-The \emph{Kneser graph} $K(n,2)$ has the $\binom n2$ pairs from $\{1,\dots,n\}$ as vertices, two pairs adjacent when disjoint. An
-independent set is a family of pairwise intersecting pairs. Its spectrum can be computed from the incidence matrix $B$ ($n\times
-\binom n2$, $b_{i,e}=1$ if $i\in e$): $BB^{\mathsf T}=(n-2)I+J$ has eigenvalues $2(n-1)$ and $n-2$ ($n-1$ times), so $B^{\mathsf T}B$
-has these and $0$ for the remaining $\binom n2-n$ dimensions. Two distinct pairs meet in exactly one point if and only if
-$(B^{\mathsf T}B)_{ef}=1$, so the ``meeting'' graph has adjacency $B^{\mathsf T}B-2I$, with eigenvalues $2n-4$, $n-4$, $-2$; the
-Kneser graph is its complement, and on $\mathbf 1^\perp$ its adjacency $J-I-(B^{\mathsf T}B-2I)$ has eigenvalues $-1-(n-4)=3-n$ and
-$-1+2=1$, while its degree is $\binom{n-2}2$. For $n\ge4$, Hoffman's bound gives
+Let $n\ge4$. The Kneser graph $K(n,2)$ has all $2$-element subsets of $\{1,\ldots,n\}$ as vertices, with edges joining disjoint pairs. Its independent sets are exactly the families in which any two pairs intersect.
+Let $B$ be the $n\times\binom n2$ incidence matrix, whose entry $b_{i,e}$ records $i\in e$. The diagonal entries of $BB^{\mathsf T}$ are $n-1$, and its off-diagonal entries are $1$. Hence
+$BB^{\mathsf T}=(n-2)I+J$, with eigenvalues $2(n-1)$ once and $n-2$ with multiplicity $n-1$. By the SVD, $B^{\mathsf T}B$ has the same non-zero eigenvalues and $\binom n2-n$ zeros.
+
+The graph joining intersecting distinct pairs has adjacency matrix $B^{\mathsf T}B-2I$. Its complement therefore has adjacency matrix $J+I-B^{\mathsf T}B$. On $\mathbf1^\perp$ the eigenvalues of this complement are $3-n$ and $1$; its constant eigenvalue is the degree $\binom{n-2}2$. Thus Hoffman's bound gives
 \[
-\alpha\le\binom n2\frac{n-3}{\binom{n-2}2+n-3}=\binom n2\frac{n-3}{\frac{n(n-3)}2}=n-1.
+\alpha(K(n,2))\le\binom n2
+\frac{n-3}{\binom{n-2}2+n-3}
+=\binom n2\frac{n-3}{n(n-3)/2}=n-1.
 \]
-So a family of pairwise intersecting pairs has at most $n-1$ members: the case $k=2$ of the Erd\H{o}s--Ko--Rado theorem, whose
-general case is a classical theorem of extremal set theory.
+All pairs containing one fixed element attain this bound. So a pairwise intersecting family of pairs has at most $n-1$ members. This is the pair case of the Erd\H{o}s--Ko--Rado theorem.
 \end{example}
 
-The same idea bounds the chromatic number: a proper colouring splits $V$ into $\chi(G)$ independent sets, so
-$\chi(G)\ge n/\alpha(G)\ge1+\frac k{-\lambda_n}$ for regular $G$ (Exercise~\ref{linear:ex:chromatic} removes regularity).
+A proper colouring partitions the vertices into independent sets. Consequently $\chi(G)\ge n/\alpha(G)$, and for the regular graphs above this gives $\chi(G)\ge1+k/(-\lambda_n)$. Exercise~\ref{linear:ex:chromatic} proves a version without the regularity assumption.
 
 \section{The Graham--Pollak theorem}
 
-Around 1970, Ron Graham and Henry Pollak at Bell Labs were designing addressing schemes for telephone networks and needed to
-cover the edges of a complete graph by complete bipartite graphs (``bicliques'') with no edge covered twice. The $n-1$ stars at
-the vertices $1,\dots,n-1$ (star $i$ joins $i$ to all $j>i$) do it. Can one do better?
+A \emph{complete bipartite graph}, or biclique, has two disjoint nonempty parts and all possible edges between them. Graham and Pollak's work on addressing telephone networks led to a question about partitioning the edges of $K_n$ into bicliques. There is a partition with $n-1$ pieces: for each $i<n$, use the star joining $i$ to all larger-numbered vertices. Linear algebra proves that no partition uses fewer pieces.
 
 \begin{theorem}[Graham--Pollak, 1971]\label{linear:thm:grahampollak}
-The edge set of $K_n$ cannot be partitioned into fewer than $n-1$ complete bipartite graphs.
+Every partition of the edges of $K_n$ into complete bipartite graphs has at least $n-1$ pieces.
 \end{theorem}
 \begin{proof}
-(Tverberg's proof.) Suppose the edges are partitioned into bicliques with parts $(X_1,Y_1),\dots,(X_m,Y_m)$. Every edge $\{i,j\}$
-lies in exactly one of them, with one end in $X_t$ and the other in $Y_t$, so for every $x\in\R^n$
+We use Tverberg's argument. Suppose the pieces have parts $(X_t,Y_t)$ for $t=1,\ldots,m$. Since each unordered edge occurs once, every real vector $x$ satisfies
 \[
-\sum_{i<j}x_ix_j=\sum_{t=1}^m\Bigl(\sum_{i\in X_t}x_i\Bigr)\Bigl(\sum_{j\in Y_t}x_j\Bigr).
+\sum_{i<j}x_ix_j=\sum_{t=1}^m
+\left(\sum_{i\in X_t}x_i\right)\left(\sum_{j\in Y_t}x_j\right).
 \]
-If $m<n-1$, the $m+1<n$ homogeneous linear equations $\sum_{i\in X_t}x_i=0$ ($t=1,\dots,m$) and $\sum_ix_i=0$ have a non-zero solution
-$x$. For it, the right side vanishes, so $\sum_{i<j}x_ix_j=0$, and $0=\bigl(\sum_ix_i\bigr)^2=\sum_ix_i^2+2\sum_{i<j}x_ix_j=\sum_i
-x_i^2>0$, a contradiction.
+If $m<n-1$, the equations $\sum_{i\in X_t}x_i=0$ for all $t$, together with $\sum_ix_i=0$, form fewer than $n$ homogeneous linear equations. Rank--nullity supplies a non-zero solution. For that vector the displayed identity gives $\sum_{i<j}x_ix_j=0$, whereas
+\[
+0=\left(\sum_ix_i\right)^2=\sum_ix_i^2+2\sum_{i<j}x_ix_j=\sum_ix_i^2>0.
+\]
+This contradiction proves the lower bound.
 \end{proof}
 
-The theorem is also an eigenvalue statement in disguise: $J-I$ has $n-1$ negative eigenvalues, and each biclique contributes a
-matrix with exactly one (Exercise~\ref{linear:ex:inertia}). For forty years every known proof used linear algebra; a proof by pure counting was found by
-Sundar Vishwanathan only in 2013.
+There is also a spectral reading: $J-I$ has $n-1$ negative eigenvalues, and a biclique adjacency matrix has just one. Exercise~\ref{linear:ex:inertia} proves that a sum cannot have more negative eigenvalues than the sum of those counts. Vishwanathan's 2013 paper, listed below, gives a counting proof of the same graph theorem.
 
 \section{Huang's theorem}
 
-The hypercube $Q_n$ has $2^n$ vertices and is bipartite, the two sides being the words of even and odd weight, each of size
-$2^{n-1}$. So an induced subgraph on $2^{n-1}$ vertices can have no edges at all. Add one more vertex, and the question becomes:
-how small can the maximum degree be? In 1988, Chung, F\"uredi, Graham and Seymour constructed examples with maximum degree about
-$\sqrt n$, and in 1992 Gotsman and Linial showed that a lower bound of the form $n^c$, for any $c>0$, would prove the sensitivity
-conjecture of Nisan and Szegedy (see the remark below).
+The even-weight vertices of $Q_n$ form an independent set of size $2^{n-1}$; so do the odd-weight vertices. Adding a single vertex to a half-sized set must create edges, but how large a degree must it create? Chung, F\"uredi, Graham and Seymour constructed examples on this scale with maximum degree of order $\sqrt n$. Huang proved the matching lower bound.
 
 \begin{theorem}[Huang, 2019]\label{linear:thm:huang}
-Every induced subgraph of $Q_n$ on $2^{n-1}+1$ vertices has a vertex of degree at least $\sqrt n$.
+Any induced subgraph of $Q_n$ with $2^{n-1}+1$ vertices contains a vertex whose degree is at least $\sqrt n$.
 \end{theorem}
 \begin{proof}
-Define symmetric matrices by $A_1=\bigl(\begin{smallmatrix}0&1\\1&0\end{smallmatrix}\bigr)$ and
+Put $A_1=\begin{pmatrix}0&1\\1&0\end{pmatrix}$ and recursively define
 \[
-A_n=\begin{pmatrix}A_{n-1}&I\\I&-A_{n-1}\end{pmatrix}\in M_{2^n}(\Z).
+A_n=\begin{pmatrix}A_{n-1}&I\\I&-A_{n-1}\end{pmatrix}.
 \]
-\emph{(i) $A_n^2=nI$.} By induction, since
+These matrices are real symmetric. Block multiplication cancels the off-diagonal blocks and gives
 \[
-A_n^2=\begin{pmatrix}A_{n-1}^2+I&A_{n-1}-A_{n-1}\\A_{n-1}-A_{n-1}&I+A_{n-1}^2\end{pmatrix}=nI.
-\] So the eigenvalues of $A_n$ are $\pm\sqrt n$, and since $\operatorname{tr}A_n=\operatorname{tr}A_{n-1}-
-\operatorname{tr}A_{n-1}=0$, each has multiplicity $2^{n-1}$.
-
-\emph{(ii) $A_n$ is a signed adjacency matrix of $Q_n$}: its non-zero entries are $\pm1$, exactly at the positions of the edges of $Q_n$,
-when the vertices are ordered so that the first half has last coordinate $0$. Indeed $Q_n$ consists of two copies of $Q_{n-1}$ (the two
-diagonal blocks) joined by a perfect matching between corresponding vertices (the identity blocks).
-
-\emph{(iii) Interlacing.} Let $H$ be induced on a set $S$ of $2^{n-1}+1$ vertices, and $B$ the principal submatrix of $A_n$ on $S$. By
-Cauchy's interlacing theorem (Theorem~\ref{linear:thm:interlacing} with $m=2^{n-1}+1$),
-\[
-\lambda_1(B)\ge\lambda_{1+2^n-m}(A_n)=\lambda_{2^{n-1}}(A_n)=\sqrt n.
+A_n^2=\begin{pmatrix}A_{n-1}^2+I&0\\0&A_{n-1}^2+I\end{pmatrix}=nI
 \]
-\emph{(iv) Degree bound.} Let $By=\lambda_1(B)y$ and $|y_i|$ be the largest coordinate. Then $\lambda_1(B)|y_i|=\bigl|\sum_jb_{ij}y_j\bigr|\le
-\sum_j|b_{ij}||y_i|=\deg_H(i)|y_i|$, so $\Delta(H)\ge\lambda_1(B)\ge\sqrt n$.
+by induction. Their eigenvalues are therefore $\pm\sqrt n$. Their traces are zero, so each sign has multiplicity $2^{n-1}$.
+
+Order cube vertices by their last coordinate. Each diagonal block represents one copy of $Q_{n-1}$, and the identity blocks join corresponding vertices across the two copies. Thus $A_n$ has entries $\pm1$ exactly on cube edges and zeros elsewhere: it is a \emph{signed adjacency matrix}.
+
+Let $S$ be the selected vertex set, of size $m=2^{n-1}+1$, and let $B$ be the corresponding principal submatrix. Interlacing (Theorem~\ref{linear:thm:interlacing}) gives
+\[
+\lambda_1(B)\ge\lambda_{1+2^n-m}(A_n)
+=\lambda_{2^{n-1}}(A_n)=\sqrt n.
+\]
+Choose a non-zero eigenvector $y$ for $\lambda_1(B)$ and an index $i$ where $|y_i|$ is largest. In particular $|y_i|>0$. The signed entries have absolute values equal to adjacency entries of the induced graph $H$, so
+\[
+\lambda_1(B)|y_i|=\left|\sum_jb_{ij}y_j\right|
+\le\sum_j|b_{ij}||y_j|\le\deg_H(i)|y_i|.
+\]
+Cancel $|y_i|$ to obtain $\deg_H(i)\ge\sqrt n$.
 \end{proof}
 
 \begin{figure}[ht]
@@ -289,270 +248,264 @@ which is what makes the signed matrix square to $3I$.}
 \end{figure}
 
 \begin{remark}
-A Boolean function $f:\{0,1\}^n\to\{0,1\}$ has \emph{sensitivity} $s(f)$, the largest number of coordinates whose flip changes
-$f(x)$, over all inputs $x$; and \emph{block sensitivity} $bs(f)$, the same with disjoint blocks of coordinates flipped together.
-Always $s(f)\le bs(f)$, and Nisan and Szegedy asked in 1992 whether $bs(f)\le s(f)^C$ for a constant $C$. Gotsman and Linial had
-shown that this would follow from a statement like Theorem~\ref{linear:thm:huang}, and Huang's theorem gives $bs(f)\le2s(f)^4$. Since block
-sensitivity is polynomially related to many other complexity measures (decision tree depth, certificate complexity, degree as a
-polynomial), sensitivity joined them. The reduction is combinatorial and is told in Huang's paper and in Aaronson's and Tao's blog
-posts listed in the sources.
+For a Boolean function $f:\{0,1\}^n\to\{0,1\}$, its \emph{sensitivity} $s(f)$ is the largest number of single-coordinate flips changing its value at an input. Its \emph{block sensitivity} $bs(f)$ allows disjoint blocks of coordinates to be flipped instead. Certainly $s(f)\le bs(f)$. The sensitivity conjecture asked for an absolute exponent $C$ bounding $bs(f)$ by $s(f)^C$.
+Gotsman and Linial related the problem to induced subgraphs of the cube. Combining their reduction with Huang's theorem gives $bs(f)\le2s(f)^4$. Other measures, including decision-tree depth and polynomial degree, are already polynomially related to block sensitivity. The graph theorem therefore brings sensitivity into the same group of measures. The reduction itself is not proved here; Huang's paper and the accounts by Aaronson and Tao give it.
 \end{remark}
 
 \section{A gem: three Petersens do not make a $K_{10}$}
 
-The complete graph $K_{10}$ has $45$ edges, and the Petersen graph $15$. Can the edges of $K_{10}$ be split into three copies of the
-Petersen graph? Counting says maybe; eigenvalues say no.
+The Petersen graph has $15$ edges and $K_{10}$ has $45$. Edge counts allow the possibility of three disjoint Petersen copies covering $K_{10}$. Their eigenspaces forbid it.
 
 \begin{proposition}[Schwenk]\label{linear:prop:schwenk}
-$K_{10}$ is not the edge-disjoint union of three Petersen graphs.
+There is no partition of the edges of $K_{10}$ into three Petersen graphs.
 \end{proposition}
 \begin{proof}
-Suppose $J-I=P_1+P_2+P_3$ with each $P_t$ the adjacency matrix of a Petersen graph (on the same ten vertices, differently numbered).
-Each $P_t$ is $3$-regular, and its eigenspace for the eigenvalue $1$ is a $5$-dimensional subspace of the $9$-dimensional space $\mathbf
-1^\perp$. Two $5$-dimensional subspaces of a $9$-dimensional space intersect non-trivially, so there is $x\ne0$, $x\perp\mathbf 1$,
-with $P_1x=P_2x=x$. Then $P_3x=(J-I)x-P_1x-P_2x=-x-x-x=-3x$, so $-3$ would be an eigenvalue of the Petersen graph $P_3$. It is not.
+Suppose their adjacency matrices satisfy $J-I=P_1+P_2+P_3$. Each Petersen matrix has a $5$-dimensional eigenspace for eigenvalue $1$, contained in the $9$-dimensional space $\mathbf1^\perp$. The eigenspaces for $P_1$ and $P_2$ must meet in a non-zero vector $x$. Then
+\[
+P_3x=(J-I)x-P_1x-P_2x=-3x.
+\]
+But the Petersen eigenvalues are $3,1,-2$, so $-3$ cannot occur. This is the desired contradiction.
 \end{proof}
 
 \begin{beauty}
-Graphs are combinatorial objects, and yet some of their deepest properties are forced by arithmetic and geometry of real numbers:
-a square root that cannot be rational (friendship), an integer that must divide $15$ (Moore graphs), two subspaces too large to
-miss each other (Petersen), a corner of a matrix that cannot escape interlacing (Huang). The spectrum is not a complete
-fingerprint (different graphs can share one), but when the fingerprint is impossible, so is the graph.
+The contradiction need not look like a graph. In the friendship theorem it is a divisibility condition. For Moore graphs it is the short list of divisors of $15$. In Schwenk's argument it is a vector belonging to two large subspaces. The matrix keeps the graph's rules while letting us argue with a different set of objects.
 \end{beauty}
 
-\section{What we proved, and what comes next}
+\section{How much does the second eigenvalue know?}
 
-The opening asked how a party in which every two guests share exactly one friend must look. It must have a politician
-(Theorem~\ref{linear:thm:friendship}), because the alternative would make $\sqrt{k-1}$ rational without being an integer. The same
-method, ``write the combinatorial condition as a matrix identity and read off the eigenvalues'', gave the spectra of strongly
-regular graphs (Theorem~\ref{linear:thm:srg}), the four possible degrees of a Moore graph (Theorem~\ref{linear:thm:moore}),
-Hoffman's bound on independent sets (Theorem~\ref{linear:thm:hoffman}), the Graham--Pollak theorem
-(Theorem~\ref{linear:thm:grahampollak}), Huang's theorem on the cube (Theorem~\ref{linear:thm:huang}) and Schwenk's three
-Petersens (Proposition~\ref{linear:prop:schwenk}).
+The party rule forced triangles around one centre. The cube argument needed a more unexpected choice: changing edge signs preserved their locations while creating a matrix with only two eigenvalues. In both cases the useful identity came from the way the matrix was built.
 
-All of these used the top or the bottom of the spectrum, or exact identities. The next chapter looks at the gap between the
-largest eigenvalue and the second one, and shows that it measures something geometric: how hard it is to cut the graph in two,
-and how fast a random walk on it forgets where it started.
+A regular graph always has its degree as the top adjacency eigenvalue. How far below it is the second? The next chapter relates that gap to a concrete task: separating a large set of vertices from the rest with few edges. The same gap will control how quickly a random walk approaches its stationary distribution.
+
+\begin{figure}[ht]
+\centering\fig{ch05-rw-ratio}
+\caption{The four Petersen vertices corresponding to pairs containing $1$ form an independent set. The ratio bound gives exactly $4$, so no fifth pair can join this family while meeting every other pair.}
+\label{fig:v8c05ratio}
+\end{figure}
+\begin{figure}[ht]
+\centering\fig{ch05-rw-signs}
+\caption{For $Q_2$, give one edge a negative sign. The two signed length-two routes between opposite vertices cancel, while each vertex has two return walks. Thus the signed adjacency matrix squares to $2I$.}
+\label{fig:v8c05signs}
+\end{figure}
 
 \section{Exercises}
 
 \begin{exercise}[$\star$]\label{linear:ex:hypercube}
-Show that the functions $\chi_T(x)=(-1)^{\sum_{i\in T}x_i}$, $T\subseteq\{1,\dots,n\}$, are eigenvectors of the adjacency matrix of
-$Q_n$ with eigenvalues $n-2|T|$.
+For each subset $T\subseteq\{1,\ldots,n\}$, put $\chi_T(x)=(-1)^{\sum_{i\in T}x_i}$. Prove that these functions give a complete eigenbasis for $Q_n$, with eigenvalues $n-2|T|$.
 \end{exercise}
-
 \begin{exercise}[$\star$]\label{linear:ex:spectrumcount}
-A graph has spectrum $3,1,1,1,1,1,-2,-2,-2,-2$. How many vertices, edges and triangles does it have? Is it regular?
+Suppose a graph has eigenvalues $3,1,1,1,1,1,-2,-2,-2,-2$. Determine its vertex, edge and triangle counts, and decide whether every vertex has the same degree.
 \end{exercise}
-
 \begin{exercise}[$\star\star$]\label{linear:ex:bipartite}
-Let $G$ be connected. Show that $G$ is bipartite if and only if $-\lambda_1$ is an eigenvalue, if and only if the spectrum is
-symmetric about $0$.
+For a connected graph, prove the equivalence of these three conditions: it is bipartite; $-\lambda_1$ occurs in its spectrum; its spectrum is symmetric about zero, with multiplicities.
 \end{exercise}
-
 \begin{exercise}[$\star$]\label{linear:ex:srgcount}
-Show that the parameters of a strongly regular graph satisfy $k(k-\lambda-1)=(n-k-1)\mu$, and compute the eigenvalues and
-multiplicities of the Petersen graph and of the hypothetical Moore graph of degree $57$.
+Establish the parameter identity $k(k-\lambda-1)=(n-k-1)\mu$ for strongly regular graphs. Compute the complete spectra of the Petersen graph and of a hypothetical degree-$57$ Moore graph.
 \end{exercise}
-
 \begin{exercise}[$\star$]\label{linear:ex:moorebound}
-Show that a graph of diameter $2$ and maximum degree $k$ has at most $k^2+1$ vertices, with equality only if it is $k$-regular
-without triangles and $4$-cycles.
+A graph has diameter $2$ and maximum degree $k$. Prove $n\le k^2+1$. Show that equality forces regularity and excludes both triangles and four-cycles.
 \end{exercise}
-
 \begin{exercise}[$\star\star$]\label{linear:ex:linegraph}
-The \emph{line graph} $L(G)$ has the edges of $G$ as vertices, adjacent when they share an endpoint. Show that its adjacency matrix
-is $B^{\mathsf T}B-2I$, with $B$ the vertex-edge incidence matrix of $G$, and deduce that every eigenvalue of a line graph is at least
-$-2$.
+Make a new graph $L(G)$ whose vertices are the edges of $G$, joining two when they share an endpoint. For the vertex-edge incidence matrix $B$, prove $A(L(G))=B^{\mathsf T}B-2I$. Deduce a lower bound of $-2$ for every line-graph eigenvalue.
 \end{exercise}
-
 \begin{exercise}[$\star\star$]\label{linear:ex:chromatic}
-(Hoffman.) Show that every graph with at least one edge satisfies $\chi(G)\ge1+\frac{\lambda_1}{-\lambda_n}$. (Test the Rayleigh quotient on the
-Perron vector, twisted by roots of unity along the colour classes.)
+Prove Hoffman's general colouring bound: if a graph has an edge, then $\chi(G)\ge1+\lambda_1/(-\lambda_n)$. You may multiply the colour-class pieces of a Perron eigenvector by roots of unity.
 \end{exercise}
-
 \begin{exercise}[$\star\star$]\label{linear:ex:wilf}
-(Wilf.) Show that $\chi(G)\le1+\lambda_1$ for every graph. (Use that some vertex has degree at most the average degree, which is at
-most $\lambda_1$, and interlacing.)
+Prove Wilf's bound $\chi(G)\le1+\lambda_1$. Use a low-degree vertex and interlacing to make an induction work on every induced subgraph.
 \end{exercise}
-
 \begin{exercise}[$\star\star\star$]\label{linear:ex:inertia}
-Show that a biclique on parts $X,Y$ has adjacency matrix $\mathbf 1_X\mathbf 1_Y^{\mathsf T}+\mathbf 1_Y\mathbf 1_X^{\mathsf T}$, with exactly
-one negative eigenvalue, and that the number of negative eigenvalues is subadditive: $\nu(A+B)\le\nu(A)+\nu(B)$ for Hermitian $A,B$.
-Deduce Theorem~\ref{linear:thm:grahampollak} again.
+For a biclique with nonempty parts $X,Y$, show that its adjacency matrix is $\mathbf1_X\mathbf1_Y^{\mathsf T}+\mathbf1_Y\mathbf1_X^{\mathsf T}$ and has exactly one negative eigenvalue. If $\nu(A)$ counts negative eigenvalues with multiplicity, prove $\nu(A+B)\le\nu(A)+\nu(B)$ for Hermitian matrices. Use this to recover Theorem~\ref{linear:thm:grahampollak}.
 \end{exercise}
-
 \begin{exercise}[$\star\star$]\label{linear:ex:infinitefriends}
-Build an infinite graph in which every two vertices have exactly one common neighbour and no vertex is adjacent to all others.
-(Start from three vertices and no edges, and repeatedly add, for each pair without a common neighbour, a new vertex adjacent to both.)
+Construct an infinite friendship graph with no vertex adjacent to everyone. Begin with three isolated vertices. At each stage, give every old pair lacking a common neighbour a new private common neighbour. Prove that the limiting graph has the required properties.
+\end{exercise}
+\begin{exercise}[$\star\star$]\label{linear:ex:huangsharp}
+Prove that Huang's lower bound is attained for $n=1$ and $n=4$. In the latter case, find nine vertices of $Q_4$ whose induced graph has maximum degree $2$.
 \end{exercise}
 
-\begin{exercise}[$\star\star$]\label{linear:ex:huangsharp}
-Show that Theorem~\ref{linear:thm:huang} is sharp for $n=1$ and $n=4$: find an induced subgraph of $Q_4$ on $9$ vertices with maximum
-degree $2$. (Hint: start from the even-weight words and replace a few of them.)
+\begin{exercise}[$\star$]\label{ex:v8c05a}
+Determine the adjacency spectrum of the complete bipartite graph $K_{a,b}$ for positive integers $a,b$, including multiplicities. Recover its edge and triangle counts from the spectrum.
+\end{exercise}
+\begin{exercise}[$\star\star$]\label{ex:v8c05b}
+Suppose a $k$-regular graph has least eigenvalue $\lambda_n<0$, and an independent set $S$ attains Hoffman's ratio bound. Prove that $\mathbf1_S-(|S|/n)\mathbf1$ is a $\lambda_n$-eigenvector. Show that every vertex outside $S$ has exactly $-\lambda_n$ neighbours in $S$.
+\end{exercise}
+\begin{exercise}[$\star$]\label{ex:v8c05c}
+Write the signed adjacency matrix of the square $00,10,01,11$ obtained from Huang's recursion, in that order. Verify its square by an exact multiplication and give its eigenvalues with multiplicities.
+\end{exercise}
+\begin{exercise}[$\star\star$]\label{ex:v8c05d}
+A graph has $n$ vertices and the same spectrum as $K_n$. Prove that it is $K_n$. Then show that a graph with spectrum symmetric about zero has no odd cycle, even when it is disconnected.
 \end{exercise}
 
 \section{Hints}
 
 \begin{hint}{linear:ex:hypercube}
-$(A\chi_T)(x)=\sum_{i=1}^n\chi_T(x+e_i)$, and flipping coordinate $i$ multiplies $\chi_T$ by $-1$ if $i\in T$, by $1$ otherwise.
+Flipping coordinate $i$ changes the sign of $\chi_T$ exactly when $i\in T$. To check orthogonality, pair words differing at one coordinate of $T\triangle T'$.
 \end{hint}
 \begin{hint}{linear:ex:spectrumcount}
-Use $\operatorname{tr}A^0$, $\operatorname{tr}A^2$, $\operatorname{tr}A^3$; for regularity, compare $\lambda_1$ with the average degree.
+Sum the zeroth, second and third powers of the eigenvalues. Compare the constant vector's Rayleigh quotient with the largest eigenvalue.
 \end{hint}
 \begin{hint}{linear:ex:bipartite}
-For a bipartite graph, $D=\operatorname{diag}(\pm1)$ by side satisfies $DAD=-A$. Conversely, look at the proof of Frobenius's
-theorem for the eigenvalue $-\lambda_1$.
+A diagonal sign change switches $A$ to $-A$ for a bipartite graph. In the converse, compare an eigenvector $y$ for $-\lambda_1$ with its entrywise absolute value.
 \end{hint}
 \begin{hint}{linear:ex:srgcount}
-Count the pairs $(x,y)$ with $u\sim x\sim y$, $u\not\sim y$, $y\ne u$, in two ways.
+Fix a vertex $u$. Count edges from its neighbourhood to the vertices outside that neighbourhood and outside $\{u\}$.
 \end{hint}
 \begin{hint}{linear:ex:moorebound}
-Count vertices at distance $1$ and $2$ from a fixed vertex.
+Count the three distance layers about an arbitrary vertex, keeping track of every possible repetition in the second layer.
 \end{hint}
 \begin{hint}{linear:ex:linegraph}
-$(B^{\mathsf T}B)_{ef}$ is the number of common endpoints of the edges $e,f$.
+The inner product of two incidence columns counts common endpoints, including both endpoints when the columns agree.
 \end{hint}
 \begin{hint}{linear:ex:chromatic}
-If $V=V_1\sqcup\dots\sqcup V_c$ with independent $V_t$, cut a unit Perron vector $x$ into its pieces $x_t$ on the classes $V_t$.
-Twist the pieces by roots of unity, $y_j=\sum_t\omega^{jt}x_t$ with $\omega=e^{2\pi i/c}$, compare each $y_j^*Ay_j$ with $\lambda_n$,
-and average over $j=1,\dots,c-1$.
+For $c$ colours and $\omega=e^{2\pi i/c}$, use $y_j=\sum_{t=0}^{c-1}\omega^{jt}x_t$ for $j=1,\ldots,c-1$. The missing $j=0$ term makes the average cross coefficient $-1/(c-1)$.
 \end{hint}
 \begin{hint}{linear:ex:wilf}
-Induction on $n$: remove a vertex of minimum degree.
+The average degree is a Rayleigh quotient. Delete a vertex with degree at most that average, colour what remains, and restore it.
 \end{hint}
 \begin{hint}{linear:ex:inertia}
-Weyl's inequality in the form $\lambda_{i+j-1}(-A-B)\le\lambda_i(-A)+\lambda_j(-B)$.
+Intersect the non-negative spectral subspaces of $A$ and $B$. Their intersection has codimension at most $\nu(A)+\nu(B)$.
 \end{hint}
 \begin{hint}{linear:ex:infinitefriends}
-Make sure the new vertex creates no second common neighbour for any pair.
+Check old--old, old--new and new--new pairs separately. The initial three vertices soon acquire degree greater than two.
 \end{hint}
 \begin{hint}{linear:ex:huangsharp}
-Look for an $8$-cycle in $Q_4$, and then for a vertex with no neighbour on it.
+Find an induced eight-cycle in the four-cube and a ninth vertex with no neighbour on that cycle.
+\end{hint}
+\begin{hint}{ex:v8c05a}
+The adjacency map preserves the two-dimensional space of vectors constant on each part and kills its orthogonal complement.
+\end{hint}
+\begin{hint}{ex:v8c05b}
+Equality in the least-eigenvalue bound puts the centred indicator in the least eigenspace. Read its eigenvector equation at a vertex outside the set.
+\end{hint}
+\begin{hint}{ex:v8c05c}
+Use $A_2=\begin{pmatrix}A_1&I_2\\I_2&-A_1\end{pmatrix}$ rather than guessing the signs independently.
+\end{hint}
+\begin{hint}{ex:v8c05d}
+For the first claim, count edges. For the second, an odd cycle gives a positive contribution to an odd trace, whereas a symmetric spectrum makes every odd trace vanish.
 \end{hint}
 
 \section{Solutions}
 
 \begin{solution}{linear:ex:hypercube}
-\idea Characters of $(\Z/2)^n$ diagonalise every ``translation-invariant'' operator; the adjacency operator of $Q_n$ is a sum of
-$n$ translations.
-\writeup The neighbours of $x$ are $x+e_i$ (addition mod $2$). Since $\chi_T(x+e_i)=-\chi_T(x)$ if $i\in T$ and $\chi_T(x)$ otherwise,
-$(A\chi_T)(x)=\sum_i\chi_T(x+e_i)=(n-|T|-|T|)\chi_T(x)$. The $2^n$ functions $\chi_T$ are orthogonal ($\sum_x\chi_T(x)\chi_{T'}(x)=
-\sum_x\chi_{T\triangle T'}(x)=0$ unless $T=T'$), so they form an eigenbasis, and $n-2j$ has multiplicity $\binom nj$.
+\idea Count the signs contributed by the $n$ coordinate flips.
+\writeup Neighbours of $x$ are $x+e_i$, with addition modulo $2$. Of the terms in $(A\chi_T)(x)=\sum_i\chi_T(x+e_i)$, exactly $|T|$ equal $-\chi_T(x)$ and the other $n-|T|$ equal $\chi_T(x)$. The sum is $(n-2|T|)\chi_T(x)$.
+If $T\ne T'$, choose $i\in T\triangle T'$. Pairing each word with its $i$th-coordinate flip cancels the sum of $\chi_T\chi_{T'}$. Thus the $2^n$ non-zero vectors are mutually orthogonal and form a basis. There are $\binom nj$ subsets of size $j$, proving the multiplicity formula as well.
 \end{solution}
 
 \begin{solution}{linear:ex:spectrumcount}
-\idea Traces of powers count closed walks.
-\writeup $n=10$; $\operatorname{tr}A^2=9+5+16=30=2|E|$, so $15$ edges; $\operatorname{tr}A^3=27+5-32=0$, so no triangles. The
-average degree is $3=\lambda_1$, so the graph is $3$-regular (equality case of Exercise~\ref{linear:ex:degree}). It is the spectrum of the
-Petersen graph (and indeed only the Petersen graph has it, though proving that takes more work).
+\idea The traces give counts, and equality in a Rayleigh bound gives regularity.
+\writeup Ten eigenvalues mean ten vertices. Their squares sum to $9+5+16=30$, so there are $15$ edges. Their cubes sum to $27+5-32=0$, so there are no triangles. The average degree is $30/10=3$. It equals $\lambda_1$, so the constant vector attains the maximum Rayleigh quotient. Expanding it in an orthonormal eigenbasis shows it belongs to the $3$-eigenspace, as in Exercise~\ref{linear:ex:degree}. Therefore $A\mathbf1=3\mathbf1$ and every degree is $3$.
 \end{solution}
 
 \begin{solution}{linear:ex:bipartite}
-\idea Bipartite graphs have period $2$ in the sense of the Perron theory in Volume~3; the signs of an eigenvector for $-\lambda_1$ reveal the two
-sides.
-\writeup If $G$ is bipartite with sides $V_1,V_2$, $D=\operatorname{diag}(d_v)$ with $d_v=1$ on $V_1$ and $-1$ on $V_2$ satisfies
-$DAD=-A$, so $A$ and $-A$ are similar: the spectrum is symmetric, and in particular contains $-\lambda_1$. Conversely, let $Ay=-\lambda_1y$.
-The proof of the Frobenius theorem (Volume~3, Theorem~A.6, with $\varphi=\pi$) shows $|y|>0$ and $e^{i\theta_j}=-e^{i\theta_i}$ whenever $i\sim j$; so the
-sets $\{v:e^{i\theta_v}=e^{i\theta_{v_0}}\}$ and $\{v:e^{i\theta_v}=-e^{i\theta_{v_0}}\}$ cover $V$ (by connectivity) and every edge joins
-them: $G$ is bipartite. The third condition implies the second, and the first implies the third.
+\idea A bipartition changes edge signs globally; an extreme negative eigenvector recovers that partition.
+\writeup For a single vertex, all three conditions hold. Otherwise connectedness gives an edge and $\lambda_1>0$. If the graph is bipartite, let $D$ have diagonal entries $1$ on one side and $-1$ on the other. Then $DAD=-A$. Similar matrices have the same eigenvalues with multiplicities, proving symmetry about zero and in particular the occurrence of $-\lambda_1$.
+Conversely take a real non-zero $y$ with $Ay=-\lambda_1y$. Entrywise non-negativity of $A$ gives
+\[
+\lambda_1\|y\|^2=-y^{\mathsf T}Ay
+\le |y|^{\mathsf T}A|y|\le\lambda_1\|y\|^2.
+\]
+Equality in the last Rayleigh bound makes $|y|$ a top eigenvector. Frobenius's theorem (Volume~3, Theorem~A.6) makes it strictly positive in a connected graph. Equality in the first inequality forces $y_iy_j<0$ on every edge: each non-negative difference term must vanish, and no coordinate is zero. The positive and negative coordinates therefore form a bipartition. Finally, spectral symmetry always implies the occurrence of $-\lambda_1$, completing all implications.
 \end{solution}
 
 \begin{solution}{linear:ex:srgcount}
-\idea Double counting of paths of length $2$ leaving the neighbourhood.
-\writeup Fix $u$. Each of the $k$ neighbours $x$ of $u$ has $k-1-\lambda$ neighbours other than $u$ that are not neighbours of $u$; each
-of the $n-k-1$ non-neighbours $y$ of $u$ has $\mu$ neighbours among the neighbours of $u$. So $k(k-1-\lambda)=(n-k-1)\mu$. Petersen
-$(10,3,0,1)$: $x^2+x-2=0$, $\theta=1$, $\tau=-2$, $\Delta=9$, multiplicities $\frac12(9\mp\frac{6-9}3)=5,4$. Moore graph of degree $57$:
-$n=3250$, $\Delta=225$, $\theta=7$, $\tau=-8$, and $m_\theta,m_\tau=\frac12\bigl(3249\mp\frac{114-3249}{15}\bigr)=\frac12(3249\pm209)$, that is
-$1729$ and $1520$. (Yes, $1729$, Ramanujan's taxicab number.)
+\idea Count edges between two distance layers, then solve the quadratic from the matrix identity.
+\writeup Fix $u$. Each of its $k$ neighbours has $k-1-\lambda$ neighbours outside $\{u\}\cup N(u)$; each of the $n-k-1$ vertices there has $\mu$ neighbours in $N(u)$. Counting the same edges gives $k(k-1-\lambda)=(n-k-1)\mu$.
+For Petersen, the quadratic is $x^2+x-2$, with roots $1,-2$. The equations $m_1+m_{-2}=9$ and $3+m_1-2m_{-2}=0$ give multiplicities $5,4$.
+For degree $57$, $n=57^2+1=3250$ and $\sqrt{4k-3}=15$. The roots are $7,-8$. Solving $m_7+m_{-8}=3249$ and $57+7m_7-8m_{-8}=0$ gives $m_7=1729$ and $m_{-8}=1520$. These integral multiplicities are necessary conditions, not an existence proof.
 \end{solution}
 
 \begin{solution}{linear:ex:moorebound}
-\idea Breadth-first search from one vertex: the layers have at most $1$, $k$ and $k(k-1)$ vertices.
-\writeup Fix $u$. It has at most $k$ neighbours, each with at most $k-1$ further neighbours, and by diameter $2$ every vertex is $u$, a
-neighbour, or a neighbour of a neighbour: $n\le1+k+k(k-1)=k^2+1$. Equality forces $\deg u=k$, every neighbour of degree $k$, and the
-$k(k-1)$ second neighbours all distinct and different from $u$ and its neighbours. A triangle $u,x,x'$ would make $x'$ counted as a
-neighbour of $x$ though already a neighbour of $u$; a $4$-cycle $u,x,y,x'$ would count $y$ twice. As $u$ is arbitrary, all degrees are
-$k$ and there are no triangles or $4$-cycles.
+\idea Equality must hold in every layer count, about every choice of centre.
+\writeup From any vertex $u$, there are at most $k$ first neighbours and at most $k(k-1)$ further vertices reached through them. Diameter $2$ exhausts the graph in these layers, so $n\le1+k+k(k-1)=k^2+1$. If equality holds, the first layer has exactly $k$ vertices, each contributes $k-1$ new vertices, and all those contributions are distinct and outside the first layer. Thus $\deg u=k$. A triangle through $u$ would send a contribution back into the first layer, and a four-cycle through $u$ would repeat a second-layer vertex. Both are excluded. Since $u$ was arbitrary, the whole graph is regular and has neither type of cycle.
 \end{solution}
 
 \begin{solution}{linear:ex:linegraph}
-\idea Incidence matrices turn ``share an endpoint'' into an inner product of columns.
-\writeup Column $e$ of $B$ is $\mathbf 1_{\{i,j\}}$ for $e=\{i,j\}$, so $(B^{\mathsf T}B)_{ef}=|e\cap f|$, which is $2$ on the diagonal, $1$
-for distinct edges sharing an endpoint and $0$ otherwise. Hence $A(L(G))=B^{\mathsf T}B-2I$, and since $B^{\mathsf T}B\succeq0$, all its
-eigenvalues are $\ge-2$.
+\idea A Gram matrix is positive semidefinite, regardless of the graph used to build its columns.
+\writeup The column for edge $e=\{i,j\}$ has ones precisely at $i,j$. Thus $(B^{\mathsf T}B)_{ef}=|e\cap f|$. This is $2$ on the diagonal and the line-graph adjacency entry elsewhere, proving the formula. If $z$ is an eigenvector of $A(L(G))$ with eigenvalue $\lambda$, then
+$(\lambda+2)\|z\|^2=z^{\mathsf T}B^{\mathsf T}Bz=\|Bz\|^2\ge0$.
+Since $z\ne0$, $\lambda\ge-2$.
 \end{solution}
 
 \begin{solution}{linear:ex:chromatic}
-\idea Use the colour classes to cut the matrix into blocks with zero diagonal blocks, and let interlacing-type inequalities compare
-$\lambda_1$ with $\lambda_n$.
-\writeup Let $V=V_1\sqcup\dots\sqcup V_c$ be a proper colouring and $x$ a unit Perron vector of $A$ ($x\ge0$, $Ax=\lambda_1x$). Let
-$x_t=x\cdot\mathbf 1_{V_t}$ (zero outside $V_t$) and $s_t=\|x_t\|^2$, so $\sum_ts_t=1$. Since $V_t$ is independent, $x_t^{\mathsf T}Ax_t=0$.
-For any signs, consider $y=\sum_t\varepsilon_tx_t$ with $\varepsilon_t\in\C$, $|\varepsilon_t|=1$: then $y^*Ay=\sum_{t\ne t'}\bar\varepsilon_t
-\varepsilon_{t'}x_t^{\mathsf T}Ax_{t'}$, with $\|y\|=1$, so $y^*Ay\ge\lambda_n$. Take $\varepsilon_t=\omega^{t}$ with $\omega=e^{2\pi ij/c}$ and
-average over $j=1,\dots,c-1$: since $\sum_{j=0}^{c-1}\omega^{j(t'-t)}=0$ for $t\ne t'$, the average over $j=1,\dots,c-1$ of
-$\bar\varepsilon_t\varepsilon_{t'}$ is $-\frac1{c-1}$. Hence
+\idea Average several phase choices so every cross-class term has the same coefficient.
+\writeup Let $c=\chi(G)\ge2$ and label the colour classes $0,\ldots,c-1$. Choose a unit non-negative top eigenvector $x$; this exists by the Perron theory in Volume~3, also for a disconnected graph by choosing a component with largest eigenvalue. Write $x_t$ for its restriction to class $t$, extended by zero. The pieces are orthogonal, their squared norms sum to $1$, and $x_t^{\mathsf T}Ax_t=0$.
+Put $\omega=e^{2\pi i/c}$ and $y_j=\sum_t\omega^{jt}x_t$. Each $y_j$ has norm $1$, so $y_j^*Ay_j\ge\lambda_n$. For $t\ne t'$, the geometric sum gives $\sum_{j=1}^{c-1}\omega^{j(t'-t)}=-1$. Averaging the Rayleigh numerators over these $j$ therefore gives
 \[
-\lambda_n\le-\frac1{c-1}\sum_{t\ne t'}x_t^{\mathsf T}Ax_{t'}=-\frac1{c-1}x^{\mathsf T}Ax=-\frac{\lambda_1}{c-1},
+\lambda_n\le-\frac1{c-1}\sum_{t\ne t'}x_t^{\mathsf T}Ax_{t'}
+=-\frac{\lambda_1}{c-1}.
 \]
-using $x^{\mathsf T}Ax=\sum_{t,t'}x_t^{\mathsf T}Ax_{t'}$ and $x_t^{\mathsf T}Ax_t=0$. So $c-1\ge\lambda_1/(-\lambda_n)$.
+A graph with an edge has $\lambda_1>0$ and, since its trace is zero, $\lambda_n<0$. Rearrangement gives $c\ge1+\lambda_1/(-\lambda_n)$.
 \end{solution}
 
 \begin{solution}{linear:ex:wilf}
-\idea Greedy colouring needs at most ``degree $+1$'' colours; the right degree to use is not the maximum but $\lambda_1$, thanks to
-interlacing.
-\writeup By induction on $n$. Some vertex $v$ has $\deg v\le\frac{2|E|}n=R_A(\mathbf 1)\le\lambda_1(G)$. The graph $G-v$ has adjacency
-matrix a principal submatrix of $A$, so $\lambda_1(G-v)\le\lambda_1(G)$ by interlacing; by induction it can be coloured with
-$1+\lambda_1(G-v)\le1+\lambda_1(G)$ colours (taking integer parts: $\lfloor1+\lambda_1\rfloor$ colours). Then $v$ has at most
-$\lfloor\lambda_1(G)\rfloor$ neighbours, so one of $\lfloor1+\lambda_1(G)\rfloor$ colours is free for $v$.
+\idea The Rayleigh bound supplies a vertex that fits into a palette of $\lfloor\lambda_1\rfloor+1$ colours.
+\writeup Induct on the number of vertices, the one-vertex case being immediate. Some vertex $v$ has degree no larger than the average degree, and
+$2|E|/n=R_A(\mathbf1)\le\lambda_1(G)$.
+Thus $\deg v\le\lfloor\lambda_1(G)\rfloor$. Interlacing gives $\lambda_1(G-v)\le\lambda_1(G)$. By induction, $G-v$ can be coloured with at most $\lfloor\lambda_1(G)\rfloor+1$ colours. At most $\lfloor\lambda_1(G)\rfloor$ are used on neighbours of $v$, so one remains for $v$. This proves the stronger integer-valued bound and hence the stated inequality.
 \end{solution}
 
 \begin{solution}{linear:ex:inertia}
-\idea A biclique is a rank-two matrix $uv^{\mathsf T}+vu^{\mathsf T}$ with $u\perp v$, which has one positive and one negative eigenvalue;
-negative eigenvalues cannot be created faster than one per summand.
-\writeup With $u=\mathbf 1_X$, $v=\mathbf 1_Y$ ($X\cap Y=\emptyset$, so $u\perp v$), $M=uv^{\mathsf T}+vu^{\mathsf T}$ maps $\frac u{\|u\|}\pm
-\frac v{\|v\|}$ to $\pm\|u\|\|v\|(\frac u{\|u\|}\pm\frac v{\|v\|})$ and kills $\{u,v\}^\perp$: exactly one negative eigenvalue. For
-subadditivity, $\nu(M)$ is the number of positive eigenvalues of $-M$. If $\nu(A)=a$ and $\nu(B)=b$, then $\lambda_{a+1}(-A)\le0$ and
-$\lambda_{b+1}(-B)\le0$, and Weyl gives $\lambda_{a+b+1}(-A-B)\le\lambda_{a+1}(-A)+\lambda_{b+1}(-B)\le0$: at most $a+b$ eigenvalues of
-$-(A+B)$ are positive. If $J-I=\sum_{t=1}^mM_t$, then $n-1=\nu(J-I)\le\sum_t\nu(M_t)=m$.
+\idea A negative spectral subspace cannot meet a subspace where the quadratic form is non-negative.
+\writeup Put $u=\mathbf1_X$, $v=\mathbf1_Y$. These are non-zero and orthogonal. The biclique matrix $uv^{\mathsf T}+vu^{\mathsf T}$ has eigenvectors $u/\|u\|\pm v/\|v\|$ with eigenvalues $\pm\|u\|\|v\|$ and vanishes on their orthogonal complement. It has exactly one negative eigenvalue.
+For subadditivity, let $N_A,N_B$ be the spans of all non-negative eigenvectors of $A,B$. Their codimensions are $a=\nu(A)$ and $b=\nu(B)$, so $\dim(N_A\cap N_B)\ge n-a-b$. Both forms are non-negative on that intersection, and hence so is their sum. If the negative eigenspace of $A+B$ had dimension greater than $a+b$, it would meet the intersection nontrivially, contradicting strict negativity there. This proves the bound; if $a+b\ge n$, it is already automatic. Summing biclique matrices to $J-I$ now gives $n-1=\nu(J-I)\le m$.
 \end{solution}
 
 \begin{solution}{linear:ex:infinitefriends}
-\idea Fix every pair without a common neighbour by a new private vertex; this never creates a second common neighbour, and the new
-pairs are fixed at the next stage. The limit is a friendship graph, and degrees grow too fast for a politician.
-\writeup Start with $G_0$: three vertices $a,b,c$ and no edges. Given $G_k$, for each pair $\{u,v\}$ of vertices of $G_k$ with no
-common neighbour in $G_k$, add a new vertex $w_{uv}$ adjacent to $u$ and $v$ only; call $\{u,v\}$ its parent pair. Let us check
-that in $G_{k+1}$ every pair has at most one common neighbour, assuming this holds in $G_k$.
-\begin{itemize}
-\item Two old vertices: a pair that had a common neighbour gets no new one, since every new vertex is attached to a pair that had
-none; a pair that had none gets exactly one, its own $w_{uv}$.
-\item A new vertex $w_{uv}$ and an old vertex $x$: a common neighbour lies in $\{u,v\}$, and it cannot be both $u$ and $v$, because
-then $x$ would have been a common neighbour of $u$ and $v$.
-\item Two new vertices: a common neighbour lies in the intersection of the two parent pairs, which has at most one element.
-\end{itemize}
-So in $G=\bigcup_kG_k$ every pair has at most one common neighbour (a common neighbour of two vertices of $G_k$ found in $G$ is
-already present in some $G_m$), and every pair of vertices of $G_k$ has one in $G_{k+1}$: exactly one.
-
-No vertex is adjacent to all others. Step~4 of the proof of Theorem~\ref{linear:thm:friendship} uses no finiteness: if some $w$ were
-adjacent to all others, every other vertex would have degree exactly $2$. But $G_1$ is the hexagon $a,w_{ab},b,w_{bc},c,w_{ca}$; in
-it the two edges at $a$ and the opposite pair $\{a,w_{bc}\}$ have no common neighbour, so $a$ gets three new neighbours and has
-degree $5$ in $G_2$; likewise $b$. Whichever vertex $w$ were, one of $a,b$ would be a vertex other than $w$ with
-degree above $2$. (So which step of the proof breaks for infinite graphs? Step~3, the only one that takes a trace.)
+\idea Repair missing common neighbours without ever repairing the same old pair twice.
+\writeup Let $G_0$ consist of isolated vertices $a,b,c$. Given the finite graph $G_k$, add for every unordered pair $\{u,v\}$ with no common neighbour a distinct vertex $w_{uv}$ joined only to its two parents $u,v$. Do not join new vertices to each other. Inductively assume that no old pair has two common neighbours.
+An old pair gets a new common neighbour exactly when it lacked one, and then gets only its own new vertex. For an old vertex $x$ and a new $w_{uv}$, common neighbours must be parents $u,v$; both cannot qualify, since then $x$ would already have been a common neighbour of the parent pair. Two distinct new vertices have at most one parent in common, so they too have at most one common neighbour. This proves the induction.
+In the union $G=\bigcup_kG_k$, any two vertices appear together at a finite stage and have a common neighbour by the next stage. They cannot acquire two, since those vertices would all occur together at some finite stage. Thus every pair has exactly one.
+To rule out a universal vertex, observe that $G_1$ is the hexagon $a,w_{ab},b,w_{bc},c,w_{ca}$. At the next stage, each of the pairs $\{a,w_{ab}\}$, $\{a,w_{ca}\}$ and $\{a,w_{bc}\}$ receives a new neighbour. So $a$ has degree at least $5$, and the same holds for $b$. If a universal vertex existed, the last paragraph of the finite friendship proof would force every other vertex to have degree exactly $2$. At least one of $a,b$ is different from that vertex, a contradiction. This also shows that the union cannot be finite, since the finite theorem would then supply a universal vertex.
 \end{solution}
 
 \begin{solution}{linear:ex:huangsharp}
-\idea Nine vertices with every degree at most $2$ means a disjoint union of paths and cycles inside the cube. An $8$-cycle in $Q_4$
-plus one far-away vertex is the natural thing to try.
-\writeup For $n=1$: $Q_1$ is an edge, and its $2^0+1=2$ vertices induce a graph of maximum degree $1=\sqrt1$. For $n=4$, take the
-$8$-cycle
+\idea Use a chordless eight-cycle and one isolated vertex to reach nine vertices with maximum degree two.
+\writeup For $n=1$ the required two vertices form the single cube edge, of degree $1$. For $n=4$, take in cyclic order
 \[
-0000-0001-0101-0111-1111-1011-1010-0010-0000
+0000,0001,0101,0111,1111,1011,1010,0010
 \]
-together with the vertex $1100$. Each step of the cycle flips one bit, and no other two of the eight words differ in exactly one
-bit (check the $28$ pairs). The neighbours of $1100$ are $0100,1000,1101,1110$, none of which is in the set. So the induced
-subgraph has maximum degree exactly $2=\sqrt4$, and Huang's bound is attained. A computer search over all nine-element sets confirms more: exactly
-$48$ of the $\binom{16}9=11440$ nine-element sets have maximum degree $2$, and every one of them is an $8$-cycle plus an isolated
-vertex.
+and add $1100$. To verify the induced edges without a search, list each cycle vertex's neighbours lying in this set:
+\[
+\begin{array}{c|c@{\qquad}c|c}
+0000&0001,0010&0001&0000,0101\\
+0101&0001,0111&0111&0101,1111\\
+1111&0111,1011&1011&1111,1010\\
+1010&1011,0010&0010&1010,0000
+\end{array}
+\]
+Each list follows by flipping its four bits. The neighbours of $1100$ are $0100,1000,1101,1110$, all absent. These exact lists prove that the induced graph is an eight-cycle plus an isolated vertex, attaining degree $2=\sqrt4$.
+\end{solution}
+
+\begin{solution}{ex:v8c05a}
+\idea Separate the two constant directions from vectors summing to zero on each part.
+\writeup Let $u=\mathbf1_X/\sqrt a$ and $v=\mathbf1_Y/\sqrt b$. They are orthonormal, and adjacency sends $u$ to $\sqrt{ab}\,v$ and $v$ to $\sqrt{ab}\,u$. Thus $u+v$ and $u-v$ have eigenvalues $\sqrt{ab}$ and $-\sqrt{ab}$. A vector orthogonal to both has zero coordinate sum in each part, so adjacency kills it. The spectrum is therefore these two eigenvalues and $0$ with multiplicity $a+b-2$. Its squared sum is $2ab$, giving $ab$ edges; its cubed sum is zero, giving no triangles.
+\end{solution}
+
+\begin{solution}{ex:v8c05b}
+\idea Equality in a weighted eigenvalue average excludes every larger eigenspace.
+\writeup Write $s=|S|$. Since $k>0$ and $\lambda_n<0$, equality in the bound gives $0<s<n$. The non-zero vector $x=\mathbf1_S-(s/n)\mathbf1$ attains $x^{\mathsf T}Ax=\lambda_n\|x\|^2$ in the proof. Expanding $x$ in an orthonormal eigenbasis makes this identity
+$\sum_i(\lambda_i-\lambda_n)|c_i|^2=0$.
+Every summand is non-negative, so only the least-eigenvalue coefficients remain. Hence $Ax=\lambda_nx$.
+At a vertex $v\notin S$, this equation says
+$|N(v)\cap S|-ks/n=-\lambda_ns/n$.
+The equality assumption also gives $s(k-\lambda_n)/n=-\lambda_n$, so $|N(v)\cap S|=-\lambda_n$, independently of $v$.
+\end{solution}
+
+\begin{solution}{ex:v8c05c}
+\idea Keep the recursive block order to make the cancellation visible.
+\writeup The requested matrix is
+\[
+A_2=\begin{pmatrix}0&1&1&0\\1&0&0&1\\1&0&0&-1\\0&1&-1&0\end{pmatrix}.
+\]
+Each row has squared length $2$. Distinct rows have inner product zero: rows with disjoint support contribute zero, and the overlapping pairs contribute $1-1$. Thus $A_2A_2^{\mathsf T}=2I_4$; symmetry gives $A_2^2=2I_4$. All eigenvalues are $\pm\sqrt2$, and the zero trace makes their multiplicities two each.
+\end{solution}
+
+\begin{solution}{ex:v8c05d}
+\idea Closed-walk counts detect missing edges and forbid odd cycles under spectral symmetry.
+\writeup The spectrum of $K_n$ is $n-1,-1,\ldots,-1$, so its squared sum is $(n-1)^2+(n-1)=n(n-1)$. A graph with that spectrum has $n(n-1)/2$ edges, the total number of unordered pairs of distinct vertices. Every pair must therefore be an edge.
+If a spectrum is symmetric, then $\operatorname{tr}A^\ell=0$ for every odd positive integer $\ell$, by cancellation of opposite eigenvalues. An odd cycle of length $\ell$ would give at least $2\ell$ closed walks of that length, so $\operatorname{tr}A^\ell>0$, since all walk counts are non-negative. This contradiction excludes odd cycles in every component.
 \end{solution}
 
 \section*{Sources and further reading}
