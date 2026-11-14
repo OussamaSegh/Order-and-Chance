@@ -1,8 +1,8 @@
 # Volume 9 complete rewrite: starting record
 
 This is a baseline for the newly requested complete rewrite, **not a completion
-or review certificate**. No manuscript prose, proofs, exercises, figure sources,
-photographs, publication identifiers or typography have changed in this workstream.
+or review certificate**. Manuscript work has begun. The immutable baseline files below still describe
+starting main; current work and unresolved findings are recorded separately.
 
 ## Provenance
 
@@ -28,8 +28,9 @@ Read during this baseline pass: root `AGENTS.md`, `docs/WRITING-STYLE.md`,
 `docs/design/interior.md`, `docs/WORKSTREAM-COORDINATION.md`, Volume 9's handoff,
 the controlling blueprint and the master plan's acceptance requirements.
 PRs #216 and #230 have no review or discussion entries in the fetched responses.
-The complete manuscript has **not yet been read in this workstream**; that remains
-a prerequisite to manuscript editing. Earlier reports do not substitute for it.
+The complete manuscript has now been read in printed order, including all
+chapters, appendices and front/back matter. `reading-findings.md` records the
+findings and repair plan. This initial read is not the separate final review.
 
 ## Preservation records
 
@@ -65,7 +66,7 @@ solutions. Counts below are the starting counts, not additions.
 | 7 | Matrix Lie Groups | 6 | 1 | Not started |
 | 8 | Haar Measure and Weyl Integration | 6 | 1 | Not started |
 | 9 | The Hyperbolic Plane and the Modular Group | 6 | 3 | Not started |
-| 10 | The Riemann Mapping Theorem | 3 | 1 | Not started |
+| 10 | The Riemann Mapping Theorem | 3 | 1 | Draft rewritten; validation pending |
 | 11 | Integral Geometry | 6 | 1 | Not started |
 | A | Transformations | 16 | 4 | Not started |
 | B | Inversion | 12 | 3 | Not started |
@@ -75,13 +76,16 @@ solutions. Counts below are the starting counts, not additions.
 | F | Plane curves | 12 | 3 | Not started |
 | G | Cubic curves | 12 | 4 | Not started |
 | H | Lattices and sphere packings | 12 | 4 | Not started |
-| I | Non-Euclidean geometry | 12 | 2 | Not started |
+| I | Non-Euclidean geometry | 12 | 2 | Draft rewritten; validation pending |
 | J | Convex bodies | 12 | 3 | Not started |
 | K | Curvature of Curves and Polyhedra | 11 | 2 | Not started |
 
 Totals: 22 units, 200 original exercises, 55 original figures. Required additions:
 88 exercises and 44 illustrations. Relevant verified public-domain photographs
-remain to be selected, credited and inspected. No additions are complete.
+remain to be selected, credited and inspected. Chapter 10 and Appendix I each have two draft illustrations and four new
+exercises with hints and full solutions. One Riemann photograph is credited,
+with source metadata preserved. The combined PDF build and rendered inspection
+are pending. All other unit additions remain outstanding.
 
 ## Validation scope
 

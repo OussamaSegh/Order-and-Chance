@@ -22,11 +22,19 @@ results, not mathematical verification of a new rewrite.
 
 PR #231 already repaired the scored review's local hyperbolic-prerequisite issue
 and several editorial issues. Preserve those changes and its index. Do not repeat
-the older report's findings as if the fixes had never landed. The complete
-manuscript read, every unit rewrite, 44 added illustrations, 88 added exercises,
-verified photographs, separate review, final validation, ready PR, exact-head green
-CI, merge and exact-merge publication verification remain outstanding. No manuscript
-unit is newly completed, and no new mathematical correction is claimed.
+the older report's findings as if the fixes had never landed. The complete manuscript has now been read in printed order; findings are in
+`review/volume9-complete-rewrite/reading-findings.md`. Chapter 10 and Appendix I
+have full draft rewrites, each with two new figures and four exercises, hints and
+idea/writeup solutions. Their original figure blocks and labels are preserved.
+One unnumbered Riemann photograph has live source metadata and adjacent credits.
+The intermediate Chapter 10 PDF-only build exited 0 at 389 print pages, with
+no overflow or unresolved references; all 544 old labels and 57 old figure files
+passed preservation. The combined PDF-only build also exited 0, at 393 print pages, with all
+preservation and layout checks passing. Rendered pages containing all four
+added diagrams and the portrait were inspected. Neither unit has its
+final independent review or EPUB validation. The remaining 20 units, final
+validation, ready PR, exact-head green CI, normal merge and exact-merge publication
+verification remain outstanding. PR #243 remains a draft. No KDP upload occurred.
 
 Volume 9, *Shapes*, is being rewritten to `docs/plan/MASTER-PLAN-V5-V15.md` and `docs/plan/book-09.md`. Read this file first. It is updated after every chapter.
 
