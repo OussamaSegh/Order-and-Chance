@@ -69,8 +69,8 @@ solutions. Counts below are the starting counts, not additions.
 | 10 | The Riemann Mapping Theorem | 3 | 1 | Draft rewritten; validation pending |
 | 11 | Integral Geometry | 6 | 1 | Draft rewritten; PDF/preservation/figures checked |
 | A | Transformations | 16 | 4 | Draft rewritten; PDF/preservation/figures checked |
-| B | Inversion | 12 | 3 | Not started |
-| C | Projective geometry | 12 | 4 | Not started |
+| B | Inversion | 12 | 3 | Draft rewritten; PDF/preservation/figures checked |
+| C | Projective geometry | 12 | 4 | Draft rewritten; PDF/preservation/figures checked |
 | D | Conics | 12 | 4 | Not started |
 | E | Quadratic forms and quadrics | 12 | 3 | Draft rewritten; PDF/preservation/figures checked |
 | F | Plane curves | 12 | 3 | Not started |
