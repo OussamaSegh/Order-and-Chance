@@ -32,7 +32,7 @@
   maximum height of 1.65 inches it prints at about **598 ppi** in both directions.
   The image is constrained by both the series height cap and available width.
 - SHA-256: `945240277e351b4deacc64e0a8e0cbb5c8398a5d13ae322eafb55bfae91cabc6`.
-- Placement: Chapter 10, beside the first discussion of Riemann's 1851 proof.
+- Placement: Chapter 1, beside the first substantive discussion of Riemann's 1854 lecture and manifolds.
   The adjacent credit repeats the subject, date, unknown photographer and
   public-domain source. The portrait is unnumbered, preserving original figures.
 
