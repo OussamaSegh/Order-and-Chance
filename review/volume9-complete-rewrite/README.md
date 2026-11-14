@@ -17,6 +17,9 @@ photographs, publication identifiers or typography have changed in this workstre
   [PR #157](https://github.com/OussamaSegh/Order-and-Chance/pull/157), fetched at
   `d9a1c8245fb07ba96cd81e96300b97995d014df1`. The same plan branch contains
   `docs/plan/MASTER-PLAN-V5-V15.md`, which is absent from current main.
+- Known deferred review item V9-04 is a Volume 15 citation of Theorem 8.8
+  for the SU(2) density; PR #231 explicitly left that external sentence untouched.
+  It is not claimed fixed by this baseline.
 - The old handoff's 377-page count and its original numbering file are historical.
   Use this workstream's fresh build record for the new comparison.
 
@@ -33,7 +36,9 @@ a prerequisite to manuscript editing. Earlier reports do not substitute for it.
 `starting-source.json` records the printed unit order from `main.tex`, every unit's
 source labels, exercise and figure counts, and SHA-256 hashes of all 87 tracked
 Volume 9 files. `starting-statements.txt` is the existing statement walker's fresh
-inventory, including unlabelled statements, on starting main. `starting-printed-labels.json` records all 544 built labels, including all four
+inventory, including unlabelled statements, on starting main. Captured text and
+contents records have trailing whitespace removed for `git diff --check`; numbers
+and mathematical text are retained. `starting-printed-labels.json` records all 544 built labels, including all four
 numbered equations and all 55 printed figures, with their printed numbers, pages,
 anchors and full captions. `starting-contents.tex` records section numbering,
 including unlabelled sections. There are 302 formal numbered statements and
@@ -106,5 +111,41 @@ No upload to Amazon KDP is authorized or performed.
   as a six-page contact sheet. No collision was visible in that sample. This is
   not a complete visual review or an inspection of new material.
 
-Captured command output is in the adjacent `baseline-*.txt` files. Full-build and
-EPUB results will be recorded only after the running command finishes.
+Captured command output is in the adjacent `baseline-*.txt` files. The first full build exited 1 at EPUB compression because `pngquant` was absent;
+its output is retained in `baseline-full-build-FAILED.txt`. Installed Debian
+`pngquant` 2.18.0 into the workspace-local toolchain and oxipng 9.1.5 from the
+release URL specified in CI. The workspace activation script now includes their
+local binary directories. No repository build rule or validation threshold changed.
+The complete `./build.sh volume9-shapes` rerun subsequently exited **0**.
+Its output is retained in `baseline-full-build.txt`. It exports 385 print pages,
+55 full-width EPUB plates at 1,800 pixels, and baseline-scaled formula images.
+The final EPUB is **26,500,229 bytes**. A separate XML package audit checked
+31 XHTML documents and resolved all **18,199** local href/src references.
+`baseline-artifacts.json` records output sizes, page counts and SHA-256 hashes.
+Representative EPUB text was inspected in the part opener, Chapter 9 and Appendix D;
+no rendered EPUB or physical Kindle inspection is claimed.
+
+The parser was also exercised with nested and escaped caption braces, duplicate
+labels and an unclosed group: captions were retained and invalid input rejected.
+The preservation check's `--require-additions` mode exits **1**, as it should at
+this stage: all 22 units lack their two new figures and four new exercises. Its
+44 diagnostics are retained in `baseline-additions-NOT-PASSED.txt`. This is an
+explicit unfinished acceptance gate, not a passing rewrite check.
+
+The baseline cover wrap was also rendered and inspected. No text collision or
+visible frame/artwork defect was seen in the sample rendering.
+
+## CI and delivery state
+
+[Run 43603022842](https://github.com/OussamaSegh/Order-and-Chance/actions/runs/43603022842)
+succeeded on intermediate head `a21bc61055d1f168b2c6fa1493cc9598b63db74d`.
+Its `list` and `site` jobs passed; `build` and `debs` were skipped because this
+workstream has no book-source changes. This is **not** an exact-final-head book
+build or publication certificate. Later validation-record commits need their own
+CI result. PR #243 remains a draft; no merge or merge-commit publication exists
+for this request. The additions gate is still failed. All 22 complete rewrites
+and their separate mathematical/editorial reviews remain outstanding.
+
+`git diff --check` passed after removing trailing whitespace from captured text.
+No new figures, exercises or photographs were added; no new mathematical
+correction is claimed. No Amazon KDP upload was made.

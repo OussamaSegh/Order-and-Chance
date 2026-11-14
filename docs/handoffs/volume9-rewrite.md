@@ -11,8 +11,11 @@ The old "Done" entries below describe that earlier pass only. The new work is
 Read [the new baseline and unit ledger](../../review/volume9-complete-rewrite/README.md)
 before editing. It records 22 printed units, 200 original exercises, 55 printed
 figures, all 544 built labels, the full section contents, and original file hashes.
-The fresh PDF-only build exits 0 and exports **385 print pages**. It reports no
-layout overflow or unresolved references. The 12 existing numerical scripts and
+Fresh PDF-only and full builds both exit 0 and export **385 print pages**. They
+report no layout overflow or unresolved references. The baseline EPUB is
+26,500,229 bytes; its media checks pass and all 18,199 local XHTML links and media
+references resolve. The first full build failed for a missing local `pngquant`;
+the complete rerun passed after installing the CI compression tools. The 12 existing numerical scripts and
 20 citation tests pass; cross-volume citations match 4,991 numbered statements;
 the Volume 3 register exits 0 and reports 19 pending entries. These are baseline
 results, not mathematical verification of a new rewrite.
