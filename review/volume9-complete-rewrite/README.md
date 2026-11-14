@@ -44,8 +44,8 @@ numbered equations and all 55 printed figures, with their printed numbers, pages
 anchors and full captions. `starting-contents.tex` records section numbering,
 including unlabelled sections. There are 302 formal numbered statements and
 200 exercises. All 57 original files under `figures/` are hashed, including
-unprinted sources. `check_preservation.py` compares the current build and original
-figure files with these records; `--require-additions` also checks the per-unit
+unprinted sources. `check_preservation.py` compares the current build, original figure and cover-art
+files, and all 213 printed part/chapter/section numbers with these records; `--require-additions` also checks the per-unit
 addition counts. It does not establish prose coverage or proof correctness.
 Do not replace these baselines with a snapshot of rewritten material.
 
@@ -63,7 +63,7 @@ solutions. Counts below are the starting counts, not additions.
 | 4 | Curvature | 6 | 2 | Not started |
 | 5 | The Fundamental Group and Coverings | 6 | 2 | Not started |
 | 6 | Homology | 6 | 2 | Not started |
-| 7 | Matrix Lie Groups | 6 | 1 | Not started |
+| 7 | Matrix Lie Groups | 6 | 1 | Draft rewritten; PDF/preservation/figures checked |
 | 8 | Haar Measure and Weyl Integration | 6 | 1 | Not started |
 | 9 | The Hyperbolic Plane and the Modular Group | 6 | 3 | Not started |
 | 10 | The Riemann Mapping Theorem | 3 | 1 | Draft rewritten; validation pending |
@@ -82,15 +82,15 @@ solutions. Counts below are the starting counts, not additions.
 
 Totals: 22 units, 200 original exercises, 55 original figures. Required additions:
 88 exercises and 44 illustrations. Relevant verified public-domain photographs
-remain to be selected, credited and inspected. Chapter 10 and Appendices E, H and I each have two added illustrations and four
-new exercises with hints and full solutions: eight illustrations and sixteen
+remain to be selected, credited and inspected. Chapters 7 and 10 and Appendices E, H and I each have two added illustrations and four
+new exercises with hints and full solutions: ten illustrations and twenty
 exercises so far. One Riemann photograph is credited, with live source metadata
-and independently inspected 1892 publication evidence. All eight added figures
+and independently inspected 1892 publication evidence. All ten added figures
 and the portrait have been inspected in rendered pages. The latest combined
-PDF-only build exited 0 at 403 print pages, with preservation and layout checks
+PDF-only build exited 0 at 407 print pages, with preservation and layout checks
 passing. The preface, blurb, repository KDP copy and canonical About the Cover
 note are rewritten; rendered preface, colophon and full paperback wrap were
-inspected. The remaining 18 unit rewrites and additions, full EPUB validation
+inspected. The remaining 17 unit rewrites and additions, full EPUB validation
 and separate final review remain outstanding.
 
 ## Validation scope
@@ -153,7 +153,7 @@ Its `list` and `site` jobs passed; `build` and `debs` were skipped because this
 workstream has no book-source changes. This is **not** an exact-final-head book
 build or publication certificate. Later validation-record commits need their own
 CI result. PR #243 remains a draft; no merge or merge-commit publication exists
-for this request. The additions gate is still failed. The remaining 18 unit rewrites and all separate final mathematical/editorial
+for this request. The additions gate is still failed. The remaining 17 unit rewrites and all separate final mathematical/editorial
 reviews remain outstanding.
 
 `git diff --check` passed after removing trailing whitespace from captured text.

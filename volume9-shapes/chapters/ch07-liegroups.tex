@@ -1,194 +1,429 @@
 \chapter{Matrix Lie Groups}
 
 \begin{center}\itshape
-Is a rotation by $360^\circ$ the same as no rotation at all? Rotations, unitary matrices and matrices of determinant one form groups that are also smooth
-manifolds, and the two structures lock together. Everything
-about such a group near its identity is captured by a vector space with a bracket, its Lie algebra, and the exponential carries that linear world onto the
-curved group. The prize at the end of this chapter is a fact about the world: a rotation by $360^\circ$ is not the same as no rotation at all, although it
-looks the same, and the electron knows it.
+A full turn ends at the identity rotation. The path that makes the turn
+still remembers something: it cannot be shrunk to a constant path.
+Two full turns can.
 \end{center}
 
-In the summer of 1925, two graduate students of Paul Ehrenfest in Leiden, George Uhlenbeck and Samuel Goudsmit, were trying to make sense of the
-spectra of alkali atoms, whose lines split in pairs. Their proposal was that the electron itself spins, carrying an angular momentum of half the
-quantum unit and a magnetic moment. Ehrenfest liked it and suggested they ask Hendrik Lorentz, the grand old man of electron theory. Lorentz came back
-some weeks later with pages of calculations: an electron of the classical size, spinning that fast, would have its surface moving at about ten times
-the speed of light. The two students asked Ehrenfest to withdraw the paper. He answered that he had already sent it to \emph{Die Naturwissenschaften},
-and, as Uhlenbeck remembered it fifty years later, that they were both young enough to be able to afford a stupidity.
+A rotation is a matrix, and nearby rotations have nearby entries.
+The rotation group is therefore both a group and a geometric space.
+Its multiplication describes how motions combine; its tangent vectors
+describe their initial velocities. The link between these two descriptions
+is the matrix exponential.
 
-It was not a stupidity, but it was strange. The spin of the electron is not a rotation of a small ball: when Wolfgang Pauli wrote down its quantum
-mechanics in 1927, the states of a spinning electron formed a two-dimensional complex space on which rotations act through the group $SU(2)$ of
-unitary $2\times2$ matrices, not through the rotation group $SO(3)$. The two groups look the same near the identity, but $SU(2)$ is a double cover:
-each rotation corresponds to two matrices $\pm U$. A rotation by $2\pi$ brings an object back to itself, but it multiplies an electron's state by $-1$;
-only a rotation by $4\pi$ is the identity. In 1975 two groups of physicists, one in Vienna and one in Missouri, split a beam of neutrons, turned the spin of
-one half by a magnetic field, recombined the beams, and saw the interference pattern flip sign at $2\pi$ and return at $4\pi$.
+The distinction between a rotation and a path of rotations also appears
+in spin. Uhlenbeck and Goudsmit proposed electron spin in 1925, and Pauli's
+1927 description uses two-component complex state vectors.
+The group acting on these vectors is $SU(2)$, which covers $SO(3)$ twice.
+A lifted full-turn path ends at $-I$; two turns end at $I$.
+This is not a claim that the final spatial rotation differs from the
+identity. Nor does an overall sign by itself distinguish physical states.
+A relative sign between two coherent parts of a beam can be detected by
+interference. The neutron experiments of Rauch and collaborators and of
+Werner and collaborators in 1975 observed the corresponding phase shift.
 
-The mathematics of this is the subject of this chapter. Matrix groups are manifolds (the theorem of von Neumann and Cartan); their tangent
-space at the identity is a Lie algebra; continuous homomorphisms become linear maps; and the map $SU(2)\to SO(3)$ is the universal covering of the rotation
-group, whose fundamental group is $\Z/2$. That is the plate trick of Volume~3, now proved.
+We can prove the double-cover statement using the tools already developed.
+First, a closed matrix subgroup turns out to be a manifold without any
+smoothness assumption. Its tangent space at the identity is a vector
+space closed under a bracket. Then homomorphisms become linear maps on
+these tangent spaces. For $SU(2)$ and $SO(3)$, the tangent spaces agree
+while the groups have different global topology.
 
 \section{Matrix groups and their Lie algebras}
 
-We regard $GL_n(\C)$ as a subset of $GL_{2n}(\R)$ (a complex number $a+ib$ acts on $\R^2$ by the matrix with rows $(a,-b)$ and $(b,a)$), and
-$M_n(\C)$ as a real vector space. Fix the norm $\|X\|=\sup_{|v|=1}|Xv|$, which satisfies $\|XY\|\le\|X\|\|Y\|$.
+Matrix sizes are positive integers unless the zero-size convention is
+explicitly mentioned. Complex matrices may be read as real matrices of
+twice the size: multiplication by $a+ib$ acts on $\R^2$ as
+$\left(\begin{smallmatrix}a&-b\\b&a\end{smallmatrix}\right)$.
+All tangent spaces and dimensions below are real.
+Use the operator norm $\|X\|=\sup_{|v|=1}|Xv|$, which satisfies
+$\|XY\|\le\|X\|\|Y\|$.
 
 \begin{definition}
-A \emph{matrix Lie group} is a subgroup $G$ of $GL_n(\R)$ or $GL_n(\C)$ that is closed in $GL_n$. Its \emph{Lie algebra} is
-\[\mathfrak g=\{X\in M_n:e^{tX}\in G\text{ for all }t\in\R\}.\]
+A matrix Lie group is a subgroup $G$ of $GL_n(\R)$ or $GL_n(\C)$
+that is closed in $GL_n$ with its usual topology.
+Its Lie algebra is the set
+\[
+ \mathfrak g=\{X\in M_n:e^{tX}\in G\text{ for every }t\in\R\}.
+\]
 \end{definition}
 
-Examples: $SL_n(\R)$ ($\det=1$), $O(n)$ ($A^{\mathsf T}A=I$), $SO(n)=O(n)\cap SL_n(\R)$, $U(n)$ ($A^*A=I$), $SU(n)=U(n)\cap SL_n(\C)$, the Heisenberg group of upper triangular $3\times3$ real matrices with ones
-on the diagonal, and every finite group of matrices. Each is defined by continuous equations, hence closed. For $\alpha$ irrational, the line $\{(e^{2\pi it},e^{2\pi i\alpha t}):t\in\R\}$ is a subgroup of the torus $U(1)\times U(1)$
-that is dense and not closed (Figure~\ref{fig:torusflow} shows such a line), and the theory below does not apply to it.
+Closedness is relative to $GL_n$, not to all matrices: a sequence may
+approach a singular matrix without violating it.
+Examples include the determinant-one group $SL_n$, the orthogonal groups
+$O(n)$ and $SO(n)$, the unitary groups $U(n)$ and $SU(n)$, and finite
+matrix groups. Their defining equations are continuous.
+The Heisenberg group of upper triangular $3\times3$ matrices with diagonal
+entries one is another example.
+By contrast, for irrational $\alpha$ the subgroup
+$\{(e^{2\pi it},e^{2\pi i\alpha t}):t\in\R\}$ of $U(1)^2$ is dense
+and not closed, as the torus flow of Figure~\ref{fig:torusflow} illustrates.
+It does not meet this definition.
 
-The exponential $e^X=\sum X^k/k!$ was studied in Volume~8, Proposition~C.13: $e^{X+Y}=e^Xe^Y$ when $XY=YX$, $\det e^X=e^{\operatorname{tr}X}$, $\frac{\dd}{\dd t}e^{tX}=Xe^{tX}$, and $e^{PXP^{-1}}=Pe^XP^{-1}$.
-Near the identity it has an inverse, the logarithm
-\[\log A=\sum_{k\ge1}\frac{(-1)^{k+1}}k(A-I)^k\qquad(\|A-I\|<1).\]
+Volume~8, Proposition~C.13, established the matrix exponential and the
+identities
+\[
+ e^{X+Y}=e^Xe^Y\quad(XY=YX),\qquad
+ \det e^X=e^{\operatorname{tr}X},\qquad
+ \frac{\dd}{\dd t}e^{tX}=Xe^{tX}.
+\]
+It also gives $e^{PXP^{-1}}=Pe^XP^{-1}$.
+Near $I$, the exponential can be undone by the logarithmic series.
 
 \begin{lemma}\label{lem:log}
+Define $\log A=\sum_{k\ge1}(-1)^{k+1}(A-I)^k/k$ for $\|A-I\|<1$.
 \begin{enumerate}
-\item[(a)] For $\|A-I\|<1$, $e^{\log A}=A$; for $\|X\|<\log2$, $\|e^X-I\|<1$ and $\log e^X=X$.
-\item[(b)] There is a constant $c$ with $\|\log A-(A-I)\|\le c\|A-I\|^2$ for $\|A-I\|\le\frac12$.
-\item[(c)] $\exp$ maps a neighbourhood of $0$ in $M_n$ diffeomorphically onto a neighbourhood of $I$, with differential the identity at $0$.
+\item[(a)] In that range, $e^{\log A}=A$.
+If $\|X\|<\log2$, then $\|e^X-I\|<1$ and $\log(e^X)=X$.
+\item[(b)] A constant $c$ satisfies
+$\|\log A-(A-I)\|\le c\|A-I\|^2$ whenever $\|A-I\|\le1/2$.
+\item[(c)] The exponential is a diffeomorphism from a neighbourhood of $0$
+in $M_n$ onto a neighbourhood of $I$. Its differential at $0$ is the identity.
 \end{enumerate}
 \end{lemma}
-
 \begin{proof}
-(a) For a complex number, $e^{\log(1+z)}=1+z$ when $|z|<1$ and $\log e^w=w$ when $|w|<\log2$; these are identities between absolutely convergent power series, so they hold as identities of formal
-power series after rearrangement, and therefore when the scalar is replaced by a matrix of norm in the same range (the rearrangements are justified by absolute convergence of
-$\sum\|X\|^k/k!$ and $\sum\|A-I\|^k$). The bound $\|e^X-I\|\le e^{\|X\|}-1<1$ gives the first claim of the second part. (b) $\sum_{k\ge2}\frac1k\|A-I\|^k\le\|A-I\|^2\sum_{k\ge0}2^{-k}$. (c) $\exp$ is smooth (a power
-series), and $e^{X}=I+X+O(\|X\|^2)$; the inverse function theorem (Theorem~\ref{thm:inverse}) applies, and (a) identifies the inverse with $\log$.
+(a) For scalars, the corresponding exponential and logarithmic power
+series compose to the identity near zero. Comparing their convergent
+series gives identities of coefficients. The same coefficients apply
+to powers of a single matrix; absolute convergence in the operator norm
+justifies the compositions and rearrangements.
+In particular,
+$\|e^X-I\|\le e^{\|X\|}-1<1$ for $\|X\|<\log2$.
+The scalar identity $\log e^z=z$ on this neighbourhood therefore gives
+$\log(e^X)=X$ as well.
+(b) The tail is bounded by
+\[
+ \sum_{k\ge2}\frac{\|A-I\|^k}{k}
+ \le\|A-I\|^2\sum_{j\ge0}2^{-j}=2\|A-I\|^2.
+\]
+Thus $c=2$ works.
+(c) The exponential series is smooth and
+$e^X=I+X+O(\|X\|^2)$. Its differential at zero is the identity.
+The inverse function theorem, Theorem~\ref{thm:inverse}, gives the local
+diffeomorphism; part (a) identifies its inverse with this logarithm.
 \end{proof}
+
+A one-parameter subgroup is a homomorphism from the additive group $\R$.
+Even continuity, with no derivative assumed, forces it to be exponential.
 
 \begin{proposition}\label{prop:oneparameter}
-Every continuous homomorphism $\gamma\colon\R\to GL_n$ is $\gamma(t)=e^{tX}$ for a unique $X$, namely $X=\gamma'(0)$.
+Every continuous homomorphism $\gamma:\R\to GL_n$ has the form
+$\gamma(t)=e^{tX}$ for a unique matrix $X$.
+It is consequently smooth, with $X=\gamma'(0)$.
 \end{proposition}
-
 \begin{proof}
-Choose $\varepsilon>0$ with $\|\gamma(t)-I\|<\frac12$ and $\|\log\gamma(t)\|<\frac12\log2$ for $|t|\le\varepsilon$, and let $X=\frac1\varepsilon\log\gamma(\varepsilon)$. The matrix $B=\log\gamma(\frac\varepsilon2)$ has $e^{2B}=\gamma(\varepsilon)=e^{\varepsilon X}$
-with $\|2B\|<\log2$ and $\|\varepsilon X\|<\log2$, so by (a), $2B=\varepsilon X$, that is $\gamma(\frac\varepsilon2)=e^{\frac\varepsilon2X}$. By induction $\gamma(\varepsilon/2^k)=e^{\varepsilon X/2^k}$, then by the homomorphism property
-$\gamma(m\varepsilon/2^k)=e^{m\varepsilon X/2^k}$ for all integers $m$, and by continuity and density $\gamma(t)=e^{tX}$ for all $t$. Differentiating at $0$ gives $X=\gamma'(0)$, hence uniqueness.
+Choose $\varepsilon>0$ so that for $|t|\le\varepsilon$,
+$\|\gamma(t)-I\|<1/2$ and $\|\log\gamma(t)\|<(\log2)/2$.
+Set $X=(\log\gamma(\varepsilon))/\varepsilon$.
+Let $B=\log\gamma(\varepsilon/2)$.
+The homomorphism property gives
+$e^{2B}=\gamma(\varepsilon)=e^{\varepsilon X}$.
+Both exponents lie in the logarithm's inverse range, so $2B=\varepsilon X$.
+Repeat the same argument at successive halves of $\varepsilon$.
+It gives $\gamma(\varepsilon/2^k)=e^{\varepsilon X/2^k}$ for every $k$.
+Taking positive and negative integer powers gives equality at every
+$m\varepsilon/2^k$, $m\in\Z$. These points are dense in $\R$.
+Continuity on both sides proves equality everywhere.
+Differentiating the resulting exponential formula at zero gives
+$X=\gamma'(0)$, proving uniqueness.
 \end{proof}
+
+For noncommuting matrices, the exponential of a sum is not generally the
+product of the exponentials. Small products still recover both the sum
+and the commutator, and closedness lets their limits remain in the group.
 
 \begin{proposition}\label{prop:liealgebra}
-For $X,Y\in M_n$, with $[X,Y]=XY-YX$,
-\[e^{X+Y}=\lim_{m\to\infty}\bigl(e^{X/m}e^{Y/m}\bigr)^m\quad\text{(Lie's product formula)},\]
-\[e^{[X,Y]}=\lim_{m\to\infty}\bigl(e^{X/m}e^{Y/m}e^{-X/m}e^{-Y/m}\bigr)^{m^2}.\]
-Consequently the Lie algebra $\mathfrak g$ of a matrix Lie group is a real vector space closed under the bracket, and $gXg^{-1}\in\mathfrak g$ for $g\in G$, $X\in\mathfrak g$.
+For matrices $X,Y$, put $[X,Y]=XY-YX$. Then
+\[
+ e^{X+Y}=\lim_{m\to\infty}(e^{X/m}e^{Y/m})^m,
+\]
+\[
+ e^{[X,Y]}=\lim_{m\to\infty}
+ (e^{X/m}e^{Y/m}e^{-X/m}e^{-Y/m})^{m^2}.
+\]
+Consequently $\mathfrak g$ is a real vector space closed under the
+commutator, and $gXg^{-1}\in\mathfrak g$ for $g\in G$, $X\in\mathfrak g$.
 \end{proposition}
-
 \begin{proof}
-Expanding, $e^{X/m}e^{Y/m}=I+\frac{X+Y}m+O(\frac1{m^2})$, so by Lemma~\ref{lem:log}(b) its logarithm is $Z_m=\frac{X+Y}m+O(\frac1{m^2})$, and $(e^{X/m}e^{Y/m})^m=e^{mZ_m}$ with
-$mZ_m=X+Y+O(\frac1m)$. For the second formula, expand to second order: with $s=\frac1m$,
-\[e^{sX}e^{sY}e^{-sX}e^{-sY}=I+s^2(XY-YX)+O(s^3),\]
-because the terms of order $s$ cancel and those of order $s^2$ are $\frac{X^2}2+\frac{Y^2}2+\frac{X^2}2+\frac{Y^2}2+XY-X^2-XY-YX-Y^2+XY=XY-YX$. Its logarithm is $s^2[X,Y]+O(s^3)$, and the $m^2$-th power is
-$e^{[X,Y]+O(1/m)}$.
+The first product is
+$I+(X+Y)/m+O(m^{-2})$. Its logarithm is therefore
+$Z_m=(X+Y)/m+O(m^{-2})$, by Lemma~\ref{lem:log}.
+Its $m$th power is $e^{mZ_m}$, tending to $e^{X+Y}$.
+For the second product, expand each exponential through degree two in
+$s=1/m$. The linear terms cancel. Multiplying and collecting quadratic
+terms leaves $XY-YX$, so the product is
+$I+s^2[X,Y]+O(s^3)$. Its logarithm has the same leading term.
+Multiplying that logarithm by $m^2$ gives $[X,Y]+O(m^{-1})$, proving
+the second limit by continuity of the exponential.
 
-If $X,Y\in\mathfrak g$, the products on the right lie in $G$ for every $t$ (replace $X,Y$ by $tX,tY$), and $G$ is closed, so $e^{t(X+Y)}$ and $e^{t^2[X,Y]}$ lie in $G$; for negative multiples of $[X,Y]$ use
-$e^{-[X,Y]}=e^{[Y,X]}$. Clearly $sX\in\mathfrak g$ for real $s$. Finally $e^{tgXg^{-1}}=ge^{tX}g^{-1}\in G$.
+If $X,Y\in\mathfrak g$, scalar multiples stay in $\mathfrak g$ by its
+definition. Replace $X,Y$ by $tX,tY$ in the limits.
+Every approximating product lies in $G$, and the limits are invertible,
+so relative closedness in $GL_n$ gives
+$e^{t(X+Y)}\in G$ and $e^{t^2[X,Y]}\in G$.
+Interchanging $X,Y$ supplies the negative multiples of the bracket.
+Thus every real multiple occurs, proving bracket closure.
+Finally $e^{tgXg^{-1}}=ge^{tX}g^{-1}\in G$ proves conjugation invariance.
 \end{proof}
 
-A real vector space with a bilinear, antisymmetric bracket satisfying the Jacobi identity $[X,[Y,Z]]+[Y,[Z,X]]+[Z,[X,Y]]=0$ is a \emph{Lie algebra}; the commutator of matrices satisfies it (expand). The
-Lie algebras of the examples follow from the definition, by differentiating the defining equation along $e^{tX}$ at $t=0$ and conversely integrating:
-\[\mathfrak{sl}_n=\{\operatorname{tr}X=0\},\quad\mathfrak{so}(n)=\{X^{\mathsf T}=-X\},\quad\mathfrak u(n)=\{X^*=-X\},\quad\mathfrak{su}(n)=\mathfrak u(n)\cap\mathfrak{sl}_n(\C).\]
-For instance $\det e^{tX}=e^{t\operatorname{tr}X}$ is $1$ for all $t$ exactly when $\operatorname{tr}X=0$, and $(e^{tX})^*e^{tX}=e^{tX^*}e^{tX}$ is $I$ for all $t$ when $X^*=-X$, while differentiating at $t=0$ gives $X^*+X=0$.
-So $\dim SO(3)=3$, $\dim SU(2)=3$, $\dim U(n)=n^2$, $\dim SL_2(\R)=3$.
+A Lie algebra is a real vector space with a bilinear antisymmetric bracket
+satisfying the Jacobi identity
+$[X,[Y,Z]]+[Y,[Z,X]]+[Z,[X,Y]]=0$.
+For matrices, expanding gives each of the six ordered triple products
+twice with opposite signs. Thus the commutator has this identity.
+
+Differentiate a group's defining equation along $e^{tX}$ at $t=0$ to
+find necessary conditions on $X$. The exponential identities give the
+converse conditions:
+\[
+ \mathfrak{sl}_n=\{X:\operatorname{tr}X=0\},\qquad
+ \mathfrak{so}(n)=\{X:X^{\mathsf T}=-X\},
+\]
+\[
+ \mathfrak u(n)=\{X:X^*=-X\},\qquad
+ \mathfrak{su}(n)=\{X:X^*=-X,\ \operatorname{tr}X=0\}.
+\]
+For example, $(e^{tX})^*e^{tX}=I$ differentiates to $X^*+X=0$.
+Conversely, if $X^*=-X$, the commuting exponentials $e^{tX^*}$ and
+$e^{tX}$ multiply to $I$.
+For determinant one, differentiating $e^{t\operatorname{tr}X}=1$
+at $t=0$ gives $\operatorname{tr}X=0$, and that condition also suffices.
+Counting free real entries gives dimensions $3$ for $\mathfrak{so}(3)$,
+$3$ for $\mathfrak{su}(2)$, $n^2$ for $\mathfrak u(n)$ and $3$ for
+$\mathfrak{sl}_2(\R)$.
+The next theorem shows that these really are the dimensions of the groups.
 
 \begin{theorem}[von Neumann, Cartan]\label{thm:closedsubgroup}
-Let $G\subset GL_n$ be a matrix Lie group with Lie algebra $\mathfrak g$. There are a neighbourhood $U$ of $0$ in $M_n$ and a neighbourhood $V$ of $I$ such that $\exp$ maps $U\cap\mathfrak g$
-homeomorphically onto $V\cap G$. Consequently $G$ is a submanifold of $M_n$ of dimension $\dim\mathfrak g$, with tangent space $T_IG=\mathfrak g$, and the group operations are smooth.
+Let $G\subset GL_n$ be a matrix Lie group with Lie algebra $\mathfrak g$.
+There are neighbourhoods $U$ of $0$ in $M_n$ and $V$ of $I$ such that
+$\exp:U\cap\mathfrak g\to V\cap G$ is a homeomorphism.
+The group $G$ is a smooth submanifold of $M_n$, of dimension
+$\dim\mathfrak g$, with $T_IG=\mathfrak g$. Multiplication and inversion
+on $G$ are smooth.
 \end{theorem}
-
 \begin{proof}
-Choose a complement $W$ of $\mathfrak g$ in $M_n$. \emph{Claim: if $Y_m\in W\setminus\{0\}$, $Y_m\to0$, then $e^{Y_m}\notin G$ for $m$ large.} Otherwise, passing to a subsequence, $e^{Y_m}\in G$ and $Y_m/\|Y_m\|\to Y$, a
-unit vector of $W$ (the unit sphere of $W$ is compact). For $t\in\R$ let $k_m$ be the integer part of $t/\|Y_m\|$. Then $e^{k_mY_m}=(e^{Y_m})^{k_m}\in G$, and $k_mY_m=k_m\|Y_m\|\cdot\frac{Y_m}{\|Y_m\|}\to tY$ because $k_m\|Y_m\|\to t$, so
-$e^{tY}\in G$ because $G$ is closed. Thus $Y\in\mathfrak g\cap W=\{0\}$, contradicting $\|Y\|=1$.
+Choose a vector-space complement $W$ to $\mathfrak g$ in $M_n$.
+First show that for some $r>0$,
+\[
+ Y\in W,\quad0<\|Y\|<r\quad\Longrightarrow\quad e^Y\notin G.
+\]
+If no such $r$ existed, there would be nonzero $Y_m\in W$ tending to
+zero with $e^{Y_m}\in G$. Passing to a subsequence on the compact unit
+sphere gives $Y_m/\|Y_m\|\to Y\in W$ with $\|Y\|=1$.
+For each fixed $t\in\R$, choose integers $k_m$ with
+$k_m\|Y_m\|\to t$. Then
+$e^{k_mY_m}=(e^{Y_m})^{k_m}\in G$ and $k_mY_m\to tY$.
+Closedness gives $e^{tY}\in G$ for every $t$, hence
+$Y\in\mathfrak g\cap W=\{0\}$, a contradiction.
+If $W=\{0\}$ the assertion is vacuous and any $r$ works.
 
-The map $\Phi(X,Y)=e^Xe^Y$ from $\mathfrak g\times W$ to $GL_n$ has differential $(X,Y)\mapsto X+Y$ at $0$, an isomorphism onto $M_n$, so it is a diffeomorphism from a neighbourhood $U_1\times U_2$ of $0$
-onto a neighbourhood $V$ of $I$. If no neighbourhood of $I$ in $G$ is covered by $\exp(U_1\cap\mathfrak g)$, there are $A_m\in G$, $A_m\to I$, with $A_m=e^{X_m}e^{Y_m}$, $X_m\in\mathfrak g$, $Y_m\in W$, $Y_m\ne0$, both tending to
-$0$. Then $e^{Y_m}=e^{-X_m}A_m\in G$, contradicting the claim. So, shrinking $V$, $G\cap V=\Phi((U_1\cap\mathfrak g)\times\{0\})=\exp(U_1\cap\mathfrak g)$: in the coordinates given by $\Phi^{-1}$, the set $G\cap V$ is the
-linear subspace $\mathfrak g\times\{0\}$, so $G$ is a submanifold near $I$ (Theorem~\ref{thm:fourdesc}). Near any $g\in G$, left multiplication by $g$, a linear isomorphism of $M_n$ preserving $G$, carries this
-picture to $g$. Multiplication and inversion are restrictions of smooth maps of $GL_n$ to a submanifold, hence smooth.
+Consider $\Phi(X,Y)=e^Xe^Y$ on $\mathfrak g\times W$.
+Its differential at $(0,0)$ is $(X,Y)\mapsto X+Y$, an isomorphism.
+The inverse function theorem gives small product neighbourhoods
+$U_{\mathfrak g}\times U_W$ on which $\Phi$ is a diffeomorphism onto
+an open set $V$ about $I$. Choose $U_W$ inside the radius-$r$ ball,
+and $U_{\mathfrak g}$ inside a neighbourhood where $\exp$ is injective.
+For $A=e^Xe^Y\in V$, if $A\in G$ then
+$e^Y=e^{-X}A\in G$. Our first assertion forces $Y=0$.
+Conversely $Y=0$ gives $A=e^X\in G$.
+Thus in these coordinates
+\[
+ G\cap V=\Phi(U_{\mathfrak g}\times\{0\})=\exp(U_{\mathfrak g}).
+\]
+The coordinate slice is a submanifold, and its tangent space at $I$ is
+$\mathfrak g$ because $d\exp_0$ is the identity.
+Set $U=U_{\mathfrak g}+U_W$, an open neighbourhood in $M_n$.
+Then $U\cap\mathfrak g=U_{\mathfrak g}$, giving the required
+homeomorphism, in fact a diffeomorphism of these submanifolds.
+
+Left multiplication by any $g\in G$ is an invertible linear map on
+$M_n$ and carries this local description to a neighbourhood of $g$.
+It follows that all of $G$ is a submanifold of the claimed dimension.
+Matrix multiplication and inversion are smooth on $GL_n$;
+their restrictions to this submanifold give smooth group operations.
+The argument also includes $\mathfrak g=0$, when the local slice is a point.
 \end{proof}
 
 \begin{beauty}
-The hypothesis is only that $G$ is a closed subgroup; no smoothness is assumed. Yet the group is automatically a manifold, because the group structure moves every point to every other:
-whatever $G$ looks like near the identity, it looks the same everywhere, and a closed set that looks the same everywhere and contains the curves $e^{tX}$ for a whole vector space of $X$ cannot
-be fractal. Hilbert's fifth problem asked how far this goes; Gleason, Montgomery and Zippin showed in 1952 that every locally Euclidean topological group is a Lie group.
+No parametrisation of the closed subgroup was assumed.
+The proof found one by separating genuine exponential directions from a
+transverse complement. A hypothetical sequence of small transverse group
+elements would, by taking large integer powers, create another genuine
+direction. That is the contradiction that makes the chart possible.
+Hilbert's fifth problem asks a broader question about topological groups.
+The theorem of Gleason, Montgomery and Zippin that a Hausdorff,
+second-countable locally Euclidean group is a Lie group is quoted here;
+it is not needed for the matrix argument.
 \end{beauty}
 
 \section{Homomorphisms and the adjoint representation}
 
-\begin{theorem}\label{thm:homlie}
-Let $\Phi\colon G\to H$ be a continuous homomorphism of matrix Lie groups. There is a unique linear map $\varphi\colon\mathfrak g\to\mathfrak h$ with $\Phi(e^X)=e^{\varphi(X)}$ for all $X\in\mathfrak g$. It satisfies
-$\varphi([X,Y])=[\varphi(X),\varphi(Y)]$ and $\varphi(gXg^{-1})=\Phi(g)\varphi(X)\Phi(g)^{-1}$, and $\varphi=d\Phi_I$.
-\end{theorem}
+A group homomorphism must carry one-parameter subgroups to one-parameter
+subgroups. Their initial velocities define its linear version.
 
+\begin{theorem}\label{thm:homlie}
+For a continuous homomorphism $\Phi:G\to H$ of matrix Lie groups there
+is a unique real-linear map $\varphi:\mathfrak g\to\mathfrak h$ with
+$\Phi(e^X)=e^{\varphi(X)}$ for every $X\in\mathfrak g$.
+It satisfies
+\[
+ \varphi([X,Y])=[\varphi(X),\varphi(Y)],\qquad
+ \varphi(gXg^{-1})=\Phi(g)\varphi(X)\Phi(g)^{-1}.
+\]
+The map $\Phi$ is smooth and $\varphi=d\Phi_I$.
+\end{theorem}
 \begin{proof}
-$t\mapsto\Phi(e^{tX})$ is a continuous homomorphism $\R\to H$, so it is $e^{t\varphi(X)}$ for a unique $\varphi(X)\in M_n$ by Proposition~\ref{prop:oneparameter}, and $\varphi(X)\in\mathfrak h$ by definition. Clearly $\varphi(sX)=s\varphi(X)$. By
-Lie's product formula and continuity,
-\[e^{t\varphi(X+Y)}=\Phi\bigl(\lim(e^{tX/m}e^{tY/m})^m\bigr)=\lim(e^{t\varphi(X)/m}e^{t\varphi(Y)/m})^m=e^{t(\varphi(X)+\varphi(Y))},\]
-so $\varphi$ is additive; the same argument with the commutator formula gives $e^{t^2\varphi([X,Y])}=e^{t^2[\varphi(X),\varphi(Y)]}$, and differentiating twice at $t=0$ gives the bracket identity. Similarly
-$\Phi(ge^{tX}g^{-1})=\Phi(g)e^{t\varphi(X)}\Phi(g)^{-1}$. Finally $\varphi(X)=\frac{\dd}{\dd t}\Phi(e^{tX})|_{t=0}$, which is $d\Phi_I(X)$ once we know that $\Phi$ is smooth: near $I$, $\Phi=\exp\circ\varphi\circ\log$ in the charts of
-Theorem~\ref{thm:closedsubgroup}, and elsewhere $\Phi=L_{\Phi(g)}\circ\Phi\circ L_{g^{-1}}$.
+For each $X$, Proposition~\ref{prop:oneparameter} gives a unique
+$\varphi(X)$ with $\Phi(e^{tX})=e^{t\varphi(X)}$ for all $t$.
+These exponentials belong to $H$, so $\varphi(X)\in\mathfrak h$.
+Rescaling the parameter gives $\varphi(sX)=s\varphi(X)$ for every real $s$.
+The product formula and continuity give
+\[
+ e^{t\varphi(X+Y)}
+ =\Phi\left(\lim_m(e^{tX/m}e^{tY/m})^m\right)
+ =e^{t(\varphi(X)+\varphi(Y))}.
+\]
+Differentiate at $t=0$ to obtain additivity.
+The commutator formula similarly gives
+$e^{t^2\varphi([X,Y])}=e^{t^2[\varphi(X),\varphi(Y)]}$.
+Comparing second derivatives at zero yields the bracket identity.
+Conjugating the one-parameter subgroup by $g$ and applying $\Phi$
+gives the second identity in the same way, by first derivatives at zero.
+
+A real-linear map between finite-dimensional spaces is smooth.
+In the exponential charts of Theorem~\ref{thm:closedsubgroup},
+$\Phi=\exp\circ\varphi\circ\log$ near $I$, so $\Phi$ is smooth there.
+The identity
+$\Phi=L_{\Phi(g)}\circ\Phi\circ L_{g^{-1}}$ near $g$
+then proves smoothness everywhere. Differentiating along $e^{tX}$ gives
+$d\Phi_I(X)=\varphi(X)$. Any linear map with the displayed exponential
+property has the same derivatives after replacing $X$ by $tX$,
+which proves uniqueness.
 \end{proof}
 
 \begin{proposition}\label{prop:connectedgen}
-If $G$ is connected, it is generated by $\exp(\mathfrak g)$, and a continuous homomorphism from $G$ is determined by its differential.
+A connected matrix Lie group $G$ is generated by $\exp(\mathfrak g)$.
+Every continuous homomorphism from $G$ is determined by its differential
+at the identity.
 \end{proposition}
-
 \begin{proof}
-The subgroup $G_0$ generated by $\exp(\mathfrak g)$ contains a neighbourhood $V$ of $I$ in $G$ (Theorem~\ref{thm:closedsubgroup}), so it contains the neighbourhood $gV$ of each of its points $g$: it is open.
-Its complement is a union of cosets $hG_0$, also open. As $G$ is connected, $G_0=G$. A homomorphism is determined on $\exp(\mathfrak g)$ by $\varphi$.
+The subgroup generated by $\exp(\mathfrak g)$ contains a neighbourhood
+of $I$ by the local chart theorem. Translating that neighbourhood shows
+this subgroup is open. Every other coset is open too, so its complement
+is open. Connectedness forces it to be all of $G$.
+The differential determines a homomorphism on every exponential by
+Theorem~\ref{thm:homlie}, and hence on every product of exponentials.
 \end{proof}
 
-The group $G$ acts on its own Lie algebra by $\mathrm{Ad}_g(X)=gXg^{-1}$ (Proposition~\ref{prop:liealgebra}). This is a continuous homomorphism $\mathrm{Ad}\colon G\to GL(\mathfrak g)$, the \emph{adjoint representation}, and by
-Theorem~\ref{thm:homlie} its differential is $\mathrm{ad}\colon\mathfrak g\to\mathfrak{gl}(\mathfrak g)$, $\mathrm{ad}_X(Y)=\frac{\dd}{\dd t}e^{tX}Ye^{-tX}|_{t=0}=[X,Y]$. In particular $\mathrm{Ad}_{e^X}=e^{\mathrm{ad}_X}$.
+Conjugation gives a linear action on $\mathfrak g$:
+$\mathrm{Ad}_g(X)=gXg^{-1}$.
+It is called the adjoint representation. Its differential is
+\[
+ \mathrm{ad}_X(Y)=\left.\frac{\dd}{\dd t}e^{tX}Ye^{-tX}\right|_{t=0}
+ =[X,Y].
+\]
+The homomorphism theorem therefore gives
+$\mathrm{Ad}_{e^X}=e^{\mathrm{ad}_X}$.
+These are linear maps on $\mathfrak g$, including the trivial action when
+$\mathfrak g$ is zero-dimensional.
 
 \section{Rotations and the spin group}
 
-The Lie algebra $\mathfrak{so}(3)$ consists of the antisymmetric matrices
-\[L(u)=\begin{pmatrix}0&-u_3&u_2\\u_3&0&-u_1\\-u_2&u_1&0\end{pmatrix},\qquad L(u)v=u\times v,\]
-and $[L(u),L(v)]=L(u\times v)$ (by the Jacobi identity of the cross product). So $\mathfrak{so}(3)$ is $\R^3$ with the cross product. Since $L(u)$ has eigenvalues $0,\pm i|u|$ with kernel $\R u$, the exponential $e^{L(u)}$ fixes $u$ and rotates the plane $u^\perp$ by the angle $|u|$. Euler's lemma (Volume~3, Lemma~12.3) says every matrix in $SO(3)$ is a rotation by some angle about some axis. Matching that axis and angle with $L(u)$ shows that $\exp\colon\mathfrak{so}(3)\to SO(3)$ is onto, and $SO(3)$ is path-connected.
+Every antisymmetric $3\times3$ matrix has the form
+\[
+ L(u)=\begin{pmatrix}0&-u_3&u_2\\u_3&0&-u_1\\-u_2&u_1&0\end{pmatrix},
+ \qquad L(u)v=u\times v.
+\]
+The vector triple-product identity gives
+$[L(u),L(v)]=L(u\times v)$. Thus the Lie algebra is $\R^3$ with its
+cross-product bracket. If $u\ne0$, $L(u)$ vanishes on $\R u$ and acts
+on $u^\perp$ as a quarter-turn times $|u|$.
+Its exponential fixes the axis and rotates the perpendicular plane by
+$|u|$. For $u=0$ the exponential is $I$.
+Euler's rotation lemma (Volume~3, Lemma~12.3) says every element of
+$SO(3)$ has an axis and angle, so every such element is $e^{L(u)}$.
+The paths $t\mapsto e^{tL(u)}$ show that $SO(3)$ is path-connected.
 
-The Lie algebra $\mathfrak{su}(2)$ consists of the traceless antihermitian matrices
-\[X(u)=\frac12\begin{pmatrix}-iu_3&-u_2-iu_1\\u_2-iu_1&iu_3\end{pmatrix}=-\frac i2(u_1\sigma_1+u_2\sigma_2+u_3\sigma_3),\]
-with the Pauli matrices $\sigma_1=\begin{pmatrix}0&1\\1&0\end{pmatrix}$, $\sigma_2=\begin{pmatrix}0&-i\\i&0\end{pmatrix}$, $\sigma_3=\begin{pmatrix}1&0\\0&-1\end{pmatrix}$. From $\sigma_1\sigma_2=i\sigma_3$ and its cyclic permutations,
-$[X(u),X(v)]=X(u\times v)$: \emph{$\mathfrak{su}(2)$ and $\mathfrak{so}(3)$ are isomorphic Lie algebras}. The group $SU(2)$ is
-\[SU(2)=\left\{\begin{pmatrix}a&-\bar b\\b&\bar a\end{pmatrix}:|a|^2+|b|^2=1\right\},\]
-which is the unit sphere $S^3\subset\C^2$: a column $(a,b)$ of length $1$ determines the matrix. (In Volume~3 these were the unit quaternions.)
+For $SU(2)$, use the Pauli matrices
+\[
+ \sigma_1=\begin{pmatrix}0&1\\1&0\end{pmatrix},\quad
+ \sigma_2=\begin{pmatrix}0&-i\\i&0\end{pmatrix},\quad
+ \sigma_3=\begin{pmatrix}1&0\\0&-1\end{pmatrix}.
+\]
+Its Lie algebra consists of
+\[
+ X(u)=-\frac i2\sum_j u_j\sigma_j
+ =\frac12\begin{pmatrix}-iu_3&-u_2-iu_1\\u_2-iu_1&iu_3\end{pmatrix}.
+\]
+Direct multiplication gives $\sigma_j^2=I$ and
+$\sigma_1\sigma_2=i\sigma_3$, with cyclic versions and opposite signs
+in the reverse orders. It follows that
+\[
+ [X(u),X(v)]=X(u\times v),\qquad X(u)^2=-|u|^2I/4.
+\]
+So $X(u)\mapsto L(u)$ is an isomorphism of Lie algebras.
+The corresponding groups need not be isomorphic.
+Indeed, the first column determines an $SU(2)$ matrix:
+\[
+ SU(2)=\left\{\begin{pmatrix}a&-\overline b\\b&\overline a\end{pmatrix}:
+ |a|^2+|b|^2=1\right\}\cong S^3.
+\]
+The orthogonal second unit column has this form by the determinant-one
+condition. These are also the unit quaternions of Volume~3.
 
 \begin{theorem}[the spin double cover]\label{thm:spin}
-The adjoint representation $\mathrm{Ad}\colon SU(2)\to GL(\mathfrak{su}(2))$, read in the basis $X(e_1),X(e_2),X(e_3)$, is a continuous surjective homomorphism $\pi\colon SU(2)\to SO(3)$ with kernel $\{\pm I\}$, and its differential is
-the isomorphism $X(u)\mapsto L(u)$. It is a two-sheeted covering, and the universal covering of $SO(3)$. Consequently $SO(3)$ is homeomorphic to $\R P^3$ and
-\[\pi_1(SO(3))\cong\Z/2.\]
-The loop $\theta\mapsto e^{\theta L(u)}$, $0\le\theta\le2\pi$, of a full turn about an axis is not nullhomotopic, and the loop of two full turns is.
+In the basis $X(e_1),X(e_2),X(e_3)$, the adjoint representation of
+$SU(2)$ is a continuous surjective homomorphism
+$\pi:SU(2)\to SO(3)$ with kernel $\{I,-I\}$.
+Its differential is the isomorphism $X(u)\mapsto L(u)$.
+It is a two-sheeted universal covering. In particular,
+$SO(3)\cong\R P^3$ as topological spaces and
+$\pi_1(SO(3))\cong\Z/2$.
+For each unit vector $u$, the full-turn loop
+$\theta\mapsto e^{\theta L(u)}$, $0\le\theta\le2\pi$,
+is not nullhomotopic, while the loop of two full turns is nullhomotopic.
 \end{theorem}
-
 \begin{proof}
-\emph{Into $SO(3)$.} The inner product
+\emph{The image consists of rotations.}
+The real inner product $\langle X,Y\rangle=-2\operatorname{tr}(XY)$
+makes the displayed basis orthonormal, since
+$\operatorname{tr}(\sigma_j\sigma_k)=2\delta_{jk}$.
+Conjugation preserves this inner product by cyclicity of trace.
+Thus $\pi(g)$ is orthogonal. Its determinant is a continuous function
+from connected $S^3$ to $\{1,-1\}$, equal to one at $I$;
+it is therefore always one.
+
+\emph{The differential and surjectivity.}
+The differential is $\mathrm{ad}$, and
+$\mathrm{ad}_{X(u)}X(v)=X(u\times v)$ represents $L(u)$.
+Hence $\pi(e^{X(u)})=e^{L(u)}$.
+Every spatial rotation has this exponential form, so $\pi$ is onto.
+
+\emph{The kernel and covering.}
+If $\pi(g)=I$, then $g$ commutes with all $X(u)$ and hence with all
+Pauli matrices. Together with $I$ these span $M_2(\C)$, so $g$ is
+scalar. Its determinant is one, forcing $g=I$ or $-I$.
+Both do lie in the kernel.
+The resulting map $S^3/\{\pm1\}\to SO(3)$ is a continuous bijection
+from a compact space to a Hausdorff space, hence a homeomorphism.
+The source is $\R P^3$, and $S^3\to\R P^3$ is the two-sheeted
+covering of Example~\ref{ex:coverings}(d).
+Since $S^3$ is simply connected by Corollary~\ref{cor:spheres}, this
+is the universal covering. The covering-space calculation from
+Example~\ref{ex:computations}(b) gives fundamental group $\Z/2$.
+
+\emph{Lift a turn.}
+Let $|u|=1$. Since $X(u)^2=-I/4$, separating even and odd powers gives
 \[
-\langle X,Y\rangle=-2\operatorname{tr}(XY)
+ e^{\theta X(u)}=\cos(\theta/2)I+2\sin(\theta/2)X(u).
 \]
- on $\mathfrak{su}(2)$ makes $X(e_1),X(e_2),X(e_3)$ orthonormal (since $\operatorname{tr}(\sigma_j\sigma_k)=2\delta_{jk}$), and it is invariant:
-
-\[
-\operatorname{tr}(gXg^{-1}gYg^{-1})=\operatorname{tr}(XY).
-\]
-So $\pi(g)\in O(3)$; $\det\pi(g)$ is $\pm1$, continuous on the connected $S^3$, and $1$ at $I$: $\pi(g)\in SO(3)$.
-
-\emph{Differential.} By Theorem~\ref{thm:homlie} it is $\mathrm{ad}$: $\mathrm{ad}_{X(u)}X(v)=X(u\times v)$, so $\mathrm{ad}_{X(u)}$ is the matrix $L(u)$. It is an isomorphism $\mathfrak{su}(2)\to\mathfrak{so}(3)$, so
-$\pi(e^{X(u)})=e^{L(u)}$ for all $u$, and $\exp\colon\mathfrak{so}(3)\to SO(3)$ is onto: \emph{$\pi$ is surjective}.
-
-\emph{Kernel.} $\pi(g)=I$ means $g$ commutes with all of $\mathfrak{su}(2)$, hence with $\sigma_1,\sigma_2,\sigma_3$ and with all $2\times2$ complex matrices (they are spanned by $I$ and the $\sigma_j$). So $g$ is a scalar of
-determinant $1$ in $U(2)$: $g=\pm I$.
-
-\emph{Covering.} $\pi$ is continuous, surjective and two-to-one, with $\pi(g)=\pi(-g)$. It induces a continuous bijection $S^3/\{\pm1\}=\R P^3\to SO(3)$, from a compact space onto a Hausdorff one, hence a
-homeomorphism, and $\pi$ becomes the quotient map $S^3\to\R P^3$, a two-sheeted covering (Example~\ref{ex:coverings}(d)). Since $S^3$ is simply connected (Corollary~\ref{cor:spheres}), it is the universal covering,
-and $\pi_1(SO(3))\cong\{\pm I\}\cong\Z/2$ (Example~\ref{ex:computations}(b)).
-
-\emph{The loops.} Take $u$ of length $1$. The loop $\theta\mapsto e^{\theta L(u)}$ lifts to $\theta\mapsto e^{\theta X(u)}$, which runs from $I$ to $e^{2\pi X(u)}$. Since $X(u)$ has eigenvalues $\pm\frac i2$, $e^{2\pi X(u)}$ has
-eigenvalues $e^{\pm i\pi}=-1$: it is $-I$. The lift does not close, so the loop is not nullhomotopic (Proposition~\ref{prop:fibre}); two turns lift to a path from $I$ to $e^{4\pi X(u)}=I$, a closed loop, so
-they are nullhomotopic.
+This is the lift starting at $I$ of $e^{\theta L(u)}$.
+At $\theta=2\pi$ it equals $-I$, so the lift is not closed.
+A nullhomotopic loop would have a closed lift, by
+Proposition~\ref{prop:fibre}; the full turn is therefore not nullhomotopic.
+At $4\pi$ the lift returns to $I$. Its closed loop contracts in $S^3$,
+and projection of that contraction contracts the two-turn loop in $SO(3)$.
 \end{proof}
 
 \begin{figure}[ht]
@@ -201,161 +436,469 @@ diameters; rotating the second one until it meets the first, then pulling the pa
 \end{figure}
 
 \begin{remark}
-The same happens in every dimension $n\ge3$: $\pi_1(SO(n))=\Z/2$, and the universal cover is the double cover $\mathrm{Spin}(n)\to SO(n)$, constructed with Clifford algebras. In the plane
-$\pi_1(SO(2))=\pi_1(S^1)=\Z$: a turn by $4\pi$ in the plane cannot be undone, which is why the belt trick needs a third dimension.
+The general statement $\pi_1(SO(n))\cong\Z/2$ for $n\ge3$, and its
+Clifford-algebra construction of the double cover $\mathrm{Spin}(n)$,
+are quoted extensions. The proof here establishes the case $n=3$.
+In two dimensions $SO(2)\cong S^1$ has fundamental group $\Z$,
+as already proved for the circle. A two-turn planar loop still has
+winding number two; the contraction above uses three-dimensional rotations.
 \end{remark}
 
 \section{$SL_2(\R)$ and the maximal torus of $U(n)$}
 
-The Lie algebra $\mathfrak{sl}_2(\R)$ has the basis
-\[H=\begin{pmatrix}1&0\\0&-1\end{pmatrix},\quad E=\begin{pmatrix}0&1\\0&0\end{pmatrix},\quad F=\begin{pmatrix}0&0\\1&0\end{pmatrix},\qquad[H,E]=2E,\ [H,F]=-2F,\ [E,F]=H.\]
-It is not isomorphic to $\mathfrak{so}(3)$: in $\mathfrak{so}(3)$ no $\mathrm{ad}_X$ has a nonzero real eigenvalue ($\mathrm{ad}_{L(u)}=L(u)$ has eigenvalues $0,\pm i|u|$), while $\mathrm{ad}_H$ has eigenvalue $2$ on $E$. The three kinds of
-one-parameter subgroups, $e^{tH}$ (hyperbolic), $e^{tE}$ (parabolic, unipotent) and rotations $e^{t(E-F)}$ (elliptic), will be the three kinds of isometries of the hyperbolic plane in Chapter~9. Unlike the compact
-groups, $SL_2(\R)$ is not the image of its exponential (Exercise~\ref{ex:slexp}).
+For $\mathfrak{sl}_2(\R)$ take the basis
+\[
+ H=\begin{pmatrix}1&0\\0&-1\end{pmatrix},\quad
+ E=\begin{pmatrix}0&1\\0&0\end{pmatrix},\quad
+ F=\begin{pmatrix}0&0\\1&0\end{pmatrix}.
+\]
+Multiplication gives $[H,E]=2E$, $[H,F]=-2F$ and $[E,F]=H$.
+This algebra is not isomorphic to $\mathfrak{so}(3)$.
+The map $\mathrm{ad}_H$ has the real eigenvalue two on $E$,
+whereas every $\mathrm{ad}_{L(u)}$ acts as a cross product and has
+only eigenvalues $0,\pm i|u|$.
+Chapter~9 will interpret $e^{tH}$, $e^{tE}$ and $e^{t(E-F)}$ as
+hyperbolic, parabolic and elliptic motions.
+Exercise~\ref{ex:slexp} shows that not every $SL_2(\R)$ matrix is a
+single exponential, even though products of exponentials can reach it.
+
+For $U(n)$ the spectral theorem makes the picture particularly direct.
+A diagonal unitary matrix has one unit-circle coordinate for each diagonal
+entry. The group of these matrices is a torus, a product of $n$ circles.
 
 \begin{theorem}[maximal torus and Weyl group of $U(n)$]\label{thm:torus}
-Let $T\subset U(n)$ be the subgroup of diagonal unitary matrices, a torus $(S^1)^n$.
+Let $T\subset U(n)$ be the diagonal unitary subgroup, isomorphic to
+$(S^1)^n$.
 \begin{enumerate}
-\item[(a)] Every $g\in U(n)$ is conjugate in $U(n)$ to an element of $T$; consequently $\exp\colon\mathfrak u(n)\to U(n)$ is onto, and $U(n)$ is connected.
-\item[(b)] If $t\in T$ has distinct diagonal entries, the matrices commuting with $t$ in $U(n)$ are exactly $T$; so $T$ is a maximal abelian subgroup.
-\item[(c)] The normalizer $N(T)=\{g:gTg^{-1}=T\}$ consists of the matrices $P_wD$, with $D\in T$ and $P_w$ the permutation matrix of $w\in S_n$, and the \emph{Weyl group} $N(T)/T$ is isomorphic to $S_n$, acting on $T$ by
-permuting the diagonal entries.
-\item[(d)] Two elements of $T$ are conjugate in $U(n)$ if and only if they differ by a permutation of the diagonal entries.
+\item[(a)] Each element of $U(n)$ is conjugate by a unitary matrix to an
+element of $T$. The exponential $\mathfrak u(n)\to U(n)$ is onto and
+$U(n)$ is connected.
+\item[(b)] If $t\in T$ has distinct diagonal entries, its centraliser in
+$U(n)$ is exactly $T$. Consequently $T$ is maximal abelian.
+\item[(c)] Its normaliser $N(T)=\{g\in U(n):gTg^{-1}=T\}$ consists
+of the matrices $P_wD$, where $D\in T$ and $P_w$ is a permutation
+matrix. The quotient $N(T)/T$ is $S_n$, acting by permuting diagonal entries.
+\item[(d)] Two elements of $T$ are conjugate in $U(n)$ exactly when their
+diagonal entries agree after a permutation.
 \end{enumerate}
 \end{theorem}
-
 \begin{proof}
-(a) A unitary matrix is normal, so it is $UDU^*$ with $U$ unitary and $D$ diagonal (Volume~8, Theorem~3.2); the eigenvalues, being of modulus $1$, are $e^{i\theta_j}$, so $D=e^{i\Theta}$ with $\Theta$ real diagonal and
-$g=e^{U(i\Theta)U^*}$ with $U(i\Theta)U^*\in\mathfrak u(n)$. The path $s\mapsto e^{sU(i\Theta)U^*}$ joins $I$ to $g$. (b) If $gt=tg$, $g$ preserves each eigenspace of $t$, which are the coordinate lines, so $g$ is
-diagonal. (c) Fix $t\in T$ with distinct entries. If $g\in N(T)$, then $gtg^{-1}\in T$ has the same eigenvalues as $t$, so $gtg^{-1}=P_wtP_w^{-1}$ for a permutation $w$, and $P_w^{-1}g$ commutes with $t$: by (b), $g=P_wD$.
-Conversely $P_wDtD^{-1}P_w^{-1}=P_wtP_w^{-1}$, which permutes the entries of $t$. The map $P_wD\mapsto w$ is a homomorphism onto $S_n$ with kernel $T$. (d) Conjugate matrices have the same eigenvalues with
-multiplicity, and permutations are realized by the $P_w$.
+(a) A unitary matrix is normal. The spectral theorem
+(Volume~8, Theorem~3.2) writes it as
+$g=U\operatorname{diag}(e^{i\theta_j})U^*$.
+Then $g=e^X$ with $X=U\operatorname{diag}(i\theta_j)U^*\in\mathfrak u(n)$,
+and $s\mapsto e^{sX}$ joins $I$ to $g$.
+(b) A matrix commuting with $t$ preserves each of its one-dimensional
+coordinate eigenspaces. It is diagonal, and if unitary belongs to $T$.
+Conversely all elements of $T$ commute. Any abelian subgroup containing
+$T$ must commute with this particular $t$, so it cannot be larger.
+(c) For $g\in N(T)$, the diagonal matrix $gtg^{-1}$ has the same
+set of distinct eigenvalues as $t$. Some permutation $w$ gives
+$gtg^{-1}=P_wtP_w^{-1}$. Thus $P_w^{-1}g$ commutes with $t$
+and belongs to $T$, proving $g=P_wD$.
+Conversely each such matrix normalises all diagonal matrices.
+Its permutation of coordinate lines is unique, and composition composes
+these permutations. This gives a homomorphism onto $S_n$ with kernel $T$.
+(d) Conjugation preserves eigenvalues with multiplicity. Conversely
+permutation matrices realise every permutation, including when entries repeat.
 \end{proof}
 
-So conjugacy classes of $U(n)$ correspond to unordered $n$-tuples of points on the unit circle: the eigenvalues. Chapter~8 integrates over $U(n)$ by integrating over the torus with the right weight,
-and the weight comes from the Weyl group and the adjoint representation.
+\begin{figure}[ht]
+\centering
+\fig{v9-ch07-spin-lift}
+\caption{A full-turn loop in $SO(3)$ lifts from $I$ to $-I$ in $SU(2)$; a second turn closes the lift. The upper and lower paths are schematic parameter paths, not distances in the groups. The endpoints have the same spatial rotation but different points of the covering sphere.}
+\label{fig:v9-spin-lift}
+\end{figure}
+\begin{figure}[ht]
+\centering
+\fig{v9-ch07-affine-product}
+\caption{The affine maps $T(x)=x+1$ and $D(x)=2x$ do not commute: $D(T(0))=2$ while $T(D(0))=1$. Their matrices lie in a two-dimensional Lie group. The order of the arrows records composition; the bracket of its dilation and translation directions is a translation direction.}
+\label{fig:v9-affine-product}
+\end{figure}
 
 \section{What we proved, and what comes next}
 
-The opening asked whether a full turn is the same as no turn. In $SO(3)$ it is, but the loop that makes the turn cannot be shrunk to a point, and two
-full turns can (Theorem~\ref{thm:spin}). The reason is that $SU(2)$, the $3$-sphere, covers $SO(3)$ twice, so $\pi_1(SO(3))=\Z/2$ and $SO(3)$ is $\R P^3$.
+The same tangent algebra can belong to different groups.
+The map from $SU(2)$ to $SO(3)$ identifies their tangent spaces, but
+identifies two points of the sphere with every spatial rotation.
+Following a loop detects that identification, which a derivative at one
+point cannot see.
 
-On the way, a closed subgroup of $GL_n$ turned out to be a manifold with no smoothness assumed (Theorem~\ref{thm:closedsubgroup}). Its tangent space at
-the identity is a Lie algebra, closed under the bracket by the product and commutator formulas (Proposition~\ref{prop:liealgebra}), and a continuous
-homomorphism of groups becomes a linear map of Lie algebras (Theorem~\ref{thm:homlie}). For the unitary group, every element is conjugate into the
-diagonal torus, and two diagonal elements are conjugate exactly when a permutation, an element of the Weyl group $S_n$, takes one to the other
-(Theorem~\ref{thm:torus}).
+A closed matrix subgroup has smooth charts, its one-parameter motions
+are exponentials, and continuous homomorphisms respect their brackets.
+Connectedness then lets a differential determine a homomorphism on the
+whole group. It does not make the exponential itself injective or onto
+in every example; the exercises let you test both issues explicitly.
 
-So a unitary matrix up to conjugacy is just its $n$ eigenvalues on the circle. The next chapter asks how those eigenvalues are distributed when the
-matrix is chosen at random, fairly. That needs a fair measure on the group, Haar measure, and an exact formula for what it does to eigenvalues.
+For $U(n)$, conjugacy leaves only the unordered eigenvalues on the circle.
+Chapter~8 asks for their distribution under a uniform random choice of
+matrix. Haar measure supplies that choice, and Weyl's formula describes
+how it changes when we pass to eigenvalue coordinates.
 
 \section{Exercises}
 
 \begin{exercise}[$\star\star$]\label{ex:slexp}
-\emph{The exponential of $SL_2(\R)$ is not onto.} (a) Show that if $X\in\mathfrak{sl}_2(\R)$, then $X^2=-\det(X)\,I$, and compute $e^X$: it is $\cosh\sqrt{-\det X}\,I+\frac{\sinh\sqrt{-\det X}}{\sqrt{-\det X}}X$ when $\det X<0$, with the obvious
-variants when $\det X\ge0$. (b) Deduce that $\operatorname{tr}e^X\ge-2$, with equality only for $e^X=-I$. (c) Show that $\begin{pmatrix}-2&0\\0&-\frac12\end{pmatrix}$ and $\begin{pmatrix}-1&1\\0&-1\end{pmatrix}$ are not exponentials, but are products of two exponentials.
+\emph{Which matrices are single exponentials?}
+(a) For $X\in\mathfrak{sl}_2(\R)$, prove $X^2=-\det(X)I$ and
+compute $e^X$ for negative, zero and positive $\det X$.
+(b) Prove $\operatorname{tr}e^X\ge-2$, with equality only if $e^X=-I$.
+(c) Show that $\left(\begin{smallmatrix}-2&0\\0&-1/2\end{smallmatrix}\right)$
+and $\left(\begin{smallmatrix}-1&1\\0&-1\end{smallmatrix}\right)$
+are not single exponentials of traceless real matrices but are products
+of two such exponentials.
 \end{exercise}
-
 \begin{exercise}[$\star$]\label{ex:heisenberg}
-\emph{The Heisenberg group.} Let $G$ be the group of matrices $\begin{pmatrix}1&a&c\\0&1&b\\0&0&1\end{pmatrix}$. (a) Find its Lie algebra $\mathfrak h$ and its brackets; show that $[\mathfrak h,\mathfrak h]$ is central. (b) Show that $\exp\colon\mathfrak h\to G$ is a
-bijection and that $e^Xe^Y=e^{X+Y+\frac12[X,Y]}$. (c) In quantum mechanics position and momentum satisfy $[Q,P]=i\hbar$; relate this to (a).
+\emph{A group with a finite exponential series.}
+For $G=\{\left(\begin{smallmatrix}1&a&c\\0&1&b\\0&0&1\end{smallmatrix}\right):a,b,c\in\R\}$,
+(a) find its Lie algebra and brackets, and show that its commutator
+algebra is central; (b) prove the exponential is bijective and
+$e^Xe^Y=e^{X+Y+[X,Y]/2}$;
+(c) explain the algebraic relation to the position--momentum commutator
+$[Q,P]=i\hbar I$. For a concrete calculation you may use the operators
+$Qf=xf$ and $Pf=-i\hbar f'$ on complex polynomials.
 \end{exercise}
-
 \begin{exercise}[$\star$]\label{ex:oneparamso3}
-\emph{One-parameter subgroups of $SO(3)$.} Show that every continuous homomorphism $\R\to SO(3)$ is $t\mapsto$ rotation about a fixed axis $u$ by the angle $\omega t$, for some $u$ and $\omega$. Which of them are periodic?
-Show that two rotations commute if and only if they have the same axis or are two half-turns about perpendicular axes.
+\emph{Axes and constant angular velocity.}
+Describe all continuous homomorphisms $\R\to SO(3)$ as rotations about
+a fixed unit axis at constant angular speed. Determine their periods,
+including the constant case.
+Show that two nonidentity rotations commute exactly when they have the
+same axis or are half-turns about perpendicular axes. Explain the identity
+exception explicitly.
 \end{exercise}
-
 \begin{exercise}[$\star\star$]\label{ex:sondconnected}
-\emph{$SO(n)$.} (a) Show that every $A\in SO(n)$ is conjugate in $SO(n)$ to a block diagonal matrix of plane rotations and $\pm1$'s with an even number of $-1$'s, and deduce that $\exp\colon\mathfrak{so}(n)\to SO(n)$ is onto and $SO(n)$ is
-connected. (b) Show that $O(n)$ has exactly two connected components.
+\emph{Orthogonal groups in dimension $n\ge1$.}
+(a) Put each $A\in SO(n)$ into block-diagonal form by conjugation in
+$SO(n)$, using plane rotations and scalar blocks $1,-1$, with an even
+number of $-1$ blocks. Deduce exponential surjectivity and connectedness.
+(b) Prove $O(n)$ has exactly two connected components.
+What changes if zero-size matrices are allowed and $n=0$?
 \end{exercise}
-
 \begin{exercise}[$\star\star$]\label{ex:sl2pi1}
-\emph{The fundamental group of $SL_2(\R)$.} Using the polar decomposition $A=WP$ (Volume~8, Theorem~4.3), show that $SL_2(\R)$ is homeomorphic to $SO(2)\times\{P\text{ symmetric positive definite},\ \det P=1\}\cong S^1\times\R^2$, and deduce
-$\pi_1(SL_2(\R))\cong\Z$. (Unlike $SO(3)$, its universal cover is not a matrix group; this remark is for culture.)
+\emph{Rotations and stretches in $SL_2(\R)$.}
+Use polar decomposition (Volume~8, Theorem~4.3) to prove
+\[
+ SL_2(\R)\cong SO(2)\times\{P=P^{\mathsf T}>0:\det P=1\}
+ \cong S^1\times\R^2.
+\]
+Deduce $\pi_1(SL_2(\R))\cong\Z$.
+A quoted advanced fact, unused in this exercise, is that its universal
+cover has no faithful finite-dimensional matrix representation.
+\end{exercise}
+\begin{exercise}[$\star$]\label{ex:centersu2}
+\emph{Centres distinguish groups.}
+Find the centres of $SU(2)$ and $SO(3)$ and use them to prove that the
+groups are not isomorphic, despite their isomorphic Lie algebras.
 \end{exercise}
 
-\begin{exercise}[$\star$]\label{ex:centersu2}
-\emph{Centres.} Show that the centre of $SU(2)$ is $\{\pm I\}$ and the centre of $SO(3)$ is trivial; deduce again that $SU(2)$ and $SO(3)$ are not isomorphic as groups, although their Lie algebras are.
+\begin{exercise}[$\star\star$]\label{ex:v9-rodrigues}
+\emph{A rotation formula and its ambiguity.}
+For $|u|=1$, put $A=L(u)$. Show that $A^2=uu^{\mathsf T}-I$ and
+\[
+ e^{\theta A}=I+\sin\theta\,A+(1-\cos\theta)A^2.
+\]
+Deduce $\operatorname{tr}e^{\theta A}=1+2\cos\theta$.
+Explain how to recover the angle in $[0,\pi]$ and its axis from a rotation
+matrix, treating angle zero and angle $\pi$ separately.
+\end{exercise}
+\begin{exercise}[$\star\star$]\label{ex:v9-circle-homomorphisms}
+\emph{A differential with an integer constraint.}
+Classify all continuous homomorphisms $\chi:U(1)\to U(1)$.
+Which real-linear maps $i\R\to i\R$ occur as their differentials?
+Then prove that every continuous homomorphism $SU(2)\to U(1)$ is trivial.
+\end{exercise}
+\begin{exercise}[$\star\star$]\label{ex:v9-affine-exponential}
+\emph{Translations and dilations.}
+Let $G=\{\left(\begin{smallmatrix}a&b\\0&1\end{smallmatrix}\right):a>0,b\in\R\}$.
+Show it is closed in $GL_2(\R)$. Find its Lie algebra and bracket.
+Compute the exponential and prove it is a bijection from the Lie algebra
+onto $G$, giving a formula for its inverse. Interpret the two coordinate
+motions as maps of a real line.
+\end{exercise}
+\begin{exercise}[$\star\star$]\label{ex:v9-spin-traces}
+\emph{A half-turn upstairs and downstairs.}
+For $g\in SU(2)$, prove
+$\operatorname{tr}\pi(g)=(\operatorname{tr}g)^2-1$.
+Describe the preimage of the half-turns as a subset of $S^3$.
+For a unit vector $u$ and integer $k$, determine exactly when the loop
+$\theta\mapsto e^{k\theta L(u)}$, $0\le\theta\le2\pi$, contracts.
 \end{exercise}
 
 \section{Hints}
 
 \begin{hint}{ex:slexp}
-(a) Cayley--Hamilton for a traceless $2\times2$ matrix. (b) $\operatorname{tr}e^X$ is $2\cosh\lambda$, $2$ or $2\cos\mu$. (c) For the products, write a negative diagonal matrix as $-I$ times a positive one.
+Use Cayley--Hamilton, separate even and odd powers, and multiply by
+$-I=e^{\pi(E-F)}$ for the final constructions.
 \end{hint}
-
 \begin{hint}{ex:heisenberg}
-$\mathfrak h$ is the strictly upper triangular matrices; products of three of them vanish. For (b), use the series of $e^X$, which stops at $X^2$.
+Use $E_{12},E_{23},E_{13}$ as a basis. All products of three strictly
+upper triangular $3\times3$ matrices vanish.
 \end{hint}
-
 \begin{hint}{ex:oneparamso3}
-Proposition~\ref{prop:oneparameter} and the description of $e^{L(u)}$. For commuting rotations, a rotation commuting with $R$ maps the axis of $R$ to itself.
+A commuting rotation must preserve the fixed axis as a line. It may
+reverse its unit direction; consider that case separately.
 \end{hint}
-
 \begin{hint}{ex:sondconnected}
-Use the real normal form of an orthogonal matrix: complex eigenvalues come in conjugate pairs, each giving a plane rotation. Pair two $-1$'s into a rotation by $\pi$.
+Pair nonreal conjugate eigenvalues into real rotation planes and pair
+$-1$ eigenvalues into half-turn planes.
 \end{hint}
-
 \begin{hint}{ex:sl2pi1}
-The polar factors depend continuously on $A$, since $P=\sqrt{A^{\mathsf T}A}$ and $W=AP^{-1}$. A positive definite symmetric matrix of determinant $1$ is $e^S$ with $S$ symmetric of trace $0$.
+For $M=A^{\mathsf T}A$ of determinant one, verify
+$P=(M+I)/\sqrt{\operatorname{tr}M+2}$.
+A positive-definite determinant-one symmetric matrix is determined by its
+upper-left entry $a>0$ and off-diagonal entry $b$.
 \end{hint}
-
 \begin{hint}{ex:centersu2}
-A central element of a connected matrix group commutes with $e^{tX}$ for all $X$, hence with all of $\mathfrak g$.
+A central element commutes with every one-parameter subgroup, hence with
+every tangent matrix. Use Pauli matrices in one case and rotation axes
+in the other.
+\end{hint}
+\begin{hint}{ex:v9-rodrigues}
+The triple-product identity gives $A^3=-A$. Group the exponential series
+into its odd and even terms after the identity term.
+\end{hint}
+\begin{hint}{ex:v9-circle-homomorphisms}
+Apply the one-parameter theorem to $t\mapsto\chi(e^{it})$.
+For $SU(2)$, every basis vector of its Lie algebra is a bracket.
+\end{hint}
+\begin{hint}{ex:v9-affine-exponential}
+For $X=\left(\begin{smallmatrix}s&t\\0&0\end{smallmatrix}\right)$,
+compute $X^k$ and extend $(e^s-1)/s$ continuously at $s=0$.
+\end{hint}
+\begin{hint}{ex:v9-spin-traces}
+Write $g=rI+N$ with $r=\operatorname{tr}g/2\in[-1,1]$.
+Cayley--Hamilton gives $N^2=-(1-r^2)I$. Handle $r=\pm1$ separately.
 \end{hint}
 
 \section{Solutions}
 
 \begin{solution}{ex:slexp}
-\idea Every element of $\mathfrak{sl}_2$ squares to a scalar, so its exponential is a combination of $I$ and $X$, and its trace is a $\cosh$, $2$ or a $\cos$: never less than $-2$.
-\writeup (a) $X$ has trace $0$, so by Cayley--Hamilton $X^2=-\det(X)I$. With $\lambda=\sqrt{-\det X}$ when $\det X<0$, the even powers are $\lambda^{2k}I$ and the odd ones $\lambda^{2k}X$, so $e^X=\cosh\lambda\,I+\frac{\sinh\lambda}\lambda X$. When
-$\det X=\mu^2>0$, $e^X=\cos\mu\,I+\frac{\sin\mu}\mu X$, and when $\det X=0$, $e^X=I+X$. (b) The traces are $2\cosh\lambda\ge2$, $2\cos\mu\ge-2$ and $2$. If $\operatorname{tr}e^X=-2$, then $\cos\mu=-1$, $\sin\mu=0$ and $e^X=-I$.
-(c) The first matrix has trace $-\frac52<-2$; the second has trace $-2$ and is not $-I$. But $\begin{pmatrix}-2&0\\0&-\frac12\end{pmatrix}=e^{\pi(E-F)}e^{(\log2)H}$, since $e^{\pi(E-F)}=-I$, and
-$\begin{pmatrix}-1&1\\0&-1\end{pmatrix}=e^{\pi(E-F)}e^{-E}$. In accordance with Proposition~\ref{prop:connectedgen}, $SL_2(\R)$ (which is connected, Exercise~\ref{ex:sl2pi1}) is generated by exponentials, but needs products.
+\idea A traceless two-by-two matrix squares to a scalar, leaving only two
+series to sum.
+\writeup (a) Cayley--Hamilton gives $X^2=-\det(X)I$.
+For $\det X=-\lambda^2<0$, the even and odd powers sum to
+$e^X=\cosh\lambda\,I+(\sinh\lambda/\lambda)X$.
+For $\det X=\mu^2>0$, they give
+$e^X=\cos\mu\,I+(\sin\mu/\mu)X$.
+For $\det X=0$, all powers from $X^2$ onward vanish and $e^X=I+X$.
+(b) Their traces are $2\cosh\lambda$, $2\cos\mu$ and $2$.
+They are at least $-2$. Equality requires $\cos\mu=-1$, giving
+$\sin\mu=0$ and $e^X=-I$.
+(c) The negative diagonal matrix has trace $-5/2$, and the second
+matrix has trace $-2$ without being $-I$, so neither is a single
+exponential. Direct multiplication gives the products
+\[
+ \begin{pmatrix}-2&0\\0&-1/2\end{pmatrix}
+ =e^{\pi(E-F)}e^{(\log2)H},\qquad
+ \begin{pmatrix}-1&1\\0&-1\end{pmatrix}
+ =e^{\pi(E-F)}e^{-E}.
+\]
+All exponents are traceless real matrices, as required.
 \end{solution}
-
 \begin{solution}{ex:heisenberg}
-\idea Nilpotent matrices have finite exponential series, so everything can be computed by hand.
-\writeup (a) $e^{tX}$ is unipotent upper triangular for all $t$ exactly when $X$ is strictly upper triangular: $\mathfrak h$ is spanned by $P=E_{12}$, $Q=E_{23}$, $Z=E_{13}$, with $[P,Q]=Z$ and $Z$ commuting
-with everything. (b) $X^3=0$, so $e^X=I+X+\frac12X^2$, and $X=(x_{12},x_{23},x_{13})$ gives $e^X$ with entries $a=x_{12}$, $b=x_{23}$, $c=x_{13}+\frac12x_{12}x_{23}$, which can be solved uniquely for $X$: a bijection. Since
-$[X,Y]$ is central and $[X,[X,Y]]=0$, $e^Xe^Y=I+X+Y+\frac{X^2}2+XY+\frac{Y^2}2$ (all products of three vanish), and $e^{X+Y+\frac12[X,Y]}=I+X+Y+\frac12[X,Y]+\frac12(X+Y)^2$, which is the same since
-$\frac12(XY-YX)+\frac12(XY+YX)=XY$. (c) $[Q,P]$ is a multiple of the identity, which commutes with everything: the canonical commutation relations define a representation of $\mathfrak h$ (with $Z$ acting
-by $i\hbar$), and the Heisenberg group is named after them.
+\idea Nilpotence turns the exponential and product identities into finite
+polynomial calculations.
+\writeup (a) Differentiating the defining entries shows that the algebra
+is spanned by $A=E_{12}$, $B=E_{23}$, $Z=E_{13}$.
+Conversely their strictly upper triangular combinations exponentiate
+into $G$. The only nonzero basic bracket is $[A,B]=Z$;
+$Z$ commutes with all three, so the commutator algebra is central.
+(b) For $X=xA+yB+zZ$, $X^2=xyZ$ and $X^3=0$.
+Thus $e^X=I+xA+yB+(z+xy/2)Z$.
+Given entries $a,b,c$, the unique preimage has
+$x=a,y=b,z=c-ab/2$.
+For two such matrices, every product of three vanishes, so
+\[
+ e^Xe^Y=I+X+Y+X^2/2+XY+Y^2/2.
+\]
+Expanding $e^{X+Y+[X,Y]/2}$ gives the same expression because
+$[X,Y]$ is a multiple of $Z$ and its products with $X,Y$ vanish.
+(c) On complex polynomials,
+$[Q,P]f=-i\hbar xf'+i\hbar(xf)'=i\hbar f$.
+The assignments $A\mapsto Q$, $B\mapsto P$, $Z\mapsto i\hbar I$
+therefore respect exactly the brackets just computed.
+This is an algebraic operator realisation on an infinite-dimensional
+space. For $\hbar\ne0$ it cannot hold for finite-dimensional complex
+matrices: the trace of a commutator is zero, while
+$\operatorname{tr}(i\hbar I)=i\hbar d\ne0$ in dimension $d\ge1$.
+The quantum-mechanical relation motivates the name, without making the
+three-by-three matrices themselves position and momentum operators.
 \end{solution}
-
 \begin{solution}{ex:oneparamso3}
-\idea A one-parameter subgroup is $e^{tX}$, and $e^{tL(u)}$ turns about $u$ at constant speed.
-\writeup By Proposition~\ref{prop:oneparameter} the homomorphism is $e^{tL(v)}$ for some $v$; with $u=\frac v{|v|}$ and $\omega=|v|$ (any $u$ if $v=0$), $e^{tL(v)}$ is the rotation by $\omega t$ about $u$. All are periodic, of period $\frac{2\pi}\omega$
-(or constant). If $RS=SR$ and $R$ is not the identity, $S$ maps the axis of $R$ (its fixed line, if $R$ is not a half-turn; the $+1$ eigenspace in general) to itself, so $Su=\pm u$. If $Su=u$, $S$ has the same axis. If
-$Su=-u$, $S$ is a half-turn about an axis $w\perp u$, and $SRS^{-1}$ is the rotation by the same angle about $Su=-u$, that is the rotation by $-\theta$ about $u$; it equals $R$ only if $\theta=\pi$. Conversely, rotations
-about the same axis commute, and two half-turns about perpendicular axes commute (their product is the half-turn about the third axis, in either order).
-\end{solution}
+\idea The generator fixes the angular velocity; commutation preserves its
+axis but may reverse its direction.
+\writeup Every homomorphism is $e^{tL(v)}$.
+For $v\ne0$, set $u=v/|v|$ and $\omega=|v|$; it is rotation about $u$
+through angle $\omega t$, with least positive period $2\pi/\omega$.
+For $v=0$ it is constant and every positive time is a period, so there
+is no least positive period.
 
+Let nonidentity $R,S$ commute, and let $u$ be a unit axis of $R$.
+Its fixed space is exactly $\R u$, including when $R$ is a half-turn.
+Thus $Su=u$ or $Su=-u$.
+In the first case, $S$ has the same axis. In the second, $-1$ is an
+eigenvalue of $S$, so it is a half-turn about an axis perpendicular to
+$u$. Conjugation by $S$ changes a rotation of angle $\theta$ about $u$
+into one of angle $-\theta$ about $u$.
+Equality with nonidentity $R$ therefore forces $\theta=\pi$ modulo $2\pi$.
+Conversely rotations about one axis commute. Two perpendicular half-turns
+are diagonal matrices with entries $1,-1,-1$ in a suitable orthonormal
+basis, so they commute as well.
+The identity commutes with every rotation, without any axis restriction.
+\end{solution}
 \begin{solution}{ex:sondconnected}
-\idea An orthogonal matrix is a product of plane rotations in perpendicular planes and reflections; in $SO(n)$ the reflections pair up into rotations by $\pi$.
-\writeup (a) As a complex matrix, $A$ is unitary, so diagonalizable with eigenvalues of modulus $1$; nonreal ones come in conjugate pairs $e^{\pm i\theta}$, with eigenvectors $v,\bar v$, and $\operatorname{Re}v$, $\operatorname{Im}v$ span a real
-plane on which $A$ is a rotation by $\theta$. These planes and the real eigenvectors (eigenvalues $\pm1$) are mutually orthogonal (eigenspaces of a normal matrix are), so in a suitable orthonormal basis $A$ is block
-diagonal. The determinant is $(-1)^{\#(-1)}$, so the number of $-1$'s is even, and pairs of them are rotations by $\pi$. Changing the sign of one basis vector if needed puts the basis change in $SO(n)$. Each block
-is $e^{\theta J}$ with $J$ the quarter turn, so $A=e^X$ with $X$ antisymmetric, and $s\mapsto e^{sX}$ joins $I$ to $A$. (b) $\det$ is continuous with values $\pm1$, so $O(n)$ has at least two components; multiplication by a
-reflection maps $SO(n)$ homeomorphically onto $\det=-1$, which is therefore connected.
+\idea Real orthogonal matrices split into invariant lines and rotation planes.
+\writeup (a) The complex spectral theorem gives orthogonal eigenspaces
+of a unitary matrix. Nonreal eigenvalues of a real orthogonal matrix
+come in conjugate pairs $e^{i\theta},e^{-i\theta}$.
+If $v=x+iy$ is an eigenvector, orthogonality to $\overline v$ gives
+$|x|=|y|$ and $x\cdot y=0$. Their real span is an invariant plane with
+an orthonormal basis in which $A$ is a plane rotation.
+The remaining real eigenvalues are $1$ or $-1$.
+Together these give a real orthonormal block basis.
+The determinant condition makes the number of $-1$ blocks even.
+Pair them into plane rotations through $\pi$.
+If the basis change has determinant $-1$, reverse one basis vector;
+this only reverses a rotation angle or leaves a scalar block unchanged,
+and makes the change belong to $SO(n)$.
+Each rotation block is the exponential of a skew-symmetric two-by-two
+block; scalar $1$ blocks use zero. Conjugating their direct sum back
+gives $A=e^X$, $X\in\mathfrak{so}(n)$.
+The path $e^{tX}$ proves connectedness, including the trivial case $n=1$.
+(b) For $n\ge1$ both determinant signs occur, and the continuous
+sign map separates them. The positive fibre is connected by (a).
+Multiplying by a fixed reflection identifies it with the negative fibre,
+which is therefore also connected. There are exactly two components.
+For $n=0$, both groups consist only of the empty identity matrix,
+whose determinant is one; there is only one component.
 \end{solution}
-
 \begin{solution}{ex:sl2pi1}
-\idea Every matrix of determinant $1$ is a rotation times a stretch, uniquely, and the stretches form a contractible set.
-\writeup By the polar decomposition, $A=WP$ with $P=\sqrt{A^{\mathsf T}A}$ positive definite and $W=AP^{-1}$ orthogonal; $\det P=|\det A|=1$, so $\det W=1$. The maps $A\mapsto(W,P)$ and $(W,P)\mapsto WP$ are continuous and
-inverse to each other (the square root of a positive definite matrix is continuous, for instance because $\sqrt{M}=\frac1{2\pi i}\oint\sqrt z(z-M)^{-1}\dd z$ on a fixed contour around the spectrum, or by
-diagonalization and the uniqueness of $P$). The positive definite symmetric matrices of determinant $1$ are the $e^S$ with $S$ symmetric of trace $0$, that is $S=\begin{pmatrix}x&y\\y&-x\end{pmatrix}$, and $S\mapsto e^S$ is a
-homeomorphism from $\R^2$ (its inverse is the logarithm of a positive matrix, computed in an eigenbasis). So $SL_2(\R)\cong S^1\times\R^2$, which deformation retracts onto $S^1$: $\pi_1\cong\Z$, generated by the loop of
-rotations $e^{\theta(E-F)}$, $0\le\theta\le2\pi$.
+\idea Give explicit continuous coordinates for the positive stretch, so
+no choice of eigenvectors or contour formula is needed.
+\writeup Let $M=A^{\mathsf T}A$. It is positive definite with determinant
+one. Cayley--Hamilton gives $M^2-(\operatorname{tr}M)M+I=0$, hence
+\[
+ P=\frac{M+I}{\sqrt{\operatorname{tr}M+2}},\qquad P^2=M.
+\]
+This $P$ is symmetric positive definite, has determinant one, and depends
+continuously on $A$. Then $W=AP^{-1}$ is orthogonal with determinant
+one. These are the unique polar factors, and the inverse operation is
+the continuous product $(W,P)\mapsto WP$.
+
+Every symmetric positive-definite determinant-one matrix is uniquely
+\[
+ P(a,b)=\begin{pmatrix}a&b\\b&(1+b^2)/a\end{pmatrix},
+ \qquad a>0,\quad b\in\R.
+\]
+The leading entry is positive. Conversely the associated form is
+$a(x+by/a)^2+y^2/a$, which is positive on every nonzero pair.
+Thus all these parameters give positive-definite matrices.
+Writing $a=e^x$, $b=y$ gives continuous coordinates $(x,y)\in\R^2$
+with continuous inverse $x=\log P_{11}$, $y=P_{12}$.
+Thus the polar decomposition is the claimed homeomorphism.
+Contract $(x,y)$ linearly to $(0,0)$ while keeping $W$ fixed.
+This deformation retracts onto $SO(2)\cong S^1$ and gives fundamental
+group $\Z$, generated by one full circle of plane rotations.
+The quoted non-matrix property of the universal cover is not used.
+\end{solution}
+\begin{solution}{ex:centersu2}
+\idea A central matrix must commute with every infinitesimal rotation.
+\writeup If $g$ is central, differentiate $ge^{tX}=e^{tX}g$ at zero.
+For $SU(2)$ this makes $g$ commute with all Pauli matrices, hence with
+all complex matrices, so it is scalar. Determinant one gives $g=\pm I$,
+and both are central.
+For $SO(3)$, the differentiated condition says
+$gL(u)g^{-1}=L(u)$ for every $u$.
+Rotations preserve the cross product, so the left side is $L(gu)$.
+Injectivity of $L$ gives $gu=u$ for every $u$, hence $g=I$.
+An isomorphism preserves the centre, but these centres have different
+sizes. The two groups are therefore not isomorphic as groups.
 \end{solution}
 
-\begin{solution}{ex:centersu2}
-\idea Being central is a linear condition on the Lie algebra, and the Lie algebras $\mathfrak{su}(2)$ and $\mathfrak{so}(3)$ have trivial centre.
-\writeup A central $g$ commutes with $e^{tX}$, and differentiating at $t=0$, with every $X\in\mathfrak g$. In $SU(2)$, commuting with the Pauli matrices forces $g$ to be a scalar, so $g=\pm I$. In $SO(3)$, if $g$ commutes with the rotation $R$
-about $u$ by a small angle, then $gRg^{-1}$, the rotation about $gu$ by the same angle, equals $R$, so $gu=\pm u$. Thus every vector is an eigenvector of $g$, which is therefore $\pm I$, and $\det g=1$ gives $g=I$. A group isomorphism
-maps the centre onto the centre, and $\{\pm I\}$ has two elements while the centre of $SO(3)$ has one.
+\begin{solution}{ex:v9-rodrigues}
+\idea Powers of the generator reduce to $I,A,A^2$.
+\writeup The vector triple product gives
+$A^2v=u(u\cdot v)-v$, so $A^2=uu^{\mathsf T}-I$ and $A^3=-A$.
+Odd powers after $A$ alternate between $A$ and $-A$;
+even powers after $I$ alternate between $A^2$ and $-A^2$.
+Summing their sine and cosine series gives the required formula.
+Since $\operatorname{tr}A=0$ and $\operatorname{tr}A^2=-2$,
+the trace is $1+2\cos\theta$.
+For any rotation $R$, choose its angle $\theta\in[0,\pi]$ by
+$\cos\theta=(\operatorname{tr}R-1)/2$.
+If $0<\theta<\pi$, then
+$L(u)=(R-R^{\mathsf T})/(2\sin\theta)$ recovers the oriented unit axis.
+If $\theta=0$, $R=I$ and every axis works.
+If $\theta=\pi$, use the one-dimensional $+1$ eigenspace of $R$;
+its two unit directions $u,-u$ give the same half-turn.
+No division by $\sin\theta$ is made at these endpoints.
+\end{solution}
+\begin{solution}{ex:v9-circle-homomorphisms}
+\idea Periodicity restricts an otherwise arbitrary infinitesimal angular speed.
+\writeup The composite $t\mapsto\chi(e^{it})$ is a continuous
+one-parameter subgroup of $U(1)$, so equals $e^{ict}$ for some real $c$.
+Since the input has period $2\pi$, $e^{2\pi ic}=1$, forcing $c=k\in\Z$.
+Thus $\chi(z)=z^k$ for all $z\in U(1)$; each integer power is indeed a
+continuous homomorphism. Their differentials are precisely $it\mapsto ikt$.
+A general real-linear map would allow any real $c$, but only integers
+respect the closed circle.
+
+For $\Phi:SU(2)\to U(1)$, its differential annihilates brackets because
+the target algebra $i\R$ is abelian. The relations
+$[X(e_1),X(e_2)]=X(e_3)$ and their cyclic versions show that brackets
+span the whole source algebra. Thus $d\Phi_I=0$.
+Connectedness of $SU(2)$ and Proposition~\ref{prop:connectedgen} force
+$\Phi$ to be the trivial homomorphism.
+\end{solution}
+\begin{solution}{ex:v9-affine-exponential}
+\idea The dilation parameter exponentiates; the translation parameter is
+scaled by the average of that dilation.
+\writeup Products and inverses preserve the displayed form with $a>0$.
+A limit in $GL_2(\R)$ still has bottom row $(0,1)$ and nonzero top-left
+entry. A limit of positive such entries must remain positive, so $G$
+is relatively closed. Differentiating gives
+$X(s,t)=\left(\begin{smallmatrix}s&t\\0&0\end{smallmatrix}\right)$,
+and conversely its exponential lies in $G$.
+Multiplication yields
+$[X(s,t),X(s',t')]=X(0,st'-s't)$.
+For $k\ge1$, the top row of $X^k$ is $(s^k,s^{k-1}t)$.
+Summing gives
+\[
+ e^{X(s,t)}=\begin{pmatrix}e^s&t\,\eta(s)\\0&1\end{pmatrix},
+ \qquad \eta(s)=\begin{cases}(e^s-1)/s,&s\ne0,\\1,&s=0.\end{cases}
+\]
+The series shows $\eta$ is continuous and smooth at zero, and it is
+positive for every real $s$.
+For a given $(a,b)$, the unique inverse parameters are
+$s=\log a$, $t=b/\eta(\log a)$, proving bijectivity.
+Acting on $(x,1)^{\mathsf T}$ gives $x\mapsto ax+b$.
+The generators $X(1,0)$ and $X(0,1)$ give dilations $x\mapsto e^s x$
+and translations $x\mapsto x+t$; their bracket is the translation
+generator, consistent with Figure~\ref{fig:v9-affine-product}.
+\end{solution}
+\begin{solution}{ex:v9-spin-traces}
+\idea The half-angle upstairs becomes a full angle under the covering map.
+\writeup The $SU(2)$ form gives real trace $2r$ with $r\in[-1,1]$.
+If $r=\pm1$, the unit-sphere coordinates force $g=\pm I$;
+then $\pi(g)=I$ and the trace identity reads $3=4-1$.
+Otherwise put $N=g-rI$.
+Cayley--Hamilton gives $N^2=-(1-r^2)I$.
+Also $g^{-1}=2rI-g=g^*$, so $N^*=-N$ and $\operatorname{tr}N=0$.
+Write $N=2\sqrt{1-r^2}X(u)$; the square identity for $X(u)$ forces
+$|u|=1$. Choose $t\in(0,\pi)$ with $\cos t=r$.
+Then $g=e^{2tX(u)}$ and $\pi(g)=e^{2tL(u)}$.
+Its trace is $1+2\cos(2t)=4\cos^2t-1=(\operatorname{tr}g)^2-1$.
+A spatial half-turn has trace $-1$, so its preimage is exactly
+$\operatorname{tr}g=0$. In the coordinates $(a,b)\in S^3\subset\C^2$,
+this is $\operatorname{Re}a=0$, a great two-sphere.
+
+The $k$-turn loop lifts from $I$ to
+$e^{2\pi kX(u)}=(-1)^kI$.
+For odd $k$ it cannot contract because the lift is not closed.
+For even $k$ its lift is a closed loop in simply connected $S^3$,
+so a contraction projects to a contraction downstairs.
+This includes $k=0$ and negative integers: precisely the even integers
+represent the trivial loop class.
 \end{solution}
 
 \section*{Sources and further reading}

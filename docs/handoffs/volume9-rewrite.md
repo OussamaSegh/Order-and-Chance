@@ -44,7 +44,15 @@ diagrams, the credited photograph, preface, colophon and paperback wrap were
 inspected. The Riemann photograph has independently inspected 1892 publication
 evidence as well as live Commons metadata. All original label/caption/figure
 checks still pass. These are intermediate results, not final acceptance.
-The remaining 18 units, final
+Chapter 7 now also has a full draft rewrite, two new figures and four exercises.
+Its unit-axis hypothesis, rotation identity exception, zero-dimensional O(n)
+case and polar-decomposition prerequisite gap are repaired. The five-unit
+PDF-only build exited 0 at 407 print pages; both new figures were inspected.
+The preservation guard now also verifies all 213 printed part/chapter/section
+numbers and both approved cover-art sources. CI found a required credit phrase
+in About the Cover; it has been restored and all ten local cover tests pass.
+The build predates that wording-only credit repair; a later build will verify it.
+The remaining 17 units, final
 validation, ready PR, exact-head green CI, normal merge and exact-merge publication
 verification remain outstanding. PR #243 remains a draft. No KDP upload occurred.
 

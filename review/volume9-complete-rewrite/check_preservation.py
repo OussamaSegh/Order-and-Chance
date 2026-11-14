@@ -55,6 +55,23 @@ def labels_from_aux(path):
     return labels
 
 
+
+def numbered_contents(path):
+    """Return every printed part/chapter/section number, ignoring changed pages."""
+    result = []
+    text = path.read_text()
+    for match in re.finditer(r"\\contentsline\s*\{", text):
+        kind, pos = group(text, match.end() - 1)
+        while text[pos].isspace():
+            pos += 1
+        title, _ = group(text, pos)
+        number = re.match(r"\\numberline\s*\{", title)
+        if number:
+            value, _ = group(title, number.end() - 1)
+            result.append((kind, value))
+    return result
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--require-additions", action="store_true")
@@ -71,14 +88,22 @@ def main():
             errors.append(f"Number changed for {name}: {original['number']} -> {current[name]['number']}")
         if original["anchor"].startswith("figure.") and current[name]["title"] != original["title"]:
             errors.append(f"Original figure caption changed: {name}")
+    original_contents = numbered_contents(HERE / "starting-contents.tex")
+    current_contents = numbered_contents(ROOT / "build/volume9-shapes/main.toc")
+    if current_contents != original_contents:
+        errors.append("Printed part/chapter/section numbering or order changed")
     figures = 0
+    artwork = 0
     for name, digest in baseline["tracked_file_sha256"].items():
-        if "/figures/" not in name:
+        if "/figures/" in name:
+            figures += 1
+        elif name.endswith(("/cover-motif.tex", "/cover-lettering.tex")):
+            artwork += 1
+        else:
             continue
-        figures += 1
         path = ROOT / name
         if not path.exists() or hashlib.sha256(path.read_bytes()).hexdigest() != digest:
-            errors.append(f"Original figure file changed: {name}")
+            errors.append(f"Original figure or cover artwork file changed: {name}")
     if args.require_additions:
         for unit in baseline["printed_units"]:
             text = (ROOT / unit["path"]).read_text()
@@ -92,6 +117,7 @@ def main():
     if errors:
         return 1
     print(f"Preserved {len(original_labels)} original printed labels, captions and {figures} figure files.")
+    print(f"Preserved {len(original_contents)} printed part/chapter/section numbers in order and {artwork} cover artwork files.")
     print("Mathematics, prose, unlabelled statements and visual placement require separate review.")
     return 0
 
