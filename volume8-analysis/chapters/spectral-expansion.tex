@@ -1,84 +1,89 @@
 \chapter{Cuts, Mixing and Expansion}\label{ch:cheeger}
 \begin{center}\itshape
-The second eigenvalue of a regular graph says how cheaply the graph can be cut,\\
-and how fast a random walk forgets where it started.
+A bottleneck has a small boundary; a Laplacian eigenvector helps us find it.
 \end{center}
 
-How do you tell, from a list of numbers, that a network has a bottleneck? A connected graph can still be easy to split in two: two dense clusters joined by three
-cables are connected, but cutting three cables disconnects them. The cheapest cut, relative to the piece it removes, is the Cheeger constant, and computing it means
-trying exponentially many pieces. This chapter shows that one eigenvalue, the second smallest eigenvalue of the Laplacian, gives the Cheeger constant up to a square
-root, and that its eigenvector finds a good cut. The gap between the two largest adjacency eigenvalues then says how evenly the edges are spread and how fast a
-random walk forgets where it started. The graph spectra of the preceding chapter supply the eigenvalues; the expanders of the next chapter are the graphs for which
-the gap is as large as a tree allows.
+Two busy networks joined by three cables are connected. They are also easy to separate: cut those three cables. Mere connectedness misses the bottleneck. To measure it, compare the number of edges leaving a set with the number of vertices inside it. A small ratio means a large piece can be detached cheaply.
 
-The \emph{Laplacian} of a $d$-regular graph with adjacency matrix $A$ is $L=dI-A$. Since $x^{\mathsf T}Ax=2\sum_{uv\in E}x_ux_v$ and each vertex lies in $d$ edges,
+The matrix detects this weakness through a vector that is nearly constant on each side of the cut. Its coordinates change little across most edges, so its energy is small. Minimising that energy under a zero-sum constraint produces the second Laplacian eigenvalue. Cheeger's inequality compares it with the cheapest cut, and its proof gives a way to find a cut by sorting the eigenvector's coordinates.
+
+Unless specified otherwise, take a finite simple $d$-regular graph with $n\ge2$ vertices. For its adjacency matrix $A$, define the \emph{Laplacian} $L=dI-A$. More generally the Laplacian of a nonregular graph is $D-A$, where $D$ is the diagonal matrix of degrees; this convention is needed for the path exercise. In either case,
 \[
-x^{\mathsf T}Lx=\sum_{uv\in E}(x_u-x_v)^2\qquad(x\in\R^n),
+x^{\mathsf T}Lx=\sum_{uv\in E}(x_u-x_v)^2.
 \]
-a sum over the edges, each counted once. So $L$ is positive semi-definite, $L\mathbf1=0$, and its eigenvalues are $\mu_i=d-\lambda_i$, where $\lambda_1\ge\dots\ge\lambda_n$ are those of $A$.
-The next lemma is the part of the Courant--Fischer theorem (Theorem~\ref{linear:thm:courantfischer}) that we need, with its two-line proof.
+Each edge is counted once. Expanding its square gives the identity, since the coefficient of $x_u^2$ is the degree of $u$. Thus $L$ is positive semidefinite and $L\mathbf1=0$. For a regular graph its eigenvalues in increasing order are $\mu_i=d-\lambda_i$, where $\lambda_1\ge\cdots\ge\lambda_n$ are the adjacency eigenvalues.
+
+The Rayleigh argument from Theorem~\ref{linear:thm:courantfischer} has a particularly useful form here.
 
 \begin{lemma}[Rayleigh]\label{expansion:lem:rayleigh}
-Let $M$ be a real symmetric matrix with eigenvalues $\nu_1\le\dots\le\nu_n$ and orthonormal eigenvectors $\psi_1,\dots,\psi_n$. If $x\ne0$ is orthogonal to
-$\psi_1,\dots,\psi_{k-1}$, then $x^{\mathsf T}Mx\ge\nu_kx^{\mathsf T}x$, with equality for $x=\psi_k$. For the Laplacian $L$ of a graph, with eigenvalues $0=\mu_1\le\mu_2\le\dots\le\mu_n$,
+Let a real symmetric matrix $M$ have eigenvalues $\nu_1\le\cdots\le\nu_n$ with an orthonormal eigenbasis $\psi_1,\ldots,\psi_n$. If a non-zero vector $x$ is orthogonal to $\psi_1,\ldots,\psi_{k-1}$, then
+$x^{\mathsf T}Mx\ge\nu_kx^{\mathsf T}x$.
+Equality is attained by $x=\psi_k$. In particular, for a graph Laplacian with $0=\mu_1\le\cdots\le\mu_n$,
 \[
-\mu_2=\min\Bigl\{\frac{x^{\mathsf T}Lx}{x^{\mathsf T}x}:x\ne0,\ x\perp\mathbf1\Bigr\}.
+\mu_2=\min_{x\ne0,\ x\perp\mathbf1}\frac{x^{\mathsf T}Lx}{x^{\mathsf T}x}.
 \]
 \end{lemma}
 \begin{proof}
-Write $x=\sum_ic_i\psi_i$; then $x^{\mathsf T}x=\sum_ic_i^2$ and $x^{\mathsf T}Mx=\sum_i\nu_ic_i^2$. If $c_1=\dots=c_{k-1}=0$, this is at least $\nu_k\sum_ic_i^2$. For $L$, the first eigenvector is proportional to $\mathbf1$.
+Write $x=\sum_ic_i\psi_i$. Orthogonality gives $c_i=0$ for $i<k$, so
+$x^{\mathsf T}Mx=\sum_{i\ge k}\nu_ic_i^2\ge\nu_k\sum_{i\ge k}c_i^2$.
+Taking $x=\psi_k$ attains equality. For the Laplacian, choose $\psi_1=\mathbf1/\sqrt n$ and complete it to an eigenbasis, including any further zero eigenvectors. The case $k=2$ gives the formula even when the graph is disconnected.
 \end{proof}
 
 \section{Cutting a graph: Cheeger's inequality}\label{spectral:sec:cheeger}
 
-How well connected is a connected graph? A natural measure is the cheapest way to cut off a piece of it, relative to the size of the piece. Let $G$ be $d$-regular with $n$
-vertices. For $S\subseteq V$, write $\bar S=V\setminus S$ and $e(S,\bar S)$ for the number of edges between $S$ and $\bar S$. The \emph{edge expansion}, or \emph{Cheeger constant}, of $G$ is
+For a vertex set $S$, put $\bar S=V\setminus S$ and let $e(S,\bar S)$ count edges crossing its boundary. The \emph{Cheeger constant}, or \emph{edge expansion}, is
 \[
-h(G)=\min\Bigl\{\frac{e(S,\bar S)}{|S|}:S\ne\varnothing,\ |S|\le\frac n2\Bigr\}.
+h(G)=\min_{\varnothing\ne S,\ |S|\le n/2}\frac{e(S,\bar S)}{|S|}.
 \]
-Computing $h(G)$ exactly is NP-hard in general. The second eigenvalue gives it up to a square root, and its eigenvector gives a good cut.
+We always use the smaller side of a cut. Finding the exact minimum is NP-hard in general. The eigenvalue gives two bounds with no search through all subsets.
 
 \begin{theorem}[Cheeger's inequality: Dodziuk, 1984; Alon and Milman, 1985]\label{spectral:thm:cheeger}
-For every $d$-regular graph,
+Every $d$-regular graph on at least two vertices satisfies
 \[
-\frac{\mu_2}2\le h(G)\le\sqrt{2d\mu_2}.
+\frac{\mu_2}{2}\le h(G)\le\sqrt{2d\mu_2}.
 \]
 \end{theorem}
 \begin{proof}
-\emph{Lower bound.} Let $S$ achieve $h(G)$, $s=|S|\le\frac n2$, and $x=\mathbf1_S-\frac sn\mathbf1$, which is orthogonal to $\mathbf1$. An edge contributes $(x_u-x_v)^2=1$ if it crosses between
-$S$ and $\bar S$ and $0$ otherwise, so $x^{\mathsf T}Lx=e(S,\bar S)$, while $x^{\mathsf T}x=s(1-\frac sn)^2+(n-s)\frac{s^2}{n^2}=\frac{s(n-s)}n$. By Lemma~\ref{expansion:lem:rayleigh},
+\emph{From a cut to a vector.} Choose a minimising set $S$, with $s=|S|\le n/2$, and centre its indicator:
+$x=\mathbf1_S-(s/n)\mathbf1$.
+It is non-zero and orthogonal to $\mathbf1$. Its coordinate difference across an edge is zero unless that edge crosses the cut, when its square is $1$. Also
 \[
-\mu_2\le\frac{n\,e(S,\bar S)}{s(n-s)}\le\frac{2e(S,\bar S)}s=2h(G),
+x^{\mathsf T}Lx=e(S,\bar S),\qquad
+\|x\|^2=s(1-s/n)^2+(n-s)(s/n)^2=\frac{s(n-s)}n.
 \]
-as $n-s\ge\frac n2$.
+The Rayleigh lemma therefore gives
+$\mu_2\le ne(S,\bar S)/(s(n-s))\le2h(G)$.
+This proves the lower bound.
 
-\emph{Upper bound.} Let $x$ be an eigenvector of $\mu_2$. It is orthogonal to $\mathbf1$ and non-zero, so it has positive and negative entries; replacing $x$ by $-x$ if necessary, the set
-$V^+=\{v:x_v>0\}$ has at most $\frac n2$ elements. Let $y_v=\max(x_v,0)$.
-
-First, $y^{\mathsf T}Ly\le\mu_2\,y^{\mathsf T}y$. For $v\in V^+$, $(Ly)_v=dy_v-\sum_{u\sim v}y_u\le dx_v-\sum_{u\sim v}x_u=(Lx)_v=\mu_2x_v=\mu_2y_v$, since $y_u\ge x_u$ and $y_v=x_v$. So
-$y^{\mathsf T}Ly=\sum_{v\in V^+}y_v(Ly)_v\le\mu_2\sum_vy_v^2$.
-
-Second, for $t\ge0$ let $S_t=\{v:y_v^2>t\}\subseteq V^+$, so $|S_t|\le\frac n2$ and $e(S_t,\bar S_t)\ge h(G)|S_t|$. An edge $uv$ crosses the cut $(S_t,\bar S_t)$ exactly for $t$ between $y_u^2$ and $y_v^2$,
-an interval of length $|y_u^2-y_v^2|$. Integrating over $t$,
+\emph{From a vector to cuts.} Choose a $\mu_2$-eigenvector $x\perp\mathbf1$, $x\ne0$. Both positive and negative coordinates occur. Replace $x$ by $-x$ if needed so that its positive support has size at most $n/2$. Put $y_v=\max(x_v,0)$, a non-zero vector supported on that set.
+For $y_v>0$, we have $y_v=x_v$ and $y_u\ge x_u$ for every neighbour, whence
 \[
-\sum_{uv\in E}|y_u^2-y_v^2|=\int_0^\infty e(S_t,\bar S_t)\dd t\ge h(G)\int_0^\infty|S_t|\dd t=h(G)\sum_vy_v^2,
+(Ly)_v=dy_v-\sum_{u\sim v}y_u\le dx_v-\sum_{u\sim v}x_u=\mu_2y_v.
 \]
-since a vertex $v$ lies in $S_t$ for $t$ in an interval of length $y_v^2$.
+Multiplying by $y_v$ and summing proves $y^{\mathsf T}Ly\le\mu_2\|y\|^2$.
 
-Third, by the Cauchy--Schwarz inequality and $(a+b)^2\le2a^2+2b^2$,
+For $t\ge0$, let $S_t=\{v:y_v^2>t\}$. Every nonempty such set has at most $n/2$ vertices. The values of $t$ for which an edge $uv$ crosses its boundary form an interval of length $|y_u^2-y_v^2|$. The values for which a vertex belongs to $S_t$ have total length $y_v^2$. Integrating these finite step functions gives
 \[
-\begin{aligned}\sum_{uv\in E}|y_u^2-y_v^2|&=\sum_{uv\in E}|y_u-y_v|(y_u+y_v)\eqbr\le\sqrt{y^{\mathsf T}Ly}\,\sqrt{\textstyle\sum_{uv\in E}2(y_u^2+y_v^2)}=\sqrt{y^{\mathsf T}Ly}\,\sqrt{2d\textstyle\sum_vy_v^2},\end{aligned}
+h(G)\|y\|^2\le\int_0^\infty e(S_t,\bar S_t)\dd t
+=\sum_{uv\in E}|y_u^2-y_v^2|.
 \]
-as each vertex is in $d$ edges. Combining the three steps, $h(G)\sum_vy_v^2\le\sqrt{2d\mu_2}\sum_vy_v^2$, and $y\neq0$.
+Cauchy--Schwarz bounds the last sum by
+\[
+\begin{aligned}
+\sum_{uv\in E}|y_u-y_v|(y_u+y_v)
+&\le\sqrt{y^{\mathsf T}Ly}\,
+ \sqrt{\sum_{uv\in E}(y_u+y_v)^2}\\
+&\le\sqrt{\mu_2\|y\|^2}\,\sqrt{2d\|y\|^2}.
+\end{aligned}
+\]
+For the second bound use $(a+b)^2\le2a^2+2b^2$ and count each vertex in $d$ edges. Dividing by $\|y\|^2>0$ finishes the proof.
 \end{proof}
 
-The proof is an algorithm, called \emph{spectral partitioning}. The integral inequality $\int_0^\infty e(S_t,\bar S_t)\dd t\le\sqrt{2d\mu_2}\int_0^\infty|S_t|\dd t$ shows that some $t$ satisfies
-$e(S_t,\bar S_t)\le\sqrt{2d\mu_2}\,|S_t|$, and the sets $S_t$ are the $n$ or fewer \emph{sweep sets}: sort the vertices by the value of the eigenvector $x$ and try every threshold. The eigenvector of $\mu_2$
-is called the \emph{Fiedler vector}, after Miroslav Fiedler, who named $\mu_2$ the \emph{algebraic connectivity} of the graph in 1973. In 2000 Jianbo Shi and
-Jitendra Malik used a normalised version of this idea to segment images, the pixels being vertices joined according to their similarity, and \emph{spectral clustering} became a standard tool of
-data analysis.
+The proof supplies a finite procedure called \emph{spectral partitioning}. Between consecutive distinct positive values of $y_v^2$, the set $S_t$ is unchanged. At least one nonempty such set has boundary ratio at most $\sqrt{2d\mu_2}$: otherwise summing the strictly larger ratios with their positive interval lengths would contradict the proved integral inequality. Sorting the coordinates leaves at most $n$ different \emph{sweep sets} to inspect.
 
-Both inequalities are tight up to constants. For the hypercube $Q_n$, $\mu_2=2$ (Example~\ref{linear:exa:spectra}), so $h(Q_n)\ge1$; cutting along a coordinate gives $2^{n-1}$ edges for $2^{n-1}$ vertices, so $h(Q_n)=1$ and the left side is attained. For the cycle, $\mu_2\approx\frac{4\pi^2}{n^2}$ while $h(C_n)\approx\frac4n$, so the square root on the right is necessary (Exercise~\ref{spectral:ex:cheegercycle}).
+The eigenvector is often called a \emph{Fiedler vector}. Fiedler studied $\mu_2$ as algebraic connectivity in 1973. Shi and Malik's 2000 image-segmentation work used a normalised cut problem on a graph of pixels. The shared idea is concrete: vertices with similar eigenvector coordinates can be grouped together.
+
+The cube attains the lower bound. Its second Laplacian eigenvalue is $2$, by Example~\ref{linear:exa:spectra}, so $h(Q_n)\ge1$. A coordinate half-cube has one outgoing edge per vertex, giving $h(Q_n)=1$. Cycles show why the upper bound needs a square root: their expansion is of order $1/n$, whereas $\mu_2$ is of order $1/n^2$. Exercise~\ref{spectral:ex:cheegercycle} computes the constants.
 
 \begin{figure}[ht]
 \centering
@@ -90,160 +95,245 @@ sweep set (dashed threshold) is exactly one cluster (charcoal): the cut crosses 
 
 \section{Expanders}
 
-For a $d$-regular graph, let $d=\lambda_1\ge\lambda_2\ge\dots\ge\lambda_n$ be the eigenvalues of $A$ (so $\mu_i=d-\lambda_i$), and $\lambda=\max(|\lambda_2|,|\lambda_n|)$, the largest absolute value of an
-eigenvalue other than $d$. A $d$-regular graph on $n$ vertices with this $\lambda$ is called an \emph{$(n,d,\lambda)$-graph}. Cheeger's inequality says that $h(G)\ge\frac{d-\lambda_2}2$: if $\lambda$ is small compared
-with $d$, every set of at most half the vertices has many edges leaving it. A family of $d$-regular graphs with $n\to\infty$ and $\lambda\le(1-\varepsilon)d$ is a family of \emph{expanders}. The
-next lemma says that in such a graph, edges are spread as if at random.
+To control both positive and negative adjacency eigenvalues, put
+\[
+\lambda=\max(|\lambda_2|,|\lambda_n|).
+\]
+This means the operator norm on $\mathbf1^\perp$, including further copies of $d$ if the graph is disconnected. A graph with these parameters is an \emph{$(n,d,\lambda)$-graph}. Cheeger's lower bound says $h(G)\ge(d-\lambda_2)/2$. Thus a small $\lambda/d$ forces every small set to have many boundary edges.
+
+For fixed $d$, a sequence with vertex counts tending to infinity and $\lambda\le(1-\varepsilon)d$, for some fixed $\varepsilon>0$, is a family of expanders with a two-sided spectral gap. Some authors use a one-sided gap $d-\lambda_2$ instead. The distinction matters for bipartite graphs: they have eigenvalue $-d$, so their non-lazy walks alternate between the two sides even when their cuts expand well.
+
+The same centred indicators used for cuts also count edges between arbitrary sets.
 
 \begin{lemma}[expander mixing lemma, Alon and Chung, 1988]\label{spectral:lem:mixing}
-Let $G$ be an $(n,d,\lambda)$-graph and $S,T\subseteq V$. Let $e(S,T)$ be the number of pairs $(s,t)\in S\times T$ with $s\sim t$. Then
+Let $G$ be an $(n,d,\lambda)$-graph. For $S,T\subseteq V$, let $e(S,T)$ count ordered adjacent pairs $(s,t)\in S\times T$. Then
 \[
-\Bigl|e(S,T)-\frac{d|S||T|}n\Bigr|\le\lambda\sqrt{|S||T|\Bigl(1-\frac{|S|}n\Bigr)\Bigl(1-\frac{|T|}n\Bigr)}\le\lambda\sqrt{|S||T|}.
+\begin{aligned}
+\left|e(S,T)-\frac{d|S||T|}{n}\right|
+&\le\lambda\sqrt{|S||T|(1-|S|/n)(1-|T|/n)}\\
+&\le\lambda\sqrt{|S||T|}.
+\end{aligned}
 \]
 \end{lemma}
 \begin{proof}
-Write $\mathbf1_S=\frac{|S|}n\mathbf1+x$ and $\mathbf1_T=\frac{|T|}n\mathbf1+y$, with $x,y\perp\mathbf1$. Then $e(S,T)=\mathbf1_S^{\mathsf T}A\mathbf1_T$, and since $A\mathbf1=d\mathbf1$ and $A$ maps $\mathbf1^\perp$ to itself,
+Write $\mathbf1_S=(|S|/n)\mathbf1+x$ and $\mathbf1_T=(|T|/n)\mathbf1+y$. Both remainders are orthogonal to $\mathbf1$. Regularity cancels the cross terms, leaving
 \[
-e(S,T)=\frac{|S||T|}{n^2}\,\mathbf1^{\mathsf T}A\mathbf1+x^{\mathsf T}Ay=\frac{d|S||T|}n+x^{\mathsf T}Ay.
+e(S,T)=\mathbf1_S^{\mathsf T}A\mathbf1_T
+=\frac{d|S||T|}{n}+x^{\mathsf T}Ay.
 \]
-Expand $x=\sum_{i\ge2}c_i\psi_i$ and $y=\sum_{i\ge2}c'_i\psi_i$ in an orthonormal eigenbasis of $A$ with $\psi_1\propto\mathbf1$: $|x^{\mathsf T}Ay|=|\sum_{i\ge2}\lambda_ic_ic'_i|\le\lambda\|x\|\|y\|$ by the Cauchy--Schwarz
-inequality. Finally $\|x\|^2=\|\mathbf1_S\|^2-\frac{|S|^2}n=|S|(1-\frac{|S|}n)$, and likewise for $y$.
+On $\mathbf1^\perp$, the eigenbasis gives $\|Ay\|\le\lambda\|y\|$. Cauchy--Schwarz bounds the error by $\lambda\|x\|\|y\|$. Finally $\|x\|^2=|S|(1-|S|/n)$ and the analogous identity holds for $y$. Dropping the two factors at most $1$ gives the second bound.
 \end{proof}
 
-For instance an independent set $S$ has $e(S,S)=0$, so $\frac{d|S|^2}n\le\lambda|S|(1-\frac{|S|}n)$, that is $|S|\le\frac{n\lambda}{d+\lambda}$ (compare Hoffman's bound, Theorem~\ref{linear:thm:hoffman}). The lemma also
-bounds the diameter (Exercise~\ref{spectral:ex:diameter}) and shows that random walks forget their starting point exponentially fast (Exercise~\ref{spectral:ex:walkmixing}). Good expanders want $\lambda$ as small as
-possible. How small can it be?
+For an independent nonempty $S$, the ordered count $e(S,S)$ is zero. The lemma yields $d|S|^2/n\le\lambda|S|(1-|S|/n)$ and hence $|S|\le n\lambda/(d+\lambda)$ when $d>0$. Compare the least-eigenvalue bound in Theorem~\ref{linear:thm:hoffman}. Powers of $A$ give further consequences: short paths between all pairs of vertices and convergence of random walks, proved in Exercises~\ref{spectral:ex:diameter} and~\ref{spectral:ex:walkmixing}.
+
+How small can the nonconstant eigenvalues be in a large regular graph? A pair of test vectors supported far apart gives a universal obstruction.
 
 \begin{theorem}[Alon and Boppana, 1986; Nilli's proof, 1991]\label{spectral:thm:alonboppana}
-Let $G$ be $d$-regular, $d\ge2$, with two edges $\{v_1,v_2\}$ and $\{u_1,u_2\}$ whose endpoints are at distance at least $2k+2$ from each other. Then
+Let $d\ge2$ and let $k$ be a non-negative integer. Suppose a $d$-regular graph contains two edges such that every endpoint of one is at distance at least $2k+2$ from every endpoint of the other. Then
 \[
 \lambda_2\ge2\sqrt{d-1}-\frac{2\sqrt{d-1}-1}{k+1}.
 \]
 \end{theorem}
 \begin{proof}
-We build a test vector for Lemma~\ref{expansion:lem:rayleigh} that looks, near each of the two edges, like the eigenvector of an infinite $d$-regular tree. Let $V_i$ be the set of vertices at distance
-exactly $i$ from $\{v_1,v_2\}$, for $0\le i\le k$, and $a_i=(d-1)^{-i/2}$. Define $f_x=a_i$ for $x\in V_i$, $i\le k$, and $f_x=0$ elsewhere.
-
-Every vertex of $V_i$ with $i\ge1$ has a neighbour in $V_{i-1}$, and each of $v_1,v_2$ has the other as a neighbour in $V_0$; so each vertex of $V_i$ has at most $d-1$ neighbours in $V_{i+1}$, and
-$|V_{i+1}|\le(d-1)|V_i|$. Edges inside some $V_i$, or outside $V_0\cup\dots\cup V_{k+1}$, contribute nothing to $f^{\mathsf T}Lf=\sum_{xy\in E}(f_x-f_y)^2$. Edges between $V_i$ and $V_{i+1}$ number at most
-$(d-1)|V_i|$, so
+Around the first edge $\{v_1,v_2\}$, let $V_i$ consist of vertices at distance $i$ from that edge. Set $a_i=(d-1)^{-i/2}$ and define $f$ to equal $a_i$ on $V_i$ for $0\le i\le k$, and zero elsewhere.
+Every vertex in a positive layer has a neighbour in the preceding layer; the two vertices in $V_0$ are neighbours of one another. Each vertex therefore has at most $d-1$ neighbours in the next layer. Consequently $|V_{i+1}|\le(d-1)|V_i|$.
+Only edges between successive layers contribute to the energy, including those leaving $V_k$. There are at most $(d-1)|V_i|$ edges from layer $i$ to layer $i+1$, so
 \[
-f^{\mathsf T}Lf\le\sum_{i=0}^{k-1}(d-1)|V_i|(a_i-a_{i+1})^2+(d-1)|V_k|a_k^2.
+f^{\mathsf T}Lf\le\sum_{i=0}^{k-1}(d-1)|V_i|(a_i-a_{i+1})^2
++(d-1)|V_k|a_k^2.
 \]
-Now $(d-1)(a_i-a_{i+1})^2=a_i^2(\sqrt{d-1}-1)^2=a_i^2(d-2\sqrt{d-1})$, and $(d-1)a_k^2=a_k^2(d-2\sqrt{d-1})+a_k^2(2\sqrt{d-1}-1)$. Hence
+Put $b=\sqrt{d-1}$. Since $(d-1)(a_i-a_{i+1})^2=(d-2b)a_i^2$, this becomes
 \[
-f^{\mathsf T}Lf\le(d-2\sqrt{d-1})\sum_{i=0}^k|V_i|a_i^2+(2\sqrt{d-1}-1)|V_k|a_k^2.
+f^{\mathsf T}Lf\le(d-2b)\|f\|^2+(2b-1)|V_k|a_k^2.
 \]
-The numbers $|V_i|a_i^2$ do not increase with $i$, since $|V_{i+1}|a_{i+1}^2\le(d-1)|V_i|\frac{a_i^2}{d-1}$; so the last one is at most their average, $|V_k|a_k^2\le\frac1{k+1}\sum_i|V_i|a_i^2=\frac{f^{\mathsf T}f}{k+1}$. With
-$\theta=d-2\sqrt{d-1}+\frac{2\sqrt{d-1}-1}{k+1}$ we get $f^{\mathsf T}Lf\le\theta f^{\mathsf T}f$.
+The layer masses $|V_i|a_i^2$ are non-increasing. Their last value is at most their average, giving $|V_k|a_k^2\le\|f\|^2/(k+1)$. Thus
+$f^{\mathsf T}Lf\le\theta\|f\|^2$, where $\theta=d-2b+(2b-1)/(k+1)$.
 
-Define $g$ in the same way around $\{u_1,u_2\}$; also $g^{\mathsf T}Lg\le\theta g^{\mathsf T}g$. The supports of $f$ and $g$ are at distance at least $2k+2-2k=2$, so they are disjoint and no edge joins them.
-Choose $c$ with $h=f-cg\perp\mathbf1$ (possible as $\sum g>0$). Then $h\ne0$, and since no edge meets both supports, $h^{\mathsf T}Lh=f^{\mathsf T}Lf+c^2g^{\mathsf T}Lg\le\theta(f^{\mathsf T}f+c^2g^{\mathsf T}g)=\theta h^{\mathsf T}h$. By
-Lemma~\ref{expansion:lem:rayleigh}, $\mu_2\le\theta$, that is $\lambda_2=d-\mu_2\ge d-\theta$.
+Construct $g$ around the other edge in exactly the same way. Its energy obeys the same bound. The distance hypothesis puts the two supports at distance at least $2$, so they are disjoint and no edge joins them. Choose $c=(\sum_v f_v)/(\sum_v g_v)>0$. Then $h=f-cg$ is non-zero and orthogonal to $\mathbf1$. Disjointness and the absence of joining edges give
+\[
+h^{\mathsf T}Lh=f^{\mathsf T}Lf+c^2g^{\mathsf T}Lg
+\le\theta(\|f\|^2+c^2\|g\|^2)=\theta\|h\|^2.
+\]
+The Rayleigh lemma gives $\mu_2\le\theta$, or $\lambda_2=d-\mu_2\ge d-\theta$, which is the claimed estimate.
 \end{proof}
 
-A $d$-regular graph with $n$ vertices has at most $2(1+(d-1)+\dots+(d-1)^r)$ vertices within distance $r$ of a given edge, so when $n\to\infty$ with $d$ fixed, there are edges at distance $2k+2$ for larger
-and larger $k$: $\lambda_2\ge2\sqrt{d-1}-o(1)$. The number $2\sqrt{d-1}$ is the spectral radius of the infinite $d$-regular tree, which every large $d$-regular graph resembles locally. Graphs with
-$\lambda\le2\sqrt{d-1}$ are called \emph{Ramanujan graphs}: Lubotzky, Phillips and Sarnak (1988), and independently Margulis, built them for $d-1$ a prime congruent to $1$ modulo $4$, using Ramanujan's conjecture on the
-coefficients of modular forms (proved by Deligne), and Marcus, Spielman and Srivastava (2013) proved that bipartite Ramanujan graphs exist for every degree, with a new method of ``interlacing
-families'' of polynomials. The next chapter tells this story. And Joel Friedman proved in 2008 that a \emph{random} $d$-regular graph has $\lambda\le2\sqrt{d-1}+\varepsilon$ with probability tending to $1$: almost all
-regular graphs are almost optimal expanders, while building one explicitly is hard.
+At most $2\sum_{i=0}^r(d-1)^i$ vertices lie within distance $r$ of an edge. For fixed degree, sufficiently large connected graphs therefore contain edge pairs at arbitrarily large distances. If a regular graph is disconnected, its repeated top eigenvalue already gives $\lambda_2=d\ge2\sqrt{d-1}$. In either case the theorem implies $\lambda_2\ge2\sqrt{d-1}-o(1)$ as the vertex count tends to infinity. Exercise~\ref{spectral:ex:moorebound} makes the size estimate explicit.
+
+The number $2\sqrt{d-1}$ is the adjacency spectral radius of the infinite $d$-regular tree, proved in the next chapter. A connected $d$-regular graph is called \emph{Ramanujan} when every eigenvalue other than the trivial values $d$ and, if present, $-d$, has absolute value at most $2\sqrt{d-1}$. For a nonbipartite graph this says $\lambda\le2\sqrt{d-1}$ in our notation. Bipartite Ramanujan graphs keep the additional trivial eigenvalue $-d$; they do not satisfy that two-sided bound with our present $\lambda$.
+
+Lubotzky, Phillips and Sarnak, and independently Margulis, constructed Ramanujan families using number theory in 1988. Marcus, Spielman and Srivastava later proved the existence of bipartite Ramanujan families in every degree. Friedman's 2008 theorem says that, for fixed $d\ge3$ and each $\varepsilon>0$, a uniformly random simple $d$-regular graph has $\lambda\le2\sqrt{d-1}+\varepsilon$ with probability tending to $1$ along admissible vertex counts. These results are quoted here; the next chapter develops the tree, constructions and graph zeta function behind them.
 
 \begin{beauty}
-Two numbers attached to a matrix, the second smallest Laplacian eigenvalue and the gap to the spectral radius of a tree, answer two questions that seem to have nothing to do with
-linear algebra: how cheaply a network can be cut, and how fast a walk forgets its start. The count of the spanning trees, the product of the non-zero eigenvalues divided by $n$, is a third answer, proved later in the series (Volume~12, Appendix~A).
+A small cut gives a vector with little edge energy. An eigenvector with little energy gives a small cut. Cheeger's proof carries the information in both directions, using only coordinate differences, level sets and Cauchy--Schwarz. That is why an algebraic minimisation can return a useful partition of an actual network.
 \end{beauty}
 
-\section{What we proved, and what comes next}
+\section{The tree sets the scale}
 
-The opening asked how a list of numbers can reveal a bottleneck. The second smallest Laplacian eigenvalue does it: $\frac{\mu_2}2\le h(G)\le\sqrt{2d\mu_2}$
-(Theorem~\ref{spectral:thm:cheeger}), and the proof is an algorithm that finds the cut. When all the eigenvalues other than $d$ are small in absolute value, edges
-are spread as if at random (Lemma~\ref{spectral:lem:mixing}), the diameter is logarithmic and random walks mix exponentially fast. But no large $d$-regular graph
-can do better than $\lambda_2\approx2\sqrt{d-1}$ (Theorem~\ref{spectral:thm:alonboppana}).
+A spectral gap controls three different tasks: finding a cut, comparing edge counts with their uniform average, and estimating a walk's remaining dependence on its start. The sign of the bottom eigenvalue matters for the last task; bipartite alternation survives even when the upper gap is large.
 
-Graphs that reach this bound exist, and building them is the subject of the next chapter. It needs a little number theory, and it gives a graph a zeta function with
-its own Riemann hypothesis.
+The obstruction $2\sqrt{d-1}$ suggests a new goal. Can finite graphs match the tree's nontrivial spectral bound? Chapter~\ref{ch:expanders} studies those graphs and the zeta function that expresses their bound as a graph version of the Riemann hypothesis.
+
+\begin{figure}[ht]
+\centering\fig{ch06-rw-levels}
+\caption{For squared coordinates $9,4,1,0$, thresholding produces three nonempty level sets. The three sets have sizes $3,2,1$ and durations $1,3,5$, so the integral of set size is $3\cdot1+2\cdot3+1\cdot5=14=9+4+1$.}
+\label{fig:v8c06levels}
+\end{figure}
+\begin{figure}[ht]
+\centering\fig{ch06-rw-bipartite}
+\caption{On $C_4$, the vector $(1,-1,1,-1)$ has adjacency eigenvalue $-2$. A usual walk reverses this component at every step; a lazy walk, staying put with probability $1/2$, removes it in one step.}
+\label{fig:v8c06bipartite}
+\end{figure}
 
 \section{Exercises}
 \begin{exercise}[$\star$]\label{spectral:ex:cheegercycle}
-Show that $h(C_n)=\frac2{\lfloor n/2\rfloor}$ and $\mu_2(C_n)=2-2\cos\frac{2\pi}n$. Conclude that in Theorem~\ref{spectral:thm:cheeger} the upper bound cannot be replaced by $c\,\mu_2$ for any constant $c$.
+Compute $h(C_n)$ and $\mu_2(C_n)$ exactly, obtaining $2/\lfloor n/2\rfloor$ and $2-2\cos(2\pi/n)$. Prove that no absolute constant $c$ can replace Cheeger's upper bound by $h(G)\le c\mu_2$ for all regular graphs.
 \end{exercise}
 \begin{exercise}[$\star\star$]\label{spectral:ex:diameter}
-Let $G$ be a connected $(n,d,\lambda)$-graph with $\lambda<d$. Show that $(A^t)_{uv}\ge\frac{d^t}n-\lambda^t$ for all vertices $u,v$, and deduce that the diameter of $G$ is at most
-$\bigl\lfloor\frac{\ln n}{\ln(d/\lambda)}\bigr\rfloor+1$.
+For a connected $(n,d,\lambda)$-graph with $\lambda<d$, prove $(A^t)_{uv}\ge d^t/n-\lambda^t$ for all vertices and non-negative integers $t$. Deduce a diameter bound of $\lfloor\ln n/\ln(d/\lambda)\rfloor+1$.
 \end{exercise}
 \begin{exercise}[$\star$]\label{spectral:ex:walkmixing}
-A random walk on a $d$-regular graph moves from its current vertex to a uniform random neighbour. Let $p_t$ be the distribution after $t$ steps and $u=\frac1n\mathbf1$. Show that $p_{t+1}=\frac1dAp_t$
-and $\|p_t-u\|\le(\frac\lambda d)^t$ for an $(n,d,\lambda)$-graph.
+Assume $d>0$. A walk chooses a uniform neighbour at each step, and $p_t$ is its probability vector. For $u=\mathbf1/n$, prove $p_{t+1}=Ap_t/d$ and $\|p_t-u\|\le(\lambda/d)^t$ on an $(n,d,\lambda)$-graph. Allow any initial probability distribution.
 \end{exercise}
 \begin{exercise}[$\star$]\label{spectral:ex:petersenalpha}
-Use Lemma~\ref{spectral:lem:mixing} to show that the Petersen graph has no independent set of $5$ vertices. Find one of $4$.
+Apply the mixing lemma to rule out an independent set of five vertices in the Petersen graph. Exhibit one with four vertices.
 \end{exercise}
 \begin{exercise}[$\star\star$]\label{spectral:ex:fiedlerpath}
-Show that the eigenvalues of the Laplacian of the path $P_n$ are $2-2\cos\frac{j\pi}n$, $j=0,\dots,n-1$, with eigenvectors $x_v=\cos\frac{j\pi(2v-1)}{2n}$, $v=1,\dots,n$. What cut does the sweep of
-the Fiedler vector find?
+For the path $P_n$ with $n\ge2$, show that its Laplacian eigenvalues are $2-2\cos(j\pi/n)$, with eigenvectors $x_v=\cos(j\pi(2v-1)/(2n))$, for $j=0,\ldots,n-1$ and $v=1,\ldots,n$. Describe the cut found by sweeping a Fiedler vector.
 \end{exercise}
 \begin{exercise}[$\star$]\label{spectral:ex:moorebound}
-(a) Show that at most $2\bigl(1+(d-1)+\dots+(d-1)^r\bigr)$ vertices of a $d$-regular graph are within distance $r$ of a given edge, with equality when the graph has girth at least $2r+2$.
-(b) Deduce that a $d$-regular graph with more than $2\bigl(1+(d-1)+\dots+(d-1)^{2k+2}\bigr)$ vertices has two edges at distance at least $2k+2$, so that Theorem~\ref{spectral:thm:alonboppana} applies.
+(a) Bound the number of vertices within distance $r$ of a fixed edge by $2\sum_{i=0}^r(d-1)^i$ in a $d$-regular graph with $d\ge2$. Prove equality if the girth is at least $2r+2$.
+(b) If the graph has more than $2\sum_{i=0}^{2k+2}(d-1)^i$ vertices, find two edges at endpoint distance at least $2k+2$. Conclude that Theorem~\ref{spectral:thm:alonboppana} applies.
 \end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:v8c06a}
+Compute $h(K_n)$ and $\mu_2(K_n)$ for $n\ge2$. Determine when the lower Cheeger bound is an equality.
+\end{exercise}
+\begin{exercise}[$\star\star$]\label{ex:v8c06b}
+On $C_4$ in cyclic order, let $P=(I+A/2)/2$ be the lazy transition matrix and start at vertex $1$. For each $t\ge1$, find the exact probability vector and its Euclidean distance from uniform. Compare with the usual walk's alternating eigenvector.
+\end{exercise}
+\begin{exercise}[$\star$]\label{ex:v8c06c}
+For $y=(3,2,1,0)$ on the path with edges $12,23,34$, compute $\int_0^\infty|S_t|\dd t$ and $\int_0^\infty e(S_t,\bar S_t)\dd t$, where $S_t=\{v:y_v^2>t\}$. Check the two level-set identities directly, and list all nonempty sweep sets.
+\end{exercise}
+\begin{exercise}[$\star\star$]\label{ex:v8c06d}
+Suppose a $d$-regular graph with $d>0$ has $\lambda_2<d$. For the lazy transition matrix $P=(I+A/d)/2$, prove
+\[
+\|p_t-u\|\le\left(1-\frac{d-\lambda_2}{2d}\right)^t\|p_0-u\|.
+\]
+Explain why this bound applies to connected bipartite graphs as well as nonbipartite ones.
+\end{exercise}
+
 \section{Hints}
 \begin{hint}{spectral:ex:cheegercycle}
-A set of $s$ vertices of a cycle has at least $2$ boundary edges, exactly $2$ for an arc.
+Each nonempty proper union of arcs has at least two boundary edges. For the eigenvalue, subtract the cycle's adjacency spectrum from $2$.
 \end{hint}
 \begin{hint}{spectral:ex:diameter}
-Use the spectral decomposition $A^t=\sum_i\lambda_i^t\psi_i\psi_i^{\mathsf T}$ and $\sum_i\psi_i(u)^2=1$.
+Separate the constant term in $A^t$ and use Cauchy--Schwarz on the remaining eigenvector coordinates. A positive entry counts at least one walk.
 \end{hint}
 \begin{hint}{spectral:ex:walkmixing}
-$p_t-u$ is orthogonal to $\mathbf1$.
+The difference $p_t-u$ lies in $\mathbf1^\perp$. For a general probability vector, $\sum_vp_0(v)^2\le1$.
 \end{hint}
 \begin{hint}{spectral:ex:petersenalpha}
-$\lambda=2$ for the Petersen graph.
+Use parameters $(n,d,\lambda)=(10,3,2)$ and take the two sets in the mixing lemma to be the same independent set.
 \end{hint}
 \begin{hint}{spectral:ex:fiedlerpath}
-Check $(Lx)_v=\mu x_v$ at the inner vertices with $\cos(a-b)+\cos(a+b)=2\cos a\cos b$, then at the ends.
+Extend the cosine formula to ghost coordinates $x_0=x_1$ and $x_{n+1}=x_n$ to verify both endpoint equations.
 \end{hint}
 \begin{hint}{spectral:ex:moorebound}
-Count the vertices at distance exactly $i$, as in the proof of Theorem~\ref{spectral:thm:alonboppana}.
+Grow two rooted trees away from the fixed edge. A repeated vertex within the prescribed depths would produce a short cycle.
 \end{hint}
+\begin{hint}{ex:v8c06a}
+A set of $s$ vertices has exactly $s(n-s)$ boundary edges. The Laplacian is $nI-J$.
+\end{hint}
+\begin{hint}{ex:v8c06b}
+Decompose the initial point mass into a constant vector, an adjacency-zero eigenvector and the alternating eigenvector with eigenvalue $-2$.
+\end{hint}
+\begin{hint}{ex:v8c06c}
+Use the intervals $[0,1)$, $[1,4)$ and $[4,9)$; endpoints have no effect on either integral.
+\end{hint}
+\begin{hint}{ex:v8c06d}
+An adjacency eigenvalue $\lambda_i$ becomes $(1+\lambda_i/d)/2$. All these numbers are non-negative.
+\end{hint}
+
 \section{Solutions}
 \begin{solution}{spectral:ex:cheegercycle}
-\idea Cutting an arc of the cycle costs two edges; the eigenvalue is tiny because a slowly varying cosine has small energy.
-\writeup A non-empty proper subset $S$ of the cycle is a union of $r\ge1$ arcs, with $2r\ge2$ boundary edges, so $\frac{e(S,\bar S)}{|S|}\ge\frac2{|S|}\ge\frac2{\lfloor n/2\rfloor}$, with equality for an arc of $\lfloor\frac n2\rfloor$ vertices. The
-eigenvalues of the cycle are $2-2\cos\frac{2\pi j}n$, the smallest non-zero one for $j=1$. As $n\to\infty$, $\mu_2\sim\frac{4\pi^2}{n^2}$ while $h(C_n)\sim\frac4n$: the ratio $\frac h{\mu_2}\sim\frac n{\pi^2}$ is unbounded, while
-$\frac h{\sqrt{2d\mu_2}}\to\frac1\pi$ ($d=2$). So no bound $h\le c\mu_2$ holds, and the square root is the right order.
+\idea An arc minimises the number of boundary edges, and the largest allowed arc minimises their ratio to size.
+\writeup A nonempty proper set in $C_n$ consists of $r\ge1$ arcs and has $2r$ boundary edges. For $|S|\le n/2$, its boundary ratio is therefore at least $2/\lfloor n/2\rfloor$. An arc of exactly that many vertices attains the bound. The adjacency eigenvalues give $\mu_2=2-2\cos(2\pi/n)$. The elementary limit $(1-\cos z)/z^2\to1/2$ shows
+\[
+h(C_n)\sim\frac4n,\qquad \mu_2(C_n)\sim\frac{4\pi^2}{n^2}.
+\]
+Their ratio tends to infinity, excluding any universal linear upper bound in $\mu_2$. In fact $h(C_n)/\sqrt{2d\mu_2}\to1/\pi$, so Cheeger's square-root scale has the correct order here.
 \end{solution}
 \begin{solution}{spectral:ex:diameter}
-\idea Count walks: the main term $\frac{d^t}n$ from the eigenvalue $d$ beats the error from the others once $t$ is large, and then every pair of vertices is joined by a walk of length $t$.
-\writeup With an orthonormal eigenbasis, $\psi_1=\frac1{\sqrt n}\mathbf1$, $(A^t)_{uv}=\sum_i\lambda_i^t\psi_i(u)\psi_i(v)=\frac{d^t}n+\sum_{i\ge2}\lambda_i^t\psi_i(u)\psi_i(v)$. The rows of the orthogonal matrix $(\psi_i(u))$ have norm $1$, so
-by Cauchy--Schwarz $\sum_{i\ge2}|\psi_i(u)\psi_i(v)|\le1$, and $(A^t)_{uv}\ge\frac{d^t}n-\lambda^t$. If $(\frac d\lambda)^t>n$, this is positive, so there is a walk of length $t$ from $u$ to $v$, and the distance is
-at most $t$. Note that $\lambda>0$, as the eigenvalues add up to $\operatorname{tr}A=0$. The integer $t=\lfloor\frac{\ln n}{\ln(d/\lambda)}\rfloor+1$ exceeds $\frac{\ln n}{\ln(d/\lambda)}$, so $(\frac d\lambda)^t>n$ and the diameter is at most $t$. Expanders have logarithmic diameter.
+\idea The constant spectral contribution eventually exceeds the absolute error from every other direction.
+\writeup Choose an orthonormal eigenbasis with $\psi_1=\mathbf1/\sqrt n$. The spectral expansion reads
+\[
+(A^t)_{uv}=\frac{d^t}{n}+\sum_{i\ge2}\lambda_i^t\psi_i(u)\psi_i(v).
+\]
+Cauchy--Schwarz bounds $\sum_{i\ge2}|\psi_i(u)\psi_i(v)|$ by $1$, since the complete rows of the eigenvector matrix have squared norm $1$. This proves the desired lower bound for every $t\ge0$. Here $0<\lambda<d$: connectedness on at least two vertices gives $d>0$, and trace zero prevents all remaining eigenvalues from vanishing. Choose
+$t=\lfloor\ln n/\ln(d/\lambda)\rfloor+1$.
+Then $(d/\lambda)^t>n$, making every entry of $A^t$ positive. A walk of length $t$ joins each pair, so their distance is at most $t$ and the diameter obeys the same bound.
 \end{solution}
 \begin{solution}{spectral:ex:walkmixing}
-\idea The uniform distribution is the eigenvector of the top eigenvalue, and everything orthogonal to it shrinks by a factor $\frac\lambda d$ per step.
-\writeup $p_{t+1}(v)=\sum_{u\sim v}\frac1dp_t(u)$, that is $p_{t+1}=\frac1dAp_t$ ($A$ is symmetric). Also $\frac1dAu=u$. So $p_{t+1}-u=\frac1dA(p_t-u)$, and $p_t-u$ has total mass $0$, so it lies in $\mathbf1^\perp$, where
-$\frac1dA$ has eigenvalues of absolute value at most $\frac\lambda d$: $\|p_{t+1}-u\|\le\frac\lambda d\|p_t-u\|$. By induction $\|p_t-u\|\le(\frac\lambda d)^t\|p_0-u\|$, and $\|p_0-u\|^2=1-\frac1n\le1$ for a walk started at a vertex. A bipartite
-graph has $\lambda_n=-d$, and the walk indeed never mixes: it alternates between the sides.
+\idea Remove the stationary component before applying the operator norm.
+\writeup The probability of arriving at $v$ is $p_{t+1}(v)=d^{-1}\sum_{w\sim v}p_t(w)$. This is the asserted matrix recursion. Since $Au=du$ and probability differences have coordinate sum zero,
+\[
+p_{t+1}-u=(A/d)(p_t-u),\qquad
+\|p_{t+1}-u\|\le(\lambda/d)\|p_t-u\|.
+\]
+Iteration gives the stronger bound with initial factor $\|p_0-u\|$. For any probability vector,
+$\|p_0-u\|^2=\sum_vp_0(v)^2-1/n\le1-1/n\le1$,
+which proves the stated estimate. In a bipartite graph $\lambda=d$, so this bound promises no decay; a point-started usual walk really does alternate between the two parts.
 \end{solution}
 \begin{solution}{spectral:ex:petersenalpha}
-\idea The mixing lemma with $S=T$ independent.
-\writeup The Petersen graph is a $(10,3,2)$-graph (eigenvalues $3,1,-2$). An independent set has $|S|\le\frac{n\lambda}{d+\lambda}=\frac{20}5=4$. In the usual drawing as the $2$-subsets of $\{1,\dots,5\}$, adjacent when disjoint,
-the four $2$-sets containing $1$ pairwise intersect, so they are independent. Here the mixing bound is as good as Hoffman's.
+\idea With no internal edges, an independent set's entire expected edge count must fit inside the mixing error.
+\writeup The spectrum $3,1,-2$ gives $\lambda=2$. For an independent set of size $s>0$, mixing gives $3s^2/10\le2s(1-s/10)$, or $s\le4$. Four pair vertices containing $1$ in the disjoint-pair model of Petersen have no edges between them, so the upper bound is attained.
 \end{solution}
 \begin{solution}{spectral:ex:fiedlerpath}
-\idea Cosines satisfy the three-term recurrence, and the half-integer shift makes the ends behave like reflecting walls.
-\writeup Let $\theta=\frac{j\pi}n$ and $x_v=\cos((v-\frac12)\theta)$. For $1<v<n$, $(Lx)_v=2x_v-x_{v-1}-x_{v+1}=2x_v-2\cos\theta\,x_v=(2-2\cos\theta)x_v$. At $v=1$, $(Lx)_1=x_1-x_2$, and the formula for the
-inner vertices would give $2x_1-x_0-x_2$; they agree because $x_0=\cos(-\frac\theta2)=x_1$. Similarly, at $v=n$ we need $x_{n+1}=x_n$, and indeed $x_{n+1}=\cos(j\pi+\frac\theta2)$ and $x_n=\cos(j\pi-\frac\theta2)$ are both $(-1)^j\cos\frac\theta2$. Each $x$
-is non-zero ($x_1=\cos\frac\theta2>0$), and the $n$ eigenvalues, for $j=0,\dots,n-1$, are distinct, so these are all the eigenvalues. The Fiedler vector ($j=1$) is a decreasing cosine; its sweep sets are the initial segments of the path, and the best is the
-half path, cut in the middle.
+\idea The cosine recurrence handles interior vertices; reflection at the endpoints supplies the missing neighbours.
+\writeup Set $\theta=j\pi/n$ and $x_v=\cos((v-1/2)\theta)$. At an interior vertex,
+$2x_v-x_{v-1}-x_{v+1}=(2-2\cos\theta)x_v$.
+At the first endpoint use $x_0=\cos(-\theta/2)=x_1$. At the other use $x_{n+1}=\cos(j\pi+\theta/2)=(-1)^j\cos(\theta/2)=x_n$. Thus the same recurrence agrees with the degree-one endpoint equations. For $j=0,\ldots,n-1$, $x_1=\cos(j\pi/(2n))>0$, so each vector is non-zero. The eigenvalues are distinct, providing all $n$ eigenvalues and an eigenbasis.
+At $j=1$, the coordinates decrease strictly along the path. Sweep sets are its initial or terminal segments. Each nonempty proper segment has one boundary edge, so the best ratio for a side of size at most $n/2$ comes from a segment of size $\lfloor n/2\rfloor$. The cut is at the middle, with either of the two equivalent choices when $n$ is odd.
 \end{solution}
 \begin{solution}{spectral:ex:moorebound}
-\idea Grow balls around the edge: each new layer is at most $d-1$ times the previous one.
-\writeup (a) Let $V_i$ be the set of vertices at distance $i$ from the edge $\{v_1,v_2\}$. As in the proof of Theorem~\ref{spectral:thm:alonboppana}, $|V_0|=2$ and $|V_{i+1}|\le(d-1)|V_i|$, so $|V_i|\le2(d-1)^i$, and summing over
-$i\le r$ gives the bound. If the girth is at least $2r+2$, the vertices within distance $r$ of $v_1$ on the side away from $v_2$, and those of $v_2$, form two disjoint trees in which every vertex at
-distance $i<r$ has $d-1$ children (a coincidence or an extra edge would close a cycle of length at most $2r+1$), so all inequalities are equalities.
-(b) By (a) with $r=2k+2$, some vertex $x$ is at distance at least $2k+3$ from $\{v_1,v_2\}$. Take any edge $\{x,x'\}$: $x'$ is at distance at least $2k+2$. So the two edges are at distance at least
-$2k+2$, and $\lambda_2\ge2\sqrt{d-1}-\frac{2\sqrt{d-1}-1}{k+1}$. For fixed $d$ and $n\to\infty$, $k$ can be taken of order $\log_{d-1}n$, which proves $\lambda_2\ge2\sqrt{d-1}-O(\frac1{\log n})$.
+\idea Branching away from an edge permits at most $d-1$ choices per step.
+\writeup (a) Let $V_i$ be its distance-$i$ layer. We have $|V_0|=2$ and $|V_{i+1}|\le(d-1)|V_i|$, as in Nilli's proof. Thus $|V_i|\le2(d-1)^i$, and summing gives the bound. If the girth is at least $2r+2$, every nonbacktracking path of length at most $r$ starting at one endpoint and first moving away from the fixed edge has a distinct endpoint, also distinct from those grown from the other endpoint. A repetition within one side would create a cycle of length at most $2r$, and a repetition between sides one of length at most $2r+1$. Such cycles are excluded. These paths therefore give exactly $2(d-1)^i$ new vertices at each depth $i\le r$. Edges between boundary vertices may still occur, but do not alter the vertex count.
+(b) The size assumption supplies a vertex $x$ at distance at least $2k+3$ from the fixed edge. Choose a neighbour $x'$; it exists because $d\ge2$. Its distance is at least $2k+2$, so the edges have the required endpoint separation. The theorem gives its stated bound.
+For fixed $d\ge3$, taking $k$ a sufficiently small positive multiple of $\log_{d-1}n$ makes the size condition hold for large $n$. This yields error $O(1/\log n)$. When $d=2$, the sum grows linearly in $k$, so one may take $k$ proportional to $n$, yielding the stronger error $O(1/n)$. In both cases the error tends to zero.
+\end{solution}
+
+\begin{solution}{ex:v8c06a}
+\idea In a complete graph the boundary ratio depends only on the set's size.
+\writeup A set of size $s$ has ratio $n-s$, minimised for $s=\lfloor n/2\rfloor$. Hence $h(K_n)=\lceil n/2\rceil$. The Laplacian $nI-J$ vanishes on constants and equals $nI$ on $\mathbf1^\perp$, so $\mu_2=n$. Its lower Cheeger bound is $n/2$. This equals $h(K_n)$ exactly when $n$ is even; for odd $n$ their difference is $1/2$.
+\end{solution}
+\begin{solution}{ex:v8c06b}
+\idea Laziness replaces each adjacency eigenvalue by a number between zero and one.
+\writeup In cyclic order the initial mass decomposes exactly as
+\[
+(1,0,0,0)=\tfrac14(1,1,1,1)+\tfrac12(1,0,-1,0)
++\tfrac14(1,-1,1,-1).
+\]
+The three vectors have adjacency eigenvalues $2,0,-2$, respectively. Their lazy eigenvalues are $1,1/2,0$. Thus for every $t\ge1$,
+\[
+p_t=\tfrac14(1,1,1,1)+2^{-t-1}(1,0,-1,0),\qquad
+\|p_t-u\|=\frac{2^{-t}}{\sqrt2}.
+\]
+For the usual transition $A/2$, the last component instead has eigenvalue $-1$ and changes sign forever. Its nonzero initial coefficient prevents convergence to uniform.
+\end{solution}
+\begin{solution}{ex:v8c06c}
+\idea The integral is a finite sum of interval lengths times constant counts.
+\writeup On $[0,1)$ the sweep set is $\{1,2,3\}$, on $[1,4)$ it is $\{1,2\}$, and on $[4,9)$ it is $\{1\}$. Beyond $9$ it is empty. Thus
+\[
+\int_0^\infty|S_t|\dd t=3\cdot1+2\cdot3+1\cdot5=14
+=9+4+1+0.
+\]
+Each nonempty listed set has one crossing path edge, giving integral $1+3+5=9$. The edge-difference sum gives the same value: $|9-4|+|4-1|+|1-0|=5+3+1=9$. These prove both identities directly for this vector. This example illustrates the level-set identities on a nonregular graph; it does not apply the regular-graph theorem to a path.
+\end{solution}
+\begin{solution}{ex:v8c06d}
+\idea The lazy transition moves the whole adjacency spectrum into $[0,1]$.
+\writeup The row-sum bound gives $-d\le\lambda_i\le d$. Therefore the eigenvalues of $P$ are $\eta_i=(1+\lambda_i/d)/2\in[0,1]$. The constant eigenvalue is $1$, and the largest eigenvalue on $\mathbf1^\perp$ is $\eta_2=1-(d-\lambda_2)/(2d)<1$. Since $P$ fixes $u$ and $p_0-u\perp\mathbf1$, its spectral expansion gives
+$\|P^t(p_0-u)\|\le\eta_2^t\|p_0-u\|$,
+which is the requested bound. Connectedness is equivalent to $\lambda_2<d$ here. If the graph is bipartite, the eigenvalue $-d$ becomes zero rather than $-1$, so it causes no alternation and the estimate still gives convergence.
 \end{solution}
 
 \section*{Sources and further reading}
