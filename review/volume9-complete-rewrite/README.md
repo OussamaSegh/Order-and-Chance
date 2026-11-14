@@ -77,13 +77,13 @@ solutions. Counts below are the starting counts, not additions.
 | G | Cubic curves | 12 | 4 | Not started |
 | H | Lattices and sphere packings | 12 | 4 | Draft rewritten; PDF/preservation/figures checked |
 | I | Non-Euclidean geometry | 12 | 2 | Draft rewritten; validation pending |
-| J | Convex bodies | 12 | 3 | Not started |
+| J | Convex bodies | 12 | 3 | Draft rewritten; PDF/preservation/figures checked |
 | K | Curvature of Curves and Polyhedra | 11 | 2 | Not started |
 
 Totals: 22 units, 200 original exercises, 55 original figures. Required additions:
-88 exercises and 44 illustrations. Chapters 7, 8, 9 and 10 and Appendices E, H and I have full draft rewrites, each with two added illustrations and four new exercises, hints and full solutions: fourteen diagrams and twenty-eight exercises so far. Two photographs are credited: Riemann's portrait (inspected 1892 publication evidence) and Shukhov's tower (attributed to Karelin, published in 1897). Source metadata and public-domain evidence are preserved. All fourteen diagrams and both photographs have been inspected in rendered pages.
+88 exercises and 44 illustrations. Chapters 7, 8, 9 and 10 and Appendices E, H, I and J have full draft rewrites, each with two added illustrations and four new exercises, hints and full solutions: sixteen diagrams and thirty-two exercises so far. Two photographs are credited: Riemann's portrait (inspected 1892 publication evidence) and Shukhov's tower (attributed to Karelin, published in 1897). Source metadata and public-domain evidence are preserved. All sixteen diagrams and both photographs have been inspected in rendered pages.
 
-The six-unit full build on 66ca56fd exited 0 at 413 print pages. Its EPUB is 29,554,897 bytes; media checks and all 18,245 local links pass. The subsequent seven-unit PDF-only build exits 0 at 419 pages, with preservation and layout checks passing. Preface, blurb, KDP copy and canonical cover note are rewritten; their rendered pages/wrap have been inspected. The remaining 15 units, final EPUB validation and separate final review remain outstanding. See ci-shared-note-dependency.md for the CI fingerprint reconciliation; no failed run is claimed green.
+The six-unit full build on 66ca56fd exited 0 at 413 print pages. Its EPUB is 29,554,897 bytes; media checks and all 18,245 local links pass. The subsequent seven-unit PDF-only build exits 0 at 419 pages, with preservation and layout checks passing. Preface, blurb, KDP copy and canonical cover note are rewritten; their rendered pages/wrap have been inspected. The eight-unit PDF-only build exits 0 at 425 pages, again with layout and preservation passing; both J figures were inspected. The remaining 14 units, final EPUB validation and separate final review remain outstanding. See ci-shared-note-dependency.md for the CI fingerprint reconciliation; no failed run is claimed green.
 
 ## Validation scope
 
