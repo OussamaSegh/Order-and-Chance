@@ -70,8 +70,8 @@ Four new exercises per chapter, after the last existing exercise, each with a hi
 | --- | --- |
 | — | Draft pull request opened: https://github.com/OussamaSegh/Order-and-Chance/pull/242 |
 | — | Preface, blurb, `kdp.md`, About the Cover, portrait macro and credits | Done |
-| 1–16, A–D | Sentence rewrite, two figures, four exercises | Done; final review and full-format validation pending |
-| E–F | Sentence rewrite, two figures, four exercises | In progress |
+| 1–16, A–E | Sentence rewrite, two figures, four exercises | Done; final review and full-format validation pending |
+| F | Sentence rewrite, two figures, four exercises | In progress |
 
 Portraits on disk, not yet placed in the chapters: Banach, Hilbert, Cayley, Kirchhoff, Fredholm, Fourier, Poisson, Gauss, Haar, Hadamard, Cauchy, Tauber, Riemann, Jordan, Frobenius, Schwarz, Lyapunov. Credits are in `volume8-analysis/photos/CREDITS.md`. Place each at the first real mention. Do not invent a caption.
 
@@ -229,3 +229,10 @@ Appendix D is rewritten through inner products, Gram–Schmidt/QR, projections, 
 The positive-integral inner product now explicitly has a<b, and the orthogonal-polynomial interval has nonempty interior. The quadrature-convergence exercise specifies continuity on the compact closure: the former wording allowed bounded open intervals with functions having no uniform polynomial approximant. The correction and its purpose are explicit in the exercise and proof. Repeated Cauchy nodes are handled before factoring. The unused beta_0 in the monic recurrence is assigned an arbitrary positive value; the ratio formula remains for n>=1. Strict zero interlacing is justified by the positive recurrence excluding common roots. The Hilbert-determinant decay is expressed logarithmically from the exact product, avoiding an ambiguous ratio asymptotic. The obtuse-vector induction only projects a putative oversized family, avoiding a zero-projection inference for two opposite vectors. Reciprocal sums in the Muntz exercise omit a possible initial zero exponent. The Gaussian covariance discussion distinguishes interpolating covariances from mixture entropy in later review.
 
 The Appendix C checkpoint exits 0 at 487 print pages, 647 whole boxes, with no overflow or unresolved references. Appendix D awaits its checkpoint.
+
+
+Appendix E is rewritten through Loewner order, square-root monotonicity, Schur complements, determinant inequalities, Schur products, Gershgorin and Hilbert's inequality, including every original exercise/hint/solution. Two added plates show distinct projections for Gaussian strict positivity and the logarithmic domain for a Hilbert lower bound. Exercises `ex:v8cEa`–`d` prove strict log-determinant concavity, strict Gaussian kernel positivity, the rank-r Woodbury update, and sharpness of Hilbert's constant pi. Original numbered triples, labels and figures pass; the prose audit is fully rewritten; citations pass at 4987 statements with 84 appended exercises.
+
+The recent Hadamard status was checked against the primary arXiv:2610.27175 v2 abstract and PDF (3 November 2026): the report verifies all twelve previously open orders below 2000, including 668. The dated attribution and bibliography are retained, without treating a numerical check as a theorem proof. Square roots and simultaneous diagonalisation use earlier main-chapter results, not later exercise premises. The squaring counterexample uses exact rational determinants. Loewner's quoted characterisation specifies analytic continuation and real values on the interval, includes constant functions with nonnegative imaginary part, and places log on the positive rather than closed nonnegative interval. The entropy interpretation concerns Gaussian laws with interpolated covariances, distinguishing them from a mixture distribution. The Hilbert proof justifies the improper midpoint endpoint and absolute double-series convergence; its optimal constant is now proved by the appended exercise. Hadamard row normalisation is stated correctly as making the first row all ones. Walsh characters are attached to the binary additive group rather than ordinary cyclic convolution.
+
+The Appendix D checkpoint exits 0 at 485 print pages, 650 whole boxes, with no overflow or unresolved references. Appendix E awaits its checkpoint.
