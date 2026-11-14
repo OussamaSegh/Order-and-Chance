@@ -85,3 +85,21 @@ Not yet. When the manuscript is in, `./build.sh --pdf-only volume8-analysis` and
 Every chapter, the preface, the blurb, `kdp.md`, the About the Cover note, portraits, two new figures per chapter, four new exercises per chapter. Then the local build, then CI.
 
 The independent review is a separate agent. This file does not contain that review.
+
+## Continuation, 14 November 2026
+
+Started from the latest remote head `32d7aa9a`. No chapter had been rewritten there. Merged current main (`328316fd`) normally in `4eb1a166`; resolved the shared cover-note inventory and conceptual-snapshot conflicts by retaining current main's Volume 3 review evidence and refreshing only the combined cover-note hash. `4f6c165a` aligns the Volume 8 About the Cover hash. No cover motif or lettering was regenerated.
+
+The baseline `./build.sh --pdf-only volume8-analysis` exited 0: 431 print pages, 575 whole boxes, maximum height 298.0 pt, no overflow or undefined reference. This is a baseline count, not the final rewritten count.
+
+Chapter 1 is rewritten, including the real and complex Lp-duality proof, all exercises, hints and solutions. Banach's credited portrait is placed. Two new plates (`ch01-rw-dual`, `ch01-rw-coordinates`) follow the existing figures so their numbers stay fixed. Four exercises `ex:v8c01a`–`d` are appended: a diagonal operator and its inverse, powers in C[0,1] with no weakly convergent subsequence, an explicit separating form, and the unit vectors in c0 versus l1. Each has a hint and a complete solution. Existing figure environments and captions remain byte-for-byte unchanged.
+
+### Explicit mathematical corrections in Chapter 1
+
+- The norm-one clause of `cor:hbnorm` is impossible on the zero space. It now assumes E is nonzero for that clause, retains the dual norm formula for every E including zero, and proves the x0=0 case on nonzero E. This is an explicit correction of a false edge case, not a silent weakening. The label and number do not change.
+- The Riesz–Markov proof uses inner regularity from Volume 7, Theorem 12.1, rather than Lemma 11.10, which is stated on Euclidean space. Zero Jordan parts are handled with constant test functions before constructing distance functions to two nonempty closed sets.
+- Bounded dual sets are relatively weak-star compact; they need not be compact themselves. The compact-set assertion is now made for the closed dual ball. The reflexive-space consequence is stated for the closed unit ball.
+- Sigma-finite Lp densities are patched on the measurable disjoint rings E_n minus E_(n-1); their almost-everywhere agreement is retained. The q=infinity bound is handled separately from monotone convergence.
+- The oscillation estimate is justified by its triangular primitive, avoiding the claim that an arbitrary interval leaves only one incomplete half-period.
+
+The source audit in `/tmp/v8_audit.py` checks original numbered-environment order, labels, duplicate labels, frozen figure environments/captions, and the counts of added exercises and figures. At Chapter 1 it passes, and `tools/cross_volume_citations.py` exits 0. The full build and prose-share audit remain to be run after all chapters are rewritten.
