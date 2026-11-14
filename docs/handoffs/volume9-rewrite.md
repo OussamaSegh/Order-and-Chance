@@ -36,7 +36,15 @@ final independent review or EPUB validation. Appendix E now also has a full draf
 exercises with complete hints/solutions. The three-unit PDF-only build exited 0
 at 397 print pages, with preservation and layout checks passing, and both new
 E figures were inspected. See the per-unit review records for exact scope.
-The remaining 19 units, final
+Appendix H also now has a full draft rewrite, two new diagrams and four new
+exercises. Preface, blurb, KDP copy and canonical About the Cover are rewritten;
+the latter corrects the finite-group uniformisation error. The four-unit and
+front/back matter PDF-only build exited 0 at 403 print pages. All eight new
+diagrams, the credited photograph, preface, colophon and paperback wrap were
+inspected. The Riemann photograph has independently inspected 1892 publication
+evidence as well as live Commons metadata. All original label/caption/figure
+checks still pass. These are intermediate results, not final acceptance.
+The remaining 18 units, final
 validation, ready PR, exact-head green CI, normal merge and exact-merge publication
 verification remain outstanding. PR #243 remains a draft. No KDP upload occurred.
 

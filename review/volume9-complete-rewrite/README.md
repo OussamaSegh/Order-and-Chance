@@ -75,20 +75,23 @@ solutions. Counts below are the starting counts, not additions.
 | E | Quadratic forms and quadrics | 12 | 3 | Draft rewritten; PDF/preservation/figures checked |
 | F | Plane curves | 12 | 3 | Not started |
 | G | Cubic curves | 12 | 4 | Not started |
-| H | Lattices and sphere packings | 12 | 4 | Not started |
+| H | Lattices and sphere packings | 12 | 4 | Draft rewritten; PDF/preservation/figures checked |
 | I | Non-Euclidean geometry | 12 | 2 | Draft rewritten; validation pending |
 | J | Convex bodies | 12 | 3 | Not started |
 | K | Curvature of Curves and Polyhedra | 11 | 2 | Not started |
 
 Totals: 22 units, 200 original exercises, 55 original figures. Required additions:
 88 exercises and 44 illustrations. Relevant verified public-domain photographs
-remain to be selected, credited and inspected. Chapter 10 and Appendices E and I each have two added illustrations and four
-new exercises with hints and full solutions: six illustrations and twelve
+remain to be selected, credited and inspected. Chapter 10 and Appendices E, H and I each have two added illustrations and four
+new exercises with hints and full solutions: eight illustrations and sixteen
 exercises so far. One Riemann photograph is credited, with live source metadata
-preserved. All six added figures and the photograph have been inspected in
-rendered pages. Their combined PDF-only build exited 0 at 397 print pages,
-with all preservation and layout checks passing. The remaining 19 unit rewrites
-and additions, full EPUB validation and separate final review remain outstanding.
+and independently inspected 1892 publication evidence. All eight added figures
+and the portrait have been inspected in rendered pages. The latest combined
+PDF-only build exited 0 at 403 print pages, with preservation and layout checks
+passing. The preface, blurb, repository KDP copy and canonical About the Cover
+note are rewritten; rendered preface, colophon and full paperback wrap were
+inspected. The remaining 18 unit rewrites and additions, full EPUB validation
+and separate final review remain outstanding.
 
 ## Validation scope
 
@@ -150,7 +153,7 @@ Its `list` and `site` jobs passed; `build` and `debs` were skipped because this
 workstream has no book-source changes. This is **not** an exact-final-head book
 build or publication certificate. Later validation-record commits need their own
 CI result. PR #243 remains a draft; no merge or merge-commit publication exists
-for this request. The additions gate is still failed. The remaining 19 unit rewrites and all separate final mathematical/editorial
+for this request. The additions gate is still failed. The remaining 18 unit rewrites and all separate final mathematical/editorial
 reviews remain outstanding.
 
 `git diff --check` passed after removing trailing whitespace from captured text.
