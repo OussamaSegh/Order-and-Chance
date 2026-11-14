@@ -70,8 +70,8 @@ Four new exercises per chapter, after the last existing exercise, each with a hi
 | --- | --- |
 | — | Draft pull request opened: https://github.com/OussamaSegh/Order-and-Chance/pull/242 |
 | — | Preface, blurb, `kdp.md`, About the Cover, portrait macro and credits | Done |
-| 1–16, A–B | Sentence rewrite, two figures, four exercises | Done; final review and full-format validation pending |
-| C–F | Sentence rewrite, two figures, four exercises | In progress |
+| 1–16, A–C | Sentence rewrite, two figures, four exercises | Done; final review and full-format validation pending |
+| D–F | Sentence rewrite, two figures, four exercises | In progress |
 
 Portraits on disk, not yet placed in the chapters: Banach, Hilbert, Cayley, Kirchhoff, Fredholm, Fourier, Poisson, Gauss, Haar, Hadamard, Cauchy, Tauber, Riemann, Jordan, Frobenius, Schwarz, Lyapunov. Credits are in `volume8-analysis/photos/CREDITS.md`. Place each at the first real mention. Do not invent a caption.
 
@@ -215,3 +215,10 @@ Appendix B is rewritten through signed volume, exterior powers, Cauchy–Binet, 
 Explicit repairs: Pluecker's proof now avoids division by two and its converse realises the original six-tuple, not only a rescaled tuple. Its geometric interpretation concerns two-planes in R4/projective lines in P3, rather than lines in R4. The condensation identity has its valid recurrence index ranges stated; the arrays still cover k=0 through n. A+tI remains valid for extending polynomial identities, but does not universally repair the condensation algorithm: independent generic entry variables do, and the new exercise gives I4+tI as an exact counterexample. Exterior-product independence is proved by the universal property before the later Laplace exercise, and the zero/top/over-dimension exterior conventions are defined. The compound-eigenvalue exercise cites the earlier main-chapter triangularisation rather than a later appendix. The polygon convention specifies simple counterclockwise boundary; self-intersections give signed winding area. General MacMahon enumeration and the limit-shape theorem are clearly quoted, while small cases are proved exactly. The MacMahon bibliography is corrected to Combinatory Analysis vol. II (1916), not a nonexistent third volume.
 
 The Appendix A checkpoint exits 0 at 485 print pages, 642 whole boxes, with no overflow or unresolved references. All 20 citation tests pass. Appendix B awaits its checkpoint.
+
+
+Appendix C is rewritten through invariant subspaces, triangularisation, Cayley–Hamilton over rings, primary decomposition, Jordan chains, commuting families and matrix functions, including every original exercise/hint/solution. New plates show squaring a chain and assembling polynomial spectral parts. Exercises `ex:v8cCa`–`d` compute repeated-root projections, square a nilpotent partition, classify one chain's commutant and show that exponentiation preserves chain sizes. Original numbers, labels and figures pass; cross-volume citations pass at 4979 statements with 76 appended exercises. Eligible prose is fully rewritten after rephrasing the one unchanged short corollary.
+
+The Dunford uniqueness proof establishes the simultaneous-diagonalisation step locally before using it and takes a common nilpotence exponent, avoiding a later theorem. Schur uses projection already taught in Volume 1/main Chapter 2 rather than the later appendix. The kernel lemma handles zero and constant coprime factors. Zero-dimensional operators have empty forms; the common-eigenvector conclusion explicitly requires a nonzero space. Jordan polynomial substitution now uses shifted coefficients over arbitrary fields, with derivative/factorial notation only in characteristic zero. The minimal-polynomial exercise uses this coefficient proof in every characteristic. Complex functional calculus requires holomorphic local jets; real smooth jets apply on real eigenvalues, and mere real smoothness near complex eigenvalues is explicitly insufficient for complex derivatives. The exponential counterexample compares equal versus unequal diagonals exactly instead of using a decimal value of cosh(1). No original statement/exercise number moved.
+
+The Appendix B checkpoint exits 0 at 485 print pages, 645 whole boxes, with no overflow or unresolved references. Appendix C awaits its checkpoint.
