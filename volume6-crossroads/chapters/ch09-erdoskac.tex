@@ -5,40 +5,40 @@ Primes play a game of chance.\\
 \upshape --- Mark Kac, \emph{Statistical Independence in Probability, Analysis and Number Theory} (1959)
 \end{center}
 
-How many prime factors does a large number have? The question sounds hopeless: $2^{100}$ has one, the product of the first twenty primes has twenty, and a
-large prime has one. But ask instead about a \emph{typical} number, and the answer is astonishingly precise. In 1917 Hardy and Ramanujan proved that almost every
-integer $n$ has about $\log\log n$ distinct prime factors. The function $\log\log n$ grows so slowly that this is a strong statement: for $n$ near $10^{9}$ it is $3.0$, and for $n$ with a
-hundred digits it is only $5.4$. Their proof was long. In 1934 Pál Turán, then aged 24, found a proof in a single page: he computed a variance.
+How many distinct prime factors does a large integer have? The power $2^{100}$ has one. The product of the first twenty primes has twenty. A large prime has one. Those three integers do not look like one another.
 
-Then came one of the great stories of twentieth-century mathematics. In March 1939 Mark Kac gave a lecture at Princeton. He had been thinking about
-independence, and he conjectured that the number of prime factors behaves like a sum of independent coin tosses, one for each prime $p$, coming up heads with probability
-$\frac1p$. If so, the central limit theorem predicts a Gaussian law, with mean and variance $\log\log n$. Kac knew probability but lacked the number theory to prove it. Paul Erd\H{o}s was
-in the audience. Kac recalled that before the lecture was over Erd\H{o}s had the proof, using the sieve. Their joint paper of 1940 founded probabilistic number theory.
+Ask about a typical integer instead. In 1917 Hardy and Ramanujan proved that almost every $n$ has about $\log\log n$ distinct prime factors. This logarithm grows slowly. Near $10^{9}$ one has $\log\log n=3.03$. Near $10^{99}$, a hundred-digit integer, one has $\log\log n=5.43$. Their argument was long. In 1934 Turán computed a variance, and the proof fitted on a page.
+
+Kac later wrote that he first stated the Gaussian conjecture in a lecture at Princeton in March 1939. He treated ``$p$ divides $n$'' as a coin toss, heads with probability $\frac1p$, one coin for each prime, and the coins independent. Mertens's theorem then makes the mean and the variance both about $\log\log n$. Kac had the probability. He did not have a sieve. Erd\H{o}s was in the audience. Kac recalled that Erd\H{o}s had the proof before the lecture ended. The announcement is a note communicated on 13 March 1939. The proof is the paper of 1940, cited at the end of the chapter.
+
+\portrait{erdos}{Paul Erd\H os (1913--1996) in Budapest, 1992. Photograph by Topsy Kretts. CC BY 3.0.}
+\portrait{kac}{Mark Kac (1914--1984). Photograph by Konrad Jacobs. Mathematisches Forschungsinstitut Oberwolfach. CC BY-SA 2.0 de.}
 
 \begin{think}
-If $p\mid n$ were an independent event of probability $\frac1p$ for each prime $p\le n$, what would be the mean and the variance of the number of primes dividing $n$? (Mertens's second theorem,
-Theorem~\ref{thm:mertens2}, gives the first.) Why should the variance be close to the mean?
+Suppose that for each prime $p\le n$ the event $p\mid n$ has probability $\frac1p$, and that these events are independent. What are the mean and the variance of the number of such primes? Theorem~\ref{thm:mertens2} gives the mean. Why should the variance sit close to the mean?
 \end{think}
 
-This chapter proves the theorem of Erd\H{o}s and Kac in full. The proof is a dialogue between the integers and a probabilistic model in which divisibility by different primes is
-independent, the model that Kubilius made precise in 1956. Turán's variance shows that the model has the right second moment. The model's higher moments are those of a
-Gaussian, and the integers have the same moments as the model, because the small primes really are nearly independent. Moments then determine the law. Figure~\ref{fig:omega}
-shows the data, and a surprise: at $10^7$ the bell curve is still far away.
+Figure~\ref{fig:omega60} is the count for every $n\le 60$. Three integers in that range have three distinct prime factors, and none has four. The mean is $1.6$. The value $\log\log 60$ is $1.41$. The same count up to $10^{7}$, in Figure~\ref{fig:omega}, is still far from a Gaussian curve. The theorem proved below is a limit. The limit arrives slowly.
+
+\begin{figure}[ht]
+\centering
+\fig{ch09-new-omega}
+\caption{Each dot is $\omega(n)$ for one $n\le 60$. The ring at the origin is $n=1$, with $\omega(1)=0$. Charcoal dots are the values $1$ and $2$. The three coral dots are $n=30$, $42$ and $60$, the only integers in the range with $\omega(n)=3$. The dashed line is the mean $1.6$. For comparison, $\log\log 60=1.41$.}
+\label{fig:omega60}
+\end{figure}
 
 \begin{figure}[ht]
 \centering
 \fig{ch09-omega}
-\caption{The proportion of $n\le10^7$ with $\omega(n)=k$ (bars), against the Gaussian law of Erd\H{o}s and Kac with mean and variance $\log\log10^7=2.78$ (ochre), and the Poisson
-law of mean $2.78$ shifted by one (coral dots). The data have mean $3.01$ but variance only $1.10$: the limit theorems hold, but $\log\log x$ grows so slowly that their limits are
-never reached in practice.}
+\caption{Bars: the proportion of integers $n\le10^7$ with $\omega(n)=k$. The ochre curve is the Gaussian of mean and variance $\log\log10^7=2.78$. The coral dots are the Poisson probabilities of mean $2.78$, shifted up by one. These integers have mean $3.01$ and variance $1.10$. Theorem~\ref{thm:erdoskac} is a limit, and at $10^7$ the bars have not yet settled onto the curve.}
 \label{fig:omega}
 \end{figure}
 
 \section{Turán's variance}
 
-Write $\omega(n)$ for the number of distinct primes dividing $n$, and $\Omega(n)$ for the number counted with multiplicity, so $\omega(12)=2$ and $\Omega(12)=3$. Both are \emph{additive}:
-$\omega(mn)=\omega(m)+\omega(n)$ when $\gcd(m,n)=1$. In fact $\omega$ is \emph{strongly additive}: $\omega(n)=\sum_{p\mid n}f(p)$ with $f(p)=1$. Chapter~\ref{ch:mertens} found the mean (Exercise~\ref{ex:averageomega}):
-$\sum_{n\le x}\omega(n)=x\log\log x+O(x)$. Turán's idea was to compute the variance too, and it works for every strongly additive function.
+Write $\omega(n)$ for the number of distinct primes dividing $n$, and $\Omega(n)$ for the number counted with multiplicity. Thus $\omega(12)=2$ and $\Omega(12)=3$, because $12=2^2\cdot 3$. Both functions are additive: $\omega(mn)=\omega(m)+\omega(n)$ when $\gcd(m,n)=1$. The function $\omega$ is strongly additive, which means $\omega(n)=\sum_{p\mid n}1$. Chapter~\ref{ch:mertens} already has the mean, in Exercise~\ref{ex:averageomega}: $\sum_{n\le x}\omega(n)=x\log\log x+O(x)$. Turán's step is to compute the variance as well. The same computation works for every strongly additive function.
+
+Take $f(p)=1$ for every prime, so that $f(n)=\omega(n)$. The sums in the next statement are then $A(x)=\sum_{p\le x}\frac1p$ and $B(x)^2=\sum_{p\le x}\frac1p$. Theorem~\ref{thm:mertens2} says both are $\log\log x+O(1)$. The inequality below turns that into a variance bound.
 
 \begin{theorem}[the Turán--Kubilius inequality]\label{thm:tk}
 There is an absolute constant $C$ such that, for every $x\ge3$ and every real function $f$ on the primes, the strongly additive function $f(n)=\sum_{p\mid n}f(p)$ satisfies
@@ -47,8 +47,7 @@ There is an absolute constant $C$ such that, for every $x\ge3$ and every real fu
 \]
 \end{theorem}
 
-In probabilistic language: for $n$ chosen uniformly in $[1,x]$, the variance of $f(n)$ is at most a constant times $B(x)^2$, which is (up to the factors $1-\frac1p$) the variance of
-$\sum_pf(p)X_p$ for independent $X_p$ of mean $\frac1p$. Dependence can only cost a constant factor.
+Read the inequality in probability language. Draw $n$ uniformly from $\{1,\dots,\lfloor x\rfloor\}$. The variance of $f(n)$ is at most a constant times $B(x)^2$. Up to the factors $1-\frac1p$, that quantity $B(x)^2$ is the variance of $\sum_pf(p)X_p$ for independent coins $X_p$ of mean $\frac1p$. Dependence among the events $p\mid n$ can cost only a constant factor.
 
 \begin{proof}
 \emph{Small primes.} Suppose first that $f(p)=0$ for $p>\sqrt x$, and write $\sum_p$ for sums over $p\le\sqrt x$. Every $p\mid n$ with $n\le x$ is counted by $\lfloor\frac xp\rfloor$, so
@@ -70,21 +69,31 @@ By Cauchy--Schwarz,
 so $|E_1|\le B^2\sqrt x\,\pi(\sqrt x)=O(\frac{xB^2}{\log x})$ by Chebyshev's bound
 (Proposition~\ref{prop:chebyshev}), and $|E_2|\le Bx^{1/2}$. Also $|A|\le B\bigl(\sum_{p\le x}\frac1p\bigr)^{1/2}=O(B\sqrt{\log\log x})$, so $2|A||E_2|=O(B^2\sqrt x\log x)$. All three terms are $O(xB^2)$.
 
-\emph{Large primes.} In general write $f=f_1+f_2$, where $f_1(p)=f(p)$ for $p\le\sqrt x$ and $f_2(p)=f(p)$ for $\sqrt x<p\le x$; then $A=A_1+A_2$, and $B_1,B_2\le B$. An integer $n\le x$ has at most
-one prime factor $p>\sqrt x$, so $f_2(n)^2=f_2(p)^2$ or $0$, and $\sum_{n\le x}f_2(n)^2\le\sum_{\sqrt x<p\le x}f(p)^2\frac xp\le xB^2$. By Cauchy--Schwarz, $A_2^2\le B^2\sum_{\sqrt x<p\le x}\frac1p=O(B^2)$ by
-Mertens's theorem. Hence $\sum_{n\le x}(f_2(n)-A_2)^2\le2\sum f_2(n)^2+2xA_2^2=O(xB^2)$, and $(a+b)^2\le2a^2+2b^2$ combines the two parts.
+\emph{Large primes.} Split $f=f_1+f_2$. The first piece keeps the values $f(p)$ for $p\le\sqrt x$. The second keeps the values for $\sqrt x<p\le x$. Then $A=A_1+A_2$, and both $B_1$ and $B_2$ are at most $B$. An integer $n\le x$ has at most one prime factor larger than $\sqrt x$. So $f_2(n)^2$ is either $f(p)^2$ for that prime or else $0$, and
+\[
+\sum_{n\le x}f_2(n)^2\le\sum_{\sqrt x<p\le x}f(p)^2\frac xp\le xB^2.
+\]
+Cauchy--Schwarz gives $A_2^2\le B^2\sum_{\sqrt x<p\le x}\frac1p$. Mertens's theorem makes the last sum $O(1)$, so $A_2^2=O(B^2)$. Therefore
+\[
+\sum_{n\le x}(f_2(n)-A_2)^2\le 2\sum_{n\le x}f_2(n)^2+2xA_2^2=O(xB^2).
+\]
+The inequality $(a+b)^2\le 2a^2+2b^2$ adds the small-prime piece to this one.
 \end{proof}
+
+The case $f(p)=1$ is the theorem of Hardy and Ramanujan, with Turán's proof.
 
 \begin{theorem}[Hardy and Ramanujan 1917, Turán 1934]\label{thm:hr}
 $\displaystyle\sum_{n\le x}\bigl(\omega(n)-\log\log x\bigr)^2=O(x\log\log x)$. Consequently, for every function $\psi(x)\to\infty$, the proportion of integers $n\le x$ with $|\omega(n)-\log\log x|>\psi(x)\sqrt{\log\log x}$ tends to $0$.
 \end{theorem}
 \begin{proof}
-With $f(p)=1$, $A(x)=B(x)^2=\sum_{p\le x}\frac1p=\log\log x+O(1)$ by Theorem~\ref{thm:mertens2}. So $\sum_{n\le x}(\omega(n)-\log\log x)^2\le2\sum(\omega(n)-A)^2+2x(A-\log\log x)^2=O(x\log\log x)$. The second
-statement is Chebyshev's inequality: the number of exceptions is at most $\frac{O(x\log\log x)}{\psi(x)^2\log\log x}$.
+Take $f(p)=1$. Theorem~\ref{thm:mertens2} gives $A(x)=B(x)^2=\sum_{p\le x}\frac1p=\log\log x+O(1)$. Expand the square about $A$ instead of about $\log\log x$:
+\[
+\sum_{n\le x}(\omega(n)-\log\log x)^2\le 2\sum_{n\le x}(\omega(n)-A)^2+2x(A-\log\log x)^2=O(x\log\log x).
+\]
+Chebyshev's inequality counts the exceptions. There are at most $\frac{O(x\log\log x)}{\psi(x)^2\log\log x}$ of them, and that count is $o(x)$.
 \end{proof}
 
-One says that $\omega(n)$ has \emph{normal order} $\log\log n$: for every $\varepsilon>0$, the $n\le x$ with $|\omega(n)-\log\log n|>\varepsilon\log\log n$ have density $0$. (Replacing $\log\log x$ by $\log\log n$ costs nothing,
-since $\log\log n=\log\log x+O(1)$ for $\sqrt x<n\le x$.) The same holds for $\Omega(n)$ (Exercise~\ref{ex:omegaOmega}), and this keeps a promise of Chapter~\ref{ch:averages}.
+One says that $\omega(n)$ has normal order $\log\log n$. The meaning is: for every $\varepsilon>0$, the integers $n\le x$ with $|\omega(n)-\log\log n|>\varepsilon\log\log n$ have density $0$. Replacing $\log\log x$ by $\log\log n$ does not change the count. For $\sqrt x<n\le x$ one has $\log\log n=\log\log x+O(1)$. The same normal order holds for $\Omega(n)$, by Exercise~\ref{ex:omegaOmega}. That exercise keeps a promise of Chapter~\ref{ch:averages}.
 
 \begin{corollary}\label{cor:taunormal}
 For every $\varepsilon>0$, the integers $n$ with $(\log n)^{\log2-\varepsilon}\le\tau(n)\le(\log n)^{\log2+\varepsilon}$ have density $1$.
@@ -94,18 +103,38 @@ For every $n$, $2^{\omega(n)}\le\tau(n)\le2^{\Omega(n)}$, since $\tau(n)=\prod_{
 and $2^{\log\log n}=(\log n)^{\log2}$.
 \end{proof}
 
-So a typical integer has about $(\log n)^{0.69}$ divisors, while the \emph{average} number of divisors is $\log n$ (Chapter~\ref{ch:averages}). There is no contradiction: the average is dominated by rare integers with
-very many divisors (Exercise~\ref{ex:taumean}). Means and typical values part ways whenever a quantity is the exponential of a sum, a lesson that probability teaches too.
+So a typical integer has about $(\log n)^{\log 2}$ divisors. Since $\log 2=0.693$, that is about $(\log n)^{0.693}$ divisors. The average number of divisors is $\log n$, from Chapter~\ref{ch:averages}. The two statements live together because the average is carried by rare integers with very many divisors. Exercise~\ref{ex:taumean} makes that split precise. The same split appears whenever a quantity is the exponential of a sum.
 
 \section{The model}
 
-Kac's heuristic is a probability space on which divisibility by different primes is exactly independent. Fix $z\ge2$, and let $(X_p)_{p\le z}$ be independent random variables with
-$P(X_p=1)=\frac1p$ and $P(X_p=0)=1-\frac1p$ (Volume~4 builds such finite families). The model of $\omega$ is $\sum_{p\le z}X_p$, and its centred version is
+Kac's picture is a probability space on which divisibility by different primes is exactly independent. Fix $z\ge2$. Let $(X_p)_{p\le z}$ be independent random variables with $P(X_p=1)=\frac1p$ and $P(X_p=0)=1-\frac1p$. Volume~4 builds such finite families. The model of $\omega$ is the sum $\sum_{p\le z}X_p$. Its centred version is
 \[
 \begin{gathered}S_z=\sum_{p\le z}\Bigl(X_p-\frac1p\Bigr),\qq\sigma_z^2=\operatorname{Var}S_z=\sum_{p\le z}\frac1p\Bigl(1-\frac1p\Bigr).\end{gathered}
 \]
-By Theorem~\ref{thm:mertens2}, $\sigma_z^2=\log\log z+O(1)\to\infty$. Since $S_z$ is a sum of many small independent pieces, it should be nearly Gaussian; we need this in the form of moments.
-Let $m_k$ be the moments of the standard Gaussian law: $m_k=0$ for odd $k$ and $m_k=(k-1)!!=1\cdot3\cdots(k-1)$ for even $k$, since an integration by parts gives $\mathbb E[Z^k]=(k-1)\mathbb E[Z^{k-2}]$ for a standard normal $Z$.
+Figure~\ref{fig:coincount} draws the four coins for $z=7$. One outcome is filled in: heads on $2$ and $5$, tails on $3$ and $7$. Its probability is
+\[
+\frac12\cdot\frac23\cdot\frac15\cdot\frac67=\frac2{35}.
+\]
+Among the integers $n\le 60$, the same pattern of divisibility holds for $10$, $20$, $40$ and $50$, four integers out of sixty. The proportion is $\frac1{15}=0.0667$, and $\frac2{35}=0.0571$. At this scale the coins and the integers are close, and they are not identical.
+
+The expected number of heads among these four coins is
+\[
+\frac12+\frac13+\frac15+\frac17=\frac{247}{210}=1.176.
+\]
+Theorem~\ref{thm:mertens2} gives $\sigma_z^2=\log\log z+O(1)$, so $\sigma_z^2\to\infty$ as $z\to\infty$. The sum $S_z$ is made of many small independent pieces. Its moments should approach the Gaussian moments. Those moments are what the next lemma records.
+
+Let $m_k$ be the moments of the standard Gaussian law. Then $m_k=0$ for odd $k$, and
+\[
+m_{2j}=\frac{(2j)!}{2^j j!}.
+\]
+For even $k=2j$ this is the double factorial $m_{2j}=(2j-1)!!=1\cdot 3\cdots(2j-1)$. The two formulas agree because $(2j)!/(2^j j!)=(2j-1)!!$. If $Z$ is standard normal, integration by parts gives $\mathbb E[Z^k]=(k-1)\mathbb E[Z^{k-2}]$. Check the first two even values by hand. The recurrence gives $\mathbb E[Z^2]=1$ and $\mathbb E[Z^4]=3\cdot\mathbb E[Z^2]=3$. The factorial formula gives $m_2=2!/2=1$ and $m_4=24/(4\cdot 2)=3$.
+
+\begin{figure}[ht]
+\centering
+\fig{ch09-new-coins}
+\caption{Kac's coins for the primes $2$, $3$, $5$ and $7$. A filled coin is heads. The outcome drawn here is heads on $2$ and $5$, tails on $3$ and $7$, with probability $\frac2{35}$. The fraction under a tails coin is the probability of tails. The integers $n\le 60$ with the same pattern are $10$, $20$, $40$ and $50$.}
+\label{fig:coincount}
+\end{figure}
 
 \begin{lemma}\label{lem:modelmoments}
 For every fixed $k\ge1$, $\mathbb E\bigl[(S_z/\sigma_z)^k\bigr]\to m_k$ as $z\to\infty$.
@@ -145,18 +174,22 @@ $\mathbf 1_{p_i\mid n}$, and $\mathbb E\bigl[\prod_{i\in I}X_{p_i}\bigr]=\frac1{
 $0\le\theta<1$. So the tuple contributes a difference of at most $\frac1N\sum_I\prod_{i\notin I}\frac1{p_i}=\frac1N\prod_i\bigl(1+\frac1{p_i}\bigr)\le\frac{2^k}N$. There are at most $z^k$ tuples.
 \end{proof}
 
-The lemma is where the independence of small primes becomes a theorem: as long as $z^k$ is small compared with $N$, the integers up to $N$ cannot tell the difference between
-divisibility by the primes up to $z$ and independent coin tosses. This is Kubilius's model. It works for the small primes and fails for primes near $\sqrt N$, and that failure is where the $2e^{-\gamma}$ of
-Chapter~\ref{ch:mertens} came from.
+Here is a small case of the same comparison. Take $k=2$, the primes $p=2$ and $q=3$, and $N=60$. The model probability that both coins are heads is $\frac16$. The proportion of $n\le 60$ divisible by $6$ is $\frac{10}{60}=\frac16$. The two sides agree. For $p=5$ and $q=7$ the model probability is $\frac1{35}=0.0286$, and exactly one integer up to $60$ is divisible by $35$, so the proportion is $\frac1{60}=0.0167$. Lemma~\ref{lem:compare} bounds the difference of the second-moment averages by $\frac{(2z)^k}N$. For $z=7$ and $k=2$ that bound is $\frac{196}{60}$, which is larger than $1$. The lemma is crude, and it is still strong enough once $z^k$ is small beside $N$.
 
-\section{From moments to the bell curve}
+The lemma is the point at which independence of small primes becomes a theorem. As long as $z^k$ is small compared with $N$, the integers up to $N$ cannot tell the difference between divisibility by the primes up to $z$ and independent coin tosses. This is Kubilius's model. It works for the small primes and fails for primes near $\sqrt N$. That failure is where the factor $2e^{-\gamma}$ of Chapter~\ref{ch:mertens} came from.
 
-The last ingredient is a principle of probability: if all the moments of $Y_N$ converge to those of a standard Gaussian, then $Y_N$ converges in law to it. Volume~4 mentions Lévy's
-continuity theorem and leaves its proof to Volume~11; the special case we need is short, and we prove it from Volume~4's inversion formula. Let $\Phi$ be the distribution function of $N(0,1)$, and recall that
-the characteristic function of a standard normal is $e^{-t^2/2}$ (Volume~4, Proposition~6.7). If $Z$ is standard, $sZ$ has characteristic function $e^{-s^2t^2/2}$, which is the transform of $N(0,s^2)$.
+\begin{remark}[Erd\H{o}s and Kac, 1940]
+Erd\H{o}s and Kac, \emph{The Gaussian law of errors in the theory of additive number theoretic functions}, American Journal of Mathematics 62 (1940), 738--742. The paper treats a bounded strongly additive function. The case $f(p)=1$ is $\omega$. They write that Brun's sieve is the deepest step in their argument, and that the statistical step is the lighter one. The argument in this chapter follows the moments, as in Billingsley (1969), cited with the sources below. The result announced without proof is P.~Erd\H{o}s and M.~Kac, Proceedings of the National Academy of Sciences 25 (1939), 206--207, communicated on 13 March 1939.
+\end{remark}
+
+\section{From moments to the Gaussian law}
+
+One principle of probability finishes the argument. If every moment of $Y_N$ converges to the corresponding Gaussian moment $m_k$, then $Y_N$ converges in law to the standard Gaussian. Volume~4 states Lévy's continuity theorem and leaves its proof to Volume~11. The special case used here is short, and it is proved from Volume~4's inversion formula. Let $\Phi$ be the distribution function of $N(0,1)$. The characteristic function of a standard normal is $e^{-t^2/2}$ (Volume~4, Proposition~6.7). If $Z$ is standard, $sZ$ has characteristic function $e^{-s^2t^2/2}$, which is the transform of $N(0,s^2)$.
+
+The variable $Y_N$ itself may have jumps, so its distribution function need not have a density. The inversion below is applied only after adding an independent Gaussian $\varepsilon G$. That sum has an integrable characteristic function. Volume~4's inversion formula then supplies a continuous density. Volume~5's Fourier inversion asks for a continuous integrable function whose transform is integrable. It is not used here, and it is not applied to a jump.
 
 \begin{lemma}\label{lem:momentslaw}
-Let $Y_N$ be real random variables, and let $m_k$ be the Gaussian moments defined above. If $\mathbb E[Y_N^k]\to m_k$ for every $k\ge1$, then $P(Y_N\le a)\to\Phi(a)$ for every real $a$.
+Let $Y_N$ be real random variables, and let $m_k$ be the Gaussian moments defined above ($m_k=0$ for odd $k$, and $m_{2j}=(2j)!/(2^j j!)$). If $\mathbb E[Y_N^k]\to m_k$ for every $k\ge1$, then $P(Y_N\le a)\to\Phi(a)$ for every real $a$.
 \end{lemma}
 \begin{proof}
 \emph{Characteristic functions converge.} For real $u$ and $K\ge1$, Taylor's formula with integral remainder gives $\bigl|e^{iu}-\sum_{k<K}\frac{(iu)^k}{k!}\bigr|\le\frac{|u|^K}{K!}$. Apply it with $u=tY_N$, take expectations,
@@ -179,6 +212,8 @@ so $q_N(y)\to q(y)$ for every $y$, where $q$ is the density of $N(0,1+\varepsilo
 \end{proof}
 
 \section{The theorem}
+
+The cut-off has to be chosen before the limit is taken. The primes up to $z$ must be few enough for Lemma~\ref{lem:compare}, and numerous enough for $\sigma_z$ to be almost $\sqrt{\log\log x}$. The choice below is $z=x^{1/\beta}$ with $\beta=(\log\log x)^{1/4}$.
 
 \begin{theorem}[Erd\H{o}s and Kac, 1940]\label{thm:erdoskac}
 For every real $a$, the proportion of integers $n\le x$ such that
@@ -217,23 +252,16 @@ strongly additive $f$ with bounded values on the primes and $B(x)\to\infty$, wit
 \end{remark}
 
 \begin{beauty}
-The theorem says that the primes dividing a random integer behave like independent coin tosses with probabilities $\frac12,\frac13,\frac15,\frac17,\dots$ The integers are as deterministic as anything
-in mathematics, and the law of their prime factors is the law of chance. Kac called this ``statistical independence'', and it is the first theorem of this series in which number theory does not
-only borrow tools from probability but obeys its laws.
+Take $n$ at random up to a large $x$. The primes that divide $n$ behave like the coins of Figure~\ref{fig:coincount}, with heads probabilities $\frac12,\frac13,\frac15,\frac17,\dots$ The integer $n$ is fixed by arithmetic. Theorem~\ref{thm:erdoskac} says that the count of its distinct prime factors, once centred and scaled, follows the Gaussian law. Kac called the phenomenon statistical independence.
 \end{beauty}
 
 \section{What we proved, and what comes next}
 
-Kac's guess is a theorem. The number of distinct prime factors of an integer $n\le x$ is, after centring at $\log\log x$ and scaling by $\sqrt{\log\log x}$, a standard Gaussian in the
-limit. Three steps got us there. Turán's variance (Theorem~\ref{thm:tk}) showed that additive functions concentrate. Kubilius's model, with one independent coin per prime,
-has Gaussian moments, and the integers up to $N$ have the same moments as the model as long as only primes up to $N^{o(1)}$ are involved (Lemma~\ref{lem:compare}). Moments then
-determine the law (Lemma~\ref{lem:momentslaw}). Along the way, a typical integer turned out to have about $(\log n)^{0.69}$ divisors, far fewer than the average $\log n$.
+The Gaussian law is Theorem~\ref{thm:erdoskac}. Three earlier statements carry the proof. Turán's variance, Theorem~\ref{thm:tk}, shows that a strongly additive function concentrates. The coin model has Gaussian moments, by Lemma~\ref{lem:modelmoments}. The integers up to $N$ have the same moments as the model when only primes up to a small $z$ are used, by Lemma~\ref{lem:compare}. Those moments determine the distribution function, by Lemma~\ref{lem:momentslaw}, where $m_k=0$ for odd $k$ and $m_{2j}=(2j)!/(2^j j!)$. Along the way, Corollary~\ref{cor:taunormal} says that a typical integer has about $(\log n)^{0.693}$ divisors.
 
-We also saw where the model breaks: for primes above $\sqrt x$ the events ``$p\mid n$'' are disjoint, not independent (Exercise~\ref{ex:largestprime}). And the convergence is so slow
-that at $10^7$ the bell curve is still out of sight.
+The model fails for primes above $\sqrt x$. The events ``$p\mid n$'' are then disjoint, as Exercise~\ref{ex:largestprime} shows. The convergence is slow enough that at $10^7$ the Gaussian curve in Figure~\ref{fig:omega} is still far from the bars.
 
-Chapter~\ref{ch:random} takes the model to the primes themselves. Cramér's version says that $n$ is prime with probability $\frac1{\log n}$, independently. It predicts the gaps
-between primes, twin primes, and the size of $\pi(x)-\operatorname{Li}(x)$, and it is right surprisingly often. Then comes the first theorem that proves it wrong.
+The coins in this chapter are attached to the divisors of a typical integer. Chapter~\ref{ch:random} attaches a coin to each integer $n\ge 3$, with heads probability $\frac1{\log n}$, and calls heads ``prime''. That model predicts the gaps between primes, the count of twin primes, and the size of $\pi(x)-\operatorname{Li}(x)$. A theorem in that chapter shows where the prediction fails.
 
 \section{Exercises}
 
@@ -263,6 +291,37 @@ Let $\omega_1(n)$ be the number of primes $p\equiv1\pmod4$ dividing $n$. Show th
 for $n\le x$.
 \end{exercise}
 
+\begin{exercise}[$\star$]\label{ex:omega60}
+Figure~\ref{fig:omega60} plots $\omega(n)$ for $1\le n\le 60$.
+\begin{enumerate}[label=(\alph*)]
+\item Count the integers in this range with $\omega(n)=0$, $1$, $2$ and $3$.
+\item Compute the mean of $\omega(n)$ over $1\le n\le 60$, and compare it with $\log\log 60$.
+\item List the three integers with $\omega(n)=3$. Why is there no $n\le 60$ with $\omega(n)=4$?
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:momentcheck}
+The moments in Lemma~\ref{lem:momentslaw} satisfy $m_k=0$ for odd $k$ and $m_{2j}=(2j)!/(2^j j!)$.
+\begin{enumerate}[label=(\alph*)]
+\item Compute $m_2$, $m_4$ and $m_6$ from the factorial formula.
+\item Check the recurrence $m_{2j}=(2j-1)m_{2j-2}$ for $j\ge1$, with $m_0=1$.
+\item Let $Z$ be standard normal. Why is $\mathbb E[Z^k]=0$ for every odd $k$?
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:cutoff16}
+In the proof of Theorem~\ref{thm:erdoskac}, $\beta=L^{1/4}$ with $L=\log\log x$, and the truncation error satisfies $|\rho_x(n)|\le\eta_x=(\beta+\log\beta+O(1))/\sqrt L$.
+\begin{enumerate}[label=(\alph*)]
+\item Take $L=16$. Compute $\beta$, $\log\beta$ and $\sqrt L$.
+\item Compute the main piece $(\beta+\log\beta)/\sqrt L$.
+\item Find the smallest integer $\beta\ge 2$ for which $(\beta+\log\beta)/\beta^2\le\frac12$. What is the corresponding $L$, and what does the size of that $L$ say about the estimate $\eta_x$?
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:fourthmodel}
+Prove that $\mathbb E[S_z^4]=3\sigma_z^4+O(\sigma_z^2)$ as $z\to\infty$. Deduce $\mathbb E[(S_z/\sigma_z)^4]\to 3$. This is the case $k=4$ of Lemma~\ref{lem:modelmoments}. The fourth Gaussian moment is $m_4=3$.
+\end{exercise}
+
 \section{Hints}
 
 \begin{hint}{ex:omegaOmega}
@@ -283,53 +342,115 @@ $\Omega(ab)=\Omega(a)+\Omega(b)$. Typical $a,b\le N$ have $\Omega(a)+\Omega(b)\a
 \begin{hint}{ex:omega1mod4}
 Chapter~\ref{ch:dirichlet} gives $\sum_{p\le x,\,p\equiv1\,(4)}\frac1p=\frac12\log\log x+O(1)$. Run the proofs of Theorems~\ref{thm:hr} and~\ref{thm:erdoskac} with only those primes.
 \end{hint}
+\begin{hint}{ex:omega60}
+The product of the first four primes is $2\cdot3\cdot5\cdot7=210$, which is larger than $60$. For the mean, add $0$, $1$, $2$ and $3$ with the four counts.
+\end{hint}
+\begin{hint}{ex:momentcheck}
+For (b), write $(2j)!=(2j)(2j-1)(2j-2)!$ and $2^j j!=2\cdot 2^{j-1}\cdot j\cdot(j-1)!$. For (c), $Z$ and $-Z$ have the same law.
+\end{hint}
+\begin{hint}{ex:cutoff16}
+Since $\beta=L^{1/4}$, one has $\sqrt L=\beta^2$. Try $\beta=2$ and $\beta=3$.
+\end{hint}
+\begin{hint}{ex:fourthmodel}
+The partitions of $\{1,2,3,4\}$ with a singleton block contribute $0$. Three pairings remain, together with the terms in which all four indices are equal. Use $|Y_p|\le1$, so $\mathbb E[Y_p^4]\le v_p$.
+\end{hint}
 
 \section{Solutions}
 
 \begin{solution}{ex:omegaOmega}
-\idea Repeated prime factors are rare: $p^2\mid n$ has probability $\frac1{p^2}$, and $\sum\frac1{p^2}$ converges. So $\Omega$ and $\omega$ differ by a bounded amount on average, hence by a small amount almost always.
+\idea Repeated prime factors are rare. The event $p^2\mid n$ has probability $\frac1{p^2}$, and $\sum\frac1{p^2}$ converges. So $\Omega$ and $\omega$ differ by a bounded amount on average, and by a small amount for almost every $n$.
 \writeup If $p^a\|n$ then $a-1$ is the number of $j\ge2$ with $p^j\mid n$. So $\sum_{n\le x}(\Omega(n)-\omega(n))\le\sum_{p^j\le x,\,j\ge2}\frac x{p^j}\le x\sum_p\frac1{p(p-1)}=O(x)$. By Markov's inequality, for $\psi(x)\to\infty$, the
-$n\le x$ with $\Omega(n)-\omega(n)>\psi(x)$ number $O(\frac x{\psi(x)})=o(x)$. Taking $\psi=\varepsilon\log\log x$ gives the normal order. For Erd\H{o}s--Kac, take $\psi(x)=(\log\log x)^{1/4}$: outside a set of density $0$,
+$n\le x$ with $\Omega(n)-\omega(n)>\psi(x)$ number $O(\frac x{\psi(x)})=o(x)$. Taking $\psi=\varepsilon\log\log x$ gives the normal order. For Erd\H{o}s--Kac, take $\psi(x)=(\log\log x)^{1/4}$. Outside a set of density $0$,
 $\frac{\Omega(n)-\log\log x}{\sqrt{\log\log x}}$ and $\frac{\omega(n)-\log\log x}{\sqrt{\log\log x}}$ differ by at most $(\log\log x)^{-1/4}\to0$, and the end of the proof of Theorem~\ref{thm:erdoskac} applies.
 \end{solution}
 
 \begin{solution}{ex:taumean}
-\idea A sum of exponentials is dominated by the largest exponents, even when they are rare. The typical $n$ has $2^{\omega(n)}\approx(\log x)^{0.69}$, far below the average, so the average must come from atypical $n$.
+\idea A sum of exponentials is dominated by the largest exponents, even when those exponents are rare. A typical $n$ has $2^{\omega(n)}$ about $(\log x)^{0.69}$, far below the average, so the average has to come from atypical $n$.
 \writeup If $\omega(n)\le1.4\log\log x$, then $2^{\omega(n)}\le2^{1.4\log\log x}=(\log x)^{1.4\log2}=(\log x)^{0.9704}$. So these $n$ contribute at most $x(\log x)^{0.9704}=o(x\log x)$, while the whole sum is
 $\frac6{\pi^2}x\log x+O(x)$. The rest of the sum comes from the $n$ with $\omega(n)>1.4\log\log x$, and by Theorem~\ref{thm:hr} (with $\psi(x)=0.4\sqrt{\log\log x}$) they have density $0$. The same argument with
-$1.4$ replaced by any $\lambda<\frac1{\log2}=1.4427$ shows that the mean of $2^{\omega(n)}$ is made by integers with about $1.44\log\log x$ prime factors or more, far in the tail of the Erd\H{o}s--Kac law.
+$1.4$ replaced by any $\lambda<\frac1{\log2}=1.4427$ shows that the mean of $2^{\omega(n)}$ is made by integers with at least about $1.44\log\log x$ prime factors, far in the tail of the Erd\H{o}s--Kac law.
 \end{solution}
 
 \begin{solution}{ex:skew}
-\idea Odd moments of the model come only from the blocks of size at least $3$; for the third moment, from triples of equal primes.
+\idea The odd moments of the model come from blocks of size at least $3$. For the third moment, the only surviving blocks are triples of equal primes.
 \writeup By independence and $\mathbb E Y_p=0$, $\mathbb E[S_z^3]=\sum_p\mathbb E[Y_p^3]$, and $\mathbb E[Y_p^3]=\frac1p(1-\frac1p)^3-(1-\frac1p)\frac1{p^3}=\frac1p(1-\frac1p)(1-\frac2p)$. So $\mathbb E[S_z^3]=\log\log z+O(1)$, like $\sigma_z^2$,
-and the skewness is $\frac{\log\log z+O(1)}{(\log\log z+O(1))^{3/2}}\sim\frac1{\sqrt{\log\log z}}$. For a sum of independent variables, the Berry--Esseen theorem (proved in Volume~11, Chapter~4), which we quote here, bounds the distance to the Gaussian law by a constant times $\sum_p\mathbb E|Y_p|^3/\sigma_z^3$, which is of the same order $\frac1{\sqrt{\log\log z}}$; Rényi and Turán proved the same rate for $\omega$ itself. With all primes up to $10^7$
+and the skewness is $\frac{\log\log z+O(1)}{(\log\log z+O(1))^{3/2}}\sim\frac1{\sqrt{\log\log z}}$. For a sum of independent variables, the Berry--Esseen theorem (proved in Volume~11, Chapter~4), which we quote here, bounds the distance to the Gaussian law by a constant times $\sum_p\mathbb E|Y_p|^3/\sigma_z^3$, which is of the same order $\frac1{\sqrt{\log\log z}}$. Rényi and Turán proved the same rate for $\omega$ itself. With all primes up to $10^7$
 the model has skewness $0.49$, and $\log\log z$ would have to exceed $10^4$, so $z>e^{e^{10^4}}$, to bring it below $0.01$.
 \end{solution}
 
 \begin{solution}{ex:largestprime}
-\idea Since at most one prime factor exceeds $\sqrt x$, the events ``$p\mid n$'' for $p>\sqrt x$ are disjoint, not independent. So their probabilities add up, to $\sum_{\sqrt x<p\le x}\frac1p\to\log2$, instead of combining
-like independent events.
+\idea At most one prime factor exceeds $\sqrt x$, so the events ``$p\mid n$'' for $p>\sqrt x$ are disjoint. Their probabilities add, and the sum is $\sum_{\sqrt x<p\le x}\frac1p\to\log2$. Independent events would combine differently.
 \writeup If $n\le x$ has a prime factor $p>\sqrt x$, it has exactly one, since the product of two would exceed $x$. So the number of such $n$ is $\sum_{\sqrt x<p\le x}\lfloor\frac xp\rfloor=x\sum_{\sqrt x<p\le x}\frac1p+O(\pi(x))$.
 By Theorem~\ref{thm:mertens2}, $\sum_{\sqrt x<p\le x}\frac1p=\log\log x-\log\log\sqrt x+O(\frac1{\log x})=\log2+O(\frac1{\log x})$, and $\pi(x)=O(\frac x{\log x})$. The proportion tends to $\log2=0.693$. The model treats ``$p\mid n$'' and ``$q\mid n$'' as independent for $p,q>\sqrt x$, but they are
-incompatible; its answer is $1-\exp\bigl(-\sum\frac1p+O(\frac1{\sqrt x})\bigr)\to1-\frac12=\frac12$. This is the same failure of the model for large primes as the $2e^{-\gamma}$ of Chapter~\ref{ch:mertens}, and the reason Lemma~\ref{lem:compare} needs $z$ small.
+incompatible. Its answer is $1-\exp\bigl(-\sum\frac1p+O(\frac1{\sqrt x})\bigr)\to1-\frac12=\frac12$. This is the same failure of the model for large primes as the factor $2e^{-\gamma}$ of Chapter~\ref{ch:mertens}, and it is why Lemma~\ref{lem:compare} needs $z$ small.
 \end{solution}
 
 \begin{solution}{ex:multtable}
-\idea Products know how many prime factors their factors had. A typical product $ab$ has about $2\log\log N$ prime factors, but a typical number up to $N^2$ has only about $\log\log N^2\approx\log\log N$. So the typical products are
-atypical numbers, and atypical numbers are few.
+\idea A product remembers how many prime factors its factors had. A typical product $ab$ has about $2\log\log N$ prime factors, counted with multiplicity. A typical integer up to $N^2$ has about $\log\log(N^2)=\log\log N+\log2$ of them. The typical products are atypical integers, and atypical integers are few.
 \writeup Fix $\varepsilon\in\left]0,\frac14\right[$ and let $L=\log\log N$. By Exercise~\ref{ex:omegaOmega}, all but $o(N)$ integers $a\le N$ have $|\Omega(a)-L|\le\varepsilon L$. So all but $o(N^2)$ pairs $(a,b)$ have
 $\Omega(ab)=\Omega(a)+\Omega(b)\ge(2-2\varepsilon)L$. On the other hand, $\log\log N^2=L+\log2$, so by the normal order of $\Omega$ (with $x=N^2$), all but $o(N^2)$ integers $m\le N^2$ have $\Omega(m)\le(1+\varepsilon)(L+\log2)<(2-2\varepsilon)L$ for large $N$, since $1+\varepsilon<2-2\varepsilon$.
 Every product $ab$ is either the product of an exceptional pair, or an integer $m\le N^2$ with $\Omega(m)\ge(2-2\varepsilon)L$, an exceptional integer. So $D(N)\le o(N^2)+o(N^2)$.
-Counting gives $D(N)/N^2=0.29$, $0.25$, $0.24$ for $N=100$, $1000$, $2000$: the decrease is very slow. Ford (2008) found the true order, $D(N)\asymp\frac{N^2}{(\log N)^c(\log\log N)^{3/2}}$ with $c=1-\frac{1+\log\log2}{\log2}=0.086\ldots$
+Counting gives $D(N)/N^2=0.29$, $0.25$, $0.24$ for $N=100$, $1000$, $2000$. The decrease is very slow. Ford (2008) found the true order, $D(N)\asymp\frac{N^2}{(\log N)^c(\log\log N)^{3/2}}$ with $c=1-\frac{1+\log\log2}{\log2}=0.086\ldots$
 \end{solution}
 
 \begin{solution}{ex:omega1mod4}
-\idea Nothing in the proofs used that \emph{all} primes are counted: only the sum of $\frac1p$ over the primes used, which here is $\frac12\log\log x+O(1)$.
+\idea The proofs use the sum of $\frac1p$ over the primes that are counted. For the primes $p\equiv1\pmod4$ that sum is $\frac12\log\log x+O(1)$.
 \writeup Apply Theorem~\ref{thm:tk} to $f(p)=1$ for $p\equiv1\pmod4$ and $f(p)=0$ otherwise: $A(x)=B(x)^2=\sum_{p\le x,\,p\equiv1\,(4)}\frac1p=\frac12\log\log x+O(1)$ by Corollary~\ref{cor:recipprog}. As in Theorem~\ref{thm:hr},
 $\sum_{n\le x}(\omega_1(n)-\frac12\log\log x)^2=O(x\log\log x)$, which gives the normal order. For the Gaussian law, repeat Lemmas~\ref{lem:modelmoments} and~\ref{lem:compare} with the primes $p\le z$, $p\equiv1\pmod4$ only:
 the model has variance $\sigma_z^2=\sum_{p\le z,\,p\equiv1}\frac1p(1-\frac1p)=\frac12\log\log z+O(1)\to\infty$, which is all that Lemma~\ref{lem:modelmoments} used, and Lemma~\ref{lem:compare} holds verbatim. The end of the proof of
 Theorem~\ref{thm:erdoskac} goes through with $L$ replaced by $\frac12\log\log x$: the truncation error is still at most $\beta$, and $\mu_z=\frac12\log\log x-\frac12\log\beta+O(1)$.
+\end{solution}
+
+\begin{solution}{ex:omega60}
+\idea Count the dots in Figure~\ref{fig:omega60} by height, then add. Four distinct prime factors would require a multiple of $2\cdot3\cdot5\cdot7$.
+\writeup (a) The value $0$ occurs once, at $n=1$. The value $1$ occurs $25$ times, the value $2$ occurs $31$ times, and the value $3$ occurs $3$ times. The four counts add to $1+25+31+3=60$.
+
+(b) The sum of the values is $0\cdot1+1\cdot25+2\cdot31+3\cdot3=25+62+9=96$. The mean is $\frac{96}{60}=1.6$. Also $\log\log 60=\log(4.0943\ldots)=1.410$. The mean sits a little above $\log\log 60$.
+
+(c) The three integers are $30=2\cdot3\cdot5$, $42=2\cdot3\cdot7$ and $60=2^2\cdot3\cdot5$. The product of the first four primes is $210>60$, so no integer up to $60$ has four distinct prime factors.
+\end{solution}
+
+\begin{solution}{ex:momentcheck}
+\idea The factorial formula is the closed form of the recurrence $\mathbb E[Z^k]=(k-1)\mathbb E[Z^{k-2}]$. Odd moments vanish because the standard normal law is symmetric about $0$.
+\writeup (a) For $j=1$, $m_2=2!/(2\cdot1!)=1$. For $j=2$, $m_4=24/(4\cdot2!)=3$. For $j=3$, $m_6=720/(8\cdot6)=15$.
+
+(b) The identity $(2j)!=(2j)(2j-1)(2j-2)!$ and $2^j j!=2\cdot 2^{j-1}\cdot j\cdot(j-1)!$ give
+\[
+m_{2j}=\frac{(2j)(2j-1)}{2\cdot j}\,m_{2j-2}=(2j-1)m_{2j-2}.
+\]
+With $m_0=1$ this produces $1$, $3$ and $15$ again.
+
+(c) The variables $Z$ and $-Z$ have the same law, so $\mathbb E[Z^k]=\mathbb E[(-Z)^k]$. For odd $k$ the right side is $-\mathbb E[Z^k]$. A finite number equal to its negative is $0$.
+\end{solution}
+
+\begin{solution}{ex:cutoff16}
+\idea The cut-off in the proof is $\beta=L^{1/4}$, so $\sqrt L=\beta^2$. The fraction $(\beta+\log\beta)/\sqrt L$ is the main piece of $\eta_x$. It becomes small only when $\beta$ is large, which forces $L=\beta^4$ to be huge.
+\writeup (a) If $L=16$, then $\beta=16^{1/4}=2$, $\log\beta=\log2=0.693$ and $\sqrt L=4$.
+
+(b) The main piece is $(2+\log2)/4=0.673$.
+
+(c) Since $\sqrt L=\beta^2$, the inequality is $(\beta+\log\beta)/\beta^2\le\frac12$. For $\beta=2$ the value is $0.673>\frac12$. For $\beta=3$, $\log3=1.099$ and $(3+1.099)/9=0.455\le\frac12$. So the smallest such integer is $\beta=3$, and $L=\beta^4=81$. At that height $\log\log x=81$, so $\log x=e^{81}$ and $x=\exp(e^{81})$. The $O(1)$ in $\eta_x$ is still present, and even the main piece of this particular estimate stays above $\frac12$ until $L$ is at least $81$. The estimate proves $\eta_x\to0$, and it does so very slowly. That is consistent with the error $O(1/\sqrt{\log\log x})$ quoted after Theorem~\ref{thm:erdoskac}, which at $x=10^7$ is still $0.6$.
+\end{solution}
+
+\begin{solution}{ex:fourthmodel}
+\idea Expand $\mathbb E[S_z^4]$ and group the terms by which primes are equal. A singleton block has mean zero and drops out. Three pairings survive, and so do the terms in which one prime is repeated four times.
+\writeup Write $Y_p=X_p-\frac1p$ and $v_p=\mathbb E[Y_p^2]$, as in the proof of Lemma~\ref{lem:modelmoments}. Then
+\[
+\mathbb E[S_z^4]=\sum_{p,q,r,s\le z}\mathbb E[Y_p Y_q Y_r Y_s].
+\]
+If the equality pattern on $(p,q,r,s)$ has a prime that appears once, independence and $\mathbb E Y_p=0$ kill the term. The surviving patterns are the three pairings of four indices and the pattern in which all four indices agree.
+
+There are three pairings: positions $(1,2)$ with $(3,4)$, positions $(1,3)$ with $(2,4)$, and positions $(1,4)$ with $(2,3)$. For the first, the sum over $p\ne q$ is $\sum_{p\ne q}v_pv_q$. The same holds for the other two. Hence the pairings contribute
+\[
+3\sum_{p\ne q}v_pv_q=3\Bigl(\sigma_z^4-\sum_pv_p^2\Bigr).
+\]
+Since $v_p\le\frac1p$, one has $\sum_pv_p^2\le\sum_p\frac1{p^2}<1$, and the subtracted term is $O(1)$.
+
+For the diagonal, $|Y_p|\le1$, so $Y_p^4\le Y_p^2$ and $\mathbb E[Y_p^4]\le v_p$. The diagonal contributes at most $\sum_pv_p=\sigma_z^2$. Therefore
+\[
+\mathbb E[S_z^4]=3\sigma_z^4+O(\sigma_z^2).
+\]
+Divide by $\sigma_z^4$. As $z\to\infty$ one has $\sigma_z^2\to\infty$, so the ratio tends to $3$. By the formula in Lemma~\ref{lem:momentslaw}, $m_4=24/(4\cdot2)=3$.
 \end{solution}
 
 \section*{Sources and further reading}
@@ -338,14 +459,14 @@ Theorem~\ref{thm:erdoskac} goes through with $L$ replaced by $\frac12\log\log x$
 \item G.~H.~Hardy and S.~Ramanujan, \emph{The normal number of prime factors of a number $n$}, Quarterly Journal of Mathematics 48 (1917), 76--92.
 \item P.~Turán, \emph{On a theorem of Hardy and Ramanujan}, Journal of the London Mathematical Society 9 (1934), 274--276.
 \item P.~Erd\H{o}s and M.~Kac, \emph{The Gaussian law of errors in the theory of additive number theoretic functions}, American Journal of Mathematics 62 (1940), 738--742.
-\item M.~Kac, \emph{Statistical Independence in Probability, Analysis and Number Theory}, Carus Mathematical Monographs 12, MAA, 1959. Short, and a joy to read.
-\item M.~Kac, \emph{Enigmas of Chance: an Autobiography}, Harper and Row, 1985. The story of the 1939 lecture.
+\item P.~Erd\H{o}s and M.~Kac, \emph{On the Gaussian law of errors in the theory of additive functions}, Proceedings of the National Academy of Sciences 25 (1939), 206--207. The announcement, communicated on 13 March 1939.
+\item M.~Kac, \emph{Statistical Independence in Probability, Analysis and Number Theory}, Carus Mathematical Monographs 12, MAA, 1959. The epigraph is the title of Chapter~4.
+\item M.~Kac, \emph{Enigmas of Chance: an Autobiography}, Harper and Row, 1985. Kac's account of the 1939 lecture.
 \item J.~Kubilius, \emph{Probabilistic Methods in the Theory of Numbers}, AMS Translations of Mathematical Monographs 11, 1964 (Russian original 1959).
-\item The epigraph is the title of Chapter~4 of Kac's \emph{Statistical Independence}, above.
 \item A.~Rényi and P.~Turán, \emph{On a theorem of Erd\H{o}s--Kac}, Acta Arithmetica 4 (1958), 71--84.
 \item A.~Selberg, \emph{Note on a paper by L.~G.~Sathe}, Journal of the Indian Mathematical Society 18 (1954), 83--87.
-\item P.~Billingsley, \emph{On the central limit theorem for the prime divisor function}, American Mathematical Monthly 76 (1969), 132--139. The method of moments, as used here.
+\item P.~Billingsley, \emph{On the central limit theorem for the prime divisor function}, American Mathematical Monthly 76 (1969), 132--139. The moment argument used in this chapter.
 \item A.~Granville and K.~Soundararajan, \emph{Sieving and the Erd\H{o}s--Kac theorem}, in \emph{Equidistribution in Number Theory, an Introduction}, Springer, 2007, 15--27.
-\item K.~Ford, \emph{The distribution of integers with a divisor in a given interval}, Annals of Mathematics 168 (2008), 367--433. The multiplication table problem.
+\item K.~Ford, \emph{The distribution of integers with a divisor in a given interval}, Annals of Mathematics 168 (2008), 367--433. The order of $D(N)$ in Exercise~\ref{ex:multtable}.
 \item G.~Tenenbaum, \emph{Introduction to Analytic and Probabilistic Number Theory}, 3rd ed., AMS Graduate Studies in Mathematics 163, 2015, Part~III.
 \end{itemize}

@@ -18,7 +18,9 @@ SOURCES = {
         # The new statements were checked in this preparation. Not an independent sign-off.
         # 2026-11-12: V1-07. The Volume 1 credit no longer says Riemann integral.
         # Labels unchanged. Not an independent sign-off of the chapter.
-        "02b9b2067fb9cbafce08f6b5f16646fd3c0cef48",
+        # 2026-11-13: V4-03. Squares on the cutoff circles are bounded by
+        # their own mesh strips. Labels unchanged. Not an independent sign-off.
+        "73617646dcb3dbad985ce9df7b4a4536fae28aad",
         "prop:densitymean prop:gausstail prop:fubini prop:polar prop:manyuniforms prop:orderpair prop:inverse thm:dct thm:boxmuller",
         "ex:counter ex:densityunique ex:tail ex:cauchy ex:gamma ex:order ex:cantor ex:usquare ex:radius pb:passone pb:stick",
     ),

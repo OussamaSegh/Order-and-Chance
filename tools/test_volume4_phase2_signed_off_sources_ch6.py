@@ -14,7 +14,10 @@ SOURCE=Path(__file__).resolve().parents[1]/"volume4-chance"/"chapters"/"ch06-clt
 # Reread 2026-11-11 for V4-01, V4-02, V4-04, V4-06, V4-07, V4-18, V4-19.
 # Numbered labels are unchanged. This pin is identity, not a proof.
 # Reread 2026-11-11 for the unnumbered characteristic-function label (V4R2-08). Numbered labels unchanged.
-SHA="71b730dcf2e7ea53ccccbef5675c0c4eab315862"
+# 2026-11-13: V4-02. The clip of the other blocks is charged to the tails
+# E[Q_j^2 1_{|Q_j|>K}], and the square is factored so that bound tends to 0.
+# Numbered labels unchanged. This pin is identity, not a proof.
+SHA="41197f55044d2d813d364c0a2cfcae7750763ab6"
 PROOFS="prop:modes prop:cdf thm:slln4 thm:gc lem:diffint prop:cfexamples thm:cfconv thm:inversion lem:normalsum thm:lindeberg cor:clt thm:local prop:cyclebern thm:gaussvec".split()
 EX="ex:slutsky ex:confidence ex:delta ex:cauchyclt ex:poissonhalf ex:returns ex:thirdmoment ex:cyclesclt".split()
 

@@ -43,13 +43,13 @@ Reduced fractions of denominator up to eighty each carry a circle whose radius i
 
 Cover illustration: the Cantor function over the Cantor set; see About the Cover.
 
-The Cantor function approached through its iterates, the last of them rising from zero to one and flat on the removed intervals, with eight stages of the Cantor set in rows underneath. Georg Cantor introduced the set in 1883, and described the staircase associated with it in 1884. The function is constant on a set of full length and increases only on a set of length zero. Making sense of that is the work of this volume, from the chapter Sets, Choice and the Real Numbers to the chapter Measures. The drawing was computed by the book's own TikZ cover generator.
+Eight stages of the Cantor set lie in rows under the Cantor function. The function is drawn through its iterates. The last of them rises from zero to one and is flat on the removed intervals. Georg Cantor introduced the set in 1883, and he described the staircase in 1884. The function is constant on a set of full length, and it increases only on a set of length zero. That is why the picture belongs on this volume. The set is built with the real numbers, and its length is settled only when measure is defined, in the chapter Measures. The drawing was computed by the book's own TikZ cover generator.
 
 ## Volume 8 — Analysis
 
 Cover illustration: Fourier sums of the square wave, and its spectrum; see About the Cover.
 
-Partial sums of the Fourier series of a square wave, the wave itself in a paler line, and beneath them the odd harmonics of its spectrum. Joseph Fourier published the series in The Analytical Theory of Heat in 1822. The overshoot at each jump, which refuses to shrink as further terms are added, was noticed by Henry Wilbraham in 1848 and brought back to attention by J. Willard Gibbs in 1899. The chapter The Fourier Transform is where this volume takes up that analysis. The drawing was computed by the book's own TikZ cover generator.
+The cover draws partial sums of the Fourier series of a square wave. A paler line is the wave itself. Beneath the wave, bars mark the odd harmonics of its spectrum. Joseph Fourier published the series in The Analytical Theory of Heat in 1822. At each jump the sums overshoot, and that overshoot does not shrink when further terms are added. Henry Wilbraham noticed the overshoot in 1848. J. Willard Gibbs brought it back to attention in 1899. This volume takes the series up again in the chapter The Fourier Transform. The drawing was computed by the book's own TikZ cover generator.
 
 ## Volume 9 — Shapes
 

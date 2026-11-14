@@ -240,7 +240,7 @@ Defining odd next to even, which the step-14 note records as the repair of the G
 
 The comparison above describes the manuscript at `8b8a5be`, before the repairs. Those repairs are [Volume 1: apply independent scored read](https://github.com/OussamaSegh/Order-and-Chance/pull/187), squash-merged as `37c56ebb791ae3da566e440135567e35d7c49816`. The Volume 1 print PDF at that commit is 463 pages.
 
-Of the 35 issues, 33 are fixed, 0 are partial, and 1 is not fixed. One more, V1-07, is deferred.
+Of the 35 issues, 34 are fixed, 0 are partial, and 1 is not fixed. V1-07, deferred at the apply, is fixed on main by #201.
 
 The citation repairs V5-01 through V5-71, from the review in pull request #196, also landed in `37c56ebb`. Volume 5 now uses Volume 1’s printed chapter numbers, with the language chapter as Chapter 0.
 
@@ -252,7 +252,7 @@ The citation repairs V5-01 through V5-71, from the review in pull request #196, 
 | V1-04 | fixed | #187 | `37c56ebb` | Volume 5 cites Exercise 6.7 and no longer says Volume 1 promised five further proofs. |
 | V1-05 | fixed | #187 | `37c56ebb` | The KDP description names the subjects and no longer says journey. |
 | V1-06 | fixed | #187 | `37c56ebb` | The preface plate’s EPUB alt text is the sentence under the figure. |
-| V1-07 | deferred | #187 | `37c56ebb` | The Volume 4 bibliography still says “Riemann integral”; that wording waits for the final Volume 4 step. |
+| V1-07 | fixed | #201 | `af918fdf` | The Volume 4 credits say the integral as Volume 1 axiomatized it, and they keep the Gaussian value. The final Volume 4 step confirmed that wording on main. |
 | V1-08 | fixed | #187 | `37c56ebb` | Every integer is even or odd and not both, from well ordering, and the parity solution cites that split. |
 | V1-09 | fixed | #187 | `37c56ebb` | A real square root of 2 is called a later theorem, and the word continuous is gone. |
 | V1-10 | fixed | #187 | `37c56ebb` | The failing test point is a charcoal cross on the axis at 2. |

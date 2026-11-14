@@ -1,444 +1,479 @@
 \chapter{Cauchy's Theorem, Growth and Mellin Inversion}\label{ch:complex}
 
 \begin{center}\itshape
-A contour integral vanishes when the contour winds around nothing outside the domain.\\
-Growth on the boundary controls growth inside, even on an infinite strip,\\
-and a sum of copies at every scale is a Dirichlet series in disguise.
+A contour remembers what it winds around. A growth bound lets us control an infinite strip. Mellin inversion turns a sum over scales into residues, including the tiny oscillations between the main terms.
 \end{center}
 
-Volume~5 proved Cauchy's theorem on star-shaped sets, and left the general statement: the integral of a holomorphic function over a cycle is zero whenever the cycle winds around no point outside the domain. Volume~7 defines the winding number of a continuous closed curve (Definition~6.5 and Proposition~6.6) and proves that a simple closed curve has an inside and an outside (Theorem~6.10).
-The division of labour is this. Volume~5, Chapter~9, owns the complex analysis of convex and star-shaped contours: Cauchy's theorem and formula, Liouville's theorem, Laurent series, residues and the maximum principle. This chapter owns what the later volumes need beyond that: Cauchy's theorem in its homology form, the Phragm\'en--Lindel\"of principle, Hadamard's factorisation and Mellin inversion. This chapter proves Dixon's form of Cauchy's theorem, which uses that winding number and Liouville's theorem. Then come growth and size. The Phragm\'en--Lindel\"of principle extends the maximum principle to unbounded regions and gives the first non-trivial bound for $\zeta(\frac12+it)$; Hadamard's factorisation writes an entire function of finite order from its zeros. The Riemann mapping theorem, which sends every simply connected domain onto a disc, is proved in Volume~9. We end with the Mellin transform, Fourier analysis on the multiplicative group, which turns sums into products of Dirichlet series and is the tool of choice for the asymptotic analysis of algorithms.
+Volume~5 proved Cauchy's theorem for star-shaped regions. Volume~7, Definition~6.5 and Proposition~6.6, gave continuous closed curves their winding numbers, and Theorem~6.10 separated the inside and outside of a Jordan curve. We can now combine those results: a holomorphic function integrates to zero around a cycle when the cycle has winding number zero at every point outside its domain. Dixon's proof does this using Liouville's theorem, without cutting the region into smaller pieces.
+
+The complex analysis already available from Volume~5, Chapter~9, includes Cauchy's formula, Laurent series, residues and the maximum principle. Here we extend its reach to general cycles, unbounded strips and entire functions of finite order. Phragm\'en--Lindel\"of will give a bound for $\zeta(1/2+it)$; Hadamard will recover an entire function from its zeros up to a polynomial exponential. The Riemann mapping theorem belongs to Volume~9; its domains must be proper simply connected domains, since the whole plane cannot map conformally onto a disc.
+
+We finish by changing from additive to multiplicative scale. The Mellin transform is Fourier analysis after $x=e^u$. It separates the shape of a function from the scales at which we add its copies, a useful tool in both number theory and the analysis of algorithms.
 
 \section{Cauchy's theorem in its final form}
 
-A \emph{cycle} is a formal sum $\gamma=\gamma_1+\dots+\gamma_k$ of closed piecewise $C^1$ paths, with $\int_\gamma f=\sum_j\int_{\gamma_j}f$, $\gamma^*=\bigcup_j\gamma_j^*$ and $n(\gamma,a)=\sum_jn(\gamma_j,a)$. The boundary of
-an annulus, the outer circle counterclockwise plus the inner circle clockwise, is a cycle but not a single closed path. A cycle $\gamma$ in an open set $\Omega$ is \emph{homologous to zero in $\Omega$} if
-$n(\gamma,a)=0$ for every $a\notin\Omega$: it does not wind around any hole of $\Omega$.
+A \emph{cycle} $\gamma=\gamma_1+\cdots+\gamma_k$ is a formal sum of closed piecewise $C^1$ paths. Integrals and winding numbers add:
+\[\int_\gamma f=\sum_j\int_{\gamma_j}f,\qquad
+ n(\gamma,a)=\sum_jn(\gamma_j,a),\qquad\gamma^*=\bigcup_j\gamma_j^*.
+\]
+For example, an annulus has a boundary cycle with its outer circle counterclockwise and its inner circle clockwise. A cycle in an open set $\Omega$ is \emph{homologous to zero in $\Omega$} when $n(\gamma,a)=0$ for every $a\notin\Omega$. The condition tests the holes outside the domain, not every point inside the contour.
 
 \begin{theorem}[Cauchy's theorem, homology form]\label{thm:globalcauchy}
-Let $\Omega$ be open, $f$ holomorphic on $\Omega$, and $\gamma$ a cycle in $\Omega$ homologous to zero in $\Omega$. Then
+Suppose $\Omega$ is open, $f$ is holomorphic on $\Omega$, and $\gamma$ is a cycle in $\Omega$ homologous to zero there. Then
 \begin{enumerate}
-\item[(a)] $\displaystyle f(z)\,n(\gamma,z)=\frac1{2\pi i}\int_\gamma\frac{f(w)}{w-z}\dd w$ for every $z\in\Omega\setminus\gamma^*$;
-\item[(b)] $\displaystyle\int_\gamma f=0$.
+\item[(a)] for every $z\in\Omega\setminus\gamma^*$,
+\[f(z)n(\gamma,z)=\frac1{2\pi i}\int_\gamma\frac{f(w)}{w-z}\dd w;\]
+\item[(b)] the integral $\int_\gamma f$ is zero.
 \end{enumerate}
 \end{theorem}
 \begin{proof}
-This is John Dixon's proof (1971). Define $g$ on $\Omega\times\Omega$ by $g(z,w)=\frac{f(w)-f(z)}{w-z}$ for $w\ne z$ and $g(z,z)=f'(z)$. It is continuous: away from the diagonal this is clear, and if
-$\overline D(z_0,r)\subset\Omega$, then for $z,w\in D(z_0,r)$
-\[
-g(z,w)=\int_0^1f'\bigl(z+t(w-z)\bigr)\dd t
-\]
-(both when $w\ne z$, integrating $f'$ along the segment, and when $w=z$), which is continuous because $f'$ is uniformly continuous on $\overline D(z_0,r)$. For fixed $w$, $z\mapsto g(z,w)$ is holomorphic on
-$\Omega\setminus\{w\}$ and continuous at $w$, hence holomorphic on $\Omega$ (Volume~5, Theorem~9.20). Writing $\int_\gamma$ as a sum of integrals over parameter intervals, Volume~5, Theorem~9.15(b), shows that
-\[
-h(z)=\frac1{2\pi i}\int_\gamma g(z,w)\dd w
-\]
-is holomorphic on $\Omega$. Let $\Omega_1=\{z\notin\gamma^*:n(\gamma,z)=0\}$, an open set, since the winding number is constant on each component of the complement (Volume~7, Proposition~6.6(c)). The hypothesis says exactly that $\Omega\cup\Omega_1=\C$. On $\Omega_1$ let
-\[
-h_1(z)=\frac1{2\pi i}\int_\gamma\frac{f(w)}{w-z}\dd w,
-\]
-again holomorphic. For $z\in\Omega\cap\Omega_1$, $h(z)=h_1(z)-f(z)n(\gamma,z)=h_1(z)$. So $h$ and $h_1$ together define an entire function $H$. The winding number vanishes on the unbounded component (Volume~7, Proposition~6.6(c)), so $\Omega_1$
-contains $\{|z|>r\}$ for $r=\max_{\gamma^*}|w|$, and there $|H(z)|=|h_1(z)|\le\frac{L(\gamma)\max_{\gamma^*}|f|}{2\pi(|z|-r)}$, where $L(\gamma)$ is the length. So $H$ is bounded and tends to $0$ at infinity; by
-Liouville's theorem (Volume~5, Theorem~9.16) it is $0$. For $z\in\Omega\setminus\gamma^*$, $h(z)=0$ is statement (a).
+Following John Dixon (1971), remove a divided difference's apparent singularity:
+\[g(z,w)=\begin{cases}(f(w)-f(z))/(w-z),&w\ne z,\\f'(z),&w=z.\end{cases}\]
+This is continuous on $\Omega\times\Omega$. Near a diagonal point choose a closed disc inside $\Omega$; for $z,w$ in that disc,
+\[g(z,w)=\int_0^1 f'(z+t(w-z))\dd t,\]
+which proves the required continuity there. With $w$ fixed, the removable-singularity theorem (Volume~5, Theorem~9.20) makes $g$ holomorphic in $z$. Integration along the finitely many parameter intervals of $\gamma$ therefore gives a holomorphic function
+\[h(z)=\frac1{2\pi i}\int_\gamma g(z,w)\dd w\quad(z\in\Omega),\]
+by Volume~5, Theorem~9.15(b).
 
-For (b), the set $\gamma^*$ contains no disc: a path of length $L$ is covered by $N$ discs of radius $\frac LN$, of total area $\frac{\pi L^2}N$. So there is $z\in\Omega\setminus\gamma^*$. Apply (a) to
-$F(w)=(w-z)f(w)$: $0=F(z)n(\gamma,z)=\frac1{2\pi i}\int_\gamma f(w)\dd w$.
+Let $\Omega_1=\{z\notin\gamma^*:n(\gamma,z)=0\}$. Local constancy of winding number makes this set open (Volume~7, Proposition~6.6(c)). The hypothesis says $\Omega\cup\Omega_1=\C$. On $\Omega_1$ define another holomorphic function,
+\[h_1(z)=\frac1{2\pi i}\int_\gamma\frac{f(w)}{w-z}\dd w.\]
+On the overlap, $h=h_1-f(z)n(\gamma,z)=h_1$. They join to an entire function $H$. For $r=\max_{w\in\gamma^*}|w|$, the region $|z|>r$ lies in $\Omega_1$, and
+\[|H(z)|\le\frac{L(\gamma)\max_{\gamma^*}|f|}{2\pi(|z|-r)}.\]
+Thus $H$ tends to zero at infinity and is bounded everywhere. Liouville (Volume~5, Theorem~9.16) forces $H=0$. Unpacking $h=0$ gives (a).
+
+For (b), an empty cycle is immediate. Otherwise choose $z\in\Omega\setminus\gamma^*$. Such a point exists because a finite union of rectifiable paths has area zero: divide each path by arc length into $N$ pieces, cover them by discs of radius $L/N$, and let $N$ grow. Apply (a) to $F(w)=(w-z)f(w)$. Since $F(z)=0$, its Cauchy integral is exactly $(2\pi i)^{-1}\int_\gamma f$, proving (b).
 \end{proof}
 
 \begin{beauty}
-Dixon's proof never decomposes the region, never triangulates, never deforms a contour. It only says: the function that \emph{ought} to vanish is holomorphic on $\Omega$, and visibly holomorphic and
-small on the region where the cycle does not wind; the two regions cover the plane, so Liouville kills it. Topology enters only through the winding number.
+The two formulas for $H$ do different jobs. The divided difference makes it holomorphic across the contour; the Cauchy kernel makes it small far away. Winding number tells us that their domains cover the plane. Liouville then finishes the argument.
 \end{beauty}
 
 \begin{corollary}[residue theorem, general form]\label{cor:globalresidue}
-Let $\Omega$ be open, $S\subset\Omega$ finite, $f$ holomorphic on $\Omega\setminus S$, and $\gamma$ a cycle in $\Omega\setminus S$ homologous to zero in $\Omega$. Then
-\[
-\int_\gamma f=2\pi i\sum_{c\in S}n(\gamma,c)\operatorname{Res}_cf.
-\]
+Let $\Omega$ be open and $S\subset\Omega$ finite. Suppose $f$ is holomorphic on $\Omega\setminus S$, and $\gamma$ is a cycle in $\Omega\setminus S$ homologous to zero in $\Omega$. Then its integral is
+\[\int_\gamma f=2\pi i\sum_{c\in S}n(\gamma,c)\operatorname{Res}_cf.\]
 \end{corollary}
 \begin{proof}
-Let $P_c(z)=\sum_{k\ge1}a_{-k}(z-c)^{-k}$ be the principal part of the Laurent series of $f$ at $c$ (Volume~5, Theorem~9.22), holomorphic on $\C\setminus\{c\}$. Then $f-\sum_cP_c$ has removable
-singularities at the points of $S$, and extends to a holomorphic function on $\Omega$; by Theorem~\ref{thm:globalcauchy}(b) its integral over $\gamma$ is $0$. The series $P_c$ converges uniformly on the
-compact set $\gamma^*\subset\C\setminus\{c\}$; the terms with $k\ge2$ have primitives and integrate to $0$ over closed paths, and the term $a_{-1}(z-c)^{-1}$ gives $2\pi i\,n(\gamma,c)a_{-1}$.
+At each $c\in S$, take the negative-power part $P_c(z)=\sum_{k\ge1}a_{-k}(z-c)^{-k}$ of the Laurent series (Volume~5, Theorem~9.22). This series is holomorphic on $\C\setminus\{c\}$ and converges uniformly on $\gamma^*$. Subtracting all the $P_c$ leaves removable singularities, hence a holomorphic function on $\Omega$, whose cycle integral vanishes by Theorem~\ref{thm:globalcauchy}(b). In each principal part, terms with $k\ge2$ have single-valued primitives. Only $a_{-1}(z-c)^{-1}$ contributes, giving $2\pi i\,a_{-1}n(\gamma,c)$.
 \end{proof}
 
-An open set $\Omega$ is \emph{homologically simply connected} if every cycle in $\Omega$ is homologous to zero in $\Omega$: no closed path in $\Omega$ winds around a point outside $\Omega$.
+Call an open set \emph{homologically simply connected} if every cycle in it is homologous to zero there. Equivalently, no closed path in the set has nonzero winding number about a point outside it.
 
 \begin{corollary}\label{cor:hsc}
-Let $\Omega$ be a connected, homologically simply connected open set. Then every holomorphic function on $\Omega$ has a primitive, and every holomorphic function without zeros on $\Omega$ has a
-holomorphic logarithm, hence holomorphic $n$-th roots for every $n\ge1$.
+On a connected homologically simply connected open set $\Omega$, every holomorphic function has a primitive. Every nowhere-zero holomorphic function on $\Omega$ also has a holomorphic logarithm and a holomorphic $n$th root for each $n\ge1$.
 \end{corollary}
 \begin{proof}
-Fix $z_0\in\Omega$. Any two points of $\Omega$ are joined by a polygonal path in $\Omega$ (Volume~7, Proposition~3.14), and by Theorem~\ref{thm:globalcauchy}(b) the integral of $f$ along such a path from
-$z_0$ to $z$ does not depend on the path; call it $F(z)$. If $D(z,r)\subset\Omega$ and $|h|<r$, then $F(z+h)-F(z)=\int_{[z,z+h]}f$, and $F'(z)=f(z)$ follows exactly as in Volume~5, Theorem~9.9. If $f$
-has no zeros, let $L_0$ be a primitive of $\frac{f'}f$. Then $(fe^{-L_0})'=0$, so $f=e^{c+L_0}$ for a constant $c$, and $L=c+L_0$ is a logarithm; $e^{L/n}$ is an $n$-th root.
+Fix $z_0\in\Omega$. Polygonal paths join it to every other point (Volume~7, Proposition~3.14). By Theorem~\ref{thm:globalcauchy}(b), integrating $f$ along such a path gives a value $F(z)$ independent of the chosen path. Inside a small disc, $F(z+h)-F(z)=\int_{[z,z+h]}f$, so continuity of $f$ gives $F'=f$, as in Volume~5, Theorem~9.9.
+
+For a nowhere-zero $f$, take a primitive $L_0$ of $f'/f$. Differentiation gives $(fe^{-L_0})'=0$. Connectedness makes this a nonzero constant, which is $e^c$ for some $c\in\C$. Therefore $L=c+L_0$ is a holomorphic logarithm of $f$, and $e^{L/n}$ is an $n$th root.
 \end{proof}
 
 \begin{proposition}\label{prop:hsccriterion}
-Let $\Omega$ be open. If every point of $\C\setminus\Omega$ lies in a connected unbounded subset of $\C\setminus\Omega$, then $\Omega$ is homologically simply connected. In particular, star-shaped open sets,
-the slit plane $\C\setminus\left]-\infty,0\right]$, and the inside of every Jordan curve are homologically simply connected.
+Suppose every point of $\C\setminus\Omega$, with $\Omega$ open, belongs to a connected unbounded subset of that complement. Then $\Omega$ is homologically simply connected. In particular this holds for star-shaped open sets, the slit plane $\C\setminus\left]-\infty,0\right]$, and the interior of any Jordan curve.
 \end{proposition}
 \begin{proof}
-Let $\gamma$ be a closed path in $\Omega$, $a\notin\Omega$, and $E\ni a$ a connected unbounded subset of $\C\setminus\Omega\subset\C\setminus\gamma^*$. The integer-valued continuous function $n(\gamma,\cdot)$ is constant
-on $E$, and $E$ contains points of modulus larger than $\max_{\gamma^*}|z|$, where it vanishes (Volume~7, Proposition~6.6(c)). So $n(\gamma,a)=0$.
+Given a closed path $\gamma$ in $\Omega$ and $a\notin\Omega$, choose such a connected unbounded set $E$ through $a$. Winding number is continuous and integer valued off $\gamma^*$, hence constant on $E$. It is zero at points of sufficiently large modulus (Volume~7, Proposition~6.6(c)), so it vanishes at $a$. Additivity extends the conclusion to cycles.
 
-If $\Omega$ is star-shaped with respect to $c$ and $a\notin\Omega$, the ray $\{a+t(a-c):t\ge0\}$ misses $\Omega$ (if $a+t(a-c)\in\Omega$, the segment from $c$ to it, which contains $a$, would lie in $\Omega$). For the
-slit plane, $\C\setminus\Omega$ is itself a connected unbounded set. If $U$ is the inside of a Jordan curve $J$ and $V$ the outside, then $\C\setminus U=J\cup V=\overline V$ by the Jordan curve theorem (Volume~7, Theorem~6.10), the
-closure of a connected unbounded set, which is connected and unbounded.
+If $\Omega$ is star-shaped about $c$ and $a\notin\Omega$, the ray $\{a+t(a-c):t\ge0\}$ stays outside: a point of that ray inside $\Omega$ would bring the segment through $a$ inside too. The slit plane's complement is already connected and unbounded. For a Jordan interior $U$ with exterior $V$, Volume~7, Theorem~6.10, gives $\C\setminus U=\overline V$. This closure remains connected and unbounded, as required.
 \end{proof}
 
 \begin{think}
-The annulus $1<|z|<2$ fails the test, and indeed $\frac1z$ has no primitive there. Can you find a connected open set $\Omega$, with $\C\setminus\Omega$ connected but bounded, that is
-homologically simply connected? (Hint: think about what the complement of a closed disc looks like.)
+The annulus $1<|z|<2$ admits no primitive of $1/z$. Could a homologically simply connected open set have a non-empty bounded complement? Choose a circle enclosing that complement. The circle lies in the open set but winds once around every point of the complement, so the answer is no. Connectedness of a bounded complement alone does not remove the obstruction; the exterior of a closed disc is an example.
 \end{think}
 
 \section{Growth in a strip: Phragm\'en and Lindel\"of}
 
-Lars Edvard Phragm\'en had already made his name in an unusual way: as editor at \emph{Acta Mathematica} in 1889, he found the error in Poincar\'e's prize-winning memoir on the three-body problem,
-which had to be pulped and rewritten, and from whose correction chaos theory was born. In 1908, with Ernst Lindel\"of, he extended the maximum principle to unbounded regions. The principle can only
-hold with a growth condition, because $\exp(\exp(-is))$ is bounded by $1$ on the edges of the strip $|\operatorname{Re}s|\le\frac\pi2$ and enormous in the middle (Exercise~\ref{ex:plsharp}); but any reasonable growth
-is allowed. We write $s=\sigma+it$, as in Volume~6.
+In 1889 Phragm\'en, working at \emph{Acta Mathematica}, spotted an error in Poincar\'e's prize memoir on the three-body problem. Correcting it led Poincar\'e to the complicated orbit geometry that helped begin chaos theory. Phragm\'en's 1908 work with Lindel\"of concerns another question about infinity: when does the maximum principle still control an unbounded region?
+
+A boundary bound alone is insufficient. On the strip $|\Re s|\le\pi/2$, the function $\exp(\exp(-is))$ has modulus one on both vertical edges and grows doubly exponentially up the middle (Exercise~\ref{ex:plsharp}). A growth hypothesis excludes this escape. As in Volume~6, write $s=\sigma+it$.
 
 \begin{theorem}[Phragm\'en--Lindel\"of in a half-strip]\label{thm:pl}
-Let $a<b$, $t_0\in\R$, and $S=\{s:a\le\sigma\le b,\ t\ge t_0\}$. Let $f$ be continuous on $S$ and holomorphic in its interior, with $|f(s)|\le Ce^{Ct}$ on $S$ for some $C$, and $|f|\le M$ on the boundary of $S$.
-Then $|f|\le M$ on $S$.
+Let $a<b$, $t_0\in\R$, and $S=\{s:a\le\sigma\le b,\ t\ge t_0\}$. Suppose $f$ is continuous on $S$, holomorphic in its interior, satisfies $|f(s)|\le Ce^{Ct}$ on $S$ for some $C>0$, and has $|f|\le M$ on its boundary. Then $|f(s)|\le M$ everywhere in $S$.
 \end{theorem}
 \begin{proof}
-We may assume $M>0$ (replace $M$ by $M+\eta$ and let $\eta\to0$). Let $\varepsilon>0$, $K=\max(a^2,b^2)$, and $G(s)=f(s)e^{\varepsilon s^2}$. Since $\operatorname{Re}s^2=\sigma^2-t^2$, $|e^{\varepsilon s^2}|\le e^{\varepsilon K}e^{-\varepsilon t^2}$ on $S$. So
-$|G|\le Me^{\varepsilon K}$ on the boundary of $S$, and $|G(s)|\le Ce^{Ct+\varepsilon K-\varepsilon t^2}\le Me^{\varepsilon K}$ when $t\ge T$, for some $T$. On the rectangle $\{a\le\sigma\le b,\ t_0\le t\le T'\}$ with $T'\ge T$,
-$|G|\le Me^{\varepsilon K}$ on the boundary, hence inside by the maximum principle (Volume~5, Theorem~9.19 and the remark after it). Every $s\in S$ lies in such a rectangle, so
-$|f(s)|\le Me^{\varepsilon K}e^{-\varepsilon(\sigma^2-t^2)}$, and letting $\varepsilon\to0$ gives $|f(s)|\le M$.
+First suppose $M>0$. For $\varepsilon>0$ put $K=\max(a^2,b^2)$ and $G(s)=f(s)e^{\varepsilon s^2}$. Since $\Re s^2=\sigma^2-t^2$, we have
+\[|G(s)|\le Ce^{Ct+\varepsilon K-\varepsilon t^2}.
+\]
+This is at most $Me^{\varepsilon K}$ for all sufficiently large $t$. On the original boundary we also have $|G|\le Me^{\varepsilon K}$. Apply the ordinary maximum principle (Volume~5, Theorem~9.19 and its following remark) to rectangles cut off at any sufficiently high horizontal line. Each point of $S$ lies in one, so
+\[|f(\sigma+it)|\le M\exp\bigl(\varepsilon(K-\sigma^2+t^2)\bigr).
+\]
+Let $\varepsilon\downarrow0$ at the fixed point. If $M=0$, apply the result with any positive boundary bound $\eta$ and let $\eta\downarrow0$.
 \end{proof}
 
 \begin{corollary}[convexity]\label{cor:convexity}
-Let $S=\{a\le\sigma\le b,\ t\ge1\}$ and $f$ continuous on $S$, holomorphic inside, with $|f(s)|\le Ce^{Ct}$, $|f(a+it)|\le At^\alpha$ and $|f(b+it)|\le Bt^\beta$ for $t\ge1$. Let $\ell$ be the affine function with
-$\ell(a)=\alpha$, $\ell(b)=\beta$. Then $|f(\sigma+it)|\le C't^{\ell(\sigma)}$ on $S$, for a constant $C'$.
+On $S=\{a\le\sigma\le b,\ t\ge1\}$, let $f$ be continuous, holomorphic inside, and bounded in modulus by $Ce^{Ct}$. Suppose $|f(a+it)|\le At^\alpha$ and $|f(b+it)|\le Bt^\beta$ for $t\ge1$. If $\ell$ is affine with $\ell(a)=\alpha$ and $\ell(b)=\beta$, then $|f(\sigma+it)|\le C't^{\ell(\sigma)}$ on $S$ for some constant $C'$.
 \end{corollary}
 \begin{proof}
-Extend $\ell$ to the complex affine function $\ell(s)=\alpha+\kappa(s-a)$, $\kappa=\frac{\beta-\alpha}{b-a}$; then $\operatorname{Re}\ell(s)=\ell(\sigma)$ and $\operatorname{Im}\ell(s)=\kappa t$. On $S$, $-is=t-i\sigma$ has real part
-$t\ge1$, so $\operatorname{Log}(-is)$ is holomorphic there, and
-\[
-\bigl|e^{-\ell(s)\operatorname{Log}(-is)}\bigr|=|s|^{-\ell(\sigma)}e^{\kappa t\arg(-is)},\qquad\arg(-is)=-\arctan\frac\sigma t.
+Extend $\ell$ by $\ell(s)=\alpha+\kappa(s-a)$, where $\kappa=(\beta-\alpha)/(b-a)$. On $S$, the point $-is=t-i\sigma$ lies in the right half-plane, so use its holomorphic logarithm. The multiplier satisfies
+\[\left|e^{-\ell(s)\operatorname{Log}(-is)}\right|
+ =|s|^{-\ell(\sigma)}e^{\kappa t\arg(-is)},\qquad\arg(-is)=-\arctan(\sigma/t).
 \]
-Let $c=\max(|a|,|b|)$ and $L=\max(|\alpha|,|\beta|)$. Since $|t\arctan\frac\sigma t|\le|\sigma|\le c$ and $1\le\frac{|s|}t\le1+c$, this modulus lies between $k^{-1}t^{-\ell(\sigma)}$ and $kt^{-\ell(\sigma)}$, with
-$k=e^{|\kappa|c}(1+c)^L$. So $F(s)=f(s)e^{-\ell(s)\operatorname{Log}(-is)}$ satisfies $|F|\le kA$ on $\sigma=a$, $|F|\le kB$ on $\sigma=b$, is bounded on the segment $t=1$ by continuity, and grows at most like
-$C''e^{C''t}$. By Theorem~\ref{thm:pl}, $|F|\le M'$ on $S$, and $|f(s)|\le kM't^{\ell(\sigma)}$.
-\end{proof}
+Set $c=\max(|a|,|b|)$ and $L=\max(|\alpha|,|\beta|)$. The estimates $|t\arg(-is)|\le c$ and $1\le|s|/t\le1+c$ place the multiplier between $k^{-1}t^{-\ell(\sigma)}$ and $kt^{-\ell(\sigma)}$, where $k=e^{|\kappa|c}(1+c)^L$.
 
-To apply this to $\zeta$ we need its size on vertical lines, and for that the size of $\Gamma$. Both come from earlier volumes.
+Thus $F(s)=f(s)e^{-\ell(s)\operatorname{Log}(-is)}$ is bounded on both vertical edges and, by continuity, on the bottom edge. A fixed power of $t$ can be absorbed into an exponential, so $F$ satisfies the growth hypothesis of Theorem~\ref{thm:pl}. The resulting bound $|F|\le M'$ gives $|f(s)|\le kM't^{\ell(\sigma)}$.
+\end{proof}
+The zeta application needs vertical-line estimates. Stirling's formula controls the Gamma factor, and the functional equation transfers bounds across the critical strip.
 
 \begin{lemma}\label{lem:verticalsizes}
-Let $I$ be a compact interval.
+For any compact interval $I$, the following estimates hold.
 \begin{enumerate}
-\item[(a)] For $\sigma\in I$ and $|t|\ge1$, $|\Gamma(\sigma+it)|$ lies between two positive constants (depending on $I$) times $|t|^{\sigma-\frac12}e^{-\frac\pi2|t|}$, and
-$|\Gamma(\sigma+it)|\sim\sqrt{2\pi}\,|t|^{\sigma-\frac12}e^{-\frac\pi2|t|}$ as $|t|\to\infty$, uniformly in $\sigma\in I$.
-\item[(b)] For $|t|\ge1$: $\zeta(\sigma+it)=O(|t|)$ uniformly for $\sigma\ge\frac12$, and $\zeta(\sigma+it)=O(|t|^{\frac32-\sigma})$ uniformly for $\sigma\in I$, $\sigma\le\frac12$.
+\item[(a)] Uniformly for $\sigma\in I$ and $|t|\ge1$, the quantity $|\Gamma(\sigma+it)|$ is bounded above and below by positive constant multiples, depending on $I$, of $|t|^{\sigma-1/2}e^{-\pi|t|/2}$. As $|t|\to\infty$, uniformly for $\sigma\in I$,
+\[|\Gamma(\sigma+it)|\sim\sqrt{2\pi}\,|t|^{\sigma-1/2}e^{-\pi|t|/2}.\]
+\item[(b)] For $|t|\ge1$, we have $\zeta(\sigma+it)=O(|t|)$ uniformly on $\sigma\ge1/2$. On $\sigma\in I$, $\sigma\le1/2$, we have $\zeta(\sigma+it)=O(|t|^{3/2-\sigma})$ uniformly.
 \end{enumerate}
 \end{lemma}
 \begin{proof}
-(a) Since $\Gamma(\overline s)=\overline{\Gamma(s)}$, take $t\ge1$. For $t\ge T_I=\max(1,\max_I|\sigma|)$, $|\arg s|\le\frac{3\pi}4$, and Stirling's formula (Volume~6, Theorem~6.1(c)) gives
-$\log|\Gamma(s)|=\operatorname{Re}\bigl((s-\frac12)\log s\bigr)-\sigma+\frac12\log2\pi+O(\frac1t)$. Here $\log|s|=\log t+O(t^{-2})$ and $\arg s=\frac\pi2-\arctan\frac\sigma t=\frac\pi2-\frac\sigma t+O(t^{-3})$, so
-$\operatorname{Re}\bigl((s-\frac12)\log s\bigr)=(\sigma-\frac12)\log|s|-t\arg s=(\sigma-\frac12)\log t-\frac\pi2t+\sigma+O(\frac1t)$. Hence $\log|\Gamma(s)|=(\sigma-\frac12)\log t-\frac\pi2t+\frac12\log2\pi+O(\frac1t)$,
-uniformly, which is the asymptotic statement. On the compact set $I\times[1,T_I]$ the ratio of $|\Gamma|$ to the model is continuous and positive, so bounded above and below.
+(a) Conjugation reduces the proof to $t\ge1$. For $t\ge\max(1,\max_I|\sigma|)$, the argument of $s$ stays within $3\pi/4$ in absolute value. Stirling's formula (Volume~6, Theorem~6.1(c)) gives
+\[\log|\Gamma(s)|=\Re((s-\tfrac12)\log s)-\sigma+\tfrac12\log(2\pi)+O(t^{-1}).\]
+Uniformly on $I$, $\log|s|=\log t+O(t^{-2})$ and $\arg s=\pi/2-\sigma/t+O(t^{-3})$. Substitution cancels the $\sigma$ term and leaves
+\[\log|\Gamma(s)|=(\sigma-\tfrac12)\log t-\tfrac\pi2t+\tfrac12\log(2\pi)+O(t^{-1}).\]
+Exponentiation proves the asymptotic. On the remaining compact range of $t$, the ratio to the model function is continuous and positive, since Gamma has no zeros or poles there. Its maximum and minimum give the two-sided bounds.
 
-(b) In the proof of Volume~5, Proposition~10.6, $\zeta(s)-\frac1{s-1}=\sum_n\phi_n(s)$ with $|\phi_n(s)|\le|s|n^{-\sigma-1}$. For $\frac12\le\sigma\le2$ and $|t|\ge1$ this gives $|\zeta(s)|\le1+(2+|t|)\zeta(\frac32)=O(|t|)$, and
-for $\sigma\ge2$, $|\zeta(s)|\le\zeta(2)$. For $\sigma\le\frac12$ put $w=1-s$, so $\operatorname{Re}w\ge\frac12$, and use Volume~5, Corollary~10.9(d):
-$\zeta(s)=2(2\pi)^{-w}\cos(\frac{\pi w}2)\Gamma(w)\zeta(w)$. Here $|(2\pi)^{-w}|=(2\pi)^{\sigma-1}$ is bounded for $\sigma\in I$, $|\cos\frac{\pi w}2|\le\cosh\frac{\pi t}2\le e^{\frac\pi2|t|}$, $|\Gamma(w)|=O(|t|^{\frac12-\sigma}e^{-\frac\pi2|t|})$
-by (a), and $\zeta(w)=O(|t|)$. Multiply.
+(b) Volume~5, Proposition~10.6 and its proof write $\zeta(s)-(s-1)^{-1}=\sum_n\phi_n(s)$, where $|\phi_n(s)|\le|s|n^{-\sigma-1}$. For $1/2\le\sigma\le2$ this gives $|\zeta(s)|\le1+(2+|t|)\zeta(3/2)$. For $\sigma\ge2$, the Dirichlet series gives $|\zeta(s)|\le\zeta(2)$.
+
+For $\sigma\le1/2$, set $w=1-s$ and apply Volume~5, Corollary~10.9(d):
+\[\zeta(s)=2(2\pi)^{-w}\cos(\pi w/2)\Gamma(w)\zeta(w).\]
+The first factor is bounded for $\sigma\in I$. The cosine is at most $e^{\pi|t|/2}$ in modulus, while (a) bounds Gamma by a constant times $|t|^{1/2-\sigma}e^{-\pi|t|/2}$. The already proved bound on $\zeta(w)$ supplies one more factor $|t|$, establishing (b).
 \end{proof}
 
 \begin{theorem}[the convexity bound]\label{thm:convexzeta}
-For every $\varepsilon>0$, $\zeta(\frac12+it)=O_\varepsilon(|t|^{\frac14+\varepsilon})$ for $|t|\ge1$.
+For each $\varepsilon>0$, the estimate
+\[\zeta(\tfrac12+it)=O_\varepsilon(|t|^{1/4+\varepsilon})\]
+holds for $|t|\ge1$.
 \end{theorem}
 \begin{proof}
-By $\zeta(\overline s)=\overline{\zeta(s)}$, take $t\ge1$. Let $0<\varepsilon<\frac12$ and apply Corollary~\ref{cor:convexity} on $S=\{-\varepsilon\le\sigma\le1+\varepsilon,\ t\ge1\}$, where $\zeta$ is holomorphic (its only pole is
-at $1$) and of polynomial growth by Lemma~\ref{lem:verticalsizes}(b). On $\sigma=1+\varepsilon$, $|\zeta(s)|\le\sum_nn^{-1-\varepsilon}=\zeta(1+\varepsilon)$: take $\alpha=0$. On $\sigma=-\varepsilon$, the functional equation with
-$w=1+\varepsilon-it$, as in the lemma, gives $|\zeta(s)|\le2(2\pi)^{-1-\varepsilon}e^{\frac\pi2t}|\Gamma(w)|\zeta(1+\varepsilon)=O(t^{\frac12+\varepsilon})$: take $\beta=\frac12+\varepsilon$. At $\sigma=\frac12$, which is at fraction
-$\frac{1/2+\varepsilon}{1+2\varepsilon}=\frac12$ of the way from $1+\varepsilon$ to $-\varepsilon$, the interpolated exponent is $\frac12(\frac12+\varepsilon)=\frac14+\frac\varepsilon2$.
+Conjugation lets us take $t\ge1$. Choose $0<\delta<1/2$ and consider $-\delta\le\sigma\le1+\delta$. There is no pole when $t\ge1$, and Lemma~\ref{lem:verticalsizes}(b) supplies polynomial growth throughout this half-strip. On the right edge the Dirichlet series bounds zeta by $\zeta(1+\delta)$. On the left edge the functional equation and Stirling give $|\zeta(-\delta+it)|=O_\delta(t^{1/2+\delta})$.
+
+Corollary~\ref{cor:convexity} interpolates these exponents. The line $\sigma=1/2$ is midway between the edges, so its exponent is $1/4+\delta/2$. Taking $\delta/2\le\varepsilon$ proves the stated estimate for every $\varepsilon$.
 \end{proof}
 
 \begin{remark}
-The \emph{Lindel\"of hypothesis} says that the exponent $\frac14$ can be replaced by $0$: $\zeta(\frac12+it)=O(|t|^\varepsilon)$ for every $\varepsilon>0$. It follows from the Riemann hypothesis. Weyl's
-exponential sum method, in the hands of Hardy and Littlewood, gave $\frac16$ around 1921 (see Titchmarsh's book, Chapter~14), and a century of work brought it down to $\frac{13}{84}\approx0.155$ (Bourgain, 2017). Everything beyond
-$\frac14$ requires arithmetic: the convexity bound is what complex analysis gives for free.
+The Lindel\"of hypothesis predicts $O_\varepsilon(|t|^\varepsilon)$ for every $\varepsilon>0$; the Riemann hypothesis would imply it. Hardy and Littlewood used Weyl's exponential-sum method to reach exponent $1/6$ around 1921. Bourgain's 2017 work reached $13/84$, about $0.155$. These are historical examples of subconvex bounds, quoted without proof. Improving the convexity exponent requires more information about zeta than the boundary-growth argument provides.
 \end{remark}
 
 \section{Entire functions of finite order}
 
-A polynomial is determined by its roots up to a constant factor. In 1876 Weierstrass showed that any sequence of points tending to infinity is the zero set of an entire function, built as an
-infinite product; the factors need small exponential corrections to make the product converge. In 1893 Hadamard showed that when the function does not grow too fast, the corrections can be
-taken of bounded degree, and what remains is the exponential of a polynomial. Volume~6 (Theorem~6.7) proved this for Riemann's $\xi$; here is the general theorem.
+A polynomial's roots determine it up to a constant. For entire functions the missing factor can be much larger. Weierstrass in 1876 constructed entire functions with any prescribed discrete zero sequence by correcting each linear factor with an exponential. Hadamard's 1893 theorem shows that finite growth limits the degree of those corrections and of the remaining exponential. Volume~6, Theorem~6.7, treated Riemann's $\xi$; we now prove the general form.
 
-An entire function $f$ has \emph{finite order} if $|f(z)|\le\exp(|z|^\lambda)$ for some $\lambda$ and all large $|z|$; its \emph{order} $\rho$ is the infimum of such $\lambda$. Polynomials have order $0$; $e^z$, $\sin z$
-and $\xi$ have order $1$; $e^{z^2}$ has order $2$; $\exp(e^z)$ has infinite order. With $M(r)=\max_{|z|=r}|f|$, the order is $\limsup_{r\to\infty}\frac{\log\log M(r)}{\log r}$.
+A nonzero entire function has \emph{finite order} if $|f(z)|\le\exp(|z|^\lambda)$ for some $\lambda>0$ and all sufficiently large $|z|$. Its \emph{order} $\rho$ is the infimum of these positive $\lambda$. Nonzero constants and polynomials have order zero. The functions $e^z$, $\sin z$ and $\xi$ have order one, $e^{z^2}$ has order two, and $\exp(e^z)$ has infinite order. With $M(r)=\max_{|z|=r}|f(z)|$, a formula valid even for small constant functions is
+\[\rho=\limsup_{r\to\infty}\frac{\log\log\max(e,M(r))}{\log r}.\]
+For nonconstant entire functions the maximum with $e$ eventually makes no difference.
 
-For $p\ge0$, the \emph{elementary factor} is $E_p(z)=(1-z)\exp\bigl(z+\frac{z^2}2+\dots+\frac{z^p}p\bigr)$; $E_0(z)=1-z$. Its exponent is the beginning of the series of $-\log(1-z)$, so $E_p(z)$ is close to $1$
-for small $z$.
+For an integer $p\ge0$, put
+\[E_p(z)=(1-z)\exp\left(z+\frac{z^2}2+\cdots+\frac{z^p}p\right),\qquad E_0(z)=1-z.\]
+The exponential cancels the first $p$ terms of $\log(1-z)$. This makes the \emph{elementary factor} approach one to order $p+1$ at the origin.
 
 \begin{lemma}\label{lem:products}
 \begin{enumerate}
-\item[(a)] For $|z|\le1$, $|1-E_p(z)|\le|z|^{p+1}$.
-\item[(b)] Let $u_n$ be holomorphic on an open set $\Omega$, with $\sum_n|u_n|$ converging uniformly on every compact subset. Then $\prod_{n\le N}(1+u_n)$ converges uniformly on compact sets to a holomorphic
-$P$, and $P(z)=0$ exactly when some $1+u_n(z)=0$, the multiplicity of the zero being the sum of the multiplicities in the factors.
+\item[(a)] If $|z|\le1$, then $|1-E_p(z)|\le|z|^{p+1}$.
+\item[(b)] Suppose $u_n$ are holomorphic on an open set $\Omega$ and $\sum_n|u_n|$ converges uniformly on each compact subset. The partial products $\prod_{n\le N}(1+u_n)$ then converge uniformly on compact sets to a holomorphic $P$. At any point where no factor is locally identically zero, $P$ vanishes exactly when some factor does, and its zero multiplicity is the sum of their multiplicities. If a factor is identically zero on a component, so is $P$ there.
 \end{enumerate}
 \end{lemma}
 \begin{proof}
-(a) $E_p'(z)=-z^p\exp\bigl(z+\dots+\frac{z^p}p\bigr)$, so $-E_p'$ has a power series with non-negative coefficients starting at $z^p$. Since $E_p(0)=1$, $1-E_p(z)=z^{p+1}\varphi(z)$ with $\varphi$ a power series
-with non-negative coefficients, and $\varphi(1)=1-E_p(1)=1$. For $|z|\le1$, $|1-E_p(z)|\le|z|^{p+1}\varphi(|z|)\le|z|^{p+1}\varphi(1)$.
+(a) Differentiation gives $E_p'(z)=-z^p\exp(z+\cdots+z^p/p)$. The power series of $-E_p'$ has non-negative coefficients. After integration, $1-E_p(z)=z^{p+1}\varphi(z)$, where $\varphi$ has non-negative coefficients and $\varphi(1)=1-E_p(1)=1$. Thus $|\varphi(z)|\le\varphi(|z|)\le1$ on the unit disc.
 
-(b) Let $K$ be compact, and $N_0$ such that $\sum_{n>N_0}|u_n|\le\frac12$ on $K$. For $|u|\le\frac12$, the series $\log(1+u)=\sum_{k\ge1}\frac{(-1)^{k+1}u^k}k$ satisfies $|\log(1+u)|\le\frac{|u|}{1-|u|}\le2|u|$. So
-$\sum_{n>N_0}\log(1+u_n)$ converges uniformly on $K$ to a bounded $\Sigma$, and $\prod_{N_0<n\le N}(1+u_n)=\exp\sum_{N_0<n\le N}\log(1+u_n)\to e^\Sigma$ uniformly. Hence on $K$, $P=\prod_{n\le N_0}(1+u_n)\cdot e^\Sigma$, where
-$e^\Sigma$ never vanishes. Covering $\Omega$ by discs with compact closures, $P$ is holomorphic (Volume~5, Theorem~9.15(a)) with the stated zeros.
+(b) On a compact set choose $N_0$ with $\sum_{n>N_0}|u_n|\le1/2$. The logarithm series obeys $|\log(1+u)|\le2|u|$ for $|u|\le1/2$. Consequently the sum $\Sigma=\sum_{n>N_0}\log(1+u_n)$ converges uniformly there, and the tail product converges uniformly to $e^\Sigma$, which never vanishes. Locally, therefore,
+\[P=\left(\prod_{n\le N_0}(1+u_n)\right)e^\Sigma.\]
+This proves convergence, holomorphy by Volume~5, Theorem~9.15(a), and the zero statement. Only the finitely many initial factors can vanish at a given point. Their multiplicities add unless one is locally identically zero, in which case the product itself is identically zero on that component.
 \end{proof}
 
 \begin{lemma}\label{lem:zerocount}
-Let $f$ be entire of finite order $\rho$, not identically zero, with non-zero zeros $a_1,a_2,\dots$ (repeated with multiplicity). Then $\sum_n|a_n|^{-\lambda}<\infty$ for every $\lambda>\rho$.
+Let $f$ be a nonzero entire function of finite order $\rho$, and list its nonzero zeros $a_n$ with multiplicity. For every $\lambda>\rho$, the sum $\sum_n|a_n|^{-\lambda}$ converges.
 \end{lemma}
 \begin{proof}
-Dividing by a power of $z$ does not increase the order, so assume $f(0)\ne0$. Choose $\eta>0$ with $\rho+\eta<\lambda$. By Volume~6, Corollary~6.4, with radii $r$ and $2r$, the number of zeros in $|z|\le r$ is
-$n(r)\le\frac{\log M(2r)-\log|f(0)|}{\log2}=O(r^{\rho+\eta})$. The zeros with $2^k\le|a_n|<2^{k+1}$ contribute at most $n(2^{k+1})2^{-k\lambda}=O(2^{(k+1)(\rho+\eta)-k\lambda})$, the terms of a convergent geometric series, and
-there are finitely many zeros in $|z|<1$.
+Remove the zero at the origin by dividing by a power of $z$; this does not increase the order. Take a positive $\eta$ small enough that $\rho+\eta<\lambda$. The zero-counting consequence of Jensen's formula (Volume~6, Corollary~6.4), applied at radii $r,2r$, gives
+\[n(r)\le\frac{\log M(2r)-\log|f(0)|}{\log2}=O(r^{\rho+\eta}).\]
+The zeros in $2^k\le|a_n|<2^{k+1}$ therefore contribute at most $O(2^{(k+1)(\rho+\eta)-k\lambda})$. These bounds form a convergent geometric series. There are only finitely many nonzero zeros with modulus below one.
 \end{proof}
 
 \begin{theorem}[Hadamard factorisation]\label{thm:hadamardgen}
-Let $f$ be entire of finite order $\rho$, with a zero of order $m\ge0$ at $0$ and other zeros $a_1,a_2,\dots$, repeated with multiplicity, and let $p=\lfloor\rho\rfloor$. Then
-\[
-f(z)=z^me^{Q(z)}\prod_nE_p\Bigl(\frac z{a_n}\Bigr),
-\]
-where the product converges uniformly on compact sets and $Q$ is a polynomial of degree at most $p$.
+Suppose $f$ is entire of finite order $\rho$, has a zero of order $m\ge0$ at the origin, and has remaining zeros $a_n$, listed with multiplicity. With $p=\lfloor\rho\rfloor$, it has a factorisation
+\[f(z)=z^me^{Q(z)}\prod_nE_p(z/a_n),\]
+where $Q$ is a polynomial of degree at most $p$ and the product converges uniformly on compact sets.
 \end{theorem}
 \begin{proof}
-\emph{The product.} For $|z|\le r$ and $|a_n|\ge r$, $|1-E_p(\frac z{a_n})|\le r^{p+1}|a_n|^{-p-1}$ by Lemma~\ref{lem:products}(a), and $\sum_n|a_n|^{-p-1}<\infty$ by Lemma~\ref{lem:zerocount} since $p+1>\rho$. By
-Lemma~\ref{lem:products}(b), the product $P$ is entire and vanishes exactly at the $a_n$, with the right multiplicities ($E_p(\frac z a)$ has a single simple zero, at $a$). So $\frac f{z^mP}$ extends to an entire
-function without zeros (Volume~5, Theorem~9.20), which has a logarithm $Q$ by Corollary~\ref{cor:hsc}: $f=z^me^QP$.
+Since $p+1>\rho$, Lemma~\ref{lem:zerocount} gives $\sum_n|a_n|^{-p-1}<\infty$. Lemma~\ref{lem:products}(a) bounds each large-index error on $|z|\le r$ by $r^{p+1}|a_n|^{-p-1}$. Part (b) therefore constructs an entire product $P$ with exactly the prescribed nonzero zeros and their multiplicities. The quotient $f/(z^mP)$ extends across those zeros and never vanishes. Corollary~\ref{cor:hsc}, applied on $\C$, supplies an entire logarithm $Q$, so $f=z^me^QP$.
 
-\emph{The logarithmic derivative.} The identity $\frac1{z-a}+\sum_{k=0}^{p-1}\frac{z^k}{a^{k+1}}=\frac{z^p}{a^p(z-a)}$ and the formula $\frac{E_p'}{E_p}(u)=\frac1{u-1}+\sum_{k=0}^{p-1}u^k$ give
-\[
-\frac{f'}f(z)=\frac mz+Q'(z)+\sum_n\frac{z^p}{a_n^p(z-a_n)}
-\]
-away from the zeros: the partial products converge locally uniformly, so do their derivatives (Volume~5, Theorem~9.15(a)), hence so do their logarithmic derivatives on compact sets where $P\ne0$.
+Logarithmic differentiation gives, away from the zeros,
+\[\frac{f'}f=\frac mz+Q'(z)+\sum_n\frac{z^p}{a_n^p(z-a_n)}.\]
+Indeed,
+\[\frac1{z-a}+\sum_{j=0}^{p-1}\frac{z^j}{a^{j+1}}=\frac{z^p}{a^p(z-a)},\]
+with the sum empty when $p=0$. Uniform convergence of products and their derivatives on compact sets justifies this identity there (Volume~5, Theorem~9.15(a)).
 
-\emph{Killing $Q^{(p+1)}$.} Fix $R\ge1$, and let $g_R(z)=\frac{f(z)}{z^m\prod_{|a_n|\le2R}(1-z/a_n)}$, an entire function without zeros in $|z|\le2R$, with $g_R(0)=c$ independent of $R$ ($c$ is the first non-zero
-Taylor coefficient of $f$). On $|z|=4R$ each factor satisfies $|1-\frac z{a_n}|\ge\frac{|z|}{|a_n|}-1\ge1$ and $|z^m|\ge1$, so $|g_R|\le M(4R)$ there, and on $|z|\le4R$ by the maximum principle. On the disc $|z|<2R$, $g_R$ has
-a holomorphic logarithm $L_R$ (Corollary~\ref{cor:hsc}), and $h=L_R-L_R(0)$ satisfies $h(0)=0$ and $\operatorname{Re}h=\log|g_R|-\log|c|\le A_R=\log M(4R)-\log|c|$. Borel--Carath\'eodory (Volume~6, Lemma~6.5) on the
-radius $\frac32R$ gives, for $|z|\le R$,
-\[
-|L_R^{(p+1)}(z)|\le\frac{2A_R\,(p+1)!\,\frac32R}{(R/2)^{p+2}}=O\Bigl(\frac{A_R}{R^{p+1}}\Bigr)\longrightarrow0\quad(R\to\infty),
+For $R\ge1$, remove just the nearby linear factors:
+\[g_R(z)=\frac{f(z)}{z^m\prod_{|a_n|\le2R}(1-z/a_n)}.\]
+This is entire and has no zeros on $|z|\le2R$. Its value $c=g_R(0)\ne0$ is independent of $R$. On $|z|=4R$, each denominator factor has modulus at least one, so $|g_R|\le M(4R)$; the maximum principle extends the bound inside. Take a logarithm $L_R$ on $|z|<2R$. Then $h=L_R-L_R(0)$ satisfies $h(0)=0$ and
+\[\Re h\le A_R=\log M(4R)-\log|c|.\]
+Borel--Carath\'eodory (Volume~6, Lemma~6.5) bounds $|h|$ on $|z|\le3R/2$ by $6A_R$. Cauchy's derivative estimate on discs of radius $R/2$ now gives, for $|z|\le R$,
+\[|L_R^{(p+1)}(z)|\le\frac{6A_R(p+1)!}{(R/2)^{p+1}}\longrightarrow0.\]
+The limit follows because $A_R=O(R^{\rho+\eta})$ for any $\eta>0$ with $\rho+\eta<p+1$.
+
+On the other hand, subtracting the nearby logarithmic derivatives in the preceding identity and differentiating $p$ times yields
+\[L_R^{(p+1)}(z)=Q^{(p+1)}(z)+(-1)^pp!\sum_{|a_n|>2R}(z-a_n)^{-p-1}.
 \]
-because $A_R=O(R^{\rho+\eta})$ with $\rho+\eta<p+1$. On the other hand $L_R'=\frac{f'}f-\frac mz-\sum_{|a_n|\le2R}\frac1{z-a_n}$, and by the formula above (whose series, for $|z|\le R$ and $|a_n|>2R$, has terms at most $2R^p|a_n|^{-p-1}$ and may be differentiated term by term), differentiating $p$ more
-times kills the polynomial terms $\sum_{k<p}\frac{z^k}{a_n^{k+1}}$:
-\[
-L_R^{(p+1)}(z)=Q^{(p+1)}(z)+(-1)^pp!\sum_{|a_n|>2R}\frac1{(z-a_n)^{p+1}}\qquad(|z|<2R).
-\]
-For $|z|\le R$ the last sum is bounded by $\sum_{|a_n|>2R}(\frac{|a_n|}2)^{-p-1}$, a tail of a convergent series. Letting $R\to\infty$, $Q^{(p+1)}(z)=0$. So $Q$ is a polynomial of degree at most $p$.
+The nearby correction polynomials have degree below $p$ and disappear. The distant series and its derivatives converge locally uniformly; on $|z|\le R$ its displayed tail is bounded by $2^{p+1}\sum_{|a_n|>2R}|a_n|^{-p-1}$, which tends to zero. Fixing $z$ and letting $R$ grow gives $Q^{(p+1)}(z)=0$. Thus $Q$ has degree at most $p$.
 \end{proof}
 
 \begin{beauty}
-Jensen's formula says a slowly growing function has few zeros; Borel--Carath\'eodory says a holomorphic function whose real part is small has small derivatives. Hadamard's theorem is the meeting
-of the two: the zeros are few enough for a product with corrections of degree $p$ to converge, and what is left over, the polynomial $Q$, is pinned down by a bound on its real part alone.
+Jensen limits how many zeros a slowly growing entire function can have. That makes its canonical product converge. Borel--Carath\'eodory then controls the real part of the logarithm left over, and Cauchy's estimate forces its high derivatives to vanish. Those are the two growth arguments behind Hadamard's polynomial.
 \end{beauty}
-
 \section{The Mellin transform and harmonic sums}\label{sec:mellin}
 
-The Mellin transform is the Fourier transform of the multiplicative group $]0,\infty[$, whose Haar measure is $\frac{\dd x}x$ (Chapter~\ref{ch:haar}). Robert Hjalmar Mellin, a Finnish student of Mittag-Leffler,
-made it systematic in the 1890s; Riemann had already used it in 1859 when he wrote $\Gamma(\frac s2)\pi^{-s/2}\zeta(s)$ as an integral of the theta function (Volume~5, Lemma~10.7). A century later Philippe
-Flajolet made it the workhorse of the analysis of algorithms, because it turns a sum of dilations, the shape of a cost that repeats at scales $2,4,8,\dots$, into a product.
+The multiplicative group $]0,\infty[$ has Haar measure $\dd x/x$, as translation becomes multiplication there (Chapter~\ref{ch:haar}). Its Fourier analysis is Mellin analysis after taking logarithms. Mellin developed the transform systematically in the 1890s. Riemann had already used the same integral in 1859 to connect theta and $\Gamma(s/2)\pi^{-s/2}\zeta(s)$ (Volume~5, Lemma~10.7). Flajolet later used it to study algorithms whose costs repeat at different scales.
 
-For $f:]0,\infty[\to\C$ continuous, its \emph{Mellin transform} is
-\[
-\mathcal Mf(s)=\int_0^\infty f(x)x^{s-1}\dd x,
-\]
-defined where the integral converges absolutely. If $\int_0^\infty|f(x)|x^{\sigma-1}\dd x<\infty$ for $\sigma$ in an open interval $]\sigma_1,\sigma_2[$, then $\mathcal Mf$ is holomorphic on the strip $\sigma_1<\sigma<\sigma_2$
-(Volume~5, Theorem~9.15(b): for $\sigma'\le\sigma\le\sigma''$ inside the strip, $|f(x)x^{s-1}|\le|f(x)|(x^{\sigma'-1}+x^{\sigma''-1})$). Examples: $\mathcal M(e^{-x})=\Gamma(s)$ for $\sigma>0$; integrating by parts,
-for $-1<\sigma<0$, where the boundary terms vanish,
+For continuous $f:]0,\infty[\to\C$, define
+\[\mathcal Mf(s)=\int_0^\infty f(x)x^{s-1}\dd x\]
+where the integral is absolutely convergent. If absolute convergence holds for every real part in $]\sigma_1,\sigma_2[$, then the transform is holomorphic on that strip. On a closed smaller strip its integrand is dominated by
+\[|f(x)|(x^{\sigma'-1}+x^{\sigma''-1}),\]
+so Volume~5, Theorem~9.15(b), applies. In particular, $\mathcal M(e^{-x})(s)=\Gamma(s)$ for $\sigma>0$. For $-1<\sigma<0$, integration by parts has vanishing boundary terms and gives
 \begin{equation}\label{eq:mellin1me}
 \mathcal M(1-e^{-x})(s)=-\frac1s\int_0^\infty e^{-x}x^s\dd x=-\Gamma(s).
 \end{equation}
 
 \begin{theorem}[Mellin inversion]\label{thm:mellininv}
-Let $f:]0,\infty[\to\C$ be continuous, and $c$ real with $\int_0^\infty|f(x)|x^{c-1}\dd x<\infty$ and $\int_{-\infty}^\infty|\mathcal Mf(c+i\tau)|\dd\tau<\infty$. Then for every $x>0$,
-\[
-f(x)=\frac1{2\pi i}\int_{c-i\infty}^{c+i\infty}\mathcal Mf(s)x^{-s}\dd s.
+Let $f:]0,\infty[\to\C$ be continuous. Suppose a real $c$ satisfies
+\[\int_0^\infty|f(x)|x^{c-1}\dd x<\infty,\qquad
+\int_\R|\mathcal Mf(c+i\tau)|\dd\tau<\infty.
 \]
+Then for every $x>0$,
+\[f(x)=\frac1{2\pi i}\int_{c-i\infty}^{c+i\infty}\mathcal Mf(s)x^{-s}\dd s.\]
 \end{theorem}
 \begin{proof}
-Let $F(u)=f(e^u)e^{cu}$. The change of variables $x=e^u$ gives $\int|F|=\int_0^\infty|f(x)|x^{c-1}\dd x<\infty$ and $\hat F(\xi)=\int F(u)e^{-2\pi iu\xi}\dd u=\mathcal Mf(c-2\pi i\xi)$, which is integrable. $F$ is continuous, so
-Fourier inversion (Theorem~\ref{thm:ftinv}) gives $F(u)=\int\hat F(\xi)e^{2\pi iu\xi}\dd\xi$. Substitute $\tau=-2\pi\xi$ and $u=\log x$: $f(x)x^c=\frac1{2\pi}\int\mathcal Mf(c+i\tau)x^{-i\tau}\dd\tau$, which is the
-formula, with $s=c+i\tau$, $\dd s=i\dd\tau$.
+Set $F(u)=f(e^u)e^{cu}$. The substitution $x=e^u$ makes $F$ continuous and integrable, and gives
+\[\hat F(\xi)=\mathcal Mf(c-2\pi i\xi).\]
+The second hypothesis makes this Fourier transform integrable too. Fourier inversion (Theorem~\ref{thm:ftinv}) therefore applies at every $u$. Substitute $u=\log x$ and $\tau=-2\pi\xi$ in its formula:
+\[f(x)x^c=\frac1{2\pi}\int_\R\mathcal Mf(c+i\tau)x^{-i\tau}\dd\tau.
+\]
+Writing $s=c+i\tau$ proves the stated contour integral.
 \end{proof}
 
-A \emph{harmonic sum} is $G(x)=\sum_k\lambda_kg(\mu_kx)$, with amplitudes $\lambda_k$ and frequencies $\mu_k>0$. If $\sum_k|\lambda_k|\mu_k^{-\sigma}<\infty$ and $\int|g|x^{\sigma-1}<\infty$, the substitution $y=\mu_kx$ and
-Fubini give the separation of variables
+A \emph{harmonic sum} adds copies of one function at different scales:
+\[G(x)=\sum_k\lambda_kg(\mu_kx),\qquad\mu_k>0.\]
+If $\sum_k|\lambda_k|\mu_k^{-\sigma}<\infty$ and $\int_0^\infty|g(x)|x^{\sigma-1}\dd x<\infty$, absolute integrability permits substitution and Fubini, giving
 \begin{equation}\label{eq:harmonicsum}
-\mathcal MG(s)=\Lambda(s)\,\mathcal Mg(s),\qquad\Lambda(s)=\sum_k\lambda_k\mu_k^{-s}.
+\mathcal MG(s)=\Lambda(s)\mathcal Mg(s),\qquad
+\Lambda(s)=\sum_k\lambda_k\mu_k^{-s},\quad\Re s=\sigma.
 \end{equation}
-The Dirichlet series $\Lambda$ carries the arithmetic of the frequencies, $\mathcal Mg$ the shape of the base function. Asymptotics of $G$ then come from moving the line of integration in
-Theorem~\ref{thm:mellininv} across poles: as $x\to0$ to the left, as $x\to\infty$ to the right, each pole at $s_0$ contributing a term $x^{-s_0}$ (times powers of $\log x$ at multiple poles).
+The Dirichlet series records the scales; the other factor records the shape. When meromorphic continuation and decay justify moving the inversion contour, poles yield asymptotic terms. Move left for $x\to0$ and right for $x\to\infty$. A simple pole at $s_0$ contributes a multiple of $x^{-s_0}$, with sign depending on the direction of the shift; repeated poles also produce powers of $\log x$.
 
 \begin{example}[a theta sum]\label{ex:thetamellin}
-Let $G(x)=\sum_{k\ge1}e^{-k^2x}$. Then for every $N$, as $x\to0^+$, $G(x)=\frac12\sqrt{\frac\pi x}-\frac12+O(x^N)$.
+For $G(x)=\sum_{k\ge1}e^{-k^2x}$ and every $N>0$, we have
+\[G(x)=\frac12\sqrt{\pi/x}-\frac12+O(x^N)\qquad(x\downarrow0).
+\]
+To prove it, use $g(x)=e^{-x}$ and $\mu_k=k^2$, obtaining $\mathcal MG(s)=\Gamma(s)\zeta(2s)$ for $\sigma>1/2$. The bounds
+\[G(x)\le\int_0^\infty e^{-u^2x}\dd u=\tfrac12\sqrt{\pi/x},\qquad
+G(x)\le\frac{e^{-x}}{1-e^{-x}}
+\]
+justify the weighted integrability at $c=1$. Lemma~\ref{lem:verticalsizes} gives integrability of the transform there. Choose an integer $J>N$ and move the contour to $\sigma=-J-1/2$. Gamma's exponential decay dominates the polynomial zeta bound on the horizontal segments, whose integrals tend to zero.
 
-Here $g(x)=e^{-x}$ and $\mu_k=k^2$, so $\mathcal MG(s)=\Gamma(s)\zeta(2s)$ for $\sigma>\frac12$. Since $G(x)\le\int_0^\infty e^{-u^2x}\dd u=\frac12\sqrt{\pi/x}$ and $G(x)\le\frac{e^{-x}}{1-e^{-x}}$, the hypotheses of
-Theorem~\ref{thm:mellininv} hold at $c=1$ (by Lemma~\ref{lem:verticalsizes}, $\Gamma$ decays exponentially on vertical lines while $\zeta(2s)$ grows at most polynomially). Integrate $\Gamma(s)\zeta(2s)x^{-s}$ around the
-rectangle with vertical sides $\sigma=1$ and $\sigma=-N-\frac12$ and horizontal sides $t=\pm T$. The horizontal sides contribute $O(e^{-T})$ by the same lemma, which tends to $0$. The poles inside are at
-$s=\frac12$, where $\zeta(2s)=\frac1{2(s-\frac12)}+O(1)$, with residue $\frac12\Gamma(\frac12)x^{-1/2}=\frac12\sqrt{\pi/x}$; and at $s=0$, residue $\zeta(0)=-\frac12$ (Volume~5, Corollary~10.9). The poles of $\Gamma$ at
-$-1,-2,\dots$ are cancelled by the trivial zeros $\zeta(-2),\zeta(-4),\dots$. So $G(x)$ equals these two residues plus $\frac1{2\pi i}\int_{(-N-\frac12)}\Gamma(s)\zeta(2s)x^{-s}\dd s$, which is $O(x^{N+\frac12})$.
+At $s=1/2$ the residue is $\tfrac12\Gamma(1/2)x^{-1/2}=\tfrac12\sqrt{\pi/x}$. At zero it is $\zeta(0)=-1/2$ (Volume~5, Corollary~10.9). Gamma's other poles are cancelled by the trivial zeros $\zeta(-2),\zeta(-4),\ldots$. The remaining vertical integral is $O(x^{J+1/2})$, proving the claim.
 \end{example}
 
-The theta transformation (Volume~5, Corollary~8.10) shows that the error is in fact $\sqrt{\pi/x}\sum_{k\ge1}e^{-\pi^2k^2/x}$, exponentially small: the Mellin method found every power of $x$ there is, namely none.
-Our main example is from computer science.
+Theta's transformation (Volume~5, Corollary~8.10) gives the stronger remainder $\sqrt{\pi/x}\sum_{k\ge1}e^{-\pi^2k^2/x}$, which is exponentially small. Mellin inversion found that all further power terms vanish.
 
-\emph{Probabilistic counting.} How many distinct visitors did a website have today? Storing them all is expensive. In 1985 Flajolet and Nigel Martin suggested hashing each visitor to a random bit
-string and remembering only the largest number of leading zeros seen. A visitor's \emph{level} $L$ satisfies $\Pr(L\ge k)=2^{-k}$, and with $n$ visitors the maximum level is about $\log_2n$; HyperLogLog
-(Flajolet, Fusy, Gandouet and Meunier, 2007), refined from this idea, is now used in many large databases to count distinct items with a few kilobytes of memory. To correct the estimate one needs the
-mean of the maximum precisely. It is easiest with a Poisson number of items: let $N$ be Poisson with mean $x$, give the $N$ items independent levels, and let $H$ be the maximum level ($0$ if $N=0$).
-Then
-\[
-\Pr(H<k)=\sum_{n\ge0}e^{-x}\frac{x^n}{n!}(1-2^{-k})^n=e^{-x2^{-k}},\qquad\mathbb E[H]=\sum_{k\ge1}\Pr(H\ge k)=\sum_{k\ge1}\bigl(1-e^{-x2^{-k}}\bigr).
+Consider a different application: counting distinct visitors without storing every identifier. Flajolet and Martin's 1985 method hashes each item to random bits and remembers the largest leading-zero count. A level $L$ has $\Pr(L\ge k)=2^{-k}$, so the maximum among $n$ independent levels is near $\log_2n$. This idea also underlies HyperLogLog (Flajolet, Fusy, Gandouet and Meunier, 2007), used for compact distinct-item estimates.
+
+To compute the mean precisely, take a Poisson number $N$ of items with mean $x$, independently of their levels. Let $H$ be their maximum, with $H=0$ for no items. For $k\ge1$, summing the Poisson series gives
+\[\Pr(H<k)=\sum_{n\ge0}e^{-x}\frac{x^n}{n!}(1-2^{-k})^n=e^{-x2^{-k}}.
 \]
+The tail-sum formula therefore yields $\mathbb E[H]=\sum_{k\ge1}(1-e^{-x2^{-k}})$.
 
 \begin{theorem}[the maximum of geometric levels]\label{thm:maxgeom}
-As $x\to\infty$, for every $d>0$,
-\[
-\mathbb E[H]=\log_2x+\frac\gamma{\ln2}-\frac12+P(\log_2x)+O(x^{-d}),\qquad P(u)=-\frac1{\ln2}\sum_{k\ne0}\Gamma\Bigl(\frac{2\pi ik}{\ln2}\Bigr)e^{-2\pi iku},
-\]
-where $P$ is a continuous $1$-periodic function with $|P|<1.6\cdot10^{-6}$.
+For every $d>0$, as $x\to\infty$,
+\[\mathbb E[H]=\log_2x+\frac\gamma{\ln2}-\frac12+P(\log_2x)+O(x^{-d}),\]
+where
+\[P(u)=-\frac1{\ln2}\sum_{k\ne0}\Gamma\left(\frac{2\pi ik}{\ln2}\right)e^{-2\pi iku}\]
+is continuous, has period one, and satisfies $|P(u)|<1.6\cdot10^{-6}$ everywhere.
 \end{theorem}
 \begin{proof}
-$G(x)=\mathbb E[H]$ is the harmonic sum with $g(x)=1-e^{-x}$, $\lambda_k=1$ and $\mu_k=2^{-k}$, so by \eqref{eq:mellin1me} and \eqref{eq:harmonicsum}, for $-1<\sigma<0$,
-\[
-\mathcal MG(s)=-\Gamma(s)\sum_{k\ge1}2^{ks}=-\Gamma(s)\frac{2^s}{1-2^s}.
+For $G(x)=\mathbb E[H]$, equations~\eqref{eq:mellin1me} and \eqref{eq:harmonicsum} give
+\[\mathcal MG(s)=-\Gamma(s)\frac{2^s}{1-2^s}\qquad(-1<\sigma<0).
 \]
-On the line $\sigma=c=-\frac12$, $|\frac{2^s}{1-2^s}|\le\frac{2^c}{1-2^c}$ and $\Gamma$ decays exponentially, so Theorem~\ref{thm:mellininv} applies. Move the line to $\sigma=d>0$. The function $\mathcal MG$ is meromorphic, with poles
-only where $1-2^s=0$, at $\chi_k=\frac{2\pi ik}{\ln2}$ (double at $\chi_0=0$, where $\Gamma$ also has a pole). Use the rectangles $c\le\sigma\le d$, $|t|\le T_j=\frac{(2j+1)\pi}{\ln2}$: on their horizontal sides $2^{iT_j}=-1$, so
-$|1-2^s|=1+2^\sigma\ge1$, and the exponential decay of $\Gamma$ (Lemma~\ref{lem:verticalsizes}) makes these sides contribute nothing in the limit. On $\sigma=d$, $|\frac{2^s}{1-2^s}|\le\frac{2^d}{2^d-1}$. Going around the
-rectangle counterclockwise (up along $\sigma=d$, down along $\sigma=c$), the residue theorem gives
-\[
-G(x)=-\sum_{k\in\Z}\operatorname{Res}_{s=\chi_k}\bigl(\mathcal MG(s)x^{-s}\bigr)+\frac1{2\pi i}\int_{(d)}\mathcal MG(s)x^{-s}\dd s,
+The absolute convergence condition follows from $\sum_{k\ge1}2^{k\sigma}<\infty$. The sum defining $G$ converges uniformly on compact $x$ intervals, since $1-e^{-x2^{-k}}\le x2^{-k}$, so $G$ is continuous. On $c=-1/2$ the rational factor is bounded and Gamma decays exponentially. Mellin inversion applies.
+
+Move the contour to $\sigma=d>0$, cutting the rectangles at $T_j=(2j+1)\pi/\ln2$. Along their horizontal edges $2^{\pm iT_j}=-1$, so $|1-2^s|=1+2^\sigma\ge1$. Lemma~\ref{lem:verticalsizes} makes those edges vanish in the limit. On the new vertical edge the rational factor is bounded by $2^d/(2^d-1)$, so the new integral is $O(x^{-d})$.
+
+The poles crossed are $\chi_k=2\pi ik/\ln2$, simple except for the double pole at zero. The right-hand vertical integral minus the left-hand one equals the sum of residues; hence
+\[G(x)=-\sum_{k\in\Z}\operatorname{Res}_{s=\chi_k}(\mathcal MG(s)x^{-s})
+ +\frac1{2\pi i}\int_{(d)}\mathcal MG(s)x^{-s}\dd s.
 \]
-and the last integral is $O(x^{-d})$ since $|x^{-s}|=x^{-d}$ there. At $\chi_k$ with $k\ne0$, $1-2^s$ has a simple zero with derivative $-\ln2$, so the residue is $\frac{\Gamma(\chi_k)}{\ln2}x^{-\chi_k}$, and
-$x^{-\chi_k}=e^{-2\pi ik\log_2x}$: these give $P(\log_2x)$. At $0$, with $\Gamma(s)=\frac1s-\gamma+O(s)$ (as $\Gamma'(1)=-\gamma$, Volume~5, Exercise~5.7), $\frac{2^s}{1-2^s}=-\frac1{s\ln2}-\frac12+O(s)$ and $x^{-s}=1-s\ln x+O(s^2)$,
-\[
-\begin{aligned}\mathcal MG(s)x^{-s}&=\Bigl(\frac1s-\gamma\Bigr)\Bigl(\frac1{s\ln2}+\frac12\Bigr)(1-s\ln x)+O(1)\\&=\frac1{s^2\ln2}+\frac1s\Bigl(\frac12-\frac\gamma{\ln2}-\log_2x\Bigr)+O(1),\end{aligned}
+For $k\ne0$, the residue is $\Gamma(\chi_k)x^{-\chi_k}/\ln2$, giving the displayed periodic series with a minus sign. At zero use
+\[\Gamma(s)=s^{-1}-\gamma+O(s),\quad
+\frac{2^s}{1-2^s}=-\frac1{s\ln2}-\frac12+O(s).
 \]
-whose residue, with the minus sign, gives the main terms. Finally, the reflection formula (Volume~5, Theorem~5.13) and $\Gamma(1-iy)=-iy\Gamma(-iy)$ give $|\Gamma(iy)|^2=\frac\pi{y\sinh\pi y}$. With $y_k=\frac{2\pi k}{\ln2}$, so
-$y_1\approx9.06$, $|P|\le\frac2{\ln2}\sum_{k\ge1}\bigl(\frac\pi{y_k\sinh\pi y_k}\bigr)^{1/2}<1.6\cdot10^{-6}$; the series converges so fast that $P$ is continuous (indeed analytic).
+Here $\Gamma'(1)=-\gamma$ is Volume~5, Exercise~5.7. Multiplying also by $x^{-s}=1-s\ln x+O(s^2)$ gives residue $1/2-\gamma/\ln2-\log_2x$. Its negative gives the three main terms.
+
+For a rigorous bound on the oscillation, reflection (Volume~5, Theorem~5.13) gives $|\Gamma(iy)|^2=\pi/(y\sinh\pi y)$. Put $q=e^{-\pi^2/\ln2}$. For $k\ge1$ this yields
+\[\left|\Gamma\left(\frac{2\pi ik}{\ln2}\right)\right|
+ =\sqrt{\frac{\ln2}{k}}\frac{q^k}{\sqrt{1-q^{4k}}}.
+\]
+Thus the series converges uniformly, and
+\[|P|\le\frac{2q}{\sqrt{\ln2}(1-q)\sqrt{1-q^4}}<1.6\cdot10^{-6}.
+\]
+Here the last strict bound can be certified without numerical sampling. The elementary series for arctangent and logarithm give $\pi>314159/100000$ and $69/100<\ln2<173287/250000$. They imply $\pi^2/\ln2>7117/500$; the positive Taylor sum $\sum_{j=0}^{69}(7117/500)^j/j!>50000000/33$ then gives $q<33/50000000$. Substituting this rational bound and $\sqrt{\ln2}>83/100$ in the preceding expression, and squaring positive quantities, proves the claimed inequality. For example, the constants for $\pi$ follow from $\pi=16\arctan(1/5)-4\arctan(1/239)$ with alternating remainders; those for $\ln2$ follow from $2\sum_{j\ge0}((2j+1)3^{2j+1})^{-1}$ with its geometric tail bound.
 \end{proof}
 
 \begin{beauty}
-The mean of the maximum is not quite $\log_2x+0.3327$: it wobbles periodically in $\log_2x$, by a millionth. The wobble is real, it comes from the poles of $\frac1{1-2^s}$ spaced along the imaginary
-axis, and it is invisible in any simulation, while the Mellin transform sees it at once. Such fluctuations are typical of algorithms that work by halving: tries, skip lists, radix sort
-and approximate counting all have them, and Flajolet, Gourdon and Dumas's survey (see the sources) computes many of them.
+The correction repeats when $x$ doubles, because doubling shifts $\log_2x$ by one. Its frequencies are the poles spaced along the imaginary axis in $1/(1-2^s)$. The oscillation is small enough to hide in ordinary plots, but its origin is exact. Similar terms appear in tries, radix algorithms and other processes that repeatedly halve a scale; Flajolet, Gourdon and Dumas give many examples.
 \end{beauty}
 
-\section{What we proved, and what comes next}
+\section{Contours, growth and scale}
 
-The opening promised three things. A contour integral vanishes when the contour winds around nothing outside the domain: that is
-Dixon's proof of Cauchy's theorem in its homology form (Theorem~\ref{thm:globalcauchy}), with the general residue theorem and
-logarithms on simply connected domains as corollaries. Growth on the boundary controls growth inside, even on an infinite strip:
-that is Phragm\'en--Lindel\"of (Theorem~\ref{thm:pl}), and with the sizes of $\Gamma$ and $\zeta$ on vertical lines it gave the
-convexity bound $\zeta(\frac12+it)=O(|t|^{\frac14+\varepsilon})$ (Theorem~\ref{thm:convexzeta}). Between them, Hadamard's factorisation
-(Theorem~\ref{thm:hadamardgen}) wrote an entire function of finite order from its zeros. And a sum of copies at every scale is a Dirichlet
-series in disguise: Mellin inversion (Theorem~\ref{thm:mellininv}) turned the theta sum and the maximum of geometric levels
-(Theorem~\ref{thm:maxgeom}) into residue computations, periodic wobble included.
+Winding number was enough to extend Cauchy's theorem to general cycles. Growth bounds then extended the maximum principle to half-strips and limited the exponential left over in an entire function's zero product. Mellin inversion brings these tools together: it converts scales to a vertical contour, and justified contour shifts turn poles into asymptotic terms.
 
-The next chapter asks what can be read off a power series or a Dirichlet series from its behaviour at the edge of convergence.
-Tauberian theorems answer, and the Wiener--Ikehara theorem, fed with the non-vanishing of $\zeta$ on the line $\operatorname{Re}s=1$,
-gives a second proof of the prime number theorem.
+The next chapter reverses another limiting process. It asks which boundary information about a power series or Dirichlet series determines the growth of its coefficients. Tauberian hypotheses make that reversal possible. Applied to zeta's nonvanishing on $\Re s=1$, Wiener--Ikehara will give another proof of the prime number theorem.
 
+\begin{figure}[ht]
+\centering\fig{ch14-rw-strip}
+\caption{The damping factor $e^{\varepsilon s^2}$ decays like $e^{-\varepsilon t^2}$ as we move up a strip. It lets the maximum principle act on a tall finite rectangle before we remove the damping.}
+\label{fig:v8c14strip}
+\end{figure}
+\begin{figure}[ht]
+\centering\fig{ch14-rw-poles}
+\caption{The poles $2\pi ik/\ln2$ of the geometric-level Mellin transform lie on the imaginary axis. Shifting right crosses them with a minus sign; the nonzero poles create a function periodic in $\log_2x$.}
+\label{fig:v8c14poles}
+\end{figure}
 \section{Exercises}
-
 \begin{exercise}[$\star\star$]\label{ex:annuluscauchy}
-\emph{Laurent series from the homology form.} Let $f$ be holomorphic on the annulus $\Omega=\{r<|z|<R\}$, and $r<r_1<r_2<R$. Let $C(\rho)$ be the circle $|z|=\rho$, counterclockwise. (a) Show that the cycle
-$C(r_2)-C(r_1)$ is homologous to zero in $\Omega$, and that for $r_1<|z|<r_2$,
-\[
-f(z)=\frac1{2\pi i}\int_{C(r_2)}\frac{f(w)}{w-z}\dd w-\frac1{2\pi i}\int_{C(r_1)}\frac{f(w)}{w-z}\dd w.
+\emph{Recovering Laurent series.} Let $f$ be holomorphic on $r<|z|<R$, and choose $r<r_1<r_2<R$. Denote the counterclockwise circle of radius $\rho$ by $C(\rho)$. (a) Verify that $C(r_2)-C(r_1)$ is homologous to zero in the annulus and deduce, for $r_1<|z|<r_2$,
+\[f(z)=\frac1{2\pi i}\int_{C(r_2)}\frac{f(w)}{w-z}\dd w
+ -\frac1{2\pi i}\int_{C(r_1)}\frac{f(w)}{w-z}\dd w.
 \]
-(b) Expand both kernels in geometric series to obtain the Laurent expansion $f(z)=\sum_{k\in\Z}a_kz^k$ on the annulus.
+(b) Expand the two kernels to recover a Laurent series valid throughout the annulus.
 \end{exercise}
-
 \begin{exercise}[$\star$]\label{ex:plsharp}
-\emph{Growth conditions are necessary.} Let $f(s)=\exp(\exp(-is))$ on the strip $|\sigma|\le\frac\pi2$. (a) Show that $|f|=1$ on both edges and $|f(it)|=\exp(e^t)$. (b) Which hypothesis of
-Theorem~\ref{thm:pl} fails?
+\emph{Escape up the middle.} For $f(s)=\exp(\exp(-is))$ on $|\sigma|\le\pi/2$, prove that both vertical edges have modulus one whereas $|f(it)|=\exp(e^t)$. Explain precisely which assumption of Theorem~\ref{thm:pl} this violates, also checking the bottom edge of a half-strip.
 \end{exercise}
-
 \begin{exercise}[$\star\star$]\label{ex:sinprod}
-\emph{Euler's sine product from Hadamard.} (a) Show that $\sin\pi z$ has order exactly $1$. (b) Deduce from Theorem~\ref{thm:hadamardgen} that $\sin\pi z=\pi z\prod_{n\ge1}\bigl(1-\frac{z^2}{n^2}\bigr)$. (c) Compare the
-coefficients of $z^3$ and recover $\zeta(2)=\frac{\pi^2}6$, as Euler did in 1735, this time with a proof that the product is right.
+\emph{From zeros to the sine product.} (a) Prove that $\sin\pi z$ has order one. (b) Use Hadamard's theorem to establish
+\[\sin\pi z=\pi z\prod_{n\ge1}(1-z^2/n^2).\]
+(c) Justify comparing the cubic coefficients and obtain $\zeta(2)=\pi^2/6$.
 \end{exercise}
-
 \begin{exercise}[$\star\star$]\label{ex:nonintorder}
-(a) Show that an entire function of finite order with only finitely many zeros has an integer order. (b) Deduce that $\cos\sqrt z=\sum_{n\ge0}\frac{(-1)^nz^n}{(2n)!}$, which has order $\frac12$, has infinitely
-many zeros, without finding them.
+(a) Prove that a nonzero entire function of finite order with only finitely many zeros has integer order. (b) Apply this to the entire function $\cos\sqrt z=\sum_{n\ge0}(-1)^nz^n/(2n)!$: establish its order $1/2$, then infer infinitely many zeros without locating them.
+\end{exercise}
+\begin{exercise}[$\star\star$]\label{ex:lambert}
+\emph{A divisor sum at small scale.} Write $d(n)$ for the number of positive divisors of $n$. Prove, as $x\downarrow0$,
+\[\sum_{k\ge1}\frac1{e^{kx}-1}=\sum_{n\ge1}d(n)e^{-nx}
+ =\frac{\log(1/x)+\gamma}{x}+\frac14-\frac{x}{144}+O(x^{3/2}).\]
 \end{exercise}
 
-\begin{exercise}[$\star\star$]\label{ex:lambert}
-\emph{Divisors and a Lambert series.} Show that, as $x\to0^+$,
-\[
-\sum_{k\ge1}\frac1{e^{kx}-1}=\sum_{n\ge1}d(n)e^{-nx}=\frac{\log\frac1x+\gamma}x+\frac14-\frac x{144}+O(x^{3/2}),
+\begin{exercise}[$\star$]\label{ex:v8c14a}
+\emph{A contour with two poles.} Let $0<r_1<r_2$, with neither radius equal to $|a|$ or $|b|$, where $a\ne b$. Evaluate
+\[\int_{C(r_2)-C(r_1)}\frac{\dd z}{(z-a)(z-b)}\]
+in terms of which poles lie between the circles. Explain why the answer is zero when both poles lie there, although each circle need not have zero integral.
+\end{exercise}
+\begin{exercise}[$\star\star$]\label{ex:v8c14b}
+\emph{A product of order one half.} Define $F(z)=\sum_{n\ge0}z^n/(2n+1)!$. Prove that $F$ is entire of order $1/2$, with zeros $-\pi^2n^2$, $n\ge1$, all simple. Deduce
+\[F(z)=\prod_{n\ge1}(1+z/(\pi^2n^2)).\]
+\end{exercise}
+\begin{exercise}[$\star\star$]\label{ex:v8c14c}
+\emph{An exact scale equation.} Put $G(x)=\sum_{k\ge1}(1-e^{-x2^{-k}})$. Establish
+\[G(2x)-G(x)=1-e^{-x}.\]
+Let $R(x)=G(x)-\log_2x-\gamma/\ln2+1/2$. Prove that $R(2x)-R(x)=-e^{-x}$, and explain why Theorem~\ref{thm:maxgeom}'s periodic correction satisfies this relation asymptotically. Does this relation alone determine the periodic function?
+\end{exercise}
+\begin{exercise}[$\star\star$]\label{ex:v8c14d}
+\emph{A Mellin pair from a Laplace integral.} For $f(x)=1/(1+x)$, prove
+\[\mathcal Mf(s)=\Gamma(s)\Gamma(1-s)=\frac\pi{\sin\pi s}\qquad(0<\Re s<1).
 \]
-where $d(n)$ is the number of divisors of $n$.
+Use Mellin inversion to represent $f(x)$ by a vertical integral on any line $0<c<1$. Justify the integrability needed for inversion.
 \end{exercise}
 
 \section{Hints}
-
 \begin{hint}{ex:annuluscauchy}
-Compute the winding number of the cycle around points with $|a|\le r$, with $|a|\ge R$, and around $z$.
+The two winding numbers cancel in the hole. For the kernels, use $|z/w|<1$ on the outer circle and $|w/z|<1$ on the inner one.
 \end{hint}
 \begin{hint}{ex:plsharp}
-Compute the real part of $\exp(-is)$ for $s=\sigma+it$.
+Take the real part of $e^{t-i\sigma}$ before exponentiating again.
 \end{hint}
 \begin{hint}{ex:sinprod}
-Look at $\sin\pi z$ on the imaginary axis. With $p=1$, pair the factors for $n$ and $-n$, and use that $\sin$ is odd.
+Use imaginary arguments for the lower growth bound, then pair the zeros $n$ and $-n$ in the canonical product.
 \end{hint}
 \begin{hint}{ex:nonintorder}
-By Hadamard, such a function is a polynomial times $e^{Q}$. Choose a direction in which the leading term of $Q$ is real and positive.
+A finite canonical product can be absorbed into a polynomial times $e^Q$. Choose a ray where the leading term of $Q$ has positive real part.
 \end{hint}
 \begin{hint}{ex:lambert}
-The Mellin transform is $\Gamma(s)\zeta(s)^2$. Move the line from $\sigma=3$ to $\sigma=-\frac32$ and collect the poles at $1$, $0$ and $-1$.
+Its transform is $\Gamma(s)\zeta(s)^2$. Shift from real part three to real part $-3/2$ and compute the residues at $1,0,-1$.
+\end{hint}
+\begin{hint}{ex:v8c14a}
+Use partial fractions; the two residues are opposites.
+\end{hint}
+\begin{hint}{ex:v8c14b}
+The expression $\sinh\sqrt z/\sqrt z$ is independent of the square-root choice and equals the given power series.
+\end{hint}
+\begin{hint}{ex:v8c14c}
+Reindex the sum for $G(2x)$. A function periodic in $\log_2x$ disappears under the difference operator.
+\end{hint}
+\begin{hint}{ex:v8c14d}
+Insert $(1+x)^{-1}=\int_0^\infty e^{-t}e^{-xt}\dd t$ and interchange absolutely convergent integrals.
 \end{hint}
 
 \section{Solutions}
-
 \begin{solution}{ex:annuluscauchy}
-\idea The two circles together do not wind around the hole, nor around anything outside, so Theorem~\ref{thm:globalcauchy} applies to the annulus even though it is not star-shaped.
-\writeup (a) For $|a|\le r$, both circles wind once around $a$, so the cycle has winding number $1-1=0$; for $|a|\ge R$, both wind $0$ times. So the cycle is homologous to zero in $\Omega$. For
-$r_1<|z|<r_2$, $n(C(r_2),z)=1$ and $n(C(r_1),z)=0$, and Theorem~\ref{thm:globalcauchy}(a) gives the formula. (b) For $|w|=r_2$, $\frac1{w-z}=\sum_{k\ge0}\frac{z^k}{w^{k+1}}$, and for $|w|=r_1$,
-$-\frac1{w-z}=\sum_{k\ge0}\frac{w^k}{z^{k+1}}$, both uniformly in $w$ on the circle. Integrating term by term, $f(z)=\sum_{k\ge0}a_kz^k+\sum_{k\ge1}a_{-k}z^{-k}$ with $a_k=\frac1{2\pi i}\int_{C(r_2)}f(w)w^{-k-1}\dd w$ and
-$a_{-k}=\frac1{2\pi i}\int_{C(r_1)}f(w)w^{k-1}\dd w$. By Volume~5, Lemma~9.21, these do not depend on the radii, so the expansion holds on the whole annulus.
-\end{solution}
+\idea The cycle cancels winding around the hole, allowing the general Cauchy formula to separate positive and negative powers.
+\writeup (a) For $|a|\le r$, the circles both have winding number one, and for $|a|\ge R$ both have winding number zero. Their difference is therefore homologous to zero. Between $r_1$ and $r_2$ its winding number is one, so Theorem~\ref{thm:globalcauchy}(a) gives the asserted formula.
 
+(b) Uniformly on the relevant circles,
+\[\frac1{w-z}=\sum_{j\ge0}\frac{z^j}{w^{j+1}}\quad(|w|=r_2),\qquad
+-\frac1{w-z}=\sum_{j\ge0}\frac{w^j}{z^{j+1}}\quad(|w|=r_1).
+\]
+Termwise integration gives the positive coefficients $(2\pi i)^{-1}\int_{C(r_2)}f(w)w^{-j-1}\dd w$ and negative coefficients $(2\pi i)^{-1}\int_{C(r_1)}f(w)w^{j-1}\dd w$, $j\ge1$. Volume~5, Lemma~9.21, makes them independent of the admissible radii. Varying those radii covers the whole annulus.
+\end{solution}
 \begin{solution}{ex:plsharp}
-\idea The function is built to be harmless on the edges and explosive in the middle, so it exhibits the only loophole the theorem leaves open.
-\writeup (a) $\exp(-is)=\exp(t-i\sigma)=e^t(\cos\sigma-i\sin\sigma)$, so $|f(s)|=\exp(e^t\cos\sigma)$. On $\sigma=\pm\frac\pi2$ this is $1$; at $\sigma=0$ it is $\exp(e^t)$. (b) Everything holds (continuity, holomorphy,
-$|f|\le1$ on the edges and $|f|\le\exp(e^{t_0})$ on the bottom segment $t=t_0$) except the growth condition $|f(s)|\le Ce^{Ct}$: $f$ grows doubly exponentially. So some growth condition is indispensable. (In fact
-Phragm\'en and Lindel\"of showed that $|f|\le\exp(Ce^{\kappa t})$ with $\kappa<1$ suffices on this strip of width $\pi$, so this example is exactly at the border.)
+\idea The second exponential turns a positive real part on the centre line into doubly exponential growth.
+\writeup Since $e^{-is}=e^t(\cos\sigma-i\sin\sigma)$, we have $|f(s)|=\exp(e^t\cos\sigma)$. This is one at $\sigma=\pm\pi/2$ and $\exp(e^t)$ at $\sigma=0$. Continuity and holomorphy hold everywhere. The bottom segment $t=t_0$ is bounded by $\exp(e^{t_0})$, so the whole half-strip boundary has a finite bound. The missing hypothesis is $|f(s)|\le Ce^{Ct}$: on the centre line it would require $e^t\le\log C+Ct$ for all large $t$, which is impossible. A stronger strip theorem allows growth $\exp(Ce^{\kappa t})$ when $\kappa<1$ for this width; that sharper result is quoted here only to locate the example at its threshold.
 \end{solution}
-
 \begin{solution}{ex:sinprod}
-\idea Hadamard reduces the identity to two unknown constants, and symmetry and the value at $0$ determine them.
-\writeup (a) $|\sin\pi z|\le\cosh(\pi\operatorname{Im}z)\le e^{\pi|z|}$, so the order is at most $1$; and $|\sin(\pi iy)|=\sinh\pi y\ge\frac14e^{\pi y}$ for large $y$, so it is at least $1$. (b) The zeros are the integers, all simple.
-By Theorem~\ref{thm:hadamardgen} with $p=1$, $\sin\pi z=ze^{A+Bz}\prod_{n\ne0}(1-\frac zn)e^{z/n}$. The product converges absolutely, so we may group $n$ with $-n$: $(1-\frac zn)e^{z/n}(1+\frac zn)e^{-z/n}=1-\frac{z^2}{n^2}$. Hence
-$\sin\pi z=ze^{A+Bz}\Pi(z)$ with $\Pi$ even. Replacing $z$ by $-z$ and using oddness gives $e^{Bz}=e^{-Bz}$ wherever $\Pi(z)\ne0$, so $B=0$ (differentiate at $0$). Dividing by $z$ and letting $z\to0$, $e^A=\pi$.
-(c) The product converges uniformly near $0$, so its Taylor coefficients are limits of those of the partial products: the coefficient of $z^2$ in $\Pi$ is $-\sum_n\frac1{n^2}$. Comparing with
-$\sin\pi z=\pi z-\frac{\pi^3z^3}6+\dots$ gives $\sum_n\frac1{n^2}=\frac{\pi^2}6$.
-\end{solution}
+\idea Pairing opposite zeros cancels the exponential corrections; symmetry then removes the remaining linear exponential.
+\writeup (a) The upper bound $|\sin\pi z|\le e^{\pi|z|}$ gives order at most one. Along $z=iy$ with $y\to\infty$, the modulus is $\sinh\pi y\ge e^{\pi y}/4$, giving order at least one.
 
+(b) The simple zeros are exactly the integers. Hadamard gives
+\[\sin\pi z=ze^{A+Bz}\prod_{n\ne0}(1-z/n)e^{z/n}.
+\]
+The locally absolute convergence permits pairing $n$ and $-n$. Each pair becomes $1-z^2/n^2$, yielding an even product $\Pi(z)$. Oddness of sine implies $e^{Bz}=e^{-Bz}$ near zero, and differentiation at zero gives $B=0$. Taking $z\to0$ after division by $z$ gives $e^A=\pi$.
+
+(c) Uniform convergence on a small closed disc gives convergence of derivatives by Cauchy's formula. The quadratic coefficient of $\Pi$ is therefore $-\sum_{n\ge1}n^{-2}$. Compare the cubic coefficient of $\pi z\Pi(z)$ with $-\pi^3/6$ to obtain $\zeta(2)=\pi^2/6$.
+\end{solution}
 \begin{solution}{ex:nonintorder}
-\idea Without zeros to account for, the growth of $f$ is all in $e^Q$, and $e^{Q}$ grows like $\exp(|z|^{\deg Q})$ in some direction.
-\writeup (a) With finitely many zeros, Theorem~\ref{thm:hadamardgen} (where the product is finite) gives $f=Pe^Q$ with $P$ a polynomial and $Q$ a polynomial of degree $d$. If $d=0$, $f$ is a polynomial of order
-$0$. If $d\ge1$, write $Q(z)=cz^d+\dots$ with $c\ne0$, and choose $\theta$ with $ce^{id\theta}=|c|$. Then $\operatorname{Re}Q(re^{i\theta})\ge\frac{|c|}2r^d$ and $|P(re^{i\theta})|\ge1$ for large $r$, so $M(r)\ge\exp(\frac{|c|}2r^d)$ and the order is
-at least $d$; it is at most $d$ since $|Pe^Q|\le\exp(C|z|^d)$ for large $|z|$. So the order is the integer $d$. (b) $|\cos\sqrt z|\le\cosh|\sqrt z|\le e^{|z|^{1/2}}$ (the series does not depend on the choice of
-square root), and $\cos\sqrt{-r}=\cosh\sqrt r\ge\frac12e^{\sqrt r}$, so the order is $\frac12$, not an integer. By (a), the zeros are infinitely many: they are $\bigl((k+\frac12)\pi\bigr)^2$, $k\ge0$.
-\end{solution}
+\idea With finitely many zeros, only a polynomial exponential can create positive order.
+\writeup (a) Absorb the finite elementary factors from Hadamard into $f=Pe^Q$, where $P$ is a nonzero polynomial and $Q$ a polynomial. If $Q$ is constant, $f$ is a polynomial of order zero. Otherwise let $d=\deg Q\ge1$ and write its leading coefficient as $c$. Choose $\theta$ with $ce^{id\theta}=|c|$. Along this ray, $\Re Q(re^{i\theta})\ge|c|r^d/2$ for large $r$, while $\log|P(re^{i\theta})|=O(\log r)$. Hence the order is at least $d$. The global bound $|Pe^Q|\le\exp(Cr^d)$ for large $r$ gives the reverse inequality, so the order equals the integer $d$.
 
+(b) The power series is entire and equals either branch expression $\cos\sqrt z$. Its modulus is at most $e^{\sqrt{|z|}}$, whereas at $z=-r$ it is $\cosh\sqrt r\ge e^{\sqrt r}/2$. Its order is consequently $1/2$. Part (a) forces infinitely many zeros, without their locations being needed.
+\end{solution}
 \begin{solution}{ex:lambert}
-\idea A harmonic sum with base function $e^{-x}$ and frequencies $n$ weighted by $d(n)$: its Mellin transform is $\Gamma(s)$ times the Dirichlet series of $d$, which is $\zeta(s)^2$. Each pole gives one term.
-\writeup Expanding $\frac1{e^{kx}-1}=\sum_{m\ge1}e^{-kmx}$ and grouping $n=km$ gives the first equality. For $\sigma>1$, $\sum_nd(n)n^{-s}=\zeta(s)^2$ (Volume~5, Proposition~10.2), so $\mathcal MG(s)=\Gamma(s)\zeta(s)^2$. As
-$G(x)=O(x^{-2})$ near $0$ (since $d(n)\le n$) and $G$ decays exponentially at infinity, Theorem~\ref{thm:mellininv} applies at $c=3$, using Lemma~\ref{lem:verticalsizes}. Shift to $\sigma=-\frac32$ as in
-Example~\ref{ex:thetamellin}; the new integral is $O(x^{3/2})$. Residues: at $s=1$, with $\Gamma(s)=1-\gamma(s-1)+\dots$ (Volume~5, Exercise~5.7), $\zeta(s)^2=\frac1{(s-1)^2}+\frac{2\gamma}{s-1}+\dots$ (Volume~5,
-Proposition~10.6) and $x^{-s}=\frac1x\bigl(1-(s-1)\log x+\dots\bigr)$, the coefficient of $\frac1{s-1}$ is $\frac1x(-\gamma-\log x+2\gamma)=\frac{\log\frac1x+\gamma}x$. At $s=0$: $\operatorname{Res}\Gamma=1$ and $\zeta(0)^2=\frac14$. At $s=-1$:
-$\operatorname{Res}\Gamma=-1$ and $\zeta(-1)^2=\frac1{144}$ (Volume~5, Theorem~10.10), giving $-\frac x{144}$.
+\idea Counting factorizations gives the squared zeta factor. The three crossed poles give the three displayed terms.
+\writeup Expand $(e^{kx}-1)^{-1}=\sum_{m\ge1}e^{-kmx}$. Non-negative summation groups each $n=km$ with multiplicity $d(n)$. The Dirichlet identity $\sum_nd(n)n^{-s}=\zeta(s)^2$ for $\sigma>1$ is Volume~5, Proposition~10.2. Thus the Mellin transform is $\Gamma(s)\zeta(s)^2$.
+
+The bound $d(n)\le n$ gives $G(x)=O(x^{-2})$ near zero and exponential decay at infinity, so inversion applies at $c=3$. Vertical-line estimates from Lemma~\ref{lem:verticalsizes} justify the shift to $-3/2$, as in Example~\ref{ex:thetamellin}; the remaining integral is $O(x^{3/2})$.
+
+At $s=1$, use $\Gamma(s)=1-\gamma(s-1)+O((s-1)^2)$ (Volume~5, Exercise~5.7), $\zeta(s)^2=(s-1)^{-2}+2\gamma(s-1)^{-1}+O(1)$ (Volume~5, Proposition~10.6), and $x^{-s}=x^{-1}(1-(s-1)\log x+O((s-1)^2))$. The residue is $x^{-1}(\log(1/x)+\gamma)$. At zero, Gamma's residue one times $\zeta(0)^2$ gives $1/4$. At $-1$, Gamma's residue $-1$ times $\zeta(-1)^2=1/144$ (Volume~5, Theorem~10.10) gives $-x/144$.
+\end{solution}
+\begin{solution}{ex:v8c14a}
+\idea Winding numbers select the poles in the annular region, and their residues have opposite signs.
+\writeup Partial fractions give $(z-a)^{-1}(z-b)^{-1}=((z-a)^{-1}-(z-b)^{-1})/(a-b)$. If $I_c$ equals one when $r_1<|c|<r_2$ and zero otherwise, the integral is $2\pi i(I_a-I_b)/(a-b)$. Thus it is zero if both poles lie between the circles, or if neither does. Cancellation of residues explains the first case; the individual circle integrals depend on which poles each encloses.
+\end{solution}
+\begin{solution}{ex:v8c14b}
+\idea Squaring the variable halves the growth order of the hyperbolic sine expression.
+\writeup The series has infinite radius of convergence and gives $F(z)=\sinh w/w$ when $w^2=z$, with the removable value one at zero. The integral identity $\sinh w/w=\int_0^1\cosh(tw)\dd t$ gives $|F(z)|\le e^{\sqrt{|z|}}$. For positive $r$ it grows at least $e^{\sqrt r}/(4\sqrt r)$ for large $r$. Thus its order is $1/2$. The nonzero zeros of $\sinh w$ are $w=i\pi n$, $n\ne0$, all simple. Since $w\mapsto w^2$ is locally invertible there, the zeros of $F$ are exactly $-\pi^2n^2$, $n\ge1$, each simple. Hadamard has $p=0$ and no zero at the origin, so its remaining exponential is constant. Evaluation at zero gives that constant as one, yielding the product.
+\end{solution}
+\begin{solution}{ex:v8c14c}
+\idea Reindexing isolates the largest scale; any logarithmic periodic term is invisible to this difference.
+\writeup Absolute convergence permits
+\[G(2x)=\sum_{j\ge0}(1-e^{-x2^{-j}})=1-e^{-x}+G(x).
+\]
+Subtracting the change $\log_2(2x)-\log_2x=1$ gives $R(2x)-R(x)=-e^{-x}$. In Theorem~\ref{thm:maxgeom}, the term $P(\log_2x)$ has zero difference because $P$ has period one. Its remaining error can have difference $-e^{-x}$, which is smaller than every negative power of $x$. The relation alone cannot determine $P$: adding any period-one function of $\log_2x$ preserves the difference equation. The Mellin residues supply the missing information.
+\end{solution}
+\begin{solution}{ex:v8c14d}
+\idea A Laplace integral separates the two Gamma factors, after which reflection gives the trigonometric form.
+\writeup For $0<\sigma<1$, the absolute double integral after inserting the suggested formula is
+\[\int_0^\infty e^{-t}\int_0^\infty e^{-xt}x^{\sigma-1}\dd x\dd t
+ =\Gamma(\sigma)\Gamma(1-\sigma)<\infty.
+\]
+Fubini and $u=xt$ therefore give $\mathcal Mf(s)=\Gamma(s)\Gamma(1-s)$. Reflection (Volume~5, Theorem~5.13) makes this $\pi/\sin\pi s$. On any line $0<c<1$, the original weighted integral is finite at both endpoints, and
+\[|\sin\pi(c+i\tau)|^2=\sin^2\pi c+\sinh^2\pi\tau.
+\]
+The reciprocal is bounded near zero and decays exponentially at infinity. Mellin inversion is therefore applicable and gives
+\[\frac1{1+x}=\frac1{2\pi i}\int_{c-i\infty}^{c+i\infty}\frac\pi{\sin\pi s}x^{-s}\dd s.
+\]
 \end{solution}
 
 \section*{Sources and further reading}
@@ -447,10 +482,10 @@ $\operatorname{Res}\Gamma=-1$ and $\zeta(-1)^2=\frac1{144}$ (Volume~5, Theorem~1
 J.~D.~Dixon, ``A brief proof of Cauchy's integral theorem'', \emph{Proc.\ Amer.\ Math.\ Soc.} 29 (1971), 625--626. E.~Phragm\'en and E.~Lindel\"of, ``Sur une extension d'un principe classique de
 l'analyse'', \emph{Acta Math.} 31 (1908), 381--406. Phragm\'en's discovery of the error in Poincar\'e's prize memoir is told in J.~Barrow-Green, \emph{Poincar\'e and the Three
 Body Problem} (AMS and LMS, 1997). J.~Hadamard, ``\'Etude sur les propri\'et\'es des fonctions enti\`eres et en particulier d'une fonction consid\'er\'ee par Riemann'', \emph{J.\ Math.\
-Pures Appl.} (4) 9 (1893), 171--215. For the Lindel\"of hypothesis and the subconvexity record: J.~Bourgain, ``Decoupling, exponential sums and the Riemann zeta function'', \emph{J.\ Amer.\ Math.\
+Pures Appl.} (4) 9 (1893), 171--215. For the Lindel\"of hypothesis and Bourgain's 2017 bound: J.~Bourgain, ``Decoupling, exponential sums and the Riemann zeta function'', \emph{J.\ Amer.\ Math.\
 Soc.} 30 (2017), 205--224; and E.~C.~Titchmarsh, \emph{The Theory of the Riemann Zeta-Function}, 2nd ed. (Oxford, 1986), Chapter~5.
 
 P.~Flajolet, X.~Gourdon and P.~Dumas, ``Mellin transforms and asymptotics: harmonic sums'', \emph{Theoret.\ Comput.\ Sci.} 144 (1995), 3--58, is the reference for Section~\ref{sec:mellin}; P.~Flajolet
 and G.~N.~Martin, ``Probabilistic counting algorithms for data base applications'', \emph{J.\ Comput.\ System Sci.} 31 (1985), 182--209; P.~Flajolet, \'E.~Fusy, O.~Gandouet and F.~Meunier,
 ``HyperLogLog: the analysis of a near-optimal cardinality estimation algorithm'', \emph{DMTCS Proceedings} AH (2007), 127--146. P.~Flajolet and R.~Sedgewick, \emph{Analytic Combinatorics}
-(Cambridge, 2009), is the grand synthesis.
+(Cambridge, 2009), develops the wider connection with enumeration and algorithms.

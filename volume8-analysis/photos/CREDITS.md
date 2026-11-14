@@ -1,0 +1,32 @@
+# Volume 8 portraits
+
+Every photograph in this volume is stored here. Nothing is hotlinked. Captions in the chapters repeat the credit. Print height is capped in `main.tex` at 1.65 in, or at pixel-height/300 when that is shorter, so the short side stays at least 300 pixels per inch.
+
+Five files are byte-for-byte copies of the public-domain portraits already used in Volume 5. Their credits there are the provenance. The hashes below are of the files in this directory.
+
+| File | What it is | Licence | SHA256 |
+| --- | --- | --- | --- |
+| `fourier.jpg` | Joseph Fourier (1768–1830). Engraving by Amédée Félix Barthélemy Geille, after Julien-Léopold Boilly. 805×984. | Public domain | `8e32934b37b6ba3d62a3db92b390b1add8262fe46a2c3d867ed362e96ef8334c` |
+| `gauss.jpg` | Carl Friedrich Gauss (1777–1855). Portrait by Christian Albrecht Jensen, 1840. 706×900. | Public domain | `5c665924edf1f54c3fac2a987f0da27bbf3e7a834f8674f7317c18fc65116f18` |
+| `cauchy.jpg` | Augustin-Louis Cauchy (1789–1857). Illustration from *Das neunzehnte Jahrhundert in Bildnissen*, Berlin, 1901. 280×388. | Public domain | `698c31e9d55daf8fd57d5c7544d36ec0c7eea5341dc8d060ca1f7efa17429907` |
+| `poisson.jpg` | Siméon Denis Poisson (1781–1840). Lithograph by François-Séraphin Delpech, after Nicolas Eustache Maurin. Commons thumbnail, short side 1280. 1280×1920. | Public domain | `8d97a7f3e247117a5fe2ffebce71ec93b4d700d01fea3256d5484d353ace94fa` |
+| `riemann.jpg` | Bernhard Riemann (1826–1866). Photograph, 1863. 824×900. | Public domain | `46a0dca7a7dd957b44d8843517f464ba1e19a3ffd4b395a1c7f20f8c9765835e` |
+
+The remaining files were downloaded from Wikimedia Commons on 13 November 2026. No scene was edited in this book. Kirchhoff and Schwarz are Commons scalings of larger files, because the originals are several thousand pixels on a side. The pixels are that scaling and nothing else.
+
+| File | Source | Licence | Pixels | SHA256 |
+| --- | --- | --- | --- | --- |
+| `banach.jpg` | Stefan Banach (1892–1945). Photograph, 1945, artist unknown. Published in *Warszawski Kalendarz Ilustrowany 1967*, Warszawa, 1966, p. 152. [File:Stefana Banach - ستيفان بناخ.jpg](https://commons.wikimedia.org/wiki/File:Stefana_Banach_-_%D8%B3%D8%AA%D9%8A%D9%81%D8%A7%D9%86_%D8%A8%D9%86%D8%A7%D8%AE.jpg). | Public domain | 348×467 | `0af592d0d4aca44774b230fddb580ce691b6fffaecbf32074ed4cbd1217e6243` |
+| `hilbert.jpg` | David Hilbert (1862–1943). Photograph, artist unknown, before 1912. [File:Hilbert.jpg](https://commons.wikimedia.org/wiki/File:Hilbert.jpg). The Commons file carries a 2021 image-editor timestamp. Nothing was edited for this book. | Public domain | 437×592 | `e0510813434980c4f93329694b0816770d388aacb27f0d83b88588cbc119a930` |
+| `cayley.jpg` | Arthur Cayley (1821–1895). Photograph by Herbert Rose Barraud, before 1883. [File:Arthur Cayley.jpg](https://commons.wikimedia.org/wiki/File:Arthur_Cayley.jpg). | Public domain | 892×1352 | `f38f5e3f4e028ccf240bdb16ef76ae1a1044d14a36683bf3918fc7ad2a9d4de9` |
+| `kirchhoff.jpg` | Gustav Robert Kirchhoff (1824–1887). Photograph, artist unknown, nineteenth century, Smithsonian Libraries. [File:Gustav Robert Kirchhoff.jpg](https://commons.wikimedia.org/wiki/File:Gustav_Robert_Kirchhoff.jpg). Commons thumbnail, long side 1804. | Public domain | 1280×1804 | `760ff05f9ec96d35973febfa705d08d95927cfb1e9cf1debe2fa04260fbfe971` |
+| `fredholm.jpg` | Erik Ivar Fredholm (1866–1927). Autochrome by Auguste Léon, 1 October 1921, Archives de la Planète, Musée Albert-Kahn. [File:1921 Erik Fredholm.jpg](https://commons.wikimedia.org/wiki/File:1921_Erik_Fredholm.jpg). | Public domain | 1165×1553 | `7e7a90a0ad0b99a8367d7a3196376ff352e40650c98e1425f11ac4f30d9068de` |
+| `haar.jpg` | Alfréd Haar (1885–1933). Photograph, artist unknown. [File:Haar Alfréd.jpg](https://commons.wikimedia.org/wiki/File:Haar_Alfr%C3%A9d.jpg). The file is marked public domain; no photographer and no date are recorded. | Public domain | 276×371 | `ef488aaf6fa80132567437ec0680b3880d5a74317942bc8c633b79e4baebdb2e` |
+| `hadamard.jpg` | Jacques Hadamard (1865–1963). Photograph. [File:Hadamard2.jpg](https://commons.wikimedia.org/wiki/File:Hadamard2.jpg). The uncropped file. | Public domain | 300×513 | `f99713dfa119dfc00b73173b06cb96f98fe96fd492d448d294000a2a5104eda0` |
+| `tauber.jpg` | Alfred Tauber (1866–1942). Photograph, artist unknown, about 1915. [File:Alfred Tauber.jpg](https://commons.wikimedia.org/wiki/File:Alfred_Tauber.jpg). | Public domain | 258×326 | `c20319a3e852d561554a0b36627d8941b5167f4684755e79d94ed2c55de7a104` |
+| `jordan.jpg` | Camille Jordan (1838–1922). Photograph by Eugène Pirou, between 1889 and 1922. Accademia delle Scienze di Torino. [File:Camille Jordan, dal 1889 al 1922 - Accademia delle Scienze di Torino 0141 B.jpg](https://commons.wikimedia.org/wiki/File:Camille_Jordan,_dal_1889_al_1922_-_Accademia_delle_Scienze_di_Torino_0141_B.jpg). | Public domain | 1090×1588 | `f0244f1d85b373bb3599adb8b7e9afded268e29f585a19ccb187fdded030e37e` |
+| `frobenius.jpg` | Ferdinand Georg Frobenius (1849–1917). Photograph from the album for Weierstrass, between 1870 and 1885. [File:Das Fotoalbum für Weierstraß 041 (Ferdinand Georg Frobenius).jpg](https://commons.wikimedia.org/wiki/File:Das_Fotoalbum_f%C3%BCr_Weierstra%C3%9F_041_(Ferdinand_Georg_Frobenius).jpg). | Public domain | 808×1309 | `672210d75291a22866b1b636d3a674281885730ff2bec09af5547a39ddc34c2f` |
+| `schwarz.jpg` | Hermann Amandus Schwarz (1843–1921). Photograph by Louis Zipfel, about 1890, ETH Library. [File:Hermann Amand Schwarz (1843-1921) by Louis Zipfel.jpg](https://commons.wikimedia.org/wiki/File:Hermann_Amand_Schwarz_(1843-1921)_by_Louis_Zipfel.jpg). Commons thumbnail, long side 2096. The Commons record names a later restoration of the scan. | Public domain | 1280×2096 | `d93f1c676dc16dc66c344891b4fd87942438a6c653dce58344367490ff526300` |
+| `lyapunov.jpg` | Aleksandr Lyapunov (1857–1918). Photograph, artist unknown, published by 1908. [File:Aleksandr Lyapunov.jpg](https://commons.wikimedia.org/wiki/File:Aleksandr_Lyapunov.jpg). | Public domain | 600×783 | `74d9f2ccf3a9a9b3e6e18d51d36a97961b532f8690daf28591de9786bbdabd0f` |
+
+Not used, after the file pages were read: a military portrait filed under Frigyes Riesz; a 2024 upload of Norbert Wiener marked as the uploader’s own work; a Lebesgue file with no artist, date, or description; a Heaviside image whose Commons date is a 2020 archive post of a painted portrait.

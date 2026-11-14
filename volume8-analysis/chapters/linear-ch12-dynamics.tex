@@ -5,84 +5,46 @@ The motion of a machine with its governor consists in general of a uniform motio
 expressed as the sum of several component motions. These components may be of four different kinds.
 \upshape(James Clerk Maxwell, \emph{On Governors}, 1868)
 \end{center}
+\noindent\emph{Use Appendix~\ref{linear:ch:eigen}, earlier matrix norm and positivity results, and Volume~3's Perron--Frobenius theorem. This optional appendix applies them to stability, iteration and control.}
 
-\noindent\emph{This appendix assumes Appendix~\ref{linear:ch:eigen} and the Perron--Frobenius theorem of Volume~3. No main chapter uses it; it is the linear algebra behind stability, iterative methods and control.}
+Watt's centrifugal governor used spinning weighted arms to close a steam valve when an engine ran too fast. Some engines instead hunted: their speed rose and fell in growing oscillations. Tuning by trial and error did not explain why a feedback device could amplify the disturbance it was meant to remove.
 
-In the 1780s James Watt fitted his steam engines with a \emph{centrifugal governor}: two heavy balls on hinged arms, spun by the
-engine, that rise when it runs too fast and close the steam valve through a lever. It was the first widely used feedback device,
-and by the 1860s there were tens of thousands of them, many of which misbehaved. Engines with governors would ``hunt'', speeding up
-and slowing down in growing oscillations, and engineers tuned them by trial and error. In 1868 James Clerk Maxwell, between his
-papers on electromagnetism, wrote a short note \emph{On Governors} for the Royal Society. He linearised the equations of motion
-near the steady state, wrote the disturbance as a sum of exponentials $e^{\lambda t}$, and observed that the governor is stable
-exactly when every $\lambda$ has negative real part. For his third-order model he found the condition explicitly; for higher
-orders he could not, and he posed the problem publicly. Edward Routh solved it in 1877 and won the Adams Prize for it; Adolf
-Hurwitz found the same criterion independently in 1895, asked by an engineer designing turbines in Switzerland.
+Maxwell's 1868 paper \emph{On Governors} linearised the motion near equilibrium. Components of the disturbance had the form $e^{\lambda t}$, so decay required negative real parts. He found the condition for his cubic model and asked for a general criterion. Routh answered in 1877; Hurwitz found the criterion independently in 1895 in connection with turbine design.
 
-Maxwell's observation is the heart of this appendix: the long-term behaviour of a linear system is written in the eigenvalues of its
-matrix. For iterations $x_{k+1}=Ax_k$ the test is $|\lambda|<1$, for differential equations $x'=Ax$ it is $\operatorname{Re}\lambda<0$,
-and the proofs are short once we know how to measure the size of $A^k$. But eigenvalues do not tell the whole story: non-normal
-matrices can grow enormously before they decay, which matters for every engineer and every numerical analyst. We then meet
-Lyapunov's way of proving stability without computing eigenvalues, apply all of this to the speed of iterative methods (gradient
-descent, Chebyshev's acceleration and Polyak's heavy ball, which together explain why ``momentum'' works), and end with Kalman's
-criterion for when a system can be steered anywhere at all, and with Maxwell's cubic.
-
-These stability estimates also underpin iterative methods and optimisation algorithms.
+The matrix tests are simple to state: powers decay when every eigenvalue has modulus below one, and exponentials decay when every eigenvalue has negative real part. Their proofs also explain why a nonnormal matrix can grow before decaying. Lyapunov gives a quadratic energy certificate; Chebyshev and heavy-ball iteration change the polynomial acting on the error; Kalman's rank condition describes which states an input can reach.
 
 \begin{think}
-The matrix $A=\bigl(\begin{smallmatrix}0.9&10\\0&0.9\end{smallmatrix}\bigr)$ has both eigenvalues equal to $0.9$, so $A^k\to0$. Roughly
-how large does $\|A^k\|$ get before it starts to decrease? Compute $A^2$ and $A^3$ and guess a formula for $A^k$.
+For $A=\begin{pmatrix}0.9&10\\0&0.9\end{pmatrix}$, both eigenvalues lie inside the unit circle. Compute its first few powers and find the upper-right entry in $A^k$. How can that entry become much larger than one while all powers eventually tend to zero?
 \end{think}
 
 \section{Powers of a matrix and Gelfand's formula}
 
-Recall that the \emph{spectral radius} of a square matrix is $\rho(A)=\max|\lambda|$ over its eigenvalues. For any vector norm on
-$\C^n$ we use the induced operator norm $\|A\|=\max_{\|x\|=1}\|Ax\|$, which satisfies $\|AB\|\le\|A\|\|B\|$; if $Ax=\lambda x$ with
-$x\ne0$, then $\|A\|\ge|\lambda|$, so $\rho(A)\le\|A\|$ for every induced norm. The key lemma says that this inequality is almost an
-equality for a well-chosen norm.
+Use positive matrix size and write $\rho(A)=\max|\lambda|$. An induced norm satisfies submultiplicativity and $\rho(A)\le\|A\|$, since it can be tested on an eigenvector. A suitable change of coordinates makes this bound nearly exact.
 
 \begin{lemma}[a norm adapted to $A$]\label{linear:lem:adaptednorm}
-For every $A\in M_n(\C)$ and $\varepsilon>0$ there is an invertible matrix $S$ such that $\|S^{-1}AS\|_2\le\rho(A)+\varepsilon$.
-Consequently the norm $\|x\|_S=\|S^{-1}x\|_2$ has induced norm $\|A\|_S\le\rho(A)+\varepsilon$.
+For every complex square $A$ and $\varepsilon>0$, some invertible $S$ satisfies $\|S^{-1}AS\|_2\le\rho(A)+\varepsilon$. The vector norm $\|x\|_S=\|S^{-1}x\|_2$ therefore has induced bound $\|A\|_S\le\rho(A)+\varepsilon$.
 \end{lemma}
 \begin{proof}
-By Schur's theorem (Theorem~\ref{linear:thm:schur}), $A=UTU^*$ with $U$ unitary and $T$ upper triangular, $T=\Lambda+N$ with
-$\Lambda$ diagonal (the eigenvalues) and $N$ strictly upper triangular. For $\delta>0$ let $D=\operatorname{diag}(1,\delta,\delta^2,
-\dots,\delta^{n-1})$. Then $D^{-1}TD$ has entries $t_{ij}\delta^{j-i}$: the diagonal is unchanged and every entry above it is
-multiplied by at least $\delta$. So $D^{-1}TD=\Lambda+N_\delta$ with $\|N_\delta\|_2\le\|N_\delta\|_F\le\delta\|N\|_F$ for $\delta\le1$.
-Hence $\|D^{-1}TD\|_2\le\|\Lambda\|_2+\delta\|N\|_F=\rho(A)+\delta\|N\|_F$, and $S=UD$ with $\delta$ small enough does it. Finally
-$\|Ax\|_S=\|S^{-1}AS\,S^{-1}x\|_2\le(\rho(A)+\varepsilon)\|x\|_S$.
+Schur gives $A=UTU^*$ with $T=\Lambda+N$ upper triangular and $N$ strictly upper triangular. For $D=\operatorname{diag}(1,\delta,\ldots,\delta^{n-1})$, the entry in position $i,j$ of $D^{-1}TD$ is $t_{ij}\delta^{j-i}$. At $0<\delta\le1$, its strictly upper part has Frobenius norm at most $\delta\|N\|_F$, hence operator norm at most that. Thus $S=UD$ gives bound $\rho(A)+\delta\|N\|_F$; choose $\delta$ small enough. The last assertion follows by substituting $S^{-1}x$ in that operator bound.
 \end{proof}
 
 \begin{theorem}[convergence of powers]\label{linear:thm:powers}
-$A^k\to0$ as $k\to\infty$ if and only if $\rho(A)<1$. More precisely, for every $\varepsilon>0$ there is $C_\varepsilon$ with
-$\|A^k\|\le C_\varepsilon(\rho(A)+\varepsilon)^k$ for all $k\ge0$.
+Powers $A^k$ tend to zero exactly when $\rho(A)<1$. For every $\varepsilon>0$ and every fixed matrix norm, there is $C_\varepsilon$ with $\|A^k\|\le C_\varepsilon(\rho(A)+\varepsilon)^k$ for all $k\ge0$.
 \end{theorem}
 \begin{proof}
-With $S$ from Lemma~\ref{linear:lem:adaptednorm}, $A^k=S(S^{-1}AS)^kS^{-1}$, so $\|A^k\|_2\le\|S\|_2\|S^{-1}\|_2(\rho+\varepsilon)^k$. Every norm on
-$M_n(\C)$ is bounded by a constant times $\|\cdot\|_2$, which gives the bound in any norm. If $\rho<1$, choose $\varepsilon$ with
-$\rho+\varepsilon<1$. Conversely, if $Ax=\lambda x$ with $|\lambda|\ge1$ and $x\ne0$, then $\|A^kx\|=|\lambda|^k\|x\|\not\to0$.
+Conjugating powers gives $\|A^k\|_2\le\|S\|_2\|S^{-1}\|_2(\rho+\varepsilon)^k$. Finite-dimensional norm equivalence proves the bound in any matrix norm. If $\rho<1$, take $\rho+\varepsilon<1$. If an eigenvalue has modulus at least one, its eigenvector satisfies $A^kv=\lambda^kv$, which cannot tend to zero. This proves the converse.
 \end{proof}
 
 \begin{theorem}[Gelfand's formula, 1941]\label{linear:thm:gelfand}
-For every norm on $M_n(\C)$, $\displaystyle\rho(A)=\lim_{k\to\infty}\|A^k\|^{1/k}$.
+For any norm on the matrix space, $\rho(A)=\lim_{k\to\infty}\|A^k\|^{1/k}$.
 \end{theorem}
 \begin{proof}
-All norms on $M_n(\C)$ are equivalent, and $c^{1/k}\to1$ for every constant $c>0$, so it suffices to treat the operator norm
-$\|\cdot\|_2$. Since $\rho(A^k)=\rho(A)^k$ and $\rho\le\|\cdot\|_2$, we have $\rho(A)\le\|A^k\|_2^{1/k}$. By Theorem~\ref{linear:thm:powers},
-$\|A^k\|_2^{1/k}\le C_\varepsilon^{1/k}(\rho+\varepsilon)$, whose $\limsup$ is at most $\rho+\varepsilon$, for every $\varepsilon>0$.
+For the Euclidean operator norm, an eigenvector gives $\rho(A)^k\le\|A^k\|_2$. The preceding upper bound makes the limit superior of its $k$th root at most $\rho+\varepsilon$. Let $\varepsilon\downarrow0$. Norm-equivalence constants disappear after taking $k$th roots, giving every norm.
 \end{proof}
 
-So the spectral radius is the \emph{asymptotic} growth rate of the powers. The opening ``Pause and think'' shows that it says nothing
-about the \emph{transient}. For $A=\lambda I+cN$ with $N=\bigl(\begin{smallmatrix}0&1\\0&0\end{smallmatrix}\bigr)$, $N^2=0$ and the
-binomial formula give
-\[
-A^k=\lambda^kI+k\lambda^{k-1}cN=\begin{pmatrix}\lambda^k&kc\lambda^{k-1}\\0&\lambda^k\end{pmatrix}.
-\]
-For $\lambda=0.9$, $c=10$, the corner $10k\cdot0.9^{k-1}$ reaches about $38.7$ at $k=9$ and $10$ before decaying, and $\|A^k\|$ stays above
-$1$ for more than sixty steps (Figure~\ref{linear:fig:transient}). For normal matrices there is no such hump: $\|A^k\|_2=\rho(A)^k$ exactly,
-since $A$ is unitarily diagonalisable. Transient growth is a phenomenon of non-normality, and it is not a curiosity: in fluid
-dynamics, linearly stable flows (pipe flow, for instance) become turbulent at moderate speeds partly because tiny disturbances are
-amplified by thousands before they decay, and the non-linear terms take over in between.
+The root rate leaves room for polynomial factors. If $N=E_{12}$, then for $k\ge1$,
+\[(\lambda I+cN)^k=\lambda^kI+kc\lambda^{k-1}N,\]
+with the zeroth power identity handled separately. At $\lambda=9/10,c=10$, the off-diagonal entry is $10k(9/10)^{k-1}$. Comparing consecutive terms gives ratio $9(k+1)/(10k)$, so the maximum occurs at $k=9,10$ and is about $38.7$. The exact formula gives transient amplification despite eventual decay. The shared root rate in Figure~\ref{linear:fig:transient} is $0.9$; the nonnormal matrix also carries its factor $k$. A normal matrix instead has $\|A^k\|_2=\rho(A)^k$. Such transient amplification can matter before nonlinear terms become important, for example in hydrodynamic stability.
 
 \begin{figure}[ht]
 \centering
@@ -95,31 +57,19 @@ $40$.}
 
 \section{Differential equations and stability}
 
-The solution of $x'=Ax$, $x(0)=x_0$ is $x(t)=e^{tA}x_0$ (Proposition~\ref{linear:prop:exp}); it is unique, since if $x'=Ax$ then
-$\frac d{dt}(e^{-tA}x(t))=0$. If $Av=\lambda v$, then $e^{tA}v=e^{\lambda t}v$, so solutions starting on eigenvectors grow or decay
-like $|e^{\lambda t}|=e^{t\operatorname{Re}\lambda}$. The \emph{spectral abscissa} $\alpha(A)=\max\operatorname{Re}\lambda$ plays the
-role of $\log\rho$, and a matrix with $\alpha(A)<0$ is called \emph{stable} (or \emph{Hurwitz}).
+The unique solution of $x'=Ax$, $x(0)=x_0$, is $e^{tA}x_0$. Differentiation verifies it, and differentiating $e^{-tA}x(t)$ proves uniqueness. On an eigenvector it grows by $e^{\lambda t}$. Put $\alpha(A)=\max\Re\lambda$; call $A$ \emph{stable} or \emph{Hurwitz} when this is negative.
 
 \begin{theorem}[stability]\label{linear:thm:stability}
-For every $\varepsilon>0$ there is $C_\varepsilon$ with $\|e^{tA}\|\le C_\varepsilon e^{(\alpha(A)+\varepsilon)t}$ for all $t\ge0$. In
-particular every solution of $x'=Ax$ tends to $0$ if and only if $A$ is stable, and then it does so exponentially fast.
+For every $\varepsilon>0$, a constant $C_\varepsilon$ satisfies $\|e^{tA}\|\le C_\varepsilon e^{(\alpha(A)+\varepsilon)t}$ for all $t\ge0$. Every solution tends to zero exactly when $A$ is stable, and then decay is exponential.
 \end{theorem}
 \begin{proof}
-As in Lemma~\ref{linear:lem:adaptednorm}, write $S^{-1}AS=\Lambda+N_\delta$ with $\Lambda$ diagonal and $\|N_\delta\|_2\le\varepsilon$. Let
-$y(t)=S^{-1}x(t)$, so $y'=(\Lambda+N_\delta)y$. Then
-\[
-\frac d{dt}\|y\|^2=2\operatorname{Re}\,y^*(\Lambda+N_\delta)y\le2\Bigl(\max_i\operatorname{Re}\lambda_i\Bigr)\|y\|^2+2\|N_\delta\|_2\|y\|^2\le
-2(\alpha+\varepsilon)\|y\|^2.
+Use the triangular scaling from the adapted-norm lemma to write $S^{-1}AS=\Lambda+N_\delta$, where $\|N_\delta\|_2\le\varepsilon$. For $y=S^{-1}x$, differentiate its squared norm:
+\[\frac{\dd}{\dd t}\|y\|^2=2\Re\,y^*(\Lambda+N_\delta)y\le2(\alpha+\varepsilon)\|y\|^2.
 \]
-So $\frac d{dt}\bigl(e^{-2(\alpha+\varepsilon)t}\|y\|^2\bigr)\le0$, and $\|y(t)\|\le e^{(\alpha+\varepsilon)t}\|y(0)\|$. Returning to $x=Sy$,
-$\|x(t)\|\le\|S\|\|S^{-1}\|e^{(\alpha+\varepsilon)t}\|x_0\|$. If $\alpha<0$, choose $\varepsilon<-\alpha$. Conversely, if $Av=\lambda v$ with
-$\operatorname{Re}\lambda\ge0$, the solution $e^{\lambda t}v$ does not tend to $0$.
+Multiplication by $e^{-2(\alpha+\varepsilon)t}$ makes it non-increasing. Return through $S$ and use norm equivalence to get the estimate. Negative $\alpha$ permits a negative exponent. Conversely an eigenvector with non-negative real eigenvalue part gives a nondecaying solution, excluding convergence for every initial state.
 \end{proof}
 
-For $2\times2$ real matrices the possible pictures are few, and Figure~\ref{linear:fig:phase} shows the main ones: real eigenvalues of the
-same sign (a \emph{node}), complex eigenvalues (a \emph{spiral}, or a \emph{centre} if they are purely imaginary), and real eigenvalues
-of opposite signs (a \emph{saddle}). Stability for $2\times2$ real matrices is $\operatorname{tr}A<0$ and $\det A>0$
-(Exercise~\ref{linear:ex:hurwitz2}), the first case of the Routh--Hurwitz criterion.
+The planar examples in Figure~\ref{linear:fig:phase} include nodes, spirals, centres and saddles. Here stability means asymptotic attraction to zero. A centre has bounded closed orbits and is stable in the usual Lyapunov sense of small disturbances staying small, but it is not attracting and is not Hurwitz. Real two-dimensional Hurwitz stability is equivalent to negative trace and positive determinant, as Exercise~\ref{linear:ex:hurwitz2} proves.
 
 \begin{figure}[ht]
 \centering
@@ -132,115 +82,68 @@ eigenvector and leave along the unstable one (rust).}
 
 \section{Lyapunov's method}
 
-In his doctoral thesis of 1892, \emph{The General Problem of the Stability of Motion}, Aleksandr Lyapunov in Kharkov proposed to
-prove stability without solving the equations: find an ``energy'' that decreases along every trajectory. For linear systems,
-quadratic energies suffice, and the search for one is a linear equation.
+Lyapunov's 1892 thesis sought a decreasing energy rather than an explicit solution. For linear systems a quadratic form is enough, and its coefficients satisfy a linear equation.
+
+\portrait{lyapunov}{Aleksandr Lyapunov (1857--1918). Photographer unknown, published by 1908. Public domain, via Wikimedia Commons.}
 
 \begin{theorem}[Lyapunov, 1892]\label{linear:thm:lyapunov}
-Let $A\in M_n(\C)$. The following are equivalent.
+For complex square $A$, the following are equivalent:
 \begin{enumerate}[label=(\roman*)]
-\item $A$ is stable.
-\item For every $Q\succ0$ there is $P\succ0$ with $A^*P+PA=-Q$.
-\item There is $P\succ0$ with $A^*P+PA\prec0$.
+\item $A$ is stable;
+\item for every $Q\succ0$ there exists $P\succ0$ with $A^*P+PA=-Q$;
+\item some $P\succ0$ satisfies $A^*P+PA\prec0$.
 \end{enumerate}
-When $A$ is stable, the solution in (ii) is unique and equals $P=\int_0^\infty e^{tA^*}Qe^{tA}\,dt$.
+When stable, the equation has the unique solution $P=\int_0^\infty e^{tA^*}Qe^{tA}\dd t$.
 \end{theorem}
 \begin{proof}
-(i)$\Rightarrow$(ii). By Theorem~\ref{linear:thm:stability} the integrand is bounded by $C^2\|Q\|e^{-2\eta t}$ with $\eta>0$, so the integral
-converges. $P$ is Hermitian, and $x^*Px=\int_0^\infty(e^{tA}x)^*Q(e^{tA}x)\,dt>0$ for $x\ne0$. Since $\frac d{dt}\bigl(e^{tA^*}Qe^{tA}\bigr)=
-A^*e^{tA^*}Qe^{tA}+e^{tA^*}Qe^{tA}A$,
-\[
-A^*P+PA=\int_0^\infty\frac d{dt}\bigl(e^{tA^*}Qe^{tA}\bigr)\,dt=\Bigl[e^{tA^*}Qe^{tA}\Bigr]_0^\infty=-Q.
-\]
-Uniqueness: if $P_1$ and $P_2$ both solve the equation, $R=P_1-P_2$ satisfies $A^*R+RA=0$, so $\frac d{dt}\bigl(e^{tA^*}Re^{tA}\bigr)=e^{tA^*}(A^*R+RA)e^{tA}=0$
-and $R=e^{tA^*}Re^{tA}$ for every $t\ge0$. By Theorem~\ref{linear:thm:stability}, $\|e^{tA^*}Re^{tA}\|\le C^2e^{-2\eta t}\|R\|\to0$, so $R=0$.
+(i) implies (ii) because exponential decay makes the integral norm convergent. It is Hermitian and positive definite: for nonzero $x$, its integrand quadratic form is positive at zero and on a nearby interval. Integrating the derivative of $e^{tA^*}Qe^{tA}$ gives $A^*P+PA=-Q$, since the far endpoint vanishes. If $R$ is the difference of two solutions, $e^{tA^*}Re^{tA}$ has zero derivative and equals $R$; exponential decay also makes it tend to zero, so $R=0$.
 
-(ii)$\Rightarrow$(iii) is clear. (iii)$\Rightarrow$(i). Let $Q=-(A^*P+PA)\succ0$ and $V(x)=x^*Px$. Along a solution,
-\[
-\frac d{dt}V(x(t))=x'^*Px+x^*Px'=x^*(A^*P+PA)x=-x^*Qx\le-\frac{\lambda_{\min}(Q)}{\lambda_{\max}(P)}V(x).
+(ii) implies (iii) by any positive $Q$. For (iii), put $Q=-(A^*P+PA)\succ0$. Along a solution the energy $V=x^*Px$ satisfies
+\[V'=-x^*Qx\le-\frac{\lambda_{\min}(Q)}{\lambda_{\max}(P)}V.
 \]
-So $V(x(t))\le e^{-ct}V(x_0)$ with $c>0$, and since $V(x)\ge\lambda_{\min}(P)\|x\|^2$, every solution tends to $0$: $A$ is stable by
-Theorem~\ref{linear:thm:stability}.
+Thus $V$ decays exponentially, and $V\ge\lambda_{\min}(P)\|x\|^2$ gives decay of every state. The preceding stability theorem proves (i).
 \end{proof}
 
-The ellipsoids $\{x^*Px\le r\}$ are traps: trajectories cross their boundaries inward and never come back. The matrix $P$ is computed
-by solving a linear system, without any eigenvalue, which is how control engineers certify stability; and unlike eigenvalues, a
-Lyapunov function survives small non-linear perturbations, which is how Lyapunov proved that the linearisation decides the stability
-of a non-linear system near an equilibrium (when it is stable). The discrete-time version, for $x_{k+1}=Ax_k$, is the \emph{Stein
-equation} $P-A^*PA=Q$ (Exercise~\ref{linear:ex:stein}).
+Trajectories enter smaller energy ellipsoids because the energy derivative is strictly negative away from zero. Solving for $P$ provides a stability certificate without first locating eigenvalues. For a nonlinear system with this stable linearisation, differentiability makes the remaining local terms smaller than the strict quadratic decrease; this is Lyapunov's local linearisation principle. The discrete counterpart is the Stein equation $P-A^*PA=Q$, treated in Exercise~\ref{linear:ex:stein}.
 
 \section{The speed of iterative methods}
 
-To solve $Ax=b$ with $A$ symmetric positive definite, or equivalently to minimise $f(x)=\frac12x^{\mathsf T}Ax-b^{\mathsf T}x$, whose gradient
-is $Ax-b$, one can avoid factorising $A$ and only multiply by it. This is how large sparse problems are solved, from structural
-mechanics to the training of machine-learning models. Throughout, the eigenvalues of $A$ lie in $[m,L]$ with $0<m\le L$, and
-$\kappa=L/m$ is the \emph{condition number}. Let $x_\star=A^{-1}b$ and $e_k=x_k-x_\star$.
+Let real symmetric $A\succ0$ have spectrum in $[m,L]$, $0<m\le L$, and solve $Ax=b$, equivalently minimise $f(x)=x^{\mathsf T}Ax/2-b^{\mathsf T}x$. Set $x_\star=A^{-1}b$ and $e_k=x_k-x_\star$. Write $\kappa=L/m$ for the spectral-interval ratio; when the endpoints are the extremal eigenvalues it is the Euclidean condition number.
 
-\emph{Gradient descent} $x_{k+1}=x_k-\eta(Ax_k-b)$ gives $e_{k+1}=(I-\eta A)e_k$, a linear dynamical system. Its rate is
-$\rho(I-\eta A)=\max_{\lambda\in\operatorname{spec}A}|1-\eta\lambda|$, and $\|e_k\|_2\le\rho^k\|e_0\|_2$ exactly, as $I-\eta A$ is symmetric.
-The best step is $\eta=\frac2{m+L}$ (Exercise~\ref{linear:ex:gdstep}), with rate $\frac{L-m}{L+m}=\frac{\kappa-1}{\kappa+1}\approx1-\frac2\kappa$: the
-number of iterations needed to gain a factor $10$ is proportional to $\kappa$.
+Gradient descent $x_{k+1}=x_k-\eta(Ax_k-b)$ gives $e_{k+1}=(I-\eta A)e_k$. Symmetry gives the exact operator factor $\rho(I-\eta A)=\max_{\lambda\in\operatorname{spec}A}|1-\eta\lambda|$. The best uniform bound over the interval uses $\eta=2/(m+L)$ and factor $(\kappa-1)/(\kappa+1)$ (Exercise~\ref{linear:ex:gdstep}). For large $\kappa$, a fixed reduction therefore takes order $\kappa$ steps.
 
-Any method that builds $x_k$ from $x_0$ and $k$ multiplications by $A$, as linear combinations of $x_0,Ax_0-b,\dots$, has an error of the
-form $e_k=p_k(A)e_0$, where $p_k$ is a polynomial of degree at most $k$ with $p_k(0)=1$. Then
-\[
-\|e_k\|_2\le\max_{\lambda\in[m,L]}|p_k(\lambda)|\,\|e_0\|_2,
+More generally suppose $x_k\in x_0+\operatorname{span}(r_0,Ar_0,\ldots,A^{k-1}r_0)$, where $r_0=Ax_0-b=Ae_0$. Then $e_k=p_k(A)e_0$ with $\deg p_k\le k$ and $p_k(0)=1$. This affine Krylov condition is the class for which the normalisation follows; arbitrary linear combinations of iterates need not preserve it. The spectral bound is
+\[\|e_k\|_2\le\max_{\lambda\in[m,L]}|p_k(\lambda)|\,\|e_0\|_2.
 \]
-and the best such bound is a classical problem in approximation theory, solved by Chebyshev's polynomials $T_k(\cos\theta)=\cos k\theta$
-(Volume~5 and Exercise~\ref{linear:ex:chebyshevrec}).
+Chebyshev's cosine polynomials solve the resulting interval minimax problem.
 
 \begin{theorem}[Chebyshev acceleration]\label{linear:thm:chebyshevaccel}
-Let $\ell(\lambda)=\frac{L+m-2\lambda}{L-m}$, which maps $[m,L]$ onto $[-1,1]$, and $x_0=\ell(0)=\frac{\kappa+1}{\kappa-1}$. The polynomial
-$p_k(\lambda)=T_k(\ell(\lambda))/T_k(x_0)$ satisfies $p_k(0)=1$ and
-\[
-\max_{[m,L]}|p_k|=\frac1{T_k(x_0)}\le2\Bigl(\frac{\sqrt\kappa-1}{\sqrt\kappa+1}\Bigr)^k,
+For $0<m<L$, put $\ell(\lambda)=(L+m-2\lambda)/(L-m)$, $\xi_0=\ell(0)=(\kappa+1)/(\kappa-1)$ and $p_k=T_k\circ\ell/T_k(\xi_0)$. Then $p_k(0)=1$ and
+\[\max_{[m,L]}|p_k|=\frac1{T_k(\xi_0)}\le2\left(\frac{\sqrt\kappa-1}{\sqrt\kappa+1}\right)^k.
 \]
-and no polynomial $q$ of degree at most $k$ with $q(0)=1$ has a smaller maximum on $[m,L]$.
+No degree-at-most-$k$ polynomial equal to one at zero has a smaller maximum. For $m=L$, the degree-zero optimum is one and every degree bound $k\ge1$ has optimum zero, attained by $1-\lambda/m$; the displayed divided formula is replaced by this singleton case.
 \end{theorem}
 \begin{proof}
-On $[-1,1]$, $|T_k|\le1$, so $\max_{[m,L]}|p_k|\le1/T_k(x_0)$, with equality since $T_k(1)=1$. For $x\ge1$, write $x=\cosh u$; then
-$T_k(x)=\cosh ku$ (both sides satisfy the recurrence $T_{k+1}=2xT_k-T_{k-1}$ with the same initial values), so $T_k(x)\ge\frac12e^{ku}=
-\frac12\bigl(x+\sqrt{x^2-1}\bigr)^k$. For $x=x_0$,
-\[
-x_0+\sqrt{x_0^2-1}=\frac{\kappa+1+2\sqrt\kappa}{\kappa-1}=\frac{(\sqrt\kappa+1)^2}{(\sqrt\kappa-1)(\sqrt\kappa+1)}=\frac{\sqrt\kappa+1}{\sqrt\kappa-1},
-\]
-which gives the bound. For optimality, $T_k(\cos\theta)=\cos k\theta$ takes the values $\pm1$ alternately at the $k+1$ points $\cos\frac{j\pi}
-k$, $j=0,\dots,k$, so $p_k$ takes the values $\pm M$ alternately at $k+1$ points $\lambda_0<\dots<\lambda_k$ of $[m,L]$, where $M=1/T_k(x_0)$.
-If $\max_{[m,L]}|q|<M$, then $r=p_k-q$ has the sign of $p_k$ at each $\lambda_j$, so it changes sign $k$ times and has $k$ roots in
-$(m,L)$; it also vanishes at $0\notin[m,L]$. A polynomial of degree at most $k$ with $k+1$ roots is zero, so $q=p_k$, a contradiction.
+For $m<L$, the cosine identity gives $|T_k|\le1$ on $[-1,1]$, attained at an endpoint. On $x=\cosh u>1$, the same recurrence gives $T_k(x)=\cosh(ku)\ge e^{ku}/2$. Since $\xi_0+\sqrt{\xi_0^2-1}=(\sqrt\kappa+1)/(\sqrt\kappa-1)$, the bound follows.
+
+For $k\ge1$, $p_k$ takes alternating extreme values at the $k+1$ transformed cosine nodes. If a competitor had a strictly smaller maximum, their difference would have a root between every consecutive pair, giving $k$ roots in $(m,L)$, and also a root at zero. Degree at most $k$ makes this impossible. At $k=0$ the only admissible constant is one. When $m=L$, a linear polynomial can vanish at that one positive point while staying one at zero, proving the separate conclusion.
 \end{proof}
 
-The number of iterations now scales like $\sqrt\kappa$ instead of $\kappa$: for $\kappa=10^4$, a hundred times fewer. The polynomials
-$p_k$ satisfy a three-term recurrence (inherited from $T_k$), so the \emph{Chebyshev iteration} computes $x_{k+1}$ from $x_k$ and $x_{k-1}$
-with one multiplication by $A$ per step. The conjugate gradient method of Hestenes and Stiefel (1952) does even better: it finds
-the optimal polynomial for the actual spectrum of $A$ and the actual $e_0$ (in the norm $\|e\|_A=\sqrt{e^{\mathsf T}Ae}$), without knowing $m$
-and $L$.
+The resulting bound needs order $\sqrt\kappa$ steps for a fixed reduction at large $\kappa$. Its three-term recurrence gives an iteration with one matrix-vector multiplication per step. In exact arithmetic conjugate gradients selects the best error polynomial for the actual spectrum and initial error in the $A$ norm, without knowing the interval endpoints; this further algorithmic result is due to Hestenes--Stiefel.
 
-The simplest method with this square-root speed-up keeps a constant ``momentum''. \emph{Polyak's heavy-ball method} (1964) is
-\[
-x_{k+1}=x_k-\alpha(Ax_k-b)+\beta(x_k-x_{k-1}).
-\]
-
+Polyak's 1964 heavy-ball iteration keeps a fixed previous-step correction:
+\[x_{k+1}=x_k-\alpha(Ax_k-b)+\beta(x_k-x_{k-1}).\]
 \begin{theorem}[heavy ball on quadratics]\label{linear:thm:heavyball}
-With $\alpha=\frac4{(\sqrt L+\sqrt m)^2}$ and $\beta=\bigl(\frac{\sqrt\kappa-1}{\sqrt\kappa+1}\bigr)^2$, the pairs $(e_{k+1},e_k)$ evolve by a
-linear map whose spectral radius is $\sqrt\beta=\frac{\sqrt\kappa-1}{\sqrt\kappa+1}$. Hence $\|e_k\|\le C_\varepsilon(\sqrt\beta+\varepsilon)^k$ for every
-$\varepsilon>0$.
+Take $\alpha=4/(\sqrt L+\sqrt m)^2$ and $\beta=((\sqrt\kappa-1)/(\sqrt\kappa+1))^2$. The paired error iteration has spectral radius $\sqrt\beta$. For every $\varepsilon>0$, $\|e_k\|\le C_\varepsilon(\sqrt\beta+\varepsilon)^k$, with the constant depending on the initial errors. This includes $m=L$, where $\beta=0$ and the paired map is nilpotent.
 \end{theorem}
 \begin{proof}
-The errors satisfy $e_{k+1}=\bigl((1+\beta)I-\alpha A\bigr)e_k-\beta e_{k-1}$. In an orthonormal eigenbasis of $A$ the coordinates decouple:
-for an eigenvalue $\lambda$, the pair $(u_{k+1},u_k)$ is multiplied by $M_\lambda=\bigl(\begin{smallmatrix}1+\beta-\alpha\lambda&-\beta\\1&0
-\end{smallmatrix}\bigr)$, whose characteristic polynomial is $z^2-(1+\beta-\alpha\lambda)z+\beta$. Put $s=\sqrt L$, $r=\sqrt m$, so that
-$\sqrt\beta=\frac{s-r}{s+r}$. At $\lambda=m$, $1+\beta-\alpha m=\frac{2(s^2+r^2)-4r^2}{(s+r)^2}=2\sqrt\beta$; at $\lambda=L$, it equals $-2\sqrt\beta$;
-being affine in $\lambda$, $|1+\beta-\alpha\lambda|\le2\sqrt\beta$ on $[m,L]$. So the discriminant is $\le0$: the roots are complex conjugate
-(or double), with product $\beta$, hence both of modulus $\sqrt\beta$. The full linear map is block diagonal with blocks $M_\lambda$, so
-its spectral radius is $\sqrt\beta$, and Theorem~\ref{linear:thm:powers} gives the bound.
+In an eigenbasis, each mode pair has matrix
+\[M_\lambda=\begin{pmatrix}1+\beta-\alpha\lambda&-\beta\\1&0\end{pmatrix}.
+\]
+Set $q=(\sqrt L-\sqrt m)/(\sqrt L+\sqrt m)=\sqrt\beta$. Its trace runs affinely from $2q$ at $m$ to $-2q$ at $L$, so its quadratic roots are conjugate or repeated with product $q^2$, both of modulus $q$. For $q=0$ the sole mode matrix is $\begin{pmatrix}0&0\\1&0\end{pmatrix}$ and its square is zero. Taking the block diagonal collection gives the radius in all cases. The power theorem supplies the error bound.
 \end{proof}
 
-Figure~\ref{linear:fig:rates} compares the three methods for $\kappa=100$: gradient descent gains about $2\%$ per step, the heavy ball and the
-Chebyshev bound about $18\%$. The heavy ball pays a transient price for its speed: its matrices $M_\lambda$ are not normal (at
-$\lambda=m$ and $\lambda=L$ they are Jordan blocks), and the hump of Figure~\ref{linear:fig:transient} reappears. Nesterov's accelerated
-gradient (1983) achieves the $\sqrt\kappa$ rate for all smooth strongly convex functions, not only quadratics; the momentum used to train
-neural networks descends from these two ideas.
+Figure~\ref{linear:fig:rates} compares the interval bounds at $\kappa=100$. The heavy-ball endpoint modes have repeated roots and nontrivial Jordan blocks when $m<L$, so a polynomial prefactor can accompany the asymptotic rate. Exercise~\ref{linear:ex:heavyjordan} makes it explicit. Nesterov's 1983 acceleration extends the square-root condition-number scale beyond quadratics to smooth strongly convex objectives; that broader result requires a different proof.
 
 \begin{figure}[ht]
 \centering
@@ -252,281 +155,274 @@ heavy ball (rate $\frac9{11}$, with an initial hump), and the Chebyshev bound $2
 
 \section{Controllability}
 
-So far the matrix has been left alone. In control theory one acts on it: $x'=Ax+Bu$, where $u(t)\in\C^p$ is an input we choose (thrust,
-voltage, steam) and $B$ is $n\times p$. Starting from $x(0)=0$, the state at time $T$ is
-\[
-x(T)=\int_0^Te^{(T-s)A}Bu(s)\,ds,
+An input changes the question from where a system goes to where we can send it. Write $x'=Ax+Bu$, with $B\in\C^{n\times p}$ and a continuous input $u:[0,T]\to\C^p$. From $x(0)=0$, variation of constants gives
+\[x(T)=\int_0^T e^{(T-s)A}Bu(s)\dd s.
 \]
-by the variation of constants formula (differentiate $e^{-tA}x(t)$). The system is \emph{controllable} if every state can be reached
-in this way. In 1960 Rudolf Kalman, then at a research institute in Baltimore, gave a criterion that is pure linear algebra; the same
-year he published the \emph{Kalman filter}, which a few years later was guiding the Apollo spacecraft to the Moon.
+Indeed, differentiate $e^{-tA}x(t)$ and integrate. The system is \emph{controllable} if every target can be reached. Kalman's 1960 criterion reduces this question to rank. His filtering work from the same year later helped guide the Apollo missions.
 
 \begin{theorem}[Kalman's rank condition]\label{linear:thm:kalman}
-For every $T>0$, the set of states reachable at time $T$ from $0$ (with continuous inputs $u$) is the column space of the
-$n\times np$ matrix $K=\bigl(B\ \ AB\ \ A^2B\ \cdots\ A^{n-1}B\bigr)$. So the system is controllable if and only if $\operatorname{rank}K=n$.
+For each $T>0$, the states reachable from zero with continuous inputs form the column space of
+\[K=\bigl(B\ \ AB\ \ A^2B\ \cdots\ A^{n-1}B\bigr).
+\]
+Consequently controllability is equivalent to $\operatorname{rank}K=n$.
 \end{theorem}
 \begin{proof}
-Let $R_T$ be the reachable set, a subspace (the map $u\mapsto x(T)$ is linear). By Cayley--Hamilton (Theorem~\ref{linear:thm:cayleyhamilton}),
-$A^n$ and hence every power $A^j$ is a linear combination of $I,A,\dots,A^{n-1}$, so $e^{\tau A}B=\sum_{j<n}c_j(\tau)A^jB$ has its columns in
-$\operatorname{col}K$, and so does every $x(T)$: $R_T\subseteq\operatorname{col}K$.
+The reachable set $R_T$ is a linear subspace. Cayley--Hamilton makes every $A^jB$ have columns in $\operatorname{col}K$. This finite-dimensional subspace is closed, so the exponential series and then integration show $R_T\subseteq\operatorname{col}K$.
 
-Conversely, let $v\perp R_T$. Take $u(s)=B^*e^{(T-s)A^*}v$; then
-\[
-0=v^*x(T)=\int_0^T\bigl\|B^*e^{(T-s)A^*}v\bigr\|^2ds,
+Take $v\perp R_T$ and choose the continuous input $u(s)=B^*e^{(T-s)A^*}v$. Its endpoint gives
+\[0=v^*x(T)=\int_0^T\|B^*e^{(T-s)A^*}v\|^2\dd s.
 \]
-so $v^*e^{\tau A}B=0$ for all $\tau\in[0,T]$. Differentiating $j$ times at $\tau=0$ gives $v^*A^jB=0$ for all $j$, that is, $v\perp\operatorname{col}K$. So
-$R_T^\perp\subseteq(\operatorname{col}K)^\perp$, and $\operatorname{col}K\subseteq R_T$.
+The integrand is continuous and nonnegative, hence identically zero. Thus $v^*e^{\tau A}B=0$ for $0\le\tau\le T$. Derivatives at zero give $v^*A^jB=0$, so $v\perp\operatorname{col}K$. Equality of the orthogonal complements proves equality of the subspaces. For real matrices the same proof works over $\R$.
 \end{proof}
 
-The proof also produces a control: the \emph{controllability Gramian}
-\[
-W_T=\int_0^Te^{\tau A}BB^*e^{\tau A^*}d\tau
+The proof suggests an explicit input. Define the \emph{controllability Gramian}
+\[W_T=\int_0^T e^{\tau A}BB^*e^{\tau A^*}\dd\tau.
 \]
- is invertible when
-$\operatorname{rank}K=n$, and $u(s)=B^*e^{(T-s)A^*}W_T^{-1}x_T$ steers $0$ to $x_T$ with the least energy $\int_0^T\|u\|^2$ (Exercise~\ref{linear:ex:mininput}).
-The time $T$ plays no role in \emph{whether} a state can be reached, only in the cost: going faster costs more.
+Full rank makes it positive definite. Then $u(s)=B^*e^{(T-s)A^*}W_T^{-1}x_T$ reaches $x_T$ with least energy $x_T^*W_T^{-1}x_T$; Exercise~\ref{linear:ex:mininput} proves both assertions. Reachability is independent of the positive time allowed. The least energy is non-increasing with that time: $W_T$ increases in Loewner order, and its inverse decreases.
 
 \begin{example}[the double integrator]\label{linear:exa:doubleintegrator}
-A cart on a rail with position $q$ and applied force $u$ obeys $q''=u$. With $x=(q,q')$, $A=\bigl(\begin{smallmatrix}0&1\\0&0\end{smallmatrix}
-\bigr)$ and $B=\binom01$, so $K=\bigl(\begin{smallmatrix}0&1\\1&0\end{smallmatrix}\bigr)$ has rank $2$: one force controls both position and
-velocity. By contrast, two identical carts pushed by the \emph{same} force ($A$ block diagonal with two copies, $B$ with the two copies of
-$\binom01$) give a $K$ of rank $2<4$: their difference is invisible to the input and can never be corrected.
+A unit-mass cart with position $q$ and force $u$ obeys $q''=u$. For the state $(q,q')$,
+\[A=\begin{pmatrix}0&1\\0&0\end{pmatrix},\qquad B=\binom01,\qquad K=\begin{pmatrix}0&1\\1&0\end{pmatrix}.
+\]
+The rank is two: one force controls position and velocity. Two identical carts driven by the same force instead have rank two in a four-dimensional state space. Their position difference has zero second derivative regardless of the input, so an arbitrary relative displacement cannot be corrected.
 \end{example}
 
 \section{A gem: Maxwell's cubic}
 
-Back to the governor. Maxwell's third-order model led to a characteristic polynomial $s^3+as^2+bs+c$ with real coefficients, and the
-question whether all its roots have negative real parts. His answer is short, and so is its proof.
-
+Maxwell's governor model led to a real cubic. Testing its roots needs just four inequalities.
 \begin{theorem}[Maxwell, 1868]\label{linear:thm:maxwell}
-All roots of $s^3+as^2+bs+c$ ($a,b,c$ real) have negative real parts if and only if $a>0$, $b>0$, $c>0$ and $ab>c$.
+The roots of $s^3+as^2+bs+c$, with real coefficients, all have negative real parts exactly when $a,b,c>0$ and $ab>c$.
 \end{theorem}
 \begin{proof}
-A real cubic has a real root $r$, and $s^3+as^2+bs+c=(s-r)(s^2+ps+q)$ with $p,q$ real. Comparing coefficients, $a=p-r$, $b=q-rp$,
-$c=-rq$. A quadratic $s^2+ps+q$ has both roots in $\{\operatorname{Re}s<0\}$ if and only if $p>0$ and $q>0$ (real roots: their sum $-p$ is
-negative and their product $q$ positive; complex roots: their real part is $-p/2$ and $q=|s|^2>0$). So the cubic is stable if and only if
-$r<0$, $p>0$, $q>0$. Now compute
-\[
-ab-c=(p-r)(q-rp)+rq=p\bigl(q-rp+r^2\bigr)=p\,(b+r^2).
+Factor at a real root as $(s-r)(s^2+ps+q)$. Coefficient comparison gives $a=p-r$, $b=q-rp$, $c=-rq$, and
+\[ab-c=p(b+r^2).
 \]
-If the cubic is stable, then $a=p-r>0$, $b=q-rp>0$, $c=-rq>0$ and $ab-c=p(b+r^2)>0$. Conversely, assume $a,b,c>0$ and $ab>c$. Then
-$p(b+r^2)>0$ with $b+r^2>0$, so $p>0$. Next $c=-rq>0$, so $r\ne0$ and $q$ has the sign of $-r$. If $r>0$, then $q<0$ and $b=q-rp<0$,
-a contradiction. So $r<0$ and $q>0$: the cubic is stable.
+A real quadratic $s^2+ps+q$ has both roots strictly in the left half-plane exactly when $p,q>0$: real roots have negative sum and positive product, while conjugate roots have real part $-p/2$ and product equal to their squared modulus.
+
+If the cubic is stable, $r<0$ and $p,q>0$, making $a,b,c$ and $ab-c$ positive. Conversely assume the four inequalities. The identity gives $p>0$. Since $c=-rq>0$, neither $r$ nor $q$ is zero and their signs are opposite. A positive $r$ would give $q<0$ and $b=q-rp<0$. Therefore $r<0$ and $q>0$, proving stability of both factors.
 \end{proof}
 
-For degree $n$, the Routh--Hurwitz criterion asks that the $n$ leading principal minors of a matrix built from the coefficients (the
-\emph{Hurwitz matrix}) be positive; for $n=3$ these minors are $a$, $ab-c$ and $c(ab-c)$, and Maxwell's conditions come back. The
-general proof is longer and uses the argument principle or Sturm sequences; Lyapunov's theorem gives yet another route.
+The general Routh--Hurwitz criterion for a monic real polynomial requires positivity of the leading principal minors of its Hurwitz matrix. For this cubic they are $a$, $ab-c$ and $c(ab-c)$, which give Maxwell's test. We quote the higher-degree criterion; its proof needs more than this factorisation.
 
 \begin{beauty}
-A governor hunting on a steam engine, a fluid that turns turbulent while every eigenvalue says it should be calm, an algorithm that
-crawls on an ill-conditioned problem until it is given momentum, and a spacecraft steered by a rank condition: all are the same
-object, a matrix raised to a power or put in an exponential. The eigenvalues decide where things end, the geometry of the
-eigenvectors decides what happens on the way, and a well-chosen polynomial decides how fast we get there.
+An eigenvalue predicts eventual growth or decay, but a tilted pair of eigenvectors can hide a large early excursion. A quadratic energy makes that excursion easier to understand. For an algorithm we can choose an error polynomial; for a cart we can choose a force. In both cases the matrix tells us which changes are possible and what they cost.
 \end{beauty}
+
+\begin{figure}[ht]
+\centering
+\fig{appF-rw-energy}
+\caption{For $A=\left(\begin{smallmatrix}-1&2\\0&-1\end{smallmatrix}\right)$, the energy with $P=\left(\begin{smallmatrix}1/2&1/2\\1/2&3/2\end{smallmatrix}\right)$ decreases at rate $-\|x\|_2^2$. The ellipses are its level sets; the curve starts at $(0,3/5)$.}
+\label{fig:v8appFenergy}
+\end{figure}
+\begin{figure}[ht]
+\centering
+\fig{appF-rw-cart}
+\caption{The least-energy trip from rest at position zero to rest at position one: $q=3(t/T)^2-2(t/T)^3$ and $T^2u=6-12t/T$. The energy cost is $12/T^3$.}
+\label{fig:v8appFcart}
+\end{figure}
 
 \section{Exercises}
 
 \begin{exercise}[$\star$]\label{linear:ex:gelfandex}
-For $A=\bigl(\begin{smallmatrix}1&1\\0&1\end{smallmatrix}\bigr)$ compute $\|A^k\|_\infty$ (maximum absolute row sum) and check Gelfand's
-formula. Show that a matrix with $\rho(A)=1$ can have bounded or unbounded powers, and that the powers are bounded if $A$ is
-diagonalisable with $\rho(A)\le1$.
+Take $A=\left(\begin{smallmatrix}1&1\\0&1\end{smallmatrix}\right)$. Find its maximum-row-sum norm $\|A^k\|_\infty$ and verify Gelfand's formula. Give matrices of spectral radius one with bounded and unbounded powers. Prove that diagonalisation and $\rho(A)\le1$ together guarantee bounded powers.
 \end{exercise}
-
 \begin{exercise}[$\star$]\label{linear:ex:hurwitz2}
-Show that a real $2\times2$ matrix is stable if and only if $\operatorname{tr}A<0$ and $\det A>0$.
+Prove the planar stability test: for a real $2\times2$ matrix, Hurwitz stability is equivalent to $\operatorname{tr}A<0$ and $\det A>0$.
 \end{exercise}
-
 \begin{exercise}[$\star\star$]\label{linear:ex:stein}
-Show that $\rho(A)<1$ if and only if for some (equivalently every) $Q\succ0$ there is $P\succ0$ with $P-A^*PA=Q$, and that then
-$P=\sum_{k\ge0}(A^*)^kQA^k$.
+Establish the discrete Lyapunov criterion: $\rho(A)<1$ exactly when, for some positive definite $Q$, there is a positive definite $P$ satisfying $P-A^*PA=Q$. Prove that then every $Q\succ0$ works and that its solution is $P=\sum_{k\ge0}(A^*)^kQA^k$.
 \end{exercise}
-
 \begin{exercise}[$\star$]\label{linear:ex:oscillator}
-For the damped oscillator $q''+2\zeta q'+q=0$ with $\zeta>0$, write $x=(q,q')$ and $x'=Ax$. Show that the energy $E=\frac12(q^2+q'^2)$ is
-non-increasing but that $A^{\mathsf T}I+IA$ is only negative semidefinite. Find $P\succ0$ with $A^{\mathsf T}P+PA=-I$.
+Write $q''+2\zeta q'+q=0$, with $\zeta>0$, as a first-order system on $(q,q')$. Prove that $E=(q^2+q'^2)/2$ never increases although $A^{\mathsf T}+A$ is only negative semidefinite. Solve $A^{\mathsf T}P+PA=-I$ and verify $P\succ0$.
 \end{exercise}
-
 \begin{exercise}[$\star$]\label{linear:ex:gdstep}
-Show that $\max_{\lambda\in[m,L]}|1-\eta\lambda|$ is minimised at $\eta=\frac2{m+L}$, with value $\frac{\kappa-1}{\kappa+1}$, and that the
-popular choice $\eta=\frac1L$ gives the rate $1-\frac1\kappa$.
+For $0<m\le L$, minimise $\max_{[m,L]}|1-\eta\lambda|$ over real $\eta$. Show that the optimal step is $2/(m+L)$ and its factor is $(\kappa-1)/(\kappa+1)$, while the step $1/L$ gives factor $1-1/\kappa$.
 \end{exercise}
-
 \begin{exercise}[$\star\star$]\label{linear:ex:chebyshevrec}
-Show that $T_0=1$, $T_1=x$, $T_{k+1}=2xT_k-T_{k-1}$ defines polynomials with $T_k(\cos\theta)=\cos k\theta$ and $T_k(\cosh u)=\cosh ku$, and that
-$T_k$ has leading coefficient $2^{k-1}$ for $k\ge1$.
+Start from $T_0=1$, $T_1=x$ and $T_{k+1}=2xT_k-T_{k-1}$. Derive $T_k(\cos\theta)=\cos(k\theta)$ and $T_k(\cosh u)=\cosh(ku)$. Determine the leading coefficient for each $k\ge1$.
 \end{exercise}
-
 \begin{exercise}[$\star\star$]\label{linear:ex:heavyjordan}
-Show that the heavy-ball matrix $M_m$ of Theorem~\ref{linear:thm:heavyball} has the double eigenvalue $\sqrt\beta$ and is not diagonalisable,
-and deduce that $\|M_m^k\|$ grows like $k\beta^{k/2}$.
+For $\kappa>1$, show that the heavy-ball endpoint matrix $M_m$ has repeated eigenvalue $\sqrt\beta$ and is not diagonalisable. Prove that its powers have norm bounded above and below by positive constant multiples of $k\beta^{k/2}$ for large $k$. Treat $\kappa=1$ separately: the matrix is still not diagonalisable, but its square is zero.
 \end{exercise}
-
 \begin{exercise}[$\star$]\label{linear:ex:kalmanosc}
-Is the harmonic oscillator $q''+q=u$ controllable? And the system $x'=-x+u$, $y'=-2y+u$ (two different first-order systems driven by
-one input)? And $x'=-x+u$, $y'=-y+u$?
+Apply Kalman's test to $q''+q=u$, then to $x'=-x+u$, $y'=-2y+u$, and finally to $x'=-x+u$, $y'=-y+u$. Which systems can reach every state?
 \end{exercise}
-
 \begin{exercise}[$\star\star$]\label{linear:ex:mininput}
-Assume $\operatorname{rank}K=n$. Show that $W_T\succ0$, that $u_\star(s)=B^*e^{(T-s)A^*}W_T^{-1}x_T$ steers $0$ to $x_T$ in time $T$, and that every
-other input $u$ doing so has $\int_0^T\|u\|^2\ge\int_0^T\|u_\star\|^2=x_T^*W_T^{-1}x_T$.
+Assume $\operatorname{rank}K=n$. Prove $W_T\succ0$ and verify that $u_\star(s)=B^*e^{(T-s)A^*}W_T^{-1}x_T$ reaches $x_T$ from zero. Show that every other continuous input with this endpoint satisfies
+\[\int_0^T\|u\|^2\dd s\ge\int_0^T\|u_\star\|^2\dd s=x_T^*W_T^{-1}x_T.
+\]
 \end{exercise}
-
 \begin{exercise}[$\star$]\label{linear:ex:routh}
-Is $s^3+s^2+2s+8$ stable? And $s^3+3s^2+3s+1$? Find all real $k$ for which $s^3+2s^2+s+k$ is stable.
+Decide stability of $s^3+s^2+2s+8$ and $s^3+3s^2+3s+1$. Determine all real $k$ making $s^3+2s^2+s+k$ stable, and factor the polynomial at the upper boundary.
 \end{exercise}
-
 \begin{exercise}[$\star\star$]\label{linear:ex:lognorm}
-Let $\mu(A)=\lambda_{\max}\bigl(\frac{A+A^*}2\bigr)$. Show that $\|e^{tA}\|_2\le e^{t\mu(A)}$ for $t\ge0$, so $\mu(A)<0$ implies stability.
-Show by an example that a stable matrix can have $\mu(A)>0$, and relate this to transient growth.
+Set $\mu(A)=\lambda_{\max}((A+A^*)/2)$. Prove $\|e^{tA}\|_2\le e^{t\mu(A)}$ for $t\ge0$ and deduce stability when $\mu(A)<0$. Find a stable matrix with $\mu(A)>0$ and exhibit an initial state whose norm initially increases.
+\end{exercise}
+\begin{exercise}[$\star\star\star$]\label{linear:ex:leontief}
+Suppose $A$ has nonnegative entries. Prove $\rho(A)<1$ exactly when $I-A$ is invertible and its inverse is entrywise nonnegative; then identify that inverse as $\sum_{k\ge0}A^k$. This condition expresses productivity in Leontief's input--output model.
 \end{exercise}
 
-\begin{exercise}[$\star\star\star$]\label{linear:ex:leontief}
-Show that if $A\ge0$ entrywise, $\rho(A)<1$ if and only if $I-A$ is invertible with $(I-A)^{-1}\ge0$, and that then $(I-A)^{-1}=\sum_kA^k$.
-(This is the condition for Leontief's input--output model of an economy to be productive.)
+\begin{exercise}[$\star\star$]\label{ex:v8cFa}
+For $A=\left(\begin{smallmatrix}1/2&1\\0&1/2\end{smallmatrix}\right)$, compute $A^k$ and prove
+\[\|A^k\|_2=2^{-k}\bigl(\sqrt{1+k^2}+k\bigr).
+\]
+Determine the integer $k\ge0$ giving the largest norm, using exact inequalities.
+\end{exercise}
+\begin{exercise}[$\star\star$]\label{ex:v8cFb}
+Let $A_c=\left(\begin{smallmatrix}-1&c\\0&-1\end{smallmatrix}\right)$ with real $c$. Solve $A_c^{\mathsf T}P+PA_c=-I$ explicitly and prove $P\succ0$. For $|c|>2$, explain how the quadratic energy decreases strictly along every nonzero trajectory while some Euclidean norms initially increase.
+\end{exercise}
+\begin{exercise}[$\star\star$]\label{ex:v8cFc}
+Suppose $A^*P+PA=-Q$ with $P,Q\succ0$. Prove that $A+E$ remains stable whenever
+\[\|E\|_2<\frac{\lambda_{\min}(Q)}{2\|P\|_2}.
+\]
+Thus the same quadratic form certifies stability throughout an explicit neighbourhood of $A$.
+\end{exercise}
+\begin{exercise}[$\star\star$]\label{ex:v8cFd}
+A cart satisfies $q''=u$ and starts at rest at zero. Among continuous forces reaching $q(T)=1$, $q'(T)=0$, find the least-energy force and trajectory. Prove that the minimum energy is $12/T^3$ and explain the curves in Figure~\ref{fig:v8appFcart}.
 \end{exercise}
 
 \section{Hints}
-
 \begin{hint}{linear:ex:gelfandex}
-$A^k=\bigl(\begin{smallmatrix}1&k\\0&1\end{smallmatrix}\bigr)$. For the diagonalisable case, $\|A^k\|\le\|S\|\|S^{-1}\|$.
+The nilpotent off-diagonal part has square zero. Compare with the identity matrix for the bounded example.
 \end{hint}
 \begin{hint}{linear:ex:hurwitz2}
-The eigenvalues are the roots of $s^2-(\operatorname{tr}A)s+\det A$; use the quadratic case in the proof of Theorem~\ref{linear:thm:maxwell}.
+Apply the quadratic root test from Maxwell's proof to the characteristic polynomial.
 \end{hint}
 \begin{hint}{linear:ex:stein}
-Imitate the proof of Theorem~\ref{linear:thm:lyapunov}, with sums instead of integrals and $V(x_{k+1})-V(x_k)$ instead of a derivative.
+Sum the discrete energies and compare successive values of $x^*Px$. Iteration also proves uniqueness.
 \end{hint}
 \begin{hint}{linear:ex:oscillator}
-$A=\bigl(\begin{smallmatrix}0&1\\-1&-2\zeta\end{smallmatrix}\bigr)$. Write $P=\bigl(\begin{smallmatrix}p&q\\q&r\end{smallmatrix}\bigr)$ and solve three
-linear equations.
+Differentiate $E$ along the equation. For $P=\left(\begin{smallmatrix}p&r\\r&s\end{smallmatrix}\right)$, coefficient comparison gives three scalar equations.
 \end{hint}
 \begin{hint}{linear:ex:gdstep}
-$|1-\eta\lambda|$ is convex in $\lambda$, so its maximum on $[m,L]$ is at an endpoint; balance the two endpoints.
+Convexity in $\lambda$ leaves only the endpoints; their optimal values have opposite signs and equal modulus.
 \end{hint}
 \begin{hint}{linear:ex:chebyshevrec}
-$\cos(k+1)\theta+\cos(k-1)\theta=2\cos\theta\cos k\theta$, and the same for $\cosh$.
+Use the addition formulas for cosine and hyperbolic cosine, then compare highest powers of $x$.
 \end{hint}
 \begin{hint}{linear:ex:heavyjordan}
-At $\lambda=m$ the characteristic polynomial is $(z-\sqrt\beta)^2$; a $2\times2$ matrix with a double eigenvalue is diagonalisable only if it
-is scalar.
+The entry below the diagonal excludes a scalar matrix. Expand powers of $qI+N$ with $N^2=0$.
 \end{hint}
 \begin{hint}{linear:ex:kalmanosc}
-Compute $K=(B\ AB)$ in each case.
+Each state space is two-dimensional, so only $B$ and $AB$ enter the test.
 \end{hint}
 \begin{hint}{linear:ex:mininput}
-For the minimality, show that $\int_0^T\langle u-u_\star,u_\star\rangle=0$.
+The Gramian is positive by the orthogonality argument in Kalman's proof. The difference of two admissible controls is orthogonal in $L^2$ to $u_\star$.
 \end{hint}
 \begin{hint}{linear:ex:routh}
-Theorem~\ref{linear:thm:maxwell}.
+Substitute the coefficients into Maxwell's four inequalities, retaining strictness at both boundaries.
 \end{hint}
 \begin{hint}{linear:ex:lognorm}
-Compute $\frac d{dt}\|x(t)\|^2$ as in the proof of Theorem~\ref{linear:thm:stability}.
+Bound the derivative of $\|x(t)\|^2$. A stable upper triangular matrix with a large off-diagonal entry gives the requested example.
 \end{hint}
 \begin{hint}{linear:ex:leontief}
-For the converse, use a non-negative eigenvector of $A^{\mathsf T}$ for the eigenvalue $\rho(A)$, as in Volume~3.
+For the reverse implication, apply Volume~3's Perron--Frobenius theorem to $A^{\mathsf T}$ and multiply its nonnegative eigenvector by the inverse.
+\end{hint}
+\begin{hint}{ex:v8cFa}
+Find the larger eigenvalue of $(A^k)^*A^k$. For $k\ge3$, use $\sqrt{1+k^2}\le k+1$.
+\end{hint}
+\begin{hint}{ex:v8cFb}
+Solve the three entries in the Lyapunov equation. Compare its energy derivative with the largest eigenvalue of the symmetric part of $A_c$.
+\end{hint}
+\begin{hint}{ex:v8cFc}
+Bound $x^*(E^*P+PE)x$ in absolute value by $2\|P\|_2\|E\|_2\|x\|_2^2$.
+\end{hint}
+\begin{hint}{ex:v8cFd}
+Use the double-integrator Gramian and the least-energy formula. Integrate the resulting affine force twice.
 \end{hint}
 
 \section{Solutions}
 
 \begin{solution}{linear:ex:gelfandex}
-\idea Powers of a Jordan block grow polynomially, which is invisible to the $k$-th root.
-\writeup By induction $A^k=\bigl(\begin{smallmatrix}1&k\\0&1\end{smallmatrix}\bigr)$, so $\|A^k\|_\infty=k+1$ and $(k+1)^{1/k}\to1=\rho(A)$. The
-powers of $A$ are unbounded, while those of $I$ (also $\rho=1$) are bounded. If $A=SDS^{-1}$ with $D$ diagonal and $|d_i|\le1$, then
-$\|A^k\|_2\le\|S\|_2\|D^k\|_2\|S^{-1}\|_2\le\|S\|_2\|S^{-1}\|_2$ for all $k$.
+\idea A polynomial factor in $k$ disappears under the $k$th root.
+\writeup Squaring the off-diagonal matrix gives zero, hence $A^k=\left(\begin{smallmatrix}1&k\\0&1\end{smallmatrix}\right)$. Its row-sum norm is $k+1$, whose $k$th root tends to $1=\rho(A)$. These powers are unbounded, whereas the identity has the same radius and bounded powers. If $A=SDS^{-1}$ and $D$ is diagonal with entries of modulus at most one, then $\|A^k\|_2\le\|S\|_2\|S^{-1}\|_2$ for every $k$; norm equivalence gives boundedness in any fixed norm.
 \end{solution}
-
 \begin{solution}{linear:ex:hurwitz2}
-\idea Stability of a $2\times2$ matrix is stability of a quadratic polynomial.
-\writeup The characteristic polynomial is $s^2-(\operatorname{tr}A)s+\det A$. As shown in the proof of Theorem~\ref{linear:thm:maxwell}, a real
-quadratic $s^2+ps+q$ has both roots in the open left half-plane if and only if $p>0$ and $q>0$; here $p=-\operatorname{tr}A$, $q=\det A$.
+\idea Trace and determinant are the two coefficients of the characteristic polynomial.
+\writeup That polynomial is $s^2-(\operatorname{tr}A)s+\det A$. The real quadratic test proved above requires its linear and constant coefficients to be positive. These are exactly $-\operatorname{tr}A$ and $\det A$.
 \end{solution}
-
 \begin{solution}{linear:ex:stein}
-\idea The discrete Lyapunov function decreases by $x^*Qx$ at each step.
-\writeup If $\rho(A)<1$, Theorem~\ref{linear:thm:powers} makes $\sum_k(A^*)^kQA^k$ converge (terms bounded by $C^2\|Q\|(\rho+\varepsilon)^{2k}$). Its sum
-$P$ is $\succeq Q\succ0$, and $A^*PA=\sum_{k\ge1}(A^*)^kQA^k=P-Q$. Conversely, if $P\succ0$ and $P-A^*PA=Q\succ0$, let $V(x)=x^*Px$ and $x_{k+1}=
-Ax_k$: then $V(x_{k+1})=V(x_k)-x_k^*Qx_k\le\bigl(1-\frac{\lambda_{\min}(Q)}{\lambda_{\max}(P)}\bigr)V(x_k)$, a geometric decrease with ratio
-in $[0,1)$ (it is $\ge0$ because $V\ge0$). So $x_k\to0$ for every $x_0$, $A^k\to0$, and $\rho(A)<1$ by Theorem~\ref{linear:thm:powers}.
-\end{solution}
+\idea The energy lost in one step supplies the series for the total energy.
+\writeup When $\rho(A)<1$, choose $r$ with $\rho(A)<r<1$. The power bound gives $\|(A^*)^kQA^k\|_2\le C^2\|Q\|_2r^{2k}$. The series converges to $P\succeq Q\succ0$, and shifting its index gives $A^*PA=P-Q$.
 
+Conversely suppose the equation holds with $P,Q\succ0$. Since $Q=P-A^*PA\preceq P$, the number $\theta=\lambda_{\min}(Q)/\lambda_{\max}(P)$ lies in $(0,1]$. For $x_{k+1}=Ax_k$, its energy satisfies
+\[x_{k+1}^*Px_{k+1}=x_k^*Px_k-x_k^*Qx_k\le(1-\theta)x_k^*Px_k.
+\]
+This forces every trajectory to zero, hence $\rho(A)<1$. Finally, two solutions differ by $R=A^*RA$; iterating gives $R=(A^*)^kRA^k\to0$. Thus the series is the unique solution, for each positive definite $Q$.
+\end{solution}
 \begin{solution}{linear:ex:oscillator}
-\idea Energy is the physicist's Lyapunov function, but it only decreases when the velocity is non-zero; a slightly tilted quadratic
-form decreases strictly.
-\writeup $E=\frac12x^{\mathsf T}x$ and $\frac{dE}{dt}=qq'+q'(-q-2\zeta q')=-2\zeta q'^2\le0$, which vanishes when $q'=0$: indeed $A^{\mathsf T}+A=
-\bigl(\begin{smallmatrix}0&0\\0&-4\zeta\end{smallmatrix}\bigr)$ is only negative semidefinite. With $P=\bigl(\begin{smallmatrix}p&q\\q&r\end{smallmatrix}
-\bigr)$, $A^{\mathsf T}P+PA=-I$ reads $-2q=-1$, $p-2\zeta q-r=0$, $2q-4\zeta r=-1$. So $q=\frac12$, $r=\frac1{2\zeta}$, $p=\zeta+\frac1{2\zeta}$, and
-\[
-P=\begin{pmatrix}\zeta+\frac1{2\zeta}&\frac12\\\frac12&\frac1{2\zeta}\end{pmatrix},
+\idea The physical energy misses instantaneous decay at zero velocity; a cross term repairs it.
+\writeup The matrix is $A=\left(\begin{smallmatrix}0&1\\-1&-2\zeta\end{smallmatrix}\right)$. Along its trajectories $E'=-2\zeta q'^2\le0$, while $A^{\mathsf T}+A=\operatorname{diag}(0,-4\zeta)$ is not negative definite. Substitution into the Lyapunov equation gives
+\[P=\begin{pmatrix}\zeta+\frac1{2\zeta}&\frac12\\[2pt]\frac12&\frac1{2\zeta}\end{pmatrix}.
 \]
-which is positive definite: $p>0$ and $\det P=\frac12+\frac1{4\zeta^2}-\frac14>0$.
+Its first diagonal entry is positive and its determinant is $1/4+1/(4\zeta^2)>0$, proving positive definiteness.
 \end{solution}
-
 \begin{solution}{linear:ex:gdstep}
-\idea Balance the slowest and the fastest mode.
-\writeup $g(\lambda)=|1-\eta\lambda|$ is convex, so $\max_{[m,L]}g=\max(|1-\eta m|,|1-\eta L|)$. As $\eta$ grows the first decreases (while
-$\eta\le1/m$) and the second increases (once $\eta\ge1/L$); the maximum is smallest when $1-\eta m=\eta L-1$, i.e.\ $\eta=\frac2{m+L}$, with
-value $1-\frac{2m}{m+L}=\frac{L-m}{L+m}=\frac{\kappa-1}{\kappa+1}$. For $\eta=\frac1L$, the maximum is $\max(1-\frac mL,0)=1-\frac1\kappa$.
+\idea Equalise the two endpoint errors.
+\writeup Convexity gives the maximum as $\max(|1-\eta m|,|1-\eta L|)$. For $m<L$, on $[1/L,1/m]$ the first term decreases and the second increases, so their maximum is minimised where $1-\eta m=\eta L-1$. Outside this interval moving towards it decreases the maximum. The optimum is therefore $\eta=2/(m+L)$ with value $(L-m)/(L+m)$. At $m=L$ the unique optimal step is $1/m$, giving zero as the same formulas say. The choice $1/L$ has endpoint maximum $1-m/L=1-1/\kappa$.
 \end{solution}
-
 \begin{solution}{linear:ex:chebyshevrec}
-\idea The recurrence is the product-to-sum formula for cosines.
-\writeup Induction: if $T_j(\cos\theta)=\cos j\theta$ for $j\le k$, then $T_{k+1}(\cos\theta)=2\cos\theta\cos k\theta-\cos(k-1)\theta=\cos(k+1)\theta$, by
-$\cos(k+1)\theta+\cos(k-1)\theta=2\cos\theta\cos k\theta$. The identity $\cosh(k+1)u+\cosh(k-1)u=2\cosh u\cosh ku$ gives the second claim in the same
-way. The leading coefficient doubles at each step from $T_1=x$, so it is $2^{k-1}$.
-\end{solution}
-
-\begin{solution}{linear:ex:heavyjordan}
-\idea A double eigenvalue without two independent eigenvectors means a Jordan block, and Jordan blocks grow polynomially.
-\writeup At $\lambda=m$, $1+\beta-\alpha m=2\sqrt\beta$ (proof of Theorem~\ref{linear:thm:heavyball}), so the characteristic polynomial of $M_m$ is
-$z^2-2\sqrt\beta z+\beta=(z-\sqrt\beta)^2$. If $M_m$ were diagonalisable it would be $\sqrt\beta I$, but its $(2,1)$ entry is $1$. So $M_m=
-P(\sqrt\beta I+N)P^{-1}$ with $N\ne0$, $N^2=0$, and $M_m^k=P(\beta^{k/2}I+k\beta^{(k-1)/2}N)P^{-1}$, whose norm is between two positive
-constants times $k\beta^{k/2}$ for large $k$.
-\end{solution}
-
-\begin{solution}{linear:ex:kalmanosc}
-\idea Controllability fails exactly when some combination of the states does not feel the input.
-\writeup Oscillator: $A=\bigl(\begin{smallmatrix}0&1\\-1&0\end{smallmatrix}\bigr)$, $B=\binom01$, $K=\bigl(\begin{smallmatrix}0&1\\1&0\end{smallmatrix}
-\bigr)$, rank $2$: controllable. Second system: $A=\operatorname{diag}(-1,-2)$, $B=\binom11$, $AB=\binom{-1}{-2}$, $K$ has determinant $-2+1=-1\ne0$:
-controllable, because the two modes respond differently to the same input. Third: $A=-I$, $B=\binom11$, $AB=-B$, rank $1$: not controllable;
-$x-y$ satisfies $(x-y)'=-(x-y)$ whatever $u$ does.
-\end{solution}
-
-\begin{solution}{linear:ex:mininput}
-\idea $u_\star$ is the input of minimal norm in an affine space of inputs, so it is orthogonal to the directions that do not change the
-endpoint.
-\writeup $v^*W_Tv=\int_0^T\|B^*e^{\tau A^*}v\|^2d\tau$, which vanishes only if $v^*e^{\tau A}B=0$ on $[0,T]$, hence (as in the proof of
-Theorem~\ref{linear:thm:kalman}) only if $v\perp\operatorname{col}K=\C^n$: so $W_T\succ0$. With $\tau=T-s$, $\int_0^Te^{(T-s)A}Bu_\star(s)\,ds=W_TW_T^{-1}x_T=x_T$.
-If $u$ also reaches $x_T$, then $d=u-u_\star$ satisfies $\int_0^Te^{(T-s)A}Bd(s)\,ds=0$, and
-\[
-\int_0^T\langle d,u_\star\rangle\,ds=\int_0^T\bigl\langle d(s),B^*e^{(T-s)A^*}w\bigr\rangle\,ds=\Bigl\langle\int_0^Te^{(T-s)A}Bd(s)\,ds,\,w\Bigr\rangle=0,
+\idea The recurrence copies the addition identities.
+\writeup The first two cosine identities hold directly. If they hold through index $k$, then
+\[T_{k+1}(\cos\theta)=2\cos\theta\cos(k\theta)-\cos((k-1)\theta)=\cos((k+1)\theta).
 \]
-with $w=W_T^{-1}x_T$. So $\int\|u\|^2=\int\|u_\star\|^2+\int\|d\|^2\ge\int\|u_\star\|^2$, and $\int\|u_\star\|^2=w^*W_Tw=x_T^*W_T^{-1}x_T$.
+The hyperbolic addition identity gives the identical induction for $\cosh$. The leading term of $2xT_k$ cannot cancel against $T_{k-1}$; starting at $T_1=x$, its coefficient doubles at each subsequent step and is $2^{k-1}$.
 \end{solution}
-
+\begin{solution}{linear:ex:heavyjordan}
+\idea A nontrivial Jordan block adds a factor of $k$ only when its eigenvalue is nonzero.
+\writeup Put $q=\sqrt\beta>0$. At the lower spectral endpoint the characteristic polynomial is $(z-q)^2$. Since the $(2,1)$ entry is one, $M_m\ne qI$, so it is similar to $qI+N$ with $N\ne0$, $N^2=0$. Its powers are similar to $q^kI+kq^{k-1}N$. After division by $kq^k$ these matrices converge to a nonzero matrix, proving the asserted two-sided norm bounds. For $\kappa=1$, $M_m=\left(\begin{smallmatrix}0&0\\1&0\end{smallmatrix}\right)$ is nonzero with square zero. A diagonalisable matrix with sole eigenvalue zero would itself be zero, so this case too is not diagonalisable, but has no large-$k$ polynomial-times-positive-rate asymptotic.
+\end{solution}
+\begin{solution}{linear:ex:kalmanosc}
+\idea Different responses to one input can still separate two modes.
+\writeup The oscillator has $A=\left(\begin{smallmatrix}0&1\\-1&0\end{smallmatrix}\right)$ and $B=(0,1)^{\mathsf T}$, giving $K=\left(\begin{smallmatrix}0&1\\1&0\end{smallmatrix}\right)$ of rank two. For the distinct decay rates, $A=\operatorname{diag}(-1,-2)$ and $B=(1,1)^{\mathsf T}$, so $K$ has columns $(1,1)^{\mathsf T}$ and $(-1,-2)^{\mathsf T}$ and determinant $-1$. Both systems are controllable. For equal decay rates $AB=-B$, giving rank one. In that case $(x-y)'=-(x-y)$ regardless of the control, so zero initial difference stays zero.
+\end{solution}
+\begin{solution}{linear:ex:mininput}
+\idea A minimal control is orthogonal to every input that leaves the endpoint unchanged.
+\writeup For any $v$,
+\[v^*W_Tv=\int_0^T\|B^*e^{\tau A^*}v\|^2\dd\tau.
+\]
+If this vanishes, continuity and differentiation at zero give $v\perp\operatorname{col}K$, hence $v=0$. Thus $W_T\succ0$. Set $w=W_T^{-1}x_T$. The proposed control reaches $W_Tw=x_T$. Another admissible input differs by $d$ with $\int_0^T e^{(T-s)A}Bd(s)\dd s=0$, whence
+\[\int_0^T u_\star(s)^*d(s)\dd s=w^*\int_0^T e^{(T-s)A}Bd(s)\dd s=0.
+\]
+Expanding the squared norm gives $\int\|u\|^2=\int\|u_\star\|^2+\int\|d\|^2$. The first term is $w^*W_Tw=x_T^*W_T^{-1}x_T$, proving the minimum and its value.
+\end{solution}
 \begin{solution}{linear:ex:routh}
-\idea Three sign conditions and one product.
-\writeup $s^3+s^2+2s+8$: $ab=2<8=c$, unstable (it has two roots with positive real part). $s^3+3s^2+3s+1=(s+1)^3$:
-$ab=9>1$, stable. $s^3+2s^2+s+k$: we need $k>0$ and $2\cdot1>k$, so $0<k<2$. At $k=2$, $s^3+2s^2+s+2=(s+2)(s^2+1)$ has the roots $\pm i$: the
-system oscillates forever, which is the onset of Maxwell's ``hunting''.
+\idea The strict product inequality detects the instability.
+\writeup For the first cubic $ab=2<8=c$, so it is not stable. In fact its unique real root lies below $-1$: its derivative $3s^2+2s+2$ is positive everywhere, and its value at $-1$ is six. The other two roots are conjugate and their sum $-1-r$ is positive, so both have positive real part. The second cubic is $(s+1)^3$ and is stable. The parameter family requires $k>0$ and $k<2$, hence exactly $0<k<2$. At $k=2$ it factors as $(s+2)(s^2+1)$ and has an undamped oscillatory pair; at $k=0$ it has a zero root.
 \end{solution}
-
 \begin{solution}{linear:ex:lognorm}
-\idea The symmetric part of $A$ measures the instantaneous growth rate of $\|x\|$; the eigenvalues only measure the long-run rate.
-\writeup For $x'=Ax$, $\frac d{dt}\|x\|^2=2\operatorname{Re}x^*Ax=x^*(A+A^*)x\le2\mu(A)\|x\|^2$, so $\|x(t)\|\le e^{t\mu(A)}\|x(0)\|$ and $\|e^{tA}\|_2\le
-e^{t\mu(A)}$. For $A=\bigl(\begin{smallmatrix}-1&10\\0&-1\end{smallmatrix}\bigr)$, stable, the symmetric part $\bigl(\begin{smallmatrix}-1&5\\5&-1\end{smallmatrix}
-\bigr)$ has eigenvalue $4$, so $\mu(A)=4>0$: some solutions grow at first (initially at rate $e^{4t}$), the continuous-time version of
-transient growth; for normal $A$, $\mu(A)=\alpha(A)$ and there is none.
+\idea The symmetric part measures instantaneous norm change.
+\writeup Along $x'=Ax$, the derivative of $\|x\|_2^2$ is $x^*(A+A^*)x\le2\mu(A)\|x\|_2^2$. Multiplying by $e^{-2\mu(A)t}$ and integrating yields the operator bound. Negative $\mu(A)$ forces every trajectory to decay. For $A=\left(\begin{smallmatrix}-1&10\\0&-1\end{smallmatrix}\right)$, both eigenvalues are $-1$ but the symmetric part has eigenvalues $4,-6$. Starting from $x_0=(1,1)^{\mathsf T}/\sqrt2$ gives $\left.\frac{\dd}{\dd t}\|e^{tA}x_0\|_2\right|_{t=0}=4$. This is an initial derivative, not an exact $e^{4t}$ trajectory. For normal $A$, unitary diagonalisation gives $\mu(A)=\alpha(A)$; a stable normal matrix has no such increase.
+\end{solution}
+\begin{solution}{linear:ex:leontief}
+\idea A Perron eigenvector tests the sign of $1-\rho(A)$.
+\writeup If $\rho(A)<1$, the power estimate makes $M=\sum_{k\ge0}A^k$ converge. Telescoping gives $(I-A)M=M(I-A)=I$, and each entry of $M$ is nonnegative. Conversely suppose $M=(I-A)^{-1}\ge0$. Perron--Frobenius in Volume~3 gives $y\ge0$, $y\ne0$ with $A^{\mathsf T}y=\rho y$, where $\rho=\rho(A)$. Invertibility excludes $\rho=1$, and the eigenvector equation gives $y=(1-\rho)M^{\mathsf T}y$. The vector $M^{\mathsf T}y$ is nonnegative and nonzero, since $M^{\mathsf T}$ is invertible. A negative coefficient would contradict $y\ge0$, $y\ne0$. Thus $1-\rho>0$.
 \end{solution}
 
-\begin{solution}{linear:ex:leontief}
-\idea For non-negative matrices, the Neumann series has non-negative terms, and the Perron eigenvector turns ``positive inverse'' into
-``spectral radius below one''.
-\writeup If $\rho(A)<1$, then $\sum_kA^k$ converges (Theorem~\ref{linear:thm:powers}), $(I-A)\sum_{k\le K}A^k=I-A^{K+1}\to I$, so $(I-A)^{-1}=\sum_kA^k\ge0$.
-Conversely, assume $(I-A)^{-1}\ge0$. By the Perron--Frobenius theorem for non-negative matrices, as proved in Volume~3, $A^{\mathsf T}$ has an
-eigenvector $y\ge0$, $y\ne0$, with $A^{\mathsf T}y=\rho y$, $\rho=\rho(A)$. Then $(I-A^{\mathsf T})y=(1-\rho)y$; as $I-A$ is invertible, $\rho\ne1$ and
-$y=(1-\rho)(I-A^{\mathsf T})^{-1}y$. The vector $(I-A^{\mathsf T})^{-1}y=((I-A)^{-1})^{\mathsf T}y$ is $\ge0$ and non-zero, and $y\ge0$ is non-zero, so
-$1-\rho>0$.
+\begin{solution}{ex:v8cFa}
+\idea Compute the singular value exactly, then bound the tail of the integer sequence.
+\writeup Nilpotence gives $A^k=2^{-k}\left(\begin{smallmatrix}1&2k\\0&1\end{smallmatrix}\right)$, including $k=0$. The larger eigenvalue of the latter matrix's Gram matrix is $1+2k^2+2k\sqrt{1+k^2}=(\sqrt{1+k^2}+k)^2$, proving the norm formula. At $k=1$ the norm is $(\sqrt2+1)/2>1$, exceeding $k=0$. At $k=2$, $\sqrt5+2<2\sqrt2+2$, so its norm is smaller than the value at one. For $k\ge3$, the norm is at most $(2k+1)/2^k$. This sequence decreases, since $2k+3<2(2k+1)$ for $k\ge1$, and its value at three is $7/8<1$. Therefore the unique largest norm occurs at $k=1$.
+\end{solution}
+\begin{solution}{ex:v8cFb}
+\idea A tilted energy ellipse can contract while a round sphere expands locally.
+\writeup Entry comparison gives
+\[P=\begin{pmatrix}1/2&c/4\\c/4&1/2+c^2/4\end{pmatrix},\qquad \det P=\frac14+\frac{c^2}{16}>0.
+\]
+Its positive first entry proves $P\succ0$. The equation gives $(x^{\mathsf T}Px)'=-\|x\|_2^2$, strictly negative for a nonzero trajectory. The symmetric part of $A_c$ has largest eigenvalue $-1+|c|/2>0$ when $|c|>2$. A unit eigenvector for it has positive initial norm derivative, despite the decreasing quadratic energy.
+\end{solution}
+\begin{solution}{ex:v8cFc}
+\idea Keep the strict negative quadratic bound after adding the perturbation.
+\writeup For every $x$, Cauchy--Schwarz and the operator norms give
+\[x^*\bigl((A+E)^*P+P(A+E)\bigr)x\le-\bigl(\lambda_{\min}(Q)-2\|P\|_2\|E\|_2\bigr)\|x\|_2^2.
+\]
+The parenthesis is positive under the stated condition. Thus the perturbed Lyapunov inequality is strictly negative definite, and Theorem~\ref{linear:thm:lyapunov} proves stability.
+\end{solution}
+\begin{solution}{ex:v8cFd}
+\idea The Gramian determines the affine force and its exact cost.
+\writeup Since $e^{\tau A}B=(\tau,1)^{\mathsf T}$, integration gives
+\[W_T=\begin{pmatrix}T^3/3&T^2/2\\T^2/2&T\end{pmatrix},\qquad W_T^{-1}=\begin{pmatrix}12/T^3&-6/T^2\\-6/T^2&4/T\end{pmatrix}.
+\]
+For target $(1,0)^{\mathsf T}$, the least-energy formula yields $u_\star(s)=6/T^2-12s/T^3$. Twice integrating from zero gives $q(s)=3(s/T)^2-2(s/T)^3$, which has the required terminal position and velocity. The minimum cost is the first diagonal entry of $W_T^{-1}$, namely $12/T^3$. These are the normalised curves drawn in the figure.
 \end{solution}
 
 \section*{Sources and further reading}

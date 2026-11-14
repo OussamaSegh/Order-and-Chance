@@ -6,176 +6,279 @@ reason to believe that it is a mystery into which the human mind will never pene
 \upshape --- Leonhard Euler (1751)
 \end{center}
 
-Picture a machine that draws a whole number at random below a million, and a referee who decides whether it is prime by
-trying to divide it by every prime up to a thousand. The prime $2$ catches half the numbers, $3$ a third of them, $p$ a fraction
-$\frac1p$. If the referee's tests behaved like independent coin flips, the number would pass them all with probability
-$\prod_{p\le1000}\bigl(1-\frac1p\bigr)$, and that should be the proportion of primes. It is a beautiful argument. It is also wrong, by about $12.3$
-percent, and it stays wrong by that factor however far out you go. Finding out exactly how wrong is the business of this chapter,
-and the answer involves a constant nobody invited: Euler's $\gamma$, which was born in the harmonic series and has no visible
-reason to care about primes.
+Draw a whole number below a million, and ask a referee to test it for primality. The referee divides by every prime up to a thousand. The prime $2$ rejects half the draws. The prime $3$ rejects a third of them. The prime $p$ rejects a fraction $\frac1p$. If those tests were independent coin flips, a draw would survive all of them with probability
+\[
+\prod_{p\le 1000}\Bigl(1-\frac1p\Bigr).
+\]
+That product is $0.0810$. Near a million, the proportion of primes is about $\frac1{\log 10^6}\approx 0.0724$. The product is the larger number. The same comparison, taken further and further out, settles at the factor $2e^{-\gamma}$. The excess $2e^{-\gamma}-1$ is about $12.3$ percent. Reading the product as a count of primes waits for the prime number theorem in Chapter~\ref{ch:pnt}. None of the proofs below uses that reading.
 
-The story so far. Euler proved that $\sum_p\frac1p$ diverges, and Volume~2 showed that it grows at least like $\log\log x$ (Volume~2, Theorem~2.2).
-Chebyshev showed that the number of primes up to $x$ is of the order $\frac x{\log x}$. The product of the primes and the lower bound are Volume~2, Theorem~2.4; the matching upper bound $\pi(x)<\sqrt x+2\ln4\cdot\frac x{\ln x}$ is the paragraph after that theorem. Then, in 1874, Franz Mertens, a
-professor in Krak\'ow, took nothing more than Chebyshev's bound and the factorisation of $n!$, and found the exact asymptotics of three averages
-over primes: $\sum_{p\le x}\frac{\log p}p$, $\sum_{p\le x}\frac1p$, and the referee's product $\prod_{p\le x}\bigl(1-\frac1p\bigr)$. The third is where $\gamma$
-sneaks in, and the last section explains how: the product is the reciprocal of the zeta function truncated to the primes up to $x$, and $\gamma$
-sits in the expansion of $\zeta$ near $1$.
+The constant in the factor is Euler's $\gamma$. It was born in the harmonic series. Nothing in that birth mentions a prime. This chapter finds the place where $\gamma$ enters the primes.
 
-These theorems are the elementary layer of the theory of primes. They do not give the prime number theorem, but they already
-show that if $\pi(x)\frac{\log x}x$ has a limit, that limit is $1$. And they settle the referee's case, which the think box invites you to try first.
+\portrait{euler}{Leonhard Euler (1707--1783). Portrait by Jakob Emanuel Handmann, 1753, Kunstmuseum Basel. Public domain.}
+
+Three facts are already proved. Euler proved that $\sum_p\frac1p$ diverges. Volume~2, Theorem~2.2 makes the divergence quantitative: for $x\ge 2$,
+\[
+\sum_{p\le x}\frac1p\ge\log\log x-1.
+\]
+Chebyshev showed that $\pi(x)$ has the order of $\frac x{\log x}$. Volume~2, Theorem~2.4 says that the product of the primes up to $x$ is less than $4^x$, and it gives a matching lower bound for $\pi(x)$. The paragraph after that theorem records the upper bound $\pi(x)<\sqrt x+2\ln 4\cdot\frac x{\ln x}$. In 1874 Franz Mertens, professor at the Jagiellonian University in Krak\'ow from 1865 to 1884, took Chebyshev's bound and the factorisation of $n!$ and found the asymptotics of three averages over primes: $\sum_{p\le x}\frac{\log p}p$, $\sum_{p\le x}\frac1p$, and the referee's product $\prod_{p\le x}\bigl(1-\frac1p\bigr)$. The third is where $\gamma$ enters. The product is a partial Euler product for $\zeta$, read backwards, and $\gamma$ sits in the expansion of $\zeta$ near $1$.
+
+These three theorems are the elementary layer. They do not prove the prime number theorem. They do show that if $\pi(x)\frac{\log x}x$ has a limit, that limit is $1$. The think box asks you to compute the referee's product before any of that is proved.
+
+\portrait{mertens}{Franz Mertens (1840--1927). Photograph by Awit Szubert, about 1870--1885. Public domain.}
+\portrait{chebyshev}{Pafnuty Chebyshev (1821--1894). Photograph, about 1890. Public domain.}
 
 \begin{think}
-An integer $n$ is prime when no prime $p\le\sqrt n$ divides it. A random integer is divisible by $p$ with probability $\frac1p$. If
-these events were independent, the ``probability'' that $n$ is prime would be $\prod_{p\le\sqrt n}\bigl(1-\frac1p\bigr)$. Compute this product for
-$n=10^6$ and compare it with the proportion of primes near $10^6$, which is about $\frac1{\log10^6}\approx0.0724$.
+An integer $n$ is prime when no prime $p\le\sqrt n$ divides it. A random integer is divisible by $p$ with probability $\frac1p$. If these events were independent, the ``probability'' that $n$ is prime would be $\prod_{p\le\sqrt n}\bigl(1-\frac1p\bigr)$. Compute this product for $n=10^6$ and compare it with the proportion of primes near $10^6$, which is about $\frac1{\log 10^6}\approx 0.0724$.
 \end{think}
 
 \section{Chebyshev's functions}
 
-Counting primes one by one is awkward: every prime counts $1$, whether it is $2$ or a prime with a hundred digits. Chebyshev's trick, in 1852,
-was to give each prime a weight $\log p$, roughly its number of digits. With that weighting the prime factors of $n$ add up to $\log n$, and the
-primes start to speak the language of factorials, which we understand very well.
+Counting primes one by one treats $2$ and a hundred-digit prime as the same object: each contributes $1$. Chebyshev's move, in 1852, was to give the prime $p$ the weight $\log p$, about the number of its digits. With that weight, the prime factors of an integer $n$ add up to $\log n$. Factorials speak this language, and we know factorials well.
 
-Throughout this volume $p$ denotes a prime, $\log$ is the natural logarithm, and $\Lambda$ is von Mangoldt's function:
-$\Lambda(n)=\log p$ if $n=p^k$ with $k\ge1$, and $\Lambda(n)=0$ otherwise. Chebyshev's functions are
+Throughout this volume $p$ denotes a prime, $\log$ is the natural logarithm, and $\Lambda$ is von Mangoldt's function: $\Lambda(n)=\log p$ if $n=p^k$ for some integer $k\ge 1$, and $\Lambda(n)=0$ otherwise. Chebyshev's two sums are
 \[
 \begin{gathered}\theta(x)=\sum_{p\le x}\log p,\qq\psi(x)=\sum_{n\le x}\Lambda(n)=\sum_{p^k\le x}\log p.\end{gathered}
 \]
-Since $\sum_{d\mid n}\Lambda(d)=\log n$ (the prime powers dividing $n$ add up the logarithms of its prime factors with multiplicity),
-$\Lambda$ is the natural weight on prime powers: $\Lambda*\mathbf1=\log$ in the notation of Volume~2, Chapter~4.
+Take $n=12=2^2\cdot 3$. The divisors of $12$ that are prime powers are $2$, $4$ and $3$, and
+\[
+\Lambda(2)+\Lambda(4)+\Lambda(3)=\log 2+\log 2+\log 3=\log 12.
+\]
+The same count works for every $n$: each prime power $p^k$ in the factorisation of $n$ contributes $\log p$, and those contributions add to $\log n$. So $\sum_{d\mid n}\Lambda(d)=\log n$. In the convolution notation of Volume~2, Chapter~4, this is $\Lambda*\mathbf 1=\log$.
 
-We use summation by parts in the following form; Volume~5, Proposition~1.7 is the discrete version.
+The form of summation by parts used below is an integral. Volume~5, Proposition~1.7 is the same idea with a sum in place of the integral.
 
 \begin{lemma}[Abel summation]\label{lem:abelint}
-Let $(a_n)_{n\ge1}$ be complex numbers, $A(t)=\sum_{n\le t}a_n$, $1\le y<x$, and $f$ of class $C^1$ on $[y,x]$. Then
+Let $(a_n)_{n\ge 1}$ be complex numbers, $A(t)=\sum_{n\le t}a_n$, $1\le y<x$, and $f$ of class $C^1$ on $[y,x]$. Then
 \[
-\begin{aligned}\sum_{y<n\le x}a_nf(n)&=A(x)f(x)-A(y)f(y)\eqbr-\int_y^xA(t)f'(t)\dd t.\end{aligned}
+\begin{aligned}\sum_{y<n\le x}a_nf(n)&=A(x)f(x)-A(y)f(y)\eqbr-\int_y^x A(t)f'(t)\dd t.\end{aligned}
 \]
 \end{lemma}
 \begin{proof}
-For $n\le x$ let $n^+=\max(n,y)$. Then $f(x)-f(n^+)=\int_y^x\mathbf1_{n\le t}f'(t)\dd t$, and summing against $a_n$ (a finite sum),
+For each $n\le x$ set $n^+=\max(n,y)$. The fundamental theorem gives $f(x)-f(n^+)=\int_{n^+}^x f'(t)\dd t$. On the interval $[y,x]$ the same integral is $\int_y^x\mathbf 1_{n\le t}f'(t)\dd t$. Indeed, if $n\le y$ then $n^+=y$ and the indicator is $1$ throughout $[y,x]$. If $y<n\le x$ then $n^+=n$ and the indicator cuts the integral down to $[n,x]$.
+
+Multiply by $a_n$ and sum over $n\le x$. The sum is finite, so it passes inside the integral:
 \[
-\sum_{n\le x}a_n\bigl(f(x)-f(n^+)\bigr)=\int_y^xA(t)f'(t)\dd t.
+\sum_{n\le x}a_n\bigl(f(x)-f(n^+)\bigr)=\int_y^x A(t)f'(t)\dd t.
 \]
-The left side is $A(x)f(x)-A(y)f(y)-\sum_{y<n\le x}a_nf(n)$.
+The inner sum that produces $A(t)$ runs over $n\le t$. For $t\in[y,x]$ that is the same as $n\le x$ and $n\le t$. The left side splits by the size of $n$. The terms with $n\le y$ have $n^+=y$, and they contribute $A(y)f(y)$. The terms with $y<n\le x$ have $n^+=n$. So the left side is
+\[
+A(x)f(x)-A(y)f(y)-\sum_{y<n\le x}a_nf(n).
+\]
+Rearrange.
 \end{proof}
 
 \begin{proposition}[Chebyshev's bounds]\label{prop:chebyshev}
-For $x\ge2$:
+For $x\ge 2$:
 \begin{enumerate}[label=(\alph*)]
-\item $\theta(x)\le x\log4$ and $\psi(x)\le x\log4+2\sqrt x\log x$; in particular $\psi(x)=O(x)$;
-\item $\pi(x)\le\sqrt x+\frac{2\log4\cdot x}{\log x}$; in particular $\pi(x)=O\bigl(\frac x{\log x}\bigr)$;
+\item $\theta(x)\le x\log 4$ and $\psi(x)\le x\log 4+2\sqrt x\log x$; in particular $\psi(x)=O(x)$;
+\item $\pi(x)\le\sqrt x+\dfrac{2\log 4\cdot x}{\log x}$; in particular $\pi(x)=O\bigl(\dfrac x{\log x}\bigr)$;
 \item $\displaystyle\sum_{n\le x}\log n=x\log x-x+r(x)$ with $|r(x)|\le\log x+1$.
 \end{enumerate}
 \end{proposition}
 \begin{proof}
-(a) Volume~2, Theorem~2.4(i) says $\prod_{p\le x}p<4^x$, which is $\theta(x)<x\log4$. Next, $\psi(x)-\theta(x)=\sum_{k\ge2}\theta(x^{1/k})$, and the terms vanish
-for $x^{1/k}<2$, that is for $k>\frac{\log x}{\log2}$. Each term is at most $x^{1/2}\log4$, so the sum is at most $\frac{\log x}{\log2}\sqrt x\log4=2\sqrt x\log x$.
+(a) Volume~2, Theorem~2.4(i) says $\prod_{p\le x}p<4^x$. Take logarithms: $\theta(x)<x\log 4$, which is the stated bound $\theta(x)\le x\log 4$.
 
-(b) The primes in $]\sqrt x,x]$ each contribute at least $\frac12\log x$ to $\theta(x)$, so there are at most $\frac{2\theta(x)}{\log x}$ of them, and at most $\sqrt x$
-primes below $\sqrt x$.
+The gap between the two Chebyshev functions is the higher prime powers,
+\[
+\psi(x)-\theta(x)=\sum_{k\ge 2}\theta(x^{1/k}).
+\]
+The term with $x^{1/k}<2$ is zero, and $x^{1/k}<2$ once $k>\frac{\log x}{\log 2}$. Each surviving term has $y=x^{1/k}\ge 2$ and $k\ge 2$, so $y\le\sqrt x$ and $\theta(y)\le y\log 4\le\sqrt x\log 4$. The number of such integers $k$ is at most $\frac{\log x}{\log 2}$. Therefore
+\[
+\psi(x)-\theta(x)\le\frac{\log x}{\log 2}\cdot\sqrt x\log 4=2\sqrt x\log x,
+\]
+where the last step is $\frac{\log 4}{\log 2}=2$. Add $\theta(x)\le x\log 4$. In particular $\psi(x)=O(x)$.
 
-(c) Let $N=\lfloor x\rfloor$. Since $\log$ increases, $\int_1^N\log t\dd t\le\sum_{n=2}^N\log n\le\int_1^N\log t\dd t+\log N$, and $\int_1^N\log t\dd t=N\log N-N+1$. The function
-$t\mapsto t\log t-t$ has derivative $\log t\le\log x$ on $[N,x]$, an interval of length less than $1$, so $0\le(x\log x-x)-(N\log N-N)\le\log x$. Combine.
+(b) Every prime in $(\sqrt x,x]$ contributes at least $\frac12\log x$ to $\theta(x)$. There are at most $\frac{2\theta(x)}{\log x}$ such primes. There are at most $\sqrt x$ primes up to $\sqrt x$, because there are at most $\sqrt x$ positive integers in that range. Add the two counts and insert $\theta(x)\le x\log 4$.
+
+(c) Let $N=\lfloor x\rfloor$, so $N\ge 2$. The logarithm increases, and comparing the sum with integrals gives
+\[
+\int_1^N\log t\dd t\le\sum_{n=2}^N\log n\le\int_1^N\log t\dd t+\log N.
+\]
+The integral equals $N\log N-N+1$. Since $\log 1=0$, the sum is $\log N!$, and
+\[
+N\log N-N+1\le\log N!\le N\log N-N+1+\log N.
+\]
+Let $g(t)=t\log t-t$. Then $g'(t)=\log t$. On the interval $[N,x]$, of length less than $1$, the derivative is at most $\log x$, so
+\[
+0\le\bigl(x\log x-x\bigr)-\bigl(N\log N-N\bigr)\le\log x.
+\]
+Set $r(x)=\log N!-(x\log x-x)$, which is $\sum_{n\le x}\log n-(x\log x-x)$. The two comparisons give
+\[
+r(x)\le(1+\log N)-0\le 1+\log x
+\]
+and
+\[
+r(x)\ge 1-\log x\ge-(\log x+1).
+\]
+Hence $|r(x)|\le\log x+1$.
 \end{proof}
 
-Figure~\ref{fig:chebyshev} shows $\theta(x)/x$ and $\psi(x)/x$: they seem to tend to $1$. That is the prime number theorem, in the form
-$\psi(x)\sim x$ (Chapter~\ref{ch:pnt}). The difference between $\theta$ and $\psi$ is negligible: by the proof above, $\psi(x)-\theta(x)=O(\sqrt x\log x)$.
+Figure~\ref{fig:chebyshev} plots the two ratios $\theta(x)/x$ and $\psi(x)/x$. Both hover near $1$. The statement $\psi(x)\sim x$ is the prime number theorem, proved in Chapter~\ref{ch:pnt}, and it is not available yet. What the proof above does give is the size of the gap: $\psi(x)-\theta(x)=O(\sqrt x\log x)$, so $\frac{\psi(x)-\theta(x)}x=O\bigl(\frac{\log x}{\sqrt x}\bigr)$.
 
 \begin{figure}[ht]
 \centering
 \fig{ch01-chebyshev}
-\caption{$\psi(x)/x$ (charcoal) and $\theta(x)/x$ (coral) for $10\le x\le3000$. The prime powers $p^k$ with $k\ge2$ make up the gap, of order $\frac{\sqrt x}x$.
-At $x=3000$ the values are $1.0004$ and $0.977$.}
+\caption{$\psi(x)/x$ (charcoal) and $\theta(x)/x$ (coral) for $10\le x\le 3000$. The gap is made of the prime powers $p^k$ with $k\ge 2$, and on the scale of the picture it has size about $\frac{\sqrt x}x$. At $x=3000$ the two ratios are $1.0004$ and $0.977$.}
 \label{fig:chebyshev}
 \end{figure}
 
 \section{Mertens's first theorem}
 
-The proof of the next theorem is one idea: write $N!$ in two ways. As a product of the numbers up to $N$, its logarithm is about $N\log N-N$. As a
-product of primes, its logarithm is a sum over primes, each counted as often as it divides $N!$. Set the two equal and read off the primes.
+The next proof has one idea. Write $N!$ in two ways. As the product of the integers from $1$ to $N$, its logarithm is about $N\log N-N$. As a product of prime powers, its logarithm counts each prime as often as that prime divides $N!$. Set the two expressions equal and read off the primes.
 
-Try it with $N=10$. On one side $10!=3\,628\,800$ and $\log10!=15.104$. On the other, $10!=2^8\cdot3^4\cdot5^2\cdot7$: the exponent of $2$ is
-$\lfloor\frac{10}2\rfloor+\lfloor\frac{10}4\rfloor+\lfloor\frac{10}8\rfloor=5+2+1$, one unit for each multiple of $2$, of $4$ and of $8$ up to $10$. So
-$15.104=8\log2+4\log3+2\log5+\log7$. Drop the floors, that is, replace $5+2+1$ by $\frac{10}2+\frac{10}4+\frac{10}8$ and so on, and the right side becomes
-$10\sum_{n\le10}\frac{\Lambda(n)}n$. The theorem says that this sum, here $1.695$, stays within a bounded distance of $\log N$, here $2.303$.
+Check the case $N=10$. Then $10!=3\,628\,800$ and $\log 10!=15.104$. On the prime side, $10!=2^8\cdot 3^4\cdot 5^2\cdot 7$. The exponent of $2$ is
+\[
+\Bigl\lfloor\frac{10}2\Bigr\rfloor+\Bigl\lfloor\frac{10}4\Bigr\rfloor+\Bigl\lfloor\frac{10}8\Bigr\rfloor=5+2+1.
+\]
+Five multiples of $2$, two multiples of $4$, and one multiple of $8$, all up to $10$. The same count gives the other exponents, so
+\[
+15.104=8\log 2+4\log 3+2\log 5+\log 7.
+\]
+Figure~\ref{fig:tenfactorial} is that count, drawn as stacked blocks. Now drop the floors. Replace $5+2+1$ by $\frac{10}2+\frac{10}4+\frac{10}8$, and do the same for $3$, $5$ and $7$. The right side becomes $10\sum_{n\le 10}\frac{\Lambda(n)}n$. That sum equals $1.695$. Beside it, $\log 10=2.303$. The distance is less than $1$. The theorem says the distance stays bounded for every $N$.
+
+\begin{figure}[ht]
+\centering
+\fig{ch01-tenfactorial}
+\caption{The exponents in $10!=2^8\cdot 3^4\cdot 5^2\cdot 7$. Coral counts the multiples of $p$ up to $10$. The lighter charcoal block counts multiples of $p^2$, and the dark block counts multiples of $p^3$. For $2$ the three counts are $5$, $2$ and $1$, and $5+2+1=8$.}
+\label{fig:tenfactorial}
+\end{figure}
 
 \begin{theorem}[Mertens, 1874]\label{thm:mertens1}
-For $x\ge2$,
+For $x\ge 2$,
 \[
 \begin{gathered}\sum_{n\le x}\frac{\Lambda(n)}n=\log x+O(1),\qq\sum_{p\le x}\frac{\log p}p=\log x+O(1).\end{gathered}
 \]
 \end{theorem}
 \begin{proof}
-Let $N=\lfloor x\rfloor$. By Legendre's formula (Volume~2, Exercise~1.3), the exponent of $p$ in $N!$ is $\sum_{k\ge1}\lfloor N/p^k\rfloor$, so
+Let $N=\lfloor x\rfloor$. Legendre's formula (Volume~2, Exercise~1.3) says that the exponent of a prime $p$ in $N!$ is $\sum_{k\ge 1}\bigl\lfloor N/p^k\bigr\rfloor$. Therefore
 \[
-\log N!=\sum_{p^k\le N}\Bigl\lfloor\frac N{p^k}\Bigr\rfloor\log p=\sum_{n\le x}\Lambda(n)\Bigl\lfloor\frac xn\Bigr\rfloor,
+\log N!=\sum_{p^k\le N}\Bigl\lfloor\frac N{p^k}\Bigr\rfloor\log p=\sum_{n\le x}\Lambda(n)\Bigl\lfloor\frac xn\Bigr\rfloor.
 \]
-since $\lfloor N/m\rfloor=\lfloor x/m\rfloor$ for every integer $m\ge1$. Write $\lfloor\frac xn\rfloor=\frac xn-\{\frac xn\}$ with $0\le\{\frac xn\}<1$:
-\[
-\begin{gathered}\log N!=x\sum_{n\le x}\frac{\Lambda(n)}n-\rho(x),\qq0\le\rho(x)\le\psi(x).\end{gathered}
-\]
-By Proposition~\ref{prop:chebyshev}, $\log N!=x\log x-x+O(\log x)$ and $\psi(x)=O(x)$. Dividing by $x$ gives the first statement.
+The second step uses $\bigl\lfloor N/m\bigr\rfloor=\bigl\lfloor x/m\bigr\rfloor$ for every integer $m\ge 1$. That holds because $N\le x<N+1$, so $x/m$ and $N/m$ have the same integer part.
 
-The two sums differ by the prime powers $p^k\le x$ with $k\ge2$, which contribute at most
-$\sum_p\log p\sum_{k\ge2}p^{-k}=\sum_p\frac{\log p}{p(p-1)}\le\sum_{n\ge2}\frac{\log n}{n(n-1)}<\infty$.
+Write $\bigl\lfloor\frac xn\bigr\rfloor=\frac xn-\bigl\{\frac xn\bigr\}$ with $0\le\bigl\{\frac xn\bigr\}<1$. Then
+\[
+\begin{gathered}\log N!=x\sum_{n\le x}\frac{\Lambda(n)}n-\rho(x),\qq 0\le\rho(x)\le\psi(x).\end{gathered}
+\]
+Proposition~\ref{prop:chebyshev} gives $\log N!=x\log x-x+O(\log x)$ and $\psi(x)=O(x)$. Divide by $x$:
+\[
+\sum_{n\le x}\frac{\Lambda(n)}n=\log x-1+O\Bigl(\frac{\log x}x\Bigr)+O(1).
+\]
+The term $-1$ is a constant, and $\frac{\log x}x$ tends to $0$, so both sit inside $O(1)$. This is the first statement.
+
+The two sums in the theorem differ by the prime powers $p^k\le x$ with $k\ge 2$. Those terms contribute at most
+\[
+\sum_{k\ge 2}\sum_{p^k\le x}\frac{\log p}{p^k}\le\sum_p\log p\sum_{k\ge 2}p^{-k}.
+\]
+The inner geometric sum equals $\frac{p^{-2}}{1-p^{-1}}=\frac1{p(p-1)}$. So the double sum is
+\[
+\sum_p\frac{\log p}{p(p-1)}\le\sum_{n\ge 2}\frac{\log n}{n(n-1)}.
+\]
+The comparison series converges: $\frac{\log n}{n(n-1)}$ behaves like $\frac{\log n}{n^2}$, and $\int_2^\infty\frac{\log t}{t^2}\dd t$ converges (integrate by parts). A convergent series is bounded, so the difference of the two sums in the theorem is $O(1)$. The prime sum is therefore $\log x+O(1)$ as well.
 \end{proof}
 
-Write $R(x)=\sum_{p\le x}\frac{\log p}p-\log x$, a bounded function. The numerical values $R(10^3)=-1.298$, $R(10^5)=-1.329$, $R(10^7)=-1.3324$
-suggest that $R(x)$ converges. It does, to $-\gamma-\sum_p\frac{\log p}{p(p-1)}=-1.33258\ldots$, but this needs the prime number theorem (Chapter~\ref{ch:pnt}, Exercise~\ref{ex:rlimit}).
-Mertens's theorem already says something about the prime number theorem.
+Write $R(x)=\sum_{p\le x}\frac{\log p}p-\log x$. Theorem~\ref{thm:mertens1} says that $R$ is bounded. Three values show the size: $R(10^3)=-1.298$, $R(10^5)=-1.329$, and $R(10^7)=-1.3324$. The sequence looks as if it is settling. It does settle, and the limit is
+\[
+-\gamma-\sum_p\frac{\log p}{p(p-1)}=-1.33258\ldots.
+\]
+Identifying that limit uses the prime number theorem (Chapter~\ref{ch:pnt}, Exercise~\ref{ex:rlimit}). This chapter uses only the bound on $R$, not the value of the limit. The next corollary is what the bound already says about $\theta(x)/x$.
 
 \begin{corollary}[Chebyshev, 1852]\label{cor:chebratio}
-$\displaystyle\liminf_{x\to\infty}\frac{\theta(x)}x\le1\le\limsup_{x\to\infty}\frac{\theta(x)}x$. So if $\frac{\theta(x)}x$, or equivalently $\pi(x)\frac{\log x}x$, has a limit, the limit is $1$.
+$\displaystyle\liminf_{x\to\infty}\frac{\theta(x)}x\le 1\le\limsup_{x\to\infty}\frac{\theta(x)}x$. So if $\frac{\theta(x)}x$, or equivalently $\pi(x)\frac{\log x}x$, has a limit, the limit is $1$.
 \end{corollary}
 \begin{proof}
-Lemma~\ref{lem:abelint} with $a_p=\log p$ (and $a_n=0$ for $n$ not prime), $A=\theta$, $f(t)=\frac1t$ and $y=1$ gives
+Apply Lemma~\ref{lem:abelint} with $a_n=\log n$ when $n$ is prime and $a_n=0$ otherwise, so that $A=\theta$, with $f(t)=\frac1t$ and $y=1$. Then $f'(t)=-\frac1{t^2}$ and $\theta(1)=0$, and
 \[
 \sum_{p\le x}\frac{\log p}p=\frac{\theta(x)}x+\int_1^x\frac{\theta(t)}{t^2}\dd t.
 \]
-If $\theta(t)\ge(1+\varepsilon)t$ for all $t\ge t_0$, the right side is at least $(1+\varepsilon)\log x-C$, contradicting Theorem~\ref{thm:mertens1}. That forbids $\liminf\theta(t)/t>1$, so the $\liminf$
-is at most $1$. The same argument with $\theta(t)\le(1-\varepsilon)t$ for all large $t$ makes the right side at most $(1-\varepsilon)\log x+C$, which is too small, and forbids $\limsup\theta(t)/t<1$: the $\limsup$
-is at least $1$. For the equivalence with $\pi$: $\theta(x)\le\pi(x)\log x$, and
-$\theta(x)\ge(\pi(x)-\pi(x^{1-\varepsilon}))(1-\varepsilon)\log x\ge(1-\varepsilon)\pi(x)\log x-x^{1-\varepsilon}\log x$ for every $\varepsilon\in\left]0,1\right[$.
+
+Suppose the liminf of $\theta(t)/t$ were strictly larger than $1$. Choose $\varepsilon>0$ so that the liminf is at least $1+2\varepsilon$. Then there is a $t_0$ such that $\theta(t)\ge(1+\varepsilon)t$ for every $t\ge t_0$. For $x>t_0$ the integral from $t_0$ to $x$ is at least $(1+\varepsilon)(\log x-\log t_0)$, and $\theta(x)/x\ge 0$, so the right side above is at least $(1+\varepsilon)\log x-C$ with $C=(1+\varepsilon)\log t_0$. Theorem~\ref{thm:mertens1} says the left side is at most $\log x+C'$ for some constant $C'$ and every $x\ge 2$. Then $\varepsilon\log x$ would be bounded. It is not. So the liminf is at most $1$.
+
+Suppose instead that the limsup of $\theta(t)/t$ were strictly smaller than $1$. Choose $\varepsilon>0$ so that the limsup is at most $1-2\varepsilon$. Then $\theta(t)\le(1-\varepsilon)t$ for all $t\ge t_0$. Split the integral at $t_0$. The piece up to $t_0$ is some constant, and the piece beyond $t_0$ is at most $(1-\varepsilon)\log(x/t_0)$. Also $\theta(x)/x\le 1-\varepsilon$. The right side is therefore at most $(1-\varepsilon)\log x+C$. Theorem~\ref{thm:mertens1} says the left side is at least $\log x-C'$ for large $x$. Again $\varepsilon\log x$ would be bounded. So the limsup is at least $1$.
+
+The two comparisons are the statement $\liminf\frac{\theta(x)}x\le 1\le\limsup\frac{\theta(x)}x$. If $\frac{\theta(x)}x$ has a limit, the limit equals both the liminf and the limsup, so the limit is $1$.
+
+It remains to match this with $\pi(x)\frac{\log x}x$. Every prime $p\le x$ has $\log p\le\log x$, so
+\[
+\theta(x)\le\pi(x)\log x.
+\]
+For the other direction, fix $\varepsilon\in\left]0,1\right[$. Every prime in $(x^{1-\varepsilon},x]$ has logarithm greater than $(1-\varepsilon)\log x$, and there are at least $\pi(x)-\pi(x^{1-\varepsilon})$ such primes. Hence
+\[
+\theta(x)\ge\bigl(\pi(x)-\pi(x^{1-\varepsilon})\bigr)(1-\varepsilon)\log x.
+\]
+Since $\pi(x^{1-\varepsilon})\le x^{1-\varepsilon}$ and $1-\varepsilon<1$,
+\[
+\theta(x)\ge(1-\varepsilon)\pi(x)\log x-x^{1-\varepsilon}\log x.
+\]
+Divide by $x$:
+\begin{align*}
+\frac{\theta(x)}x&\le\pi(x)\frac{\log x}x,\\
+\frac{\theta(x)}x&\ge(1-\varepsilon)\pi(x)\frac{\log x}x-x^{-\varepsilon}\log x.
+\end{align*}
+The error $x^{-\varepsilon}\log x$ tends to $0$.
+
+Suppose $\pi(x)\frac{\log x}x\to L$. The first inequality gives $\limsup\frac{\theta(x)}x\le L$. The second gives $\liminf\frac{\theta(x)}x\ge(1-\varepsilon)L$. Let $\varepsilon$ tend to $0$. Then $\frac{\theta(x)}x\to L$.
+
+Suppose instead $\frac{\theta(x)}x\to L$. The first inequality gives $\liminf\pi(x)\frac{\log x}x\ge L$. The second rearranges to
+\[
+(1-\varepsilon)\pi(x)\frac{\log x}x\le\frac{\theta(x)}x+x^{-\varepsilon}\log x,
+\]
+so $\limsup\pi(x)\frac{\log x}x\le\frac L{1-\varepsilon}$. Let $\varepsilon$ tend to $0$. Then $\pi(x)\frac{\log x}x\to L$.
+
+One limit exists exactly when the other does, and the two limits agree. Combined with the first half of the proof, if either limit exists then it equals $1$.
 \end{proof}
 
 \section{The sum of the reciprocals of the primes}
 
-Euler knew that $\frac12+\frac13+\frac15+\frac17+\cdots$ diverges. Mertens found out how fast, and the answer is: about as slowly as a series can
-diverge and still be called divergent with a straight face.
+Euler knew that $\frac12+\frac13+\frac15+\frac17+\cdots$ diverges. Mertens found the speed. Up to $10^{100}$ the sum is only about $5.70$. A machine that adds one prime at a time will not see the divergence.
 
 \begin{theorem}[Mertens, 1874]\label{thm:mertens2}
-There is a constant $M$ such that, for $x\ge2$,
+There is a constant $M$ such that, for $x\ge 2$,
 \[
 \sum_{p\le x}\frac1p=\log\log x+M+O\Bigl(\frac1{\log x}\Bigr),
 \]
-namely $M=1-\log\log2+\int_2^\infty\frac{R(t)}{t\log^2t}\dd t=0.2614972128\ldots$, the \emph{Meissel--Mertens constant}.
+namely $M=1-\log\log 2+\int_2^\infty\frac{R(t)}{t\log^2 t}\dd t=0.2614972128\ldots$, the \emph{Meissel--Mertens constant}.
 \end{theorem}
 \begin{proof}
-Let $A(t)=\sum_{p\le t}\frac{\log p}p=\log t+R(t)$. Lemma~\ref{lem:abelint} with $f(t)=\frac1{\log t}$, $f'(t)=-\frac1{t\log^2t}$ and $y=2$ gives
-$\sum_{2<p\le x}\frac1p=\frac{A(x)}{\log x}-\frac{A(2)}{\log2}+\int_2^x\frac{A(t)}{t\log^2t}\dd t$. Since $\frac{A(2)}{\log2}=\frac12$ is the term $p=2$,
+Let $A(t)=\sum_{p\le t}\frac{\log p}p=\log t+R(t)$ for $t\ge 2$, with $R$ the bounded function from the last section. Apply Lemma~\ref{lem:abelint} with $f(t)=\frac1{\log t}$, so $f'(t)=-\frac1{t\log^2 t}$, and with $y=2$. Then
 \[
-\sum_{p\le x}\frac1p=1+\frac{R(x)}{\log x}+\int_2^x\frac{\mathrm dt}{t\log t}+\int_2^x\frac{R(t)}{t\log^2t}\dd t.
+\sum_{2<p\le x}\frac1p=\frac{A(x)}{\log x}-\frac{A(2)}{\log 2}+\int_2^x\frac{A(t)}{t\log^2 t}\dd t.
 \]
-The first integral is $\log\log x-\log\log2$. Since $|R|\le C$, the second converges as $x\to\infty$, and $\int_x^\infty\frac{|R(t)|}{t\log^2t}\dd t\le\frac C{\log x}$. So the sum is
-$\log\log x+M+O\bigl(\frac1{\log x}\bigr)$. The constant can be evaluated numerically (Exercise~\ref{ex:mertensconst} gives a faster route).
+Here $A(2)=\frac{\log 2}2$, so $\frac{A(2)}{\log 2}=\frac12$, which is exactly the missing term $\frac1p$ at $p=2$. Adding that term cancels $-\frac12+\frac12$, and
+\[
+\sum_{p\le x}\frac1p=\frac{A(x)}{\log x}+\int_2^x\frac{A(t)}{t\log^2 t}\dd t.
+\]
+Insert $A(t)=\log t+R(t)$. The boundary term is $1+\frac{R(x)}{\log x}$. The integral splits as
+\[
+\int_2^x\frac{\mathrm dt}{t\log t}+\int_2^x\frac{R(t)}{t\log^2 t}\dd t,
+\]
+and the first of those equals $\log\log x-\log\log 2$. Altogether
+\[
+\sum_{p\le x}\frac1p=1+\frac{R(x)}{\log x}+\log\log x-\log\log 2+\int_2^x\frac{R(t)}{t\log^2 t}\dd t.
+\]
+Since $|R|\le C$ for some constant $C$, the improper integral $\int_2^\infty\frac{R(t)}{t\log^2 t}\dd t$ converges: the comparison $\int_2^\infty\frac{\mathrm dt}{t\log^2 t}=\frac1{\log 2}$ is finite. The tail satisfies
+\[
+\int_x^\infty\frac{|R(t)|}{t\log^2 t}\dd t\le C\int_x^\infty\frac{\mathrm dt}{t\log^2 t}=\frac C{\log x}.
+\]
+The term $\frac{R(x)}{\log x}$ is of the same order. Collecting the constant terms gives the formula for $M$ in the statement, and the error is $O\bigl(\frac1{\log x}\bigr)$. Exercise~\ref{ex:mertensconst} computes $M$ by a series that converges much faster than this integral.
 \end{proof}
 
 \begin{figure}[ht]
 \centering
 \fig{ch01-mertens}
-\caption{$\sum_{p\le x}\frac1p-\log\log x$ for $10\le x\le10^7$, in logarithmic scale. It settles at $M=0.26149\ldots$ (dashed); at $x=10^7$ the difference is
-$0.261507$, within $10^{-5}$ of $M$.}
+\caption{$\sum_{p\le x}\frac1p-\log\log x$ for $10\le x\le 10^7$, on a logarithmic scale in $x$. The dashed line is the Meissel--Mertens constant $M=0.26149\ldots$. At $x=10^7$ the difference is $0.261507$, within $10^{-5}$ of $M$.}
 \label{fig:mertens}
 \end{figure}
 
-So the primes up to $10^{100}$ have reciprocals adding up to about $\log(100\log10)+0.26\approx5.7$: the series diverges, but so slowly that no
-computation will ever see it.
+The sum of reciprocals up to $10^{100}$ equals $\log\log(10^{100})+M=5.70$, plus an error of size about $\frac1{\log(10^{100})}=\frac1{100\log 10}$, which is smaller than $0.005$. The series diverges. It diverges so slowly that adding the primes one at a time will not show you the divergence.
 
 \section{Mertens's product and Euler's constant}
 
-Now the referee's product. Taking logarithms turns it into the sum of the previous section plus a convergent correction, so it is of order
-$\frac1{\log x}$ up to a constant factor. The surprise is the factor.
+Now the referee's product. Its logarithm is the sum of the previous section, plus a correction series that converges. So the product has the order of $\frac1{\log x}$, up to a constant factor. The work is to name the factor.
+
+At $x=100$ the product equals $0.1203$, and $\frac{e^{-\gamma}}{\log 100}=0.1219$. Figure~\ref{fig:product} draws that pair and nineteen others, from $x=10$ to $x=50000$. Theorem~\ref{thm:mertens3} is the reason the coral points sit on the charcoal curve.
+
+Euler met the infinite product in 1737. He formed $\prod_p\frac{p}{p-1}$ and showed that it matches the harmonic series, which diverges, so there are infinitely many primes. The paper was published in 1744. Mertens's third theorem is that product cut off at $x$, with the constant $e^{-\gamma}$ written in.
 
 \begin{theorem}[Mertens, 1874]\label{thm:mertens3}
 As $x\to\infty$,
@@ -185,89 +288,136 @@ As $x\to\infty$,
 where $\gamma=0.5772\ldots$ is Euler's constant and $e^{-\gamma}=0.5614\ldots$
 \end{theorem}
 
-Taking logarithms, $-\log\prod_{p\le x}(1-\frac1p)=\sum_{p\le x}\frac1p+\sum_{p\le x}h(p)$ with $h(p)=-\log\bigl(1-\frac1p\bigr)-\frac1p$. For $0\le u\le\frac12$,
-$0\le-\log(1-u)-u=\sum_{m\ge2}\frac{u^m}m\le\frac{u^2}{2(1-u)}\le u^2$, so $H=\sum_ph(p)$ converges, with $\sum_{p>x}h(p)\le\sum_{n>x}\frac1{n^2}\le\frac1{x-1}$. With
-Theorem~\ref{thm:mertens2},
+Set $h(p)=-\log\bigl(1-\frac1p\bigr)-\frac1p$. Taking logarithms,
+\[
+-\log\prod_{p\le x}\Bigl(1-\frac1p\Bigr)=\sum_{p\le x}\frac1p+\sum_{p\le x}h(p).
+\]
+For $0\le u\le\frac12$ the Taylor series of the logarithm gives
+\[
+0\le-\log(1-u)-u=\sum_{m\ge 2}\frac{u^m}m\le\sum_{m\ge 2}\frac{u^m}2=\frac{u^2}{2(1-u)}.
+\]
+On this range $\frac1{2(1-u)}\le 1$, so $-\log(1-u)-u\le u^2$. Every prime satisfies $\frac1p\le\frac12$, and therefore $0\le h(p)\le\frac1{p^2}$. The series $H=\sum_ph(p)$ converges. Its tail is at most the tail of $\sum\frac1{n^2}$: if $m=\lfloor x\rfloor+1$, then
+\[
+\sum_{n>x}\frac1{n^2}=\sum_{n\ge m}\frac1{n^2}\le\int_{m-1}^\infty t^{-2}\dd t=\frac1{\lfloor x\rfloor}\le\frac1{x-1}
+\]
+for $x\ge 2$, and $\sum_{p>x}h(p)\le\sum_{n>x}\frac1{n^2}$. Theorem~\ref{thm:mertens2} now gives
 \[
 \begin{aligned}-\log\prod_{p\le x}\Bigl(1-\frac1p\Bigr)&=\log\log x+M+H\eqbr+O\Bigl(\frac1{\log x}\Bigr).\end{aligned}
 \]
-So the theorem says exactly that $M+H=\gamma$, and exponentiating gives the stated form, since $e^{O(1/\log x)}=1+O(\frac1{\log x})$. The constants $M$ and $H$
-come from elementary sums; $\gamma$ comes from the harmonic series. The link is the zeta function near $s=1$.
+The displayed formula in Theorem~\ref{thm:mertens3} is exactly the statement $M+H=\gamma$, together with the expansion $e^u=1+O(u)$ as $u\to 0$. Here $u=O\bigl(\frac1{\log x}\bigr)$, so $u\to 0$ and $u^2=O(|u|)$, which is why $e^u=1+O\bigl(\frac1{\log x}\bigr)$. The constants $M$ and $H$ come from elementary sums. The constant $\gamma$ comes from the harmonic series. The link is $\zeta$ near $s=1$.
 
 \begin{lemma}\label{lem:mplush}
 $M+H=\gamma$.
 \end{lemma}
 \begin{proof}
-Let $\sigma=1+\delta$ with $0<\delta\le1$, and compute $\log\zeta(\sigma)$ in two ways as $\delta\to0^+$.
+Let $\sigma=1+\delta$ with $0<\delta\le 1$. Compute $\log\zeta(\sigma)$ in two ways, and let $\delta\to 0^+$.
 
-\emph{First way.} Near $1$, $\zeta(s)=\frac1{s-1}+\gamma+O(s-1)$ (Volume~5, Proposition~10.6). So $\delta\zeta(1+\delta)=1+\gamma\delta+O(\delta^2)$, and taking logarithms, $\log\zeta(\sigma)=\log\frac1\delta+O(\delta)$.
+\emph{First way.} Near $1$, $\zeta(s)=\frac1{s-1}+\gamma+O(s-1)$ (Volume~5, Proposition~10.6). Multiply by $\delta=s-1$:
+\[
+\delta\,\zeta(1+\delta)=1+\gamma\delta+O(\delta^2).
+\]
+The right side is positive for small $\delta$. Take logarithms:
+\[
+\log\zeta(\sigma)=\log\frac1\delta+\log\bigl(1+\gamma\delta+O(\delta^2)\bigr).
+\]
+As $z\to 0$, $\log(1+z)=O(z)$. The second term is $O(\delta)$, and
+\[
+\log\zeta(\sigma)=\log\frac1\delta+O(\delta).
+\]
 
-\emph{Second way.} Taking logarithms in the Euler product (Volume~5, Theorem~10.3),
-$\log\zeta(\sigma)=\sum_p-\log(1-p^{-\sigma})=\sum_pp^{-\sigma}+\sum_ph_\sigma(p)$, where $h_\sigma(p)=-\log(1-p^{-\sigma})-p^{-\sigma}$. Since $u\mapsto-\log(1-u)-u$
-increases on $[0,1[$, $0\le h_\sigma(p)\le h(p)$, and $h_\sigma(p)\to h(p)$; the series $\sum_ph(p)$ converges, so $\sum_ph_\sigma(p)\to H$ (the series converges uniformly
-in $\sigma$ by the Weierstrass test).
+\emph{Second way.} For $\sigma>1$ each factor $1-p^{-\sigma}$ lies in $(0,1)$, so the logarithm of the Euler product is the sum of the logarithms. Volume~5, Theorem~10.3 gives
+\[
+\log\zeta(\sigma)=\sum_p-\log(1-p^{-\sigma})=\sum_pp^{-\sigma}+\sum_ph_\sigma(p),
+\]
+where $h_\sigma(p)=-\log(1-p^{-\sigma})-p^{-\sigma}$. The map $u\mapsto-\log(1-u)-u$ increases on $[0,1)$. For $\sigma>1$ one has $p^{-\sigma}<p^{-1}$, so $0\le h_\sigma(p)\le h(p)$. Also $h_\sigma(p)\to h(p)$ as $\sigma\to 1^+$. The comparison $h(p)$ is summable, so the Weierstrass test gives uniform convergence of $\sum_ph_\sigma(p)$ for $\sigma\in(1,2]$. The limit of the sum is the sum of the limits, and $\sum_ph_\sigma(p)\to H$.
 
-It remains to show that $\sum_pp^{-\sigma}=\log\frac1\delta-\gamma+M+o(1)$. Let $S(t)=\sum_{p\le t}\frac1p$, which is $0$ for $t<2$. Lemma~\ref{lem:abelint} with $a_p=\frac1p$ and
-$f(t)=t^{-\delta}$ gives $\sum_{p\le x}p^{-\sigma}=S(x)x^{-\delta}+\delta\int_2^xS(t)t^{-1-\delta}\dd t$. As $x\to\infty$, $S(x)x^{-\delta}\to0$ because $S(x)=O(\log\log x)$, so
+\emph{The prime sum.} The missing identity is $\sum_pp^{-\sigma}=\log\frac1\delta-\gamma+M+o(1)$. Let $S(t)=\sum_{p\le t}\frac1p$, so $S(t)=0$ for $t<2$ and $S(2)=\frac12$. Apply Lemma~\ref{lem:abelint} on $[2,x]$ with $a_p=\frac1p$ and $f(t)=t^{-\delta}$. Then $f'(t)=-\delta t^{-1-\delta}$, and the primes strictly larger than $2$ contribute
+\[
+\sum_{2<p\le x}p^{-\sigma}=S(x)x^{-\delta}-S(2)\,2^{-\delta}+\delta\int_2^x S(t)\,t^{-1-\delta}\dd t.
+\]
+The boundary term $S(2)\,2^{-\delta}=2^{-1-\delta}$ is exactly $2^{-\sigma}$. Add the prime $p=2$ and those two copies cancel:
+\[
+\sum_{p\le x}p^{-\sigma}=S(x)x^{-\delta}+\delta\int_2^x S(t)\,t^{-1-\delta}\dd t.
+\]
+Let $x\to\infty$. Theorem~\ref{thm:mertens2} gives $S(x)=O(\log\log x)$, and $x^{-\delta}$ beats any power of $\log\log x$, so $S(x)x^{-\delta}\to 0$. Therefore
 \[
 \sum_pp^{-\sigma}=\delta\int_2^\infty S(t)\,t^{-1-\delta}\dd t.
 \]
-By Theorem~\ref{thm:mertens2}, $S(t)=\log\log t+M+E(t)$ with $|E(t)|\le\frac C{\log t}$. We treat the three terms, substituting $u=\delta\log t$, so that
-$t^{-\delta}=e^{-u}$ and $\frac{\mathrm dt}t=\frac{\mathrm du}\delta$.
-\begin{itemize}
-\item $\delta\int_2^\infty Mt^{-1-\delta}\dd t=M2^{-\delta}\to M$.
-\item The term $J=\delta\int_2^\infty\log\log t\;t^{-1-\delta}\dd t$ equals, since $\log\log t=\log u+\log\frac1\delta$,
+
+\emph{Three pieces.} By Theorem~\ref{thm:mertens2}, $S(t)=\log\log t+M+E(t)$ with $|E(t)|\le\frac C{\log t}$ for $t\ge 2$ and some constant $C$. Substitute $u=\delta\log t$, so $t^{-\delta}=e^{-u}$ and $\frac{\mathrm dt}t=\frac{\mathrm du}\delta$. The three pieces are as follows.
+
+The constant $M$ produces
 \[
-J=2^{-\delta}\log\frac1\delta+\int_{\delta\log2}^\infty e^{-u}\log u\dd u.
+\delta\int_2^\infty M\,t^{-1-\delta}\dd t=M\,2^{-\delta}.
 \]
-The first term is $\log\frac1\delta+O(\delta\log\frac1\delta)$. The integral from $\delta\log2$ to $\infty$ tends to $\int_0^\infty e^{-u}\log u\dd u$: the missing piece over $(0,\delta\log2)$ has absolute value at most $\int_0^{\delta\log2}|\log u|\dd u$, and $\int_0^1|\log u|\dd u=1$, so that piece is at most $\delta\log2\bigl(1-\log(\delta\log2)\bigr)$ and tends to $0$. The full integral is $\Gamma'(1)=-\gamma$ (Volume~5, Exercise~5.7).
-\item For the error term,
+As $\delta\to 0^+$ this tends to $M$.
+
+The logarithmic piece is $J=\delta\int_2^\infty\log\log t\cdot t^{-1-\delta}\dd t$. Under the substitution, $\log\log t=\log u+\log\frac1\delta$, and the integral becomes
 \[
-\begin{aligned}\Bigl|\delta\int_2^\infty E(t)t^{-1-\delta}\dd t\Bigr|&\le C\delta\int_{\delta\log2}^\infty\frac{e^{-u}}u\dd u\\&\le C\delta\Bigl(\log\frac1{\delta\log2}+1\Bigr),\end{aligned}
+J=2^{-\delta}\log\frac1\delta+\int_{\delta\log 2}^\infty e^{-u}\log u\dd u.
+\]
+The first term equals $\log\frac1\delta+O\bigl(\delta\log\frac1\delta\bigr)$, because $2^{-\delta}=1+O(\delta)$. For the second term, compare with $\int_0^\infty e^{-u}\log u\dd u$. The missing piece over $(0,\delta\log 2)$ has absolute value at most $\int_0^{\delta\log 2}|\log u|\dd u$. For $0<a<1$,
+\[
+\int_0^a|\log u|\dd u=a(1-\log a),
+\]
+so with $a=\delta\log 2$ the piece is at most $\delta\log 2\bigl(1-\log(\delta\log 2)\bigr)$. This tends to $0$ as $\delta\to 0^+$, since $a|\log a|\to 0$. The full integral equals $\Gamma'(1)=-\gamma$ (Volume~5, Exercise~5.7). Hence $J=\log\frac1\delta-\gamma+o(1)$.
+
+For the error,
+\begin{align*}
+\Bigl|\delta\int_2^\infty E(t)\,t^{-1-\delta}\dd t\Bigr|
+&\le C\delta\int_2^\infty\frac{t^{-1-\delta}}{\log t}\dd t
+=C\delta\int_{\delta\log 2}^\infty\frac{e^{-u}}u\dd u.
+\end{align*}
+Split the integral at $1$. The split is legitimate because $\delta\le 1$, so $\delta\log 2\le\log 2<1$. On $[\delta\log 2,1]$ one has $e^{-u}\le 1$, so the integral is at most $\log\frac1{\delta\log 2}$. On $[1,\infty)$ one has $\frac1u\le 1$, so the integral is at most $\int_1^\infty e^{-u}\dd u=e^{-1}<1$. Therefore the error is at most
+\[
+C\delta\Bigl(\log\frac1{\delta\log 2}+1\Bigr),
 \]
 which tends to $0$.
-\end{itemize}
-Adding, $\sum_pp^{-\sigma}=\log\frac1\delta-\gamma+M+o(1)$. Comparing the two ways, $\log\frac1\delta+o(1)=\log\frac1\delta-\gamma+M+H+o(1)$, so $M+H=\gamma$.
+
+Adding the three pieces, $\sum_pp^{-\sigma}=\log\frac1\delta-\gamma+M+o(1)$.
+
+\emph{Comparison.} The second way and the limit of $\sum h_\sigma$ give
+\[
+\log\zeta(\sigma)=\log\frac1\delta-\gamma+M+H+o(1).
+\]
+The first way says the same logarithm equals $\log\frac1\delta+O(\delta)$. Cancel $\log\frac1\delta$. What remains tends to $0$ on the left and to $-\gamma+M+H$ on the right. So $M+H=\gamma$.
 \end{proof}
 
-The proof of Theorem~\ref{thm:mertens3} is complete. Numerically $H=0.3157184520\ldots$, and $M+H=0.5772156649\ldots$, as it must.
+The proof of Theorem~\ref{thm:mertens3} is complete. Numerically $H=0.3157184520\ldots$, and $M+H=0.5772156649\ldots$, which is $\gamma$.
+
+\begin{figure}[ht]
+\centering
+\fig{ch01-product}
+\caption{Twenty values of $\prod_{p\le x}\bigl(1-\frac1p\bigr)$ (coral), from $x=10$ to $x=50000$, against $\frac{e^{-\gamma}}{\log x}$ (charcoal). At $x=100$ the product is $0.1203$ and the curve is $0.1219$. At $x=50000$ the two are $0.05187$ and $0.05189$.}
+\label{fig:product}
+\end{figure}
 
 \begin{beauty}
-The answer to the think box. For $n=10^6$, $\prod_{p\le1000}(1-\frac1p)\approx\frac{e^{-\gamma}}{\log1000}=0.0813$, while the density of primes near $10^6$ is $0.0724$.
-In general the naive product is $\frac{2e^{-\gamma}}{\log n}=\frac{1.1229}{\log n}$, while the prime number theorem says the density is $\frac1{\log n}$: the
-``independence'' heuristic overestimates the primes by about $12.3\%$. That comparison waits for Chapter~\ref{ch:pnt}; this box is a preview, not a step in the proofs of this chapter. Divisibility by small primes behaves independently (Exercise~\ref{ex:sieveprob}),
-but divisibility by primes near $\sqrt n$ does not, within $[1,n]$: an integer below $n$ has at most one prime factor above $\sqrt n$, and that constraint
-is invisible to a product of probabilities. This factor $2e^{-\gamma}$ is the first sign of the difficulty that sieves meet in Chapter~\ref{ch:sieves}, and it is why
-Cram\'er's random model of the primes (Chapter~\ref{ch:random}) uses $\frac1{\log n}$ directly instead of a sieve.
+The answer to the think box. For $n=10^6$ the product over primes $p\le 1000$ equals $0.0810$, while $\frac{e^{-\gamma}}{\log 1000}=0.0813$. The proportion of primes near $10^6$ is about $\frac1{\log 10^6}\approx 0.0724$. In general the naive product, taken over primes up to $\sqrt n$, is $\frac{2e^{-\gamma}}{\log n}=\frac{1.1229}{\log n}$. The prime number theorem says the density is $\frac1{\log n}$. The ratio of those two expressions is $2e^{-\gamma}$, and the excess $2e^{-\gamma}-1$ is about $12.3\%$. That comparison waits for Chapter~\ref{ch:pnt}. This box is a preview, not a step in the proofs of this chapter.
+
+Divisibility by a fixed finite set of small primes does behave independently (Exercise~\ref{ex:sieveprob}). Divisibility by primes near $\sqrt n$ does not, inside $[1,n]$. An integer below $n$ has at most one prime factor above $\sqrt n$, and a product of probabilities does not see that constraint. The factor $2e^{-\gamma}$ is the first sign of the difficulty that sieves meet in Chapter~\ref{ch:sieves}. It is also why Cram\'er's random model of the primes (Chapter~\ref{ch:random}) uses $\frac1{\log n}$ directly, instead of a sieve.
 \end{beauty}
 
-\section{What we proved, and what comes next}
+\section{Three sums, and the question they leave open}
 
-Three averages over the primes now have exact asymptotics. Weighted by $\frac{\log p}p$, the primes up to $x$ add up to $\log x+O(1)$. Their reciprocals add up
-to $\log\log x+M+O\bigl(\frac1{\log x}\bigr)$. And the referee's product is $\frac{e^{-\gamma}}{\log x}$ up to a factor $1+O\bigl(\frac1{\log x}\bigr)$. The only inputs were
-Chebyshev's bound $\psi(x)=O(x)$, the factorisation of $N!$, and the behaviour of $\zeta$ near $1$.
+Three averages over the primes now have asymptotics, and each one has a name. Weighted by $\frac{\log p}p$, the primes up to $x$ add to $\log x+O(1)$ (Theorem~\ref{thm:mertens1}). Their reciprocals add to $\log\log x+M+O\bigl(\frac1{\log x}\bigr)$ (Theorem~\ref{thm:mertens2}). The referee's product equals $\frac{e^{-\gamma}}{\log x}$ times $1+O\bigl(\frac1{\log x}\bigr)$ (Theorem~\ref{thm:mertens3}). The inputs were Chebyshev's bound $\psi(x)=O(x)$, the factorisation of $N!$, and the expansion of $\zeta$ near $1$.
 
-What we did not prove is the prime number theorem. Corollary~\ref{cor:chebratio} says that $\frac{\theta(x)}x$ can only tend to $1$, not that it tends to anything. All
-three theorems put weights on the primes that shrink as $p$ grows, and such averages are too forgiving to count the primes one by one.
-Chapter~\ref{ch:pnt} removes the weights.
+The prime number theorem is not Corollary~\ref{cor:chebratio}. That corollary says $\frac{\theta(x)}x$ can tend only to $1$. It does not say that the limit exists. All three theorems put a weight on the primes that shrinks as $p$ grows. An average with a shrinking weight can absorb a lot of irregularity and still look smooth. Counting the primes one by one asks for a weight that does not shrink. Chapter~\ref{ch:pnt} removes the weights. Exercise~\ref{ex:m6d} shows, inside the tools of this chapter, how an error $O(1)$ in Theorem~\ref{thm:mertens1} becomes an error $O(x)$ if you try to rebuild $\psi(x)$ from it.
 
-Before that, the same averaging is turned on other arithmetic functions. Mertens's product was a statement about the density of integers with no small
-prime factor. Chapter~\ref{ch:averages} asks the same kind of question for the number of divisors, for Euler's function and for squarefree numbers: how
-large are they on average, and when is the answer the product that independent coins would give?
+Before that removal of weights, the same averaging is turned on other arithmetic functions. Mertens's product describes the integers with no small prime factor. Chapter~\ref{ch:averages} asks the same kind of question for the number of divisors, for Euler's function, and for squarefree numbers. How large are they on average, and when is the answer the product that independent coins would give?
 
 \section{Exercises}
 
 \begin{exercise}[$\star$]\label{ex:sieveprob}
-Fix $y\ge2$, and let $P=\prod_{p\le y}p$. Show that the number of $n\le x$ with no prime factor $\le y$ is $\sum_{d\mid P}\mu(d)\lfloor\frac xd\rfloor$, and that the
-proportion of such $n$ tends to $\prod_{p\le y}(1-\frac1p)$ as $x\to\infty$.
+Fix $y\ge 2$, and let $P=\prod_{p\le y}p$. Show that the number of integers $n\le x$ with no prime factor $\le y$ is $\sum_{d\mid P}\mu(d)\bigl\lfloor\frac xd\bigr\rfloor$, and that the proportion of such $n$ tends to $\prod_{p\le y}\bigl(1-\frac1p\bigr)$ as $x\to\infty$.
 \end{exercise}
 
 \begin{exercise}[$\star$]\label{ex:mertensconst}
-Show that $M=\gamma+\sum_p\bigl(\log(1-\frac1p)+\frac1p\bigr)$.
+Show that $M=\gamma+\sum_p\bigl(\log\bigl(1-\frac1p\bigr)+\frac1p\bigr)$.
 \end{exercise}
 
 \begin{exercise}[$\star\star$]\label{ex:chebyshevlower}
-Show that $\log\lfloor x\rfloor!-2\log\lfloor x/2\rfloor!\le\psi(x)$, and deduce that $\psi(x)\ge x\log2-3\log x-3$ for $x\ge2$.
+Show that $\log\lfloor x\rfloor!-2\log\lfloor x/2\rfloor!\le\psi(x)$, and deduce that $\psi(x)\ge x\log 2-3\log x-3$ for $x\ge 2$.
 \end{exercise}
 
 \begin{exercise}[$\star\star$]\label{ex:averageomega}
@@ -282,154 +432,327 @@ Show that $\prod_{p\le x}\bigl(1+\frac1p\bigr)\sim\frac{6e^\gamma}{\pi^2}\log x$
 \end{exercise}
 
 \begin{exercise}[$\star\star$]\label{ex:mobiusmean}
-Show that $\sum_{n\le x}\mu(n)\lfloor\frac xn\rfloor=1$ for $x\ge1$, and deduce that $\bigl|\sum_{n\le x}\frac{\mu(n)}n\bigr|\le1$.
+Show that $\sum_{n\le x}\mu(n)\bigl\lfloor\frac xn\bigr\rfloor=1$ for $x\ge 1$, and deduce that $\bigl|\sum_{n\le x}\frac{\mu(n)}n\bigr|\le 1$.
 \end{exercise}
 
 \begin{exercise}[$\star\star\star$]\label{pb:poissoncycles}
 Let $C_j$ be the number of $j$-cycles of a uniformly random permutation of $\{1,\dots,n\}$, and $(c)_m=c(c-1)\cdots(c-m+1)$.
 \begin{enumerate}[label=(\alph*)]
-\item Show that for all $m_1,\dots,m_k\ge0$,
+\item Show that for all $m_1,\dots,m_k\ge 0$,
 \[
 \mathbb E\Bigl[\prod_{j=1}^k(C_j)_{m_j}\Bigr]=\begin{cases}\prod_jj^{-m_j}&\text{if }\sum_jjm_j\le n,\\0&\text{otherwise.}\end{cases}
 \]
-\item Deduce that for fixed $k$, $(C_1,\dots,C_k)$ converges in law to independent Poisson variables of parameters
-$1,\frac12,\dots,\frac1k$.
-\item Show that the probability that a random permutation has no cycle shorter than $m$ tends to
-$e^{-H_{m-1}}\approx\frac{e^{-\gamma}}m$ as $n\to\infty$, where $H_{m-1}=1+\frac12+\dots+\frac1{m-1}$. Compare with the
-density of the integers that have no prime factor smaller than $m$.
+\item Deduce that for fixed $k$, $(C_1,\dots,C_k)$ converges in law to independent Poisson variables of parameters $1,\frac12,\dots,\frac1k$.
+\item Show that the probability that a random permutation has no cycle shorter than $m$ tends to $e^{-H_{m-1}}\approx\frac{e^{-\gamma}}m$ as $n\to\infty$, where $H_{m-1}=1+\frac12+\dots+\frac1{m-1}$. Compare with the density of the integers that have no prime factor smaller than $m$.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:m6a}
+Show that $\sum_p\frac{\log p}{p^2}$ converges. Use Lemma~\ref{lem:abelint} and the bound $\theta(x)\le x\log 4$ from Proposition~\ref{prop:chebyshev}.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:m6b}
+Let $P(x)=\prod_{p\le x}\bigl(1-\frac1p\bigr)$. Take $e^{-\gamma}=0.56145948$. For $x=30$, $x=100$ and $x=1000$, compute $P(x)$ and the ratio $P(x)\big/\bigl(e^{-\gamma}/\log x\bigr)$, each to four decimal places.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:m6c}
+Show that the series $\sum_p\frac1{p\log p}$ converges. You may use Theorem~\ref{thm:mertens2} and Lemma~\ref{lem:abelint}.
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:m6d}
+Let $A(x)=\sum_{n\le x}\frac{\Lambda(n)}n$ and write $A(x)=\log x+B(x)$ for $x\ge 2$, so that Theorem~\ref{thm:mertens1} gives a constant $C$ with $|B(x)|\le C$. Also $A(x)=0$ for $x<2$.
+\begin{enumerate}[label=(\alph*)]
+\item Apply Lemma~\ref{lem:abelint} with $a_n=\frac{\Lambda(n)}n$ and $f(t)=t$, and deduce
+\[
+\psi(x)=x+xB(x)-\int_2^x B(t)\dd t+2\log 2-2.
+\]
+\item Deduce $\psi(x)=x+O(x)$.
+\item Show that $|xB(x)-\int_2^x B(t)\dd t|\le 2Cx$. Explain why a bound of this shape does not force $\frac{\psi(x)}x\to 1$.
 \end{enumerate}
 \end{exercise}
 
 \section{Hints}
 
 \begin{hint}{ex:sieveprob}
-Inclusion--exclusion over the primes $p\le y$; the error in each term is less than $1$.
+Inclusion--exclusion over the primes $p\le y$. Each floor costs an error smaller than $1$, and there are $2^{\pi(y)}$ divisors of $P$.
 \end{hint}
 \begin{hint}{ex:mertensconst}
-This is Lemma~\ref{lem:mplush} rewritten.
+Rewrite the definition of $H$ from the argument for Theorem~\ref{thm:mertens3}, and use Lemma~\ref{lem:mplush}.
 \end{hint}
 \begin{hint}{ex:chebyshevlower}
-Compare $\lfloor\frac xn\rfloor-2\lfloor\frac x{2n}\rfloor$ with $0$ and $1$, then use Proposition~\ref{prop:chebyshev}(c).
+For real $u$, the bracket $\lfloor 2u\rfloor-2\lfloor u\rfloor$ is $0$ or $1$. Then use Proposition~\ref{prop:chebyshev}(c).
 \end{hint}
 \begin{hint}{ex:averageomega}
-Swap the sums: $\sum_{n\le x}\omega(n)=\sum_{p\le x}\lfloor\frac xp\rfloor$.
+Swap the sums: $\sum_{n\le x}\omega(n)=\sum_{p\le x}\bigl\lfloor\frac xp\bigr\rfloor$.
 \end{hint}
 \begin{hint}{ex:plusproduct}
-$1+\frac1p=\frac{1-1/p^2}{1-1/p}$.
+$1+\frac1p=\dfrac{1-1/p^2}{1-1/p}$.
 \end{hint}
 \begin{hint}{ex:mobiusmean}
-$\sum_{n\le x}\mu(n)\lfloor\frac xn\rfloor=\sum_{m\le x}\sum_{n\mid m}\mu(n)$.
+$\sum_{n\le x}\mu(n)\bigl\lfloor\frac xn\bigr\rfloor=\sum_{m\le x}\sum_{n\mid m}\mu(n)$.
 \end{hint}
 
 \begin{hint}{pb:poissoncycles}
-(a) $\prod(C_j)_{m_j}$ counts ordered lists of distinct cycles of $\sigma$. (b) Inclusion--exclusion writes $P(C=c)$ with
-factorial moments, exactly.
+(a) The product $\prod_j(C_j)_{m_j}$ counts ordered lists of distinct cycles of $\sigma$. (b) Inclusion--exclusion writes $P(C=c)$ from the factorial moments, with no remainder.
+\end{hint}
+
+\begin{hint}{ex:m6a}
+Take $f(t)=\frac1{t^2}$ and $y=2$. The integral that appears is bounded by a constant times $\int_2^\infty t^{-2}\dd t$.
+\end{hint}
+\begin{hint}{ex:m6b}
+The primes up to $30$ are $2,3,5,7,11,13,17,19,23,29$. Multiply $\frac{p-1}p$ and reduce the fraction before dividing.
+\end{hint}
+\begin{hint}{ex:m6c}
+Abel summation with $a_p=\frac1p$ and $f(t)=\frac1{\log t}$, starting at $y=3$. Theorem~\ref{thm:mertens2} makes the integral converge.
+\end{hint}
+\begin{hint}{ex:m6d}
+On $[2,x]$ one has $A(t)=\log t+B(t)$, and $\int_2^x\log t\dd t=(x\log x-x)-(2\log 2-2)$. The boundary term $A(1)$ is $0$.
 \end{hint}
 
 \section{Solutions}
 
 \begin{solution}{ex:sieveprob}
-\idea Count the complement with inclusion--exclusion: the multiples of $d$ up to $x$ number $\lfloor\frac xd\rfloor$, and $\mu$ supplies the signs. With $y$ fixed there are
-only $2^{\pi(y)}$ terms, a constant.
-\writeup An integer $n$ has no prime factor $\le y$ exactly when $\gcd(n,P)=1$, and $\sum_{d\mid\gcd(n,P)}\mu(d)=[\gcd(n,P)=1]$ (Volume~2, Chapter~4). Summing over $n\le x$ and
-swapping, the count is $\sum_{d\mid P}\mu(d)\#\{n\le x:d\mid n\}=\sum_{d\mid P}\mu(d)\lfloor\frac xd\rfloor$. Replacing $\lfloor\frac xd\rfloor$ by $\frac xd$ costs less than $1$ per term, so the count is
-$x\sum_{d\mid P}\frac{\mu(d)}d+O(2^{\pi(y)})=x\prod_{p\le y}(1-\frac1p)+O(2^{\pi(y)})$, expanding the product. Divide by $x$ and let $x\to\infty$. By Theorem~\ref{thm:mertens3},
-the limit is about $\frac{e^{-\gamma}}{\log y}$ for large $y$. The error term $2^{\pi(y)}$ is why this argument fails for $y=\sqrt x$, as the beauty box explains.
+\idea Count the complement by inclusion--exclusion. The multiples of $d$ up to $x$ number $\bigl\lfloor\frac xd\bigr\rfloor$, and $\mu$ supplies the signs. With $y$ fixed there are $2^{\pi(y)}$ divisors of $P$, a constant.
+\writeup An integer $n$ has no prime factor $\le y$ exactly when $\gcd(n,P)=1$. The indicator of that event is $\sum_{d\mid\gcd(n,P)}\mu(d)$ (Volume~2, Chapter~4). Sum over $n\le x$ and swap the order:
+\[
+\sum_{n\le x}\sum_{d\mid\gcd(n,P)}\mu(d)=\sum_{d\mid P}\mu(d)\,\#\{n\le x:d\mid n\}=\sum_{d\mid P}\mu(d)\Bigl\lfloor\frac xd\Bigr\rfloor.
+\]
+Replacing $\bigl\lfloor\frac xd\bigr\rfloor$ by $\frac xd$ costs less than $1$ in each term. The count is therefore
+\[
+x\sum_{d\mid P}\frac{\mu(d)}d+O\bigl(2^{\pi(y)}\bigr)=x\prod_{p\le y}\Bigl(1-\frac1p\Bigr)+O\bigl(2^{\pi(y)}\bigr),
+\]
+where the product is the expansion of $\sum_{d\mid P}\frac{\mu(d)}d$. Divide by $x$ and let $x\to\infty$. The proportion tends to $\prod_{p\le y}\bigl(1-\frac1p\bigr)$. By Theorem~\ref{thm:mertens3}, that limit is about $\frac{e^{-\gamma}}{\log y}$ when $y$ is large. The error $2^{\pi(y)}$ is why the same argument fails for $y=\sqrt x$, as the beauty box explains: $2^{\pi(\sqrt x)}$ is much larger than $x$.
 \end{solution}
 
 \begin{solution}{ex:mertensconst}
-\idea Just rearrange the definition of $H$.
-\writeup By Lemma~\ref{lem:mplush}, $M=\gamma-H=\gamma-\sum_p\bigl(-\log(1-\frac1p)-\frac1p\bigr)$. Since the series converges fast (its tail after $x$ is below $\frac1{x-1}$),
-this computes $M$ much better than Theorem~\ref{thm:mertens2}: the primes up to $10^7$ give the eight digits $0.26149721$, and the next digit still moves. One gets many more with the identity
-$\sum_pp^{-m}=\sum_{k\ge1}\frac{\mu(k)}k\log\zeta(km)$.
+\idea Rearrange the definition of $H$.
+\writeup In the argument for Theorem~\ref{thm:mertens3}, $H=\sum_ph(p)$ with $h(p)=-\log\bigl(1-\frac1p\bigr)-\frac1p$. Lemma~\ref{lem:mplush} says $M+H=\gamma$, so
+\[
+M=\gamma-H=\gamma+\sum_p\Bigl(\log\Bigl(1-\frac1p\Bigr)+\frac1p\Bigr).
+\]
+The series converges quickly. Its tail after $x$ is at most $\frac1{x-1}$, by the comparison used for $H$. The primes up to $10^7$ produce the partial value $0.26149722$ when it is rounded to eight decimals. The limit is $0.2614972128\ldots$, so that eighth decimal has not yet settled, but the error is already far smaller than the integral formula of Theorem~\ref{thm:mertens2} suggests at the same height. Many further digits come from the identity $\sum_pp^{-m}=\sum_{k\ge 1}\frac{\mu(k)}k\log\zeta(km)$, which turns a prime sum into values of $\zeta$ at integers.
 \end{solution}
 
 \begin{solution}{ex:chebyshevlower}
-\idea The ratio $\frac{(2m)!}{m!^2}$ is the central binomial coefficient that Chebyshev used: it is large, about $4^m$, and all its prime factors are small, so
-it forces many primes up to $2m$.
-\writeup By the proof of Theorem~\ref{thm:mertens1}, $\log\lfloor x\rfloor!-2\log\lfloor x/2\rfloor!=\sum_{n\le x}\Lambda(n)\bigl(\lfloor\frac xn\rfloor-2\lfloor\frac x{2n}\rfloor\bigr)$. For real $u$,
-$\lfloor2u\rfloor-2\lfloor u\rfloor\in\{0,1\}$; with $u=\frac x{2n}$, each bracket is $0$ or $1$, so the sum is at most $\psi(x)$. By Proposition~\ref{prop:chebyshev}(c), the
-left side is $(x\log x-x)-2\bigl(\frac x2\log\frac x2-\frac x2\bigr)+r(x)-2r(\frac x2)=x\log2+r(x)-2r(\frac x2)$, and $|r(x)-2r(\frac x2)|\le3\log x+3$ (with the convention
-$\log\lfloor x/2\rfloor!=0$ when $x<4$, the bound still holds by a direct check). So $\psi(x)\ge x\log2-3\log x-3$. With Proposition~\ref{prop:chebyshev}(a),
-$0.69\le\frac{\psi(x)}x\le1.39$ for large $x$: Chebyshev's theorem, with explicit constants.
+\idea The ratio $\frac{(2m)!}{(m!)^2}$ is the central binomial coefficient Chebyshev used. It is large, about $4^m$, and every prime factor is at most $2m$, so the size forces many prime powers up to $2m$.
+\writeup By the identity in the proof of Theorem~\ref{thm:mertens1},
+\[
+\log\lfloor x\rfloor!-2\log\lfloor x/2\rfloor!=\sum_{n\le x}\Lambda(n)\Bigl(\Bigl\lfloor\frac xn\Bigr\rfloor-2\Bigl\lfloor\frac x{2n}\Bigr\rfloor\Bigr).
+\]
+For every real $u$, the integer $\lfloor 2u\rfloor-2\lfloor u\rfloor$ equals $0$ or $1$. Set $u=\frac x{2n}$. Each bracket on the right is $0$ or $1$. Dropping the brackets therefore only increases the sum, and the left side is at most $\sum_{n\le x}\Lambda(n)=\psi(x)$.
+
+Proposition~\ref{prop:chebyshev}(c) expands the factorials. Write $r$ for the error in that proposition, so $|r(t)|\le\log t+1$. Then
+\begin{align*}
+\log\lfloor x\rfloor!-2\log\lfloor x/2\rfloor!
+&=(x\log x-x)-2\Bigl(\frac x2\log\frac x2-\frac x2\Bigr)+r(x)-2r\Bigl(\frac x2\Bigr)\\
+&=x\log 2+r(x)-2r\Bigl(\frac x2\Bigr).
+\end{align*}
+The error satisfies $|r(x)-2r(x/2)|\le(\log x+1)+2(\log x+1)=3\log x+3$, because $\log(x/2)\le\log x$. Hence $\psi(x)\ge x\log 2-3\log x-3$ when the factorials in the statement are the ones Proposition~\ref{prop:chebyshev}(c) describes.
+
+For $2\le x<4$ one has $\lfloor x/2\rfloor\le 1$, so $\log\lfloor x/2\rfloor!=0$. On this range $\psi(x)\ge\log 2$. The function $x\log 2-3\log x-3$ has negative derivative on $[2,4)$, since $\log 2<\frac3x$ there, and its value at $x=2$ is $-\log 2-3<0$. So it stays below $\log 2$, and the lower bound still holds. The factorial comparison is the direct check $\log 2\le\psi(x)$ on $[2,3)$ and $\log 6\le\psi(x)$ on $[3,4)$.
+
+Together with Proposition~\ref{prop:chebyshev}(a), this is Chebyshev's theorem with explicit constants. Since $\log 2>0.69$ and $\log 4<1.39$, one has $0.69\le\frac{\psi(x)}x\le 1.39$ for all sufficiently large $x$.
 \end{solution}
 
 \begin{solution}{ex:averageomega}
-\idea Count pairs $(p,n)$ with $p\mid n\le x$ in the other order: each prime $p$ divides $\lfloor x/p\rfloor$ integers up to $x$. Then Mertens's second theorem does
-the rest, and Chebyshev bounds the rounding errors.
-\writeup $\sum_{n\le x}\omega(n)=\sum_{n\le x}\sum_{p\mid n}1=\sum_{p\le x}\lfloor\frac xp\rfloor=x\sum_{p\le x}\frac1p-\varepsilon(x)$ with $0\le\varepsilon(x)\le\pi(x)=O(\frac x{\log x})$
-(Proposition~\ref{prop:chebyshev}(b)). By Theorem~\ref{thm:mertens2}, $x\sum_{p\le x}\frac1p=x\log\log x+Mx+O(\frac x{\log x})$. So a typical integer up to $x$
-has about $\log\log x+M$ prime factors: $3.3$ for $x=10^9$. The main term alone, without $M$, is $3.0$. Chapter~\ref{ch:erdoskac} shows that most integers have close to that many, and that the fluctuations are Gaussian.
+\idea Count pairs $(p,n)$ with $p\mid n$ and $n\le x$ in the other order. The prime $p$ divides $\bigl\lfloor\frac xp\bigr\rfloor$ integers up to $x$. Theorem~\ref{thm:mertens2} sums the reciprocals, and Proposition~\ref{prop:chebyshev} bounds the rounding.
+\writeup
+\[
+\sum_{n\le x}\omega(n)=\sum_{n\le x}\sum_{p\mid n}1=\sum_{p\le x}\Bigl\lfloor\frac xp\Bigr\rfloor=x\sum_{p\le x}\frac1p-\varepsilon(x),
+\]
+where $0\le\varepsilon(x)\le\pi(x)$. Proposition~\ref{prop:chebyshev}(b) gives $\pi(x)=O\bigl(\frac x{\log x}\bigr)$, so the same bound holds for $\varepsilon(x)$. Theorem~\ref{thm:mertens2} multiplies by $x$:
+\[
+x\sum_{p\le x}\frac1p=x\log\log x+Mx+O\Bigl(\frac x{\log x}\Bigr).
+\]
+Add the two errors. A typical integer up to $x$ therefore has about $\log\log x+M$ distinct prime factors. At $x=10^9$ that quantity is $3.29$, while $\log\log(10^9)$ alone is $3.03$. Chapter~\ref{ch:erdoskac} returns to the fluctuations around this average and shows that they are Gaussian.
 \end{solution}
 
 \begin{solution}{ex:plusproduct}
-\idea Turn the product with $+$ signs into Mertens's product, at the cost of a convergent product, which is $\frac1{\zeta(2)}$.
-\writeup $\prod_{p\le x}(1+\frac1p)=\prod_{p\le x}(1-\frac1{p^2})\cdot\prod_{p\le x}(1-\frac1p)^{-1}$. The first product tends to $\prod_p(1-p^{-2})=\frac1{\zeta(2)}=\frac6{\pi^2}$ (Euler
-product, Volume~5, Theorem~10.3, and $\zeta(2)=\frac{\pi^2}6$). The second is $\sim e^\gamma\log x$ by Theorem~\ref{thm:mertens3}. So the product is
-$\sim\frac{6e^\gamma}{\pi^2}\log x=1.0827\ldots\log x$. Expanding, $\prod_{p\le x}(1+\frac1p)=\sum\frac1n$ over the squarefree $n$ with all prime factors $\le x$, which is consistent
-with the density $\frac6{\pi^2}$ of the squarefree integers (Chapter~\ref{ch:averages}).
+\idea Turn the product with plus signs into the reciprocal of Mertens's product. The cost is a convergent product, equal to $\frac1{\zeta(2)}$.
+\writeup
+\[
+\prod_{p\le x}\Bigl(1+\frac1p\Bigr)=\prod_{p\le x}\Bigl(1-\frac1{p^2}\Bigr)\cdot\prod_{p\le x}\Bigl(1-\frac1p\Bigr)^{-1},
+\]
+because $1+\frac1p=\frac{1-1/p^2}{1-1/p}$. As $x\to\infty$ the first product increases to $\prod_p(1-p^{-2})=\frac1{\zeta(2)}=\frac6{\pi^2}$. The Euler product is Volume~5, Theorem~10.3, and $\zeta(2)=\frac{\pi^2}6$. The second product is $\sim e^\gamma\log x$ by Theorem~\ref{thm:mertens3}. Therefore
+\[
+\prod_{p\le x}\Bigl(1+\frac1p\Bigr)\sim\frac{6e^\gamma}{\pi^2}\log x=1.08276\ldots\log x.
+\]
+Expanding the finite product, $\prod_{p\le x}\bigl(1+\frac1p\bigr)$ equals $\sum\frac1n$ over the squarefree positive integers whose prime factors are all $\le x$. That is consistent with the density $\frac6{\pi^2}$ of the squarefree integers, which Chapter~\ref{ch:averages} identifies.
 \end{solution}
 
 \begin{solution}{ex:mobiusmean}
-\idea $\lfloor\frac xn\rfloor$ counts the multiples of $n$ up to $x$, so the sum counts each $m\le x$ with weight $\sum_{n\mid m}\mu(n)$, which is $1$ for $m=1$ and $0$ otherwise.
-The identity then pins $\sum\frac{\mu(n)}n$ down up to the fractional parts.
-\writeup $\sum_{n\le x}\mu(n)\lfloor\frac xn\rfloor=\sum_{n\le x}\mu(n)\#\{m\le x:n\mid m\}=\sum_{m\le x}\sum_{n\mid m}\mu(n)=1$, since $\mu*\mathbf1=\varepsilon$ (Volume~2, Theorem~4.4). Write
-$\lfloor\frac xn\rfloor=\frac xn-\{\frac xn\}$: then $x\sum_{n\le x}\frac{\mu(n)}n=1+\sum_{n\le x}\mu(n)\{\frac xn\}$. The last sum has $\lfloor x\rfloor$ terms of modulus less than $1$, and the term
-$n=1$ is $\{x\}$, so its modulus is at most $\{x\}+\lfloor x\rfloor-1=x-1$. Hence $x\bigl|\sum_{n\le x}\frac{\mu(n)}n\bigr|\le x$. Chapter~\ref{ch:pnt} shows that this sum actually tends to $0$, by the method that proves the prime number theorem, to which this
-fact is equivalent.
+\idea The floor $\bigl\lfloor\frac xn\bigr\rfloor$ counts the multiples of $n$ up to $x$. Each $m\le x$ is therefore counted with weight $\sum_{n\mid m}\mu(n)$, which equals $1$ at $m=1$ and equals $0$ for every $m>1$. The fractional parts then keep $\sum\frac{\mu(n)}n$ from wandering by more than $1$.
+\writeup
+\[
+\sum_{n\le x}\mu(n)\Bigl\lfloor\frac xn\Bigr\rfloor=\sum_{n\le x}\mu(n)\,\#\{m\le x:n\mid m\}=\sum_{m\le x}\sum_{n\mid m}\mu(n).
+\]
+The inner sum is $(\mu*\mathbf 1)(m)=\varepsilon(m)$ (Volume~2, Theorem~4.4), so the double sum equals $1$.
+
+Write $\bigl\lfloor\frac xn\bigr\rfloor=\frac xn-\bigl\{\frac xn\bigr\}$. Then
+\[
+x\sum_{n\le x}\frac{\mu(n)}n=1+\sum_{n\le x}\mu(n)\Bigl\{\frac xn\Bigr\}.
+\]
+The term $n=1$ equals $\{x\}$. For $2\le n\le x$ there are $\lfloor x\rfloor-1$ terms, and each has absolute value at most $\bigl\{\frac xn\bigr\}<1$. Their total therefore has absolute value strictly less than $\lfloor x\rfloor-1$ whenever $\lfloor x\rfloor\ge 2$, and equals $0$ when $x<2$. In every case
+\[
+\Bigl|\sum_{n\le x}\mu(n)\Bigl\{\frac xn\Bigr\}\Bigr|\le\{x\}+\lfloor x\rfloor-1=x-1,
+\]
+the inequality being an equality at $x=1$, where both sides are $0$. Hence
+\[
+\Bigl|x\sum_{n\le x}\frac{\mu(n)}n\Bigr|\le 1+(x-1)=x,
+\]
+and $\bigl|\sum_{n\le x}\frac{\mu(n)}n\bigr|\le 1$. Chapter~\ref{ch:pnt} shows that the sum actually tends to $0$. The argument there is the prime number theorem, and the vanishing of this sum is equivalent to it. The bound just proved does not need that argument.
 \end{solution}
 
 \begin{solution}{pb:poissoncycles}
-\idea A falling factorial $(C_j)_m$ counts ordered lists of $m$ distinct $j$-cycles of $\sigma$. So the mixed factorial moment
-counts ordered lists of disjoint cycles that are all present in $\sigma$, and each list is present with probability
-$\frac{(n-M)!}{n!}$, $M$ the number of points it uses. Since the factorial moments are exact, inclusion--exclusion gives the law
-exactly, as a truncated Poisson series.
+\idea A falling factorial $(C_j)_m$ counts ordered lists of $m$ distinct $j$-cycles of a permutation $\sigma$. The mixed moment therefore counts ordered lists of disjoint cycles, all present in $\sigma$. A fixed list that uses $M$ points lies in $\sigma$ with probability $\frac{(n-M)!}{n!}$. The factorial moments are exact, so inclusion--exclusion gives the law of $(C_1,\dots,C_k)$ as a truncated Poisson series.
 
-\writeup (a) Let $M=\sum jm_j$. The product $\prod_j(C_j)_{m_j}$ is the number of ways to choose, for each $j$, an ordered list of
-$m_j$ distinct $j$-cycles of $\sigma$; all these cycles are disjoint. If $M>n$ there are none. Otherwise, the expectation is the
-number of such lists of disjoint cycles in $\{1,\dots,n\}$ times the probability that a given list consists of cycles of $\sigma$.
-A list is given by an ordered sequence of $M$ distinct points, cut into consecutive blocks of the prescribed lengths, each block
-read as a cycle; a $j$-cycle can be written in $j$ ways, so there are $\frac{n!}{(n-M)!\prod_jj^{m_j}}$ lists. A given list of
-disjoint cycles lies in $(n-M)!$ permutations, so one list has probability $\frac{(n-M)!}{n!}$. The expectation is that probability times the number of lists, which is $\prod_jj^{-m_j}$.
+\writeup (a) Let $M=\sum_j jm_j$. The product $\prod_j(C_j)_{m_j}$ is the number of ways to choose, for each $j$, an ordered list of $m_j$ distinct $j$-cycles of $\sigma$. Cycles in one such choice are pairwise disjoint, because they are cycles of one permutation. If $M>n$ there is no such choice, and the expectation is $0$.
 
-(b) For a vector $C=(C_1,\dots,C_k)$ of bounded non-negative integers and $c\in\N^k$, inclusion--exclusion gives
+Now suppose $M\le n$. The expectation equals the number of lists of disjoint cycles in $\{1,\dots,n\}$, of the prescribed lengths, times the probability that one fixed list consists of cycles of $\sigma$. A list is an ordered sequence of $M$ distinct points, cut into consecutive blocks of the prescribed lengths, each block read as a cycle. A $j$-cycle can be written in $j$ ways and still be the same cycle, so the number of lists is
 \[
-P(C=c)=\sum_{m\ge c}\ \prod_j(-1)^{m_j-c_j}\binom{m_j}{c_j}\ \mathbb E\Bigl[\prod_j\frac{(C_j)_{m_j}}{m_j!}\Bigr],
+\frac{n!}{(n-M)!\,\prod_j j^{m_j}}.
 \]
-a finite sum: expand $\mathbf 1_{C_j=c_j}=\binom{C_j}{c_j}(1-1)^{C_j-c_j}$ and use $\binom{C_j}{c_j}\binom{C_j-c_j}{i}=\binom{c_j+i}{c_j}\binom{C_j}{c_j+i}$.
-By (a), the terms are those of
-\[
-\prod_j\sum_{m_j\ge c_j}(-1)^{m_j-c_j}\binom{m_j}{c_j}\frac{j^{-m_j}}{m_j!}=\prod_je^{-1/j}\frac{j^{-c_j}}{c_j!},
-\]
-restricted to $\sum jm_j\le n$. The full series converges absolutely (its absolute values sum to $\prod_j\frac{e^{1/j}j^{-c_j}}{c_j!}$), so
-the omitted tail tends to $0$ as $n\to\infty$, and $P(C=c)$ tends to the product of the Poisson probabilities.
+A given list of disjoint cycles lies in $(n-M)!$ permutations of $n$ points: the remaining $n-M$ points may be permuted freely, and the cycles in the list are fixed. One list therefore has probability $\frac{(n-M)!}{n!}$. Multiply. The expectation equals $\prod_j j^{-m_j}$.
 
-(c) By (b), $P(C_1=\dots=C_{m-1}=0)\to\prod_{j<m}e^{-1/j}=e^{-H_{m-1}}$. As $H_{m-1}=\log m+\gamma+O(\frac1m)$, this is
-$\sim\frac{e^{-\gamma}}m$. For integers, the density of those with no prime factor below $m$ is $\prod_{p<m}(1-\frac1p)\sim\frac{e^{-\gamma}}{\log m}$
-(Theorem~\ref{thm:mertens3}). The same constant $e^{-\gamma}$ appears, with $m$ in place of $\log m$: cycles of length $j$ play the role of primes
-of size about $e^j$, and $\frac1j$ the role of $\frac1p$.
+(b) Let $C=(C_1,\dots,C_k)$ and let $c\in\N^k$. For a single coordinate the indicator of the value $c_j$ expands by the binomial theorem:
+\[
+\mathbf 1_{C_j=c_j}=\binom{C_j}{c_j}(1-1)^{C_j-c_j}=\sum_{i\ge 0}(-1)^i\binom{C_j}{c_j}\binom{C_j-c_j}{i}.
+\]
+The identity $\binom{C_j}{c_j}\binom{C_j-c_j}{i}=\binom{c_j+i}{c_j}\binom{C_j}{c_j+i}$ rewrites the general term. Set $m_j=c_j+i$. Then
+\[
+\mathbf 1_{C_j=c_j}=\sum_{m_j\ge c_j}(-1)^{m_j-c_j}\binom{m_j}{c_j}\binom{C_j}{m_j},
+\]
+and $\binom{C_j}{m_j}=\frac{(C_j)_{m_j}}{m_j!}$. The product of the indicators, summed against the uniform measure, is a finite sum because $(C_j)_{m_j}=0$ once $m_j>C_j$. Therefore
+\[
+P(C=c)=\sum_{m\ge c}\ \prod_j(-1)^{m_j-c_j}\binom{m_j}{c_j}\ \mathbb E\Bigl[\prod_j\frac{(C_j)_{m_j}}{m_j!}\Bigr].
+\]
+By (a), the expectation equals $\prod_j\frac{j^{-m_j}}{m_j!}$ when $\sum_j jm_j\le n$, and equals $0$ otherwise. The unrestricted series factors as a product over $j$. For one coordinate, with $\lambda=\frac1j$ and $k=m_j-c_j$,
+\begin{align*}
+\sum_{m_j\ge c_j}(-1)^{m_j-c_j}\binom{m_j}{c_j}\frac{j^{-m_j}}{m_j!}
+&=\frac{j^{-c_j}}{c_j!}\sum_{k\ge 0}\frac{(-1/j)^k}{k!}
+=e^{-1/j}\frac{j^{-c_j}}{c_j!}.
+\end{align*}
+So the unrestricted sum is $\prod_j e^{-1/j}\frac{j^{-c_j}}{c_j!}$. The terms we omitted are those with $\sum_j jm_j>n$. The series of absolute values equals $\prod_j\frac{e^{1/j}j^{-c_j}}{c_j!}$, which is finite. The omitted tail tends to $0$ as $n\to\infty$. Hence $P(C=c)$ tends to the product of the Poisson probabilities of parameters $1,\frac12,\dots,\frac1k$.
+
+(c) Part (b) with $c_1=\dots=c_{m-1}=0$ gives
+\[
+P(C_1=\dots=C_{m-1}=0)\to\prod_{j<m}e^{-1/j}=e^{-H_{m-1}}.
+\]
+The harmonic number satisfies $H_{m-1}=\log(m-1)+\gamma+O\bigl(\frac1m\bigr)$. Since $\log(m-1)=\log m+\log\bigl(1-\frac1m\bigr)=\log m+O\bigl(\frac1m\bigr)$, one has $H_{m-1}=\log m+\gamma+O\bigl(\frac1m\bigr)$, and
+\[
+e^{-H_{m-1}}\sim\frac{e^{-\gamma}}m.
+\]
+For the integers, the density of those with no prime factor strictly below $m$ is $\prod_{p\le m-1}\bigl(1-\frac1p\bigr)$. Theorem~\ref{thm:mertens3} says this product is asymptotic to $\frac{e^{-\gamma}}{\log(m-1)}$, and $\log(m-1)\sim\log m$, so the density is asymptotic to $\frac{e^{-\gamma}}{\log m}$. The constant $e^{-\gamma}$ appears in both places. The role of $m$ among cycle lengths is the role of $\log m$ among integers: a cycle of length $j$ behaves like a prime of size about $e^j$, and $\frac1j$ behaves like $\frac1p$.
 \tools{Volume~4, Chapters~2 and~6 (factorial moments, convergence in law); Theorem~\ref{thm:mertens3}.}
-\leads The convergence is extremely fast: Arratia and Tavaré (1992) showed that the total variation distance is
-superexponentially small in $\frac nk$. The analogy between cycles and prime factors is the theme of the book by Arratia, Barbour
-and Tavaré. Dickman's function, which Volume~5 met in the closing problems of its Chapter~13, belongs to the same analogy: it counts the integers with no large prime factor, and the permutations with no long cycle.
+\leads The convergence is extremely fast: Arratia and Tavar\'e (1992) showed that the total variation distance is superexponentially small in $\frac nk$. The analogy between cycles and prime factors is the theme of the book by Arratia, Barbour and Tavar\'e. Dickman's function, which Volume~5 met in the closing problems of its Chapter~13, belongs to the same analogy: it counts the integers with no large prime factor, and the permutations with no long cycle.
+\end{solution}
+
+\begin{solution}{ex:m6a}
+\idea Partial summation turns $\sum\frac{\log p}{p^2}$ into an integral of $\frac{\theta(t)}{t^3}$. The bound $\theta(t)\le t\log 4$ makes that integral converge, like $\int\frac{\mathrm dt}{t^2}$.
+\writeup Apply Lemma~\ref{lem:abelint} with $a_n=\log n$ when $n$ is prime and $a_n=0$ otherwise, so $A=\theta$, with $f(t)=\frac1{t^2}$ and $y=2$. Then $f'(t)=-\frac2{t^3}$ and $\theta(2)=\log 2$, and
+\begin{align*}
+\sum_{2<p\le x}\frac{\log p}{p^2}
+&=\frac{\theta(x)}{x^2}-\frac{\log 2}4-\int_2^x\theta(t)\Bigl(-\frac2{t^3}\Bigr)\dd t\\
+&=\frac{\theta(x)}{x^2}-\frac{\log 2}4+2\int_2^x\frac{\theta(t)}{t^3}\dd t.
+\end{align*}
+Proposition~\ref{prop:chebyshev}(a) gives $\theta(t)\le t\log 4$ for $t\ge 2$. The boundary term satisfies $0\le\frac{\theta(x)}{x^2}\le\frac{\log 4}x$, which tends to $0$. The integral satisfies
+\[
+0\le\int_2^x\frac{\theta(t)}{t^3}\dd t\le\log 4\int_2^x t^{-2}\dd t=\log 4\Bigl(\frac12-\frac1x\Bigr)\le\frac{\log 4}2.
+\]
+So $\int_2^\infty\frac{\theta(t)}{t^3}\dd t$ converges. The partial sums $\sum_{2<p\le x}\frac{\log p}{p^2}$ therefore converge as $x\to\infty$. Adding the single term $\frac{\log 2}4$ at $p=2$ does not change the convergence. The series $\sum_p\frac{\log p}{p^2}$ converges.
+\end{solution}
+
+\begin{solution}{ex:m6b}
+\idea Multiply $\frac{p-1}p$ over the primes up to $x$. For $x=30$ the fraction reduces by hand. Divide each product by $e^{-\gamma}/\log x$.
+\writeup The primes up to $30$ are $2,3,5,7,11,13,17,19,23,29$. Their product is
+\[
+P(30)=\frac{1\cdot 2\cdot 4\cdot 6\cdot 10\cdot 12\cdot 16\cdot 18\cdot 22\cdot 28}{2\cdot 3\cdot 5\cdot 7\cdot 11\cdot 13\cdot 17\cdot 19\cdot 23\cdot 29}=\frac{442368}{2800733}=0.15794722\ldots.
+\]
+To four decimal places, $P(30)=0.1579$. With the given value $e^{-\gamma}=0.56145948$,
+\[
+\frac{e^{-\gamma}}{\log 30}=0.16507700\ldots,\qquad\frac{P(30)}{e^{-\gamma}/\log 30}=0.95680935\ldots.
+\]
+The ratio to four decimal places is $0.9568$.
+
+The same running product over the $25$ primes up to $100$ equals $0.12031729\ldots$, so $P(100)=0.1203$. The ratio against $\frac{e^{-\gamma}}{\log 100}$ equals $0.986859\ldots$, which is $0.9869$ to four decimal places.
+
+Over the primes up to $1000$ the product equals $0.08096526\ldots$, so $P(1000)=0.0810$. The ratio equals $0.996133\ldots$, which is $0.9961$ to four decimal places.
+
+The three ratios are $0.9568$, $0.9869$ and $0.9961$. They climb toward $1$, which is the content of Theorem~\ref{thm:mertens3} at three heights.
+\end{solution}
+
+\begin{solution}{ex:m6c}
+\idea The partial sums of $\sum\frac1p$ grow like $\log\log t$. Dividing one more time by $\log p$, and summing by parts, produces an integral of $\frac{\log\log t}{t\log^2 t}$, which converges.
+\writeup Let $S(t)=\sum_{p\le t}\frac1p$. Theorem~\ref{thm:mertens2} gives $S(t)=\log\log t+M+E(t)$ for $t\ge 2$, with $|E(t)|\le\frac C{\log t}$ for some constant $C$. Apply Lemma~\ref{lem:abelint} with $a_p=\frac1p$, $f(t)=\frac1{\log t}$ and $y=3$. Then $f'(t)=-\frac1{t\log^2 t}$, and for $x>3$
+\begin{align*}
+\sum_{3<p\le x}\frac1{p\log p}
+&=\frac{S(x)}{\log x}-\frac{S(3)}{\log 3}+\int_3^x\frac{S(t)}{t\log^2 t}\dd t.
+\end{align*}
+The boundary term $\frac{S(x)}{\log x}$ tends to $0$, because $S(x)=O(\log\log x)$. It is enough to show that the integral up to $\infty$ converges. Split $S$ into three pieces and substitute $u=\log t$, so $\frac{\mathrm dt}t=\mathrm du$.
+
+The constant $M$ gives $\int_3^\infty\frac{M}{t\log^2 t}\dd t=M\int_{\log 3}^\infty u^{-2}\dd u=\frac M{\log 3}$, which is finite.
+
+The main term gives $\int_3^\infty\frac{\log\log t}{t\log^2 t}\dd t=\int_{\log 3}^\infty\frac{\log u}{u^2}\dd u$. Integrate by parts. Set $w=\log u$ and $\mathrm dz=u^{-2}\dd u$, so $\mathrm dw=\frac{\mathrm du}u$ and $z=-\frac1u$. Then
+\[
+\int\frac{\log u}{u^2}\dd u=-\frac{\log u}u-\int\Bigl(-\frac1u\Bigr)\frac{\mathrm du}u=-\frac{\log u}u-\frac1u.
+\]
+From $\log 3$ to $\infty$ the boundary term at infinity vanishes, and the value at $\log 3$ is finite. This piece converges.
+
+The error satisfies
+\[
+\int_3^\infty\frac{|E(t)|}{t\log^2 t}\dd t\le C\int_3^\infty\frac{\mathrm dt}{t\log^3 t}=C\int_{\log 3}^\infty u^{-3}\dd u=\frac C{2(\log 3)^2},
+\]
+which is finite. So $\int_3^\infty\frac{S(t)}{t\log^2 t}\dd t$ converges, and the partial sums $\sum_{3<p\le x}\frac1{p\log p}$ converge. The two primes $p=2$ and $p=3$ add two finite terms. The series $\sum_p\frac1{p\log p}$ converges.
+
+The contrast with Theorem~\ref{thm:mertens2} is the extra logarithm in the denominator. The sum $\sum\frac1p$ diverges, slowly. Divide the general term by $\log p$ and the series converges.
+\end{solution}
+
+\begin{solution}{ex:m6d}
+\idea Summation by parts with $f(t)=t$ rebuilds $\psi$ from $A$. The main terms $x\log x$ cancel, and the bounded error $B$ is multiplied by $x$. An error of size $x$ does not force the ratio $\psi(x)/x$ to tend to $1$.
+\writeup (a) Apply Lemma~\ref{lem:abelint} with $a_n=\frac{\Lambda(n)}n$, so that the partial-sum function is $A$, with $f(t)=t$ and $y=1$. Then $f'(t)=1$ and $A(1)=0$, because $\Lambda(1)=0$ and there is no prime at most $1$. Also $a_nf(n)=\Lambda(n)$. The lemma gives
+\[
+\sum_{1<n\le x}\Lambda(n)=A(x)\,x-\int_1^x A(t)\dd t.
+\]
+The left side is $\psi(x)$. On $[1,2)$ the function $A$ vanishes, so the integral starts at $2$:
+\[
+\psi(x)=xA(x)-\int_2^x A(t)\dd t.
+\]
+For $t\ge 2$ write $A(t)=\log t+B(t)$. Then $xA(x)=x\log x+xB(x)$, and
+\[
+\int_2^x\log t\dd t=\bigl(x\log x-x\bigr)-\bigl(2\log 2-2\bigr).
+\]
+Subtract:
+\begin{align*}
+\psi(x)
+&=x\log x+xB(x)-\bigl(x\log x-x-2\log 2+2\bigr)-\int_2^x B(t)\dd t\\
+&=x+xB(x)-\int_2^x B(t)\dd t+2\log 2-2.
+\end{align*}
+
+(b) Theorem~\ref{thm:mertens1} supplies a constant $C$ with $|B(t)|\le C$ for every $t\ge 2$. Then
+\[
+\Bigl|xB(x)-\int_2^x B(t)\dd t\Bigr|\le Cx+C(x-2)\le 2Cx,
+\]
+and the constant $2\log 2-2$ is $O(1)$. Therefore $\psi(x)=x+O(x)$.
+
+(c) The estimate in (b) is the required bound $|xB(x)-\int_2^x B|\le 2Cx$. Insert it into the identity of (a):
+\[
+\bigl|\psi(x)-x-(2\log 2-2)\bigr|\le 2Cx.
+\]
+Divide by $x$. For large $x$ the ratio $\frac{\psi(x)}x$ is forced only into an interval of the shape $[1-2C-\varepsilon,1+2C+\varepsilon]$. The constant $C$ coming from Theorem~\ref{thm:mertens1} is some positive number, not zero. An interval of that width still contains numbers other than $1$. The bound $\psi(x)=x+O(x)$ is true, and it is the bound Chebyshev already gave in Proposition~\ref{prop:chebyshev}(a). It does not say $\frac{\psi(x)}x\to 1$.
+
+A single value shows the size of the terms. At $x=10$ one has $\psi(10)=7.832$ and $B(10)=-0.608$. The distance $|\psi(10)-10|$ is $2.168$, the same order as $x$. Corollary~\ref{cor:chebratio} gets a sharper grip by a different argument: it forbids the ratio from staying above $1+\varepsilon$, or below $1-\varepsilon$, for all large $t$. Even that corollary does not prove that the limit exists. Rebuilding $\psi$ from Theorem~\ref{thm:mertens1} by summation by parts loses the main term into an error of size $x$.
 \end{solution}
 
 \section*{Sources and further reading}
 
 \begin{itemize}
 \item F.~Mertens, \emph{Ein Beitrag zur analytischen Zahlentheorie}, Journal f\"ur die reine und angewandte Mathematik 78 (1874), 46--62.
-\item T.~M.~Apostol, \emph{Introduction to Analytic Number Theory}, Springer, 1976, Chapters~3 and~4 (averages of arithmetic functions,
-Chebyshev's functions, Mertens's first two theorems).
-\item G.~Tenenbaum, \emph{Introduction to Analytic and Probabilistic Number Theory}, 3rd ed., AMS Graduate Studies in Mathematics~163, 2015,
-Chapter~I.1 (Mertens's theorems, including the product, by a different route).
-\item H.~L.~Montgomery and R.~C.~Vaughan, \emph{Multiplicative Number Theory I: Classical Theory}, Cambridge, 2007, Section~2.2 and
-Exercise~2.2.1 (the constants $M$ and $\gamma$).
-\item A.~Granville, \emph{Harald Cram\'er and the distribution of prime numbers}, Scandinavian Actuarial Journal (1995), 12--28. Discusses the factor
-$2e^{-\gamma}$ of the beauty box and why sieve heuristics fail.
+\item T.~M.~Apostol, \emph{Introduction to Analytic Number Theory}, Springer, 1976, Chapters~3 and~4 (averages of arithmetic functions, Chebyshev's functions, Mertens's first two theorems).
+\item G.~Tenenbaum, \emph{Introduction to Analytic and Probabilistic Number Theory}, 3rd ed., AMS Graduate Studies in Mathematics~163, 2015, Chapter~I.1 (Mertens's theorems, including the product, by a different route).
+\item H.~L.~Montgomery and R.~C.~Vaughan, \emph{Multiplicative Number Theory I: Classical Theory}, Cambridge, 2007, Section~2.2 and Exercise~2.2.1 (the constants $M$ and $\gamma$).
+\item A.~Granville, \emph{Harald Cram\'er and the distribution of prime numbers}, Scandinavian Actuarial Journal (1995), 12--28. Discusses the factor $2e^{-\gamma}$ of the beauty box and why sieve heuristics fail.
 \item Mertens's life (Krak\'ow 1865--1884, then Graz and Vienna): MacTutor History of Mathematics archive, \url{https://mathshistory.st-andrews.ac.uk/Biographies/Mertens/}.
-\item The epigraph: L.~Euler, \emph{D\'ecouverte d'une loi tout extraordinaire des nombres par rapport \`a la somme de leurs diviseurs} (E175), Biblioth\`eque
-impartiale 3 (1751), 10--31; in English in G.~P\'olya, \emph{Mathematics and Plausible Reasoning}, Vol.~I, Princeton, 1954, Chapter~VI.
-\item R.~Arratia, A.~D.~Barbour and S.~Tavar\'e, \emph{Logarithmic Combinatorial Structures: A Probabilistic Approach}, European Mathematical Society, 2003
-(cycles of permutations and prime factors of integers, for the last exercise); R.~Arratia and S.~Tavar\'e, \emph{The cycle structure of random permutations},
-Annals of Probability 20 (1992), 1567--1591.
+\item L.~Euler, \emph{Variae observationes circa series infinitas} (E72), Commentarii academiae scientiarum Petropolitanae 9 (1744), 160--188. Written in 1737. The prime product is matched with the harmonic series.
+\item The epigraph: L.~Euler, \emph{D\'ecouverte d'une loi tout extraordinaire des nombres par rapport \`a la somme de leurs diviseurs} (E175), Biblioth\`eque impartiale 3 (1751), 10--31; in English in G.~P\'olya, \emph{Mathematics and Plausible Reasoning}, Vol.~I, Princeton, 1954, Chapter~VI.
+\item R.~Arratia, A.~D.~Barbour and S.~Tavar\'e, \emph{Logarithmic Combinatorial Structures: A Probabilistic Approach}, European Mathematical Society, 2003 (cycles of permutations and prime factors of integers, for the last exercise); R.~Arratia and S.~Tavar\'e, \emph{The cycle structure of random permutations}, Annals of Probability 20 (1992), 1567--1591.
 \end{itemize}
