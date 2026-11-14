@@ -65,7 +65,7 @@ solutions. Counts below are the starting counts, not additions.
 | 6 | Homology | 6 | 2 | Not started |
 | 7 | Matrix Lie Groups | 6 | 1 | Draft rewritten; PDF/preservation/figures checked |
 | 8 | Haar Measure and Weyl Integration | 6 | 1 | Draft rewritten; intermediate PDF/figures checked |
-| 9 | The Hyperbolic Plane and the Modular Group | 6 | 3 | Not started |
+| 9 | The Hyperbolic Plane and the Modular Group | 6 | 3 | Draft rewritten; PDF/preservation/figures checked |
 | 10 | The Riemann Mapping Theorem | 3 | 1 | Draft rewritten; validation pending |
 | 11 | Integral Geometry | 6 | 1 | Not started |
 | A | Transformations | 16 | 4 | Not started |
@@ -81,19 +81,9 @@ solutions. Counts below are the starting counts, not additions.
 | K | Curvature of Curves and Polyhedra | 11 | 2 | Not started |
 
 Totals: 22 units, 200 original exercises, 55 original figures. Required additions:
-88 exercises and 44 illustrations. Relevant verified public-domain photographs
-remain to be selected, credited and inspected. Chapters 7, 8 and 10 and Appendices E, H and I have full draft rewrites, each
-with two added illustrations and four new exercises with hints and full solutions:
-twelve illustrations and twenty-four exercises so far. Two photographs are credited:
-Riemann's portrait (inspected 1892 publication evidence) and Shukhov's tower
-(attributed to Karelin, published in 1897). Source metadata and public-domain
-evidence are preserved. All twelve added figures and both photographs have been
-inspected in rendered pages. The latest intermediate PDF-only build exited 0 at
-411 print pages, with preservation and layout checks passing. Some later small
-checking-pass repairs await the next complete build. Preface, blurb, KDP copy and
-canonical cover note are rewritten; their rendered pages/wrap have been inspected.
-The remaining 16 unit rewrites and additions, complete EPUB validation and the
-separate final review remain outstanding.
+88 exercises and 44 illustrations. Chapters 7, 8, 9 and 10 and Appendices E, H and I have full draft rewrites, each with two added illustrations and four new exercises, hints and full solutions: fourteen diagrams and twenty-eight exercises so far. Two photographs are credited: Riemann's portrait (inspected 1892 publication evidence) and Shukhov's tower (attributed to Karelin, published in 1897). Source metadata and public-domain evidence are preserved. All fourteen diagrams and both photographs have been inspected in rendered pages.
+
+The six-unit full build on 66ca56fd exited 0 at 413 print pages. Its EPUB is 29,554,897 bytes; media checks and all 18,245 local links pass. The subsequent seven-unit PDF-only build exits 0 at 419 pages, with preservation and layout checks passing. Preface, blurb, KDP copy and canonical cover note are rewritten; their rendered pages/wrap have been inspected. The remaining 15 units, final EPUB validation and separate final review remain outstanding. See ci-shared-note-dependency.md for the CI fingerprint reconciliation; no failed run is claimed green.
 
 ## Validation scope
 
