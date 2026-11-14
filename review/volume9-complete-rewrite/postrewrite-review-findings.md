@@ -1,0 +1,15 @@
+# Post-rewrite review findings — open final review phase
+
+These are findings from a fresh pass after all 22 unit drafts exist. They are not an independent verification certificate. The master plan's separate-reviewer requirement has been presented to the author; delegation awaits explicit authorization. Every final verification claim must identify the actual reviewer and checked source/PDF.
+
+| ID | Finding | Repair | Validation state |
+| --- | --- | --- | --- |
+| R01 | Chapter 5's graph/tree edge count needs a nonempty convention; an empty tree would have zero edges, not V-1. | Define a connected graph here as having at least one vertex and an edge path between every vertex pair. This matches the based fundamental-group applications. | Source repaired; next build pending. |
+| R02 | Several manuscript sentences sounded like review instructions: the infinite-component dimension formula “must not be asserted,” and integral geometry mentioned avoiding forward citations. | Replace with direct mathematics, including a Vandermonde example showing uncountable function-space dimension on countably many points; remove process wording. | Source repaired; next build pending. |
+| R03 | Some short explanatory sentences and the index introduction remained too close to baseline phrasing. | Rewrite these as reader-facing statements while preserving hypotheses, formulas and index records. The prose comparison excludes literal epigraphs, original figures and bibliography. | No retained normalized sentences of at least two prose words remain in the 22 bodies. One-word matches are mathematical introducers such as Let plus a formula; the scan is a coverage aid, not a quality certificate. |
+| R04 | Appendix G's closing paragraph was split around its new figure batch. | Add a local float barrier after the new batch so the closing paragraph follows the illustrations. | Source repaired; next rendered inspection pending. |
+| R05 | The common default prints an unassigned ISBN placeholder. The user requires a blank field. | Override only Volume 9 bookisbnprint to empty; preserve every assigned identifier and shared default. | Source override applied; next build pending. |
+| R06 | The straightening example reuses y for two coordinates, then explains the naming conflict. | Use a transverse parameter eta and remove the process sentence. | Source repaired with transverse eta; next build pending. |
+| R07 | The all-unit EPUB build failed on braceless hat-C after formula normalization. PDF export passed, but no EPUB acceptance is claimed. | Brace the two accent arguments in Appendix B; preserve the failed log. | Source repaired; full rebuild required. |
+
+The final pass must still cover every original numbered statement, all solutions, prerequisites, citations, figure/photo placement and the EPUB. The source audit establishes counts/order/labels/required solution structure only. Do not treat its success as a proof check.
