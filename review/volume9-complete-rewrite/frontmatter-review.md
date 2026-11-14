@@ -36,7 +36,7 @@ The canonical note was edited in `common/cover-notes.json` and regenerated with
 Only Volume 9's about text, `docs/COVER-NOTES.md` and the corresponding metadata
 hashes in the shared manifest changed. No other volume note, motif or lettering
 changed. The short copyright-page cover credit is unchanged. The new note is
-96 words, within the generator's 80–150-word requirement.
+93 words, within the generator's 80–150-word requirement.
 
 The rendered full paperback wrap, preface opening (manuscript PDF page 5) and
 About the Cover (page 403) were inspected. Blurb, spine and cover text fit with
@@ -49,3 +49,15 @@ evidence: the 1892 collected works frontispiece, scan PDF pages 10 and 14.
 The source photograph was compared directly against that printed portrait;
 URLs, date, publisher and scan SHA-256 are preserved beside the Commons
 metadata. The portrait file itself is unchanged.
+
+## CI credit-phrase repair
+
+Run 43613899573 on head 331fa2c3 failed its list job: the shared cover test
+requires the exact phrase `TikZ cover generator`. The draft had said 'computed
+TikZ drawing' instead. Restored the required credit phrase, regenerated the
+canonical note and manifest, and ran `python3 -m unittest discover -s tools
+-p test_series_cover.py`: all 10 tests passed, exit 0. No test or production
+requirement was weakened. The mathematical infinite-group correction remains.
+The five-unit PDF-only build began before this wording-only repair, so its
+rendered colophon is not claimed to verify the repaired sentence. A subsequent
+build must do that. Exact-head GitHub verification remains outstanding.
