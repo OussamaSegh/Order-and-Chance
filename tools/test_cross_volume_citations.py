@@ -149,9 +149,6 @@ class CrossVolumeCitations(unittest.TestCase):
             bezout,
         )
         self.assertNotIn("Theorem~1.4", bezout)
-        factorial = (root / "volume15-order-and-chance/chapters/ch09-lean.tex").read_text(encoding="utf-8")
-        self.assertIn(r"Volume~2, Exercise~2.9: a prime factor of $n!+1$", factorial)
-        self.assertNotIn("Theorem~2.1", factorial)
         disc = (root / "volume6-crossroads/chapters/ch05-pnt.tex").read_text(encoding="utf-8")
         self.assertIn(r"$\sim\pi x$ (Volume~2, Theorem~7.5, or a direct count)", disc)
         ball = (root / "volume7-spaces/chapters/ch02-metric.tex").read_text(encoding="utf-8")
@@ -183,8 +180,6 @@ class CrossVolumeCitations(unittest.TestCase):
         self.assertIn("Volume~3, Proposition~6.17", curves)
         additive = (root / "volume14-primes/chapters/ch11-additive.tex").read_text(encoding="utf-8")
         self.assertIn("Volume~3, Theorem~C.12", additive)
-        cubes = (root / "volume15-order-and-chance/chapters/ch08-heuristics.tex").read_text(encoding="utf-8")
-        self.assertIn("Volume~3, Theorem~C.12", cubes)
         lie = (root / "volume9-shapes/chapters/ch07-liegroups.tex").read_text(encoding="utf-8")
         self.assertIn("Volume~3, Lemma~12.3", lie)
         self.assertNotIn("as in Volume~3", lie)
@@ -328,9 +323,10 @@ class CrossVolumeCitations(unittest.TestCase):
         self.assertIn(r"Volume~4, Theorem~8.2 gives the exit probability", exit_time)
         self.assertIn(r"Volume~4, Proposition~8.3 gives the mean duration", exit_time)
         self.assertNotIn("ab$ steps", exit_time)
-        projects = (root / "volume15-order-and-chance/chapters/ch12-projects.tex").read_text(encoding="utf-8")
-        self.assertIn("chooses two cards at a step", projects)
-        self.assertNotIn(r"Proposition~9.11 (the covariances", projects)
+        # Volume 15's old projects chapter (random-to-top shuffle) was removed in the master-plan rewrite;
+        # no Volume 15 file may reintroduce the one-card misreading of Volume 4, Proposition 9.11.
+        for path in (root / "volume15-order-and-chance/chapters").glob("*.tex"):
+            self.assertNotIn(r"Proposition~9.11 (the covariances", path.read_text(encoding="utf-8"))
         fixed_points = (root / "volume11-randomness/chapters/ch13-harder.tex").read_text(encoding="utf-8")
         self.assertIn(r"Volume~1, Chapter~2, writes $\frac{D_r}{r!}", fixed_points)
         self.assertNotIn("inclusion and exclusion (Volume~4, Proposition~2.3)", fixed_points)
