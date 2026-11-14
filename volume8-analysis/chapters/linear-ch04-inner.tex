@@ -5,171 +5,89 @@ Of all the principles that can be proposed for this purpose, I think there is no
 to apply than the one we have used in this work: it consists of making the sum of the squares of the errors a minimum.
 \upshape(Adrien-Marie Legendre, \emph{Nouvelles m\'ethodes pour la d\'etermination des orbites des com\`etes}, 1805)
 \end{center}
+\noindent\emph{Use Volume~1 and Appendices~\ref{linear:ch:duality} and~\ref{linear:ch:volume}. These finite-dimensional arguments complement the main Hilbert, spectral and singular-value chapters and supply tools for Appendix~\ref{linear:ch:inequalities}.}
 
-\noindent\emph{This appendix assumes Volume~1 and Appendices~\ref{linear:ch:duality} and~\ref{linear:ch:volume}. Chapters~\ref{linear:ch:spectral} and~\ref{linear:ch:svd} and Appendices~\ref{linear:ch:eigen} and~\ref{linear:ch:inequalities} use it.}
+Piazzi discovered Ceres on 1 January 1801 and followed it for about six weeks before sunlight hid it. A short noisy arc was all astronomers had for predicting where the new object would reappear. Gauss's prediction differed markedly from the others, and von Zach recovered Ceres near the predicted position at the end of that year.
 
-On the first night of the nineteenth century, 1 January 1801, Giuseppe Piazzi in Palermo noticed a faint star that
-was not on his charts. The next night it had moved. He followed it for six weeks, through about three degrees of sky,
-until it vanished into the glare of the Sun. Piazzi had found Ceres, the first asteroid, and almost immediately lost
-it: from six weeks of noisy positions, nobody could say where it would reappear in the autumn. The astronomers of
-Europe published predictions, and they disagreed.
+Least squares became part of the ensuing history. Legendre published the principle in 1805: choose parameters making the sum of squared errors smallest. Gauss published his orbital methods in 1809 and claimed he had used least squares since 1795, provoking a priority dispute. The practical problem gives a clear geometric question: which vector in a model subspace is closest to the observations?
 
-A twenty-four-year-old in Brunswick, Carl Friedrich Gauss, set aside his number theory and attacked the problem. His
-prediction differed from everyone else's, by several degrees. On 31 December 1801, almost exactly a year after Piazzi's
-discovery, Franz von Zach pointed his telescope where Gauss said, and Ceres was there. Gauss became famous overnight.
-He did not explain his method until 1809, and by then Legendre had published, in 1805, the principle quoted above: when
-a system has more equations than unknowns and no exact solution, choose the unknowns that make the sum of the squared
-errors smallest. Gauss wrote that he had used this principle since 1795. Legendre was not amused, and the priority
-quarrel that followed is one of the classic bad tempers of the history of mathematics.
-
-The geometry behind least squares is the subject of this appendix. Once a vector space has an \emph{inner product}, it
-has lengths and angles, and the closest point of a subspace to a given vector is found by dropping a perpendicular. That
-single picture gives the Cauchy--Schwarz inequality, Gram--Schmidt and the $QR$ factorisation, least squares, Gram
-determinants as squared volumes, and, applied to the space of polynomials, the orthogonal polynomials and Gauss's most
-beautiful numerical discovery, a quadrature rule that is exact twice as often as it has any right to be.
+An inner product makes that closest vector an orthogonal projection. Repeated projection gives Gram--Schmidt and $QR$; its residual lengths give volumes and Gram determinants. Applied to monomials, it produces orthogonal polynomials, whose zeros are the nodes of Gauss quadrature. The same geometry links error fitting, polynomial approximation and integration.
 
 \begin{think}
-The three points $(0,0)$, $(1,1)$, $(2,1)$ are not on a line. Which line $y=a+bx$ is the ``closest'' to them, in the
-sense that the sum of the squares of the vertical errors is smallest? Before calculating, guess whether the line passes
-above or below the middle point, and whether the errors have any reason to add up to zero. Example~\ref{linear:exa:line} answers.
+Fit a line $y=a+bx$ to $(0,0),(1,1),(2,1)$ by minimising squared vertical errors. Does it pass above or below the middle point? Should the three errors sum to zero? Example~\ref{linear:exa:line} computes the fit and explains the cancellation.
 \end{think}
 
 \section{Inner products and the Cauchy--Schwarz inequality}
 
-Throughout, $\mathbb K$ is $\R$ or $\C$, and $\bar z$ is the complex conjugate (so $\bar z=z$ when $\mathbb K=\R$).
-
+Work over $\mathbb K=\R$ or $\C$, using conjugation also over $\R$, where it does nothing.
 \begin{definition}\label{linear:def:inner}
-An \emph{inner product} on a $\mathbb K$-vector space $V$ is a map $V\times V\to\mathbb K$, $(x,y)\mapsto\langle x,y\rangle$,
-that is linear in $x$, satisfies $\langle y,x\rangle=\overline{\langle x,y\rangle}$, and is \emph{positive definite}:
-$\langle x,x\rangle>0$ for $x\ne0$. The \emph{norm} is $\|x\|=\sqrt{\langle x,x\rangle}$; vectors with $\langle x,y\rangle=0$
-are \emph{orthogonal}, written $x\perp y$.
+An \emph{inner product} is a map $\langle\cdot,\cdot\rangle:V\times V\to\mathbb K$ linear in its first argument, conjugate symmetric, and positive definite: $\langle x,x\rangle>0$ for nonzero $x$. Its norm is $\|x\|=\sqrt{\langle x,x\rangle}$. Vectors with pairing zero are \emph{orthogonal}, written $x\perp y$.
 \end{definition}
 
-It follows that $\langle x,\lambda y+\mu z\rangle=\bar\lambda\langle x,y\rangle+\bar\mu\langle x,z\rangle$: the inner
-product is conjugate-linear in the second variable. The standard examples are $\langle x,y\rangle=\sum_ix_i\bar y_i=y^*x$
-on $\mathbb K^n$ (where $y^*=\bar y^{\mathsf T}$), and
-\[
-\langle f,g\rangle=\int_a^bf(t)\overline{g(t)}\,w(t)\dd t
-\]
-on continuous functions on $[a,b]$, or on polynomials, for a positive continuous \emph{weight} $w$. Positivity holds
-because a continuous function with $\int_a^b|f|^2w=0$ vanishes identically.
+Conjugate symmetry makes the second argument conjugate-linear. On $\mathbb K^n$ use $\langle x,y\rangle=\sum_ix_i\bar y_i=y^*x$, where $y^*=\bar y^{\mathsf T}$. On continuous functions over a nondegenerate interval $[a,b]$, $a<b$, a positive continuous weight gives $\langle f,g\rangle=\int_a^bf\bar g\,w$. A continuous nonzero function is bounded away from zero on some subinterval, so its squared norm is positive. Restriction gives the polynomial example as well.
 
-The expansion $\|x+y\|^2=\|x\|^2+2\operatorname{Re}\langle x,y\rangle+\|y\|^2$ is used constantly; for orthogonal $x,y$
-it is \emph{Pythagoras}: $\|x+y\|^2=\|x\|^2+\|y\|^2$.
+Expanding the norm gives $\|x+y\|^2=\|x\|^2+2\Re\langle x,y\rangle+\|y\|^2$. Orthogonality removes the middle term, giving Pythagoras.
 
 \begin{theorem}[Cauchy--Schwarz]\label{linear:thm:cs}
-For all $x,y\in V$, $|\langle x,y\rangle|\le\|x\|\,\|y\|$, with equality if and only if $x$ and $y$ are linearly dependent.
+For any $x,y$, $|\langle x,y\rangle|\le\|x\|\|y\|$, with equality exactly when the vectors are linearly dependent.
 \end{theorem}
 \begin{proof}
-If $y=0$ both sides vanish. Otherwise let $p=\frac{\langle x,y\rangle}{\|y\|^2}\,y$, the ``shadow'' of $x$ on the line
-$\mathbb Ky$. Then
-\[
-\langle x-p,y\rangle=\langle x,y\rangle-\frac{\langle x,y\rangle}{\|y\|^2}\langle y,y\rangle=0,
-\]
-so $x-p\perp p$ and Pythagoras gives $\|x\|^2=\|p\|^2+\|x-p\|^2\ge\|p\|^2=|\langle x,y\rangle|^2/\|y\|^2$. Equality holds
-exactly when $x=p$, that is when $x\in\mathbb Ky$.
+If $y=0$ the assertion and its equality condition hold. Otherwise put $p=\langle x,y\rangle y/\|y\|^2$. Direct pairing gives $x-p\perp y$, hence $x-p\perp p$. Pythagoras yields $\|x\|^2=\|p\|^2+\|x-p\|^2\ge|\langle x,y\rangle|^2/\|y\|^2$. Equality requires $x=p$, precisely dependence with nonzero $y$.
 \end{proof}
-
-The proof is the whole chapter in miniature: drop a perpendicular, then apply Pythagoras. Two consequences follow.
 
 \begin{corollary}\label{linear:cor:triangle}
-$\|x+y\|\le\|x\|+\|y\|$, so $d(x,y)=\|x-y\|$ is a distance. In a real inner product space, the \emph{angle}
-$\theta\in[0,\pi]$ between non-zero vectors, defined by $\cos\theta=\frac{\langle x,y\rangle}{\|x\|\|y\|}$, makes sense.
+The triangle inequality $\|x+y\|\le\|x\|+\|y\|$ holds, so $d(x,y)=\|x-y\|$ is a metric. For nonzero real-space vectors, the angle $\theta\in[0,\pi]$ is well defined by $\cos\theta=\langle x,y\rangle/(\|x\|\|y\|)$.
 \end{corollary}
 \begin{proof}
-$\|x+y\|^2=\|x\|^2+2\operatorname{Re}\langle x,y\rangle+\|y\|^2\le\|x\|^2+2\|x\|\|y\|+\|y\|^2$. The quotient defining
-$\cos\theta$ lies in $[-1,1]$ by Theorem~\ref{linear:thm:cs}.
+The norm expansion and Cauchy--Schwarz bound its square by $(\|x\|+\|y\|)^2$. Positivity, symmetry and homogeneity give the other metric properties. In the real case Cauchy--Schwarz puts the displayed quotient in $[-1,1]$, where cosine has a unique inverse in $[0,\pi]$.
 \end{proof}
 
-Applied to the examples, Cauchy--Schwarz says $\bigl|\sum x_iy_i\bigr|^2\le\sum x_i^2\sum y_i^2$ and
-$\bigl|\int fg\bigr|^2\le\int f^2\int g^2$: two inequalities of analysis that are one inequality of geometry.
+The real coordinate and integral inequalities $|\sum x_iy_i|^2\le\sum x_i^2\sum y_i^2$ and $|\int fg|^2\le\int f^2\int g^2$ are instances of the same statement. Complex versions use conjugates and absolute squares.
 
 \begin{remark}
-Not every norm comes from an inner product: a norm does if and only if it satisfies the \emph{parallelogram law}
-$\|x+y\|^2+\|x-y\|^2=2\|x\|^2+2\|y\|^2$ (Jordan and von Neumann, 1935). One direction is a two-line expansion; the other,
-harder one is Exercise~\ref{linear:ex:jvn}. The norm $|x_1|+|x_2|$ on $\R^2$ fails the law at $x=(1,0)$, $y=(0,1)$.
+Jordan--von Neumann's criterion says a norm comes from an inner product precisely when it satisfies $\|x+y\|^2+\|x-y\|^2=2\|x\|^2+2\|y\|^2$. Expansion proves necessity; Exercise~\ref{linear:ex:jvn} proves sufficiency over $\R$. The norm $|x_1|+|x_2|$ fails this parallelogram law at the two coordinate unit vectors.
 \end{remark}
 
 \section{Orthonormal bases and Gram--Schmidt}
 
-A family $(e_1,\dots,e_k)$ is \emph{orthonormal} if $\langle e_i,e_j\rangle=\delta_{ij}$.
-
+An \emph{orthonormal family} satisfies $\langle e_i,e_j\rangle=\delta_{ij}$.
 \begin{proposition}\label{linear:prop:orthfamily}
-An orthonormal family is linearly independent, and for $x=\sum_i x_ie_i$ in its span, $x_i=\langle x,e_i\rangle$ and
-$\|x\|^2=\sum_i|x_i|^2$.
+Such a family is independent. In its span, $x=\sum_ix_ie_i$ has coordinates $x_i=\langle x,e_i\rangle$ and norm squared $\sum_i|x_i|^2$.
 \end{proposition}
 \begin{proof}
-Taking the inner product of $x=\sum_jx_je_j$ with $e_i$ gives $\langle x,e_i\rangle=x_i$; in particular $x=0$ forces
-every $x_i=0$. Then $\|x\|^2=\langle\sum_ix_ie_i,\sum_jx_je_j\rangle=\sum_{i,j}x_i\bar x_j\delta_{ij}=\sum_i|x_i|^2$.
+Pair the expansion with each $e_i$ to recover its coefficient. A zero vector therefore has only zero coefficients. Pairing the full expansion with itself cancels all off-diagonal terms, giving the norm formula.
 \end{proof}
 
-So in an orthonormal basis, coordinates are computed by inner products, with no linear system to solve: this is what
-makes orthonormal bases so convenient, and the next theorem says they always exist.
+Orthogonal coordinates need only inner products, rather than a linear system. The next construction finds such coordinates while preserving successive spans.
 
 \begin{theorem}[Gram--Schmidt]\label{linear:thm:gramschmidt}
-Let $v_1,\dots,v_k$ be linearly independent in an inner product space. There is a unique orthonormal family
-$e_1,\dots,e_k$ such that, for each $j$, $\operatorname{span}(e_1,\dots,e_j)=\operatorname{span}(v_1,\dots,v_j)$ and
-$\langle v_j,e_j\rangle>0$. Explicitly,
-\[
-u_j=v_j-\sum_{i<j}\langle v_j,e_i\rangle e_i,\qquad e_j=\frac{u_j}{\|u_j\|}.
-\]
+For independent $v_1,\ldots,v_k$, there is exactly one orthonormal family $e_1,\ldots,e_k$ with matching successive spans and $\langle v_j,e_j\rangle>0$ for every $j$. It is given by
+\[u_j=v_j-\sum_{i<j}\langle v_j,e_i\rangle e_i,\qquad e_j=u_j/\|u_j\|.\]
 \end{theorem}
 \begin{proof}
-By induction on $j$. Suppose $e_1,\dots,e_{j-1}$ are built, orthonormal, with span $W_{j-1}=\operatorname{span}(v_1,\dots,
-v_{j-1})$. The vector $u_j$ satisfies $\langle u_j,e_i\rangle=\langle v_j,e_i\rangle-\langle v_j,e_i\rangle=0$ for $i<j$,
-and $u_j\ne0$ since $v_j\notin W_{j-1}$. So $e_j=u_j/\|u_j\|$ extends the orthonormal family, $\operatorname{span}(e_1,
-\dots,e_j)=W_{j-1}+\mathbb Kv_j$, and $\langle v_j,e_j\rangle=\langle u_j,e_j\rangle=\|u_j\|>0$ (the difference $v_j-u_j$
-lies in $W_{j-1}\perp e_j$).
-
-Uniqueness: any $e_j'$ with the stated properties lies in $W_j$ and is orthogonal to $W_{j-1}$, a hyperplane of $W_j$; so
-$e_j'$ is a unit multiple $ce_j$, and $\langle v_j,e_j'\rangle=\bar c\|u_j\|>0$ forces $c=1$.
+At each stage the subtraction makes $u_j$ orthogonal to earlier $e_i$. Independence makes it nonzero, and normalisation gives the desired span and positive pairing $\|u_j\|$. For uniqueness, the complement of the earlier span inside the new span is a line. Any other unit choice is $ce_j$ with $|c|=1$; its required pairing is $\bar c\|u_j\|>0$, forcing $c=1$.
 \end{proof}
 
-In particular every finite-dimensional inner product space has an orthonormal basis, and every orthonormal family extends
-to one (apply Gram--Schmidt to the family followed by any basis, discarding vectors that become dependent). Written with
-matrices, Gram--Schmidt is a factorisation.
+Consequently every finite-dimensional inner-product space has an orthonormal basis, and every orthonormal family in it extends to one. Complete it first to a basis and run the construction on the added vectors.
 
 \begin{corollary}[$QR$ factorisation]\label{linear:cor:qr}
-Let $A\in M_{m,n}(\mathbb K)$ have linearly independent columns. Then $A=QR$, where $Q\in M_{m,n}(\mathbb K)$ has orthonormal
-columns ($Q^*Q=I_n$) and $R\in M_n(\mathbb K)$ is upper triangular with positive diagonal entries. This factorisation is
-unique.
+A rectangular matrix with independent columns has a unique factorisation $A=QR$, where $Q^*Q=I$ and $R$ is square upper triangular with positive diagonal.
 \end{corollary}
 \begin{proof}
-Apply Theorem~\ref{linear:thm:gramschmidt} to the columns $a_j$ of $A$. Since $a_j\in\operatorname{span}(e_1,\dots,e_j)$,
-Proposition~\ref{linear:prop:orthfamily} gives $a_j=\sum_{i\le j}r_{ij}e_i$ with $r_{ij}=\langle a_j,e_i\rangle$ and
-$r_{jj}=\|u_j\|>0$; this is $A=QR$ with $Q=(e_1|\cdots|e_n)$.
-
-If also $A=Q'R'$, the columns of $Q$ and of $Q'$ are orthonormal bases of the same space, the column space of $A$.
-Then $U=Q'^*Q$ satisfies $Q=Q'U$ (expand each column of $Q$ in the basis given by $Q'$), so $U$ is the matrix of a change
-between orthonormal bases and $U^*U=Q^*Q'Q'^*Q=Q^*Q=I$. From $Q'R'=QR=Q'UR$ we get $R'=UR$, so $U=R'R^{-1}$ is upper
-triangular with positive diagonal. Its inverse $U^*$ is then both upper triangular (as an inverse of an upper triangular
-matrix) and lower triangular (as a conjugate transpose), so $U$ is diagonal, with entries of modulus $1$ that are
-positive: $U=I$.
+Apply Gram--Schmidt to the columns. Each $a_j=\sum_{i\le j}\langle a_j,e_i\rangle e_i$, giving $Q$ and $r_{ij}$, with $r_{jj}=\|u_j\|>0$. Conversely any such factorisation has the same successive column spans and positive diagonal pairings. Gram--Schmidt uniqueness therefore fixes $Q$, and $R=Q^*A$ is fixed as well.
 \end{proof}
 
 \section{Orthogonal projections}
 
-For a subset $S$ of $V$, the \emph{orthogonal} $S^\perp=\{x:\ x\perp s\text{ for all }s\in S\}$ is a subspace.
-
+For any subset $S$, let $S^\perp$ be the vectors orthogonal to every element of $S$.
 \begin{theorem}[orthogonal projection]\label{linear:thm:projection}
-Let $W$ be a finite-dimensional subspace of an inner product space $V$ (which may have infinite dimension), with
-orthonormal basis $e_1,\dots,e_k$, and let
-\[
-P_Wx=\sum_{i=1}^k\langle x,e_i\rangle e_i.
-\]
-Then $x-P_Wx\in W^\perp$, so $V=W\oplus W^\perp$. The point $P_Wx$ is the unique closest point of $W$ to $x$: for
-$w\in W$, $\|x-w\|^2=\|x-P_Wx\|^2+\|P_Wx-w\|^2$. The map $P_W$ is linear, $P_W^2=P_W$, and
-$\langle P_Wx,y\rangle=\langle x,P_Wy\rangle$.
+Let $W$ be a finite-dimensional subspace of an inner-product space $V$, which need not be finite-dimensional. For an orthonormal basis $e_1,\ldots,e_k$ of $W$, put $P_Wx=\sum_i\langle x,e_i\rangle e_i$. Then $x-P_Wx\in W^\perp$ and $V=W\oplus W^\perp$. Moreover
+\[\|x-w\|^2=\|x-P_Wx\|^2+\|P_Wx-w\|^2\qquad(w\in W),\]
+so $P_Wx$ is the unique nearest point. The map is linear and idempotent, and $\langle P_Wx,y\rangle=\langle x,P_Wy\rangle$.
 \end{theorem}
 \begin{proof}
-For each $j$, $\langle x-P_Wx,e_j\rangle=\langle x,e_j\rangle-\langle x,e_j\rangle=0$, so $x-P_Wx\perp W$. Hence
-$x=P_Wx+(x-P_Wx)$ with the first term in $W$ and the second in $W^\perp$; and $W\cap W^\perp=0$ because a vector
-orthogonal to itself is zero. For $w\in W$, the vector $P_Wx-w$ lies in $W$, so it is orthogonal to $x-P_Wx$, and
-Pythagoras applied to $x-w=(x-P_Wx)+(P_Wx-w)$ gives the displayed identity: $\|x-w\|$ is smallest exactly when $w=P_Wx$.
-Linearity is clear, $P_W$ fixes $W$ so $P_W^2=P_W$, and $\langle P_Wx,y\rangle=\sum_i\langle x,e_i\rangle\overline{\langle
-y,e_i\rangle}$ is symmetric in the required sense.
+Pairing the residual with each basis vector gives zero. A vector in $W\cap W^\perp$ has zero squared norm, proving uniqueness of the decomposition. The displayed identity is Pythagoras for its two orthogonal terms, so minimisation and uniqueness follow. The formula is linear, fixes $W$ and thus is idempotent. Finally both pairings in the last identity equal $\sum_i\langle x,e_i\rangle\overline{\langle y,e_i\rangle}$. Figure~\ref{linear:fig:projection} gives the geometric picture.
 \end{proof}
-
 \begin{figure}[ht]
 \centering
 \fig{linear-ch04-projection}
@@ -178,52 +96,32 @@ closest to $x$, because $x-w$ is the hypotenuse of a right triangle whose other 
 \label{linear:fig:projection}
 \end{figure}
 
-Since $\|x\|^2=\|P_Wx\|^2+\|x-P_Wx\|^2$, we obtain \emph{Bessel's inequality}: for every orthonormal family $(e_i)$,
+Pythagoras for the projection gives Bessel's inequality:
 \begin{equation}\label{linear:eq:bessel}
 \sum_i|\langle x,e_i\rangle|^2\le\|x\|^2.
 \end{equation}
-It holds for infinite orthonormal families too, since every finite partial sum is bounded. Equality for every $x$ is
-Parseval's identity, the subject of Hilbert spaces (Chapter~\ref{ch:hilbert}); Exercise~\ref{linear:ex:basel} squeezes a famous
-inequality out of Bessel alone.
+For an infinite orthonormal family interpret this sum as the supremum of finite subsums. Each finite projection gives the bound. Main Chapter~\ref{ch:hilbert} develops completeness and Parseval equality; Exercise~\ref{linear:ex:basel} uses just the inequality.
 
-In finite dimension, $W^{\perp\perp}=W$ and $\dim W^\perp=\dim V-\dim W$, which is the inner-product version of the
-annihilator of Appendix~\ref{linear:ch:duality} (Theorem~\ref{linear:thm:annihilator}): the inner product identifies $V$ with its dual,
-as we shall see in Section~\ref{linear:sec:adjoint}.
+In finite dimension, $\dim W^\perp=\dim V-\dim W$ and $W^{\perp\perp}=W$. Compare annihilators in Appendix~\ref{linear:ch:duality}. The inner product will identify vectors with forms, conjugate-linearly in the complex case, in Section~\ref{linear:sec:adjoint}.
 
 \section{Least squares}
 
-Gauss's problem in modern clothes: $A\in M_{m,n}(\mathbb K)$ with $m>n$, $b\in\mathbb K^m$, and the system $Ax=b$ has no
-solution. We look for $x$ minimising $\|Ax-b\|$.
+For rectangular $A$ and observed $b$, the equation $Ax=b$ may be inconsistent. Minimising $\|Ax-b\|$ finds the closest vector in the column space, regardless of whether the number of rows exceeds the number of columns.
 
 \begin{theorem}[least squares]\label{linear:thm:lsq}
-The vector $x$ minimises $\|Ax-b\|$ if and only if it satisfies the \emph{normal equations}
-\[
-A^*Ax=A^*b.
-\]
-Minimisers always exist; the minimiser is unique if and only if the columns of $A$ are independent, and then
-$x=(A^*A)^{-1}A^*b=R^{-1}Q^*b$, where $A=QR$.
+A vector $x$ minimises $\|Ax-b\|$ exactly when it satisfies $A^*Ax=A^*b$. Minimisers always exist and are unique exactly when $A$ has independent columns. In that case
+\[x=(A^*A)^{-1}A^*b=R^{-1}Q^*b,\qquad A=QR.\]
 \end{theorem}
 \begin{proof}
-As $x$ varies, $Ax$ runs over $W=\operatorname{Im}A$, and by Theorem~\ref{linear:thm:projection} the closest point of $W$ to
-$b$ is $P_Wb$. So $x$ is a minimiser if and only if $Ax=P_Wb$, if and only if $b-Ax\perp W$, that is
-$\langle b-Ax,Ay\rangle=y^*A^*(b-Ax)=0$ for every $y$, which is $A^*(b-Ax)=0$. Minimisers exist because $P_Wb\in W$.
-They are unique if and only if $\ker A=0$. In that case $A^*A$ is invertible, because $A^*Ax=0$ implies
-$\|Ax\|^2=x^*A^*Ax=0$. With $A=QR$, the normal equations read $R^*Q^*QRx=R^*Q^*b$, that is $R^*Rx=R^*Q^*b$, and $R^*$ is
-invertible.
+The optimal image is $P_{\operatorname{Im}A}b$. Thus minimisation is equivalent to $b-Ax\perp\operatorname{Im}A$, or $y^*A^*(b-Ax)=0$ for all $y$, giving the normal equations. An optimal image has a preimage, proving existence. All its preimages differ by $\ker A$, proving the uniqueness criterion. With independent columns, $x^*A^*Ax=\|Ax\|^2$ proves $A^*A$ invertible. Substituting $A=QR$ into the equations and cancelling $R^*$ gives the second formula.
 \end{proof}
 
 \begin{example}\label{linear:exa:line}
-For the three points of the opening question, the unknowns are $(a,b)$ and
-\[
-A=\begin{pmatrix}1&0\\1&1\\1&2\end{pmatrix},\quad y=\begin{pmatrix}0\\1\\1\end{pmatrix},\quad
-A^{\mathsf T}A=\begin{pmatrix}3&3\\3&5\end{pmatrix},\quad A^{\mathsf T}y=\begin{pmatrix}2\\3\end{pmatrix}.
+For the opening data, the design matrix and observation vector are
+\[A=\begin{pmatrix}1&0\\1&1\\1&2\end{pmatrix},\qquad y=\begin{pmatrix}0\\1\\1\end{pmatrix}.
 \]
-The normal equations $3a+3b=2$, $3a+5b=3$ give $b=\frac12$, $a=\frac16$. The errors $y_i-(a+bx_i)$ are $-\frac16,\frac13,
--\frac16$: the line passes \emph{below} the middle point, and the errors add up to zero. That is no accident: the first
-normal equation says that the error vector is orthogonal to the first column of $A$, the vector $(1,1,1)$. Whenever
-the model contains a constant term, least squares errors sum to zero.
+Their normal equations are $3a+3b=2$, $3a+5b=3$, so $a=1/6,b=1/2$. The residuals are $-1/6,1/3,-1/6$, summing to zero. The line lies below the middle point, as Figure~\ref{linear:fig:lsq} shows. The zero sum follows from residual orthogonality to the constant column; every least-squares model containing constants has this property.
 \end{example}
-
 \begin{figure}[ht]
 \centering
 \fig{linear-ch04-lsq}
@@ -232,163 +130,86 @@ smaller than for any other line.}
 \label{linear:fig:lsq}
 \end{figure}
 
-Why squares, and not absolute values or fourth powers? Legendre's answer was convenience: squares give linear equations.
-Gauss's answer, given in 1821, is deeper and needs only the vocabulary of expectation and covariance (Volume~4). Suppose
-that $b=Ax_0+\varepsilon$, where $x_0$ is the unknown truth and the noise $\varepsilon$ is a random vector with
-$\mathbb E\varepsilon=0$ and covariance $\mathbb E\varepsilon\varepsilon^{\mathsf T}=\sigma^2I$ (independent errors of
-equal size suffice), all real. A \emph{linear unbiased estimator} is $\hat x=Cb$ with $\mathbb E\hat x=x_0$ for every
-$x_0$, that is $CA=I$; its covariance matrix is $\mathbb E(\hat x-x_0)(\hat x-x_0)^{\mathsf T}=\sigma^2CC^{\mathsf T}$.
+
+Squared errors give linear normal equations. They also have a statistical optimality property without assuming Gaussian noise. Suppose real observations satisfy $b=Ax_0+\varepsilon$, with $\mathbb E\varepsilon=0$ and covariance $\sigma^2I$. A linear estimator $Cb$ is unbiased for every $x_0$ exactly when $CA=I$; its covariance is then $\sigma^2CC^{\mathsf T}$. Equal variances and zero pairwise covariances suffice; independence is stronger than needed.
 
 \begin{theorem}[Gauss--Markov]\label{linear:thm:gaussmarkov}
-Let $A$ have independent columns and $C_0=(A^{\mathsf T}A)^{-1}A^{\mathsf T}$, the least squares estimator. For every
-$C$ with $CA=I$, the matrix $CC^{\mathsf T}-C_0C_0^{\mathsf T}$ is positive semidefinite. In particular, for every
-vector $u$, the variance of $u^{\mathsf T}Cb$ is at least that of $u^{\mathsf T}C_0b$: least squares is the best linear
-unbiased estimator.
+For real $A$ with independent columns, let $C_0=(A^{\mathsf T}A)^{-1}A^{\mathsf T}$. Every $C$ with $CA=I$ satisfies $CC^{\mathsf T}-C_0C_0^{\mathsf T}\ge0$ as a positive semidefinite matrix. Thus every scalar linear estimate $u^{\mathsf T}Cb$ has variance at least that of $u^{\mathsf T}C_0b$.
 \end{theorem}
 \begin{proof}
-Let $D=C-C_0$. Then $DA=CA-C_0A=I-I=0$, hence $DC_0^{\mathsf T}=DA(A^{\mathsf T}A)^{-1}=0$ and also $C_0D^{\mathsf
-T}=(DC_0^{\mathsf T})^{\mathsf T}=0$. Expanding,
-\[
-CC^{\mathsf T}=(C_0+D)(C_0+D)^{\mathsf T}=C_0C_0^{\mathsf T}+DD^{\mathsf T},
-\]
-and $u^{\mathsf T}DD^{\mathsf T}u=\|D^{\mathsf T}u\|^2\ge0$. The variance of $u^{\mathsf T}Cb$ is
-$\sigma^2u^{\mathsf T}CC^{\mathsf T}u$.
+Set $D=C-C_0$. Then $DA=0$, so $DC_0^{\mathsf T}=DA(A^{\mathsf T}A)^{-1}=0$ and its transpose also vanishes. Expanding gives $CC^{\mathsf T}=C_0C_0^{\mathsf T}+DD^{\mathsf T}$. Its difference has quadratic form $\|D^{\mathsf T}u\|^2\ge0$. Multiply by $\sigma^2$ for the variance comparison.
 \end{proof}
 
-The proof is once more a right angle: the competitor $C$ is the least squares estimator plus a perpendicular error
-$D$, and Pythagoras says the error can only add variance.
+The extra estimator component contributes only the non-negative term $DD^{\mathsf T}$. This is the same orthogonal-error geometry as the closest-point theorem.
 
 \section{Gram determinants and volumes}
 
-The \emph{Gram matrix} of vectors $v_1,\dots,v_k$ is $G=(\langle v_j,v_i\rangle)_{i,j}$; if the $v_j$ are the columns of
-a matrix $A\in M_{m,k}(\mathbb K)$ with the standard inner product, then $G=A^*A$. Its determinant is the \emph{Gram
-determinant} $\operatorname{Gram}(v_1,\dots,v_k)$.
+For vectors $v_1,\ldots,v_k$, define their Gram matrix by $G_{ij}=\langle v_j,v_i\rangle$ and their Gram determinant by $\det G$. With coordinate columns $A$ in an orthonormal basis, $G=A^*A$.
 
 \begin{theorem}[Gram determinants]\label{linear:thm:gram}
-Let $u_j=v_j-P_{W_{j-1}}v_j$, where $W_{j-1}=\operatorname{span}(v_1,\dots,v_{j-1})$: the part of $v_j$ perpendicular to
-the earlier vectors, as in Gram--Schmidt.
+Put $W_{j-1}=\operatorname{span}(v_1,\ldots,v_{j-1})$ and $u_j=v_j-P_{W_{j-1}}v_j$.
 \begin{enumerate}[label=(\alph*)]
-\item $\operatorname{Gram}(v_1,\dots,v_k)=\|u_1\|^2\|u_2\|^2\cdots\|u_k\|^2$. In particular the Gram determinant is
-$\ge0$, and it vanishes if and only if the $v_j$ are dependent.
-\item If $v_1,\dots,v_k$ are independent and $W=\operatorname{span}(v_1,\dots,v_k)$, the distance from $x$ to $W$ is given
-by
-\[
-d(x,W)^2=\frac{\operatorname{Gram}(v_1,\dots,v_k,x)}{\operatorname{Gram}(v_1,\dots,v_k)}.
-\]
-\item For $v_1,\dots,v_k\in\R^n$, the columns of a matrix $A$,
-\[
-\operatorname{Gram}(v_1,\dots,v_k)=\sum_{|I|=k}\det(A_I)^2,
-\]
-the sum running over the $k\times k$ minors $A_I$ made of the rows in $I$.
+\item The Gram determinant equals $\prod_{j=1}^k\|u_j\|^2$. It is non-negative and vanishes exactly for dependent vectors.
+\item For independent $v_1,\ldots,v_k$ spanning $W$,
+\[d(x,W)^2=\frac{\operatorname{Gram}(v_1,\ldots,v_k,x)}{\operatorname{Gram}(v_1,\ldots,v_k)}.\]
+\item For real columns $A$ in $\R^n$, $\operatorname{Gram}(v_1,\ldots,v_k)=\sum_{|I|=k}\det(A_I)^2$.
 \end{enumerate}
 \end{theorem}
 \begin{proof}
-(a) If the $v_j$ are dependent, some $c\ne0$ has $Ac=0$ (working in coordinates in an orthonormal basis of their span),
-so $Gc=A^*Ac=0$ and $\det G=0$; and some $u_j$ is zero. If they are independent, write $A=QR$ (Corollary~\ref{linear:cor:qr});
-then $G=A^*A=R^*Q^*QR=R^*R$ and $\det G=|\det R|^2=\prod_jr_{jj}^2=\prod_j\|u_j\|^2$, since $r_{jj}=\|u_j\|$.
-(b) Apply (a) to $(v_1,\dots,v_k,x)$: the last factor is $\|x-P_Wx\|^2=d(x,W)^2$, and the others are those of (a).
-(c) is the Pythagoras theorem for $k$-volumes, Corollary~\ref{linear:cor:pythagoras}, since $G=A^{\mathsf T}A$.
+(a) Dependence gives a nonzero coefficient vector killed by $A$ and therefore by $A^*A$, so its determinant is zero; the first dependent residual is also zero. For independent columns, $A=QR$ gives $G=R^*R$ and $\det G=|\det R|^2=\prod_j\|u_j\|^2$. (b) Append $x$ in (a); the last residual is $x-P_Wx$, while the earlier factors are unchanged. (c) Apply real Cauchy--Binet, Corollary~\ref{linear:cor:pythagoras}.
 \end{proof}
 
-Part (a) says that $\sqrt{\operatorname{Gram}}$ is ``base times height'' iterated: the $k$-dimensional volume of the
-parallelepiped spanned by the $v_j$, as in Appendix~\ref{linear:ch:volume}. For $k=2$ it is Cauchy--Schwarz again:
-$\|x\|^2\|y\|^2-|\langle x,y\rangle|^2\ge0$. Part (b) turns any best-approximation problem into a ratio of determinants,
-and the next section has a family of determinants we can compute exactly.
+In real geometry, successive perpendicular residual lengths are successive base and height factors. Their product is the parallelepiped's volume, so the Gram determinant is its square. The two-vector case is Cauchy--Schwarz again; the appended-vector ratio computes distance by determinants.
 
 \section{The Cauchy determinant and the Hilbert matrix}
-
 \begin{theorem}[Cauchy, 1841]\label{linear:thm:cauchydet}
-For numbers $x_1,\dots,x_n$ and $y_1,\dots,y_n$ with all $x_i+y_j\ne0$,
-\[
-\det\Bigl(\frac1{x_i+y_j}\Bigr)_{i,j=1}^n=\frac{\prod_{i<j}(x_j-x_i)(y_j-y_i)}{\prod_{i,j}(x_i+y_j)}.
-\]
+Whenever all $x_i+y_j$ are nonzero,
+\[\det\left(\frac1{x_i+y_j}\right)_{i,j=1}^n
+ =\frac{\prod_{i<j}(x_j-x_i)(y_j-y_i)}{\prod_{i,j}(x_i+y_j)}.\]
 \end{theorem}
 \begin{proof}
-By induction on $n$; the case $n=1$ is clear. Call the matrix $C$. Subtract the last row from each other row: for $i<n$,
-\[
-\frac1{x_i+y_j}-\frac1{x_n+y_j}=\frac{x_n-x_i}{(x_i+y_j)(x_n+y_j)}.
+If two $x$ values or two $y$ values coincide, both sides vanish. Otherwise induct on $n$. Subtract row $n$ from each earlier row, giving differences $(x_n-x_i)/((x_i+y_j)(x_n+y_j))$. Factor $x_n-x_i$ from each such row and $(x_n+y_j)^{-1}$ from every column. The last row becomes all ones and the earlier rows return to Cauchy form.
+
+Subtract the last column from the others. The earlier entries become $(y_n-y_j)/((x_i+y_j)(x_i+y_n))$, and the last row becomes $(0,\ldots,0,1)$. Factor those numerators from columns and $(x_i+y_n)^{-1}$ from earlier rows, then expand along the last row. This gives
+\[\det C=\frac{\prod_{i<n}(x_n-x_i)\prod_{j<n}(y_n-y_j)}{\prod_{j\le n}(x_n+y_j)\prod_{i<n}(x_i+y_n)}\det C_{n-1}.
 \]
-Factor $x_n-x_i$ out of row $i$ (for $i<n$) and $\frac1{x_n+y_j}$ out of column $j$ (for all $j$). The rows $i<n$ become
-$\frac1{x_i+y_j}$ again, and the last row becomes $(1,\dots,1)$. Now subtract the last column from each other column:
-for $i<n$ and $j<n$,
-\[
-\frac1{x_i+y_j}-\frac1{x_i+y_n}=\frac{y_n-y_j}{(x_i+y_j)(x_i+y_n)},
-\]
-and the last row becomes $(0,\dots,0,1)$. Factor $y_n-y_j$ out of column $j<n$ and $\frac1{x_i+y_n}$ out of row $i<n$,
-and expand along the last row. What remains is the Cauchy matrix of $x_1,\dots,x_{n-1}$ and $y_1,\dots,y_{n-1}$, and
-\[
-\det C=\frac{\prod_{i<n}(x_n-x_i)\prod_{j<n}(y_n-y_j)}{\prod_{j\le n}(x_n+y_j)\prod_{i<n}(x_i+y_n)}\cdot\det C_{n-1}.
-\]
-The fraction contains exactly the factors of the formula that involve the index $n$, so induction concludes.
+These are exactly the new factors in the claimed product, proving the induction from $n=1$.
 \end{proof}
 
-In 1894 Hilbert asked how small $\int_0^1P(t)^2\dd t$ can be for a non-zero polynomial $P$ with integer coefficients. Its
-answer goes through the Gram matrix of $1,t,\dots,t^{n-1}$ in $L^2[0,1]$, the \emph{Hilbert matrix}
-\[
-H_n=\Bigl(\int_0^1t^{i+j}\dd t\Bigr)_{i,j=0}^{n-1}=\Bigl(\frac1{i+j+1}\Bigr)_{i,j=0}^{n-1}
-=\begin{pmatrix}1&\frac12&\frac13&\cdots\\[2pt]\frac12&\frac13&\frac14&\cdots\\[2pt]\frac13&\frac14&\frac15&\cdots\\[-2pt]
-\vdots&\vdots&\vdots&\ddots\end{pmatrix}.
+Hilbert's 1894 approximation problem led to the Gram matrix of $1,t,\ldots,t^{n-1}$ on $[0,1]$:
+\[H_n=\left(\int_0^1t^{i+j}\dd t\right)_{i,j=0}^{n-1}
+ =\left(\frac1{i+j+1}\right)_{i,j=0}^{n-1}.
 \]
-Being a Gram matrix of independent vectors, $H_n$ is positive definite, a fact that would be painful to check directly.
+Independent monomials make it positive definite, despite the difficulty of seeing that directly from its entries.
 
 \begin{corollary}\label{linear:cor:hilbert}
-With $c_n=\prod_{k=1}^{n-1}k!$, we have $\det H_n=\dfrac{c_n^4}{c_{2n}}$, and in $L^2[0,1]$ the distance from $t^n$ to the
-polynomials of degree less than $n$ is
-\[
-d\bigl(t^n,\R[t]_{<n}\bigr)=\frac{(n!)^2}{(2n)!\sqrt{2n+1}}=\frac1{\binom{2n}n\sqrt{2n+1}}.
-\]
+For $c_n=\prod_{k=1}^{n-1}k!$, one has $\det H_n=c_n^4/c_{2n}$. The $L^2[0,1]$ distance from $t^n$ to lower-degree polynomials is
+\[d(t^n,\R[t]_{<n})=\frac{(n!)^2}{(2n)!\sqrt{2n+1}}
+ =\frac1{\binom{2n}n\sqrt{2n+1}}.\]
 \end{corollary}
 \begin{proof}
-$H_n$ is the Cauchy matrix of Theorem~\ref{linear:thm:cauchydet} with $x_i=i$ and $y_j=j+1$ for $i,j=0,\dots,n-1$.
-Passing from $H_n$ to $H_{n+1}$ adds $x_n=n$ and $y_n=n+1$, and multiplies the determinant by the factors of Cauchy's
-formula that involve the index $n$:
-\[
-\frac{\det H_{n+1}}{\det H_n}=\frac{\prod_{i<n}(n-i)^2}{\prod_{j\le n}(n+j+1)\prod_{i<n}(i+n+1)}
-=\frac{(n!)^2}{\frac{(2n+1)!}{n!}\cdot\frac{(2n)!}{n!}}=\frac{(n!)^4}{(2n)!\,(2n+1)!}.
+Apply Cauchy's formula with $x_i=i,y_j=j+1$. Adding the next row and column gives
+\[\frac{\det H_{n+1}}{\det H_n}=\frac{(n!)^4}{(2n)!(2n+1)!}.
 \]
-Since $c_{n+1}=c_n\,n!$ and $c_{2n+2}=c_{2n}\,(2n)!\,(2n+1)!$, the quotient $\frac{c_{n+1}^4}{c_{2n+2}}\big/\frac{c_n^4}{c_{2n}}$
-is the same number, and $\det H_1=1=c_1^4/c_2$; the formula for $\det H_n$ follows by induction. By Theorem~\ref{linear:thm:gram}(b), the squared distance is the ratio
-$\det H_{n+1}/\det H_n=(n!)^4/\bigl((2n)!(2n+1)!\bigr)$, which is the square of the stated value.
+The quotient of consecutive $c_n^4/c_{2n}$ has the same value and starts at $\det H_1=1$. The Gram ratio theorem gives squared distance equal to this determinant ratio, whose square root is the displayed expression. At $n=0$, the distance from one to the zero polynomial space is one, also agreeing with the distance formula.
 \end{proof}
 
-So $t$ is at distance $\frac1{2\sqrt3}$ from the constants (the closest constant is $\frac12$), $t^2$ at distance
-$\frac1{6\sqrt5}$ from the lines, and $t^n$ at distance about $\frac{\sqrt{\pi n}}{4^n\sqrt{2n+1}}$ from lower degrees: the
-monomials become almost dependent very fast. Correspondingly $\det H_n$ is tiny, about $4^{-n^2}$, and $H_n$ is a
-classic torture test for numerical software . Meanwhile $1/\det H_n$ is an integer
-(Exercise~\ref{linear:ex:hilbertint}).
+For degrees one and two, the distances are $1/(2\sqrt3)$ and $1/(6\sqrt5)$. Stirling applied to the exact factorial product shows $\log\det H_n=-n^2\log4+O(n\log n)$. The monomials approach dependence rapidly, and Hilbert matrices are correspondingly demanding numerical examples. Their reciprocal determinants are nevertheless integers, as Exercise~\ref{linear:ex:hilbertint} proves.
 
 \begin{remark}
-Hilbert's application: for an interval of length less than $4$, there are non-zero integer polynomials with
-$\int P^2$ as small as we like, because $\det H_n$ for that interval tends to $0$ fast enough for Minkowski's lattice point
-theorem to apply (Volume~13, Chapter~5, proves Minkowski's theorem). For the general weighted version, and the open problem
-of the exact threshold for the uniform norm (the \emph{integer Chebyshev constant}), see the article of Borwein and
-Erd\'elyi in the sources.
+Hilbert used lattice-point arguments to find nonzero integer polynomials with arbitrarily small $L^2$ integral on intervals shorter than four. That application needs Minkowski's theorem, proved later in Volume~13, Chapter~5; we quote it here and use no lattice-point result below. Borwein--Erd\'elyi discuss weighted and uniform-norm versions of the integer Chebyshev problem.
 \end{remark}
 
 \section{Orthogonal polynomials}
 
-Let $I$ be an interval, $w$ a positive continuous function on its interior with $\int_I|t|^kw(t)\dd t<\infty$ for every
-$k$, and $\langle f,g\rangle=\int_If(t)g(t)w(t)\dd t$ on real polynomials. This is an inner product: a non-zero
-polynomial has finitely many zeros, so $\int f^2w>0$. Gram--Schmidt applied to $1,t,t^2,\dots$ produces, after rescaling
-to make the leading coefficients $1$, the \emph{monic orthogonal polynomials} $p_0=1,p_1,p_2,\dots$: $p_n$ has degree $n$
-and is orthogonal to every polynomial of degree less than $n$. They are unique, by Theorem~\ref{linear:thm:gramschmidt}.
+Let $I$ have nonempty interior and let $w$ be positive and continuous there, with $\int_I|t|^kw(t)\dd t<\infty$ for every non-negative integer $k$. Then $\langle f,g\rangle=\int_Ifgw$ is an inner product on real polynomials: a nonzero polynomial cannot vanish throughout an interval. Gram--Schmidt on the monomials, rescaled to leading coefficient one, gives unique monic polynomials $p_n$ of degree $n$ orthogonal to all lower degrees, with $p_0=1$.
 
 \begin{example}[Legendre polynomials]\label{linear:exa:legendre}
-For $I=[-1,1]$ and $w=1$, the polynomials
-\[
-P_n(t)=\frac1{2^nn!}\,\frac{\mathrm d^n}{\mathrm dt^n}(t^2-1)^n
+For $I=[-1,1]$ and $w=1$, Rodrigues's 1816 formula is
+\[P_n(t)=\frac1{2^nn!}\frac{\dd^n}{\dd t^n}(t^2-1)^n.
 \]
-(Rodrigues, 1816) are orthogonal: for $k<n$, integrating by parts $k$ times,
-\[
-\int_{-1}^1t^k\frac{\mathrm d^n}{\mathrm dt^n}(t^2-1)^n\dd t=(-1)^kk!\int_{-1}^1\frac{\mathrm d^{n-k}}{\mathrm dt^{n-k}}(t^2-1)^n\dd t=0,
-\]
-because every derivative of $(t^2-1)^n=(t-1)^n(t+1)^n$ of order less than $n$ vanishes at $\pm1$, so all boundary terms
-vanish, and the last integral is a difference of two such derivatives at $\pm1$. The Legendre polynomials are scaled so
-that $P_n(1)=1$ (Exercise~\ref{linear:ex:legendrenorm}); the monic ones are $P_n$ divided by the leading coefficient
-$\binom{2n}n/2^n$. Other weights give other famous families: $w=(1-t^2)^{-1/2}$ on $[-1,1]$ gives Chebyshev
-(Exercise~\ref{linear:ex:chebyshev}), $e^{-t}$ on $[0,\infty)$ Laguerre, $e^{-t^2}$ on $\R$ Hermite.
+Every derivative of $(t^2-1)^n$ below order $n$ vanishes at both endpoints. Integrating $\int t^kP_n$ by parts $n$ times therefore gives zero when $k<n$, proving orthogonality. Exercise~\ref{linear:ex:legendrenorm} verifies $P_n(1)=1$, leading coefficient $\binom{2n}n/2^n$ and norm squared $2/(2n+1)$. Division by the leading coefficient gives the monic version. Other choices include Chebyshev's weight $(1-t^2)^{-1/2}$ on $(-1,1)$, Laguerre's $e^{-t}$ on $[0,\infty[$ and Hermite's $e^{-t^2}$ on $\R$.
 \end{example}
-
 \begin{figure}[ht]
 \centering
 \fig{linear-ch04-legendre}
@@ -397,497 +218,326 @@ consecutive polynomials interlace.}
 \label{linear:fig:legendre}
 \end{figure}
 
-The picture suggests two theorems. Here is the first, which explains why only three polynomials ever talk to each other.
-
+Multiplication by the variable couples only neighbouring orthogonal degrees.
 \begin{theorem}[three-term recurrence]\label{linear:thm:recurrence}
-There are real numbers $\alpha_n$ and $\beta_n>0$ such that, with $p_{-1}=0$,
-\[
-p_{n+1}(t)=(t-\alpha_n)p_n(t)-\beta_np_{n-1}(t),\qquad \alpha_n=\frac{\langle tp_n,p_n\rangle}{\|p_n\|^2},\quad
-\beta_n=\frac{\|p_n\|^2}{\|p_{n-1}\|^2}\ (n\ge1).
-\]
+There are real $\alpha_n$ and positive $\beta_n$ such that, with $p_{-1}=0$,
+\[p_{n+1}(t)=(t-\alpha_n)p_n(t)-\beta_np_{n-1}(t),\]
+where $\alpha_n=\langle tp_n,p_n\rangle/\|p_n\|^2$ and $\beta_n=\|p_n\|^2/\|p_{n-1}\|^2$ for $n\ge1$. At $n=0$, choose any $\beta_0>0$, since it multiplies zero.
 \end{theorem}
 \begin{proof}
-The polynomial $tp_n-p_{n+1}$ has degree at most $n$ (both are monic of degree $n+1$), so it is a combination
-$\sum_{k\le n}c_kp_k$ with $c_k=\langle tp_n,p_k\rangle/\|p_k\|^2$. The key point is that multiplication by $t$ is
-symmetric: $\langle tp_n,p_k\rangle=\langle p_n,tp_k\rangle$, which vanishes when $k+1<n$ since $tp_k$ has degree $k+1$.
-So only $c_n=\alpha_n$ and $c_{n-1}$ survive, and $\langle p_n,tp_{n-1}\rangle=\langle p_n,p_n\rangle$ because
-$tp_{n-1}-p_n$ has degree less than $n$. Hence $c_{n-1}=\|p_n\|^2/\|p_{n-1}\|^2=\beta_n$.
+The polynomial $tp_n-p_{n+1}$ has degree at most $n$. Its coefficient along $p_k$ is $\langle tp_n,p_k\rangle/\|p_k\|^2$. Symmetry of multiplication makes this $\langle p_n,tp_k\rangle/\|p_k\|^2$, zero when $k<n-1$. The remaining diagonal coefficient is $\alpha_n$. At $k=n-1$, $tp_{n-1}-p_n$ has lower degree, so the numerator is $\|p_n\|^2$, giving $\beta_n$. Its positivity follows from the positive norms.
 \end{proof}
 
 \begin{theorem}[zeros]\label{linear:thm:zeros}
-The polynomial $p_n$ has $n$ distinct real zeros, all in the interior of $I$.
+The degree-$n$ polynomial $p_n$ has $n$ distinct real roots, all in the interior of $I$.
 \end{theorem}
 \begin{proof}
-Let $t_1<\dots<t_k$ be the points of the interior of $I$ where $p_n$ changes sign (zeros of odd multiplicity), and
-$q=\prod_{i=1}^k(t-t_i)$, with $q=1$ if $k=0$. Then $p_nq$ does not change sign on $I$ and is not zero, so
-$\langle p_n,q\rangle=\int_Ip_nqw\ne0$. If $k<n$, $q$ has degree less than $n$ and $\langle p_n,q\rangle=0$. Hence $k\ge n$;
-as $p_n$ has at most $n$ zeros, $k=n$, and these zeros are simple.
+Let $t_1,\ldots,t_k$ be its sign-changing interior roots and set $q(t)=\prod_i(t-t_i)$, or one if there are none. The product $p_nq$ has one fixed sign on $I$, is nonzero on a subinterval and is integrable against the positive weight. Hence $\langle p_n,q\rangle\ne0$. Orthogonality would force zero if $k<n$. Thus $k\ge n$, which uses all available degree and makes every root simple and interior.
 \end{proof}
-
-There is a second proof, which explains the interlacing in Figure~\ref{linear:fig:legendre} and is also how the zeros are
-computed in practice.
 
 \begin{proposition}[the Jacobi matrix]\label{linear:prop:jacobi}
-The zeros of $p_n$ are the eigenvalues of the real symmetric tridiagonal matrix
-\[
-J_n=\begin{pmatrix}\alpha_0&\sqrt{\beta_1}&&\\\sqrt{\beta_1}&\alpha_1&\ddots&\\&\ddots&\ddots&\sqrt{\beta_{n-1}}\\
-&&\sqrt{\beta_{n-1}}&\alpha_{n-1}\end{pmatrix}.
-\]
+The roots of $p_n$ are exactly the eigenvalues of the symmetric tridiagonal matrix with diagonal $\alpha_0,\ldots,\alpha_{n-1}$ and adjacent entries $\sqrt{\beta_1},\ldots,\sqrt{\beta_{n-1}}$.
 \end{proposition}
 \begin{proof}
-Let $T$ be the tridiagonal matrix with diagonal $\alpha_0,\dots,\alpha_{n-1}$, ones above the diagonal and
-$\beta_1,\dots,\beta_{n-1}$ below it. The recurrence $tp_k=p_{k+1}+\alpha_kp_k+\beta_kp_{k-1}$ says that the vector
-$v(t)=(p_0(t),\dots,p_{n-1}(t))^{\mathsf T}$ satisfies $Tv(t)=tv(t)-p_n(t)e_n$. At a zero $t$ of $p_n$, $v(t)$ is an
-eigenvector of $T$ for the eigenvalue $t$ (it is non-zero since $p_0=1$). The $n$ distinct zeros (Theorem~\ref{linear:thm:zeros})
-give $n$ distinct eigenvalues, so $\chi_T=p_n$. Finally $T=DJ_nD^{-1}$ with $D=\operatorname{diag}(d_0,\dots,d_{n-1})$,
-$d_0=1$, $d_k=\sqrt{\beta_1\cdots\beta_k}$, as a direct check of the off-diagonal entries shows.
+Let $T$ instead have superdiagonal ones and subdiagonal $\beta_k$. The recurrence gives $Tv(t)=tv(t)-p_n(t)e_n$, where $v(t)=(p_0(t),\ldots,p_{n-1}(t))^{\mathsf T}$. Every root gives a nonzero eigenvector because $p_0=1$. There are $n$ distinct roots, so $\chi_T=p_n$. With $D=\operatorname{diag}(1,\sqrt{\beta_1},\sqrt{\beta_1\beta_2},\ldots)$, direct multiplication gives $T=DJ_nD^{-1}$ for the stated symmetric matrix. Thus their characteristic polynomials agree.
 \end{proof}
 
-Since $J_n$ is the top-left corner of $J_{n+1}$, the interlacing of the zeros of $p_n$ and $p_{n+1}$ is a special case of
-Cauchy's interlacing theorem, proved in Chapter~\ref{linear:ch:spectral}.
+Nested Jacobi matrices give weak root interlacing by Chapter~\ref{linear:ch:spectral}'s Cauchy theorem. It is strict: a shared root of $p_n,p_{n+1}$ would, by the recurrence and $\beta_n>0$, also kill $p_{n-1}$ and then every preceding polynomial, contradicting $p_0=1$.
 
 \section{Gauss quadrature}
 
-To approximate $\int_If\,w$, a \emph{quadrature rule} chooses nodes $t_1,\dots,t_n$ and weights $\lambda_1,\dots,\lambda_n$
-and uses $\sum_i\lambda_if(t_i)$. With $n$ nodes chosen in advance, interpolation makes the rule exact for polynomials
-of degree less than $n$: take $\lambda_i=\int_I\ell_iw$, where $\ell_i$ is the Lagrange basis polynomial of
-Example~\ref{linear:ex:lagrange}, $\ell_i(t_j)=\delta_{ij}$. Gauss's discovery (1814) is that the right choice of nodes doubles
-the degree for free.
+Fixed distinct nodes give an interpolatory rule exact below degree $n$, with weights $\lambda_i=\int_I\ell_iw$. Choosing the nodes as orthogonal-polynomial zeros raises exactness to degree $2n-1$.
 
 \begin{theorem}[Gauss quadrature]\label{linear:thm:gaussquad}
-Let $t_1,\dots,t_n$ be the zeros of $p_n$ and $\lambda_i=\int_I\ell_iw$. Then
-\[
-\int_If(t)w(t)\dd t=\sum_{i=1}^n\lambda_if(t_i)\quad\text{for every polynomial $f$ of degree at most $2n-1$.}
+For $n\ge1$, take the roots $t_i$ of $p_n$ and $\lambda_i=\int_I\ell_iw$. Then
+\[\int_Ifw=\sum_{i=1}^n\lambda_if(t_i)\qquad(\deg f\le2n-1).
 \]
-The weights are positive, $\lambda_i=\int_I\ell_i^2w$, and no rule with $n$ nodes is exact for all polynomials of degree
-$2n$.
+Each weight is $\lambda_i=\int_I\ell_i^2w>0$. No rule with $n$ real nodes is exact for all degree-$2n$ polynomials.
 \end{theorem}
 \begin{proof}
-Divide: $f=qp_n+r$ with $\deg q\le n-1$ and $\deg r\le n-1$. Then $\int fw=\langle q,p_n\rangle+\int rw=\int rw$, by
-orthogonality. Since $f(t_i)=r(t_i)$ and the rule is exact for $r$ (interpolation), $\sum\lambda_if(t_i)=\sum\lambda_ir(t_i)
-=\int rw=\int fw$. Applying this to $\ell_i^2$, of degree $2n-2$, gives $\int\ell_i^2w=\sum_j\lambda_j\ell_i(t_j)^2=\lambda_i$,
-which is positive. Finally, for any nodes $s_1,\dots,s_n$, the polynomial $\prod_i(t-s_i)^2$ of degree $2n$ has a positive
-integral and vanishes at every node.
+Divide $f=qp_n+r$, with both $q,r$ of degree at most $n-1$. Orthogonality kills the integral of $qp_n$, and its node values vanish too. Interpolation integrates $r$ exactly, proving the identity. Apply it to $\ell_i^2$ to obtain the positive-weight formula. For any proposed $n$ real nodes $s_i$, the polynomial $\prod_i(t-s_i)^2$ has positive integral but zero node values, proving the degree obstruction.
 \end{proof}
 
-With $n=2$ and Legendre's weight, $p_2=t^2-\frac13$, the nodes are $\pm\frac1{\sqrt3}$ and the weights are $1$: the rule
-$f(-\frac1{\sqrt3})+f(\frac1{\sqrt3})$ integrates every cubic over $[-1,1]$ exactly, with two evaluations. Positivity of the
-weights matters in practice: it makes the rule stable, and it gives convergence for every continuous $f$ (Exercise~\ref{linear:ex:gaussconv}).
+For two-node Legendre quadrature, the roots are $\pm1/\sqrt3$ and both weights are one. Two evaluations thus integrate any cubic on $[-1,1]$ exactly. Positive weights also control uniform approximation errors and give convergence for functions continuous on a compact interval (Exercise~\ref{linear:ex:gaussconv}).
 
 \section{Adjoints and isometries}\label{linear:sec:adjoint}
 
-From now on $V$ is a finite-dimensional inner product space.
-
+Assume finite dimension for the rest of this section.
 \begin{theorem}[Riesz representation]\label{linear:thm:riesz}
-For every linear form $\varphi$ on $V$ there is a unique $y\in V$ with $\varphi(x)=\langle x,y\rangle$ for all $x$.
+Every linear form $\varphi$ is represented uniquely by a vector $y$ with $\varphi(x)=\langle x,y\rangle$ for all $x$.
 \end{theorem}
 \begin{proof}
-With an orthonormal basis $(e_i)$, set $y=\sum_i\overline{\varphi(e_i)}e_i$. For $x=\sum_ix_ie_i$,
-$\langle x,y\rangle=\sum_ix_i\varphi(e_i)=\varphi(x)$. If $y'$ also works, $\langle x,y-y'\rangle=0$ for all $x$, including
-$x=y-y'$, so $y=y'$.
+For an orthonormal basis set $y=\sum_i\overline{\varphi(e_i)}e_i$. Expansion verifies the identity. Two representatives have difference orthogonal to every vector, including itself, and so agree.
 \end{proof}
 
-So the inner product identifies $V$ with its dual $V^*$ (conjugate-linearly when $\mathbb K=\C$), with no choice of basis.
-For an operator $A$ on $V$, the form $x\mapsto\langle Ax,y\rangle$ is represented by a unique vector, called $A^*y$.
-
+The resulting identification with the dual is conjugate-linear over $\C$ and linear over $\R$. For an operator $A$, apply it to the form $x\mapsto\langle Ax,y\rangle$.
 \begin{proposition}[the adjoint]\label{linear:prop:adjoint}
-There is a unique linear map $A^*$ with $\langle Ax,y\rangle=\langle x,A^*y\rangle$ for all $x,y$. In an orthonormal
-basis its matrix is the conjugate transpose of that of $A$. Moreover $(AB)^*=B^*A^*$, $A^{**}=A$,
-\[
-\ker A^*=(\operatorname{Im}A)^\perp\quad\text{and}\quad\operatorname{Im}A^*=(\ker A)^\perp.
-\]
+There is exactly one linear $A^*$ with $\langle Ax,y\rangle=\langle x,A^*y\rangle$. Its orthonormal-coordinate matrix is conjugate transpose. It satisfies $(AB)^*=B^*A^*$, $A^{**}=A$, $\ker A^*=(\operatorname{Im}A)^\perp$ and $\operatorname{Im}A^*=(\ker A)^\perp$.
 \end{proposition}
 \begin{proof}
-Existence and uniqueness come from Theorem~\ref{linear:thm:riesz}, and linearity of $A^*$ from uniqueness. In an orthonormal
-basis the $(i,j)$ entry of $A^*$ is $\langle A^*e_j,e_i\rangle=\overline{\langle e_i,A^*e_j\rangle}=\overline{\langle
-Ae_i,e_j\rangle}=\overline{a_{ji}}$. The two product rules follow from the defining identity. Finally, $y\in\ker A^*$ if
-and only if $\langle x,A^*y\rangle=\langle Ax,y\rangle=0$ for all $x$, that is $y\perp\operatorname{Im}A$. Applying this to
-$A^*$ and taking orthogonals gives the last identity, as $W^{\perp\perp}=W$ in finite dimension.
+Riesz gives the unique representing vector for each $y$. Conjugate-linearity in both second arguments makes their assignments linear in $y$. Evaluating at basis vectors gives entry $\overline{a_{ji}}$. Applying the defining equality twice proves the product and double-adjoint rules. Finally $A^*y=0$ exactly when $\langle Ax,y\rangle=0$ for all $x$, proving the kernel equality. Apply it to $A^*$ and take orthogonal complements for the image equality.
 \end{proof}
 
-This is Theorem~\ref{linear:thm:transpose} of Appendix~\ref{linear:ch:duality} once the dual is identified with $V$; the Fredholm
-alternative becomes ``$Ax=b$ is solvable if and only if $b$ is orthogonal to every solution of $A^*y=0$''.
-
-An operator $U$ is \emph{unitary} (\emph{orthogonal} when $\mathbb K=\R$) if it preserves inner products:
-$\langle Ux,Uy\rangle=\langle x,y\rangle$.
+This matches the transpose construction after identifying the dual with the original space. Fredholm's condition becomes orthogonality of $b$ to $\ker A^*$.
 
 \begin{theorem}[unitary operators]\label{linear:thm:unitary}
-For an operator $U$ on $V$, the following are equivalent: (i) $U$ preserves inner products; (ii) $U$ preserves norms;
-(iii) $U$ maps some (equivalently every) orthonormal basis to an orthonormal basis; (iv) $U^*U=I$.
+For a linear operator $U$ in finite dimension, the following are equivalent: preserving inner products; preserving norms; carrying some orthonormal basis, hence every one, to an orthonormal basis; and $U^*U=I$.
 \end{theorem}
 \begin{proof}
-(i)$\Rightarrow$(ii) is the case $x=y$. (ii)$\Rightarrow$(i) by the \emph{polarisation identities}, which recover the inner
-product from the norm:
-\[
-\operatorname{Re}\langle x,y\rangle=\tfrac14\bigl(\|x+y\|^2-\|x-y\|^2\bigr),\qquad \operatorname{Im}\langle x,y\rangle=
-\operatorname{Re}\langle x,iy\rangle.
-\]
-(i)$\Rightarrow$(iii) is clear. (iii)$\Rightarrow$(i): if $(Ue_i)$ is orthonormal, then for $x=\sum x_ie_i$ and $y=\sum
-y_ie_i$, both $\langle Ux,Uy\rangle$ and $\langle x,y\rangle$ equal $\sum_ix_i\bar y_i$. (i)$\Leftrightarrow$(iv):
-$\langle Ux,Uy\rangle=\langle U^*Ux,y\rangle$, and this equals $\langle x,y\rangle$ for all $x,y$ if and only if $U^*U=I$.
+Inner-product preservation gives norm preservation. Conversely polarisation recovers the real part by $(\|x+y\|^2-\|x-y\|^2)/4$ and, over $\C$, the imaginary part as $\Re\langle x,iy\rangle$. Thus norms determine all pairings for a linear map. Preserving one orthonormal basis preserves pairings by coordinate expansion, and preserving all pairings clearly preserves every such basis. The adjoint identity makes inner-product preservation equivalent to $U^*U=I$.
 \end{proof}
 
-Unitary matrices are those with orthonormal columns; they form a group, and every change of orthonormal basis is one.
-Requiring linearity turns out to be unnecessary in the real case.
+These operators are unitary over $\C$ and orthogonal over $\R$. Their matrices have orthonormal columns and form a group; their inverse is the adjoint. In real Euclidean space, metric preservation already forces linearity once the origin is fixed.
 
 \begin{theorem}\label{linear:thm:isometry}
-Let $f:\R^n\to\R^n$ be any map with $f(0)=0$ and $\|f(x)-f(y)\|=\|x-y\|$ for all $x,y$. Then $f$ is linear, hence
-orthogonal.
+Any map $f:\R^n\to\R^n$ fixing zero and preserving all distances is linear and orthogonal.
 \end{theorem}
 \begin{proof}
-Taking $y=0$, $f$ preserves norms. Since $\langle x,y\rangle=\frac12\bigl(\|x\|^2+\|y\|^2-\|x-y\|^2\bigr)$ in a real space,
-$f$ preserves inner products. Now expand $\|f(x+y)-f(x)-f(y)\|^2$ into nine inner products of the vectors
-$f(x+y),f(x),f(y)$; each equals the corresponding inner product of $x+y,x,y$, so the total equals
-$\|(x+y)-x-y\|^2=0$. Hence $f(x+y)=f(x)+f(y)$, and in the same way $\|f(\lambda x)-\lambda f(x)\|^2=\|\lambda x-\lambda
-x\|^2=0$.
+Distance preservation from zero gives norms. The identity $\langle x,y\rangle=(\|x\|^2+\|y\|^2-\|x-y\|^2)/2$ therefore gives pairing preservation. Expand the squared norm of $f(x+y)-f(x)-f(y)$ into these pairings; it equals $\|(x+y)-x-y\|^2=0$. Likewise $\|f(\lambda x)-\lambda f(x)\|^2=0$ for real $\lambda$. Thus $f$ is real-linear and preserves inner products.
 \end{proof}
 
-Thus a rigid motion of space is a translation followed by an orthogonal map: the starting point of the geometry of
-Volume~9. To close the section, here is what Gram--Schmidt says about inner products themselves. On $\mathbb K^n$, every
-inner product has the form $\langle x,y\rangle_G=y^*Gx$, where $G=(\langle e_j,e_i\rangle_G)$ is the Gram matrix of the
-standard basis: a Hermitian matrix ($G^*=G$) with $x^*Gx>0$ for $x\ne0$, that is, \emph{positive definite}. Conversely
-every positive definite $G$ defines an inner product this way.
+Every Euclidean rigid motion is consequently a translation followed by an orthogonal map. Conversely, positive definite Hermitian matrices describe all inner products on coordinate space through $\langle x,y\rangle_G=y^*Gx$.
 
 \begin{corollary}[Cholesky factorisation]\label{linear:cor:cholesky}
-Every positive definite matrix $G$ is $G=R^*R$ for a unique upper triangular $R$ with positive diagonal.
+Every positive definite matrix has a unique factorisation $G=R^*R$ with $R$ upper triangular and positive on its diagonal.
 \end{corollary}
 \begin{proof}
-Apply Gram--Schmidt to the standard basis $e_1,\dots,e_n$ for the inner product $\langle\cdot,\cdot\rangle_G$, obtaining
-an orthonormal basis $f_1,\dots,f_n$ with $e_j=\sum_{i\le j}r_{ij}f_i$, $r_{jj}>0$. With $F=(f_1|\cdots|f_n)$, this says
-$I=FR$, so $F=R^{-1}$; and orthonormality says $F^*GF=I$. Hence $G=(F^*)^{-1}F^{-1}=R^*R$. Uniqueness: if $G=R^*R$, then
-the columns of $R^{-1}$ are $G$-orthonormal and obtained from the standard basis by an upper triangular change of
-basis with positive diagonal, so they are the Gram--Schmidt basis by the uniqueness in Theorem~\ref{linear:thm:gramschmidt}.
+Run Gram--Schmidt on the coordinate basis for the $G$ inner product. If its new basis matrix is $F$ and its coefficient matrix $R$, then $I=FR$ and $F^*GF=I$. Hence $G=R^*R$. If also $G=R'^*R'$, the matrix $R'R^{-1}$ is unitary and upper triangular with positive diagonal. Its adjoint, also its inverse, is both lower and upper triangular, so it is diagonal. Its positive unit-modulus entries are all one, proving uniqueness.
 \end{proof}
 
-Appendix~\ref{linear:ch:inequalities} will return to positive matrices, with Hadamard's and Minkowski's inequalities, and uses Cholesky constantly.
+Appendix~\ref{linear:ch:inequalities} uses this factorisation for positive-matrix inequalities.
 
 \begin{beauty}
-Gram--Schmidt is a dull algorithm, and yet: run it on the monomials $1,t,t^2,\dots$ and out come the Legendre
-polynomials, whose zeros are the eigenvalues of a tridiagonal matrix, interlace like the eigenvalues of nested
-matrices, and are exactly the points where Gauss's rule integrates polynomials of twice the expected degree. The volumes
-of the parallelepipeds built on those same monomials are the Cauchy determinants of the Hilbert matrix, rational numbers
-whose inverses are integers. One right angle, dropped over and over, organises all of it.
+Repeatedly remove a perpendicular component from the monomials. Their residual norms determine the Hilbert determinants, while the resulting orthogonal polynomials give tridiagonal eigenvalue problems and optimal quadrature nodes. The same projection calculation organised the original least-squares fit. These are different uses of one precise orthogonality identity.
 \end{beauty}
 
+\begin{figure}[ht]
+\centering\fig{appD-rw-weights}
+\caption{Weighted least squares at the three opening abscissae, with weights $1,2,1$, gives residuals $-1/4,1/4,-1/4$. Their weighted sum vanishes, although their ordinary sum does not.}
+\label{fig:v8appDweights}
+\end{figure}
+\begin{figure}[ht]
+\centering\fig{appD-rw-gauss}
+\caption{The three-node Legendre rule uses nodes $-\sqrt{3/5},0,\sqrt{3/5}$ with weights $5/9,8/9,5/9$. It integrates every polynomial through degree five exactly; the sixth-degree error is $8/175$.}
+\label{fig:v8appDgauss}
+\end{figure}
 \section{Exercises}
-
 \begin{exercise}[$\star$]\label{linear:ex:polar}
-(a) Prove the parallelogram law $\|x+y\|^2+\|x-y\|^2=2\|x\|^2+2\|y\|^2$ in any inner product space, and interpret it for
-a parallelogram in the plane. (b) In a complex space, show that $\langle x,y\rangle=\frac14\sum_{k=0}^3i^k\|x+i^ky\|^2$.
+(a) Prove the parallelogram norm identity and interpret its sides and diagonals geometrically. (b) For a complex inner product linear in the first argument, establish $\langle x,y\rangle=\tfrac14\sum_{k=0}^3i^k\|x+i^ky\|^2$.
 \end{exercise}
-
 \begin{exercise}[$\star\star\star$]\label{linear:ex:jvn}
-(Jordan--von Neumann.) Let $\|\cdot\|$ be a norm on a real vector space satisfying the parallelogram law. Show that
-$\langle x,y\rangle=\frac14(\|x+y\|^2-\|x-y\|^2)$ is an inner product whose norm is $\|\cdot\|$.
+For a real norm satisfying the parallelogram law, prove that $(\|x+y\|^2-\|x-y\|^2)/4$ defines an inner product inducing that norm.
 \end{exercise}
-
 \begin{exercise}[$\star$]\label{linear:ex:qr}
-Compute the $QR$ factorisation of
-$A=\begin{pmatrix}1&1&0\\1&0&1\\0&1&1\end{pmatrix}$, and check that $|\det A|=r_{11}r_{22}r_{33}$.
+Compute $QR$ for $\begin{pmatrix}1&1&0\\1&0&1\\0&1&1\end{pmatrix}$ and verify the determinant magnitude equals the product of the positive $R$ diagonals.
 \end{exercise}
-
 \begin{exercise}[$\star$]\label{linear:ex:projmatrix}
-Let $A\in M_{m,n}(\R)$ have independent columns. Show that $P=A(A^{\mathsf T}A)^{-1}A^{\mathsf T}$ is the matrix of the
-orthogonal projection onto $\operatorname{Im}A$. Conversely, show that a matrix with $P^2=P=P^{\mathsf T}$ is the
-orthogonal projection onto its image, and that $\operatorname{tr}P=\operatorname{rank}P$.
+For real $A$ with independent columns, prove $A(A^{\mathsf T}A)^{-1}A^{\mathsf T}$ projects orthogonally onto its column space. Conversely prove $P^2=P=P^{\mathsf T}$ characterises projection onto $\operatorname{Im}P$, with $\operatorname{tr}P=\operatorname{rank}P$.
 \end{exercise}
-
 \begin{exercise}[$\star\star$]\label{linear:ex:parabola}
-Fit $y=a+bx+cx^2$ by least squares to the five points $(-2,3)$, $(-1,1)$, $(0,0)$, $(1,1)$, $(2,4)$. Do it a second time
-using the basis $1$, $x$, $x^2-2$, and explain why the normal equations become diagonal.
+Fit a quadratic by least squares to $(-2,3),(-1,1),(0,0),(1,1),(2,4)$. Repeat in the basis $1,x,x^2-2$ and explain its diagonal normal equations.
 \end{exercise}
-
 \begin{exercise}[$\star$]\label{linear:ex:distpoly}
-Find the polynomial $a+bt$ minimising $\int_0^1(t^2-a-bt)^2\dd t$, and check the minimum against
-Corollary~\ref{linear:cor:hilbert}.
+Find the affine polynomial nearest $t^2$ in $L^2[0,1]$. Compute its squared error and compare with Corollary~\ref{linear:cor:hilbert}.
 \end{exercise}
-
 \begin{exercise}[$\star$]\label{linear:ex:hilbertint}
-Show that $\det H_{n+1}/\det H_n=\dfrac1{(2n+1)\binom{2n}n^2}$ and deduce that $1/\det H_n$ is an integer. Compute it for
-$n\le4$.
+Rewrite the consecutive Hilbert determinant ratio as $((2n+1)\binom{2n}n^2)^{-1}$. Deduce integer reciprocal determinants and compute them through size four.
 \end{exercise}
-
 \begin{exercise}[$\star\star$]\label{linear:ex:obtuse}
-Show that $\R^n$ contains $n+1$ vectors with pairwise negative inner products, but not $n+2$. (Project onto the
-orthogonal of one of them.)
+Construct $n+1$ vectors in $\R^n$ with negative pairwise inner products, and exclude $n+2$. For the upper bound project away one vector and use dimension induction.
 \end{exercise}
-
 \begin{exercise}[$\star\star$]\label{linear:ex:basel}
-In the space of continuous real functions on $[-\pi,\pi]$ with $\langle f,g\rangle=\int_{-\pi}^\pi fg$, show that the
-functions $\frac{\sin kt}{\sqrt\pi}$, $k\ge1$, are orthonormal. Apply Bessel's inequality~\eqref{linear:eq:bessel} to $f(t)=t$ to
-prove $\sum_{k\ge1}\frac1{k^2}\le\frac{\pi^2}6$. (Equality is Parseval's identity, Theorem~\ref{thm:fourierl2}.)
+In continuous real functions on $[-\pi,\pi]$ with integral inner product, normalise the sine functions to an orthonormal family. Apply Bessel to $f(t)=t$ to obtain $\sum_{k\ge1}k^{-2}\le\pi^2/6$. Parseval, Theorem~\ref{thm:fourierl2}, gives equality, but is unnecessary for this bound.
 \end{exercise}
-
 \begin{exercise}[$\star\star$]\label{linear:ex:legendrenorm}
-Show that $P_n(1)=1$, that the leading coefficient of $P_n$ is $\binom{2n}n/2^n$, and that $\int_{-1}^1P_n^2=\frac2{2n+1}$.
-(Use $\int_{-1}^1(1-t^2)^n\dd t=\frac{2^{2n+1}(n!)^2}{(2n+1)!}$, which you may prove by induction.)
+From Rodrigues's formula prove the endpoint value one, leading coefficient $\binom{2n}n/2^n$, and squared norm $2/(2n+1)$. Establish the auxiliary integral $\int_{-1}^1(1-t^2)^n\dd t=2^{2n+1}(n!)^2/(2n+1)!$ rather than assuming it.
 \end{exercise}
-
 \begin{exercise}[$\star\star$]\label{linear:ex:chebyshev}
-Let $T_n(\cos\theta)=\cos n\theta$. Show that $T_n$ is a polynomial of degree $n$, that the $T_n$ are orthogonal for the
-weight $(1-t^2)^{-1/2}$ on $(-1,1)$, and that the Gauss rule for this weight has nodes $\cos\frac{(2k-1)\pi}{2n}$ and all
-weights equal to $\frac\pi n$.
+Define $T_n(\cos\theta)=\cos(n\theta)$. Prove polynomial degree $n$ and orthogonality for $(1-t^2)^{-1/2}$ on $(-1,1)$. Find its $n$-point Gauss rule: nodes $\cos((2k-1)\pi/(2n))$ and weights $\pi/n$.
 \end{exercise}
-
 \begin{exercise}[$\star\star$]\label{linear:ex:gaussconv}
-Let $G_n(f)=\sum_i\lambda_i^{(n)}f(t_i^{(n)})$ be the $n$-point Gauss rule on a bounded interval $I$. Using positivity of the
-weights and the Weierstrass approximation theorem, show that $G_n(f)\to\int_Ifw$ for every continuous $f$ on $I$.
+For the Gauss rules $G_n$ of the given positive weight on a compact interval $I=[a,b]$, prove $G_n(f)\to\int_Ifw$ for every $f\in C([a,b])$ by positive weights and Weierstrass. Continuity only on a bounded open interval does not imply uniform polynomial approximation; the endpoint condition here makes the intended hypothesis explicit.
 \end{exercise}
-
 \begin{exercise}[$\star\star$]\label{linear:ex:householder}
-For $u\ne0$ in $\R^n$, let $H_u=I-2\frac{uu^{\mathsf T}}{u^{\mathsf T}u}$. Show that $H_u$ is orthogonal and symmetric (a
-reflection), that $H_{x-y}x=y$ when $\|x\|=\|y\|$ and $x\ne y$, and that every orthogonal $n\times n$ matrix is a product of
-at most $n$ reflections.
+For nonzero real $u$, prove $H_u=I-2uu^{\mathsf T}/(u^{\mathsf T}u)$ is a symmetric orthogonal reflection. Show $H_{x-y}x=y$ for distinct equal-norm $x,y$. Then factor every orthogonal $n\times n$ matrix into at most $n$ such reflections.
+\end{exercise}
+\begin{exercise}[$\star\star\star$]\label{linear:ex:muntz}
+Let $0\le a_1<a_2<\cdots$ and let integer $m\ge0$ differ from every $a_k$. Prove that the distance from $t^m$ to the first $N$ powers in $L^2[0,1]$ satisfies
+\[d_N^2=\frac1{2m+1}\prod_{k=1}^N\left(\frac{a_k-m}{a_k+m+1}\right)^2.\]
+If $a_k\to\infty$ and the reciprocal sum over the positive $a_k$ diverges, deduce $d_N\to0$. An initial zero exponent is omitted from the reciprocal sum; finite initial terms do not affect its divergence.
 \end{exercise}
 
-\begin{exercise}[$\star\star\star$]\label{linear:ex:muntz}
-Let $0\le a_1<a_2<\dots$ be real and $m\ge0$ an integer distinct from all $a_k$. In $L^2[0,1]$, show that the distance
-$d_N$ from $t^m$ to $\operatorname{span}(t^{a_1},\dots,t^{a_N})$ satisfies
-\[
-d_N^2=\frac1{2m+1}\prod_{k=1}^N\Bigl(\frac{a_k-m}{a_k+m+1}\Bigr)^2.
-\]
-Deduce that if $a_k\to\infty$ and $\sum_k\frac1{a_k}=\infty$, then $d_N\to0$ (one half of M\"untz's theorem, 1914).
+\begin{exercise}[$\star\star$]\label{ex:v8cDa}
+\emph{Changing observation weights.} Fit the opening three points using squared-error weights $1,2,1$. Derive the weighted normal equations by multiplying rows by square roots of the weights. Find the line, residuals and minimum error, and check their weighted zero-sum identity.
+\end{exercise}
+\begin{exercise}[$\star\star$]\label{ex:v8cDb}
+\emph{A least-norm interpolant.} Among real polynomials of degree at most two satisfying $p(0)=p(1)=1$, minimise $\int_0^1p(t)^2\dd t$. Prove uniqueness and relate the minimising condition to orthogonality along the space of polynomials vanishing at both endpoints.
+\end{exercise}
+\begin{exercise}[$\star\star$]\label{ex:v8cDc}
+\emph{Three Gauss nodes and the first error.} Derive the Legendre three-node weights $5/9,8/9,5/9$ at $-\sqrt{3/5},0,\sqrt{3/5}$. Prove exactness through degree five and compute the quadrature error for $t^6$ as $8/175$ using the monic orthogonal cubic.
+\end{exercise}
+\begin{exercise}[$\star\star$]\label{ex:v8cDd}
+\emph{When two projections combine.} For orthogonal projections $P,Q$ in finite dimension, prove $PQ$ is an orthogonal projection exactly when $PQ=QP$. In that case identify its image as the intersection of the two images. Give two line projections in $\R^2$ whose product is not a projection.
 \end{exercise}
 
 \section{Hints}
-
 \begin{hint}{linear:ex:polar}
-Expand both squares and add. For (b), expand each $\|x+i^ky\|^2$ and use $\sum_ki^k=0$.
+Expand squared norms and sum the powers of $i$.
 \end{hint}
 \begin{hint}{linear:ex:jvn}
-Show $\langle x+z,y\rangle+\langle x-z,y\rangle=2\langle x,y\rangle$, then $\langle2x,y\rangle=2\langle x,y\rangle$, then
-additivity, then homogeneity for rational and finally real scalars by continuity.
+First prove $B(x+z,y)+B(x-z,y)=2B(x,y)$ for the proposed pairing. Doubling then gives additivity, and norm continuity extends rational homogeneity to real homogeneity.
 \end{hint}
 \begin{hint}{linear:ex:qr}
-Gram--Schmidt on the columns; $\det Q=\pm1$.
+Subtract earlier orthogonal components column by column and retain positive residual lengths.
 \end{hint}
 \begin{hint}{linear:ex:projmatrix}
-$Pb=Ax$ for the least squares solution $x$. For the converse, check $b-Pb\perp\operatorname{Im}P$; for the trace, use a basis
-adapted to $\operatorname{Im}P\oplus\ker P$.
+Use the least-squares image for the forward statement and residual orthogonality for the converse.
 \end{hint}
 \begin{hint}{linear:ex:parabola}
-On these five points, $\sum x=\sum x^3=0$ and $\sum(x^2-2)=0$.
+The five abscissae give zero sums for $x,x^3,x^2-2$ and $x(x^2-2)$.
 \end{hint}
 \begin{hint}{linear:ex:distpoly}
-The error $t^2-a-bt$ must be orthogonal to $1$ and to $t$.
+Make $t^2-a-bt$ orthogonal to both one and $t$.
 \end{hint}
 \begin{hint}{linear:ex:hilbertint}
-The ratio was computed in the proof of Corollary~\ref{linear:cor:hilbert}.
+Multiply the reciprocal ratios starting from determinant one.
 \end{hint}
 \begin{hint}{linear:ex:obtuse}
-If $v_1,\dots,v_m$ are pairwise obtuse, the projections of $v_1,\dots,v_{m-1}$ onto $v_m^\perp$ are still pairwise obtuse.
+Projection onto the last vector's orthogonal complement subtracts a positive quantity from the remaining pairwise inner products.
 \end{hint}
 \begin{hint}{linear:ex:basel}
-$\int_{-\pi}^\pi t\sin kt\dd t=\frac{2\pi(-1)^{k+1}}k$, by parts.
+Integration by parts gives $\int_{-\pi}^\pi t\sin(kt)\dd t=2\pi(-1)^{k+1}/k$.
 \end{hint}
 \begin{hint}{linear:ex:legendrenorm}
-Leibniz's rule on $(t-1)^n(t+1)^n$ for $P_n(1)$. For the norm, $\int P_n^2$ equals the leading coefficient times
-$\int t^nP_n$.
+At $t=1$ only one Leibniz term survives. For the norm replace one polynomial factor by its leading monomial, then integrate by parts $n$ times.
 \end{hint}
 \begin{hint}{linear:ex:chebyshev}
-$\cos(n+1)\theta+\cos(n-1)\theta=2\cos\theta\cos n\theta$; substitute $t=\cos\theta$ in the integrals.
+The cosine recurrence gives polynomiality. Substitution $t=\cos\theta$ gives orthogonality and a finite cosine sum for the weights.
 \end{hint}
 \begin{hint}{linear:ex:gaussconv}
-$\sum_i\lambda_i^{(n)}=\int_Iw$ for all $n$. Approximate $f$ uniformly within $\varepsilon$ by a polynomial $q$, and compare
-$G_n(f)$ with $G_n(q)$ once $2n-1\ge\deg q$.
+Both the positive rule and the integral have norm bounded by the total weight mass. Apply them to a uniformly small polynomial-approximation error.
 \end{hint}
 \begin{hint}{linear:ex:householder}
-For the last part, induct on $n$: send $Qe_1$ back to $e_1$ by one reflection.
+First fix $e_1$ with one reflection, then induct on its orthogonal complement.
 \end{hint}
 \begin{hint}{linear:ex:muntz}
-Theorem~\ref{linear:thm:gram}(b) with Cauchy's determinant: $\langle t^a,t^b\rangle=\frac1{a+b+1}$. For the limit, write each factor
-as $1-\frac{2m+1}{a_k+m+1}$ and use $\log(1-u)\le-u$.
+The power-function Gram entries are $1/(a+b+1)$. Add exponent $m$ to Cauchy's determinant, then estimate the logarithm of its product tail.
+\end{hint}
+\begin{hint}{ex:v8cDa}
+Use $A^{\mathsf T}WA$ and $A^{\mathsf T}Wy$, with $W=\operatorname{diag}(1,2,1)$.
+\end{hint}
+\begin{hint}{ex:v8cDb}
+Every feasible polynomial is $1+ct(1-t)$.
+\end{hint}
+\begin{hint}{ex:v8cDc}
+Symmetry leaves two weights. Apply the rule to one and $t^2$, then compare $t^6$ with $(t^3-3t/5)^2$.
+\end{hint}
+\begin{hint}{ex:v8cDd}
+The adjoint of $PQ$ is $QP$. For the counterexample use the coordinate axis and the line $y=x$.
 \end{hint}
 
 \section{Solutions}
-
 \begin{solution}{linear:ex:polar}
-\idea Every identity about norms in an inner product space is proved by expanding $\|u\|^2=\langle u,u\rangle$.
-\writeup (a) $\|x\pm y\|^2=\|x\|^2\pm2\operatorname{Re}\langle x,y\rangle+\|y\|^2$; adding cancels the middle terms. For a
-parallelogram with sides $x,y$, the diagonals are $x+y$ and $x-y$: the sum of the squares of the diagonals equals the sum
-of the squares of the four sides.
-
-(b) $\|x+i^ky\|^2=\|x\|^2+\|y\|^2+\overline{i^k}\langle x,y\rangle+i^k\langle y,x\rangle$. Multiply by $i^k$ and sum over
-$k=0,1,2,3$: the terms $i^k(\|x\|^2+\|y\|^2)$ and $i^{2k}\langle y,x\rangle$ sum to zero (as $\sum i^k=\sum(-1)^k=0$),
-while $i^k\overline{i^k}=1$ leaves $4\langle x,y\rangle$.
+\idea Norm expansions retain or cancel the inner-product cross terms.
+\writeup (a) Add $\|x+y\|^2$ and $\|x-y\|^2$; the cross terms cancel. A parallelogram's diagonal vectors are $x+y,x-y$, while its four sides have squared lengths summing to $2\|x\|^2+2\|y\|^2$. (b) Expansion gives $\|x+i^ky\|^2=\|x\|^2+\|y\|^2+i^{-k}\langle x,y\rangle+i^k\langle y,x\rangle$. Multiplication by $i^k$ and summation cancel the constant-norm and $i^{2k}$ terms, leaving $4\langle x,y\rangle$.
 \end{solution}
-
 \begin{solution}{linear:ex:jvn}
-\idea The formula is forced by polarisation; symmetry and $\langle x,x\rangle=\|x\|^2$ are immediate, so all the work is
-linearity in $x$. The parallelogram law is the only tool, so apply it to the pairs that occur in
-$\|x\pm z+y\|$ and $\|x\pm z-y\|$.
-\writeup Symmetry is clear, $\langle x,x\rangle=\frac14\|2x\|^2=\|x\|^2$, and $\langle0,y\rangle=0$. The parallelogram
-law for the vectors $x+y$ and $z$ gives $\|x+z+y\|^2+\|x-z+y\|^2=2\|x+y\|^2+2\|z\|^2$; for $x-y$ and $z$ it gives
-$\|x+z-y\|^2+\|x-z-y\|^2=2\|x-y\|^2+2\|z\|^2$. Subtracting and dividing by $4$,
-\[
-\langle x+z,y\rangle+\langle x-z,y\rangle=2\langle x,y\rangle.
-\]
-With $z=x$ this gives $\langle2x,y\rangle=2\langle x,y\rangle$. For arbitrary $u,v$, put $x=\frac{u+v}2$, $z=\frac{u-v}2$:
-then $\langle u,y\rangle+\langle v,y\rangle=2\langle\frac{u+v}2,y\rangle=\langle u+v,y\rangle$, so $\langle\cdot,y\rangle$
-is additive. Additivity gives $\langle kx,y\rangle=k\langle x,y\rangle$ for integers $k$ (using $\langle-x,y\rangle=-\langle
-x,y\rangle$, clear from the formula), then for rationals ($q\langle\frac pqx,y\rangle=\langle px,y\rangle$). Finally
-$\lambda\mapsto\langle\lambda x,y\rangle$ is continuous, since the norm is continuous ($|\|u\|-\|v\||\le\|u-v\|$), and agrees
-with $\lambda\langle x,y\rangle$ on $\Q$, hence on $\R$. Positivity is $\langle x,x\rangle=\|x\|^2>0$ for $x\ne0$.
+\idea The parallelogram law forces the proposed polarisation form to be additive; continuity supplies real homogeneity.
+\writeup Denote the proposed form by $B$. It is symmetric, $B(x,x)=\|x\|^2$ and $B(0,y)=0$. Apply the parallelogram law to $x+y,z$ and $x-y,z$ and subtract. Dividing by four gives $B(x+z,y)+B(x-z,y)=2B(x,y)$. Setting $z=x$ gives $B(2x,y)=2B(x,y)$. Now put $x=(u+v)/2,z=(u-v)/2$ to obtain additivity. Integer and then rational homogeneity follow. The formula for $B$ is continuous in each argument because the norm is continuous, so rational approximation proves real homogeneity. Symmetry gives bilinearity, and positive definiteness follows from $B(x,x)=\|x\|^2$.
 \end{solution}
-
 \begin{solution}{linear:ex:qr}
-\idea Run Gram--Schmidt and record the coefficients: $r_{ij}=\langle a_j,e_i\rangle$.
-\writeup $e_1=\frac1{\sqrt2}(1,1,0)$. Then $a_2-\frac12(1,1,0)=(\frac12,-\frac12,1)$, of norm $\sqrt{3/2}$, so
-$e_2=\frac1{\sqrt6}(1,-1,2)$. Then $\langle a_3,e_1\rangle=\frac1{\sqrt2}$, $\langle a_3,e_2\rangle=\frac1{\sqrt6}$, and
-$a_3-\frac12(1,1,0)-\frac16(1,-1,2)=\frac23(-1,1,1)$, of norm $\frac2{\sqrt3}$, so $e_3=\frac1{\sqrt3}(-1,1,1)$. Hence
-\[
-Q=\begin{pmatrix}\frac1{\sqrt2}&\frac1{\sqrt6}&-\frac1{\sqrt3}\\[2pt]\frac1{\sqrt2}&-\frac1{\sqrt6}&\frac1{\sqrt3}\\[2pt]0&\frac2{\sqrt6}&\frac1{\sqrt3}\end{pmatrix},\qquad
-R=\begin{pmatrix}\sqrt2&\frac1{\sqrt2}&\frac1{\sqrt2}\\[2pt]0&\sqrt{\frac32}&\frac1{\sqrt6}\\[2pt]0&0&\frac2{\sqrt3}\end{pmatrix}.
+\idea Orthogonalise columns and store each removed component in $R$.
+\writeup The unit columns are $e_1=(1,1,0)/\sqrt2$, $e_2=(1,-1,2)/\sqrt6$ and $e_3=(-1,1,1)/\sqrt3$. Their positive residual lengths are $\sqrt2,\sqrt{3/2},2/\sqrt3$. Thus
+\[Q=\begin{pmatrix}1/\sqrt2&1/\sqrt6&-1/\sqrt3\\1/\sqrt2&-1/\sqrt6&1/\sqrt3\\0&2/\sqrt6&1/\sqrt3\end{pmatrix},\qquad
+R=\begin{pmatrix}\sqrt2&1/\sqrt2&1/\sqrt2\\0&\sqrt{3/2}&1/\sqrt6\\0&0&2/\sqrt3\end{pmatrix}.
 \]
-Then $r_{11}r_{22}r_{33}=\sqrt2\cdot\sqrt{3/2}\cdot\frac2{\sqrt3}=2$, and $\det A=1\cdot(0-1)-1\cdot(1-0)=-2$. In general
-$|\det A|=|\det Q|\det R=\prod r_{jj}$, the volume as base times heights; here $\det Q=-1$.
+Their product recovers $A$, and the diagonal product is two, equal to $|\det A|$ since $\det A=-2$. More generally $|\det Q|=1$ gives the same determinant identity for square $QR$.
 \end{solution}
-
 \begin{solution}{linear:ex:projmatrix}
-\idea A projection is determined by what it does: fix the subspace, kill its orthogonal.
-\writeup By Theorem~\ref{linear:thm:lsq}, the closest point of $\operatorname{Im}A$ to $b$ is $Ax$ with $x=(A^{\mathsf T}A)^{-1}
-A^{\mathsf T}b$, which is $Pb$. Conversely, let $P^2=P=P^{\mathsf T}$ and $W=\operatorname{Im}P$. For $w=Pv\in W$,
-$Pw=P^2v=w$. For any $b$ and $w\in W$, $\langle b-Pb,w\rangle=\langle b-Pb,Pw\rangle=\langle P(b-Pb),w\rangle=\langle
-Pb-P^2b,w\rangle=0$. So $Pb\in W$ and $b-Pb\perp W$, which characterises $P_Wb$. In a basis made of a basis of $W$ and a
-basis of $W^\perp$, $P=\operatorname{diag}(1,\dots,1,0,\dots,0)$ with $\dim W$ ones, so $\operatorname{tr}P=\dim W=
-\operatorname{rank}P$.
+\idea An orthogonal projection fixes its image and makes every residual perpendicular to it.
+\writeup The least-squares formula sends $b$ to $A(A^{\mathsf T}A)^{-1}A^{\mathsf T}b$, its closest column-space vector. Conversely if $P^2=P=P^{\mathsf T}$, it fixes $W=\operatorname{Im}P$ and $\langle b-Pb,Pv\rangle=\langle P(b-Pb),v\rangle=0$. This characterises $P_W$. In a basis adapted to $W\oplus W^\perp$, its matrix has $\dim W$ diagonal ones and otherwise zeros, giving trace equal to rank.
 \end{solution}
-
 \begin{solution}{linear:ex:parabola}
-\idea Normal equations in the monomial basis first; then notice that in an orthogonal basis the coefficients are just
-projections, one inner product each.
-\writeup With the sums $\sum1=5$, $\sum x=\sum x^3=0$, $\sum x^2=10$, $\sum x^4=34$, $\sum y=9$, $\sum xy=2$, $\sum
-x^2y=30$, the normal equations are $5a+10c=9$, $10b=2$, $10a+34c=30$, so $b=\frac15$, $c=\frac67$, $a=\frac3{35}$.
+\idea Discrete orthogonal polynomials diagonalise the fitting equations without changing the model space.
+\writeup The data sums are $\sum1=5$, $\sum x^2=10$, $\sum x^4=34$, $\sum y=9$, $\sum xy=2$, $\sum x^2y=30$, with odd pure-power sums zero. The normal equations give $5a+10c=9$, $10b=2$, $10a+34c=30$, hence $(a,b,c)=(3/35,1/5,6/7)$.
 
-The vectors of values of $1$, $x$, $x^2-2$ at the five points are pairwise orthogonal ($\sum x=0$, $\sum(x^2-2)=0$,
-$\sum x(x^2-2)=0$), so the projection of $y$ onto their span is
-\[
-\frac{\langle y,1\rangle}{5}+\frac{\langle y,x\rangle}{10}x+\frac{\langle y,x^2-2\rangle}{14}(x^2-2)=\frac95+\frac x5+
-\frac67(x^2-2),
-\]
-which is $\frac3{35}+\frac x5+\frac67x^2$ again. The Gram matrix of an orthogonal basis is diagonal, which is why discrete
-orthogonal polynomials were how least squares fits were computed by hand for a century.
+The value vectors for $1,x,x^2-2$ are mutually orthogonal, with squared norms $5,10,14$. Their pairings with $y$ are $9,2,12$. Projection therefore gives $9/5+x/5+(6/7)(x^2-2)$, the same quadratic. The diagonal Gram matrix explains why this basis makes the computation simpler.
 \end{solution}
-
 \begin{solution}{linear:ex:distpoly}
-\idea Orthogonality of the error to $1$ and $t$ gives two linear equations; Corollary~\ref{linear:cor:hilbert} predicts the
-answer $\frac1{6\sqrt5}$ for the distance.
-\writeup $\int_0^1(t^2-a-bt)\dd t=\frac13-a-\frac b2=0$ and $\int_0^1(t^2-a-bt)t\dd t=\frac14-\frac a2-\frac b3=0$ give
-$b=1$, $a=-\frac16$. The error is $t^2-t+\frac16$, which with $s=t-\frac12$ is $s^2-\frac1{12}$, and
-\[
-\int_{-1/2}^{1/2}\Bigl(s^2-\frac1{12}\Bigr)^2\dd s=\frac1{80}-\frac2{12}\cdot\frac1{12}+\frac1{144}=\frac1{80}-\frac1{144}=\frac1{180}.
+\idea Set the two residual moments to zero.
+\writeup Orthogonality gives $1/3-a-b/2=0$ and $1/4-a/2-b/3=0$, yielding $a=-1/6,b=1$. The residual is $t^2-t+1/6$. With $s=t-1/2$, its squared integral is
+\[\int_{-1/2}^{1/2}(s^2-1/12)^2\dd s=1/80-1/144=1/180.
 \]
-The corollary with $n=2$ gives $\bigl(\binom42\sqrt5\bigr)^{-2}=\frac1{180}$.
+This equals $(\binom42\sqrt5)^{-2}$ from the Hilbert-distance formula.
 \end{solution}
-
 \begin{solution}{linear:ex:hilbertint}
-\idea The ratio is the squared distance of Corollary~\ref{linear:cor:hilbert}; rewrite $\frac{(n!)^4}{(2n)!(2n+1)!}$ with a
-binomial coefficient.
-\writeup $\frac{(n!)^4}{(2n)!(2n+1)!}=\frac{(n!)^4}{(2n)!^2(2n+1)}=\frac1{(2n+1)\binom{2n}n^2}$. Since $\det H_1=1$,
-\[
-\frac1{\det H_n}=\prod_{k=1}^{n-1}(2k+1)\binom{2k}k^2,
-\]
-a product of integers. The values for $n=1,2,3,4$ are $1$, $3\cdot4=12$, $12\cdot5\cdot36=2160$ and $2160\cdot7\cdot400=
-6048000$.
+\idea Each reciprocal determinant ratio is already an integer binomial expression.
+\writeup The ratio equals $(n!)^4/((2n)!^2(2n+1))=((2n+1)\binom{2n}n^2)^{-1}$. Starting with determinant one gives $1/\det H_n=\prod_{k=1}^{n-1}(2k+1)\binom{2k}k^2$. The first four values are $1,12,2160,6048000$, each obtained by this exact product.
 \end{solution}
-
 \begin{solution}{linear:ex:obtuse}
-\idea For the construction, think of the vertices of a regular simplex seen from its centre. For the bound, removing
-one vector by projection should keep the others obtuse, which sets up an induction on the dimension.
-\writeup \emph{Construction.} Let $f_1,\dots,f_{n+1}$ be the standard basis of $\R^{n+1}$ and $v_i=f_i-\frac1{n+1}
-\sum_jf_j$. These lie in the hyperplane $\sum x_j=0$, a copy of $\R^n$, and $\langle v_i,v_j\rangle=-\frac1{n+1}<0$ for
-$i\ne j$.
-
-\emph{Bound}, by induction on $n$. In $\R^1$, three non-zero numbers cannot have pairwise negative products (two of them
-have the same sign). Let $v_1,\dots,v_m\in\R^n$ be pairwise obtuse, and let $w_i=v_i-\frac{\langle v_i,v_m\rangle}
-{\|v_m\|^2}v_m$ for $i<m$, the projections onto $v_m^\perp\cong\R^{n-1}$. Then
-\[
-\langle w_i,w_j\rangle=\langle v_i,v_j\rangle-\frac{\langle v_i,v_m\rangle\langle v_j,v_m\rangle}{\|v_m\|^2}<0,
+\idea A centred simplex constructs the family; perpendicular projection preserves strict obtuseness for the upper bound.
+\writeup In $\R^{n+1}$ let $v_i=e_i-(n+1)^{-1}\sum_je_j$. They lie in the dimension-$n$ zero-sum hyperplane and have off-diagonal pairing $-1/(n+1)$. For the upper bound, the case $n=1$ follows because three nonzero real numbers cannot have all pairwise negative products. In dimension $n>1$, suppose there were $n+2$ such vectors and project the first $n+1$ onto the last vector's perpendicular. Their pairings become
+\[\langle v_i,v_j\rangle-\frac{\langle v_i,v_m\rangle\langle v_j,v_m\rangle}{\|v_m\|^2}<0.
 \]
-as the first term is negative and the subtracted product of two negative numbers is positive. In particular the $w_i$
-are non-zero, and by induction $m-1\le(n-1)+1$, so $m\le n+1$.
+The projected family is nonzero and has $n+1$ members in dimension $n-1$, contradicting induction. Smaller-family zero-projection edge cases are irrelevant to this contradiction because there are at least three remaining vectors. At $n=0$, one zero vector is allowed by the vacuous pair condition, but two are impossible.
 \end{solution}
-
 \begin{solution}{linear:ex:basel}
-\idea Bessel's inequality turns any orthonormal family into a lower bound for $\int f^2$; with $f(t)=t$ and the sines,
-the coefficients are $\frac1k$ up to constants, so out comes $\sum\frac1{k^2}$.
-\writeup $\int_{-\pi}^\pi\sin kt\sin lt\dd t=\frac12\int_{-\pi}^\pi(\cos(k-l)t-\cos(k+l)t)\dd t=\pi\delta_{kl}$ for $k,l\ge1$,
-so the $\frac{\sin kt}{\sqrt\pi}$ are orthonormal. By parts, $\int_{-\pi}^\pi t\sin kt\dd t=\bigl[-\frac{t\cos kt}k\bigr]
-_{-\pi}^\pi+\int\frac{\cos kt}k=\frac{2\pi(-1)^{k+1}}k$. Bessel's inequality gives
-\[
-\sum_{k\ge1}\frac1\pi\cdot\frac{4\pi^2}{k^2}\le\int_{-\pi}^\pi t^2\dd t=\frac{2\pi^3}3,\qquad\text{that is}\qquad
-\sum_{k\ge1}\frac1{k^2}\le\frac{\pi^2}6.
-\]
+\idea The sine coefficients of $t$ are multiples of $1/k$, so Bessel bounds their squared sum.
+\writeup Product-to-sum integration gives $\int_{-\pi}^\pi\sin(kt)\sin(lt)\dd t=\pi\delta_{kl}$. The normalised sines are orthonormal. Integration by parts gives their coefficient on $t$ as $2\sqrt\pi(-1)^{k+1}/k$. Bessel yields $4\pi\sum_{k\ge1}k^{-2}\le\int_{-\pi}^\pi t^2\dd t=2\pi^3/3$, proving the bound.
 \end{solution}
-
 \begin{solution}{linear:ex:legendrenorm}
-\idea Evaluating an $n$-th derivative of a product at a root of one factor kills almost every Leibniz term. For the
-norm, orthogonality lets us replace one copy of $P_n$ by its leading term.
-\writeup By Leibniz, $\frac{\mathrm d^n}{\mathrm dt^n}\bigl((t-1)^n(t+1)^n\bigr)=\sum_k\binom nk\frac{\mathrm d^k}{\mathrm
-dt^k}(t-1)^n\cdot\frac{\mathrm d^{n-k}}{\mathrm dt^{n-k}}(t+1)^n$; at $t=1$ only $k=n$ survives, giving $n!\,2^n$, so
-$P_n(1)=1$. The leading term of $(t^2-1)^n$ is $t^{2n}$, whose $n$-th derivative is $\frac{(2n)!}{n!}t^n$; dividing by
-$2^nn!$ gives the leading coefficient $\binom{2n}n/2^n$. Since $P_n\perp$ lower degrees, $\int P_n^2=\frac{\binom{2n}n}{2^n}
-\int t^nP_n$, and by the computation of Example~\ref{linear:exa:legendre} with $k=n$,
-\[
-\int_{-1}^1t^nP_n=\frac{(-1)^nn!}{2^nn!}\int_{-1}^1(t^2-1)^n=\frac1{2^n}\int_{-1}^1(1-t^2)^n=\frac{2^{n+1}(n!)^2}{(2n+1)!}.
-\]
-Multiplying, $\int P_n^2=\frac{(2n)!}{2^n(n!)^2}\cdot\frac{2^{n+1}(n!)^2}{(2n+1)!}=\frac2{2n+1}$. The integral $\int_{-1}^1(1-t^2)^n$
-follows by induction from the integration by parts $I_n=\frac{2n}{2n+1}I_{n-1}$.
-\end{solution}
+\idea Endpoint vanishing simplifies Leibniz, and orthogonality reduces the norm to one leading-monomial integral.
+\writeup At one, the $n$th derivative of $(t-1)^n(t+1)^n$ has only the Leibniz term $n!2^n$, proving $P_n(1)=1$. Differentiating the leading $t^{2n}$ gives leading coefficient $(2n)!/(2^n(n!)^2)$.
 
+Let $I_n=\int_{-1}^1(1-t^2)^n\dd t$. Integrating the derivative of $t(1-t^2)^n$ gives $(2n+1)I_n=2nI_{n-1}$ for $n\ge1$, with $I_0=2$. This proves $I_n=2^{2n+1}(n!)^2/(2n+1)!$. Integrating Rodrigues's formula against $t^n$ by parts $n$ times yields $\int t^nP_n=I_n/2^n$. Multiplying by the leading coefficient, since all lower degrees are orthogonal to $P_n$, gives $\int P_n^2=2/(2n+1)$.
+\end{solution}
 \begin{solution}{linear:ex:chebyshev}
-\idea The substitution $t=\cos\theta$ turns the weight $(1-t^2)^{-1/2}\dd t$ into $\dd\theta$, and everything becomes
-the orthogonality of cosines.
-\writeup From $T_{n+1}+T_{n-1}=2tT_n$, $T_0=1$ and $T_1=t$, induction shows $T_n$ is a polynomial of degree $n$
-(leading coefficient $2^{n-1}$ for $n\ge1$). With $t=\cos\theta$,
-\[
-\int_{-1}^1T_mT_n\frac{\dd t}{\sqrt{1-t^2}}=\int_0^\pi\cos m\theta\cos n\theta\dd\theta=0\quad(m\ne n).
-\]
-So $p_n=2^{1-n}T_n$, whose zeros are the $t$ with $\cos n\theta=0$, that is $\theta=\frac{(2k-1)\pi}{2n}$, $k=1,\dots,n$.
-For the weights, the rule must integrate $T_j$ exactly for $j\le2n-1$. With $\theta_k=\frac{(2k-1)\pi}{2n}$ and $0<j<2n$,
-$\sum_k\cos j\theta_k=\operatorname{Re}\bigl(e^{ij\pi/2n}\sum_{k=0}^{n-1}e^{ij\pi k/n}\bigr)=\operatorname{Re}\frac{e^{ij\pi/2n}
-(1-e^{ij\pi})}{1-e^{ij\pi/n}}=\operatorname{Re}\frac{1-(-1)^j}{e^{-ij\pi/2n}-e^{ij\pi/2n}}$, and the last fraction is purely
-imaginary, so the sum is $0$. Thus equal weights $\frac\pi n$ integrate $T_0$ correctly ($\int\frac{\dd t}{\sqrt{1-t^2}}=\pi$)
-and every $T_j$, $0<j<2n$, correctly (both sides $0$); by uniqueness of the weights of an interpolatory rule, these are the
-Gauss weights.
-\end{solution}
+\idea Cosine coordinates absorb the weight and turn the rule into a finite trigonometric sum.
+\writeup The recurrence $T_{n+1}=2tT_n-T_{n-1}$, starting with $1,t$, gives polynomial degree $n$ and leading coefficient $2^{n-1}$ for $n\ge1$. Substitution $t=\cos\theta$ makes weighted pairings $\int_0^\pi\cos(m\theta)\cos(n\theta)\dd\theta$, proving orthogonality. The zeros have $\theta_k=(2k-1)\pi/(2n)$.
 
+For $0<j<2n$, the geometric sum gives
+\[\sum_{k=1}^n\cos(j\theta_k)
+ =\Re\frac{1-(-1)^j}{e^{-ij\pi/(2n)}-e^{ij\pi/(2n)}}=0.
+\]
+The denominator is nonzero and purely imaginary, while the numerator is real. Equal weights $\pi/n$ therefore integrate $T_0$ correctly and every $T_j$ through $2n-1$ to zero. These form a polynomial basis, so the rule has full Gauss exactness; uniqueness of interpolatory weights identifies them as the Gauss weights.
+\end{solution}
 \begin{solution}{linear:ex:gaussconv}
-\idea Exactness handles polynomials; positivity of weights says the rule cannot amplify errors, since it is an average.
-\writeup Applying the rule to $f=1$ gives $\sum_i\lambda_i^{(n)}=\int_Iw=:M$. Given $\varepsilon>0$, Weierstrass gives a
-polynomial $q$ with $|f-q|\le\varepsilon$ on $I$. For $2n-1\ge\deg q$, $G_n(q)=\int qw$, and since the weights are
-positive,
-\[
-\Bigl|G_n(f)-\int_Ifw\Bigr|\le\sum_i\lambda_i^{(n)}|f-q|(t_i^{(n)})+\int_I|q-f|w\le2M\varepsilon.
+\idea Exactness removes a polynomial approximant, and positivity bounds both remaining errors by its uniform error.
+\writeup The total weight is $M=\int_Iw<\infty$. For $f$ continuous on $[a,b]$, choose a polynomial $q$ with $\|f-q\|_\infty<\varepsilon$ by Weierstrass. Once $2n-1\ge\deg q$, exactness and positive weights give
+\[|G_n(f)-\int_Ifw|\le\sum_i\lambda_i|f-q|(t_i)+\int_I|f-q|w\le2M\varepsilon.
 \]
+Let $n\to\infty$ and then $\varepsilon\downarrow0$. Continuity on the compact closure is what guarantees the uniform approximant used in this proof.
 \end{solution}
-
 \begin{solution}{linear:ex:householder}
-\idea A reflection fixes a hyperplane and reverses its normal. To send $x$ to $y$, reflect in the perpendicular bisector,
-whose normal is $x-y$.
-\writeup $H_u$ is symmetric, and $H_u^2=I-4\frac{uu^{\mathsf T}}{u^{\mathsf T}u}+4\frac{u(u^{\mathsf T}u)u^{\mathsf T}}{(u^{\mathsf T}u)^2}=I$,
-so $H_u^{\mathsf T}H_u=I$. With $u=x-y$ and $\|x\|=\|y\|$, $u^{\mathsf T}u=2\|x\|^2-2\langle x,y\rangle=2\langle x,u\rangle$, so
-$H_ux=x-2\frac{\langle x,u\rangle}{u^{\mathsf T}u}u=x-u=y$. For the factorisation, induct on $n$ (the case $n=1$: $Q=\pm1$,
-a product of at most one reflection). Given $Q$ orthogonal, if $Qe_1\ne e_1$ let $H=H_{Qe_1-e_1}$, so $HQe_1=e_1$;
-otherwise $H=I$. Then $HQ$ is orthogonal and fixes $e_1$, hence preserves $e_1^\perp$, and acts there as an orthogonal
-map of $\R^{n-1}$, a product of at most $n-1$ reflections of $e_1^\perp$ by induction; each extends to a reflection of
-$\R^n$ fixing $e_1$. So $Q=H^{-1}(HQ)=H(HQ)$ is a product of at most $n$ reflections. This is the Cartan--Dieudonn\'e
-theorem, and it is how Householder computes $QR$ factorisations stably.
-\end{solution}
+\idea A reflection reverses its normal and fixes its perpendicular hyperplane; one such move fixes the first basis direction.
+\writeup Writing $P_u=uu^{\mathsf T}/\|u\|^2$, we have $P_u^2=P_u=P_u^{\mathsf T}$. Thus $H_u=I-2P_u$ is symmetric and squares to identity. If $u=x-y$ for distinct equal-norm vectors, $\|u\|^2=2\langle x,u\rangle$, giving $H_ux=x-u=y$.
 
+For orthogonal $Q$, if $Qe_1\ne e_1$ use that reflection to obtain $HQe_1=e_1$; otherwise use no reflection. The resulting orthogonal map preserves $e_1^\perp$. Induct there, using at most $n-1$ reflections, each extended by fixing $e_1$. Together with the initial optional one this gives at most $n$, starting from $\pm1$ in dimension one and the empty product in dimension zero. This is the Euclidean Cartan--Dieudonn\'e argument underlying Householder $QR$.
+\end{solution}
 \begin{solution}{linear:ex:muntz}
-\idea The distance is a ratio of Gram determinants, and here every Gram matrix is a Cauchy matrix. Adding one exponent
-multiplies the Cauchy determinant by a simple factor, exactly as in the proof of Corollary~\ref{linear:cor:hilbert}.
-\writeup $\langle t^a,t^b\rangle=\frac1{a+b+1}$, so the Gram matrix of $t^{a_1},\dots,t^{a_N}$ is Cauchy with $x_i=a_i$,
-$y_j=a_j+1$, and adding the exponent $m$ as $(N+1)$-st multiplies its determinant by
-\[
-\frac{\prod_k(m-a_k)^2}{(2m+1)\prod_k(a_k+m+1)^2}
+\idea Cauchy's product gives the exact Gram ratio for adjoining one power function.
+\writeup Power pairings are $\langle t^a,t^b\rangle=1/(a+b+1)$. Their Gram determinant is Cauchy's determinant and is positive for distinct exponents. Adding exponent $m$ multiplies it by $\prod_k(m-a_k)^2/((2m+1)\prod_k(a_k+m+1)^2)$, proving the distance formula.
+
+For sufficiently large $k$, the ratio is $1-(2m+1)/(a_k+m+1)$ in $(0,1)$. The inequality $\log(1-u)\le-u$ gives
+\[\log d_N^2\le C-2\sum_{k\text{ sufficiently large}}^N\frac{2m+1}{a_k+m+1}\longrightarrow-\infty,
 \]
-by Theorem~\ref{linear:thm:cauchydet} (the factors involving the new index; order does not matter as everything is squared).
-Theorem~\ref{linear:thm:gram}(b) gives the formula for $d_N^2$. Each factor is $\bigl(1-\frac{2m+1}{a_k+m+1}\bigr)^2$; for $k$
-large it lies in $(0,1)$, and $\log(1-u)\le-u$ gives $\log d_N^2\le C-2\sum_{k\le N}\frac{2m+1}{a_k+m+1}\to-\infty$ when
-$\sum\frac1{a_k}=\infty$ (as $\frac1{a_k+m+1}\ge\frac1{2a_k}$ once $a_k\ge m+1$). So $d_N\to0$. Combined with the density
-of polynomials in $L^2[0,1]$, this shows the span of the $t^{a_k}$ is dense; M\"untz and Sz\'asz proved the converse.
+since $(a_k+m+1)^{-1}\ge(2a_k)^{-1}$ once $a_k\ge m+1$. Thus $d_N\to0$. Monomials whose exponent already occurs need no approximation, and all other monomials satisfy this argument. Polynomial density in $L^2[0,1]$ then gives density of the power span. The converse is a further theorem of M\"untz and Sz\'asz, quoted here.
+\end{solution}
+\begin{solution}{ex:v8cDa}
+\idea Positive row scaling converts weighted fitting to ordinary least squares.
+\writeup Minimise $\|W^{1/2}(Ax-y)\|^2$. The equations are $\begin{pmatrix}4&4\\4&6\end{pmatrix}(a,b)^{\mathsf T}=(3,4)^{\mathsf T}$, giving $a=1/4,b=1/2$. The residuals are $(-1/4,1/4,-1/4)$ with weighted sum zero and weighted squared error $1/16+2/16+1/16=1/4$. The positive-definite normal matrix proves uniqueness.
+\end{solution}
+\begin{solution}{ex:v8cDb}
+\idea The feasible affine line has one tangent direction, and the minimum is perpendicular to it.
+\writeup Feasibility gives $p=1+ct(1-t)$. Its squared norm is $1+c/3+c^2/30=1/6+(c+5)^2/30$. Thus $c=-5$ uniquely, giving $p=1-5t+5t^2$ and minimum $1/6$. The condition $\langle p,t(1-t)\rangle=0$ is exactly $1/6+c/30=0$, the same minimising equation.
+\end{solution}
+\begin{solution}{ex:v8cDc}
+\idea Symmetry and two moments determine the weights; the squared monic cubic measures the first missed degree.
+\writeup The monic cubic is $p_3=t^3-3t/5$, so its nodes are the stated three roots. Symmetry and the moments of one and $t^2$ give $2w+v=2$ and $2w(3/5)=2/3$, hence $w=5/9,v=8/9$. Gauss quadrature proves degree-five exactness. Since $t^6-p_3^2$ has degree four, its error vanishes, while the rule gives zero on $p_3^2$. Thus the $t^6$ error is $\int_{-1}^1p_3^2=8/175$, by Legendre's norm formula or direct integration.
+\end{solution}
+\begin{solution}{ex:v8cDd}
+\idea Self-adjointness of a projection forces the order of the two factors to agree.
+\writeup If $PQ$ is an orthogonal projection, $PQ=(PQ)^*=QP$. Conversely commutation gives $(PQ)^2=PQ$ and $(PQ)^*=PQ$, so it is an orthogonal projection. Its image lies in both images, and any vector in their intersection is fixed by the product, proving equality. In $\R^2$, take $P=\begin{pmatrix}1&0\\0&0\end{pmatrix}$ and $Q=\tfrac12\begin{pmatrix}1&1\\1&1\end{pmatrix}$. Their product is neither symmetric nor idempotent: $(PQ)^2=PQ/2\ne PQ$.
 \end{solution}
 
 \section*{Sources and further reading}

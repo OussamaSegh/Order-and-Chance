@@ -1,107 +1,258 @@
-# Handoff: Volume 8 rewrite
+# Volume 8 rewrite — handoff
 
-Volume 8, *Analysis: Operators, Spectra and Transforms*, is being rewritten to `docs/plan/MASTER-PLAN-V5-V15.md` and `docs/plan/book-08.md`. Read this file first. It is updated after every chapter.
+Branch: `cursor/volume8-complete-rewrite-3faf`. Base: `main` at `e9711ffe`. The folder is `volume8-analysis`. Do not edit any other volume. Do not merge, and do not edit, PR #157. Read the blueprint with `git show origin/claude/project-thread-khh5pi:docs/plan/book-08.md`. The structural pass (sixteen chapters, six appendices, random-matrix chapters in Volume 12) is already on `main`. Where the blueprint disagrees with the older `docs/plan/book-08.md` on `main`, the blueprint wins. This pass does not renumber.
 
-**Branch and pull request.** Branch `claude/project-thread-hngezv`, one pull request for the whole volume, as Volumes 5, 6 and 7 each landed on their own pull request. The master plan and the blueprints stay on PR #157 (branch `claude/project-thread-khh5pi`), which remains open and is not merged. Read the blueprint with `git show origin/claude/project-thread-khh5pi:docs/plan/book-08.md`. The copy of `docs/plan/book-08.md` on `main` is the older ten-chapter specification; where the two differ, the blueprint on PR #157 wins.
+## What “rewritten” means
 
-## What "rewrite" means here
+A sentence counts when it has at least 40 characters and at least 25 characters outside mathematics. It is rewritten when it is not identical to the sentence in `origin/main`. Target: at least 90% in every chapter, in the main text and again from the exercises onward (hints and solutions included). Quotations inside quotation marks may stay. A displayed formula that was already checked may stay. The English around it may not.
 
-The blueprint keeps every chapter that stays ("Preserve. Every chapter that stays, as written") and asks for structure: decisions D-16 (the two random-matrix chapters go to Volume 12), D-17 (Haar measure on $\mathbb Q_p$ stays, built on Volume 7), D-18 (a main path of sixteen chapters and six appendices), D-19 (length accepted). So the work is the restructure, then one pass per chapter with the list used for Volumes 5, 6 and 7:
+## Style
 
-1. **Voice.** `docs/WRITING-STYLE.md`, Sound human. Opens with a question, ends with "What we proved, and what comes next".
-2. **Proof read.** Every proof re-read as a hostile examiner.
-3. **Numbers.** Every printed number that is not proved on the page is recomputed by a script in `review/volume8-rewrite/`, one per chapter (`check_chNN_*.py`, helper `common.py`).
-4. **History.** Every date, quotation and attribution has a source in the chapter's "Sources" section.
-5. **References.** Hand-typed numbers inside the volume become `\ref`. Every chapter has a label (table below). The hand-typed numbers were written against three different orders (the ten-chapter book, the twenty-four-chapter book, and Volume 3's old appendices), so each one was resolved by reading, not by a table.
-6. **Plan items** of the blueprint for that chapter.
-7. **R1.** No proof or solution uses a later chapter or a later volume as a premise. The appendices are premises (D-18).
-8. **Build.** The volume builds with no undefined reference.
+`docs/WRITING-STYLE.md`, Sound human. Short sentences. A small case before the general claim. “You” when the reader should check a case. No “delve”, “robust”, “landscape”, “tapestry”, “journey”, “it is important to note”, “in this section we will”, “in conclusion”. The volume already has that voice. This pass still rewrites the sentences. It does not replace the voice with a generic textbook.
 
-Gate B of the master plan (independent verification) is not this pass.
+## Numbering lock
 
-## Structure (done)
+Do not insert a theorem, proposition, lemma, corollary, definition, or example except nothing: no new numbered statement in the middle. Four new exercises go at the **end** of each chapter’s exercise list. Keep every `\label`. Keep the order of numbered environments. Later volumes cite Volume 8 by hand-typed numbers. A new statement in the middle would shift those numbers. New exercises use fresh labels `ex:v8c01a` through `ex:v8c16d` for the sixteen chapters and `ex:v8cAa` through `ex:v8cFd` for the appendices.
 
-`main.tex` equals the blueprint's table. Chapter numbers changed for every chapter after Chapter 2:
+No proof or solution may use a later chapter or a later volume as a premise. A forward pointer is a preview. Proofs use only what Volumes 1–8 have already taught, in the printed order of `main.tex`. Numerical checks are not proofs. Do not weaken a theorem.
 
-| Now | Title | File | Label | Before |
-| --- | --- | --- | --- | --- |
-| 1 | Banach Spaces | `ch01-banach.tex` | `ch:banach` | 1 |
-| 2 | Hilbert Spaces | `ch02-hilbert.tex` | `ch:hilbert` | 2 |
-| 3 | The Spectral Theorem and Its Relatives | `linear-ch05-spectral.tex` | `linear:ch:spectral` | 7 |
-| 4 | Singular Values | `linear-ch06-svd.tex` | `linear:ch:svd` | 8 |
-| 5 | Graphs through Their Eigenvalues | `linear-ch08-graphs.tex` | `linear:ch:graphs` | 9 |
-| 6 | Cuts, Mixing and Expansion | `spectral-expansion.tex` | `ch:cheeger` | 10 |
-| 7 | Expanders and Ramanujan Graphs | `ch09-expanders.tex` | `ch:expanders` | 11 |
-| 8 | Operators, Spectra and Banach Algebras | `ch03-operators.tex` | `ch:operators` | 16 |
-| 9 | The Spectral Theorem for Compact Operators | `ch04-spectral.tex` | `ch:spectral` | 17 |
-| 10 | The Fourier Transform | `ch05-fourier.tex` | `ch:fourier` | 18 |
-| 11 | Distributions and Sobolev Spaces | `ch06-distributions.tex` | `ch:distributions` | 19 |
-| 12 | Fourier Analysis on Finite Abelian Groups | `ch07-finite.tex` | `ch:finite` | 20 |
-| 13 | Haar Measure, Duality and the $p$-adic Numbers | `ch08-haar.tex` | `ch:haar` | 21 |
-| 14 | Cauchy's Theorem, Growth and Mellin Inversion | `ch09-complex.tex` | `ch:complex` | 22 |
-| 15 | Tauberian Theorems | `ch10-tauberian.tex` | `ch:tauberian` | 23 |
-| 16 | The Values of Zeta (problems) | `ch11-harder.tex` | `ch:harder` | 24 |
-| A | Spaces, Quotients and Duality | `linear-ch01-duality.tex` | `linear:ch:duality` | 3 |
-| B | Determinants as Volume | `linear-ch02-volume.tex` | `linear:ch:volume` | 4 |
-| C | Eigenvalues and Invariant Subspaces | `linear-ch03-eigen.tex` | `linear:ch:eigen` | 5 |
-| D | Inner Products and Projections | `linear-ch04-inner.tex` | `linear:ch:inner` | 6 |
-| E | Inequalities between Matrices | `linear-ch11-inequalities.tex` | `linear:ch:inequalities` | 14 |
-| F | Linear Dynamics | `linear-ch12-dynamics.tex` | `linear:ch:dynamics` | 15 |
+Do not change fonts, sizes, or the text inside an existing diagram. New figures are new files. Do not regenerate cover motifs or lettering. The paperback ISBN stays blank.
 
-Numbering inside each chapter is preserved (new statements and exercises go at the end of a list), so a citation "Volume 8, Theorem 17.6" becomes "Volume 8, Theorem 9.6": only the chapter number moves. `review/volume8-rewrite/baseline-numbering.txt` is the printed order before the rewrite.
+## Portraits
 
-**Moved to Volume 12 (D-16).** "Random Matrices I: The Semicircle" and "Random Matrices II: Unitary Matrices and the Zeros of Zeta" are now `volume12-random-motion/chapters/ch09-semicircle.tex` and `ch10-cue.tex`, with the figure `moments-ch05-semicircle.tex`. They are wired into Volume 12's `main.tex` in the blueprint's final order: networks 8, semicircle 9, unitary matrices 10, log-correlated fields 11 (moved from Part II to the end of Part III), all in the part "Networks and Random Matrices". The figures `ch10-laws.tex` and `ch11-zeta.tex` moved with them. Every citation of those chapters and of the log-correlated chapter in Volumes 8, 14 and 15 was renumbered (for example Keating–Snaith is Volume 12, Theorem 10.10; `prop:cuelogcorr` is Proposition 11.3). Volume 12's preface, blurb and `docs/SERIES-STRUCTURE.md` say so. **Still owed by the Volume 12 rewrite:** the file names (`ch09-semicircle.tex`, `ch10-cue.tex` against the blueprint's `ch10-`, `ch11-`), and a full pass of the two chapters' citations of Volumes 4, 9 and 11 (only the Volume 8 ones and the internal numbers were fixed here).
+`\portrait` is defined in `volume8-analysis/main.tex`, the same macro Volumes 5 and 7 use. Credits live in `volume8-analysis/photos/CREDITS.md`. Place a portrait at the first real mention. Caption pattern repeats the credit. Short photographs are capped so the print height keeps the short side at about 300 ppi.
 
-## Chapter progress
+## Figures
 
-| Ch. | Title | State |
-| --- | --- | --- |
-| — | Structure (D-16, D-18) | Done |
-| 1 | Banach Spaces | Done |
-| 2 | Hilbert Spaces | Done |
-| 3 | The Spectral Theorem and Its Relatives | Done |
-| 4 | Singular Values | Done |
-| 5 | Graphs through Their Eigenvalues | Done |
-| 6 | Cuts, Mixing and Expansion | Done |
-| 7 | Expanders and Ramanujan Graphs | Done |
-| 8 | Operators, Spectra and Banach Algebras | Done |
-| 9 | The Spectral Theorem for Compact Operators | Done |
-| 10 | The Fourier Transform | Done |
-| 11 | Distributions and Sobolev Spaces | Done |
-| 12 | Fourier Analysis on Finite Abelian Groups | Done |
-| 13 | Haar Measure, Duality and the $p$-adic Numbers | Done |
-| 14 | Cauchy's Theorem, Growth and Mellin Inversion | Done |
-| 15 | Tauberian Theorems | Done |
-| 16 | The Values of Zeta (problems) | Done |
-| A–F | Appendices | Done |
-| — | Preface, blurb, `kdp.md`, citations of Volume 8 in other volumes | Done |
+Each chapter includes two new TikZ figures, colours `MidnightBlue` and `BurntOrange` (and `BrickRed` where a third ink helps), by `\fig{...}` inside `\begin{figure}[ht]`. Captions state the takeaway. No existing figure file is overwritten. No pixel width is set. New files are named `chNN-rw-*.tex` or `appX-rw-*.tex`.
 
-## What changed, chapter by chapter
+## Exercises
 
-- **1.** The complex case of the $L^p$ dual is written out in four steps (blueprint item, risk 4). The old paragraph tested the norm with $|g|^{q-1}\operatorname{sgn}g$ without the conjugate and did not treat $p=1$. Lebesgue constants are printed (1.436, 2.223, 3.139, 4.070) in place of "a direct computation gives them". Closing section. Citations of Volumes 5 and 7 checked: Volume 5's Fourier series are its Chapter 6. Sources added for Kolmogorov 1926, Riesz 1910, Steinhaus 1919, Wright 1973, Garnir 1974.
-- **2.** The Radon–Nikodym section is headed "A second proof" and says so (blueprint). Closing section. Citations of Volume 5 moved to its new chapters (6, 5, 9); the Gaussian kernel cites Volume 5, Theorem 8.3.
-- **3.** A reminder of what the chapter assumes (Appendices C and D). Closing section.
-- **4.** The photograph keeps 24 singular triples (24 cost 48,024 numbers, a 25th would exceed 50,000); caption fractions checked against the figure. Closing section.
-- **5.** Volume 3 Perron theory cited precisely (Appendix A: Theorems A.1, A.6, Exercise A.2). History corrected: Aschbacher 1971 excluded rank three, not vertex-transitivity (Higman; Mačaj–Širáň 2010 added); Graham–Pollak has had a counting proof since Vishwanathan 2013; the unsupported "no proof of the friendship theorem without counting" removed. Closing section.
-- **6.** The Laplacian is now defined before it is used; Fiedler named; the hypercube's h = 1 follows from the theorem itself. LPS needs d − 1 ≡ 1 mod 4. A Sources section added (there was none). Opening question, closing section.
-- **7.** R1: the reminder no longer imports Kesten's theorem from Volume 12 (the chapter proves its own Kesten 1959 statement, and the text compares it with Volume 12's `thm:kesten`, blueprint item 7); the Catalan moments of the semicircle are now proved in the solution instead of cited from the moved chapter. LPS girth corrected (about (4/3) log_p N in the bipartite case). Hoeffding cited as Volume 4, Theorem 4.2. Closing section. **Note for Volume 12:** the text says Volume 12, Chapter 9 (networks, `thm:kesten`) and Chapter 10 (semicircle), the current printed order; if the Volume 12 rewrite applies the blueprint order (networks 8, semicircle 9), these two numbers in `ch09-expanders.tex` must move with it.
-- **8.** All hand-typed internal numbers became `\ref`. Liouville and Laurent cited as Volume 5, Theorems 9.16 and 9.22; Fubini for series as Volume 7, Theorem 9.6. Wiener–Lévy marked as not developed. Opening question, closing section.
-- **9.** All hand-typed internal numbers became `\ref` (they were in the ten-chapter order: 3.x = Chapter 8, 1.x, 2.x). The full spectral theorem stays a remark, and the closing section says it was not proved (blueprint). Opening question, closing section.
+Four new exercises per chapter, after the last existing exercise, each with a hint and a solution (`\idea` then `\writeup`). Solvable from this chapter and earlier volumes. Stars as in the series.
 
-- **10–11.** Hand-typed numbers became `\ref`; Volume 5 and Volume 7 citations moved to their rewritten numbers. Closing sections.
-- **12.** Volume 5 citations fixed (Chapter 7, Theorems 7.9, 8.9, 8.16). Pontryagin duality is stated in Chapter 13 and proved there for $\mathbb Q_p$. Chebotarev is proved in Volume 13 in its Dirichlet density form. Closing section.
-- **13.** $\mathbb Q_p$ now comes from Volume 7 (Theorem 2.10, Corollary 2.11). Uniqueness of measures is Volume 7, Theorem 7.5. Exercise `ex:squareszp` moved to Volume 13, `ch12-padic.tex`, where it cites Proposition 13.12 and `cor:squares`. Closing section.
-- **14.** A sentence on the division of labour with Volume 5, Chapter 9 (blueprint), and the matching sentence in Volume 5. Volume 7 winding number and Jordan curve citations made exact. Error fixed in the Phragmén–Lindelöf exercise ($\exp(e^{t_0})$, not $e^e$). Closing section.
-- **15.** Label `sec:wienerlemma` added in Chapter 8. Tauber was 75 when deported, not 76. The Littlewood remark rewritten with Wielandt (1952) as source. The corollary is "the prime number theorem, second proof", importing Volume 6, Theorem 5.2. Closing section.
-- **16.** Retitled "The Values of Zeta". The limiting distribution is proved in Volume 15, Chapter 11; no problem uses it. False claims about a Beurling–Selberg chapter removed. The Bergman problem (d) is now proved with Volume 5 (identity theorem, Rouché) instead of a Volume 9 lemma (R1). New closing section "Where this leads".
-- **Appendices.** Each opens with one line saying what it assumes and who uses it. Appendix F's Lyapunov uniqueness used Sylvester's equation from Volume 10 (R1): now proved in two lines from the stability theorem. Self-references "Volume 8" became `\ref`. Dependency check: no main chapter uses an appendix whose proof uses a later main chapter (Appendix D only mentions Cauchy interlacing of Chapter 3 in a remark).
-- **Other volumes.** Every "Volume 8, ..." citation in Volumes 5, 9–15 was moved from the twenty-four-chapter order to the new one (for example Theorem 21.11 → 13.11, Theorem 3.8 → A.8, Theorem 14.5 → E.5); random-matrix citations now point to Volume 12. `tools/cross_volume_citations.py` reports no mismatch involving Volume 8 or Volume 12.
-- **Preface, blurb, `kdp.md`.** No longer claim the semicircle, the sine kernel, the unbounded spectral theorem, the Jordan curve theorem or the Riemann mapping theorem; they name the appendices and the problem chapter.
+## Scope of files
 
-## Tools
+- `volume8-analysis/`
+- `docs/handoffs/volume8-rewrite.md`
+- the Volume 8 sentence in `common/cover-notes.json`, and the hashes `tools/series_cover.py --check` needs (`volume8-analysis/about-the-cover.tex`, `docs/COVER-NOTES.md`, `tools/assets/series/manifest.json`)
+- if the cover-note hash moves, the Volume 3 inventory and conceptual snapshot get a hash-only refresh, because `inventory.py --check` and `registers.py` compare those hashes
 
-`review/volume8-rewrite/statements.py volume8-analysis` prints every numbered statement in printed order. `resolve_citations.py <chapter file>` prints each numbered citation of another volume beside the statement that number has today. `internal_numbers.py` lists hand-typed numbers inside the volume against the old order. `list_citations.py` lists every citation of another volume.
+## Chapter map
 
-## How to build
+| Ch. | Title | File | Label |
+| --- | --- | --- | --- |
+| 1 | Banach Spaces | `ch01-banach.tex` | `ch:banach` |
+| 2 | Hilbert Spaces | `ch02-hilbert.tex` | `ch:hilbert` |
+| 3 | The Spectral Theorem and Its Relatives | `linear-ch05-spectral.tex` | `linear:ch:spectral` |
+| 4 | Singular Values | `linear-ch06-svd.tex` | `linear:ch:svd` |
+| 5 | Graphs through Their Eigenvalues | `linear-ch08-graphs.tex` | `linear:ch:graphs` |
+| 6 | Cuts, Mixing and Expansion | `spectral-expansion.tex` | `ch:cheeger` |
+| 7 | Expanders and Ramanujan Graphs | `ch09-expanders.tex` | `ch:expanders` |
+| 8 | Operators, Spectra and Banach Algebras | `ch03-operators.tex` | `ch:operators` |
+| 9 | The Spectral Theorem for Compact Operators | `ch04-spectral.tex` | `ch:spectral` |
+| 10 | The Fourier Transform | `ch05-fourier.tex` | `ch:fourier` |
+| 11 | Distributions and Sobolev Spaces | `ch06-distributions.tex` | `ch:distributions` |
+| 12 | Fourier Analysis on Finite Abelian Groups | `ch07-finite.tex` | `ch:finite` |
+| 13 | Haar Measure, Duality and the p-adic Numbers | `ch08-haar.tex` | `ch:haar` |
+| 14 | Cauchy's Theorem, Growth and Mellin Inversion | `ch09-complex.tex` | `ch:complex` |
+| 15 | Tauberian Theorems | `ch10-tauberian.tex` | `ch:tauberian` |
+| 16 | The Values of Zeta | `ch11-harder.tex` | `ch:harder` |
+| A | Spaces, Quotients and Duality | `linear-ch01-duality.tex` | `linear:ch:duality` |
+| B | Determinants as Volume | `linear-ch02-volume.tex` | `linear:ch:volume` |
+| C | Eigenvalues and Invariant Subspaces | `linear-ch03-eigen.tex` | `linear:ch:eigen` |
+| D | Inner Products and Projections | `linear-ch04-inner.tex` | `linear:ch:inner` |
+| E | Inequalities between Matrices | `linear-ch11-inequalities.tex` | `linear:ch:inequalities` |
+| F | Linear Dynamics | `linear-ch12-dynamics.tex` | `linear:ch:dynamics` |
 
-`./build.sh --pdf-only volume8-analysis`, or `xelatex` in `volume8-analysis/` as `build.sh` does. The cloud container has no TeX by default: install the packages listed in `.github/workflows/build.yml`. The checks need `pip install mpmath numpy scipy sympy networkx`.
+## Progress
+
+| Ch. | State |
+| --- | --- |
+| — | Draft pull request opened: https://github.com/OussamaSegh/Order-and-Chance/pull/242 |
+| — | Preface, blurb, `kdp.md`, About the Cover, portrait macro and credits | Done |
+| 1–16, A–F | Sentence rewrite, two figures, four exercises | Done; review recorded below and in the linked report |
+
+All seventeen portraits are placed in the chapters: Banach, Hilbert, Cayley, Kirchhoff, Fredholm, Fourier, Poisson, Gauss, Haar, Hadamard, Cauchy, Tauber, Riemann, Jordan, Frobenius, Schwarz, Lyapunov. Credits are in `volume8-analysis/photos/CREDITS.md` and repeated at each placement.
+
+The Volume 8 cover note changed `common/cover-notes.json`. `tools/series_cover.py --check` passes. The Volume 3 inventory and conceptual snapshot were restamped for that one hash. No Volume 3 anchor or status changed.
+
+## Build
+
+PDF checkpoints through Appendix E exit 0; the latest is 487 print pages with no overflow or unresolved reference. The complete-manuscript PDF build is running. The full EPUB build and final exact-head CI remain pending.
+
+## Remains
+
+Final mathematical and visual review, complete PDF/EPUB validation, citation and register checks, PR readiness, and exact-head CI. The user subsequently authorised review and merge; that supersedes the original no-merge pause for these rewrite PRs.
+
+The final review and its validation evidence will be recorded separately under `docs/review/`. No independent agent review is claimed.
+
+## Continuation, 14 November 2026
+
+Started from the latest remote head `32d7aa9a`. No chapter had been rewritten there. Merged current main (`328316fd`) normally in `4eb1a166`; resolved the shared cover-note inventory and conceptual-snapshot conflicts by retaining current main's Volume 3 review evidence and refreshing only the combined cover-note hash. `4f6c165a` aligns the Volume 8 About the Cover hash. No cover motif or lettering was regenerated.
+
+The baseline `./build.sh --pdf-only volume8-analysis` exited 0: 431 print pages, 575 whole boxes, maximum height 298.0 pt, no overflow or undefined reference. This is a baseline count, not the final rewritten count.
+
+Chapter 1 is rewritten, including the real and complex Lp-duality proof, all exercises, hints and solutions. Banach's credited portrait is placed. Two new plates (`ch01-rw-dual`, `ch01-rw-coordinates`) follow the existing figures so their numbers stay fixed. Four exercises `ex:v8c01a`–`d` are appended: a diagonal operator and its inverse, powers in C[0,1] with no weakly convergent subsequence, an explicit separating form, and the unit vectors in c0 versus l1. Each has a hint and a complete solution. Existing figure environments and captions remain byte-for-byte unchanged.
+
+### Explicit mathematical corrections in Chapter 1
+
+- The norm-one clause of `cor:hbnorm` is impossible on the zero space. It now assumes E is nonzero for that clause, retains the dual norm formula for every E including zero, and proves the x0=0 case on nonzero E. This is an explicit correction of a false edge case, not a silent weakening. The label and number do not change.
+- The Riesz–Markov proof uses inner regularity from Volume 7, Theorem 12.1, rather than Lemma 11.10, which is stated on Euclidean space. Zero Jordan parts are handled with constant test functions before constructing distance functions to two nonempty closed sets.
+- Bounded dual sets are relatively weak-star compact; they need not be compact themselves. The compact-set assertion is now made for the closed dual ball. The reflexive-space consequence is stated for the closed unit ball.
+- Sigma-finite Lp densities are patched on the measurable disjoint rings E_n minus E_(n-1); their almost-everywhere agreement is retained. The q=infinity bound is handled separately from monotone convergence.
+- The oscillation estimate is justified by its triangular primitive, avoiding the claim that an arbitrary interval leaves only one incomplete half-period.
+
+The source audit in `/tmp/v8_audit.py` checks original numbered-environment order, labels, duplicate labels, frozen figure environments/captions, and the counts of added exercises and figures. At Chapter 1 it passes, and `tools/cross_volume_citations.py` exits 0. The full build and prose-share audit remain to be run after all chapters are rewritten.
+
+Chapter 2 is rewritten, including projection, Riesz, orthonormal bases, Fourier and Legendre expansions, Kronecker–Weyl, the mean ergodic theorem, von Neumann's Radon–Nikodym proof, and Moore–Aronszajn. Hilbert's credited portrait is placed. New figures `ch02-rw-tail` and `ch02-rw-kernel` show Parseval tails and a two-point kernel's geometry. New exercises `ex:v8c02a`–`d` compute a projection, a geometric coefficient tail, two operator averages, and a finite RKHS norm. Frozen figure environments and captions remain byte-identical; the source-order/label audit and cross-volume checker pass.
+
+Chapter 2 clarifies three existing claims without moving any number: only infinite-dimensional separable Hilbert spaces are identified with l2 indexed by all positive integers; a bounded set need only be relatively weakly sequentially compact; kernel positivity alone does not guarantee that any specified data become linearly separable. The mean-ergodic proof now introduces the adjoint and derives its norm and double-adjoint identities before using them. The Radon–Nikodym proof first chooses a representative with 0 <= g <= 1 everywhere, and explicitly removes the null set where g=1 when defining the density. The no-nearest-point solution treats complex functions by a phase rotation and a real-part argument. The Legendre proof uses n integrations by parts, correcting its undefined k. The RKHS completion is realised injectively as functions via the evaluation vectors, with the original theorem unchanged.
+
+Chapter 3 is rewritten through all original exercises and solutions. Cauchy's credited portrait is placed. The two added plates show the Schur–Horn hexagon for eigenvalues 3, 2, 1, and scalar shifts attaining both spectral perturbation bounds. Exercises `ex:v8c03a`–`d` cover spectral projections and matrix powers, a two-dimensional compression, prescribed diagonals of rank-one projections, and sharp versus quadratic perturbations. Original statement order, labels and frozen figure environments pass the source audit.
+
+Schur triangularisation is proved locally before the spectral theorem, using the fundamental theorem of algebra, an eigenvector and Gram–Schmidt, so the main proof no longer needs an appendix as a premise. The equality case in the Hermitian trace inequality now includes its converse: plane variations force commutation across unequal eigenspaces, and swapping an inverted eigenvalue pairing would increase the trace. The rank-one perturbation solution handles dimension one separately. The real normal-form solution makes the conjugate-pair basis and reducing complement explicit.
+
+The checkpoint PDF after Chapters 1 and 2 exits 0 at 437 print pages, with no overflow or unresolved references. Fredholm's and Schwarz's credited portraits are also placed in Chapter 2. The prose audit counts all eligible narrative sentences as rewritten in Chapters 1–3; retained source titles account for the remaining identical strings in the exercise-side audit. Cross-volume citations match 4915 numbered statements. These are checkpoint results, not final Volume 8 validation.
+
+Chapter 4 is rewritten, with Jordan's credited portrait, two new plates on truncation error and conditioning, and exercises `ex:v8c04a`–`d` on a rectangular pseudo-inverse, a storage budget, sharp conditioning and an exact PCA fit. All original labels, numbered-environment order and figure environments pass the audit. The prose audit's unchanged strings are bibliographic entries. The cross-volume checker passes at 4919 numbered statements.
+
+The SVD proof now proves the kernel identity directly instead of assuming the later appendix's least-squares theorem. The polar proof proves uniqueness of the positive square root locally. The geometry distinguishes the image of a ball from the image of a sphere, including a nontrivial kernel. The truncation theorem makes its index range and zero-extension convention explicit, and proves the full-rank endpoint separately. PCA also handles zero appended directions. The nuclear-norm solution uses diagonal entry bounds, valid over both fields, instead of invoking complex unitary factors in a real argument. The Penrose uniqueness proof identifies projections by image and kernel. Statements about conditioning describe sensitivity rather than guaranteeing an algorithm's numerical stability.
+
+Chapter 5 is rewritten, with Frobenius's and Kirchhoff's credited portraits, new plates on a sharp independent set and signed-square cancellation, and four exercises `ex:v8c05a`–`d`. These compute bipartite spectra, analyse equality in Hoffman's bound, multiply Huang's signed square exactly, and recover complete graphs and odd-cycle obstructions from traces. All original labels, statement order and frozen plates pass; the citation checker passes at 4923 statements.
+
+The friendship theorem now explicitly includes the single-vertex windmill. The strongly regular definition still permits complete graphs; the spectral theorem handles them separately rather than applying a potentially meaningless two-root formula to a vacuous parameter. This is an explicit repair of that edge case, not a hidden restriction of the definition. Hoffman's proof separates the empty independent set before dividing. The bipartite-spectrum proof handles a singleton and proves the sign argument directly. The inertia proof uses intersecting non-negative subspaces and covers the case in which their codimension bound exceeds the dimension. Huang's sharpness solution gives exact neighbour lists rather than relying on an asserted computer enumeration; its original requested examples and conclusions are retained.
+
+The PDF checkpoint through Chapter 4 exits 0 at 445 print pages, with 595 whole boxes and no overflow or unresolved references. A new Chapter 4 plate initially used an undefined colour name; both new plates now use the existing BurntOrange palette name, and the successful checkpoint includes that correction. No existing figure file was changed.
+
+Chapter 6 is rewritten, including Cheeger's level-set proof, mixing, Nilli's Alon–Boppana proof and every exercise. New plates show the level-set integrals and bipartite alternation. Exercises `ex:v8c06a`–`d` treat complete-graph cuts, exact lazy mixing on a square, finite level-set identities and the general lazy spectral bound. Original numbered-environment order, labels and figure environment pass; cross-volume citations pass at 4927 statements.
+
+The chapter explicitly assumes at least two vertices wherever mu_2 is used, defines D−A before the nonregular path exercise, and requires positive degree for transition probabilities. The Ramanujan definition excludes both trivial eigenvalues, including −d in bipartite graphs; the earlier text's lambda includes −d, so it cannot describe bipartite Ramanujan bounds or imply ordinary-walk mixing there. This distinction is now made explicit without changing Cheeger or mixing claims. Nilli's proof includes k=0, zero cross terms between supports, and a separate degree-two asymptotic, avoiding logarithms to base d−1=1. The girth-count solution permits boundary edges while excluding repeated vertices, which are what the count actually needs. The walk bound now proves its stated assertion for arbitrary initial laws, rather than only point starts.
+
+Chapter 7 is rewritten through every proof, exercise, hint and solution. Cayley's credited portrait is placed at the Cayley-graph explanation. Two new plates illustrate four-step tree returns and a signed triangle's double cover. Exercises `ex:v8c07a`–`d` compute an exact hitting probability, the bipartite K_3,3 zeta counts, endpoint moment growth and the spectral splitting of a signed double cover. All original labels, numbered-environment order and frozen figure environments pass the source audit. The prose audit, restricted to narrative and exercises/hints/solutions rather than bibliographic records, finds every eligible sentence rewritten in Chapters 1–7, in each category separately. Bibliographic titles and quoted material remain intact. Cross-volume citations pass at 4931 statements.
+
+The random-graph claim was checked against Huang–McKenzie–Yau, arXiv:2412.20263v2 (2 February 2025), Theorem 1.2 and Corollary 1.3, and Sloman's Quanta account (18 April 2025). It is for each fixed d >= 3 and uniformly random simple graphs as admissible size grows; both edge distributions and asymptotic independence are relevant to the roughly 69% probability. The source entry now identifies that version and those results. The concentration proof retains the full two-variable recurrence and the constant 20, with its restrictions and exponential estimates explicit. The Kesten proof defines the needed Chebyshev polynomials locally and justifies the series integrals by uniform convergence. Return growth is proved from endpoint mass, without assuming an infinite-dimensional spectral theorem. Random short-cycle counts are described as bounded in probability, not deterministically O(1).
+
+Explicit corrections: `ex:amplify` originally demanded an exact fractional-bit budget for arbitrary degree, and its solution's ceiling did not produce an exact uniform sample. The exact budget now specifies power-of-two degree; the exercise also asks for the obstruction and a rejection sampler at other degrees, whose expected cost is proved. The point-start condition is made explicit when claiming a bipartite walk fails to converge; a uniform start is stationary. Bass's determinant identity retains graphs with m < n by explaining removable factors, while the subsequent extra-eigenvalue list assumes degree at least two. The cycle-zeta hint uses polynomial factorisation rather than a complex-modulus formula invalid for complex u. The SL_2 remark excludes p=2 from its four-regular assertion; the group generation exercise retains all primes.
+
+The checkpoint PDF through Chapter 6 exits 0 at 451 print pages, 603 whole boxes, with no overflow or unresolved references. The Chapter 7 checkpoint build is running; this handoff does not claim its result.
+
+Chapter 8 is rewritten, with two new plates on the shift/adjoint and Fredholm orthogonality. New exercises `ex:v8c08a`–`d` treat a step multiplier, a diagonal compact map with nonclosed range, an explicit convolution inverse and a compact weighted shift with no eigenvalues. All original labels, statement order and frozen figure environments pass; the prose audit finds every eligible narrative and exercise-side sentence rewritten. Cross-volume citations pass at 4935 numbered statements. The one remaining unchanged eligible sentence in the preface has also been rewritten without changing its meaning.
+
+The Hilbert–Schmidt example makes its section measurability explicit. Fredholm's proof keeps the range-closure normalisation, strict range chain, and finite-rank nullity correction. Spectral nonemptiness uses the correct sign at the zero resolvent parameter, and explicitly excludes the zero operator algebra by its norm-one unit. The multiplication exercise separately handles the zero measure, whose Hilbert space has empty spectrum, while retaining its original essential-range assertion. The Laurent-series/UBP proof keeps both prerequisites and derives the full infimum formula. Characters are explicitly complex-linear. The Wiener algebra identification proves uniqueness of coefficients by integration. The Jacobi exercise now states the required invertibility of its diagonal and convergence to the same unique solution, and its proof establishes existence before using the error equation.
+
+The checkpoint PDF through Chapter 7 exits 0 at 455 print pages with no overflow or unresolved references. The Chapter 8 checkpoint build is running. No final EPUB or final-head CI claim is made at this stage.
+
+Chapter 9 is rewritten through the compact and normal spectral theorems, min–max, the string problem, Mercer, Brownian covariance and continuous functional calculus, including all original exercise solutions. Two new plates compare the two sine-kernel boundary conditions and the multiplier square root. Exercises `ex:v8c09a`–`d` treat a signed compact diagonal, constant-potential Green functions, a rank-two Mercer kernel and strong versus norm convergence of multipliers. Poisson's credited portrait is placed with the Poisson-kernel example; Fourier's and Gauss's are placed in Chapter 2, and Riemann's with Chapter 7's graph Riemann hypothesis.
+
+The initial-value lemma is strengthened to every continuous complex coefficient p, so the uniqueness argument with p=q−lambda is available before use. The extreme-eigenvalue lemma explicitly requires a nonzero space, and unit-sphere extrema use that same condition; the zero operator on a nonzero space is handled directly. Finite-dimensional eigenvalue comparisons explain appended zeros and stay within the valid dimension range for variational formulas. Mercer's interval explicitly has a<b, since Lebesgue integration over a point cannot reconstruct a nonzero kernel; this repairs a degenerate edge case rather than silently discarding it. Its proof separately justifies uniform convergence of the operator series and of each kernel row before Dini upgrades the diagonal to uniform convergence on the product.
+
+The Hilbert–Schmidt kernel proof uses the product-basis density already established by finite rectangles. The min-kernel example verifies the converse differential-to-integral eigenfunction step. Brownian coefficients are justified as Gaussian mean-square limits, and the uniform-convergence promise was checked in Volume 12, Chapter 1, `thm:wienerseries`. The bridge solution proves its positive-kernel identity directly rather than depending on a later exercise. The graph exercise uses an earlier geometric-sum proof rather than the later finite-Fourier chapter. The Volterra norm solution distinguishes singular values from their squares, the eigenvalues of V*V. The functional-calculus proof includes constant polynomials, complex approximation on a compact real set, and the omitted kernel term when zero is not spectral.
+
+Source-order, label and frozen-figure audits pass through Chapter 9. The narrative and exercise/hint/solution prose audit is 100% rewritten in Chapters 1–9 and the preface, excluding bibliographic records, quotations and frozen captions. Cross-volume citations pass at 4939 numbered statements. The PDF checkpoint through Chapter 8 exits 0 at 461 print pages, 610 whole boxes, with no overflow or unresolved references. The Chapter 9 build is running.
+
+Chapter 10 is rewritten through inversion, Schwartz space, Plancherel, Hermite functions, interpolation, measures, sampling and lattice summation, including all original exercises/hints/solutions. Two added plates show sinc samples and reciprocal Gaussian widths. Exercises `ex:v8c10a`–`d` compute Gaussian uncertainty equality, sampling energy, an atomic convolution law and rectangular-lattice duality. The prose audit is 100% rewritten in each narrative/exercise category through Chapter 10 and the preface; existing quotations, bibliographic records and frozen figures are excluded. The label/environment audit and cross-volume checker pass at 4943 statements. A separate counter audit compares every original statement/exercise against current main: all 505 original kind/number/label triples match, with 40 appended exercises.
+
+Explicit mathematical repairs in Chapter 10: Theorem 10.14 (`thm:poissonlattice`) originally asserted uniform convergence of the spatial translate series over all x, which fails for a Gaussian tail evaluated at x=−m. The statement now gives absolute locally uniform spatial convergence and absolute globally uniform frequency convergence; the preceding paragraph provides the counterexample to the stronger false assertion, and the proof establishes both valid claims. The exact identity and every label/number stay fixed. No external numbered citation to Volume 8, Theorem 10.14 was found; the internal later uses need the identity, not the false global tail claim.
+
+Exercise 10.6 (`ex:hysharp`) originally inferred non-sharpness of an operator norm from a strict Gaussian example. That inference is false. It still proves the strict Gaussian ratio, and now asks explicitly what global assertion is missing. The true sharp constant and its Gaussian extremisers remain quoted from Beckner's theorem in the chapter, rather than being presented as proved by one input. The solution distinguishes a lower bound for an operator norm from a uniform upper bound. This repair is documented rather than silently dropping the mathematical claim.
+
+Other checks: Riesz–Thorin retains all original exponent restrictions and endpoint infinities, handles zero operator bounds, omits zero complex-power bases, and establishes integrability of the analytic-family coefficients before applying the strip lemma. The positive-definite solution derives its two-point bound before using it for dominated convergence. Sampling specifies the continuous representative, and the no-compact-support proof turns almost-everywhere vanishing into pointwise vanishing before the identity theorem. Theta's asymptotic uses a summable dominating series. The broken literal Chapter 19 reference is replaced by the stable distributions label. The checkpoint PDF through Chapter 9 exits 0 at 467 print pages, with no overflow or unresolved references; all 20 citation tests pass. The Chapter 10 PDF checkpoint is running.
+
+Chapter 11 is rewritten through distributions, tempered Fourier transformation, Newton's potential, Sobolev representatives and compactness, weak equations and Galerkin approximation. Two new plates show a continuous two-material flux and an exact one-hat approximation. Exercises `ex:v8c11a`–`d` classify power-function Sobolev membership, solve distributional multiplication equations, solve an interface problem and calculate Galerkin energy error. All original labels, statement/exercise numbers and figure environments pass the audits; all 505 original kind/number/label triples still match main, with 44 appended exercises. The prose audit is 100% rewritten in each narrative and exercise-side category through Chapter 11. Cross-volume citations pass at 4947 statements.
+
+The Sobolev definition now distinguishes the Fourier norm on the line from the equivalent derivative norm used on bounded intervals; their 4pi^2 factor is retained explicitly. The weak-solution theorem's closed-interval C^2 conclusion now requires continuous extensions of q and f to the endpoints: mere open-interval continuity of an L^2 forcing does not ensure that conclusion. This endpoint repair is explicit in the theorem and its proof. Bounded H^1 sets are described as relatively compact via convergent subsequences, rather than necessarily compact themselves.
+
+Other prerequisite checks: the nonzero-test qualifier fixes the zero exception in the test-transform observation. The definition keeps the bilinear distribution pairing distinct from the Hilbert inner product. A tempered convolution rule with Schwartz kernels is defined and proved before the Hilbert-transform exercise uses it. The positive-order principal-value proof controls both the origin and infinity. The Gagliardo solution proves the required Sobolev density by cutoff and mollification before passing to the uniform limit. H^2 on an interval is defined before the finite-element error claim, and the error is proved using absolutely continuous derivative representatives rather than assuming pointwise second derivatives. The convection solution gives exact coefficients and rigorous scaled boundary-layer limits, including the O(1/b) amplitude for forcing one.
+
+The checkpoint PDF through Chapter 10 exits 0 at 469 print pages, 616 whole boxes, maximum 391.2 pt, with no overflow or unresolved references. The Chapter 11 build is running; a later final build will include all subsequent small source and new-figure clarifications.
+
+
+Chapter 12 is rewritten, including every original exercise, hint and solution. Hadamard's credited portrait is placed. Two new plates show the annihilator of a subgroup of Z/12Z and the three fibre densities of a cap in F_3^2. Exercises `ex:v8c12a`–`d` compute a coset transform and convolution, an extremal prime-order support example, the exact rejection probability of a perturbed linearity test, and the sharp four-point cap in F_3^2. All 505 original printed statement/exercise kind/number/label triples still match main; 48 exercises are appended. The frozen-figure and label audits pass, eligible narrative and exercise prose is fully rewritten through Chapter 12, and cross-volume citations pass at 4951 statements.
+
+Prerequisite repairs in Chapter 12 include a proof of Cauchy–Binet before Chebotarev's determinant proof and a full proof of the diagonal slice-rank lemma before the cap-set exercise. The uncertainty discussion distinguishes the small primes 2, 3 and 5 from p>=7. The FFT proof explains the power-of-two padding in Rader's convolution. Meshulam's increment argument retains the constant 32 and uses a reciprocal-density decrement to count iterations without the previous dyadic gap. The cap-set exercise proves its numerical constant by an exact rational cube comparison and removes the prefactor by tensor powers. The odd-characteristic preview uses x+z=2y. FunSearch's admissible-set lower bound and the definition of cap capacity were checked against the primary Nature paper (online 14 December 2023, Nature 625 (2024), 468–475); no claim about the current record is made. The PCP preview distinguishes decision-problem completeness and soundness from a claim about all invalid mathematical proofs.
+
+The checkpoint through Chapter 11 exits 0 at 473 print pages, 620 whole boxes, with no overflow or unresolved references. The Chapter 12 PDF checkpoint is running.
+
+
+Chapter 13 is rewritten through invariant means, Hausdorff's paradox, real/circle/discrete duality and local p-adic Fourier inversion. Haar's credited portrait is placed. New plates show reciprocal ball masses and geometric cancellation along a circle rotation. Exercises `ex:v8c13a`–`d` treat ball convolution, dilation and unitarity, finite quotient characters, and uniform orbit averages. Every original statement number, label and figure environment passes the audit; all eligible narrative and exercise prose is rewritten. Cross-volume citations pass at 4955 statements, with all 505 original numbered triples unchanged and 52 appended exercises.
+
+The abstract-group mean argument now explicitly permits arbitrary groups rather than inheriting the topological section's countability assumption. Haar uniqueness retains the sigma-finite measure-uniqueness step and justifies compact support of the distance cutoffs. The Q_p self-duality proof now checks both directions of the compact-convergence topology, using annihilators of compact open subgroups. The rational-quotient exercise likewise verifies its topological identification. The Folland reference names the book without the previous unsupported chapter locator. General Haar existence, nonabelian uniqueness and general Pontryagin duality are clearly quoted, not prerequisites silently assumed proved.
+
+The Chapter 12 checkpoint exits 0 at 473 print pages, 626 whole boxes, with no overflow or unresolved references. Chapter 13 awaits its checkpoint build.
+
+
+Chapter 14 is rewritten through Dixon's homology proof, strip growth, Hadamard factorisation and Mellin inversion, including every original exercise/hint/solution. Its two new plates show Gaussian damping on a strip and the geometric-level Mellin poles. Exercises `ex:v8c14a`–`d` treat annular residue cancellation, an order-one-half product, the exact scale equation and a Mellin pair obtained from a Laplace integral. All original labels, numbered triples and figures are preserved, with 56 appended exercises and 4959 cross-volume statements.
+
+The homological-connectivity prompt now explains why a nonempty bounded complement is impossible, rather than suggesting the exterior of a disc as a positive example. Riemann mapping explicitly excludes the whole plane. The order definition handles nonzero constants using max(e,M(r)); the product lemma explicitly handles identically zero factors, whose finite zero multiplicity would otherwise be undefined. Hadamard's derivative step now derives the estimate from Borel–Caratheodory and Cauchy's formula. The finite-zero solution does not assume a nonzero constant polynomial has modulus at least one. The maximum-level proof justifies continuity and weighted integrability before inversion and proves its strict 1.6e-6 amplitude bound by Gamma reflection, a geometric-series majorant and exact rational Taylor bounds. Bourgain's exponent is described as a historical 2017 result rather than a current-record claim.
+
+The Chapter 13 checkpoint exits 0 at 479 print pages, 628 whole boxes, with no overflow or unresolved references. Chapter 14 awaits its PDF checkpoint.
+
+
+Chapter 15 is rewritten through regular summation, Tauber, Karamata, Wiener's local inversion/density theorem, Wiener–Ikehara, the prime number theorem and the weighted two-squares count. Tauber's credited portrait is placed. Two new plates show the frequency partition and the one-sided monotonicity comparisons used to remove smoothing. Exercises `ex:v8c15a`–`d` test zero residue, uniform continuity, the exact Karamata model and a general pole abscissa. Source and prose audits pass; cross-volume citations pass at 4963 statements, with all 505 original numbered triples unchanged and 60 appended exercises.
+
+Explicit repairs: Wiener–Ikehara now concludes A(x)=Cx+o(x), retaining C>=0 and explaining the C=0 case rather than writing an undefined asymptotic ratio to zero. Its proof defines psi on negative arguments before using full-line smoothing. The two-squares remark corrects the false claim that the unweighted result does not imply the weighted one by elementary means: it gives the partial-summation identity and the implication. The reverse inference remains unproved and is correctly distinguished. Slow-variation logarithm examples are extended positively below their natural large-x range. The nonunital L1 algebra discussion no longer asserts a naive global inverse, and Tauber's condition is described as sufficient rather than falsely sharp against Littlewood's weaker condition. The quicksort solution derives its exact recurrence formula before using it.
+
+The Chapter 14 checkpoint exits 0 at 483 print pages, 632 whole boxes, with no overflow or unresolved references. Chapter 15 awaits its checkpoint build.
+
+
+Chapter 16 is rewritten through all 22 original linked problems, hints, solutions, tool notes and research leads. Its two new plates show a four-line tight frame and Gaussian Hermite eigenvalues. Problems `ex:v8c16a`–`d` compute the sharp planar frame geometry, solve a constrained Fock evaluation problem, separate atomic from continuous Fourier energy, and analyse compact Gaussian conditional expectation. All 505 original numbered statement/exercise triples match main, with 64 appended exercises; original figures and labels are preserved. Eligible prose is fully rewritten, and cross-volume citations pass at 4967 statements.
+
+The solutions now prove Ramanujan-sum orthogonality and the fractional-part integral directly, so the problem-book citations are optional companions rather than prerequisites. The van de Lune threshold includes the omitted strict boundary case sigma=sigma_0: the already taught prime number theorem supplies a prime away from the tangent phase. The research lead no longer says real-part zero curves cross that boundary. The Sobolev kernel proof treats endpoint evaluations by boundary derivatives, since their kernels do not satisfy the interior Neumann boundary conditions. The Khinchin example explicitly restricts strict improvement to 0<a<1. Ingham's lead gives Kadec's uniform sup|delta_n|<1/4 condition, not merely pointwise strict inequalities. The mean-value constant 5 follows from exact pi>3 algebra, replacing decimal estimates. The slow-average construction justifies the telescoping mass identity near zero. Gaussian operator leads distinguish positive, negative, zero and endpoint correlations. The chapter map uses current volume numbers and contains no Volume 0.
+
+The Chapter 15 PDF checkpoint exits 0 at 483 print pages, 637 whole boxes, with no overflow or unresolved references. Chapter 16 awaits its checkpoint.
+
+
+Appendix A is rewritten through bases, quotients, duality, annihilators, transpose, the finite Fredholm alternative and dimension arguments, with all original exercises/hints/solutions. New plates show endpoint evaluation of cubics and an explicit compatibility certificate. Exercises `ex:v8cAa`–`d` compute quotient representatives and annihilators, classify all complements as graphs, give a normalised inconsistent-system certificate, and construct six unisolvent bivariate nodes. Original labels, numbered triples and figure environments pass; the prose audit is fully rewritten; cross-volume citations pass at 4971 statements with 68 appended exercises.
+
+Exact algebra replaces the Lights Out example's unsupported rank computation: a row recurrence and displayed terminal matrices give the 3-, 4-, 5- and 6-board claims. Its longer verification is ordinary prose outside the unbreakable example box, with the original claims still in the example. Quotient factorisation proofs are explicitly dimension-free before their polynomial/function examples. The constant-polynomial quotient and n=0 difference-operator cases are handled. The infinite algebraic bidual remark gives the basis-extension obstruction. The additive-function exercise now specifies nondegenerate intervals, since a singleton cannot support an unbounded function; its density claim is also justified. Fisher's Gram proof treats m<=1 separately, avoiding its formerly unjustified nonnegative-diagonal claim in the vacuous single-set case. The trigonometric interpolation solution retains the literal prerequisite phrase required by the citation test while rewriting the containing explanation.
+
+The Chapter 16 PDF checkpoint exits 0 at 483 print pages, 638 whole boxes, with no overflow or unresolved references. Appendix A awaits its checkpoint.
+
+
+Appendix B is rewritten through signed volume, exterior powers, Cauchy–Binet, complementary minors, condensation, LGV and lozenge counts, including every original exercise/hint/solution. New plates show the squared-minor area calculation and the zero-divisor distinction in condensation. Exercises `ex:v8cBa`–`d` compare real and finite-field Gram determinants, expose diagonal perturbation failure, evaluate a binomial Vandermonde determinant, and derive a tiling recurrence. The original numbered triples, labels and figure environments pass; eligible prose is rewritten; citations pass at 4975 statements with 72 appended exercises.
+
+Explicit repairs: Pluecker's proof now avoids division by two and its converse realises the original six-tuple, not only a rescaled tuple. Its geometric interpretation concerns two-planes in R4/projective lines in P3, rather than lines in R4. The condensation identity has its valid recurrence index ranges stated; the arrays still cover k=0 through n. A+tI remains valid for extending polynomial identities, but does not universally repair the condensation algorithm: independent generic entry variables do, and the new exercise gives I4+tI as an exact counterexample. Exterior-product independence is proved by the universal property before the later Laplace exercise, and the zero/top/over-dimension exterior conventions are defined. The compound-eigenvalue exercise cites the earlier main-chapter triangularisation rather than a later appendix. The polygon convention specifies simple counterclockwise boundary; self-intersections give signed winding area. General MacMahon enumeration and the limit-shape theorem are clearly quoted, while small cases are proved exactly. The MacMahon bibliography is corrected to Combinatory Analysis vol. II (1916), not a nonexistent third volume.
+
+The Appendix A checkpoint exits 0 at 485 print pages, 642 whole boxes, with no overflow or unresolved references. All 20 citation tests pass. Appendix B awaits its checkpoint.
+
+
+Appendix C is rewritten through invariant subspaces, triangularisation, Cayley–Hamilton over rings, primary decomposition, Jordan chains, commuting families and matrix functions, including every original exercise/hint/solution. New plates show squaring a chain and assembling polynomial spectral parts. Exercises `ex:v8cCa`–`d` compute repeated-root projections, square a nilpotent partition, classify one chain's commutant and show that exponentiation preserves chain sizes. Original numbers, labels and figures pass; cross-volume citations pass at 4979 statements with 76 appended exercises. Eligible prose is fully rewritten after rephrasing the one unchanged short corollary.
+
+The Dunford uniqueness proof establishes the simultaneous-diagonalisation step locally before using it and takes a common nilpotence exponent, avoiding a later theorem. Schur uses projection already taught in Volume 1/main Chapter 2 rather than the later appendix. The kernel lemma handles zero and constant coprime factors. Zero-dimensional operators have empty forms; the common-eigenvector conclusion explicitly requires a nonzero space. Jordan polynomial substitution now uses shifted coefficients over arbitrary fields, with derivative/factorial notation only in characteristic zero. The minimal-polynomial exercise uses this coefficient proof in every characteristic. Complex functional calculus requires holomorphic local jets; real smooth jets apply on real eigenvalues, and mere real smoothness near complex eigenvalues is explicitly insufficient for complex derivatives. The exponential counterexample compares equal versus unequal diagonals exactly instead of using a decimal value of cosh(1). No original statement/exercise number moved.
+
+The Appendix B checkpoint exits 0 at 485 print pages, 645 whole boxes, with no overflow or unresolved references. Appendix C awaits its checkpoint.
+
+
+Appendix D is rewritten through inner products, Gram–Schmidt/QR, projections, least squares/Gauss–Markov, Gram and Cauchy determinants, orthogonal polynomials, quadrature, adjoints and Cholesky, including all original exercises/hints/solutions. Two added plates show weighted residuals and the three-node Gauss rule. Exercises `ex:v8cDa`–`d` compute a weighted fit, a least-norm interpolating quadratic, the first three-node quadrature error, and products of projections. Original numbers/labels/figures pass the audits, eligible prose is rewritten, and citations pass at 4983 statements with 80 appended exercises.
+
+The positive-integral inner product now explicitly has a<b, and the orthogonal-polynomial interval has nonempty interior. The quadrature-convergence exercise specifies continuity on the compact closure: the former wording allowed bounded open intervals with functions having no uniform polynomial approximant. The correction and its purpose are explicit in the exercise and proof. Repeated Cauchy nodes are handled before factoring. The unused beta_0 in the monic recurrence is assigned an arbitrary positive value; the ratio formula remains for n>=1. Strict zero interlacing is justified by the positive recurrence excluding common roots. The Hilbert-determinant decay is expressed logarithmically from the exact product, avoiding an ambiguous ratio asymptotic. The obtuse-vector induction only projects a putative oversized family, avoiding a zero-projection inference for two opposite vectors. Reciprocal sums in the Muntz exercise omit a possible initial zero exponent.
+
+The Appendix C checkpoint exits 0 at 487 print pages, 647 whole boxes, with no overflow or unresolved references. Appendix D awaits its checkpoint.
+
+
+Appendix E is rewritten through Loewner order, square-root monotonicity, Schur complements, determinant inequalities, Schur products, Gershgorin and Hilbert's inequality, including every original exercise/hint/solution. Two added plates show distinct projections for Gaussian strict positivity and the logarithmic domain for a Hilbert lower bound. Exercises `ex:v8cEa`–`d` prove strict log-determinant concavity, strict Gaussian kernel positivity, the rank-r Woodbury update, and sharpness of Hilbert's constant pi. Original numbered triples, labels and figures pass; the prose audit is fully rewritten; citations pass at 4987 statements with 84 appended exercises.
+
+The recent Hadamard status was checked against the primary arXiv:2610.27175 v2 abstract and PDF (3 November 2026): the report verifies all twelve previously open orders below 2000, including 668. The dated attribution and bibliography are retained, without treating a numerical check as a theorem proof. Square roots and simultaneous diagonalisation use earlier main-chapter results, not later exercise premises. The squaring counterexample uses exact rational determinants. Loewner's quoted characterisation specifies analytic continuation and real values on the interval, includes constant functions with nonnegative imaginary part, and places log on the positive rather than closed nonnegative interval. The entropy interpretation concerns Gaussian laws with interpolated covariances, distinguishing them from a mixture distribution. The Hilbert proof justifies the improper midpoint endpoint and absolute double-series convergence; its optimal constant is now proved by the appended exercise. Hadamard row normalisation is stated correctly as making the first row all ones. Walsh characters are attached to the binary additive group rather than ordinary cyclic convolution.
+
+The Appendix D checkpoint exits 0 at 485 print pages, 650 whole boxes, with no overflow or unresolved references. Appendix E awaits its checkpoint.
+
+
+Appendix F is rewritten through matrix powers, continuous and discrete stability, Lyapunov energy, Chebyshev/heavy-ball acceleration, Kalman controllability and Maxwell's cubic. Lyapunov's portrait completes all seventeen placements. Two new plates show a contracting energy ellipse and the least-energy cart trajectory. Exercises `ex:v8cFa`–`d` prove an exact transient maximum, solve a triangular Lyapunov equation, give a quantitative perturbation certificate and compute the cart's minimum energy. All 505 original printed statement/exercise triples still match main, with 88 appended exercises and 44 added figures. Original figure environments and captions remain byte-identical. Cross-volume citations match 4991 statements. All eligible prose is rewritten except the deliberately retained literal Maxwell epigraph.
+
+Explicit repairs: the matrix size is positive where a maximum over eigenvalues is used. The transient example states its polynomial prefactor beside the frozen figure caption. The phase-portrait discussion distinguishes Hurwitz attraction from the Lyapunov stability of a centre. Chebyshev acceleration retains the full m<=L scope with a separate m=L singleton case; its divided expression is used only for m<L. The polynomial normalisation is justified for affine Krylov iterates. Heavy-ball includes the nilpotent m=L case, and its endpoint Jordan exercise separates that case from the positive-rate k*q^k asymptotic. Kalman's proof uses closure of a finite-dimensional column space when taking series and integrals. The logarithmic-norm solution gives the exact initial norm derivative rather than falsely claiming an e^(4t) trajectory. The cubic example's two right-half-plane roots are justified algebraically.
+
+The Appendix E PDF checkpoint exits 0 at 487 print pages, 655 whole boxes, maximum height 391.2 pt, with no overflow or unresolved references. The complete-manuscript build is running.
+
+Final proof-copy pass removes five comments about avoiding later exercises/appendices, retaining the proofs and their mathematics. Standalone rendering found that the new three-node quadrature plate used the book-only differential macro; its new figure file now spells that differential locally so the EPUB exporter can compile it independently. No original figure file changed.
+
+All 44 added plates compile independently. Visual inspection of four contact sheets found two label collisions in the added Mellin-pole and energy-ellipse plates; those new labels are moved apart, with leader arrows for the energy levels. The corrected plates were rendered and inspected again. The complete-manuscript checkpoint `--pdf-only` exits 0 at 491 print pages, 659 whole boxes, maximum height 391.2 pt, with no overflow or unresolved references. The final proof-copy/plate sources are undergoing another PDF-only build followed by the full EPUB build.
+
+A stricter final prose comparison also checks short sentences below the handoff's forty-character threshold. It found twelve short prose sentences still matching after mathematics was stripped; these are rephrased without changing formulas or hypotheses. Remaining identical fragments are exercise/subpart titles and the literal Maxwell quotation. All original numbered triples, labels and frozen figures still pass afterward.
+
+
+The final editorial review and per-unit commit table are in [volume8-rewrite-final-review-2026-11-14.md](../review/volume8-rewrite-final-review-2026-11-14.md). The manuscript is frozen at the source contents of `16c6d0d6`. The final exact-head build results, exported page count/EPUB size, readiness and CI run IDs are recorded in [PR #242](https://github.com/OussamaSegh/Order-and-Chance/pull/242) after those checks finish, without changing the checked head just to record its own SHA. Earlier build notes in this handoff are chronological checkpoints.
+
+
+The last prerequisite sweep found one remaining untaught tool: the Foelner exercise selected a convergent subnet, whereas Volume 7 explicitly leaves nets aside. Its solution now takes the nested closures of the mean sequence's tails in the compact mean space. Their intersection is nonempty; each approximate-invariance closed slab contains a late tail and hence that intersection. This proves invariance directly using already taught compactness, with no change to the exercise or its conclusion. The production source snapshot therefore advances beyond `16c6d0d6`; the final exact-head validation record in PR #242 identifies the checked head.
+
+The full EPUB pass exposed ungrouped accents on the blackboard-bold integer macro: the exported `widehat mathbb{Z}` and `hat mathbb{Z}` were invalid isolated formulas. The chapter now braces the accent arguments explicitly, preserving the mathematics and print appearance. A syntax preflight compiles all 8466 distinct exported formulas in 22 XeLaTeX batches after that grouping correction: zero failures. This check precedes the next full PDF/EPUB build and CI restart; no existing figure file or build helper is changed.

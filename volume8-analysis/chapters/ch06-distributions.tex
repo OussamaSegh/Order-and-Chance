@@ -1,116 +1,113 @@
 \chapter{Distributions and Sobolev Spaces}\label{ch:distributions}
 
 \begin{center}\itshape
-How do you differentiate a function with a corner, a jump, or no derivative anywhere? You stop asking for its values and ask how it
-acts. Every locally integrable function, every measure, and some stranger objects become infinitely differentiable, and
-differential equations acquire solutions that classical calculus could not even write down.
+A jump has no classical derivative at the jump point.\\
+Integration against a test function still records its derivative exactly.
 \end{center}
 
-Physicists did not wait for permission. Oliver Heaviside, a self-taught telegraph engineer, solved the equations of electrical
-circuits in the 1890s with an ``operational calculus'' in which the derivative of a unit step was an infinitely tall spike. The Royal
-Society published the first two papers of his series on operational methods and refused the third (1894). In 1927 Paul Dirac needed the same spike in quantum mechanics, wrote it $\delta(x)$, and stated
-its rules: $\delta(x)=0$ for $x\ne0$ and $\int\delta(x)f(x)\dd x=f(0)$. No function can do this, and Dirac knew it; he called $\delta$
-``improper'' and used it anyway, to great effect. In the 1930s Sergei Sobolev in Leningrad, working on wave equations, defined
-\emph{generalised solutions} by integration against smooth test functions, and built the spaces that now carry his name.
+The unit step changes by one at zero. Its derivative ought to record that change without spreading it over an interval. No locally integrable function can be zero away from zero and still contribute one unit to every test integral at zero. The Dirac mass can: it evaluates a test function at the point.
 
-The unifying idea came to Laurent Schwartz, a young French mathematician who had spent the war hiding under a false name. One night in
-November 1944 he understood that all these objects are continuous linear functionals on a space of smooth functions with compact
-support, and that differentiation can be moved onto the test function by integration by parts. He later recalled it as one of the most
-beautiful nights of his life. His \emph{Th\'eorie des distributions} (1950--1951) earned him the Fields Medal in 1950. Distributions
-gave the Fourier transform its natural domain, gave $\delta$ a precise meaning, and gave partial differential equations a framework in
-which existence can be proved by Hilbert space methods and smoothness established afterwards.
+Heaviside used such impulses in operational calculations for electrical circuits, and Dirac used them in quantum mechanics. Sobolev's work on generalised solutions made integration against smooth functions part of the definition of a solution. Schwartz's distribution theory, announced in 1945 and developed in his 1950--1951 treatise, supplied a systematic space of continuous linear functionals. His work on this theory was recognised by the Fields Medal in 1950. The useful rule is an old integration-by-parts identity: move a derivative onto the smooth test function and change its sign.
 
-This chapter builds distributions on open sets of $\R^d$, their derivatives and Fourier transforms, finds the fundamental solution of
-the Laplacian, and then studies Sobolev spaces on the line and on intervals in full: embedding, Rellich's compactness, and the
-Lax--Milgram theorem, which solves boundary value problems in their weak form and leads straight to the finite element method.
+That rule gives every distribution derivatives of all orders, without claiming that the original object is a smooth function. It also permits weak derivatives of ordinary functions. Requiring a function and some of its weak derivatives to lie in $L^2$ leads to Sobolev spaces. On an interval their representatives are continuous, their bounded sets have compactness properties, and their inner-product geometry solves differential equations with discontinuous coefficients.
 
 \section{Test functions and distributions}
 
-Let $\Omega\subset\R^d$ be open. A \emph{test function} is a $C^\infty$ function on $\Omega$ with compact support in $\Omega$; they form the space $\mathcal D(\Omega)=C_c^\infty(\Omega)$. Mollifiers (Volume~7, Theorem~10.10) show that there are
-many: for every compact $K\subset\Omega$ there is $\chi\in\mathcal D(\Omega)$ with $0\le\chi\le1$ and $\chi=1$ on a neighbourhood of $K$ (mollify the indicator of a small neighbourhood of $K$). For $\varphi$ smooth and $N\in\N$, write
+For open $\Omega\subset\R^d$, let $\mathcal D(\Omega)=C_c^\infty(\Omega)$, the smooth functions whose support is compactly contained in $\Omega$. These are \emph{test functions}. Every compact $K\subset\Omega$ has a smooth cutoff $\chi$ with $0\le\chi\le1$, equal to one near $K$ and compactly supported in $\Omega$. To construct it, mollify the indicator of a sufficiently small bounded neighbourhood of $K$, using Volume~7, Theorem~10.10. Set
 $\|\varphi\|_{C^N}=\max_{|\alpha|\le N}\sup|\partial^\alpha\varphi|$.
 
 \begin{definition}
-A \emph{distribution} on $\Omega$ is a linear form $T:\mathcal D(\Omega)\to\C$, written $\varphi\mapsto\langle T,\varphi\rangle$, such that for every compact $K\subset\Omega$ there are $C\ge0$ and $N\in\N$ with
-\[|\langle T,\varphi\rangle|\le C\|\varphi\|_{C^N}\qquad\text{for all }\varphi\in\mathcal D(\Omega)\text{ supported in }K.\]
-If one $N$ works for all $K$, the least such $N$ is the \emph{order} of $T$. The distributions form a vector space $\mathcal D'(\Omega)$. A sequence $T_n\to T$ in $\mathcal D'(\Omega)$ if $\langle T_n,\varphi\rangle\to\langle T,\varphi\rangle$ for every
-test function $\varphi$.
+A distribution on $\Omega$ is a complex-linear functional on $\mathcal D(\Omega)$, written $\langle T,\varphi\rangle$, with this bound: for each compact $K\subset\Omega$ there are $C\ge0$ and $N\in\N$ such that
+\[
+|\langle T,\varphi\rangle|\le C\|\varphi\|_{C^N}
+\quad\text{whenever }\operatorname{supp}\varphi\subseteq K.
+\]
+The space of distributions is $\mathcal D'(\Omega)$. If a single $N$ works for all $K$, the least such integer is its order. Convergence $T_j\to T$ means convergence of $\langle T_j,\varphi\rangle$ for every fixed test function to $\langle T,\varphi\rangle$.
 \end{definition}
 
-The estimate is a continuity condition: if test functions $\varphi_n$ are supported in a fixed compact set and $\varphi_n\to\varphi$ with all derivatives uniformly, then $\langle T,\varphi_n\rangle\to\langle T,\varphi\rangle$.
+The pairing is bilinear, unlike our Hilbert inner product: there is no complex conjugate on the test function. The estimate gives continuity when test functions share one compact support and converge uniformly with all derivatives. Only the finitely many derivatives appearing in that support's bound are actually needed to test a fixed distribution.
 
 \begin{example}\label{ex:distexamples}
-(a) A locally integrable $f\in L^1_{\mathrm{loc}}(\Omega)$ defines $\langle T_f,\varphi\rangle=\int f\varphi$, a distribution of order $0$: $|\langle T_f,\varphi\rangle|\le\bigl(\int_K|f|\bigr)\|\varphi\|_{C^0}$. We write $f$ for $T_f$.
-(b) A Radon measure $\mu$ (finite on compact sets) defines $\langle\mu,\varphi\rangle=\int\varphi\dd\mu$, also of order $0$. In particular the \emph{Dirac mass} $\langle\delta_a,\varphi\rangle=\varphi(a)$; we write $\delta=\delta_0$.
-(c) On $\R$, the \emph{principal value}
-\[\Bigl\langle\operatorname{p.v.}\frac1x,\varphi\Bigr\rangle=\lim_{\varepsilon\to0}\int_{|x|>\varepsilon}\frac{\varphi(x)}x\dd x=\int_0^\infty\frac{\varphi(x)-\varphi(-x)}x\dd x\]
-is a distribution of order at most $1$: if $\varphi$ is supported in $[-R,R]$, $|\varphi(x)-\varphi(-x)|\le2|x|\|\varphi'\|_\infty$, so the integral is at most $2R\|\varphi\|_{C^1}$. It is not of order $0$
-(Exercise~\ref{ex:pvorder}).
+(a) A locally integrable $f$ defines $\langle T_f,\varphi\rangle=\int f\varphi$. Its bound is $(\int_K|f|)\|\varphi\|_\infty$, so it has order zero. We usually write $f$ for this distribution.
+(b) A Radon measure, finite on compact sets, gives an order-zero distribution by integration. The Dirac mass at $a$ is $\langle\delta_a,\varphi\rangle=\varphi(a)$; write $\delta=\delta_0$.
+(c) On the line the symmetric principal value is
+\[
+\left\langle\operatorname{p.v.}\frac1x,\varphi\right\rangle
+=\lim_{\varepsilon\downarrow0}\int_{|x|>\varepsilon}\frac{\varphi(x)}x\dd x
+=\int_0^\infty\frac{\varphi(x)-\varphi(-x)}x\dd x.
+\]
+If the support lies in $[-R,R]$, the numerator is at most $2x\|\varphi'\|_\infty$ for $x>0$. This proves existence and bound $2R\|\varphi\|_{C^1}$, so its order is at most one. Exercise~\ref{ex:pvorder} proves it is not zero.
 \end{example}
 
 \begin{proposition}\label{prop:lloc}
-If $f\in L^1_{\mathrm{loc}}(\Omega)$ and $\int f\varphi=0$ for every $\varphi\in\mathcal D(\Omega)$, then $f=0$ almost everywhere. So $f\mapsto T_f$ is injective, and $L^1_{\mathrm{loc}}(\Omega)\subset\mathcal D'(\Omega)$.
+If $f\in L^1_{\mathrm{loc}}(\Omega)$ pairs to zero against every test function, then $f=0$ almost everywhere. Thus the map $f\mapsto T_f$ embeds the space of locally integrable classes injectively into $\mathcal D'(\Omega)$.
 \end{proposition}
 \begin{proof}
-Let $B$ be a closed ball in $\Omega$ and $\delta>0$ with the $\delta$-neighbourhood of $B$ in $\Omega$. Let $g=f\mathbf 1_{B'}$, where $B'$ is the closed $\delta$-neighbourhood of $B$; $g\in L^1(\R^d)$. For a mollifier $\varphi$ and
-$t<\delta$, $g*\varphi_t(x)=\int f(y)\varphi_t(x-y)\dd y=0$ for $x\in B$, since $y\mapsto\varphi_t(x-y)$ is a test function supported in $B'$. As $g*\varphi_t\to g$ in $L^1$ (Volume~7, Theorem~10.10), $g=0$ almost everywhere on $B$.
-Countably many balls cover $\Omega$.
+Choose a closed ball $B$ with a closed positive-radius neighbourhood $B'$ still contained in $\Omega$, and extend $g=f\mathbf1_{B'}$ by zero to $\R^d$. It is integrable. For small enough mollifier radius $t$, every kernel $y\mapsto\varphi_t(x-y)$ with $x\in B$ is supported inside $B'$, so the hypothesis makes $g*\varphi_t(x)=0$. Approximate identities converge in $L^1$ (Volume~7, Theorem~10.10), hence $g=0$ almost everywhere on $B$. A countable collection of such balls covers the open set, proving the claim.
 \end{proof}
 
 \begin{think}
-Why is the Dirac mass not a function? Suppose $\int f\varphi=\varphi(0)$ for all $\varphi$, with $f$ locally integrable. Test it on functions supported away from $0$, and use Proposition~\ref{prop:lloc}.
+If a locally integrable $f$ represented $\delta$, tests supported away from zero would make it zero almost everywhere there by the proposition. The singleton is null, so it would be zero almost everywhere on the whole space. But then it could not evaluate a test function equal to one at zero. The obstruction concerns integrals, not the possible choice of a function's value at one point.
 \end{think}
-
-(Answer: $f=0$ almost everywhere on $\R^d\setminus\{0\}$, hence almost everywhere, and then $\varphi(0)=0$ for every $\varphi$, which is absurd.)
 
 \section{Derivatives}
 
-If $f\in C^1(\Omega)$ and $\varphi\in\mathcal D(\Omega)$, integration by parts in the variable $x_j$ (with no boundary terms, since $\varphi$ has compact support) gives $\int\partial_jf\,\varphi=-\int f\,\partial_j\varphi$. This formula makes
-sense for every distribution, and becomes the definition.
+For $C^1$ functions and compactly supported tests, integration by parts gives $\int(\partial_jf)\varphi=-\int f\partial_j\varphi$. The right side also makes sense for a distribution, so it can define the derivative.
 
 \begin{definition}
-For $T\in\mathcal D'(\Omega)$ and a multi-index $\alpha$, $\langle\partial^\alpha T,\varphi\rangle=(-1)^{|\alpha|}\langle T,\partial^\alpha\varphi\rangle$. For $a\in C^\infty(\Omega)$, $\langle aT,\varphi\rangle=\langle T,a\varphi\rangle$.
+For $T\in\mathcal D'(\Omega)$ and multi-index $\alpha$, set
+$\langle\partial^\alpha T,\varphi\rangle=(-1)^{|\alpha|}\langle T,\partial^\alpha\varphi\rangle$.
+For smooth $a$, define $\langle aT,\varphi\rangle=\langle T,a\varphi\rangle$.
 \end{definition}
 
-Both are distributions: $\|\partial^\alpha\varphi\|_{C^N}\le\|\varphi\|_{C^{N+|\alpha|}}$, and by Leibniz $\|a\varphi\|_{C^N}\le C_{K,N}\|\varphi\|_{C^N}$ for $\varphi$ supported in $K$. So \emph{every distribution is infinitely differentiable},
-derivatives commute ($\partial_i\partial_j\varphi=\partial_j\partial_i\varphi$), and the Leibniz rule $\partial_j(aT)=(\partial_ja)T+a\,\partial_jT$ holds (test it on $\varphi$). For $f\in C^1$, the distributional and classical derivatives
-agree.
+Both operations satisfy the required distribution bounds: differentiation raises the needed derivative count by $|\alpha|$, and the product rule bounds $\|a\varphi\|_{C^N}$ by a fixed multiple of $\|\varphi\|_{C^N}$ on each compact support. Derivatives commute because test-function derivatives commute. Testing the ordinary product rule also gives $\partial_j(aT)=(\partial_ja)T+a\partial_jT$. These derivatives agree with classical ones whenever the latter exist continuously.
 
 \begin{example}\label{ex:derivatives}
-On $\R$, let $H=\mathbf 1_{[0,\infty[}$ be the Heaviside function. Then $\langle H',\varphi\rangle=-\int_0^\infty\varphi'=\varphi(0)$: $H'=\delta$. Similarly $\langle\delta',\varphi\rangle=-\varphi'(0)$. The function $\log|x|$ is locally
-integrable, and
-\[\langle(\log|x|)',\varphi\rangle=-\lim_{\varepsilon\to0}\int_{|x|>\varepsilon}\log|x|\,\varphi'(x)\dd x=\lim_{\varepsilon\to0}\Bigl(\int_{|x|>\varepsilon}\frac{\varphi(x)}x\dd x+\log\varepsilon\,\bigl(\varphi(\varepsilon)-\varphi(-\varepsilon)\bigr)\Bigr),\]
-and the last term tends to $0$ since $|\varphi(\varepsilon)-\varphi(-\varepsilon)|\le2\varepsilon\|\varphi'\|_\infty$. So $(\log|x|)'=\operatorname{p.v.}\frac1x$.
+For the Heaviside function $H=\mathbf1_{[0,\infty)}$,
+$\langle H',\varphi\rangle=-\int_0^\infty\varphi'=\varphi(0)$,
+so $H'=\delta$. The derivative of the point mass is $\langle\delta',\varphi\rangle=-\varphi'(0)$.
+The function $\log|x|$ is locally integrable. Integrating on both sides of a deleted interval about zero gives
+\[
+\langle(\log|x|)',\varphi\rangle
+=\lim_{\varepsilon\downarrow0}\left(
+\int_{|x|>\varepsilon}\frac{\varphi(x)}x\dd x
++\log\varepsilon\,[\varphi(\varepsilon)-\varphi(-\varepsilon)]\right).
+\]
+The extra term has absolute value at most $2\varepsilon|\log\varepsilon|\|\varphi'\|_\infty$, which tends to zero. Hence $(\log|x|)'=\operatorname{p.v.}(1/x)$.
 \end{example}
 
-More generally, a function $f$ which is $C^1$ on $\R$ except for a jump at $a$, with $f'$ (where it exists) locally integrable, has distributional derivative $f'+(f(a^+)-f(a^-))\delta_a$: the jump becomes a Dirac mass.
+For a piecewise $C^1$ function with finite one-sided values at a jump $a$, and locally integrable classical derivative on the two sides, the same integration-by-parts calculation gives $f'_{\mathrm{dist}}=f'_{\mathrm{class}}+(f(a^+)-f(a^-))\delta_a$. The mass records the jump size.
 
 \begin{theorem}\label{thm:zeroderiv}
-Let $I$ be an open interval and $T\in\mathcal D'(I)$ with $T'=0$. Then $T$ is a constant function. If $T'=g$ for a continuous $g$, then $T=G+c$ for any primitive $G$ of $g$ and a constant $c$.
+A distribution with zero derivative on a nonempty open interval is a constant-function distribution. If $T'=g$ for continuous $g$, then $T=G+c$ for any primitive $G$ of $g$ and some constant $c$.
 \end{theorem}
 \begin{proof}
-A test function $\psi$ is the derivative of a test function if and only if $\int\psi=0$: if $\int\psi=0$, the primitive $x\mapsto\int_{-\infty}^x\psi$ (with $\psi$ extended by $0$) vanishes to the left of the support of $\psi$ and, since
-$\int\psi=0$, to its right. Fix $\theta\in\mathcal D(I)$ with $\int\theta=1$. For every $\varphi\in\mathcal D(I)$, $\varphi-(\int\varphi)\theta$ has integral $0$, so it is $\psi'$ with $\psi\in\mathcal D(I)$, and
-\[\langle T,\varphi\rangle=\Bigl(\int\varphi\Bigr)\langle T,\theta\rangle+\langle T,\psi'\rangle=c\int\varphi-\langle T',\psi\rangle=c\int\varphi,\]
-with $c=\langle T,\theta\rangle$. So $T=c$. For the second claim, $(T-G)'=g-g=0$, as the classical derivative of the $C^1$ function $G$ is also its distributional derivative.
+A test function $\psi$ on the interval is a derivative of another test function exactly when $\int\psi=0$. Necessity follows by integration. For sufficiency, extend $\psi$ by zero and integrate from $-\infty$. Its primitive vanishes on both sides of its support when the total integral is zero; its support's convex hull is still compactly inside the interval.
+Choose $\theta$ in the test space with integral one. For any $\varphi$, the test $\varphi-(\int\varphi)\theta$ has integral zero, hence equals $\psi'$ for a test $\psi$. Thus
+\[
+\langle T,\varphi\rangle=(\int\varphi)\langle T,\theta\rangle
++\langle T,\psi'\rangle=c\int\varphi-\langle T',\psi\rangle
+=c\int\varphi.
+\]
+If $T'=g$, apply this result to $T-G$, whose derivative vanishes.
 \end{proof}
 
 \section{Smoothing}
 
-For $T\in\mathcal D'(\R^d)$ and $\varphi\in\mathcal D(\R^d)$, define the \emph{convolution} $(T*\varphi)(x)=\langle T,\varphi(x-\cdot)\rangle$. For $T=T_f$ it is the usual $f*\varphi$.
+For $T\in\mathcal D'(\R^d)$ and $\varphi\in\mathcal D(\R^d)$ define
+$(T*\varphi)(x)=\langle T,\varphi(x-\cdot)\rangle$.
+Each translated kernel remains a valid test. For a locally integrable function this is its usual convolution.
 
 \begin{proposition}\label{prop:smoothing}
-$T*\varphi$ is $C^\infty$, with $\partial^\alpha(T*\varphi)=T*\partial^\alpha\varphi=(\partial^\alpha T)*\varphi$. If $\varphi$ is a mollifier, then $T*\varphi_t\to T$ in $\mathcal D'(\R^d)$ as $t\to0$. So every distribution is a limit of smooth
-functions.
+The convolution $T*\varphi$ is smooth and satisfies
+$\partial^\alpha(T*\varphi)=T*\partial^\alpha\varphi=(\partial^\alpha T)*\varphi$.
+For a mollifier $\varphi$, $T*\varphi_t\to T$ in $\mathcal D'$ as $t\downarrow0$. In particular every distribution is a distributional limit of smooth functions.
 \end{proposition}
 \begin{proof}
-Fix $x$ and a unit vector $e_j$. As $h\to0$, the test functions $\frac1h(\varphi(x+he_j-\cdot)-\varphi(x-\cdot))$ are supported in a fixed compact set and converge to $\partial_j\varphi(x-\cdot)$ with all their derivatives, uniformly, by
-Taylor's formula applied to each derivative of $\varphi$. By the continuity estimate, $\partial_j(T*\varphi)(x)$ exists and equals $(T*\partial_j\varphi)(x)$; the same argument gives continuity of $T*\varphi$ and, by
-induction, all derivatives. And $\langle\partial_jT,\varphi(x-\cdot)\rangle=-\langle T,\partial_{y_j}[\varphi(x-y)]\rangle=\langle T,(\partial_j\varphi)(x-\cdot)\rangle$.
-
-For the convergence, let $\psi\in\mathcal D$ and $\check\varphi_t(y)=\varphi_t(-y)$. A Riemann sum argument (the same continuity estimate, applied to Riemann sums of $\int\varphi_t(x-y)\psi(x)\dd x$, which converge to it in the sense of
-test functions) gives $\langle T*\varphi_t,\psi\rangle=\langle T,\check\varphi_t*\psi\rangle$. As $t\to0$, $\check\varphi_t*\psi\to\psi$ with all derivatives uniformly (Volume~7, Theorem~10.10(b), applied to $\partial^\alpha\psi$), with
-supports in a fixed compact set, so $\langle T,\check\varphi_t*\psi\rangle\to\langle T,\psi\rangle$.
+On a small compact neighbourhood of a fixed $x$, the translated tests share a compact support. Taylor's formula shows that their coordinate difference quotients converge, with all derivatives uniformly, to $\partial_j\varphi(x-\cdot)$. The distribution bound passes this convergence through $T$. It gives the first derivative formula; the same estimate proves continuity and all higher derivatives. Moving a derivative off $T$ produces a minus sign that cancels the derivative of $x-y$ with respect to $y$, proving the second formula.
+For a test $\psi$, put $\check\varphi_t(y)=\varphi_t(-y)$. Approximate the compact integral of translated tests by Riemann sums. Those sums converge with every derivative uniformly and one common compact support, so the distribution bound permits passing $T$ through the integral. This gives
+$\langle T*\varphi_t,\psi\rangle=\langle T,\check\varphi_t*\psi\rangle$.
+Approximate-identity convergence for each derivative of $\psi$ is uniform (Volume~7, Theorem~10.10(b)), with common compact support for small $t$. The last pairing therefore tends to $\langle T,\psi\rangle$.
 \end{proof}
 
 \begin{figure}[ht]
@@ -123,168 +120,204 @@ $+\infty$ at it: convergence of distributions is convergence of averages, not of
 
 \section{Tempered distributions and the Fourier transform}
 
-The transform of a test function is never a test function (Corollary~\ref{cor:nocompact}), so the Fourier transform cannot act on $\mathcal D'$. It acts on the distributions that are continuous for the topology of the Schwartz space.
-For $\varphi\in\mathcal S(\R^d)$ write $p_N(\varphi)=\max_{|\alpha|,|\beta|\le N}\sup_x|x^\alpha\partial^\beta\varphi(x)|$.
+A nonzero test function cannot have a compactly supported Fourier transform, by Corollary~\ref{cor:nocompact}. Thus simply feeding transformed tests to an arbitrary member of $\mathcal D'$ would not define its Fourier transform. Schwartz tests have the stability that compactly supported tests lack. Put
+$p_N(\varphi)=\max_{|\alpha|,|\beta|\le N}\sup_x|x^\alpha\partial^\beta\varphi(x)|$.
 
 \begin{definition}
-A \emph{tempered distribution} is a linear form $T$ on $\mathcal S(\R^d)$ with $|\langle T,\varphi\rangle|\le Cp_N(\varphi)$ for some $C,N$. They form the space $\mathcal S'(\R^d)$.
+A tempered distribution is a complex-linear functional on $\mathcal S(\R^d)$ satisfying $|\langle T,\varphi\rangle|\le Cp_N(\varphi)$ for some fixed $C,N$ and all Schwartz tests. Their space is $\mathcal S'(\R^d)$.
 \end{definition}
 
-Restricted to $\mathcal D$, a tempered distribution is a distribution, and it is determined by this restriction since $\mathcal D$ is dense in $\mathcal S$ for the seminorms $p_N$ (multiply by $\chi(\frac xR)$ with $\chi=1$ near $0$). Functions in
-$L^p$, $1\le p\le\infty$, measurable functions with polynomial growth, finite measures, $\delta$ and $\operatorname{p.v.}\frac1x$ are tempered. The function $e^x$ is not: with $g(x)=e^{-\sqrt{1+x^2}}\in\mathcal S$ and $\chi\in\mathcal D$ equal to $1$ near $0$, the functions $\chi(\frac xn)g(x)$ have bounded
-seminorms $p_N$, while $\int e^x\chi(\frac xn)g(x)\dd x\to\infty$. Derivatives and products with polynomials of tempered distributions are tempered.
+Restriction to $\mathcal D$ gives a distribution. It determines the tempered functional uniquely: if $\chi$ is a cutoff equal to one near zero, $\chi(x/R)\varphi$ tends to $\varphi$ in every seminorm $p_N$. Leibniz's rule reduces this to rapid decay of each derivative outside a growing ball.
+Every $L^p$ function, $1\le p\le\infty$, is tempered by H\"older and the seminorm bounds for integrable decay of tests. A measurable function bounded in modulus by a polynomial also is, as is any locally integrable function with such a bound outside a compact set. Finite measures are bounded by the test supremum. The point mass is tempered, and splitting the principal-value integral near zero and at infinity bounds it using the first derivative and a rapidly decreasing test bound. Derivatives and polynomial multiples preserve these estimates.
+The locally integrable function $e^x$ is not tempered. Take $g(x)=e^{-\sqrt{1+x^2}}\in\mathcal S$ and a non-negative cutoff $\chi$ equal to one on $[-1,1]$. The tests $\chi(x/n)g(x)$ have uniformly bounded $p_N$ for every fixed $N$, by Leibniz and rapid decay. But their pairings with $e^x$ are at least $\int_0^ne^{x-\sqrt{1+x^2}}\dd x\ge n/e$. No tempered bound can hold.
 
 \begin{definition}
-The Fourier transform of $T\in\mathcal S'(\R^d)$ is $\langle\hat T,\varphi\rangle=\langle T,\hat\varphi\rangle$.
+For $T\in\mathcal S'$, define $\langle\hat T,\varphi\rangle=\langle T,\hat\varphi\rangle$ on Schwartz tests.
 \end{definition}
 
-For $T=T_f$ with $f\in L^1$ this agrees with $\hat f$, by the multiplication formula (Proposition~\ref{prop:ftl1}(e)); for $f\in L^2$ it agrees with Plancherel's $\mathcal Ff$, by continuity, as the multiplication formula extends to $L^2$.
+For integrable functions this agrees with the ordinary transform by the multiplication formula, Proposition~\ref{prop:ftl1}(e). For $L^2$ functions, approximate by Schwartz functions and use Plancherel together with Cauchy--Schwarz on the pairings; the same identity passes to the limit. Thus the definitions agree on their common domains.
 
 \begin{theorem}\label{thm:ftsprime}
-$\mathcal F$ is a bijection of $\mathcal S'(\R^d)$, with $\mathcal F^4=I$, and $\widehat{\partial^\beta T}=(2\pi i\xi)^\beta\hat T$, $\widehat{(-2\pi ix)^\alpha T}=\partial^\alpha\hat T$. Moreover $\hat\delta=1$ and $\hat1=\delta$.
+Fourier transformation is a bijection of $\mathcal S'$ and satisfies $\mathcal F^4=I$. Its differentiation rules are
+\[
+\widehat{\partial^\beta T}=(2\pi i\xi)^\beta\hat T,\qquad
+\widehat{(-2\pi ix)^\alpha T}=\partial^\alpha\hat T.
+\]
+Also $\hat\delta=1$ and $\hat1=\delta$.
 \end{theorem}
 \begin{proof}
-From the proof of Proposition~\ref{prop:schwartz},
-\[\sup|\xi^\beta\partial^\alpha\hat\varphi|\le(2\pi)^{|\alpha|-|\beta|}\|\partial^\beta(x^\alpha\varphi)\|_1,\]
-and $\|\psi\|_1\le C\sup|(1+|x|^2)^d\psi|$. Expanding $\partial^\beta(x^\alpha\varphi)$ by Leibniz, $p_N(\hat\varphi)\le C_Np_{N+2d}(\varphi)$. So
-$|\langle\hat T,\varphi\rangle|\le Cp_N(\hat\varphi)\le C'p_{N+2d}(\varphi)$, and $\hat T\in\mathcal S'$. $\mathcal F^4=I$ on $\mathcal S$ (Proposition~\ref{prop:schwartz}), hence on $\mathcal S'$, and $\mathcal F$ is a bijection. The formulas follow from those on
-$\mathcal S$: for instance $\langle\widehat{\partial_jT},\varphi\rangle=-\langle T,\partial_j\hat\varphi\rangle=\langle T,\widehat{2\pi ix_j\varphi}\rangle=\langle(2\pi i\xi_j)\hat T,\varphi\rangle$. Finally $\langle\hat\delta,\varphi\rangle=\hat\varphi(0)=\int\varphi$, so
-$\hat\delta=1$, and $\hat1=\mathcal F^2\delta=\delta$ since $\delta$ is even.
+The Schwartz proof gives the estimate
+$\sup|\xi^\beta\partial^\alpha\hat\varphi|\le(2\pi)^{|\alpha|-|\beta|}\|\partial^\beta(x^\alpha\varphi)\|_1$.
+Bound an $L^1$ norm by a constant times the supremum of $(1+|x|^2)^d$ times its argument. Leibniz expansion then gives $p_N(\hat\varphi)\le C_Np_{N+2d}(\varphi)$. Hence a tempered bound for $T$ supplies one for $\hat T$, making the definition valid. The identity $\mathcal F^4=I$ on tests passes through the pairing, proving bijectivity on distributions.
+For one derivative,
+\[
+\langle\widehat{\partial_jT},\varphi\rangle
+=-\langle T,\partial_j\hat\varphi\rangle
+=\langle T,\widehat{2\pi ix_j\varphi}\rangle
+=\langle(2\pi i\xi_j)\hat T,\varphi\rangle.
+\]
+Moving a coordinate factor instead gives the second rule; iteration proves the multi-index formulas. Finally $\langle\hat\delta,\varphi\rangle=\hat\varphi(0)=\int\varphi$, so $\hat\delta=1$. Applying the transform again reflects $\delta$, leaving it fixed, and gives $\hat1=\delta$.
 \end{proof}
 
+Multiplying a tempered distribution by a Schwartz function remains tempered: Leibniz bounds the seminorm of the test product, since all derivatives of the multiplier are bounded. For tempered $T$ and Schwartz $f$, the same formula $(T*f)(x)=\langle T,f(x-\cdot)\rangle$ extends smoothing beyond compactly supported kernels. Translated Schwartz seminorms grow at most polynomially in $x$, so this gives a smooth function of polynomial growth. It also gives
+$\widehat{T*f}=\hat T\,\hat f$.
+To verify the identity, pair with Schwartz $\psi$ and move $T$ through the integral against $\hat\psi(x)$. This is justified in each Schwartz seminorm by polynomial growth of the translated kernel and rapid decay of $\hat\psi$. Fubini computes the inner test as
+$\int f(x-y)\hat\psi(x)\dd x=\mathcal F(\hat f\psi)(y)$.
+The definition of $\hat T$ now gives the claimed pairing. This provides the convolution rule used for the Hilbert transform below.
+
 \begin{beauty}
-The identity $\hat1=\delta$ is the meaning of the formula $\int e^{-2\pi ix\xi}\dd x=\delta(\xi)$ that physicists write without blinking: the integral diverges, but as a distribution it is exact. It says that the
-exponentials $e_\xi(x)=e^{2\pi ix\xi}$ are ``orthonormal'' in the continuous sense, $\langle e_\xi,e_\eta\rangle=\delta(\xi-\eta)$, which is the precise form of the ``as if'' of Plancherel's theorem in Chapter~\ref{ch:fourier}.
+The formal integral $\int e^{-2\pi ix\cdot\xi}\dd x$ does not converge as an ordinary integral. The identity $\hat1=\delta$ states exactly how it acts after testing in $\xi$. Frequency waves can therefore be paired through a Dirac distribution without pretending that they are actual unit vectors of $L^2$.
 \end{beauty}
 
 \section{Fundamental solutions}
 
-A \emph{fundamental solution} of a linear differential operator $P(\partial)$ with constant coefficients is a distribution $E$ with $P(\partial)E=\delta$. Then $u=E*f$ solves $P(\partial)u=f$, at least for $f\in\mathcal D$, since
-$P(\partial)(E*f)=(P(\partial)E)*f=\delta*f=f$ by Proposition~\ref{prop:smoothing}. On $\R$, $H$ is a fundamental solution of $\frac{\dd}{\dd x}$, and $u=H*f$ is the primitive $\int_{-\infty}^xf$. The Malgrange--Ehrenpreis theorem
-(1954--1955) says that every non-zero operator with constant coefficients has one. Here is the most important.
+For a constant-coefficient differential operator $P(\partial)$, a \emph{fundamental solution} is a distribution $E$ satisfying $P(\partial)E=\delta$. For a test function $f$, smoothing then gives $P(\partial)(E*f)=f$. The Heaviside distribution supplies this for the first derivative, with convolution giving the primitive from $-\infty$. Malgrange and Ehrenpreis proved that every nonzero constant-coefficient operator has a fundamental solution; that general result is quoted here. The three-dimensional Laplacian permits a direct proof.
 
 \begin{theorem}[Newton's potential]\label{thm:newton}
-In $\R^3$, $E(x)=-\frac1{4\pi|x|}$ is locally integrable and $\Delta E=\delta$.
+The function $E(x)=-1/(4\pi|x|)$ on $\R^3$ is locally integrable and satisfies $\Delta E=\delta$ in distributions.
 \end{theorem}
 \begin{proof}
-In spherical coordinates $\int_{|x|\le R}\frac{\dd x}{|x|}=\int_0^R4\pi r^2\frac{\dd r}r<\infty$, so $E\in L^1_{\mathrm{loc}}$. For $\varepsilon>0$ let $E_\varepsilon(x)=-\frac1{4\pi}(|x|^2+\varepsilon^2)^{-1/2}$, which is smooth. For a smooth radial function $g(|x|)$
-on $\R^3$, the chain rule gives $\Delta[g(|x|)]=g''(r)+\frac2rg'(r)$ for $r=|x|\ne0$. With $g(r)=-\frac1{4\pi}(r^2+\varepsilon^2)^{-1/2}$,
-\[g'=\frac{r}{4\pi(r^2+\varepsilon^2)^{3/2}},\qquad g''+\frac2rg'=\frac{3(r^2+\varepsilon^2)-3r^2}{4\pi(r^2+\varepsilon^2)^{5/2}},\]
-so $\Delta E_\varepsilon=\psi_\varepsilon$ with $\psi_\varepsilon(x)=\frac{3\varepsilon^2}{4\pi(|x|^2+\varepsilon^2)^{5/2}}=\varepsilon^{-3}\psi_1(\frac x\varepsilon)$ (by continuity, also at $0$). And $\int\psi_1=3\int_0^\infty\frac{r^2\dd r}{(1+r^2)^{5/2}}=1$ (substitute
-$r=\tan u$: $\int_0^{\pi/2}\sin^2u\cos u\dd u=\frac13$). So $\psi_\varepsilon$ is an approximate identity. For $\varphi\in\mathcal D(\R^3)$, integrating by parts twice (no boundary terms),
-\[\langle\Delta E,\varphi\rangle=\int E\Delta\varphi=\lim_{\varepsilon\to0}\int E_\varepsilon\Delta\varphi=\lim_{\varepsilon\to0}\int\psi_\varepsilon\varphi=\varphi(0),\]
-by dominated convergence ($|E_\varepsilon|\le|E|$) and Volume~7, Theorem~10.10(b).
+Radial integration near zero gives $\int_{|x|\le R}|x|^{-1}\dd x=4\pi\int_0^Rr\dd r<\infty$. Smooth the singularity by putting $E_\varepsilon(x)=-(4\pi)^{-1}(|x|^2+\varepsilon^2)^{-1/2}$. The radial chain rule in three dimensions gives $\Delta g(r)=g''(r)+2g'(r)/r$ for $r>0$. Differentiating this $g$ yields
+\[
+\Delta E_\varepsilon(x)=\frac{3\varepsilon^2}{4\pi(|x|^2+\varepsilon^2)^{5/2}}
+=\varepsilon^{-3}\psi_1(x/\varepsilon)=:\psi_\varepsilon(x).
+\]
+Both sides are continuous at zero, so the identity holds there too. The density is non-negative, and
+$\int\psi_1=3\int_0^\infty r^2(1+r^2)^{-5/2}\dd r=1$,
+using $r=\tan u$ to obtain $3\int_0^{\pi/2}\sin^2u\cos u\dd u$. Thus these scaled densities form an approximate identity.
+For a compactly supported test, $|E_\varepsilon|\le|E|$ permits dominated convergence against $\Delta\varphi$. Twice integrating by parts then gives
+\[
+\langle\Delta E,\varphi\rangle
+=\lim_{\varepsilon\downarrow0}\int E_\varepsilon\Delta\varphi
+=\lim_{\varepsilon\downarrow0}\int\psi_\varepsilon\varphi
+=\varphi(0).
+\]
+The last limit is the approximate-identity property, proving the distributional equation.
 \end{proof}
 
-So the solution of Poisson's equation $\Delta u=f$ is $u=E*f=-\frac1{4\pi}\int\frac{f(y)}{|x-y|}\dd y$: the gravitational potential of a mass density $f$, exactly as Newton and Laplace computed it, now with $\Delta u=f$ holding in
-the sense of distributions for every $f\in\mathcal D$. The fundamental solution of the heat operator is the heat kernel of Chapter~\ref{ch:fourier} (Exercise~\ref{ex:heatfund}).
+Consequently $u(x)=-(4\pi)^{-1}\int f(y)/|x-y|\dd y$ solves $\Delta u=f$ for every test density $f$. The equation follows through convolution rather than by differentiating a singular kernel pointwise. Exercise~\ref{ex:heatfund} proves the corresponding fundamental-solution identity for heat.
 
 \section{Sobolev spaces in one dimension}
 
 \begin{definition}
-For $s\ge0$, $H^s(\R)=\{f\in L^2(\R):(1+\xi^2)^{s/2}\hat f\in L^2\}$, with $\|f\|_{H^s}=\|(1+\xi^2)^{s/2}\hat f\|_2$. For an open interval $I$ and $1\le p\le\infty$,
-$W^{1,p}(I)=\{u\in L^p(I):u'\in L^p(I)\}$, the derivative taken in $\mathcal D'(I)$, with $\|u\|_{W^{1,p}}=\|u\|_p+\|u'\|_p$; and $H^1(I)=W^{1,2}(I)$ with $\|u\|_{H^1}^2=\|u\|_2^2+\|u'\|_2^2$.
+For $s\ge0$, define
+\[
+H^s(\R)=\{f\in L^2:(1+\xi^2)^{s/2}\hat f\in L^2\},\qquad
+\|f\|_{H^s}=\|(1+\xi^2)^{s/2}\hat f\|_2.
+\]
+For an open interval $I$ and $1\le p\le\infty$, define $W^{1,p}(I)=\{u\in L^p(I):u'\in L^p(I)\}$ using the distributional derivative, with norm $\|u\|_p+\|u'\|_p$. Write $H^1(I)=W^{1,2}(I)$. On bounded intervals use its Hilbert norm $\|u\|_{H^1(I)}^2=\|u\|_2^2+\|u'\|_2^2$.
 \end{definition}
 
-By Theorem~\ref{thm:ftsprime} and Plancherel, $f\in L^2(\R)$ is in $H^1(\R)$ if and only if $f'\in L^2$, and then $\|f\|_{H^1}^2=\|f\|_2^2+\frac1{4\pi^2}\|f'\|_2^2$: two equivalent definitions, one counting derivatives, one
-measuring the decay of $\hat f$. The Fourier one allows fractional $s$. $H^s(\R)$ is a Hilbert space, isometric to a weighted $L^2$ space, and $H^1(I)$ is complete by the same argument as for $L^2$ (if $u_n$ and $u_n'$
-converge in $L^2$ to $u$ and $v$, then $u'=v$ by testing on $\varphi$).
+On the line, Plancherel and the distributional transform show that $H^1(\R)$ is the same space as $W^{1,2}(\R)$, but its Fourier norm is
+$\|f\|_{H^1(\R)}^2=\|f\|_2^2+(4\pi^2)^{-1}\|f'\|_2^2$.
+This is equivalent to the derivative norm, not numerically identical to it. We keep the Fourier norm for $H^s(\R)$ and the displayed derivative Hilbert norm for bounded intervals. Fractional $s$ are defined by the frequency weight without requiring a fractional classical derivative.
+The weighted transform identifies $H^s(\R)$ with a complete weighted $L^2$ space, making it Hilbert. Completeness on an interval follows by testing: if $u_n\to u$ and $u_n'\to v$ in $L^2$, then $\int u\varphi'=-\int v\varphi$, so $u'=v$. This also proves closedness of the derivative graph.
 
 \begin{theorem}[Sobolev embedding]\label{thm:sobolevR}
-If $s>\frac12$, every $f\in H^s(\R)$ is almost everywhere equal to a continuous function tending to $0$ at infinity, and $\|f\|_\infty\le C_s\|f\|_{H^s}$ with $C_s^2=\int(1+\xi^2)^{-s}\dd\xi$.
+If $s>1/2$, every $f\in H^s(\R)$ has a continuous representative tending to zero at infinity. It obeys
+$\|f\|_\infty\le C_s\|f\|_{H^s}$,
+where $C_s^2=\int_{\R}(1+\xi^2)^{-s}\dd\xi$.
 \end{theorem}
 \begin{proof}
-By Cauchy--Schwarz, $\int|\hat f|=\int(1+\xi^2)^{-s/2}\cdot(1+\xi^2)^{s/2}|\hat f|\le C_s\|f\|_{H^s}$, finite since $2s>1$. So $\hat f\in L^1\cap L^2$, and by Theorems~\ref{thm:ftinv} and~\ref{thm:plancherel}, $f$ is almost everywhere equal to
-$x\mapsto\int\hat f(\xi)e^{2\pi ix\xi}\dd\xi$, which is continuous, bounded by $\|\hat f\|_1$, and tends to $0$ at infinity by Riemann--Lebesgue.
+Cauchy--Schwarz gives
+$\|\hat f\|_1\le(\int(1+\xi^2)^{-s})^{1/2}\|(1+\xi^2)^{s/2}\hat f\|_2$.
+The first factor is finite precisely in the stated range. The inverse integral therefore gives the representative by Plancherel's consistency. Its modulus has the asserted bound, continuity follows by dominated convergence, and decay follows by Riemann--Lebesgue applied to $\hat f\in L^1$.
 \end{proof}
 
-At $s=\frac12$ the embedding fails (Exercise~\ref{ex:loglog}). In dimension $d$ the threshold is $s>\frac d2$, with the same proof.
+The endpoint $s=1/2$ fails, as Exercise~\ref{ex:loglog} proves. In $\R^d$, the same weighted-integral argument works when $s>d/2$.
 
 \begin{theorem}\label{thm:w11}
-Let $I=]a,b[$ be bounded and $u\in W^{1,1}(I)$. Then $u$ has a representative $\tilde u$, continuous on $[a,b]$, with $\tilde u(y)-\tilde u(x)=\int_x^yu'$ for all $x,y$. If $u\in H^1(I)$, then
-\[|\tilde u(y)-\tilde u(x)|\le|y-x|^{1/2}\|u'\|_2,\qquad\|\tilde u\|_\infty\le|I|^{-1/2}\|u\|_2+|I|^{1/2}\|u'\|_2.\]
+Let $I=(a,b)$ with finite $a<b$. Each $u\in W^{1,1}(I)$ has an absolutely continuous representative on $[a,b]$ satisfying
+$\tilde u(y)-\tilde u(x)=\int_x^yu'(t)\dd t$ for all endpoints and interior points $x,y$. For $u\in H^1(I)$,
+\[
+|\tilde u(y)-\tilde u(x)|\le|y-x|^{1/2}\|u'\|_2,
+\qquad
+\|\tilde u\|_\infty\le |I|^{-1/2}\|u\|_2+|I|^{1/2}\|u'\|_2.
+\]
 \end{theorem}
 \begin{proof}
-Let $v(x)=\int_a^xu'$, continuous on $[a,b]$ since $u'\in L^1$. For $\varphi\in\mathcal D(I)$, Fubini gives
-\[\int_av\varphi'=\int_a^b\int_a^xu'(t)\dd t\,\varphi'(x)\dd x=\int_a^bu'(t)\int_t^b\varphi'(x)\dd x\dd t=-\int_a^bu'\varphi,\]
-so $v'=u'$ in $\mathcal D'(I)$. By Theorem~\ref{thm:zeroderiv}, $u-v$ is a constant $c$ almost everywhere, and $\tilde u=v+c$ works. For $u\in H^1$, Cauchy--Schwarz gives $|\int_x^yu'|\le|y-x|^{1/2}\|u'\|_2$. Since the mean of
-$|\tilde u|^2$ over $I$ is $\frac{\|u\|_2^2}{|I|}$, there is $x_0$ with $|\tilde u(x_0)|\le|I|^{-1/2}\|u\|_2$, and $|\tilde u(x)|\le|\tilde u(x_0)|+|I|^{1/2}\|u'\|_2$.
+Put $v(x)=\int_a^xu'(t)\dd t$, an absolutely continuous function on the closed interval. Fubini gives $\int_Iv\varphi'=-\int_Iu'\varphi$ for every test: the inner integral of $\varphi'$ from $t$ to $b$ is $-\varphi(t)$. Hence $v'=u'$ as distributions. The zero-derivative theorem makes $u-v$ a constant distribution, and injectivity for locally integrable functions makes it a constant almost everywhere. This proves the representative formula.
+For $H^1$, Cauchy--Schwarz on the subinterval gives the first estimate. The continuous representative attains a minimum of its modulus at some $x_0\in[a,b]$, with $|\tilde u(x_0)|\le|I|^{-1/2}\|u\|_2$, since a minimum cannot exceed the root mean square. Comparing any other point with $x_0$ gives the supremum estimate.
 \end{proof}
 
-From now on we identify $u\in W^{1,1}(I)$ with its continuous representative. So functions of $H^1$ on an interval are H\"older continuous of exponent $\frac12$, and point values $u(x)$, in particular boundary values, make
-sense and depend continuously on $u$ in $H^1$. Define $H^1_0(I)=\{u\in H^1(I):u(a)=u(b)=0\}$, a closed subspace.
+We use these representatives from now on for bounded intervals. Point evaluation, including at either endpoint, is continuous in the $H^1$ norm. The boundary-zero space $H^1_0(I)=\{u\in H^1(I):u(a)=u(b)=0\}$ is therefore closed and Hilbert.
 
 \begin{theorem}[Rellich]\label{thm:rellich}
-Let $I$ be a bounded interval. Every bounded sequence in $H^1(I)$ has a subsequence that converges uniformly on $\bar I$, hence in $L^2(I)$. So the inclusion $H^1(I)\to L^2(I)$ is a compact operator.
+On a bounded nonempty interval, every bounded $H^1$ sequence has a subsequence converging uniformly on its closure, hence in $L^2$. Thus the inclusion $H^1(I)\to L^2(I)$ is compact.
 \end{theorem}
 \begin{proof}
-If $\|u_n\|_{H^1}\le M$, Theorem~\ref{thm:w11} shows that the $u_n$ are uniformly bounded and equicontinuous (equi-H\"older) on $\bar I$. By Arzel\`a--Ascoli (Volume~7, Theorem~4.15), a subsequence converges uniformly, and
-uniform convergence on a bounded interval implies convergence in $L^2$.
+The representative estimates give uniform boundedness and a common $1/2$-H\"older bound. Arzel\`a--Ascoli on the closed interval (Volume~7, Theorem~4.15) supplies a uniformly convergent subsequence. Its $L^2$ error is at most $|I|^{1/2}$ times its uniform error, proving the rest.
 \end{proof}
 
 \begin{think}
-The derivative of $|x|$ is the sign function, and the derivative of the sign is $2\delta$. So $|x|$ is in $H^1(]-1,1[)$, but the sign function is not. Is $\sqrt{|x|}$ in $H^1(]-1,1[)$? Is $|x|^{3/4}$?
+On $(-1,1)$ the function $|x|$ has square-integrable weak derivative $\operatorname{sgn}x$. That sign function has derivative $2\delta$ and is not in $H^1$. Compare $|x|^{1/2}$ and $|x|^{3/4}$ by integrating the square of their ordinary derivatives away from zero. Exercise~\ref{ex:v8c11a} proves the complete positive-power criterion.
 \end{think}
 
 \section{Weak solutions and the Lax--Milgram theorem}
 
-Let $I=]0,1[$ and consider the boundary value problem
+Use real functions in this section. On $I=(0,1)$ consider
 \begin{equation}\label{eq:bvp}
--(pu')'+qu=f\ \text{ on }I,\qquad u(0)=u(1)=0,
+-(pu')'+qu=f,\qquad u(0)=u(1)=0,
 \end{equation}
-with $p,q\in L^\infty(I)$, $p\ge p_0>0$, $q\ge0$, and $f\in L^2(I)$. The coefficients may jump, as for a rod made of two materials, so classical solutions may not exist. Multiply by $v\in H^1_0(I)$ and integrate by
-parts, pretending everything is smooth: $\int pu'v'+\int quv=\int fv$. This makes sense for $u\in H^1_0$.
+where $p,q$ are real essentially bounded functions, $p\ge p_0>0$, $q\ge0$ almost everywhere, and $f\in L^2(I)$. A jump in $p$ can model a change of material. Moving the derivative onto a boundary-zero test gives an expression that still makes sense for $u\in H^1_0$.
 
 \begin{definition}
-A \emph{weak solution} of \eqref{eq:bvp} is $u\in H^1_0(I)$ with $a(u,v)=\int fv$ for all $v\in H^1_0(I)$, where $a(u,v)=\int_0^1(pu'v'+quv)$.
+A weak solution of~\eqref{eq:bvp} is $u\in H^1_0(I)$ satisfying $a(u,v)=\int_0^1fv$ for every $v\in H^1_0(I)$, where
+$a(u,v)=\int_0^1(pu'v'+quv)$.
 \end{definition}
 
-We work with real-valued functions in this section; everything holds for complex ones with sesquilinear forms.
+The existence argument uses a Hilbert-space theorem that does not require the form to be symmetric.
 
 \begin{theorem}[Lax--Milgram, 1954]\label{thm:laxmilgram}
-Let $V$ be a real Hilbert space, $a:V\times V\to\R$ bilinear, \emph{bounded} ($|a(u,v)|\le M\|u\|\|v\|$) and \emph{coercive} ($a(u,u)\ge\alpha\|u\|^2$ with $\alpha>0$). For every bounded linear form $\ell$ on $V$ there is a unique
-$u\in V$ with $a(u,v)=\ell(v)$ for all $v\in V$, and $\|u\|\le\frac{\|\ell\|}\alpha$.
+Let $V$ be a real Hilbert space and $a:V\times V\to\R$ a bilinear form with
+$|a(u,v)|\le M\|u\|\|v\|$ and $a(u,u)\ge\alpha\|u\|^2$ for some $\alpha>0$. For every bounded linear functional $\ell$ there is a unique $u\in V$ satisfying $a(u,v)=\ell(v)$ for all $v\in V$, and
+$\|u\|\le\|\ell\|/\alpha$.
 \end{theorem}
 \begin{proof}
-For fixed $u$, $v\mapsto a(u,v)$ is a bounded linear form, so by the Riesz representation theorem (Theorem~\ref{thm:rieszrep}) there is a unique $Au\in V$ with $a(u,v)=\langle Au,v\rangle$; $A$ is linear and $\|Au\|\le M\|u\|$. Coercivity gives
-$\alpha\|u\|^2\le\langle Au,u\rangle\le\|Au\|\|u\|$, so $\|Au\|\ge\alpha\|u\|$: $A$ is injective with closed range (as in Proposition~\ref{prop:saspec}). If $w\perp\operatorname{ran}A$, then $0=\langle Aw,w\rangle\ge\alpha\|w\|^2$, so the range is dense,
-hence all of $V$. Let $y$ represent $\ell$ (Theorem~\ref{thm:rieszrep}) and $u=A^{-1}y$: then $a(u,v)=\langle y,v\rangle=\ell(v)$. Uniqueness follows from injectivity, and $\alpha\|u\|^2\le a(u,u)=\ell(u)\le\|\ell\|\|u\|$.
+Riesz representation gives $Au$ with $a(u,v)=\langle Au,v\rangle$. Uniqueness makes $A$ linear, and boundedness gives $\|Au\|\le M\|u\|$. Coercivity gives $\alpha\|u\|^2\le\langle Au,u\rangle\le\|Au\|\|u\|$, hence $\|Au\|\ge\alpha\|u\|$. Thus $A$ is injective and its range is closed: a convergent image sequence has a Cauchy preimage sequence. If $w$ is orthogonal to that range, then $0=\langle Aw,w\rangle\ge\alpha\|w\|^2$, so $w=0$. The closed range is therefore dense and equals $V$.
+Let $y$ represent $\ell$, and take $u=A^{-1}y$. This gives the equation and uniqueness. Finally $\alpha\|u\|^2\le a(u,u)=\ell(u)\le\|\ell\|\|u\|$ gives the bound, including $u=0$ without division.
 \end{proof}
 
-When $a$ is symmetric, it is an inner product equivalent to the original one, and the theorem is just Riesz's; its power is for non-symmetric problems (Exercise~\ref{ex:convdiff}).
+For a symmetric form, $a$ itself is an equivalent Hilbert inner product and Riesz alone proves the result. Nonsymmetric forms are the additional case. Over $\C$, use a sesquilinear form and the condition $\operatorname{Re}a(u,u)\ge\alpha\|u\|^2$; the same argument works with real parts in the coercivity estimates and the matching conjugate-linear convention for the test variable.
 
 \begin{theorem}\label{thm:weaksol}
-Problem \eqref{eq:bvp} has a unique weak solution $u$. It satisfies $\|u\|_{H^1}\le C\|f\|_2$; the function $pu'$ belongs to $H^1(I)$ and $-(pu')'+qu=f$ almost everywhere. If $p=1$ and $q,f$ are continuous, then
-$u\in C^2([0,1])$ is a classical solution.
+The boundary problem~\eqref{eq:bvp} has exactly one weak solution. It obeys $\|u\|_{H^1}\le C\|f\|_2$, has $pu'\in H^1(I)$, and satisfies $-(pu')'+qu=f$ almost everywhere. If $p=1$ and $q,f$ have continuous extensions to $[0,1]$, then $u\in C^2([0,1])$ is a classical solution.
 \end{theorem}
 \begin{proof}
-On $H^1_0(I)$, $|u(x)|=|\int_0^xu'|\le\|u'\|_2$, so $\|u\|_2\le\|u'\|_2$ (a Poincar\'e inequality; Exercise~\ref{ex:poincare} has the best constant). Hence $a(u,u)\ge p_0\|u'\|_2^2\ge\frac{p_0}2\|u\|_{H^1}^2$, and
-$|a(u,v)|\le(\|p\|_\infty+\|q\|_\infty)\|u\|_{H^1}\|v\|_{H^1}$. The form $\ell(v)=\int fv$ has $\|\ell\|\le\|f\|_2$. Lax--Milgram gives existence, uniqueness and the bound with $C=\frac2{p_0}$.
-
-Taking $v=\varphi\in\mathcal D(I)$ in the weak formulation, $\int pu'\varphi'=\int(f-qu)\varphi$, which says that the distributional derivative of $pu'\in L^2$ is $qu-f\in L^2$. So $pu'\in H^1(I)$, continuous, and
-$(pu')'=qu-f$ almost everywhere. If $p=1$ and $q,f$ are continuous, then $u'$ is continuous with $(u')'=qu-f$ continuous (Theorem~\ref{thm:zeroderiv}), so $u\in C^2$.
+For $u\in H^1_0$, its representative satisfies $|u(x)|=|\int_0^xu'|\le\|u'\|_2$, hence $\|u\|_2\le\|u'\|_2$. Consequently
+\[
+a(u,u)\ge p_0\|u'\|_2^2\ge\frac{p_0}{2}\|u\|_{H^1}^2.
+\]
+Cauchy--Schwarz bounds $a$ by $(\|p\|_\infty+\|q\|_\infty)\|u\|_{H^1}\|v\|_{H^1}$, and $\ell(v)=\int fv$ has norm at most $\|f\|_2$. Lax--Milgram gives the unique solution and $C=2/p_0$.
+Now test with $\varphi\in\mathcal D(I)\subset H^1_0$. The weak identity says $\int pu'\varphi'=\int(f-qu)\varphi$, so the distributional derivative of the $L^2$ function $pu'$ is $qu-f\in L^2$. Thus $pu'\in H^1$ and the equation holds almost everywhere.
+When $p=1$ and the coefficients extend continuously as stated, $qu-f$ is continuous on the closed interval. The primitive formula applied to $u'$ makes it $C^1$ there. Applying the representative formula once more to $u$ gives $u\in C^2([0,1])$, with its boundary values already imposed. Continuity only on the open interval would not by itself give this closed-interval conclusion for a possibly unbounded $f$ near an endpoint.
 \end{proof}
 
 \begin{remark}
-This is the modern route to Theorem~\ref{thm:sturm}: existence first, in a Hilbert space, with almost no hypotheses; regularity afterwards. The solution operator $f\mapsto u$ is bounded from $L^2$ to $H^1_0$, hence compact from $L^2$ to $L^2$
-by Rellich, and self-adjoint (by the symmetry of $a$). The spectral theorem then gives a Hilbert basis of eigenfunctions of $-(pu')'+qu$ even for discontinuous coefficients. In dimension $d$, the same scheme solves
-the Dirichlet problem for elliptic equations on bounded domains, with $H^1_0(\Omega)$ defined as the closure of $\mathcal D(\Omega)$.
+The solution map is bounded $L^2\to H^1_0$ and therefore compact $L^2\to L^2$ by Rellich. Symmetry of $a$ makes it self-adjoint, and $\langle Tf,f\rangle=a(Tf,Tf)\ge0$. It is injective: if $Tf=0$, its weak equation makes $f$ orthogonal to all compactly supported smooth tests, so $f=0$. The compact spectral proof, valid for real self-adjoint operators too, therefore gives a basis of weak eigenfunctions even for these discontinuous coefficients. Higher-dimensional elliptic problems follow the same plan, using $H^1_0(\Omega)$ as the closure of $\mathcal D(\Omega)$ and additional Sobolev estimates; those higher-dimensional estimates are not proved here.
 \end{remark}
 
-\emph{Galerkin's method.} Choose a finite-dimensional subspace $V_h\subset V$ and solve $a(u_h,v)=\ell(v)$ for $v\in V_h$, a linear system. By Lax--Milgram in $V_h$ it has a unique solution.
+For Galerkin approximation, choose a finite-dimensional $V_h\subset V$ and solve $a(u_h,v)=\ell(v)$ only for $v\in V_h$. This is a finite linear system; Lax--Milgram on the closed Hilbert subspace $V_h$ makes it uniquely solvable.
 
 \begin{proposition}[C\'ea's lemma]\label{prop:cea}
-In the setting of Theorem~\ref{thm:laxmilgram}, $\|u-u_h\|\le\frac M\alpha\inf_{v\in V_h}\|u-v\|$.
+Under the Lax--Milgram hypotheses, the Galerkin approximation satisfies
+$\|u-u_h\|\le(M/\alpha)\inf_{v\in V_h}\|u-v\|$.
 \end{proposition}
 \begin{proof}
-Subtracting, $a(u-u_h,w)=0$ for $w\in V_h$ (\emph{Galerkin orthogonality}). For $v\in V_h$, $\alpha\|u-u_h\|^2\le a(u-u_h,u-u_h)=a(u-u_h,u-v)\le M\|u-u_h\|\|u-v\|$.
+Subtracting the two equations gives $a(u-u_h,w)=0$ for $w\in V_h$, called Galerkin orthogonality. For any $v\in V_h$,
+\[
+\alpha\|u-u_h\|^2\le a(u-u_h,u-u_h)
+=a(u-u_h,u-v)\le M\|u-u_h\|\|u-v\|.
+\]
+If the error vanishes the claim holds. Otherwise cancel its norm and then take the infimum.
 \end{proof}
 
-So the Galerkin solution is as good as the best approximation from $V_h$, up to the factor $\frac M\alpha$. The \emph{finite element method} takes for $V_h$ the continuous functions that are affine on each interval of a
-mesh $0=x_0<x_1<\cdots<x_n=1$ and vanish at $0$ and $1$, with the ``hat functions'' as basis (Figure~\ref{fig:hats}). The matrix of $a$ in this basis is tridiagonal, and if $u\in H^2$ the error in $H^1$ is $O(h)$ for a
-mesh of size $h$: by C\'ea's lemma it is enough to compare $u$ with its piecewise linear interpolant, and a Taylor estimate on each
-interval bounds that distance by $Ch\|u''\|_2$. Galerkin proposed the method in 1915 for problems of elasticity; Courant suggested piecewise linear trial functions in 1943, and engineers rediscovered it in the 1950s
-to design aircraft.
+In one-dimensional finite elements, $V_h$ consists of continuous piecewise affine functions on a mesh, zero at the endpoints. The nodal hat functions form its basis. Only neighbouring hats overlap in positive-length intervals, so the stiffness matrix is tridiagonal.
+If the solution belongs to $H^2(I)=\{u\in H^1(I):u''\in L^2(I)\}$, its piecewise linear interpolant $I_hu$ gives an $O(h)$ error in $H^1$, where $h$ is the largest interval length. Here is the estimate without assuming a pointwise second derivative. On a cell $J$, $(I_hu)'$ is the average of $u'$ there. The absolutely continuous representative of $u'$ gives
+$|u'(x)-(I_hu)'|\le |J|^{1/2}\|u''\|_{L^2(J)}$,
+by averaging the difference estimate over the other point. Squaring and integrating gives derivative error at most $|J|\|u''\|_{L^2(J)}$. The function error vanishes at cell endpoints, so its $L^2$ norm is at most $|J|$ times its derivative norm. Summing yields
+$\|u-I_hu\|_{H^1}\le\sqrt{1+h^2}\,h\|u''\|_2$.
+C\'ea's lemma transfers this estimate to $u_h$. Galerkin's 1915 work and Courant's 1943 piecewise linear trial functions are historical sources for this method.
 
 \begin{figure}[ht]
 \centering
@@ -294,164 +327,231 @@ neighbours, so the matrix $a(\phi_i,\phi_j)$ is tridiagonal.}
 \label{fig:hats}
 \end{figure}
 
-\section{What we proved, and what comes next}
+\section{From tests to finite sums}
 
-The opening asked how to differentiate a function with a corner, a jump, or no derivative at all. Let it act on test functions,
-and move the derivative onto them: then every distribution is infinitely differentiable, $H'=\delta$ and $(\log|x|)'=\operatorname{p.v.}\frac1x$
-(Example~\ref{ex:derivatives}), a distribution with zero derivative on an interval is constant (Theorem~\ref{thm:zeroderiv}), and
-every distribution is a limit of smooth functions (Proposition~\ref{prop:smoothing}). Tempered distributions have Fourier
-transforms, and $\hat1=\delta$ (Theorem~\ref{thm:ftsprime}); $-\frac1{4\pi|x|}$ is a fundamental solution of the Laplacian in
-$\R^3$ (Theorem~\ref{thm:newton}). On an interval, functions of $H^1$ are continuous (Theorem~\ref{thm:w11}), bounded sets of $H^1$
-are compact in $L^2$ (Theorem~\ref{thm:rellich}), and Lax--Milgram (Theorem~\ref{thm:laxmilgram}) solves boundary value problems
-with rough coefficients in their weak form (Theorem~\ref{thm:weaksol}), with the finite element method as its discrete shadow
-(Proposition~\ref{prop:cea}).
+The step's derivative became a point mass because test-function integration kept the jump contribution. The same derivative definition made a rough-coefficient equation meaningful in $H^1_0$. Coercivity gave a weak solution, regularity recovered classical derivatives when the data allowed them, and Galerkin orthogonality controlled a finite approximation.
 
-So far the transform has lived on $\R^d$. The next chapter shrinks the space to a finite abelian group, where every integral is
-a finite sum, and finds that the same ideas prove quadratic reciprocity and bound the size of sets with no arithmetic progression.
+The next chapter replaces the real line by a finite abelian group. Integrals become finite sums and no limiting domain is needed for the transform. Characters still supply orthogonal coordinates, with arithmetic consequences including quadratic reciprocity and bounds for progression-free sets.
+
+\begin{figure}[ht]
+\centering\fig{ch11-rw-flux}
+\caption{For the two-material problem of Exercise~\ref{ex:v8c11c}, the derivative jumps at $x=1/2$, but the flux $pu'=5/12-x$ is continuous. Differentiating the flux therefore creates no extra Dirac mass at the interface.}
+\label{fig:v8c11flux}
+\end{figure}
+\begin{figure}[ht]
+\centering\fig{ch11-rw-galerkin}
+\caption{For $-u''=1$ with zero endpoints, the exact parabola and the one-hat Galerkin solution agree at the three nodes. Their squared derivative-error integral is $1/48$, calculated exactly in Exercise~\ref{ex:v8c11d}.}
+\label{fig:v8c11galerkin}
+\end{figure}
 
 \section{Exercises}
 
 \begin{exercise}[$\star$]\label{ex:derivabs}
-Compute, in $\mathcal D'(\R)$, the first and second derivatives of $|x|$, of $x_+=\max(x,0)$ and of $\sin|x|$. Show that $x\delta=0$, $x\delta'=-\delta$ and $x\operatorname{p.v.}\frac1x=1$. Deduce that the product of distributions cannot be
-associative and commutative in general: compute $(\delta\cdot x)\cdot\operatorname{p.v.}\frac1x$ and $\delta\cdot(x\cdot\operatorname{p.v.}\frac1x)$ as if it were.
+Find the first two distributional derivatives of $|x|$, $x_+=\max(x,0)$ and $\sin|x|$. Verify $x\delta=0$, $x\delta'=-\delta$ and $x\operatorname{p.v.}(1/x)=1$. Use these identities to show why an everywhere-defined bilinear associative commutative multiplication extending these smooth-product rules cannot exist on all distributions: compare the two bracketings of $\delta\cdot x\cdot\operatorname{p.v.}(1/x)$.
 \end{exercise}
-
 \begin{exercise}[$\star\star$]\label{ex:pvorder}
-\emph{The principal value.} (a) Show that $\operatorname{p.v.}\frac1x$ is not of order $0$: find test functions $\varphi_n$ with $\|\varphi_n\|_\infty\le1$, supported in $[-1,1]$, and $\langle\operatorname{p.v.}\frac1x,\varphi_n\rangle\to\infty$. (b) Show that
-$\widehat{\operatorname{p.v.}\frac1x}=-i\pi\operatorname{sgn}\xi$. (The operator $f\mapsto\mathcal F^{-1}(-i\operatorname{sgn}\xi\,\hat f)$, which is $\frac1\pi\operatorname{p.v.}\frac1x*f$, is the \emph{Hilbert transform}.)
+\emph{Principal value.} Construct tests supported in $[-1,1]$ with supremum norm at most one whose pairings with $\operatorname{p.v.}(1/x)$ tend to infinity. Deduce that its order is not zero. Prove its tempered Fourier transform is $-i\pi\operatorname{sgn}\xi$. The multiplier $-i\operatorname{sgn}\xi$ defines the Hilbert transform, equivalently convolution with $\pi^{-1}\operatorname{p.v.}(1/x)$ on Schwartz inputs.
 \end{exercise}
-
 \begin{exercise}[$\star\star$]\label{ex:loglog}
-\emph{The failure at $s=\frac12$.} Let $g(\xi)=\frac1{(1+|\xi|)\log(2+|\xi|)}$ and $f=\mathcal F^{-1}g$. Show that $f\in H^{1/2}(\R)$ but that $f$ is not essentially bounded.
+\emph{The endpoint failure.} Set $g(\xi)=1/((1+|\xi|)\log(2+|\xi|))$ and $f=\mathcal F^{-1}g$. Prove $f\in H^{1/2}(\R)$ and prove that $f$ is not essentially bounded.
 \end{exercise}
-
 \begin{exercise}[$\star$]\label{ex:poincare}
-\emph{Poincar\'e's inequality, sharp.} Show that $\|u\|_2\le\frac1\pi\|u'\|_2$ for $u\in H^1_0(]0,1[)$, with equality for $u=\sin\pi x$. Relate the constant to Theorem~\ref{thm:sturm}.
+\emph{Sharp Poincar\'e bound.} Prove $\|u\|_2\le\|u'\|_2/\pi$ on $H^1_0((0,1))$, and show equality for $u(x)=\sin\pi x$. Explain the connection with the first string eigenvalue in Theorem~\ref{thm:sturm}.
 \end{exercise}
-
 \begin{exercise}[$\star$]\label{ex:gagliardo}
-\emph{An interpolation inequality.} Show that $\|u\|_\infty^2\le\|u\|_2\|u'\|_2$ for real $u\in H^1(\R)$, and that equality holds for $u=e^{-|x|}$. (Approximate by test functions first.)
+\emph{Interpolation on the line.} For real $u\in H^1(\R)$, establish $\|u\|_\infty^2\le\|u\|_2\|u'\|_2$ and verify equality at $e^{-|x|}$. Begin with compactly supported smooth functions, then justify approximation in the Sobolev norm.
 \end{exercise}
-
 \begin{exercise}[$\star\star$]\label{ex:convdiff}
-\emph{Convection and diffusion.} Let $b\in\R$ and $f\in L^2(]0,1[)$. Show that $-u''+bu'+u=f$, $u(0)=u(1)=0$, has a unique weak solution in $H^1_0$, although the bilinear form is not symmetric. For $f=1$, solve it explicitly and describe
-the solution when $b$ is large: where is the ``boundary layer''?
+\emph{Convection and diffusion.} For real $b$ and $f\in L^2((0,1))$, prove unique weak solvability of $-u''+bu'+u=f$ with zero endpoints, despite the nonsymmetric form. Solve explicitly for $f=1$. For large positive $b$, locate and quantify the boundary layer.
+\end{exercise}
+\begin{exercise}[$\star\star$]\label{ex:heatfund}
+\emph{Heat's fundamental solution.} On $(t,x)\in\R^2$, put $K(t,x)=\mathbf1_{t>0}(4\pi t)^{-1/2}e^{-x^2/(4t)}$. Prove local integrability and the distribution identity $(\partial_t-\partial_x^2)K=\delta_{(0,0)}$.
 \end{exercise}
 
-\begin{exercise}[$\star\star$]\label{ex:heatfund}
-\emph{The heat kernel as a fundamental solution.} On $\R^2$ with coordinates $(t,x)$, let $K(t,x)=\frac{\mathbf 1_{t>0}}{\sqrt{4\pi t}}e^{-x^2/(4t)}$. Show that $K\in L^1_{\mathrm{loc}}(\R^2)$ and $(\partial_t-\partial_x^2)K=\delta_{(0,0)}$.
+\begin{exercise}[$\star\star$]\label{ex:v8c11a}
+For $\alpha>0$ on $(-1,1)$, determine exactly when $u(x)=|x|^\alpha$ lies in $H^1$. Prove its weak derivative formula, and compute its squared $H^1$ norm whenever finite.
+\end{exercise}
+\begin{exercise}[$\star\star$]\label{ex:v8c11b}
+Find every distribution $T$ on $\R$ satisfying $xT=0$. Then find every solution of $xT=1$, where $1$ is the constant-function distribution. You may use a smooth cutoff equal to one near zero to divide a test function after subtracting its value at zero.
+\end{exercise}
+\begin{exercise}[$\star\star$]\label{ex:v8c11c}
+Solve the weak Dirichlet problem $-(pu')'=1$ on $(0,1)$ with $p=1$ on $(0,1/2)$ and $p=2$ on $(1/2,1)$. Give the two quadratic formulas for $u$, and check continuity of $u$ and $pu'$ at the interface even though $u'$ jumps.
+\end{exercise}
+\begin{exercise}[$\star\star$]\label{ex:v8c11d}
+For $-u''=1$ with zero endpoints, use the one-dimensional trial space spanned by the hat $\phi(x)=2x$ for $x\le1/2$ and $2(1-x)$ for $x\ge1/2$. Find its Galerkin solution and the exact solution. Compute $\int_0^1|u'-u_h'|^2$ using Galerkin orthogonality, and verify it by direct integration.
 \end{exercise}
 
 \section{Hints}
 
 \begin{hint}{ex:derivabs}
-$|x|'=\operatorname{sgn}x$ and $\operatorname{sgn}'=2\delta$. For products, test against $\varphi$ and move $x$ onto it.
+Integrate on the two half-lines before combining boundary terms. To multiply a point mass or its derivative by $x$, move $x$ onto the test.
 \end{hint}
 \begin{hint}{ex:pvorder}
-(a) Take $\varphi_n$ close to $\operatorname{sgn}x$ on $[\frac1n,1]$ and $[-1,-\frac1n]$. (b) Approximate by the truncations $\mathbf 1_{\varepsilon<|x|<1/\varepsilon}\frac1x$ and use $\int_0^\infty\frac{\sin t}t\dd t=\frac\pi2$.
+Use smooth odd approximations to the sign function with a fixed cutoff. For the transform, truncate to $\varepsilon<|x|<1/\varepsilon$ and use the sine integral from Volume~5, Theorem~4.11.
 \end{hint}
 \begin{hint}{ex:loglog}
-$\int\frac{\dd\xi}{(1+|\xi|)\log^2(2+|\xi|)}<\infty$ but $\int g=\infty$. If $|f|\le M$, look at $f*G_\varepsilon(0)$.
+The weighted square of $g$ is integrable, while $g$ itself is not. A bounded $f$ would keep its Gaussian averages bounded, including the average at zero.
 \end{hint}
 \begin{hint}{ex:poincare}
-Expand $u$ in the sine basis of Lemma~\ref{lem:sines}, and $u'$ in the cosines $\sqrt2\cos(n\pi x)$.
+Pair $u'$ with the orthonormal cosines and integrate by parts to recover $n\pi$ times the sine coefficients of $u$.
 \end{hint}
 \begin{hint}{ex:gagliardo}
-$u(x)^2=\int_{-\infty}^x(u^2)'=-\int_x^\infty(u^2)'$.
+For a test function, integrate $(u^2)'$ from both sides of a point and add the resulting bounds.
 \end{hint}
 \begin{hint}{ex:convdiff}
-$\int_0^1u'u=\frac12[u^2]_0^1=0$ on $H^1_0$, so $a(u,u)=\|u\|_{H^1}^2$.
+The diagonal convection term is $b\int u'u=b[u^2]_0^1/2=0$. For the explicit solution, the two roots are $(b\pm\sqrt{b^2+4})/2$.
 \end{hint}
 \begin{hint}{ex:heatfund}
-\[\langle K,-\partial_t\varphi-\partial_x^2\varphi\rangle=\lim_{\varepsilon\to0}\int_\varepsilon^\infty\!\!\int K(-\partial_t\varphi-\partial_x^2\varphi);\]
-integrate by parts in $t$ and in $x$.
+Exclude $t=0$ temporarily. Integration by parts leaves a heat-kernel average of $\varphi(\varepsilon,\cdot)$ at time $\varepsilon$.
+\end{hint}
+\begin{hint}{ex:v8c11a}
+Integrate by parts separately outside $(-\varepsilon,\varepsilon)$ to identify the weak derivative. Its square behaves like $|x|^{2\alpha-2}$.
+\end{hint}
+\begin{hint}{ex:v8c11b}
+Write $\varphi=\varphi(0)\chi+x\psi$ with $\chi=1$ near zero and both $\chi,\psi$ compactly supported and smooth.
+\end{hint}
+\begin{hint}{ex:v8c11c}
+The flux has weak derivative $-1$, so $pu'=C-x$. The two zero boundary values determine $C$ by integrating $(C-x)/p$.
+\end{hint}
+\begin{hint}{ex:v8c11d}
+Compute $\int\phi'^2=4$ and $\int\phi=1/2$. Orthogonality gives an exact energy Pythagoras identity.
 \end{hint}
 
 \section{Solutions}
 
 \begin{solution}{ex:derivabs}
-\idea A distributional derivative is the classical derivative where it exists, plus a Dirac mass for every jump. Corners produce jumps in the first derivative, hence masses in the second.
-\writeup $|x|$ is continuous, with classical derivative $\operatorname{sgn}x$ off $0$; integrating by parts on each half-line, $|x|'=\operatorname{sgn}x$, and $\operatorname{sgn}$ jumps by $2$ at $0$, so $|x|''=2\delta$. Likewise $x_+'=H$ and
-$x_+''=\delta$. For $\sin|x|$: the first derivative is $\operatorname{sgn}(x)\cos x$, which jumps by $2$ at $0$, so the second is $-\sin|x|+2\delta$. Next, $\langle x\delta,\varphi\rangle=(x\varphi)(0)=0$;
-$\langle x\delta',\varphi\rangle=-(x\varphi)'(0)=-\varphi(0)$; and $\langle x\operatorname{p.v.}\frac1x,\varphi\rangle=\lim\int_{|x|>\varepsilon}\varphi=\int\varphi$. If a product of distributions extended these rules associatively and
-commutatively, then $(\delta\cdot x)\cdot\operatorname{p.v.}\frac1x=0\cdot\operatorname{p.v.}\frac1x=0$, while $\delta\cdot(x\cdot\operatorname{p.v.}\frac1x)=\delta\cdot1=\delta$. Schwartz showed in 1954 that no multiplication on all distributions
-extends that of continuous functions and satisfies the usual algebraic rules; nonlinear problems need other tools.
+\idea A corner creates a jump in the first derivative, and that jump becomes a mass in the second.
+\writeup Half-line integration gives $|x|'=\operatorname{sgn}x$ and $|x|''=2\delta$. Similarly $x_+'=H$ and $x_+''=\delta$. For $\sin|x|$, the first derivative is $\operatorname{sgn}(x)\cos x$. Its jump is two, so the second derivative is $-\sin|x|+2\delta$.
+The product pairings give $\langle x\delta,\varphi\rangle=0$ and $\langle x\delta',\varphi\rangle=-(x\varphi)'(0)=-\varphi(0)$. Also
+$\langle x\operatorname{p.v.}(1/x),\varphi\rangle=\lim_{\varepsilon\downarrow0}\int_{|x|>\varepsilon}\varphi=\int\varphi$.
+An everywhere-defined bilinear product agreeing with smooth multiplication and having a unit would therefore give $(\delta x)\operatorname{p.v.}(1/x)=0$, while associativity would make it $\delta(x\operatorname{p.v.}(1/x))=\delta$. These contradict one another. This establishes the stated obstruction for those algebraic requirements; specialised products of particular distributions need separate definitions.
 \end{solution}
 
 \begin{solution}{ex:pvorder}
-\idea The principal value sees the derivative of $\varphi$ at $0$, through the cancellation between $x$ and $-x$. An odd function with a steep jump at $0$ defeats any bound by $\|\varphi\|_\infty$ alone.
-\writeup (a) Let $\varphi_n$ be odd, with $0\le\varphi_n\le1$ on $[0,1]$, $\varphi_n=1$ on $[\frac1n,\frac12]$, and support in $[-1,1]$. Then $\langle\operatorname{p.v.}\frac1x,\varphi_n\rangle=2\int_0^1\frac{\varphi_n(x)}x\dd x\ge2\log\frac n2\to\infty$, while
-$\|\varphi_n\|_\infty=1$.
-
-(b) Let $T_\varepsilon=\mathbf 1_{\varepsilon<|x|<1/\varepsilon}\frac1x\in L^1$. For $\varphi\in\mathcal S$, $\langle T_\varepsilon,\varphi\rangle=\int_\varepsilon^{1/\varepsilon}\frac{\varphi(x)-\varphi(-x)}x\dd x\to\langle\operatorname{p.v.}\frac1x,\varphi\rangle$ (dominated convergence, the
-integrand being bounded by $2\|\varphi'\|_\infty$ near $0$ and by $\frac{2\|\varphi\|_\infty}x\cdot\frac{C}{1+x}$ far away). By oddness,
-\[\hat T_\varepsilon(\xi)=-2i\int_\varepsilon^{1/\varepsilon}\frac{\sin(2\pi x\xi)}x\dd x=-2i\operatorname{sgn}(\xi)\int_{2\pi\varepsilon|\xi|}^{2\pi|\xi|/\varepsilon}\frac{\sin t}t\dd t.\]
-The integrals $\int_a^b\frac{\sin t}t\dd t$ are bounded uniformly in $0\le a<b$ and tend to $\frac\pi2$ as $a\to0$, $b\to\infty$ (Volume~5, Theorem~4.11). So $\hat T_\varepsilon(\xi)\to-i\pi\operatorname{sgn}\xi$ boundedly, and for
-$\varphi\in\mathcal S$, $\langle\widehat{\operatorname{p.v.}\frac1x},\varphi\rangle=\lim\langle T_\varepsilon,\hat\varphi\rangle=\lim\int\hat T_\varepsilon\varphi=\int-i\pi\operatorname{sgn}(\xi)\varphi(\xi)\dd\xi$, using the multiplication formula and dominated convergence.
+\idea A bounded test can have an increasingly steep transition at zero, exposing the principal value's cancellation scale.
+\writeup Choose smooth odd $\eta$ equal to $\operatorname{sgn}x$ for $|x|\ge1$ and between zero and one for $0\le x\le1$. Let $\chi$ be an even non-negative cutoff, supported in $(-1,1)$ and equal to one on $[-1/2,1/2]$. Then $\varphi_n(x)=\eta(nx)\chi(x)$ has supremum at most one and
+\[
+\left\langle\operatorname{p.v.}\frac1x,\varphi_n\right\rangle
+=2\int_0^1\frac{\varphi_n(x)}x\dd x
+\ge2\log(n/2)\longrightarrow\infty.
+\]
+No order-zero bound on this fixed compact support is possible.
+For the transform take $T_\varepsilon(x)=\mathbf1_{\varepsilon<|x|<1/\varepsilon}/x$. Its pairings tend to the principal value on every Schwartz test: near zero use $|\varphi(x)-\varphi(-x)|\le2x\|\varphi'\|_\infty$, and at infinity use rapid decay. Oddness gives
+\[
+\hat T_\varepsilon(\xi)=-2i\operatorname{sgn}\xi
+\int_{2\pi\varepsilon|\xi|}^{2\pi|\xi|/\varepsilon}\frac{\sin t}t\dd t.
+\]
+Sine integrals over arbitrary positive subintervals are uniformly bounded: on $(0,1)$ bound the integrand by one, and on a tail integrate by parts to bound it by an absolute constant. Their limit from zero to infinity is $\pi/2$ (Volume~5, Theorem~4.11). Thus $\hat T_\varepsilon$ tends boundedly pointwise to $-i\pi\operatorname{sgn}\xi$, with value zero at zero. Pairing with an integrable Schwartz test and using dominated convergence identifies the tempered transform. The convolution rule stated above then gives the Hilbert-transform multiplier on Schwartz inputs.
 \end{solution}
 
 \begin{solution}{ex:loglog}
-\idea The embedding at $s>\frac12$ came from $\hat f\in L^1$. At $s=\frac12$, one can make $\hat f$ just fail to be integrable while $|\xi|^{1/2}\hat f$ is still square-integrable, the difference being one power of a
-logarithm.
-\writeup $(1+\xi^2)^{1/2}g(\xi)^2\le\frac{\sqrt2}{(1+|\xi|)\log^2(2+|\xi|)}$, which is integrable (substitute $t=\log(2+|\xi|)$), so $f\in H^{1/2}$; also $g\in L^2$, so $f\in L^2$ is well defined. But $\int g=\infty$, since
-$\int^\infty\frac{\dd\xi}{\xi\log\xi}$ diverges. Suppose $|f|\le M$ almost everywhere. With $G_\varepsilon$ as in Chapter~\ref{ch:fourier}, $f*G_\varepsilon(0)=\int g(\xi)e^{-\pi\varepsilon^2\xi^2}\dd\xi$ (Plancherel's inner product with the even function $G_\varepsilon$,
-whose transform is $e^{-\pi\varepsilon^2\xi^2}$), and $|f*G_\varepsilon(0)|\le M$. But the right side tends to $\int g=\infty$ by monotone convergence: contradiction.
+\idea The extra logarithm makes the weighted square integrable without making the transform integrable.
+\writeup The function $g$ lies in $L^2$, and
+\[
+(1+\xi^2)^{1/2}g(\xi)^2
+\le\frac{\sqrt2}{(1+|\xi|)\log^2(2+|\xi|)}.
+\]
+The right side is integrable, by comparison with $1/(\xi\log^2\xi)$ at infinity. Plancherel therefore defines $f$ and places it in $H^{1/2}$. But $\int g=\infty$, by comparison with $1/(\xi\log\xi)$.
+If $|f|\le M$ almost everywhere, its average against the positive unit-mass Gaussian $G_\varepsilon$ at zero would have modulus at most $M$. Plancherel applied to its inner product with this real even Gaussian gives
+\[
+f*G_\varepsilon(0)=\int g(\xi)e^{-\pi\varepsilon^2\xi^2}\dd\xi.
+\]
+As $\varepsilon\downarrow0$, monotone convergence makes the right side tend to infinity, a contradiction. The failure concerns essential boundedness, so changing a point value cannot repair it.
 \end{solution}
 
 \begin{solution}{ex:poincare}
-\idea On $H^1_0$, differentiation is diagonal in the sine basis, multiplying the $n$-th coefficient by $n\pi$. The worst ratio $\frac{\|u\|}{\|u'\|}$ is at the slowest sine.
-\writeup Let $c_n=\langle u,s_n\rangle$ with $s_n=\sqrt2\sin(n\pi x)$, and $\gamma_n(x)=\sqrt2\cos(n\pi x)$. Integrating by parts (valid for the absolutely continuous $u$, with $u(0)=u(1)=0$),
-$\langle u',\gamma_n\rangle=-\int u\gamma_n'=n\pi c_n$. The $\gamma_n$, $n\ge1$, are orthonormal, so by Bessel and Parseval (Lemma~\ref{lem:sines}),
-\[\|u'\|_2^2\ge\sum_{n\ge1}n^2\pi^2|c_n|^2\ge\pi^2\sum_n|c_n|^2=\pi^2\|u\|_2^2.\]
-Equality holds for $u=s_1$. The constant $\pi^2$ is the first eigenvalue of $-u''$ with Dirichlet conditions (Theorem~\ref{thm:sturm} with $q=0$): the best Poincar\'e constant is always the bottom of the spectrum.
+\idea The smallest sine frequency determines the largest possible ratio of a function's length to its derivative's length.
+\writeup Let $s_n=\sqrt2\sin(n\pi x)$, $\gamma_n=\sqrt2\cos(n\pi x)$ and $c_n=\langle u,s_n\rangle$. The absolutely continuous representative and its zero endpoints justify integration by parts, giving $\langle u',\gamma_n\rangle=n\pi c_n$. The cosines are orthonormal, so Bessel and the complete sine basis give
+\[
+\|u'\|_2^2\ge\sum_{n\ge1}n^2\pi^2|c_n|^2
+\ge\pi^2\sum_n|c_n|^2=\pi^2\|u\|_2^2.
+\]
+For the first sine every inequality is an equality. Its eigenvalue is $\pi^2$ for the zero-potential Dirichlet string, which explains the sharp constant $1/\pi$ in this interval problem.
 \end{solution}
 
 \begin{solution}{ex:gagliardo}
-\idea The value at a point is controlled by integrating the derivative of $u^2$ from either side; averaging the two sides gives the factor that makes the inequality sharp.
-\writeup For $u\in\mathcal D(\R)$ real, $u(x)^2=\int_{-\infty}^x2uu'=-\int_x^\infty2uu'$, so $2u(x)^2\le\int2|u||u'|$, and Cauchy--Schwarz gives $u(x)^2\le\|u\|_2\|u'\|_2$. Test functions are dense in $H^1(\R)$ (truncate with
-$\chi(\frac xn)$ and mollify), and both sides are continuous for the $H^1$ norm, the left one by Theorem~\ref{thm:sobolevR} with $s=1$. For $u=e^{-|x|}$, $\|u\|_\infty=1$, $\|u\|_2^2=\int e^{-2|x|}=1$ and $\|u'\|_2^2=1$: equality.
+\idea Use both half-lines so neither side of the point pays the full derivative estimate alone.
+\writeup For real $u\in\mathcal D$, integration gives $u(x)^2=\int_{-\infty}^x2uu'=-\int_x^\infty2uu'$. Taking absolute bounds and adding yields $2u(x)^2\le2\int|u||u'|$. Cauchy--Schwarz proves the claim for these tests.
+For general $H^1(\R)$, truncate with $\chi(x/n)$. The derivative error consists of the vanishing derivative tail and $n^{-1}\chi'(x/n)u$, whose $L^2$ norm tends to zero. The function tail also tends to zero in $L^2$. Mollifying each truncation approximates both it and its weak derivative in $L^2$, by convolution's derivative rule and approximate identities. This gives test-function density in the derivative norm, hence in the equivalent Fourier Sobolev norm. Sobolev embedding at $s=1$ makes the representatives converge uniformly. Both sides of the inequality pass to the limit.
+For $u=e^{-|x|}$ the weak derivative is $-\operatorname{sgn}(x)e^{-|x|}$, and direct integration gives $\|u\|_2=\|u'\|_2=\|u\|_\infty=1$. Thus equality holds.
 \end{solution}
 
 \begin{solution}{ex:convdiff}
-\idea Coercivity does not need symmetry. On functions vanishing at both ends, the convection term $bu'$ does no work against $u$, so the energy estimate is the same as for $b=0$; Lax--Milgram then replaces Riesz.
-\writeup Let $a(u,v)=\int(u'v'+bu'v+uv)$ on $V=H^1_0$. It is bilinear and bounded by $(1+|b|)\|u\|_{H^1}\|v\|_{H^1}$. Since $uu'=\frac12(u^2)'$ and $u$ vanishes at both ends (Theorem~\ref{thm:w11}, applied to $u^2\in W^{1,1}$),
-$\int bu'u=0$ and $a(u,u)=\|u\|_{H^1}^2$. Lax--Milgram gives a unique weak solution, and as in Theorem~\ref{thm:weaksol}, $u'\in H^1$ with $-u''+bu'+u=f$ almost everywhere. For $f=1$: $u=1+Ae^{r_1x}+Be^{r_2x}$ with
-$r_{1,2}=\frac{b\mp\sqrt{b^2+4}}2$ and $A,B$ fixed by $u(0)=u(1)=0$. For $b\gg1$, $r_1\approx-\frac1b$ is small and $r_2\approx b$ is large. Away from $x=1$ the term $e^{r_2x}$ is negligible
-(its coefficient is of size $e^{-b}$), and $u$ follows the \emph{reduced} first-order equation $bu'+u=1$ with $u(0)=0$, that is $u\approx1-e^{-x/b}\approx\frac xb$: the diffusion $-u''$ has dropped out. A first-order
-equation can only honour one boundary condition, and the flow carries information from left to right, so it keeps the inflow condition at $x=0$. The outflow condition $u(1)=0$ is restored by the fast exponential
-$e^{b(x-1)}$, which lives in a layer of width about $\frac1b$ at $x=1$: that is the boundary layer. (With $f=b$ instead, $u\approx x$ and the drop from $1$ to $0$ inside the layer is dramatic.) Numerically,
-such layers make naive finite elements oscillate unless the mesh resolves them, a famous difficulty of convection-dominated problems.
+\idea The convection term is antisymmetric in the energy test, leaving coercivity intact.
+\writeup Set $a(u,v)=\int(u'v'+bu'v+uv)$ on $H^1_0$. The first and last terms together are its Hilbert inner product, and the middle is bounded by $|b|\|u\|_{H^1}\|v\|_{H^1}$. Since the representatives are absolutely continuous, $\int u'u=[u^2]_0^1/2=0$. Hence $a(u,u)=\|u\|_{H^1}^2$. Lax--Milgram gives a unique weak solution. Its equation gives $u''=bu'+u-f\in L^2$; for $f=1$ this then upgrades to a classical equation by the representative theorem.
+Put $r_-=(b-\sqrt{b^2+4})/2$ and $r_+=(b+\sqrt{b^2+4})/2$. The exact solution is
+\[
+u(x)=1+A e^{r_-x}+B e^{r_+x},\qquad
+A=\frac{1-e^{r_+}}{e^{r_+}-e^{r_-}},\quad
+B=\frac{e^{r_-}-1}{e^{r_+}-e^{r_-}}.
+\]
+The denominator is positive, and substitution verifies both zero endpoints.
+As $b\to+\infty$, $br_-\to-1$ and $r_+/b\to1$. Also $A\to-1$, $b(A+1)\to0$ and $bBe^{r_+}\to-1$, directly from the displayed coefficients. Thus for fixed $0\le x<1$, $bu(x)\to x$, while at $x=1-s/b$ with fixed $s\ge0$,
+$bu(1-s/b)\to1-e^{-s}$.
+The latter profile quantifies a layer of width $1/b$ at the right endpoint. For forcing one its amplitude is also of order $1/b$; multiplying the forcing by $b$ makes the amplitude of order one. Negative large $b$ is the reflected problem and puts the layer at the left endpoint.
 \end{solution}
 
 \begin{solution}{ex:heatfund}
-\idea The heat kernel is the temperature after a unit of heat is dropped at the origin at time $0$. Testing against $\varphi$ and cutting out the instant $t=0$, the equation $(\partial_t-\partial_x^2)K=0$ kills the inside, and what survives is the
-temperature profile at time $\varepsilon$, which is an approximate identity.
-\writeup \emph{Local integrability.} $K\ge0$ and $\int K(t,x)\dd x=1$ for every $t>0$ (Gaussian integral), so $\int_0^T\int K=T$: $K\in L^1_{\mathrm{loc}}(\R^2)$ (even integrable on every strip $t\le T$).
-
-\emph{The equation.} We must show $\langle K,-\partial_t\varphi-\partial_x^2\varphi\rangle=\varphi(0,0)$ for $\varphi\in\mathcal D(\R^2)$. By dominated convergence, the left side is
-$\lim_{\varepsilon\to0}I_\varepsilon$ with $I_\varepsilon=\int_\varepsilon^\infty\int K(-\partial_t\varphi-\partial_x^2\varphi)\dd x\dd t$. On $t\ge\varepsilon$, $K$ is smooth and all its derivatives decay like Gaussians in $x$, so we may
-integrate by parts: twice in $x$ (no boundary terms, $\varphi$ having compact support), and once in $t$, with a boundary term at $t=\varepsilon$:
-\[I_\varepsilon=\int K(\varepsilon,x)\varphi(\varepsilon,x)\dd x+\int_\varepsilon^\infty\!\!\int(\partial_tK-\partial_x^2K)\varphi\dd x\dd t.\]
-A direct computation gives $\partial_tK=\partial_x^2K=\bigl(\frac{x^2}{4t^2}-\frac1{2t}\bigr)K$ for $t>0$, so the second term vanishes. In the first, $K(\varepsilon,\cdot)$ is the Gaussian $G$ of variance $2\varepsilon$, an approximate identity
-as $\varepsilon\to0$, and
-\[\Bigl|\int K(\varepsilon,x)\varphi(\varepsilon,x)\dd x-\varphi(0,0)\Bigr|\le\int K(\varepsilon,x)\bigl|\varphi(\varepsilon,x)-\varphi(0,0)\bigr|\dd x.\]
-Split at $|x|=\eta$: where $|x|\le\eta$ the integrand is at most $\sup_{|s|,|y|\le\max(\varepsilon,\eta)}|\varphi(s,y)-\varphi(0,0)|$, small by uniform continuity; where $|x|>\eta$ it is at most
+\idea The heat equation cancels the interior integral, leaving the unit mass placed at the initial time.
+\writeup For $t>0$, $\int_\R K(t,x)\dd x=1$. Hence $\int_0^T\int K=T$, proving local integrability across $t=0$ too. For a test $\varphi$, cut the time integral off at $\varepsilon>0$ and integrate by parts once in time and twice in space:
 \[
-2\|\varphi\|_\infty\int_{|x|>\eta}K(\varepsilon,x)\dd x,
+\begin{aligned}
+I_\varepsilon&=\int_\varepsilon^\infty\!\int K(-\partial_t\varphi-\partial_x^2\varphi)\dd x\dd t\\
+&=\int K(\varepsilon,x)\varphi(\varepsilon,x)\dd x
++\int_\varepsilon^\infty\!\int(\partial_tK-\partial_x^2K)\varphi\dd x\dd t.
+\end{aligned}
 \]
-which tends to $0$ as $\varepsilon\to0$. So $I_\varepsilon\to\varphi(0,0)$, that is $(\partial_t-\partial_x^2)K=\delta$. The solution of $\partial_tu=\partial_x^2u$ with $u(0,\cdot)=g$ is then $K(t,\cdot)*g$, as Fourier promised in
-Exercise~\ref{ex:heatft}.
+The interior term vanishes, since direct differentiation gives both derivatives as $(x^2/(4t^2)-1/(2t))K$. The integrations are valid away from zero time, with the compactly supported test eliminating outer boundary terms.
+The remaining Gaussian average tends to $\varphi(0,0)$. To see this, bound $|\varphi(\varepsilon,x)-\varphi(0,0)|$ by uniform continuity for $|x|\le\eta$, and by $2\|\varphi\|_\infty$ outside. The outside Gaussian mass tends to zero for fixed $\eta$, then the inside bound tends to zero as $\eta\downarrow0$. Finally dominated convergence using local integrability identifies $\lim I_\varepsilon$ with the distribution pairing. Thus $(\partial_t-\partial_x^2)K=\delta_{(0,0)}$, and convolution with spatial initial data yields the heat evolution already computed in Exercise~\ref{ex:heatft}.
+\end{solution}
+
+\begin{solution}{ex:v8c11a}
+\idea A locally integrable classical derivative becomes the weak derivative when the origin contributes no jump.
+\writeup For $\alpha>0$, $u$ is continuous and its derivative off zero is $v=\alpha\operatorname{sgn}(x)|x|^{\alpha-1}\in L^1(-1,1)$. Half-interval integration by parts leaves boundary terms of size at most $2\varepsilon^\alpha\|\varphi\|_\infty$, tending to zero, so $u'=v$ weakly. The function $u$ is always in $L^2$ for these exponents. Its derivative is square-integrable exactly when $2\alpha-2>-1$, or $\alpha>1/2$. Uniqueness of regular distributions excludes any different $L^2$ derivative when this fails. In the valid range,
+\[
+\|u\|_{H^1(-1,1)}^2=\frac2{2\alpha+1}+\frac{2\alpha^2}{2\alpha-1}.
+\]
+The endpoint $\alpha=1/2$ has a logarithmically divergent derivative-square integral.
+\end{solution}
+
+\begin{solution}{ex:v8c11b}
+\idea Once the test's value at zero is removed, it is smoothly divisible by $x$.
+\writeup Choose $\chi\in\mathcal D$ equal to one near zero. Every test can be written as $\varphi=\varphi(0)\chi+x\psi$, where $\psi=(\varphi-\varphi(0)\chi)/x$ off zero and extends smoothly through zero by Taylor's formula. Its support is compact. If $xT=0$, then $\langle T,\varphi\rangle=\varphi(0)\langle T,\chi\rangle$, so $T=c\delta$. Conversely all such point masses satisfy the equation.
+Since $x\operatorname{p.v.}(1/x)=1$, subtracting this particular solution from any solution of $xT=1$ leaves the homogeneous equation. Thus every solution is $\operatorname{p.v.}(1/x)+c\delta$, and direct multiplication verifies the entire family.
+\end{solution}
+
+\begin{solution}{ex:v8c11c}
+\idea Continuity belongs to the flux, not necessarily to the ordinary derivative.
+\writeup The weak equation makes $(pu')'=-1$, so the zero-derivative theorem gives $pu'=C-x$. Both zero endpoints require
+\[
+0=\int_0^1\frac{C-x}{p(x)}\dd x
+=\frac34 C-\frac5{16},
+\]
+hence $C=5/12$. Integrating from zero gives
+\[
+u(x)=\begin{cases}5x/12-x^2/2,&0\le x\le1/2,\\
+1/24+5x/24-x^2/4,&1/2\le x\le1.
+\end{cases}
+\]
+Both formulas give $u(1/2)=1/12$, and the outer endpoints vanish. The one-sided derivatives there are $-1/12$ and $-1/24$, respectively, but multiplication by their coefficients $1$ and $2$ gives the same flux $-1/12$. The function is continuous piecewise smooth with square-integrable weak derivative, hence lies in $H^1_0$. Its continuous affine flux has derivative $-1$, so integration by parts verifies the weak equation for every $H^1_0$ test. Uniqueness follows from the theorem.
+\end{solution}
+
+\begin{solution}{ex:v8c11d}
+\idea The Galerkin coefficient is determined by one scalar equation, and orthogonality separates its energy from the exact error.
+\writeup Write $u_h=c\phi$. Since $\int\phi'^2=4$ and $\int\phi=1/2$, the equation gives $4c=1/2$ and $c=1/8$. The exact solution is $u=x(1-x)/2$. Its nodal values are zero, $1/8$, zero, so this Galerkin function is also its linear interpolant.
+Galerkin orthogonality gives $\int(u'-u_h')u_h'=0$. Thus
+\[
+\int|u'-u_h'|^2=\int|u'|^2-\int|u_h'|^2
+=\frac1{12}-\frac1{16}=\frac1{48}.
+\]
+Directly, symmetry reduces the error integral to $2\int_0^{1/2}(1/4-x)^2\dd x=1/48$, confirming the exact energy calculation.
 \end{solution}
 
 \section*{Sources and further reading}
 \addcontentsline{toc}{section}{Sources and further reading}
 
-Laurent Schwartz announced distributions in 1945 and gave the full theory in \emph{Th\'eorie des distributions} (Hermann, 2 vols., 1950--51), which won him the Fields Medal in 1950. His autobiography, \emph{Un math\'ematicien aux prises avec
-le si\`ecle} (Odile Jacob, 1997; English translation AMS 2001), tells the story of the ``night of the distributions'' and much else. The idea had precursors: Dirac's $\delta$ in \emph{The Principles of Quantum Mechanics}
-(Oxford, 1930), Heaviside's operational calculus, and above all S.~L.~Sobolev, ``M\'ethode nouvelle \`a r\'esoudre le probl\`eme de Cauchy pour les \'equations lin\'eaires hyperboliques normales'', \emph{Mat.\ Sbornik} 1 (1936),
-39--72, where generalized functions and the spaces now named after him first appear. The Lax--Milgram theorem is from P.~D.~Lax and A.~N.~Milgram, ``Parabolic equations'', in \emph{Contributions to the Theory of Partial
-Differential Equations}, Ann.\ Math.\ Studies 33 (Princeton, 1954), 167--190. The finite element method has a famous ancestor in R.~Courant, ``Variational methods for the solution of problems of equilibrium and vibrations'',
-\emph{Bull.\ AMS} 49 (1943), 1--23; Galerkin's method is from B.~G.~Galerkin, \emph{Vestnik Inzhenerov i Tekhnikov} 19 (1915), 897--908. Heaviside's dealings with the Royal Society are told in P.~J.~Nahin, \emph{Oliver Heaviside: Sage in Solitude} (IEEE Press, 1988). The existence of a fundamental solution for every constant-coefficient operator is due to Malgrange and to Ehrenpreis (1954--55).
+Schwartz's \emph{Th\'eorie des distributions} (Hermann, 2 vols., 1950--1951) develops the theory announced in 1945. His autobiography, \emph{Un math\'ematicien aux prises avec le si\`ecle} (Odile Jacob, 1997; English translation, AMS, 2001), recalls its discovery and his life during the war. Earlier approaches include Dirac's \emph{The Principles of Quantum Mechanics} (Oxford, 1930), Heaviside's operational methods, and Sobolev's ``M\'ethode nouvelle \`a r\'esoudre le probl\`eme de Cauchy pour les \'equations lin\'eaires hyperboliques normales'', \emph{Mat. Sbornik} 1 (1936), 39--72. For Heaviside's historical setting see P.~J.~Nahin, \emph{Oliver Heaviside: Sage in Solitude} (IEEE Press, 1988).
 
-For a first course, H.~Brezis, \emph{Functional Analysis, Sobolev Spaces and Partial Differential Equations} (Springer, 2011), Chapters~8--9, is the model of this chapter's one-dimensional approach. The standard reference for distributions is
-L.~H\"ormander, \emph{The Analysis of Linear Partial Differential Operators I} (Springer, 1983). For finite elements, S.~C.~Brenner and L.~R.~Scott, \emph{The Mathematical Theory of Finite Element Methods} (Springer, 3rd ed., 2008).
+The coercive-form theorem is P.~D.~Lax and A.~N.~Milgram, ``Parabolic equations'', in \emph{Contributions to the Theory of Partial Differential Equations}, Annals of Mathematics Studies 33 (Princeton, 1954), 167--190. Galerkin's paper appeared in \emph{Vestnik Inzhenerov i Tekhnikov} 19 (1915), 897--908. For piecewise linear trial functions see R.~Courant, ``Variational methods for the solution of problems of equilibrium and vibrations'', \emph{Bull. AMS} 49 (1943), 1--23. Malgrange and Ehrenpreis proved the general constant-coefficient fundamental-solution theorem in 1954--1955; our Newton and heat arguments prove their stated cases independently.
+
+For the interval Sobolev theory and weak equations, see H.~Brezis, \emph{Functional Analysis, Sobolev Spaces and Partial Differential Equations} (Springer, 2011), Chapters~8--9. L.~H\"ormander, \emph{The Analysis of Linear Partial Differential Operators I} (Springer, 1983), treats distributions in greater generality. S.~C.~Brenner and L.~R.~Scott, \emph{The Mathematical Theory of Finite Element Methods}, 3rd ed. (Springer, 2008), develops the approximation theory beyond the one-dimensional estimates proved here.

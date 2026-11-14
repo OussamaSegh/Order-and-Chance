@@ -49,7 +49,7 @@ Eight stages of the Cantor set lie in rows under the Cantor function. The functi
 
 Cover illustration: Fourier sums of the square wave, and its spectrum; see About the Cover.
 
-Partial sums of the Fourier series of a square wave, the wave itself in a paler line, and beneath them the odd harmonics of its spectrum. Joseph Fourier published the series in The Analytical Theory of Heat in 1822. The overshoot at each jump, which refuses to shrink as further terms are added, was noticed by Henry Wilbraham in 1848 and brought back to attention by J. Willard Gibbs in 1899. The chapter The Fourier Transform is where this volume takes up that analysis. The drawing was computed by the book's own TikZ cover generator.
+The cover draws partial sums of the Fourier series of a square wave. A paler line is the wave itself. Beneath the wave, bars mark the odd harmonics of its spectrum. Joseph Fourier published the series in The Analytical Theory of Heat in 1822. At each jump the sums overshoot, and that overshoot does not shrink when further terms are added. Henry Wilbraham noticed the overshoot in 1848. J. Willard Gibbs brought it back to attention in 1899. This volume takes the series up again in the chapter The Fourier Transform. The drawing was computed by the book's own TikZ cover generator.
 
 ## Volume 9 — Shapes
 
