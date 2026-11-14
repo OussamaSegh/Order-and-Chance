@@ -54,7 +54,7 @@ and export fixes apply on top.
 | 10. Fourier transform | Plancherel, interpolation, characteristic functions, sampling and Poisson; locally uniform lattice summation and the global sharp Hausdorff–Young theorem distinguished. | `1071c0dd` |
 | 11. Distributions | Weak derivatives, fundamental solutions, Sobolev estimates and Galerkin; boundary regularity, convolution and exact layer scaling checked. | `204e3f49` |
 | 12. Finite Fourier analysis | Characters, reciprocity, uncertainty, FFT and additive methods; characteristic-free rank arguments and exact cap-set constant supplied. | `3f6684dd` |
-| 13. Haar and duality | Means, paradoxical actions, Haar uniqueness and p-adic inversion; countability scope and both directions of self-duality topology checked. | `0d98f246` |
+| 13. Haar and duality | Means, paradoxical actions, Haar uniqueness and p-adic inversion; countability scope and both directions of self-duality topology checked; the Foelner limit uses nested closed tails instead of untaught subnets. | `0d98f246` |
 | 14. Complex growth | Cycles, strips, entire products and Mellin inversion; proper-domain, constant-function and zero-product cases handled with local factorisation proof. | `47dd5253` |
 | 15. Tauberian theorems | Density/inversion, Wiener–Ikehara, PNT and two squares; zero residue, negative smoothing arguments and partial-summation implication repaired. | `2b30d2a4` |
 | 16. Zeta problems | All 22 original linked problems and research leads; strict boundary positivity, endpoint evaluation kernels and exact constants proved. | `ba80b397` |
@@ -78,7 +78,7 @@ printed numbers remain intact.
 Proofs use results available earlier in the printed order. Local arguments replace
 forward dependencies for Schur triangularisation, positive-square-root uniqueness,
 Fredholm's alternative, IVP uniqueness, characteristic-free exterior independence,
-and simultaneous diagonalisation. Advanced context such as Beckner's sharp
+simultaneous diagonalisation, and the compactness argument producing a Foelner mean. Advanced context such as Beckner's sharp
 inequality, the general Haar/duality theorems and recent graph results is clearly
 quoted with sources. Numerical illustrations are not substituted for proofs.
 The recent graph, cap-set and Hadamard claims were checked against their primary

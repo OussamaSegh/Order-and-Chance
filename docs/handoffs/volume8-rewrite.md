@@ -251,3 +251,6 @@ A stricter final prose comparison also checks short sentences below the handoff'
 
 
 The final editorial review and per-unit commit table are in [volume8-rewrite-final-review-2026-11-14.md](../review/volume8-rewrite-final-review-2026-11-14.md). The manuscript is frozen at the source contents of `16c6d0d6`. The final exact-head build results, exported page count/EPUB size, readiness and CI run IDs are recorded in [PR #242](https://github.com/OussamaSegh/Order-and-Chance/pull/242) after those checks finish, without changing the checked head just to record its own SHA. Earlier build notes in this handoff are chronological checkpoints.
+
+
+The last prerequisite sweep found one remaining untaught tool: the Foelner exercise selected a convergent subnet, whereas Volume 7 explicitly leaves nets aside. Its solution now takes the nested closures of the mean sequence's tails in the compact mean space. Their intersection is nonempty; each approximate-invariance closed slab contains a late tail and hence that intersection. This proves invariance directly using already taught compactness, with no change to the exercise or its conclusion. The production source snapshot therefore advances beyond `16c6d0d6`; the final exact-head validation record in PR #242 identifies the checked head.
