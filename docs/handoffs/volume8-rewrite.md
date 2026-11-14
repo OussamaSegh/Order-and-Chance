@@ -70,8 +70,8 @@ Four new exercises per chapter, after the last existing exercise, each with a hi
 | --- | --- |
 | — | Draft pull request opened: https://github.com/OussamaSegh/Order-and-Chance/pull/242 |
 | — | Preface, blurb, `kdp.md`, About the Cover, portrait macro and credits | Done |
-| 1–16 | Sentence rewrite, two figures, four exercises | Done; final review and full-format validation pending |
-| A–F | Sentence rewrite, two figures, four exercises | In progress |
+| 1–16, A | Sentence rewrite, two figures, four exercises | Done; final review and full-format validation pending |
+| B–F | Sentence rewrite, two figures, four exercises | In progress |
 
 Portraits on disk, not yet placed in the chapters: Banach, Hilbert, Cayley, Kirchhoff, Fredholm, Fourier, Poisson, Gauss, Haar, Hadamard, Cauchy, Tauber, Riemann, Jordan, Frobenius, Schwarz, Lyapunov. Credits are in `volume8-analysis/photos/CREDITS.md`. Place each at the first real mention. Do not invent a caption.
 
@@ -201,3 +201,10 @@ Chapter 16 is rewritten through all 22 original linked problems, hints, solution
 The solutions now prove Ramanujan-sum orthogonality and the fractional-part integral directly, so the problem-book citations are optional companions rather than prerequisites. The van de Lune threshold includes the omitted strict boundary case sigma=sigma_0: the already taught prime number theorem supplies a prime away from the tangent phase. The research lead no longer says real-part zero curves cross that boundary. The Sobolev kernel proof treats endpoint evaluations by boundary derivatives, since their kernels do not satisfy the interior Neumann boundary conditions. The Khinchin example explicitly restricts strict improvement to 0<a<1. Ingham's lead gives Kadec's uniform sup|delta_n|<1/4 condition, not merely pointwise strict inequalities. The mean-value constant 5 follows from exact pi>3 algebra, replacing decimal estimates. The slow-average construction justifies the telescoping mass identity near zero. Gaussian operator leads distinguish positive, negative, zero and endpoint correlations. The chapter map uses current volume numbers and contains no Volume 0.
 
 The Chapter 15 PDF checkpoint exits 0 at 483 print pages, 637 whole boxes, with no overflow or unresolved references. Chapter 16 awaits its checkpoint.
+
+
+Appendix A is rewritten through bases, quotients, duality, annihilators, transpose, the finite Fredholm alternative and dimension arguments, with all original exercises/hints/solutions. New plates show endpoint evaluation of cubics and an explicit compatibility certificate. Exercises `ex:v8cAa`–`d` compute quotient representatives and annihilators, classify all complements as graphs, give a normalised inconsistent-system certificate, and construct six unisolvent bivariate nodes. Original labels, numbered triples and figure environments pass; the prose audit is fully rewritten; cross-volume citations pass at 4971 statements with 68 appended exercises.
+
+Exact algebra replaces the Lights Out example's unsupported rank computation: a row recurrence and displayed terminal matrices give the 3-, 4-, 5- and 6-board claims. Its longer verification is ordinary prose outside the unbreakable example box, with the original claims still in the example. Quotient factorisation proofs are explicitly dimension-free before their polynomial/function examples. The constant-polynomial quotient and n=0 difference-operator cases are handled. The infinite algebraic bidual remark gives the basis-extension obstruction. The additive-function exercise now specifies nondegenerate intervals, since a singleton cannot support an unbounded function; its density claim is also justified. Fisher's Gram proof treats m<=1 separately, avoiding its formerly unjustified nonnegative-diagonal claim in the vacuous single-set case. The trigonometric interpolation solution retains the literal prerequisite phrase required by the citation test while rewriting the containing explanation.
+
+The Chapter 16 PDF checkpoint exits 0 at 483 print pages, 638 whole boxes, with no overflow or unresolved references. Appendix A awaits its checkpoint.
