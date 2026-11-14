@@ -72,7 +72,7 @@ solutions. Counts below are the starting counts, not additions.
 | B | Inversion | 12 | 3 | Not started |
 | C | Projective geometry | 12 | 4 | Not started |
 | D | Conics | 12 | 4 | Not started |
-| E | Quadratic forms and quadrics | 12 | 3 | Not started |
+| E | Quadratic forms and quadrics | 12 | 3 | Draft rewritten; PDF/preservation/figures checked |
 | F | Plane curves | 12 | 3 | Not started |
 | G | Cubic curves | 12 | 4 | Not started |
 | H | Lattices and sphere packings | 12 | 4 | Not started |
@@ -82,10 +82,13 @@ solutions. Counts below are the starting counts, not additions.
 
 Totals: 22 units, 200 original exercises, 55 original figures. Required additions:
 88 exercises and 44 illustrations. Relevant verified public-domain photographs
-remain to be selected, credited and inspected. Chapter 10 and Appendix I each have two draft illustrations and four new
-exercises with hints and full solutions. One Riemann photograph is credited,
-with source metadata preserved. The combined PDF build and rendered inspection
-are pending. All other unit additions remain outstanding.
+remain to be selected, credited and inspected. Chapter 10 and Appendices E and I each have two added illustrations and four
+new exercises with hints and full solutions: six illustrations and twelve
+exercises so far. One Riemann photograph is credited, with live source metadata
+preserved. All six added figures and the photograph have been inspected in
+rendered pages. Their combined PDF-only build exited 0 at 397 print pages,
+with all preservation and layout checks passing. The remaining 19 unit rewrites
+and additions, full EPUB validation and separate final review remain outstanding.
 
 ## Validation scope
 
@@ -147,8 +150,8 @@ Its `list` and `site` jobs passed; `build` and `debs` were skipped because this
 workstream has no book-source changes. This is **not** an exact-final-head book
 build or publication certificate. Later validation-record commits need their own
 CI result. PR #243 remains a draft; no merge or merge-commit publication exists
-for this request. The additions gate is still failed. All 22 complete rewrites
-and their separate mathematical/editorial reviews remain outstanding.
+for this request. The additions gate is still failed. The remaining 19 unit rewrites and all separate final mathematical/editorial
+reviews remain outstanding.
 
 `git diff --check` passed after removing trailing whitespace from captured text.
 No new figures, exercises or photographs were added; no new mathematical

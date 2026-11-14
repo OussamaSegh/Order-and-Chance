@@ -32,7 +32,11 @@ no overflow or unresolved references; all 544 old labels and 57 old figure files
 passed preservation. The combined PDF-only build also exited 0, at 393 print pages, with all
 preservation and layout checks passing. Rendered pages containing all four
 added diagrams and the portrait were inspected. Neither unit has its
-final independent review or EPUB validation. The remaining 20 units, final
+final independent review or EPUB validation. Appendix E now also has a full draft rewrite, two new diagrams and four new
+exercises with complete hints/solutions. The three-unit PDF-only build exited 0
+at 397 print pages, with preservation and layout checks passing, and both new
+E figures were inspected. See the per-unit review records for exact scope.
+The remaining 19 units, final
 validation, ready PR, exact-head green CI, normal merge and exact-merge publication
 verification remain outstanding. PR #243 remains a draft. No KDP upload occurred.
 
