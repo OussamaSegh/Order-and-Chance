@@ -71,9 +71,9 @@ solutions. Counts below are the starting counts, not additions.
 | A | Transformations | 16 | 4 | Draft rewritten; PDF/preservation/figures checked |
 | B | Inversion | 12 | 3 | Draft rewritten; PDF/preservation/figures checked |
 | C | Projective geometry | 12 | 4 | Draft rewritten; PDF/preservation/figures checked |
-| D | Conics | 12 | 4 | Draft rewritten; PDF/preservation checked; label repair pending |
+| D | Conics | 12 | 4 | Draft rewritten; PDF/preservation/figures checked |
 | E | Quadratic forms and quadrics | 12 | 3 | Draft rewritten; PDF/preservation/figures checked |
-| F | Plane curves | 12 | 3 | Not started |
+| F | Plane curves | 12 | 3 | Draft rewritten; PDF/preservation checked; label repair pending |
 | G | Cubic curves | 12 | 4 | Not started |
 | H | Lattices and sphere packings | 12 | 4 | Draft rewritten; PDF/preservation/figures checked |
 | I | Non-Euclidean geometry | 12 | 2 | Draft rewritten; validation pending |
