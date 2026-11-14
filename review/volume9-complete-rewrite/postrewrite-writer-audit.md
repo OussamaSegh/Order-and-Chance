@@ -49,3 +49,39 @@ The entire source was freshly reread, including 21 formal statements and ten exe
 A prose-level hypothesis clarification is queued: the final genus-comparison sentence must say connected closed surfaces; disconnected compact surfaces require the sum over components. Independent review remains pending.
 
 Source SHA-256: 826164403b8828b228ce31fca560bd166693927bbe921b019148669696d05fc1
+
+## Chapter 7
+
+The complete source was freshly reread, including all nine formal statements and ten exercise/hint/solution sets. Checked logarithmic radii and absolute matrix-series composition, dyadic one-parameter uniqueness, both product limits and negative bracket parameters, transverse closed-subgroup charts including zero-dimensional complements, continuous-homomorphism linearity before smoothness, and exponential generation. Checked the spin map orientation, kernel, differential, quotient topology and lifted loops, distinct and repeated torus spectra, and every solution: trace equality in SL2, finite Heisenberg products and the infinite-dimensional commutator qualification, commuting half-turn exceptions, orthogonal n=0, explicit polar coordinates, centres, Rodrigues endpoints, integer circle differentials, affine positivity and all integer spin turns. No additional mathematical gap was found. This remains a writer check; the separate-reader review is pending.
+
+Source SHA-256: e280456d0a6eb0b1c8eb7cac6fa42aac4239a4dd49f184e0075f3f884e0a7ab0
+
+## Chapter 8
+
+The complete source was freshly reread, including all sixteen formal statements and ten exercise/hint/solution sets. Checked zero-dimensional forms and counting measure, the right-translation modular factor, finite-measure uniqueness and inversion, Gaussian Borel sampling and QR phase conventions. Checked principal-angle measurability, the Hermitian orbit regular-value proof, signed versus absolute Jacobians, finite-sheet local covering including zero sheets, equal-dimensional Sard and null singular sets, Vandermonde normalization, complex Andreief and Gaudin cycle signs. Checked correlation factorials and the n=1 boundary, signed dominated convergence in the pair limit, the stated scope of quoted zeta results, and every original/new solution including endpoint atoms, quaternion folding, Fourier moments, gap limits, QR determinant forcing, scalar-phase fibres, count covariance and characteristic-polynomial recurrence at zero and one. No additional mathematical gap was found. This remains a writer check; the separate-reader review is pending.
+
+Source SHA-256: c0b965e020b8ac682f643e707c20b220a90e3eb3a8b40582d6d4f0e107c4591f
+
+## Chapter 9
+
+The complete source was freshly reread, including all sixteen formal statements and ten exercise/hint/solution sets. Checked fractional-linear and reflection invariance, unique h-lines, shortest geometric paths with pauses, finite/ideal triangle areas and equality, disk coordinates, zero-radius circles, distance-preserving maps before surjectivity, polar coordinates away from their centre, all Iwasawa signs and circle parameters, marked normal versus tangent, and orbifold qualifications. Checked every trace case and axis equality, Farey noncrossing and triangle configurations, reflected continued-fraction resets, and all exercise solutions: explicit factorization, golden and silver axes, complete reduced-form representatives, quoted quartic facts, cusp and antipodal distances, closest-axis uniqueness, Ford tangency, PSL sign in centralizers, adjoint determinants and direction-volume probabilities. No additional mathematical gap was found. This is a writer check; independent review remains pending.
+
+Source SHA-256: a53fb17d1dcc4efe1a99a9a34c28edce49ed6e8bde44a1bc6c2da0a73723fbc2
+
+## Chapter 10
+
+The entire source was freshly reread, including all six formal statements and seven exercise/hint/solution sets. Checked Montel compact exhaustion for empty or full-plane domains, the segment neighborhood used in Cauchy estimates, diagonal extraction, Rouche multiplicities for injective maps and their limits, inverse continuity before inverse differentiation, Schwarz equality and automorphism inverses. Checked the initial square-root separation, finite positive extremal derivative, missing-point factorization and strict Schwarz contradiction, normalization uniqueness, quoted square image and Jordan prerequisites. All solutions were checked, including branch ranges, both Schwarz-Pick equalities, strict inclusion in conformal radius, the punctured-domain winding obstruction, and nonuniqueness of interpolants for every strict derivative bound. No additional mathematical gap was found. This is a writer check; independent review remains pending.
+
+Source SHA-256: 29483db18cd58d611d2031b8f28cd7aa647eafbfd14ee0ce1dd1190503151754
+
+## Chapter 11
+
+The entire source was freshly reread, including all nine formal statements and ten exercise/hint/solution sets. Checked uniform offset translation from angular partitions, interval measure uniqueness, the unoriented double-cover factor, quotient Haar versus infinite pushforward, Borel preimage counts and joint measurability, Crofton multiplicities and null endpoints, convex boundary crossings without future separation, the local isoperimetric proof and equality. Checked moving-segment null degeneracies, projected-face double covering and shadow interiors, and all solutions: offset laws, chord means, pair normalization, grid inclusion-exclusion, hexagon coordinates, C1 spherical incidence including zero velocity and Sard multiplicity, width-weighted windows, circle coincidence null sets, affine angle/offset Jacobians and large spherical caps. Quoted rectifiable and kinematic extensions remain explicitly distinguished from proofs. No additional mathematical gap was found. This is a writer check; independent review remains pending.
+
+Source SHA-256: e017e1f6d94673ca247f65c5e13ac229a1572ed48f59ba7c361848603babc92f
+
+## Appendix A
+
+The whole current source was freshly reread, including ten formal statements and twenty exercise/hint/solution sets. Checked dimension-zero affine isometry, omitted reflection steps, identity versus genuine glides, finite orbit averages and n=1 cyclic/dihedral groups, all seven frieze sign/coset cases and closure, affine lattice rotations, shortest-vector basis arguments, reflection sublattice index and Fagnano lower bound before attainment. All solutions were checked, including ideal glyph assumptions, arbitrary rotation axes, billiard parity with zero velocity components, finite pole counts, signed Ceva with parallel alternatives and finite denominator conditions, Euler coincident centres, correct Routh edge vectors, invariant positive affine forms, glide fundamental domains, all ellipse maximum cases and the two four-dimensional order-five planes. No additional mathematical gap was found. This remains a writer check; independent review is pending.
+
+Source SHA-256: 24d6dce9ef69ecbbf4d154864e461032a614a930e342ef030ec4c1b06acf3086
