@@ -1,5 +1,30 @@
 # Handoff: Volume 9 rewrite
 
+## New complete-rewrite workstream — 14 November 2026
+
+The author has requested a complete rewrite beyond the earlier blueprint pass.
+The old "Done" entries below describe that earlier pass only. The new work is
+**not complete**. Its starting main is
+`9cd86c15bd386d59e7a1c6f96fb0ea5ed808c26b`, on branch
+`codex/volume9-complete-rewrite`.
+
+Read [the new baseline and unit ledger](../../review/volume9-complete-rewrite/README.md)
+before editing. It records 22 printed units, 200 original exercises, 55 printed
+figures, all 544 built labels, the full section contents, and original file hashes.
+The fresh PDF-only build exits 0 and exports **385 print pages**. It reports no
+layout overflow or unresolved references. The 12 existing numerical scripts and
+20 citation tests pass; cross-volume citations match 4,991 numbered statements;
+the Volume 3 register exits 0 and reports 19 pending entries. These are baseline
+results, not mathematical verification of a new rewrite.
+
+PR #231 already repaired the scored review's local hyperbolic-prerequisite issue
+and several editorial issues. Preserve those changes and its index. Do not repeat
+the older report's findings as if the fixes had never landed. The complete
+manuscript read, every unit rewrite, 44 added illustrations, 88 added exercises,
+verified photographs, separate review, final validation, ready PR, exact-head green
+CI, merge and exact-merge publication verification remain outstanding. No manuscript
+unit is newly completed, and no new mathematical correction is claimed.
+
 Volume 9, *Shapes*, is being rewritten to `docs/plan/MASTER-PLAN-V5-V15.md` and `docs/plan/book-09.md`. Read this file first. It is updated after every chapter.
 
 **Branch and pull request.** Branch `claude/project-thread-k4hv7k`, one pull request for the whole volume, as Volumes 5–8 each landed on their own pull request. The master plan and the blueprints stay on PR #157 (branch `claude/project-thread-khh5pi`), which remains open and is not merged. Read the blueprint with `git show origin/claude/project-thread-khh5pi:docs/plan/book-09.md`. Where it differs from the copy on `main`, the blueprint on PR #157 wins.
