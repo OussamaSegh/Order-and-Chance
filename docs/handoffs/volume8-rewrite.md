@@ -70,8 +70,8 @@ Four new exercises per chapter, after the last existing exercise, each with a hi
 | --- | --- |
 | — | Draft pull request opened: https://github.com/OussamaSegh/Order-and-Chance/pull/242 |
 | — | Preface, blurb, `kdp.md`, About the Cover, portrait macro and credits | Done |
-| 1–14 | Sentence rewrite, two figures, four exercises | Done; final review and full-format validation pending |
-| 15–16, A–F | Sentence rewrite, two figures, four exercises | In progress |
+| 1–15 | Sentence rewrite, two figures, four exercises | Done; final review and full-format validation pending |
+| 16, A–F | Sentence rewrite, two figures, four exercises | In progress |
 
 Portraits on disk, not yet placed in the chapters: Banach, Hilbert, Cayley, Kirchhoff, Fredholm, Fourier, Poisson, Gauss, Haar, Hadamard, Cauchy, Tauber, Riemann, Jordan, Frobenius, Schwarz, Lyapunov. Credits are in `volume8-analysis/photos/CREDITS.md`. Place each at the first real mention. Do not invent a caption.
 
@@ -187,3 +187,10 @@ Chapter 14 is rewritten through Dixon's homology proof, strip growth, Hadamard f
 The homological-connectivity prompt now explains why a nonempty bounded complement is impossible, rather than suggesting the exterior of a disc as a positive example. Riemann mapping explicitly excludes the whole plane. The order definition handles nonzero constants using max(e,M(r)); the product lemma explicitly handles identically zero factors, whose finite zero multiplicity would otherwise be undefined. Hadamard's derivative step now derives the estimate from Borel–Caratheodory and Cauchy's formula. The finite-zero solution does not assume a nonzero constant polynomial has modulus at least one. The maximum-level proof justifies continuity and weighted integrability before inversion and proves its strict 1.6e-6 amplitude bound by Gamma reflection, a geometric-series majorant and exact rational Taylor bounds. Bourgain's exponent is described as a historical 2017 result rather than a current-record claim.
 
 The Chapter 13 checkpoint exits 0 at 479 print pages, 628 whole boxes, with no overflow or unresolved references. Chapter 14 awaits its PDF checkpoint.
+
+
+Chapter 15 is rewritten through regular summation, Tauber, Karamata, Wiener's local inversion/density theorem, Wiener–Ikehara, the prime number theorem and the weighted two-squares count. Tauber's credited portrait is placed. Two new plates show the frequency partition and the one-sided monotonicity comparisons used to remove smoothing. Exercises `ex:v8c15a`–`d` test zero residue, uniform continuity, the exact Karamata model and a general pole abscissa. Source and prose audits pass; cross-volume citations pass at 4963 statements, with all 505 original numbered triples unchanged and 60 appended exercises.
+
+Explicit repairs: Wiener–Ikehara now concludes A(x)=Cx+o(x), retaining C>=0 and explaining the C=0 case rather than writing an undefined asymptotic ratio to zero. Its proof defines psi on negative arguments before using full-line smoothing. The two-squares remark corrects the false claim that the unweighted result does not imply the weighted one by elementary means: it gives the partial-summation identity and the implication. The reverse inference remains unproved and is correctly distinguished. Slow-variation logarithm examples are extended positively below their natural large-x range. The nonunital L1 algebra discussion no longer asserts a naive global inverse, and Tauber's condition is described as sufficient rather than falsely sharp against Littlewood's weaker condition. The quicksort solution derives its exact recurrence formula before using it.
+
+The Chapter 14 checkpoint exits 0 at 483 print pages, 632 whole boxes, with no overflow or unresolved references. Chapter 15 awaits its checkpoint build.
