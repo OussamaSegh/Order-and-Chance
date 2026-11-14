@@ -67,7 +67,7 @@ solutions. Counts below are the starting counts, not additions.
 | 8 | Haar Measure and Weyl Integration | 6 | 1 | Draft rewritten; intermediate PDF/figures checked |
 | 9 | The Hyperbolic Plane and the Modular Group | 6 | 3 | Draft rewritten; PDF/preservation/figures checked |
 | 10 | The Riemann Mapping Theorem | 3 | 1 | Draft rewritten; validation pending |
-| 11 | Integral Geometry | 6 | 1 | Not started |
+| 11 | Integral Geometry | 6 | 1 | Draft rewritten; PDF/preservation/figures checked |
 | A | Transformations | 16 | 4 | Not started |
 | B | Inversion | 12 | 3 | Not started |
 | C | Projective geometry | 12 | 4 | Not started |
@@ -78,12 +78,12 @@ solutions. Counts below are the starting counts, not additions.
 | H | Lattices and sphere packings | 12 | 4 | Draft rewritten; PDF/preservation/figures checked |
 | I | Non-Euclidean geometry | 12 | 2 | Draft rewritten; validation pending |
 | J | Convex bodies | 12 | 3 | Draft rewritten; PDF/preservation/figures checked |
-| K | Curvature of Curves and Polyhedra | 11 | 2 | Draft rewritten; PDF checked, figure-label relocation pending |
+| K | Curvature of Curves and Polyhedra | 11 | 2 | Draft rewritten; PDF/preservation/figures checked |
 
 Totals: 22 units, 200 original exercises, 55 original figures. Required additions:
-88 exercises and 44 illustrations. Chapters 7, 8, 9 and 10 and Appendices E, H, I, J and K have full draft rewrites, each with two added illustrations and four new exercises, hints and full solutions: eighteen diagrams and thirty-six exercises so far. Two photographs are credited: Riemann's portrait (inspected 1892 publication evidence) and Shukhov's tower (attributed to Karelin, published in 1897). Source metadata and public-domain evidence are preserved. All eighteen diagrams and both photographs have been inspected in rendered pages.
+88 exercises and 44 illustrations. Chapters 7, 8, 9, 10 and 11 and Appendices E, H, I, J and K have full draft rewrites, each with two added illustrations and four new exercises, hints and full solutions: twenty diagrams and forty exercises so far. Two photographs are credited: Riemann's portrait (inspected 1892 publication evidence) and Shukhov's tower (attributed to Karelin, published in 1897). Source metadata and public-domain evidence are preserved. All twenty diagrams and both photographs have been inspected in rendered pages.
 
-The six-unit full build on 66ca56fd exited 0 at 413 print pages. Its EPUB is 29,554,897 bytes; media checks and all 18,245 local links pass. The subsequent seven-unit PDF-only build exits 0 at 419 pages, with preservation and layout checks passing. Preface, blurb, KDP copy and canonical cover note are rewritten; their rendered pages/wrap have been inspected. The eight-unit PDF-only build exits 0 at 425 pages, again with layout and preservation passing; both J figures were inspected. The nine-unit PDF-only build exits 0 at 433 pages; both K figures were inspected, with one label relocation awaiting the next build. The remaining 13 units, final EPUB validation and separate final review remain outstanding. See ci-shared-note-dependency.md for the CI fingerprint reconciliation; no failed run is claimed green.
+The six-unit full build on 66ca56fd exited 0 at 413 print pages. Its EPUB is 29,554,897 bytes; media checks and all 18,245 local links pass. The subsequent seven-unit PDF-only build exits 0 at 419 pages, with preservation and layout checks passing. Preface, blurb, KDP copy and canonical cover note are rewritten; their rendered pages/wrap have been inspected. The eight-unit PDF-only build exits 0 at 425 pages, again with layout and preservation passing; both J figures were inspected. The nine-unit PDF-only build exits 0 at 433 pages; both K figures were inspected, with one label relocation awaiting the next build. The ten-unit PDF-only build exits 0 at 441 pages with preservation/layout passing; both Ch11 figures and the K label relocation were inspected. The remaining 12 units, final EPUB validation and separate final review remain outstanding. See ci-shared-note-dependency.md for the CI fingerprint reconciliation; no failed run is claimed green.
 
 ## Validation scope
 

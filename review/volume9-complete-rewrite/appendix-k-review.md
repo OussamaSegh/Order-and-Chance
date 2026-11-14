@@ -1,6 +1,6 @@
 # Appendix K — rewrite and checking record
 
-Status: full draft rewrite; intermediate PDF-only build exited 0 at 433 print pages, with no overflow or unresolved references. Both figures were inspected on manuscript pages 415–416. The normal-arrow label touched the circle and was moved inside; this small relocation awaits the next PDF build. Separate final
+Status: full draft rewrite; intermediate PDF-only build exited 0 at 433 print pages, with no overflow or unresolved references. Both figures were inspected on manuscript pages 415–416. The normal-arrow label touched the circle and was moved inside. The subsequent ten-unit PDF build passes at 441 pages, and the relocated label was inspected on manuscript page 422 without a collision. Separate final
 review is outstanding. This is writer checking, not an independent certificate.
 
 ## Coverage and preservation
