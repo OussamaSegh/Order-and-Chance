@@ -1,5 +1,7 @@
 # Appendix F writer check — plane curves
 
+Current final source review: see [the mathematical review](final-mathematical-review.md) and [editorial review](final-editorial-review.md). This unit record preserves its earlier checkpoints; final-validation.md supersedes historical pending statuses.
+
 ## Coverage
 All body prose, original formal statements/proofs, twelve original exercises, hints and idea/writeup solutions, closing bridge and reading guidance are rewritten. The literal epigraph, three old figure blocks/captions and bibliographic records are preserved. This is a writer check, not separate final review.
 

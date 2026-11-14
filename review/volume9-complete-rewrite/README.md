@@ -1,39 +1,39 @@
-# Volume 9 complete rewrite: starting record
+# Volume 9 complete rewrite: baseline and acceptance record
 
-This is a baseline for the newly requested complete rewrite, **not a completion
-or review certificate**. Manuscript work has begun. The immutable baseline files below still describe
-starting main; current work and unresolved findings are recorded separately.
+The immutable baseline below describes starting main. Current review and production
+results are recorded separately; the baseline is never replaced by rewritten material.
 
-Current checkpoint: all 22 units have full drafts, with 44 added figures, 88 fully solved exercises and two credited photographs. The combined PDF-only build exits 0 at 511 print pages. Source additions and preservation pass. The full all-unit build on book sources 612854ac exits 0: EPUB 31,551,162 bytes, 99 full-width plates and 16,412 resolved local references. The subsequent mathematical clarifications on 30cbe592 pass PDF-only export at 511 pages; their full rebuild is running. Separate final review, exact-head green CI, ready PR, normal merge and exact-merge publication are not yet complete. See the unit writer checks and current handoff.
+## Current checkpoint — manuscript and local validation complete
 
-## Current checkpoint — post-writer review
+Book sources: `fb4502e3acda521b598c5bc3cd5e46e2f0e028d0`.
+All eleven chapters and eleven appendices are fully rewritten and reviewed,
+with 44 new figures, 88 fully solved exercises and two credited public-domain
+photographs. All 302 original numbered statements were compared with starting
+main; the review accounts for 245 proofs, 288 hints and 288 solutions.
+R01–R20 are repaired and linked to their fixing commits.
 
-Book sources are fixed at `835800aca433da221024fac3b0735ac75d5c2253`.
-All 22 units have complete rewrite drafts and a fresh writer follow-up. R01–R14
-are recorded, including the final vanishing-Hessian and primitive-root wording
-fixes. The 302-statement comparison packet and independent-review instructions
-now refer to this book source snapshot. No independent verification is claimed.
+The author explicitly instructed **“You review and merge.”** Codex performed
+the separate final mathematical/editorial review phase itself. No independent
+second reader or different review agent is claimed. See the
+[mathematical review](final-mathematical-review.md),
+[editorial review](final-editorial-review.md) and
+[statement records](final-statement-review.json).
 
-The last completed full build is on book sources `30cbe592`: 511 print pages,
-31,553,132-byte EPUB, 99 1800-pixel plates and 16,416 resolved local references.
-The R12 PDF-only build on `1017fbd8` also exits 0 at 511 pages and its repaired
-solution was visually inspected. Its full export was deliberately stopped with
-exit 143 after print checks to batch R13/R14; that partial EPUB is not accepted.
-Both required commands are now running sequentially on `835800ac`, with logs
-`/tmp/v9-final-pdf-build.log` and `/tmp/v9-final-full-build.log` and corresponding
-`.exit` files. Their results must be collected rather than assumed.
+Both required build commands on these fixed book sources exit 0 at **511 print
+pages**. The EPUB is 31,586,815 bytes, with 99 full-width 1800-pixel plates;
+all 16,454 local links/media references/fragments resolve. There are no overfull
+boxes or undefined references. Original numbering, complete original figure
+blocks, 57 original figure files, 213 structure numbers and cover-art sources
+pass preservation. All 44 added figures, both native photo pages, repaired
+proof pages, covers and representative actual EPUB content were inspected.
+All 20 citation tests, cross-volume citations (5,118 statements), all 12 numerical
+illustration scripts and the Volume 3 register pass (1,177 accepted, 19 unchanged
+pre-existing pending). See [the actual validation receipts](final-validation.md).
 
-On `835800ac`, all 20 citation tests, cross-volume citations (5,118 statements),
-the Volume 3 register (1,177 accepted, 19 unchanged pending), source additions,
-short-prose coverage and diff whitespace checks pass. Final built preservation,
-EPUB/media/link checks and current rendered inspections remain to be collected.
-
-PR #243 stays draft. The author has been asked to authorize separate review
-agents because master-plan §6.4 requires a reviewer who is not the writer and
-current instructions prohibit delegation without explicit authorization. No
-answer has arrived, so no review agent has been spawned. After that review and
-all fixes, still required: exact-final-head green CI, ready PR, normal merge,
-and exact-merge publication/published-page-count verification. No KDP upload.
+PR: https://github.com/OussamaSegh/Order-and-Chance/pull/243. Its delivery record
+identifies the exact final-head CI, normal merge and exact-merge publication
+receipts. This source handoff records local validation of the fixed book inputs;
+remote delivery status is tracked on that PR. No Amazon KDP upload.
 
 ## Provenance
 
@@ -88,28 +88,28 @@ solutions. Counts below are the starting counts, not additions.
 
 | Unit | Title | Original exercises | Original figures | New complete rewrite |
 | --- | --- | ---: | ---: | --- |
-| 1 | Smooth Manifolds | 7 | 2 | Draft rewritten; PDF/preservation/figures checked |
-| 2 | Vector Fields and Flows | 7 | 2 | Draft rewritten; PDF/preservation/figures checked |
-| 3 | Differential Forms and Stokes' Theorem | 6 | 2 | Draft rewritten; PDF/preservation/figures checked |
-| 4 | Curvature | 6 | 2 | Draft rewritten; PDF/preservation/figures checked |
-| 5 | The Fundamental Group and Coverings | 6 | 2 | Draft rewritten; PDF/preservation/figures checked |
-| 6 | Homology | 6 | 2 | Draft rewritten; PDF/preservation/figures checked |
-| 7 | Matrix Lie Groups | 6 | 1 | Draft rewritten; PDF/preservation/figures checked |
-| 8 | Haar Measure and Weyl Integration | 6 | 1 | Draft rewritten; intermediate PDF/figures checked |
-| 9 | The Hyperbolic Plane and the Modular Group | 6 | 3 | Draft rewritten; PDF/preservation/figures checked |
-| 10 | The Riemann Mapping Theorem | 3 | 1 | Draft rewritten; PDF/preservation/figures checked |
-| 11 | Integral Geometry | 6 | 1 | Draft rewritten; PDF/preservation/figures checked |
-| A | Transformations | 16 | 4 | Draft rewritten; PDF/preservation/figures checked |
-| B | Inversion | 12 | 3 | Draft rewritten; PDF/preservation/figures checked |
-| C | Projective geometry | 12 | 4 | Draft rewritten; PDF/preservation/figures checked |
-| D | Conics | 12 | 4 | Draft rewritten; PDF/preservation/figures checked |
-| E | Quadratic forms and quadrics | 12 | 3 | Draft rewritten; PDF/preservation/figures checked |
-| F | Plane curves | 12 | 3 | Draft rewritten; PDF/preservation/figures checked |
-| G | Cubic curves | 12 | 4 | Draft rewritten; PDF/preservation/figures checked |
-| H | Lattices and sphere packings | 12 | 4 | Draft rewritten; PDF/preservation/figures checked |
-| I | Non-Euclidean geometry | 12 | 2 | Draft rewritten; PDF/preservation/figures checked |
-| J | Convex bodies | 12 | 3 | Draft rewritten; PDF/preservation/figures checked |
-| K | Curvature of Curves and Polyhedra | 11 | 2 | Draft rewritten; PDF/preservation/figures checked |
+| 1 | Smooth Manifolds | 7 | 2 | Complete rewrite; reviewed; both builds pass |
+| 2 | Vector Fields and Flows | 7 | 2 | Complete rewrite; reviewed; both builds pass |
+| 3 | Differential Forms and Stokes' Theorem | 6 | 2 | Complete rewrite; reviewed; both builds pass |
+| 4 | Curvature | 6 | 2 | Complete rewrite; reviewed; both builds pass |
+| 5 | The Fundamental Group and Coverings | 6 | 2 | Complete rewrite; reviewed; both builds pass |
+| 6 | Homology | 6 | 2 | Complete rewrite; reviewed; both builds pass |
+| 7 | Matrix Lie Groups | 6 | 1 | Complete rewrite; reviewed; both builds pass |
+| 8 | Haar Measure and Weyl Integration | 6 | 1 | Complete rewrite; reviewed; both builds pass |
+| 9 | The Hyperbolic Plane and the Modular Group | 6 | 3 | Complete rewrite; reviewed; both builds pass |
+| 10 | The Riemann Mapping Theorem | 3 | 1 | Complete rewrite; reviewed; both builds pass |
+| 11 | Integral Geometry | 6 | 1 | Complete rewrite; reviewed; both builds pass |
+| A | Transformations | 16 | 4 | Complete rewrite; reviewed; both builds pass |
+| B | Inversion | 12 | 3 | Complete rewrite; reviewed; both builds pass |
+| C | Projective geometry | 12 | 4 | Complete rewrite; reviewed; both builds pass |
+| D | Conics | 12 | 4 | Complete rewrite; reviewed; both builds pass |
+| E | Quadratic forms and quadrics | 12 | 3 | Complete rewrite; reviewed; both builds pass |
+| F | Plane curves | 12 | 3 | Complete rewrite; reviewed; both builds pass |
+| G | Cubic curves | 12 | 4 | Complete rewrite; reviewed; both builds pass |
+| H | Lattices and sphere packings | 12 | 4 | Complete rewrite; reviewed; both builds pass |
+| I | Non-Euclidean geometry | 12 | 2 | Complete rewrite; reviewed; both builds pass |
+| J | Convex bodies | 12 | 3 | Complete rewrite; reviewed; both builds pass |
+| K | Curvature of Curves and Polyhedra | 11 | 2 | Complete rewrite; reviewed; both builds pass |
 
 Totals: all 22 units have complete drafts, retaining 200 original exercises and 55 original figures and adding 88 exercises and 44 illustrations. Each unit has two added figures and four added exercises, with unique labels, difficulty, hints and complete idea/writeup solutions. Two photographs have adjacent credits, native resolution and public-domain source evidence. All added figure pages and both photograph placements have now been inspected in the current 511-page print build. The original 544 labels/captions, 213 structural numbers, 57 figure files and two cover-art sources pass preservation.
 

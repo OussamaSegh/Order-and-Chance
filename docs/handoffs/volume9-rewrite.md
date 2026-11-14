@@ -1,35 +1,38 @@
 # Handoff: Volume 9 rewrite
 
-## Current checkpoint — post-writer review
+## Current checkpoint — manuscript and local validation complete
 
-Book sources are fixed at `835800aca433da221024fac3b0735ac75d5c2253`.
-All 22 units have complete rewrite drafts and a fresh writer follow-up. R01–R14
-are recorded, including the final vanishing-Hessian and primitive-root wording
-fixes. The 302-statement comparison packet and independent-review instructions
-now refer to this book source snapshot. No independent verification is claimed.
+Book sources: `fb4502e3acda521b598c5bc3cd5e46e2f0e028d0`.
+All eleven chapters and eleven appendices are fully rewritten and reviewed,
+with 44 new figures, 88 fully solved exercises and two credited public-domain
+photographs. All 302 original numbered statements were compared with starting
+main; the review accounts for 245 proofs, 288 hints and 288 solutions.
+R01–R20 are repaired and linked to their fixing commits.
 
-The last completed full build is on book sources `30cbe592`: 511 print pages,
-31,553,132-byte EPUB, 99 1800-pixel plates and 16,416 resolved local references.
-The R12 PDF-only build on `1017fbd8` also exits 0 at 511 pages and its repaired
-solution was visually inspected. Its full export was deliberately stopped with
-exit 143 after print checks to batch R13/R14; that partial EPUB is not accepted.
-Both required commands are now running sequentially on `835800ac`, with logs
-`/tmp/v9-final-pdf-build.log` and `/tmp/v9-final-full-build.log` and corresponding
-`.exit` files. Their results must be collected rather than assumed.
+The author explicitly instructed **“You review and merge.”** Codex performed
+the separate final mathematical/editorial review phase itself. No independent
+second reader or different review agent is claimed. See the
+[mathematical review](../../review/volume9-complete-rewrite/final-mathematical-review.md),
+[editorial review](../../review/volume9-complete-rewrite/final-editorial-review.md) and
+[statement records](../../review/volume9-complete-rewrite/final-statement-review.json).
 
-On `835800ac`, all 20 citation tests, cross-volume citations (5,118 statements),
-the Volume 3 register (1,177 accepted, 19 unchanged pending), source additions,
-short-prose coverage and diff whitespace checks pass. Final built preservation,
-EPUB/media/link checks and current rendered inspections remain to be collected.
+Both required build commands on these fixed book sources exit 0 at **511 print
+pages**. The EPUB is 31,586,815 bytes, with 99 full-width 1800-pixel plates;
+all 16,454 local links/media references/fragments resolve. There are no overfull
+boxes or undefined references. Original numbering, complete original figure
+blocks, 57 original figure files, 213 structure numbers and cover-art sources
+pass preservation. All 44 added figures, both native photo pages, repaired
+proof pages, covers and representative actual EPUB content were inspected.
+All 20 citation tests, cross-volume citations (5,118 statements), all 12 numerical
+illustration scripts and the Volume 3 register pass (1,177 accepted, 19 unchanged
+pre-existing pending). See [the actual validation receipts](../../review/volume9-complete-rewrite/final-validation.md).
 
-PR #243 stays draft. The author has been asked to authorize separate review
-agents because master-plan §6.4 requires a reviewer who is not the writer and
-current instructions prohibit delegation without explicit authorization. No
-answer has arrived, so no review agent has been spawned. After that review and
-all fixes, still required: exact-final-head green CI, ready PR, normal merge,
-and exact-merge publication/published-page-count verification. No KDP upload.
+PR: https://github.com/OussamaSegh/Order-and-Chance/pull/243. Its delivery record
+identifies the exact final-head CI, normal merge and exact-merge publication
+receipts. This source handoff records local validation of the fixed book inputs;
+remote delivery status is tracked on that PR. No Amazon KDP upload.
 
-## New complete-rewrite workstream — 14 November 2026
+## Historical workstream log — begun 14 November 2026
 
 The author has requested a complete rewrite beyond the earlier blueprint pass.
 The old "Done" entries below describe that earlier pass only. The new work is

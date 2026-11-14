@@ -1,5 +1,7 @@
 # Chapter 4 — rewrite and checking record
 
+Current final source review: see [the mathematical review](final-mathematical-review.md) and [editorial review](final-editorial-review.md). This unit record preserves its earlier checkpoints; final-validation.md supersedes historical pending statuses.
+
 Status: full draft rewrite. Intermediate PDF-only build exited 0 at 445 print pages, with no overflow or unresolved references. Both diagrams were inspected on manuscript pages 89–90.
 Separate final review remains outstanding; this is writer checking.
 

@@ -1,5 +1,7 @@
 # Chapter 5 writer check — coverings and fundamental groups
 
+Current final source review: see [the mathematical review](final-mathematical-review.md) and [editorial review](final-editorial-review.md). This unit record preserves its earlier checkpoints; final-validation.md supersedes historical pending statuses.
+
 ## Coverage and preservation
 
 All introductions, explanations, definitions, numbered statements, proofs, six original exercises, hints and solutions, ending and reading guidance were rewritten. Accurate bibliography records and both original figure blocks remain literal. Source comparison preserves the formal environment sequence and all original label order. Two figures and four substantial exercises, each with a unique label, difficulty, hint and idea/writeup solution, are appended without changing original numbers. This is a writer check, not the separate final review.

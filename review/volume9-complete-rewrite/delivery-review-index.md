@@ -1,27 +1,29 @@
-# Volume 9 review index — acceptance still pending
+# Volume 9 review index — final manuscript and local validation
 
-PR: https://github.com/OussamaSegh/Order-and-Chance/pull/243 (draft).
+PR: https://github.com/OussamaSegh/Order-and-Chance/pull/243.
 Starting main: `9cd86c15bd386d59e7a1c6f96fb0ea5ed808c26b`, 385 print pages.
-All 22 units have complete rewrite drafts. Each adds two figures and four
+All 22 units have complete rewrites and author-directed final review. Each adds two figures and four
 exercises with fresh labels, difficulty, hints and full idea/writeup solutions:
 **44 figures and 88 exercises** altogether. Two unnumbered, credited public-domain
 photographs have been added. Original figure sources, complete figure blocks,
 printed labels and numbered structure remain protected by the baseline audits.
 
-These are writer findings and repairs. The separate-reader requirement is still
-open; this file is not a mathematical verification certificate. Full details,
-including proof repairs, equality cases and validation limits, are in each linked
-unit record. The fresh post-draft pass is in postrewrite-writer-audit.md; R01–R14
-are tracked separately in postrewrite-review-findings.md.
+The final mathematical and editorial review was performed by Codex at the
+author's explicit direction, “You review and merge.” No independent second
+reader is claimed. [The mathematical review](final-mathematical-review.md),
+[editorial review](final-editorial-review.md) and [statement records](final-statement-review.json)
+cover the complete source and every original numbered statement. R01–R20 are
+tracked in postrewrite-review-findings.md. The unit reports below retain their
+historical build checkpoints; final validation supersedes their pending statuses.
 
 | Printed unit | Rewrite and principal mathematical repairs | Fixing commit | Detailed writer record |
 | --- | --- | --- | --- |
-| 1. Smooth manifolds | Rebuild local calculus and global constructions; include empty/zero-dimensional cases, nonempty regular fibres, connected analytic identity hypothesis and n≥1 strong Whitney/SL assumptions. | `4c3168bf` | [Chapter 1](ch01-review.md) |
+| 1. Smooth manifolds | Rebuild local calculus and global constructions; include empty/zero-dimensional cases, nonempty regular fibres, connected analytic identity hypothesis and n≥1 strong Whitney/SL assumptions. | `4c3168bf`, `fb4502e3` | [Chapter 1](ch01-review.md) |
 | 2. Vector fields and flows | Complete Picard/variational regularity and finite escape, Frobenius endpoint ranks, bracket signs and projective/quaternion examples. | `195cd412` | [Chapter 2](ch02-review.md) |
-| 3. Forms and Stokes | Complete boundary orientation and zero-dimensional Stokes; H0 is a product over components, with full constructive torus calculations. | `3929915f`, `612854ac` | [Chapter 3](ch03-review.md) |
+| 3. Forms and Stokes | Complete boundary orientation and zero-dimensional Stokes; H0 is a product over components, with full constructive torus calculations. | `3929915f`, `612854ac`, `2c0fccc8` | [Chapter 3](ch03-review.md) |
 | 4. Curvature | Remove prerequisite circularity in Morse/Euler and local distance arguments; make quoted genus construction and sphere-chart reflection explicit. | `5d5391e7`, `30cbe592` | [Chapter 4](ch04-review.md) |
-| 5. Coverings and fundamental groups | Repair the van Kampen boundary word, normalizer arguments and arbitrary-rank graph proof; retain covering hypotheses and require nonempty domains for exact root counts. | `7f656353`, `612854ac`, `30cbe592` | [Chapter 5](ch05-review.md) |
-| 6. Homology | Supply subdivision/comparison/transfer details and empty augmentation conventions; handle projective top degree, null measures and connected Euler comparison. | `57f9e4ee`, `30cbe592` | [Chapter 6](ch06-review.md) |
+| 5. Coverings and fundamental groups | Repair the van Kampen boundary word, normalizer arguments and arbitrary-rank graph proof; retain covering hypotheses and require nonempty domains for exact root counts. | `7f656353`, `612854ac`, `30cbe592`, `2c0fccc8` | [Chapter 5](ch05-review.md) |
+| 6. Homology | Supply subdivision/comparison/transfer details and empty augmentation conventions; handle projective top degree, null measures and connected Euler comparison. | `57f9e4ee`, `30cbe592`, `2c0fccc8` | [Chapter 6](ch06-review.md) |
 | 7. Matrix Lie groups | Complete closed-subgroup charts, the spin lift and all exponential cases; repair unit-axis/identity and O0 exceptions and supply local polar coordinates. | `aad3d3d9` | [Chapter 7](ch07-review.md) |
 | 8. Haar and Weyl integration | Prove measurable sampling, absolute Weyl Jacobian and correlation limits; isolate n=1 atoms/counts and signed domination. | `66ca56fd` | [Chapter 8](ch08-review.md) |
 | 9. Hyperbolic geometry | Complete isometry/trace/equality and Farey coding proofs; distinguish horocycle normals, orbifold points, conjugate axes and complete reduced-form lists. | `8a19ff17` | [Chapter 9](ch09-review.md) |
@@ -33,11 +35,11 @@ are tracked separately in postrewrite-review-findings.md.
 | D. Conics | Complete five-point/normal-form and empty-real cases, harmonic secant scope and smooth Poncelet invariant measure; prove Fuss and directed chord conditions. | `1f778501` | [Appendix D](appd-review.md) |
 | E. Quadrics | Include zero-sized Gram and rank cases, nondegenerate quotient arguments and Witt cancellation; preserve Segre over every field. | `8418357e`, `66ca56fd` | [Appendix E](appendix-e-review.md) |
 | F. Plane curves | Prove finiteness before projection, define proved multiplicities relative to O rather than claiming unproved intrinsic independence, repair characteristic-two conics and nonzero polars, and verify all nine intersections. | `62fa7135` | [Appendix F](appf-review.md) |
-| G. Cubics | Correct geometric versus rational neutral claims and affine Hesse incidence; retain the nine-distinct association scope, prove elementary doubling infinitude and check all finite recursions. | `42e0f8fa` | [Appendix G](appg-review.md) |
+| G. Cubics | Correct geometric versus rational neutral claims and affine Hesse incidence; retain the nine-distinct association scope, prove elementary doubling infinitude and check all finite recursions. | `42e0f8fa`, `835800ac`, `2c0fccc8`, `21ca4d5a` | [Appendix G](appg-review.md) |
 | H. Lattices | Repair n=0 and non-strict Minkowski boundary cases, measurable convex sets, reduction tie stopping, circle-count range and complete E8/root arguments. | `c363b76e`, `66ca56fd` | [Appendix H](appendix-h-review.md) |
 | I. Non-Euclidean geometry | Make spherical/ideal hypotheses and Klein incidence explicit; supply local cosine-law error control instead of an unproved shortest-path step. | `71d47c17`, `1017fbd8` | [Appendix I](appendix-i-review.md) |
-| J. Convex bodies | Correct the small-family disk-cover hypothesis; prove the full compact nonconvex Brunn–Minkowski bound, degenerate perimeters and fixed-epsilon Steiner limits. | `f393a975` | [Appendix J](appendix-j-review.md) |
-| K. Curvature | Handle periodic derivatives and non-strict/infinite four-vertex extrema, rank-zero Gauss-map area, prior planar separation, Fresnel tails and arbitrarily small flattening obstruction. | `ceef8ece` | [Appendix K](appendix-k-review.md) |
+| J. Convex bodies | Correct the small-family disk-cover hypothesis; prove the full compact nonconvex Brunn–Minkowski bound, degenerate perimeters and fixed-epsilon Steiner limits. | `f393a975`, `fb4502e3` | [Appendix J](appendix-j-review.md) |
+| K. Curvature | Handle periodic derivatives and non-strict/infinite four-vertex extrema, rank-zero Gauss-map area, prior planar separation, Fresnel tails and arbitrarily small flattening obstruction. | `ceef8ece`, `835800ac`, `2c0fccc8` | [Appendix K](appendix-k-review.md) |
 
 Preface, back-cover blurb, KDP listing and approved-scope About the Cover were
 rewritten in `331fa2c3`; `c724c7f4` restores the required cover-generator credit.
@@ -47,12 +49,19 @@ ISBN blank and repairs two EPUB accent arguments. Photo evidence and attribution
 are in ../../volume9-shapes/photos/CREDITS.md. Native print resolutions were
 measured at 597.59 and about 1626.08 ppi.
 
-Production evidence is indexed by source head, never inferred from a newer push.
-The successful full build on book sources `30cbe592` has 511 print pages and a
-31,553,132-byte EPUB, 99 full-width plates and 16,416 resolved local references.
-R12 in `1017fbd8` requires the new builds currently running. The exact final PR
-head, green required CI, ready state, merge SHA, publication run and published
-page count remain to be recorded after independent review and acceptance.
-No Amazon KDP upload has occurred.
+Final book sources are `fb4502e3acda521b598c5bc3cd5e46e2f0e028d0`.
+Both required commands exit 0 at 511 print pages. The EPUB is 31,586,815 bytes;
+all 16,454 local links/media references/fragments resolve, with 99 full-width
+plates. Source/numbering/figure preservation, 20 citation tests, cross-volume
+citations, the register and all 12 numerical illustration scripts pass.
+All added figures, photo placements, covers and representative actual EPUB
+content were inspected. See [the final validation](final-validation.md).
 
-Final wording repairs in `835800ac`: Appendix K now calls its possibly zero Hessian expression the quadratic Taylor term; the new Hesse caption explicitly requires a primitive cube root. Both required build commands are running against these fixed book sources.
+R20 in `fb4502e3` supplies local arguments at the Cassini crossing and before
+identifying outer surface content with perimeter. R15–R18 are fixed in
+`2c0fccc8`; R13/R14 in `835800ac`; R19 clarifies the new Hesse caption in
+`21ca4d5a`. Intentionally stopped intermediate full builds are labelled STOPPED,
+with exit 143, and are never counted as successful exports.
+
+Exact final-head CI, normal merge and exact-merge publication receipts are
+recorded in the delivery section of PR #243. No Amazon KDP upload.

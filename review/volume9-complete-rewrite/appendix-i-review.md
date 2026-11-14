@@ -1,5 +1,7 @@
 # Appendix I — rewrite and checking record
 
+Current final source review: see [the mathematical review](final-mathematical-review.md) and [editorial review](final-editorial-review.md). This unit record preserves its earlier checkpoints; final-validation.md supersedes historical pending statuses.
+
 Status: full draft rewrite; final-volume independent review is outstanding.
 The checks below are a later pass by the writer, not an independent certificate.
 

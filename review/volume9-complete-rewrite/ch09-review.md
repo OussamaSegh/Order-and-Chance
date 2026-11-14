@@ -1,5 +1,7 @@
 # Chapter 9 — rewrite and checking record
 
+Current final source review: see [the mathematical review](final-mathematical-review.md) and [editorial review](final-editorial-review.md). This unit record preserves its earlier checkpoints; final-validation.md supersedes historical pending statuses.
+
 Status: full draft rewrite. Intermediate PDF-only build exited 0 at 419 print pages; no overflow or unresolved references. Original labels, captions, section numbers, figure sources and cover artwork pass preservation. Both new figures have been inspected in rendered pages. Twenty citation tests and the cross-volume checker (5,019 statements) pass.
 A later checking pass by the writer is not an independent certificate; the
 separate final manuscript review remains outstanding.

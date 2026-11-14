@@ -1,5 +1,7 @@
 # Chapter 8 — rewrite and checking record
 
+Current final source review: see [the mathematical review](final-mathematical-review.md) and [editorial review](final-editorial-review.md). This unit record preserves its earlier checkpoints; final-validation.md supersedes historical pending statuses.
+
 Status: full draft rewrite; intermediate PDF-only build completed, final small
 clarifications await the next complete build. Separate final review is outstanding.
 This is a later checking pass by the writer, not an independent certificate.
@@ -69,8 +71,12 @@ The four mathematical sections and all later section numbers are unchanged.
   nonvanishing invariant form, including the point orbit at n=1.
 - Jacobian coordinates, denominator k-j and complex determinant |z|^2 checked.
   The constant may have either sign; all measure formulas use its absolute value.
-- The sheet lemma gives N local branches over their common image and rules out
-  any extra point by the exact fibre count; N=0 is addressed. Sard in equal
+- The sheet lemma explicitly requires a finite integer N (fixed in 66ca56fd).
+  It gives N local branches over their common image and excludes extra points
+  by the exact fibre count; N=0 is addressed. Constant infinite cardinality
+  alone would not suffice: the disjoint union of the universal real-line cover
+  of the circle with a proper open arc is a local homeomorphism with countably
+  infinite fibres but no evenly covered neighborhood at an arc endpoint. Sard in equal
   dimensions makes the singular image null. Countable inverse charts and a
   disjoint Borel partition justify the global sheet integral. Fourier integration
   gives integral |V|^2=(2pi)^n n!, fixing the normalisation.

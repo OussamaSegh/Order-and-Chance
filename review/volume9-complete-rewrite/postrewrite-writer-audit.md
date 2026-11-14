@@ -1,6 +1,6 @@
 # Fresh post-rewrite writer audit
 
-This is a separate chronological pass by the writer, not independent verification. The author has been asked to authorize a different review agent to satisfy the master plan. No theorem is marked VERIFIED by this record.
+This is the historical complete post-draft source pass by the writer, not independent verification. The author later instructed “You review and merge”; the final author-directed review is in final-mathematical-review.md and final-statement-review.json. Queued findings and pending statuses below describe their recorded source checkpoints and are superseded by the final findings and validation records. No theorem is marked VERIFIED by this record.
 
 ## Chapter 1
 

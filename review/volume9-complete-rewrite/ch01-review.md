@@ -1,5 +1,7 @@
 # Chapter 1 writer check — smooth manifolds
 
+Current final source review: see [the mathematical review](final-mathematical-review.md) and [editorial review](final-editorial-review.md). This unit record preserves its earlier checkpoints; final-validation.md supersedes historical pending statuses.
+
 ## Full coverage and preservation
 
 Introductions, teaching prose, all definitions, original numbered statements and proofs, examples, seven old exercises with hints and idea/writeup solutions, ending and reading guidance are rewritten. All original formal environments and labels keep their order. Both original figure blocks and accurate bibliography records are literal; historical quotations are preserved. Two added diagrams follow the old arm figure; four new exercises follow the original seven, with fresh labels, ratings, hints and complete solutions. This writer check is not the separate final review.

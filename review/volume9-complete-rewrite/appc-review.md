@@ -1,5 +1,7 @@
 # Appendix C writer check — projective geometry
 
+Current final source review: see [the mathematical review](final-mathematical-review.md) and [editorial review](final-editorial-review.md). This unit record preserves its earlier checkpoints; final-validation.md supersedes historical pending statuses.
+
 ## Coverage and corrections
 The complete body, every original formal statement/proof, twelve original exercises, hints and idea/writeup solutions, ending and reading guidance are rewritten. Cayley's epigraph, all four original figure blocks/captions and bibliographic records are preserved. Two new illustrations follow the Fano figure; four fully solved exercises follow the old twelve. This is a writer check, not separate final review.
 

@@ -1,5 +1,7 @@
 # Appendix G writer check — cubic curves
 
+Current final source review: see [the mathematical review](final-mathematical-review.md) and [editorial review](final-editorial-review.md). This unit record preserves its earlier checkpoints; final-validation.md supersedes historical pending statuses.
+
 ## Coverage
 The full body, every original formal statement/proof, twelve original exercises/hints/idea-writeup solutions, ending and reading guidance are rewritten. The literal attributed Newton paraphrase, four original figure blocks/captions and bibliographic records are unchanged. Two figures and four fully solved exercises are appended in their prescribed positions. This is a writer check, not the separate final review.
 

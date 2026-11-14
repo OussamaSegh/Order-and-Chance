@@ -1,5 +1,7 @@
 # Appendix A writer check — transformations
 
+Current final source review: see [the mathematical review](final-mathematical-review.md) and [editorial review](final-editorial-review.md). This unit record preserves its earlier checkpoints; final-validation.md supersedes historical pending statuses.
+
 ## Coverage and preservation
 
 The complete body, every original formal statement/proof, sixteen original exercises/hints/solutions, closing bridge and reading guidance are rewritten. Klein's epigraph is literal, as are all four original figure blocks/captions and the accurate bibliographic fields. Original formal environments and labels retain their order. Two diagrams follow the old Euler figure, and four fully solved exercises follow the old sixteen, with unique labels, difficulty and hints. This is a writer check, not the separate final review.

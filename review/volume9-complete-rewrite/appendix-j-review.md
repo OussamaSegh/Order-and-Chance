@@ -1,5 +1,7 @@
 # Appendix J — rewrite and checking record
 
+Current final source review: see [the mathematical review](final-mathematical-review.md) and [editorial review](final-editorial-review.md). This unit record preserves its earlier checkpoints; final-validation.md supersedes historical pending statuses.
+
 Status: complete draft rewrite; intermediate PDF-only build exited 0 at 425 print pages. Layout checks report no overflow or unresolved references. Both added figures were inspected on manuscript pages 395–396. Separate final
 review remains outstanding. This is writer checking, not independent review.
 

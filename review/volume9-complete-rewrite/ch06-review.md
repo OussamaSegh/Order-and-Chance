@@ -1,5 +1,7 @@
 # Chapter 6 writer check — homology
 
+Current final source review: see [the mathematical review](final-mathematical-review.md) and [editorial review](final-editorial-review.md). This unit record preserves its earlier checkpoints; final-validation.md supersedes historical pending statuses.
+
 ## Complete prose coverage and preservation
 
 The full chapter, all definitions, original numbered statements and proofs, examples, six original exercises, hints, idea/writeup solutions, ending and reading guidance are rewritten. Original bibliography records and both original figure blocks are preserved. Source comparison keeps the formal environment sequence and every original label in order. Two new figures and four new fully solved exercises are appended with fresh labels. These writer checks are not the separate final review or an independent certificate.

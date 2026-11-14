@@ -1,5 +1,7 @@
 # Appendix D writer check — conics
 
+Current final source review: see [the mathematical review](final-mathematical-review.md) and [editorial review](final-editorial-review.md). This unit record preserves its earlier checkpoints; final-validation.md supersedes historical pending statuses.
+
 ## Coverage and corrections
 The complete body, original formal statements/proofs, twelve original exercises/hints/idea-writeup solutions, ending and reading guidance are rewritten. Galileo's quotation, four original figure blocks/captions and bibliographic records are preserved. This is a writer check, not the separate final review.
 

@@ -1,5 +1,7 @@
 # Chapter 10 — rewrite record and separate checking pass
 
+Current final source review: see [the mathematical review](final-mathematical-review.md) and [editorial review](final-editorial-review.md). This unit record preserves its earlier checkpoints; final-validation.md supersedes historical pending statuses.
+
 Status: manuscript draft complete; final-volume independent review and EPUB
 validation outstanding. This record is a subsequent checking pass by the writer,
 not an independent reviewer certificate.

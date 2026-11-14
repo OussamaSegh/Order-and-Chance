@@ -1,5 +1,7 @@
 # Appendix B writer check — inversion
 
+Current final source review: see [the mathematical review](final-mathematical-review.md) and [editorial review](final-editorial-review.md). This unit record preserves its earlier checkpoints; final-validation.md supersedes historical pending statuses.
+
 ## Coverage
 The entire body, all formal statements and proofs, twelve original exercises, hints, idea/writeup solutions, ending and reading guidance are rewritten. The epigraph, three original figure blocks/captions and bibliographic records are preserved. Two new diagrams follow the original gasket; four labelled exercises follow the old twelve. This is a writer check, not the separate final review.
 

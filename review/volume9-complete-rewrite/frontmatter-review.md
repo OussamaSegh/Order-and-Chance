@@ -1,5 +1,7 @@
 # Preface, jacket, listing and cover explanation
 
+Current final source review: see [the mathematical review](final-mathematical-review.md) and [editorial review](final-editorial-review.md). This unit record preserves its earlier checkpoints; final-validation.md supersedes historical pending statuses.
+
 Status: rewritten draft, shared cover-note synchronisation passed. The combined
 PDF-only build exited 0 at 403 print pages. This is a checking pass by the writer; the separate
 final independent review remains outstanding.

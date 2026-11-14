@@ -1,5 +1,7 @@
 # Chapter 2 — rewrite and checking record
 
+Current final source review: see [the mathematical review](final-mathematical-review.md) and [editorial review](final-editorial-review.md). This unit record preserves its earlier checkpoints; final-validation.md supersedes historical pending statuses.
+
 Status: full draft rewrite; intermediate PDF-only build running. The separate
 final review is outstanding. This is writer checking, not independent review.
 
