@@ -70,8 +70,8 @@ Four new exercises per chapter, after the last existing exercise, each with a hi
 | --- | --- |
 | — | Draft pull request opened: https://github.com/OussamaSegh/Order-and-Chance/pull/242 |
 | — | Preface, blurb, `kdp.md`, About the Cover, portrait macro and credits | Done |
-| 1–11 | Sentence rewrite, two figures, four exercises | Done; final review and full-format validation pending |
-| 12–16, A–F | Sentence rewrite, two figures, four exercises | In progress |
+| 1–12 | Sentence rewrite, two figures, four exercises | Done; final review and full-format validation pending |
+| 13–16, A–F | Sentence rewrite, two figures, four exercises | In progress |
 
 Portraits on disk, not yet placed in the chapters: Banach, Hilbert, Cayley, Kirchhoff, Fredholm, Fourier, Poisson, Gauss, Haar, Hadamard, Cauchy, Tauber, Riemann, Jordan, Frobenius, Schwarz, Lyapunov. Credits are in `volume8-analysis/photos/CREDITS.md`. Place each at the first real mention. Do not invent a caption.
 
@@ -166,3 +166,10 @@ The Sobolev definition now distinguishes the Fourier norm on the line from the e
 Other prerequisite checks: the nonzero-test qualifier fixes the zero exception in the test-transform observation. The definition keeps the bilinear distribution pairing distinct from the Hilbert inner product. A tempered convolution rule with Schwartz kernels is defined and proved before the Hilbert-transform exercise uses it. The positive-order principal-value proof controls both the origin and infinity. The Gagliardo solution proves the required Sobolev density by cutoff and mollification before passing to the uniform limit. H^2 on an interval is defined before the finite-element error claim, and the error is proved using absolutely continuous derivative representatives rather than assuming pointwise second derivatives. The convection solution gives exact coefficients and rigorous scaled boundary-layer limits, including the O(1/b) amplitude for forcing one.
 
 The checkpoint PDF through Chapter 10 exits 0 at 469 print pages, 616 whole boxes, maximum 391.2 pt, with no overflow or unresolved references. The Chapter 11 build is running; a later final build will include all subsequent small source and new-figure clarifications.
+
+
+Chapter 12 is rewritten, including every original exercise, hint and solution. Hadamard's credited portrait is placed. Two new plates show the annihilator of a subgroup of Z/12Z and the three fibre densities of a cap in F_3^2. Exercises `ex:v8c12a`–`d` compute a coset transform and convolution, an extremal prime-order support example, the exact rejection probability of a perturbed linearity test, and the sharp four-point cap in F_3^2. All 505 original printed statement/exercise kind/number/label triples still match main; 48 exercises are appended. The frozen-figure and label audits pass, eligible narrative and exercise prose is fully rewritten through Chapter 12, and cross-volume citations pass at 4951 statements.
+
+Prerequisite repairs in Chapter 12 include a proof of Cauchy–Binet before Chebotarev's determinant proof and a full proof of the diagonal slice-rank lemma before the cap-set exercise. The uncertainty discussion distinguishes the small primes 2, 3 and 5 from p>=7. The FFT proof explains the power-of-two padding in Rader's convolution. Meshulam's increment argument retains the constant 32 and uses a reciprocal-density decrement to count iterations without the previous dyadic gap. The cap-set exercise proves its numerical constant by an exact rational cube comparison and removes the prefactor by tensor powers. The odd-characteristic preview uses x+z=2y. FunSearch's admissible-set lower bound and the definition of cap capacity were checked against the primary Nature paper (online 14 December 2023, Nature 625 (2024), 468–475); no claim about the current record is made. The PCP preview distinguishes decision-problem completeness and soundness from a claim about all invalid mathematical proofs.
+
+The checkpoint through Chapter 11 exits 0 at 473 print pages, 620 whole boxes, with no overflow or unresolved references. The Chapter 12 PDF checkpoint is running.
