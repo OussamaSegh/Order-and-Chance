@@ -323,9 +323,10 @@ class CrossVolumeCitations(unittest.TestCase):
         self.assertIn(r"Volume~4, Theorem~8.2 gives the exit probability", exit_time)
         self.assertIn(r"Volume~4, Proposition~8.3 gives the mean duration", exit_time)
         self.assertNotIn("ab$ steps", exit_time)
-        projects = (root / "volume15-order-and-chance/chapters/ch12-projects.tex").read_text(encoding="utf-8")
-        self.assertIn("chooses two cards at a step", projects)
-        self.assertNotIn(r"Proposition~9.11 (the covariances", projects)
+        # Volume 15's old projects chapter (random-to-top shuffle) was removed in the master-plan rewrite;
+        # no Volume 15 file may reintroduce the one-card misreading of Volume 4, Proposition 9.11.
+        for path in (root / "volume15-order-and-chance/chapters").glob("*.tex"):
+            self.assertNotIn(r"Proposition~9.11 (the covariances", path.read_text(encoding="utf-8"))
         fixed_points = (root / "volume11-randomness/chapters/ch13-harder.tex").read_text(encoding="utf-8")
         self.assertIn(r"Volume~1, Chapter~2, writes $\frac{D_r}{r!}", fixed_points)
         self.assertNotIn("inclusion and exclusion (Volume~4, Proposition~2.3)", fixed_points)
