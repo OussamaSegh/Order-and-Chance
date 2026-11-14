@@ -70,8 +70,8 @@ Four new exercises per chapter, after the last existing exercise, each with a hi
 | --- | --- |
 | — | Draft pull request opened: https://github.com/OussamaSegh/Order-and-Chance/pull/242 |
 | — | Preface, blurb, `kdp.md`, About the Cover, portrait macro and credits | Done |
-| 1–16, A–C | Sentence rewrite, two figures, four exercises | Done; final review and full-format validation pending |
-| D–F | Sentence rewrite, two figures, four exercises | In progress |
+| 1–16, A–D | Sentence rewrite, two figures, four exercises | Done; final review and full-format validation pending |
+| E–F | Sentence rewrite, two figures, four exercises | In progress |
 
 Portraits on disk, not yet placed in the chapters: Banach, Hilbert, Cayley, Kirchhoff, Fredholm, Fourier, Poisson, Gauss, Haar, Hadamard, Cauchy, Tauber, Riemann, Jordan, Frobenius, Schwarz, Lyapunov. Credits are in `volume8-analysis/photos/CREDITS.md`. Place each at the first real mention. Do not invent a caption.
 
@@ -222,3 +222,10 @@ Appendix C is rewritten through invariant subspaces, triangularisation, Cayley�
 The Dunford uniqueness proof establishes the simultaneous-diagonalisation step locally before using it and takes a common nilpotence exponent, avoiding a later theorem. Schur uses projection already taught in Volume 1/main Chapter 2 rather than the later appendix. The kernel lemma handles zero and constant coprime factors. Zero-dimensional operators have empty forms; the common-eigenvector conclusion explicitly requires a nonzero space. Jordan polynomial substitution now uses shifted coefficients over arbitrary fields, with derivative/factorial notation only in characteristic zero. The minimal-polynomial exercise uses this coefficient proof in every characteristic. Complex functional calculus requires holomorphic local jets; real smooth jets apply on real eigenvalues, and mere real smoothness near complex eigenvalues is explicitly insufficient for complex derivatives. The exponential counterexample compares equal versus unequal diagonals exactly instead of using a decimal value of cosh(1). No original statement/exercise number moved.
 
 The Appendix B checkpoint exits 0 at 485 print pages, 645 whole boxes, with no overflow or unresolved references. Appendix C awaits its checkpoint.
+
+
+Appendix D is rewritten through inner products, Gram–Schmidt/QR, projections, least squares/Gauss–Markov, Gram and Cauchy determinants, orthogonal polynomials, quadrature, adjoints and Cholesky, including all original exercises/hints/solutions. Two added plates show weighted residuals and the three-node Gauss rule. Exercises `ex:v8cDa`–`d` compute a weighted fit, a least-norm interpolating quadratic, the first three-node quadrature error, and products of projections. Original numbers/labels/figures pass the audits, eligible prose is rewritten, and citations pass at 4983 statements with 80 appended exercises.
+
+The positive-integral inner product now explicitly has a<b, and the orthogonal-polynomial interval has nonempty interior. The quadrature-convergence exercise specifies continuity on the compact closure: the former wording allowed bounded open intervals with functions having no uniform polynomial approximant. The correction and its purpose are explicit in the exercise and proof. Repeated Cauchy nodes are handled before factoring. The unused beta_0 in the monic recurrence is assigned an arbitrary positive value; the ratio formula remains for n>=1. Strict zero interlacing is justified by the positive recurrence excluding common roots. The Hilbert-determinant decay is expressed logarithmically from the exact product, avoiding an ambiguous ratio asymptotic. The obtuse-vector induction only projects a putative oversized family, avoiding a zero-projection inference for two opposite vectors. Reciprocal sums in the Muntz exercise omit a possible initial zero exponent. The Gaussian covariance discussion distinguishes interpolating covariances from mixture entropy in later review.
+
+The Appendix C checkpoint exits 0 at 487 print pages, 647 whole boxes, with no overflow or unresolved references. Appendix D awaits its checkpoint.
