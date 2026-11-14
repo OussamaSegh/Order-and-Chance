@@ -43,7 +43,7 @@ Reduced fractions of denominator up to eighty each carry a circle whose radius i
 
 Cover illustration: the Cantor function over the Cantor set; see About the Cover.
 
-The Cantor function approached through its iterates, the last of them rising from zero to one and flat on the removed intervals, with eight stages of the Cantor set in rows underneath. Georg Cantor introduced the set in 1883, and described the staircase associated with it in 1884. The function is constant on a set of full length and increases only on a set of length zero. Making sense of that is the work of this volume, from the chapter Sets, Choice and the Real Numbers to the chapter Measures. The drawing was computed by the book's own TikZ cover generator.
+Eight stages of the Cantor set lie in rows under the Cantor function. The function is drawn through its iterates. The last of them rises from zero to one and is flat on the removed intervals. Georg Cantor introduced the set in 1883, and he described the staircase in 1884. The function is constant on a set of full length, and it increases only on a set of length zero. That is why the picture belongs on this volume. The set is built with the real numbers, and its length is settled only when measure is defined, in the chapter Measures. The drawing was computed by the book's own TikZ cover generator.
 
 ## Volume 8 — Analysis
 
