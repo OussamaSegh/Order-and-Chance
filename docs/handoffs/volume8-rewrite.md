@@ -70,8 +70,8 @@ Four new exercises per chapter, after the last existing exercise, each with a hi
 | --- | --- |
 | — | Draft pull request opened: https://github.com/OussamaSegh/Order-and-Chance/pull/242 |
 | — | Preface, blurb, `kdp.md`, About the Cover, portrait macro and credits | Done |
-| 1–12 | Sentence rewrite, two figures, four exercises | Done; final review and full-format validation pending |
-| 13–16, A–F | Sentence rewrite, two figures, four exercises | In progress |
+| 1–13 | Sentence rewrite, two figures, four exercises | Done; final review and full-format validation pending |
+| 14–16, A–F | Sentence rewrite, two figures, four exercises | In progress |
 
 Portraits on disk, not yet placed in the chapters: Banach, Hilbert, Cayley, Kirchhoff, Fredholm, Fourier, Poisson, Gauss, Haar, Hadamard, Cauchy, Tauber, Riemann, Jordan, Frobenius, Schwarz, Lyapunov. Credits are in `volume8-analysis/photos/CREDITS.md`. Place each at the first real mention. Do not invent a caption.
 
@@ -173,3 +173,10 @@ Chapter 12 is rewritten, including every original exercise, hint and solution. H
 Prerequisite repairs in Chapter 12 include a proof of Cauchy–Binet before Chebotarev's determinant proof and a full proof of the diagonal slice-rank lemma before the cap-set exercise. The uncertainty discussion distinguishes the small primes 2, 3 and 5 from p>=7. The FFT proof explains the power-of-two padding in Rader's convolution. Meshulam's increment argument retains the constant 32 and uses a reciprocal-density decrement to count iterations without the previous dyadic gap. The cap-set exercise proves its numerical constant by an exact rational cube comparison and removes the prefactor by tensor powers. The odd-characteristic preview uses x+z=2y. FunSearch's admissible-set lower bound and the definition of cap capacity were checked against the primary Nature paper (online 14 December 2023, Nature 625 (2024), 468–475); no claim about the current record is made. The PCP preview distinguishes decision-problem completeness and soundness from a claim about all invalid mathematical proofs.
 
 The checkpoint through Chapter 11 exits 0 at 473 print pages, 620 whole boxes, with no overflow or unresolved references. The Chapter 12 PDF checkpoint is running.
+
+
+Chapter 13 is rewritten through invariant means, Hausdorff's paradox, real/circle/discrete duality and local p-adic Fourier inversion. Haar's credited portrait is placed. New plates show reciprocal ball masses and geometric cancellation along a circle rotation. Exercises `ex:v8c13a`–`d` treat ball convolution, dilation and unitarity, finite quotient characters, and uniform orbit averages. Every original statement number, label and figure environment passes the audit; all eligible narrative and exercise prose is rewritten. Cross-volume citations pass at 4955 statements, with all 505 original numbered triples unchanged and 52 appended exercises.
+
+The abstract-group mean argument now explicitly permits arbitrary groups rather than inheriting the topological section's countability assumption. Haar uniqueness retains the sigma-finite measure-uniqueness step and justifies compact support of the distance cutoffs. The Q_p self-duality proof now checks both directions of the compact-convergence topology, using annihilators of compact open subgroups. The rational-quotient exercise likewise verifies its topological identification. The Folland reference names the book without the previous unsupported chapter locator. General Haar existence, nonabelian uniqueness and general Pontryagin duality are clearly quoted, not prerequisites silently assumed proved.
+
+The Chapter 12 checkpoint exits 0 at 473 print pages, 626 whole boxes, with no overflow or unresolved references. Chapter 13 awaits its checkpoint build.
