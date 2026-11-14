@@ -95,3 +95,12 @@ parallelograms, labels and captions were legible and consistent. The rendered
 text includes the dimension-zero clarification. `check_appendices.py` exited 0;
 its numerical examples are illustrations, not proof verification.
 `git diff --check` passed. EPUB and exact-final-head CI remain unverified.
+
+## Later draft-check repair
+
+The new non-strict compact Minkowski exercise explicitly assumes n>=1 and now
+asks for the dimension-zero exception as well. For n=0, C=Lambda={0} meets the
+threshold but contains no nonzero vector; dilation cannot make its volume strict.
+The solution gives this counterexample. This fixes a boundary omission in the
+new exercise, not a false statement on starting main. Original strict Minkowski
+and Blichfeldt statements remain valid and vacuous in dimension zero.

@@ -175,3 +175,16 @@ K. **Curvature.** Closed curves must have periodic derivatives before using tota
 Chapter 10 is being rewritten first. No entry above is considered fixed until
 its manuscript change, mathematical recheck and fixing commit are recorded.
 No full-volume acceptance gate has been passed for the rewritten manuscript.
+
+## Further findings while rewriting Chapter 8 (not yet fixed)
+
+The Weyl proof says to change the product orientation to make its already-defined
+scalar C positive. An orientation choice alone does not change that scalar.
+Use |C| in the measure identity instead (or explicitly change a form's sign).
+The trace-moment solution invokes the two-point correlation theorem also when
+n=1, although that theorem requires correlation order <=n. Treat n=1 directly.
+The sine quotient for the kernel needs its continuous value at coincident angles.
+The repulsion exercise needs the full angular-distance boundary cases outside
+0<epsilon<pi. When stating the zero pair-correlation conjecture, index zeros with
+multiplicity and exclude equal indices, rather than silently discarding distinct
+copies at an equal ordinate. These are in addition to the first-read findings.

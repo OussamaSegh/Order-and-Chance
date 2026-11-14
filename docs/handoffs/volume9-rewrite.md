@@ -52,7 +52,15 @@ The preservation guard now also verifies all 213 printed part/chapter/section
 numbers and both approved cover-art sources. CI found a required credit phrase
 in About the Cover; it has been restored and all ten local cover tests pass.
 The build predates that wording-only credit repair; a later build will verify it.
-The remaining 17 units, final
+Chapter 8 now has a full draft rewrite, two diagrams and four exercises. Its
+first-column n=1 atom, signed-test domination, absolute Jacobian, n=1 trace
+moment and spectral-statistics qualifications are repaired. The six-unit
+intermediate PDF build exited 0 at 411 pages; all twelve added diagrams and
+both photographs were inspected. A tower photograph is credited beside the
+first Shukhov discussion, with 1897 publication evidence. Later checks also
+restored Segre's all-field scope and added the n=0 counterexample to the NEW
+non-strict Minkowski exercise; those small repairs await the complete build.
+The remaining 16 units, final
 validation, ready PR, exact-head green CI, normal merge and exact-merge publication
 verification remain outstanding. PR #243 remains a draft. No KDP upload occurred.
 

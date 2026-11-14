@@ -118,3 +118,8 @@ and a deliberately altered section number was detected. `git diff --check`
 passed. The build began before the later cover-credit phrase repair; its
 colophon is not claimed to validate that subsequent wording change. Full EPUB,
 separate final review and exact-final-head CI remain outstanding.
+
+A later checking pass supplied the intermediate three-factor commutator expansion
+and explicitly used invariant orthogonal complements in the SO(n) block proof,
+covering repeated eigenvalues without a hidden choice of real eigenbasis.
+These clarifications await the subsequent complete build.

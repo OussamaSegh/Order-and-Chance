@@ -100,3 +100,15 @@ inspected on rendered manuscript PDF pages 300 and 301; labels, values, ruling
 colours and captions were legible, with no visible collision. Original source
 figure blocks also compare literally equal. `git diff --check` passed.
 This is not a full EPUB build, exact-final-head CI or final review certificate.
+
+## Later draft-check repair
+
+Restored the Segre theorem's explicitly all-field scope, including characteristic
+two. Starting main allowed any field in the ruled-quadric section; an overbroad
+new opening sentence had temporarily restricted the whole appendix to
+characteristic !=2. The opening now names the exception, the Segre statement
+says 'over any field', and the restriction is restored only for the subsequent
+Witt arguments. The new ruling-map exercise also works over any field, including
+F2. No original valid hypothesis has been discarded. The tower photograph was
+added near the first Shukhov discussion, unnumbered, with source evidence and
+credits in photos/CREDITS.md; its rendered page was inspected.

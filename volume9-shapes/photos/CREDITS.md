@@ -35,3 +35,29 @@
 - Placement: Chapter 10, beside the first discussion of Riemann's 1851 proof.
   The adjacent credit repeats the subject, date, unknown photographer and
   public-domain source. The portrait is unnumbered, preserving original figures.
+
+## Shukhov's first hyperboloid water tower
+
+- File: `shukhov-tower.jpg`. The first Shukhov hyperboloid water tower at the
+  1896 All-Russian exhibition in Nizhny Novgorod. Photograph attributed by
+  Commons to **Andrei Osipovich Karelin (1837–1906)**. The native print's
+  phototype imprint names Scherer, Nabholz & Co., Moscow; it is retained.
+- Source page: [First Shukhov Tower Nizhny Novgorod 1896](https://commons.wikimedia.org/wiki/File:First_Shukhov_Tower_Nizhny_Novgorod_1896.jpg).
+- Original image: <https://upload.wikimedia.org/wikipedia/commons/a/a1/First_Shukhov_Tower_Nizhny_Novgorod_1896.jpg>.
+- The upload URL, date, artist, publication credit and full rights
+  metadata are preserved in `shukhov-tower-source-evidence.json`, retrieved
+  live from the Commons imageinfo API on **14 November 2026**.
+- Publication credit recorded by Commons: *Vydy Vserossiyskoy vystavki 1896
+  goda v Nizhnem Novgorode*, **1897**. The original plate was inspected,
+  including its printed caption and phototype imprint.
+- Public-domain evidence: Commons identifies the work as **Public domain**
+  under a life-plus-100-or-shorter term. The attributed photographer died in
+  1906. Publication in 1897 also puts it outside the US 95-year term as of 2026.
+  These dates, rather than the date of a modern upload, establish the term.
+- Native file: **3105 × 2683 pixels**, **1,750,527 bytes**, unedited. At the
+  shared maximum height of 1.65 inches it prints at about **1626 ppi**.
+- SHA-256: `b55dd286efba4453f0f60ca9a13f6d832134738a697d29a4f09b70dfec47d646`.
+- Placement: Appendix E, immediately following the first discussion of Shukhov's
+  towers. The adjacent credit repeats subject, date, attribution, publication
+  year and public-domain source. EPUB alternative text explains the straight
+  bars and curved frame. The photograph is unnumbered.

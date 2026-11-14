@@ -64,7 +64,7 @@ solutions. Counts below are the starting counts, not additions.
 | 5 | The Fundamental Group and Coverings | 6 | 2 | Not started |
 | 6 | Homology | 6 | 2 | Not started |
 | 7 | Matrix Lie Groups | 6 | 1 | Draft rewritten; PDF/preservation/figures checked |
-| 8 | Haar Measure and Weyl Integration | 6 | 1 | Not started |
+| 8 | Haar Measure and Weyl Integration | 6 | 1 | Draft rewritten; intermediate PDF/figures checked |
 | 9 | The Hyperbolic Plane and the Modular Group | 6 | 3 | Not started |
 | 10 | The Riemann Mapping Theorem | 3 | 1 | Draft rewritten; validation pending |
 | 11 | Integral Geometry | 6 | 1 | Not started |
@@ -82,16 +82,18 @@ solutions. Counts below are the starting counts, not additions.
 
 Totals: 22 units, 200 original exercises, 55 original figures. Required additions:
 88 exercises and 44 illustrations. Relevant verified public-domain photographs
-remain to be selected, credited and inspected. Chapters 7 and 10 and Appendices E, H and I each have two added illustrations and four
-new exercises with hints and full solutions: ten illustrations and twenty
-exercises so far. One Riemann photograph is credited, with live source metadata
-and independently inspected 1892 publication evidence. All ten added figures
-and the portrait have been inspected in rendered pages. The latest combined
-PDF-only build exited 0 at 407 print pages, with preservation and layout checks
-passing. The preface, blurb, repository KDP copy and canonical About the Cover
-note are rewritten; rendered preface, colophon and full paperback wrap were
-inspected. The remaining 17 unit rewrites and additions, full EPUB validation
-and separate final review remain outstanding.
+remain to be selected, credited and inspected. Chapters 7, 8 and 10 and Appendices E, H and I have full draft rewrites, each
+with two added illustrations and four new exercises with hints and full solutions:
+twelve illustrations and twenty-four exercises so far. Two photographs are credited:
+Riemann's portrait (inspected 1892 publication evidence) and Shukhov's tower
+(attributed to Karelin, published in 1897). Source metadata and public-domain
+evidence are preserved. All twelve added figures and both photographs have been
+inspected in rendered pages. The latest intermediate PDF-only build exited 0 at
+411 print pages, with preservation and layout checks passing. Some later small
+checking-pass repairs await the next complete build. Preface, blurb, KDP copy and
+canonical cover note are rewritten; their rendered pages/wrap have been inspected.
+The remaining 16 unit rewrites and additions, complete EPUB validation and the
+separate final review remain outstanding.
 
 ## Validation scope
 
@@ -153,7 +155,7 @@ Its `list` and `site` jobs passed; `build` and `debs` were skipped because this
 workstream has no book-source changes. This is **not** an exact-final-head book
 build or publication certificate. Later validation-record commits need their own
 CI result. PR #243 remains a draft; no merge or merge-commit publication exists
-for this request. The additions gate is still failed. The remaining 17 unit rewrites and all separate final mathematical/editorial
+for this request. The additions gate is still failed. The remaining 16 unit rewrites and all separate final mathematical/editorial
 reviews remain outstanding.
 
 `git diff --check` passed after removing trailing whitespace from captured text.
