@@ -4,6 +4,8 @@ This is a baseline for the newly requested complete rewrite, **not a completion
 or review certificate**. Manuscript work has begun. The immutable baseline files below still describe
 starting main; current work and unresolved findings are recorded separately.
 
+Current checkpoint: all 22 units have full drafts, with 44 added figures, 88 fully solved exercises and two credited photographs. The combined PDF-only build exits 0 at 511 print pages. Source additions and preservation pass. The separate final review, full EPUB, exact-head green CI, ready PR, normal merge and exact-merge publication are not yet complete. See the unit writer checks and current handoff.
+
 ## Provenance
 
 - Starting main: `9cd86c15bd386d59e7a1c6f96fb0ea5ed808c26b`.
@@ -73,8 +75,8 @@ solutions. Counts below are the starting counts, not additions.
 | C | Projective geometry | 12 | 4 | Draft rewritten; PDF/preservation/figures checked |
 | D | Conics | 12 | 4 | Draft rewritten; PDF/preservation/figures checked |
 | E | Quadratic forms and quadrics | 12 | 3 | Draft rewritten; PDF/preservation/figures checked |
-| F | Plane curves | 12 | 3 | Draft rewritten; PDF/preservation checked; label repair pending |
-| G | Cubic curves | 12 | 4 | Not started |
+| F | Plane curves | 12 | 3 | Draft rewritten; PDF/preservation/figures checked |
+| G | Cubic curves | 12 | 4 | Draft rewritten; PDF/preservation/figures checked |
 | H | Lattices and sphere packings | 12 | 4 | Draft rewritten; PDF/preservation/figures checked |
 | I | Non-Euclidean geometry | 12 | 2 | Draft rewritten; validation pending |
 | J | Convex bodies | 12 | 3 | Draft rewritten; PDF/preservation/figures checked |
@@ -145,8 +147,7 @@ Its `list` and `site` jobs passed; `build` and `debs` were skipped because this
 workstream has no book-source changes. This is **not** an exact-final-head book
 build or publication certificate. Later validation-record commits need their own
 CI result. PR #243 remains a draft; no merge or merge-commit publication exists
-for this request. The additions gate is still failed. The remaining 16 unit rewrites and all separate final mathematical/editorial
-reviews remain outstanding.
+for this request. The additions gate is still failed. At that earlier checkpoint, sixteen unit rewrites and all separate final reviews remained outstanding; the current checkpoint is recorded at the top.
 
 `git diff --check` passed after removing trailing whitespace from captured text.
 No new figures, exercises or photographs were added; no new mathematical
