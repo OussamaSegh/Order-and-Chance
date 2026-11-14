@@ -70,7 +70,7 @@ Four new exercises per chapter, after the last existing exercise, each with a hi
 | --- | --- |
 | — | Draft pull request opened: https://github.com/OussamaSegh/Order-and-Chance/pull/242 |
 | — | Preface, blurb, `kdp.md`, About the Cover, portrait macro and credits | Done |
-| 1–16, A–F | Sentence rewrite, two figures, four exercises | Done; final review and full-format validation pending |
+| 1–16, A–F | Sentence rewrite, two figures, four exercises | Done; review recorded below and in the linked report |
 
 All seventeen portraits are placed in the chapters: Banach, Hilbert, Cayley, Kirchhoff, Fredholm, Fourier, Poisson, Gauss, Haar, Hadamard, Cauchy, Tauber, Riemann, Jordan, Frobenius, Schwarz, Lyapunov. Credits are in `volume8-analysis/photos/CREDITS.md` and repeated at each placement.
 
@@ -248,3 +248,6 @@ Final proof-copy pass removes five comments about avoiding later exercises/appen
 All 44 added plates compile independently. Visual inspection of four contact sheets found two label collisions in the added Mellin-pole and energy-ellipse plates; those new labels are moved apart, with leader arrows for the energy levels. The corrected plates were rendered and inspected again. The complete-manuscript checkpoint `--pdf-only` exits 0 at 491 print pages, 659 whole boxes, maximum height 391.2 pt, with no overflow or unresolved references. The final proof-copy/plate sources are undergoing another PDF-only build followed by the full EPUB build.
 
 A stricter final prose comparison also checks short sentences below the handoff's forty-character threshold. It found twelve short prose sentences still matching after mathematics was stripped; these are rephrased without changing formulas or hypotheses. Remaining identical fragments are exercise/subpart titles and the literal Maxwell quotation. All original numbered triples, labels and frozen figures still pass afterward.
+
+
+The final editorial review and per-unit commit table are in [volume8-rewrite-final-review-2026-11-14.md](../review/volume8-rewrite-final-review-2026-11-14.md). The manuscript is frozen at the source contents of `16c6d0d6`. The final exact-head build results, exported page count/EPUB size, readiness and CI run IDs are recorded in [PR #242](https://github.com/OussamaSegh/Order-and-Chance/pull/242) after those checks finish, without changing the checked head just to record its own SHA. Earlier build notes in this handoff are chronological checkpoints.
