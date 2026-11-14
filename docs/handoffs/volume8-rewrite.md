@@ -70,8 +70,8 @@ Four new exercises per chapter, after the last existing exercise, each with a hi
 | --- | --- |
 | — | Draft pull request opened: https://github.com/OussamaSegh/Order-and-Chance/pull/242 |
 | — | Preface, blurb, `kdp.md`, About the Cover, portrait macro and credits | Done |
-| 1–15 | Sentence rewrite, two figures, four exercises | Done; final review and full-format validation pending |
-| 16, A–F | Sentence rewrite, two figures, four exercises | In progress |
+| 1–16 | Sentence rewrite, two figures, four exercises | Done; final review and full-format validation pending |
+| A–F | Sentence rewrite, two figures, four exercises | In progress |
 
 Portraits on disk, not yet placed in the chapters: Banach, Hilbert, Cayley, Kirchhoff, Fredholm, Fourier, Poisson, Gauss, Haar, Hadamard, Cauchy, Tauber, Riemann, Jordan, Frobenius, Schwarz, Lyapunov. Credits are in `volume8-analysis/photos/CREDITS.md`. Place each at the first real mention. Do not invent a caption.
 
@@ -194,3 +194,10 @@ Chapter 15 is rewritten through regular summation, Tauber, Karamata, Wiener's lo
 Explicit repairs: Wiener–Ikehara now concludes A(x)=Cx+o(x), retaining C>=0 and explaining the C=0 case rather than writing an undefined asymptotic ratio to zero. Its proof defines psi on negative arguments before using full-line smoothing. The two-squares remark corrects the false claim that the unweighted result does not imply the weighted one by elementary means: it gives the partial-summation identity and the implication. The reverse inference remains unproved and is correctly distinguished. Slow-variation logarithm examples are extended positively below their natural large-x range. The nonunital L1 algebra discussion no longer asserts a naive global inverse, and Tauber's condition is described as sufficient rather than falsely sharp against Littlewood's weaker condition. The quicksort solution derives its exact recurrence formula before using it.
 
 The Chapter 14 checkpoint exits 0 at 483 print pages, 632 whole boxes, with no overflow or unresolved references. Chapter 15 awaits its checkpoint build.
+
+
+Chapter 16 is rewritten through all 22 original linked problems, hints, solutions, tool notes and research leads. Its two new plates show a four-line tight frame and Gaussian Hermite eigenvalues. Problems `ex:v8c16a`–`d` compute the sharp planar frame geometry, solve a constrained Fock evaluation problem, separate atomic from continuous Fourier energy, and analyse compact Gaussian conditional expectation. All 505 original numbered statement/exercise triples match main, with 64 appended exercises; original figures and labels are preserved. Eligible prose is fully rewritten, and cross-volume citations pass at 4967 statements.
+
+The solutions now prove Ramanujan-sum orthogonality and the fractional-part integral directly, so the problem-book citations are optional companions rather than prerequisites. The van de Lune threshold includes the omitted strict boundary case sigma=sigma_0: the already taught prime number theorem supplies a prime away from the tangent phase. The research lead no longer says real-part zero curves cross that boundary. The Sobolev kernel proof treats endpoint evaluations by boundary derivatives, since their kernels do not satisfy the interior Neumann boundary conditions. The Khinchin example explicitly restricts strict improvement to 0<a<1. Ingham's lead gives Kadec's uniform sup|delta_n|<1/4 condition, not merely pointwise strict inequalities. The mean-value constant 5 follows from exact pi>3 algebra, replacing decimal estimates. The slow-average construction justifies the telescoping mass identity near zero. Gaussian operator leads distinguish positive, negative, zero and endpoint correlations. The chapter map uses current volume numbers and contains no Volume 0.
+
+The Chapter 15 PDF checkpoint exits 0 at 483 print pages, 637 whole boxes, with no overflow or unresolved references. Chapter 16 awaits its checkpoint.
