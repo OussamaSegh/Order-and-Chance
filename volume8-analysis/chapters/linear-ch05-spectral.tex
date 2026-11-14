@@ -1,108 +1,67 @@
 \chapter{The Spectral Theorem and Its Relatives}\label{linear:ch:spectral}
 
 \begin{center}\itshape
-I developed my theory of infinitely many variables from purely mathematical interests, and even called it ``spectral
-analysis'' without any presentiment that it would later find application to the actual spectrum of physics.
+``I developed my theory of infinitely many variables from purely mathematical interests, and even called it `spectral analysis' without any presentiment that it would later find application to the actual spectrum of physics.''
 \upshape(attributed to David Hilbert, in the 1920s)
 \end{center}
 
-In 1904 David Hilbert, studying integral equations, needed a name for the set of values $\lambda$ for which $(A-\lambda I)$
-fails to be invertible, and he borrowed one from optics: the \emph{spectrum}. It was a metaphor. A prism splits white light
-into colours, and Hilbert's theorem split a symmetric operator into simple pieces, each acting by a single number. Twenty
-years later, Heisenberg, Born, Jordan and Schr\"odinger discovered that the energy levels of the hydrogen atom, whose
-differences are the frequencies of the lines in its actual, physical spectrum, are the eigenvalues of a symmetric
-operator. The metaphor had been literally true all along. Hilbert's reaction, quoted above as it was reported, became part
-of the folklore of the subject.
+A prism separates light into colours. Spectral theory separates an operator into simpler actions. Hilbert borrowed the word \emph{spectrum} while studying integral equations: it names the values $\lambda$ for which $A-\lambda I$ is not invertible. Quantum mechanics later gave the name a physical meaning. Heisenberg, Born, Jordan and Schr\"odinger expressed atomic energy levels through operators; differences between the eigenvalues correspond to spectral lines. Hilbert's reported remark above recalls that unexpected connection.
 
-Long before Hilbert, the theorem in finite dimension was known: Cauchy (1829) proved that a real symmetric matrix has real
-eigenvalues and an orthonormal basis of eigenvectors. What the twentieth century added is the \emph{variational} point of
-view. Lord Rayleigh, in \emph{The Theory of Sound} (1877), estimated the lowest frequency of a vibrating string or plate by
-minimising a ratio of energies, and Ernst Fischer (1905) and Richard Courant (1920) characterised \emph{every} eigenvalue
-as a min-max of such ratios. Hermann Weyl (1912) used this to prove that the eigenvalues of a drum grow in proportion to $n$
-divided by its area, and in passing found inequalities between the eigenvalues of $A$, $B$ and $A+B$ that still bear his
-name.
+The finite-dimensional theorem came earlier. Cauchy proved the real symmetric case in 1829: the eigenvalues are real and eigenvectors can be chosen as perpendicular unit vectors. Rayleigh's \emph{Theory of Sound} (1877) approached frequencies by minimising energy ratios. Fischer (1905) and Courant (1920) extended this variational description to every eigenvalue. Weyl used it in 1912 to study the growth of eigenvalues of planar drums and to compare the spectra of $A$, $B$ and $A+B$.
 
-This chapter proves the spectral theorem for normal operators, then studies eigenvalues of Hermitian matrices as
-optimisation problems: Rayleigh quotients, the Courant--Fischer theorem, Cauchy's interlacing, Weyl's inequalities, and two
-theorems that tell exactly which diagonals a symmetric matrix with given eigenvalues can have (Schur and Horn) and how far
-eigenvalues move when a matrix moves (Hoffman and Wielandt).
+\portrait{cauchy}{Augustin-Louis Cauchy (1789--1857). Illustration from \emph{Das neunzehnte Jahrhundert in Bildnissen}, Berlin, 1901. Public domain, via Wikimedia Commons.}
+
+Normal matrices have orthonormal eigenbases. For Hermitian matrices, their eigenvalues also solve optimisation problems. Rayleigh quotients lead to min-max formulas, interlacing and Weyl's inequalities. Schur and Horn describe the diagonals compatible with a given spectrum. Hoffman--Wielandt bounds the total movement of eigenvalues under perturbation.
 
 \begin{think}
-Is there a real symmetric $3\times3$ matrix with diagonal entries $3,0,0$ and eigenvalues $2,2,-1$? With diagonal entries
-$1,1,1$ and eigenvalues $3,0,0$? The traces agree in both cases, so the trace alone cannot decide. Section~\ref{linear:sec:schurhorn}
-gives a complete answer; the first question has an answer that fits on one line once you know the Rayleigh quotient.
+Can a real symmetric matrix have diagonal $(3,0,0)$ and eigenvalues $(2,2,-1)$? Can it have diagonal $(1,1,1)$ and eigenvalues $(3,0,0)$? Both pairs have matching traces. What further obstruction would you look for? Section~\ref{linear:sec:schurhorn} will give a complete test.
 \end{think}
 
-Part~I worked in infinite dimension from the start. Part~II begins again in finite dimension, on purpose. The word \emph{spectrum} is easiest to understand on a matrix, and every theorem of this chapter has a
-descendant in Chapter~\ref{ch:spectral}, where the matrix becomes a compact operator on a Hilbert space.
+Matrices let us examine a spectrum with finitely many coordinates. Chapter~\ref{ch:spectral} will return to infinite dimension and the compact spectral theorem. The finite-dimensional proofs here show which geometric arguments are worth carrying over.
 
 \begin{reminder}[what this chapter assumes]
-Linear algebra as in Volume~1, Chapter~7, and three facts from the appendices of this volume. An inner product on a finite-dimensional space has orthonormal bases, and a subspace $W$ has an orthogonal complement
-$W^\perp$ with $V=W\oplus W^\perp$ (Appendix~\ref{linear:ch:inner}). The \emph{adjoint} $A^*$ of an operator is defined by $\langle Ax,y\rangle=\langle x,A^*y\rangle$; its matrix in an orthonormal basis is the conjugate transpose
-(Appendix~\ref{linear:ch:inner}). Every operator on a complex inner product space has an orthonormal basis in which its matrix is upper triangular (Schur's theorem, Theorem~\ref{linear:thm:schur} in
-Appendix~\ref{linear:ch:eigen}). The proofs of these three facts use nothing from this chapter.
+We use Volume~1, Chapter~7, and Chapter~\ref{ch:hilbert}'s orthonormal bases, orthogonal complements and adjoints. In an orthonormal basis, the adjoint has the conjugate-transpose matrix. Appendices~\ref{linear:ch:eigen} and~\ref{linear:ch:inner} give a separate finite-dimensional account. The one additional fact needed now is Schur's triangularisation; the following argument establishes it before use.
 \end{reminder}
+
+A complex operator has an eigenvector because its characteristic polynomial has a root (Volume~1, Theorem~6.4). Choose a unit eigenvector and complete it to an orthonormal basis by Gram--Schmidt. The first column of the matrix has its eigenvalue at the top and zeros below. Apply induction to the lower-right block, using an orthonormal change of basis on those remaining coordinates. This makes the whole matrix upper triangular. Over $\R$, the same induction works whenever the characteristic polynomial splits over $\R$: the lower block's characteristic polynomial is the original one divided by the first eigenvalue factor. This proves the form of Schur's theorem also recorded in Theorem~\ref{linear:thm:schur}.
 
 \section{The spectral theorem}
 
-Throughout, $V$ is a finite-dimensional inner product space over $\C$ (or $\R$, when said), and $A^*$ is the adjoint, the conjugate transpose in an orthonormal basis.
+Unless we specify real scalars, $V$ is a finite-dimensional complex inner product space. The notation $A^*$ always means the adjoint.
 
 \begin{definition}\label{linear:def:normal}
-An operator $A$ is \emph{normal} if $AA^*=A^*A$. Special cases: \emph{Hermitian} (or \emph{self-adjoint}; \emph{symmetric}
-over $\R$) if $A^*=A$; \emph{skew-Hermitian} if $A^*=-A$; \emph{unitary} if $A^*A=I$.
+An operator is \emph{normal} when $AA^*=A^*A$. It is \emph{Hermitian}, or \emph{self-adjoint}, when $A^*=A$; over $\R$ this is called symmetric. The conditions $A^*=-A$ and $A^*A=I$ define skew-Hermitian and unitary operators, respectively.
 \end{definition}
 
 \begin{theorem}[spectral theorem]\label{linear:thm:spectral}
-An operator on a finite-dimensional complex inner product space is normal if and only if it has an orthonormal basis of
-eigenvectors. In matrix terms, $A\in M_n(\C)$ is normal if and only if $A=UDU^*$ with $U$ unitary and $D$ diagonal.
+A finite-dimensional complex operator is normal exactly when it admits an orthonormal eigenbasis. Equivalently, a complex matrix is normal exactly when $A=UDU^*$ for a unitary $U$ and diagonal $D$.
 \end{theorem}
 \begin{proof}
-If $A=UDU^*$, then $A^*=U\bar DU^*$, and $AA^*=U D\bar DU^*=U\bar DDU^*=A^*A$ because diagonal matrices commute.
+For $A=UDU^*$, its adjoint is $U\bar DU^*$. Diagonal matrices commute, so $AA^*=UD\bar DU^*=U\bar DDU^*=A^*A$.
 
-Conversely, by Schur's theorem (Theorem~\ref{linear:thm:schur}, orthonormal version) there is a unitary $U$ with $T=U^*AU$ upper
-triangular, and $T$ is normal: $TT^*=U^*AA^*U=U^*A^*AU=T^*T$. Compare the $(1,1)$ entries of $T^*T$ and $TT^*$: the first is
-the squared norm of the first column of $T$, which is $|t_{11}|^2$, and the second is the squared norm of the first row,
-$\sum_j|t_{1j}|^2$. Hence $t_{1j}=0$ for $j>1$. Then $T=\operatorname{diag}(t_{11},T')$ with $T'$ upper triangular and
-normal, and induction shows that $T$ is diagonal.
+Conversely, triangularisation gives a unitary $U$ with $T=U^*AU$ upper triangular. Normality passes to $T$, since $TT^*=U^*AA^*U=U^*A^*AU=T^*T$. The $(1,1)$ entries compare the squared norms of the first row and column. The column contributes only $|t_{11}|^2$, whereas the row contributes $\sum_j|t_{1j}|^2$. Equality forces $t_{1j}=0$ for $j>1$. Thus $T=\operatorname{diag}(t_{11},T')$, where $T'$ remains upper triangular and normal. Induction makes $T$ diagonal.
 \end{proof}
 
 \begin{corollary}\label{linear:cor:hermitian}
-The eigenvalues of a Hermitian operator are real, those of a unitary operator have modulus $1$, and eigenvectors of a
-normal operator for distinct eigenvalues are orthogonal. A real symmetric matrix is $A=QDQ^{\mathsf T}$ with $Q$ real
-orthogonal and $D$ real diagonal.
+Hermitian eigenvalues are real, and unitary eigenvalues have modulus $1$. Eigenvectors of a normal operator belonging to different eigenvalues are orthogonal. Every real symmetric matrix has $A=QDQ^{\mathsf T}$ with real orthogonal $Q$ and real diagonal $D$.
 \end{corollary}
 \begin{proof}
-For $A=UDU^*$, $A^*=A$ means $\bar D=D$, and $A^*A=I$ means $\bar DD=I$. Eigenvectors for distinct eigenvalues lie in
-different eigenspaces, which are spanned by different vectors of the orthonormal eigenbasis. For a real symmetric $A$, the
-complex eigenvalues are real, so $\chi_A$ splits over $\R$, and Theorem~\ref{linear:thm:schur} over $\R$ gives a real orthogonal
-$Q$ with $Q^{\mathsf T}AQ$ upper triangular; being symmetric, it is diagonal.
+In $A=UDU^*$, the identity $A=A^*$ gives $D=\bar D$, and $A^*A=I$ gives $\bar DD=I$. Distinct eigenspaces are spanned by disjoint parts of the orthonormal eigenbasis and hence are orthogonal. For real symmetric $A$, its eigenvalues are real even when first computed over $\C$, so its characteristic polynomial splits over $\R$. The real triangularisation proved above supplies an orthogonal $Q$ making $Q^{\mathsf T}AQ$ upper triangular. Symmetry makes that triangular matrix diagonal.
 \end{proof}
 
-Grouping the eigenvectors by eigenvalue, the theorem says $A=\sum_\lambda\lambda P_\lambda$, where $P_\lambda$ is the
-orthogonal projection onto the eigenspace of $\lambda$; these projections are mutually orthogonal and add up to $I$. This is
-the \emph{spectral decomposition}, the form that generalises to infinite dimension (Chapter~\ref{ch:spectral}). It makes functions
-of a normal operator trivial: $f(A)=\sum_\lambda f(\lambda)P_\lambda$, so $e^A$, $|A|$, and, for a Hermitian operator with
-eigenvalues $\ge0$, the square root $\sqrt A$ all make sense (Exercise~\ref{linear:ex:sqrtpsd}).
+Group eigenvectors by eigenvalue and write $P_\lambda$ for projection onto the corresponding eigenspace. These projections have orthogonal ranges, sum to $I$, and give the \emph{spectral decomposition} $A=\sum_\lambda\lambda P_\lambda$. A function of the operator is then $f(A)=\sum_\lambda f(\lambda)P_\lambda$. This defines $e^A$ and $|A|$; for Hermitian $A$ with nonnegative eigenvalues it also defines $\sqrt A$ (Exercise~\ref{linear:ex:sqrtpsd}). Chapter~\ref{ch:spectral} extends this way of thinking to compact operators.
 
-Hermitian operators are the matrices of Hermitian forms, and a Hermitian $A$ with all eigenvalues $\ge0$ (equivalently
-$x^*Ax\ge0$ for all $x$, by expanding $x$ in the eigenbasis) is \emph{positive semidefinite}, written $A\succeq0$. From now
-on, the eigenvalues of a Hermitian $A$ are listed in decreasing order, $\lambda_1(A)\ge\lambda_2(A)\ge\dots\ge\lambda_n(A)$.
+Call a Hermitian matrix \emph{positive semidefinite}, written $A\succeq0$, when its eigenvalues are nonnegative. Expanding in an eigenbasis shows this is equivalent to $x^*Ax\ge0$ for every $x$. We order all Hermitian spectra decreasingly: $\lambda_1(A)\ge\cdots\ge\lambda_n(A)$.
 
 \section{Rayleigh quotients and the min-max theorem}
 
-The \emph{Rayleigh quotient} of a Hermitian $A$ is $R_A(x)=\frac{\langle Ax,x\rangle}{\langle x,x\rangle}$ for $x\ne0$, a real
-number. Take an orthonormal eigenbasis $u_1,\dots,u_n$ with $Au_i=\lambda_iu_i$; for $x=\sum_ic_iu_i$,
+For nonzero $x$, define the real-valued Rayleigh quotient $R_A(x)=\langle Ax,x\rangle/\langle x,x\rangle$. In an orthonormal eigenbasis $Au_i=\lambda_iu_i$, write $x=\sum_ic_iu_i$. Then
 \begin{equation}\label{linear:eq:rayleigh}
-R_A(x)=\frac{\sum_i\lambda_i|c_i|^2}{\sum_i|c_i|^2},
+R_A(x)=\frac{\sum_i\lambda_i|c_i|^2}{\sum_i|c_i|^2}.
 \end{equation}
-a weighted average of the eigenvalues. Hence $\lambda_n\le R_A(x)\le\lambda_1$, with equality on the extreme eigenvectors:
-\[
-\lambda_1(A)=\max_{x\ne0}R_A(x),\qquad\lambda_n(A)=\min_{x\ne0}R_A(x).
-\]
-Two consequences come for free. First, $\lambda_1$ is a maximum of the linear functions $A\mapsto\langle Ax,x\rangle$ over unit
-vectors $x$, hence a \emph{convex} function of $A$: $\lambda_1(A+B)\le\lambda_1(A)+\lambda_1(B)$. Second, each diagonal entry
-$a_{ii}=R_A(e_i)$ lies between $\lambda_n$ and $\lambda_1$. That answers the first question of the opening: a diagonal entry
-$3$ is impossible when the largest eigenvalue is $2$.
+It is a weighted average of eigenvalues. Therefore its maximum is $\lambda_1$ and minimum is $\lambda_n$, both attained on eigenvectors:
+\[\lambda_1(A)=\max_{x\ne0}R_A(x),\qquad\lambda_n(A)=\min_{x\ne0}R_A(x).\]
+On unit vectors the numerator is linear in $A$, so taking its maximum makes $\lambda_1$ convex; in particular $\lambda_1(A+B)\le\lambda_1(A)+\lambda_1(B)$. Also $a_{ii}=R_A(e_i)$ lies between the extreme eigenvalues. This settles the first opening question: an entry $3$ cannot occur on the diagonal when the largest eigenvalue is $2$.
 
 \begin{figure}[ht]
 \centering
@@ -113,41 +72,26 @@ and minimal on the other.}
 \label{linear:fig:rayleigh}
 \end{figure}
 
-What about the eigenvalues in the middle? Each one is a max of mins.
+To reach an eigenvalue in the middle, first minimise on a subspace, then choose the best subspace.
 
 \begin{theorem}[Courant--Fischer]\label{linear:thm:courantfischer}
-For a Hermitian operator $A$ on $V$ of dimension $n$ and $1\le k\le n$,
-\[
-\lambda_k(A)=\max_{\dim W=k}\ \min_{x\in W\setminus0}R_A(x)=\min_{\dim W=n-k+1}\ \max_{x\in W\setminus0}R_A(x).
-\]
+For a Hermitian operator on an $n$-dimensional space and $1\le k\le n$, both formulas recover its $k$th largest eigenvalue:
+\[\lambda_k(A)=\max_{\dim W=k}\ \min_{x\in W\setminus0}R_A(x)=\min_{\dim W=n-k+1}\ \max_{x\in W\setminus0}R_A(x).\]
 \end{theorem}
 \begin{proof}
-For $W_k=\operatorname{span}(u_1,\dots,u_k)$, formula~\eqref{linear:eq:rayleigh} with $c_i=0$ for $i>k$ gives $\min_{W_k}R_A=
-\lambda_k$. Now let $W$ be any subspace of dimension $k$. The subspace $U=\operatorname{span}(u_k,\dots,u_n)$ has dimension
-$n-k+1$, and $\dim W+\dim U=n+1>n$, so $W\cap U$ contains some $x\ne0$. For that $x$, only $c_k,\dots,c_n$ are non-zero
-and $R_A(x)\le\lambda_k$. So $\min_WR_A\le\lambda_k$, which proves the first formula. The second is the first applied to
-$-A$, whose $k$-th largest eigenvalue is $-\lambda_{n-k+1}(A)$.
+The subspace $W_k=\operatorname{span}(u_1,\dots,u_k)$ has minimum quotient $\lambda_k$. Any other $k$-dimensional $W$ meets $U=\operatorname{span}(u_k,\dots,u_n)$ nontrivially, because their dimensions add to $n+1$. At a nonzero vector of that intersection, formula~\eqref{linear:eq:rayleigh} gives $R_A(x)\le\lambda_k$. Thus $\min_WR_A\le\lambda_k$, proving the max-min identity. Apply that identity to $-A$, whose eigenvalues reverse order and sign, to obtain the min-max identity.
 \end{proof}
 
-The point of the theorem is that it characterises $\lambda_k$ without mentioning eigenvectors, so it can be used to compare
-the eigenvalues of different operators. The first comparison is between a matrix and its corners.
+These formulas compare eigenvalues without matching eigenvectors. Compressing an operator to a smaller subspace gives the first application.
 
 \begin{theorem}[Cauchy interlacing]\label{linear:thm:interlacing}
-Let $A$ be Hermitian of size $n$, and $B=P^*AP$ its compression to a subspace of dimension $m$, where $P\in M_{n,m}$ has
-orthonormal columns; for instance, $B$ is a principal $m\times m$ submatrix of $A$. Then for $1\le k\le m$,
-\[
-\lambda_k(A)\ge\lambda_k(B)\ge\lambda_{k+n-m}(A).
-\]
-In particular, the eigenvalues $\mu_1\ge\dots\ge\mu_{n-1}$ of an $(n-1)\times(n-1)$ principal submatrix interlace those of
-$A$: $\lambda_1\ge\mu_1\ge\lambda_2\ge\mu_2\ge\dots\ge\mu_{n-1}\ge\lambda_n$.
+Let $A$ be Hermitian of size $n$ and $P\in M_{n,m}$ have orthonormal columns. Its compression $B=P^*AP$ satisfies
+\[\lambda_k(A)\ge\lambda_k(B)\ge\lambda_{k+n-m}(A)\qquad(1\le k\le m).\]
+Principal submatrices are examples. In particular, an $(n-1)$-dimensional principal corner with eigenvalues $\mu_1\ge\cdots\ge\mu_{n-1}$ has
+\[\lambda_1\ge\mu_1\ge\lambda_2\ge\mu_2\ge\cdots\ge\mu_{n-1}\ge\lambda_n.\]
 \end{theorem}
 \begin{proof}
-For $y\in\C^m$, $R_B(y)=\frac{\langle APy,Py\rangle}{\langle Py,Py\rangle}=R_A(Py)$, and $y\mapsto Py$ maps the subspaces of
-$\C^m$ bijectively onto the subspaces of $\operatorname{Im}P$, preserving dimension. So by Theorem~\ref{linear:thm:courantfischer},
-$\lambda_k(B)$ is the max-min of $R_A$ over $k$-dimensional subspaces of $\operatorname{Im}P$, which is at most the
-max-min over all $k$-dimensional subspaces, $\lambda_k(A)$. Similarly $\lambda_k(B)$ is the min-max of $R_A$ over subspaces
-of $\operatorname{Im}P$ of dimension $m-k+1$, which is at least the min-max over all subspaces of that dimension, namely
-$\lambda_{n-(m-k+1)+1}(A)=\lambda_{k+n-m}(A)$.
+Since $P$ preserves lengths, $R_B(y)=R_A(Py)$. Its images of subspaces are precisely the subspaces of $\operatorname{Im}P$, with dimensions unchanged. Courant--Fischer therefore computes $\lambda_k(B)$ by maximising the minimum over $k$-dimensional subspaces of $\operatorname{Im}P$. Allowing all such subspaces of the ambient space can only increase the answer to $\lambda_k(A)$. For the other bound, minimise the maximum over $(m-k+1)$-dimensional subspaces. Restricting to $\operatorname{Im}P$ can only increase this minimum, whose unrestricted value is $\lambda_{n-(m-k+1)+1}(A)=\lambda_{k+n-m}(A)$.
 \end{proof}
 
 \begin{figure}[ht]
@@ -159,446 +103,313 @@ eigenvalues of the next corner. Such triangular arrays are called Gelfand--Tsetl
 \label{linear:fig:interlace}
 \end{figure}
 
-Appendix~\ref{linear:ch:inner} uses this theorem: the Jacobi matrix $J_n$ of orthogonal polynomials is the corner of
-$J_{n+1}$, so the zeros of consecutive orthogonal polynomials interlace (Figure~\ref{linear:fig:legendre}). In Chapter~\ref{linear:ch:graphs} the same
-theorem, applied to a cleverly signed adjacency matrix of the cube $\{0,1\}^n$, proves the sensitivity conjecture. Its converse
-also holds: any two interlacing sequences are the spectra of a matrix and of a corner of it (Exercise~\ref{linear:ex:bordered}).
+Appendix~\ref{linear:ch:inner} applies interlacing to successive Jacobi matrices, giving interlacing zeros of orthogonal polynomials (Figure~\ref{linear:fig:legendre}). Chapter~\ref{linear:ch:graphs} applies it to a signed adjacency matrix of the cube and proves the sensitivity conjecture. Conversely, prescribed interlacing sequences can be realised by a matrix and a corner; Exercise~\ref{linear:ex:bordered} constructs one.
 
 \section{Weyl's inequalities}
 
-What can be said about the eigenvalues of $A+B$ when we know those of $A$ and $B$? Not everything, since the answer depends
-on how the eigenvectors sit, but a lot.
+The spectra of $A$ and $B$ do not determine the spectrum of their sum: the relative positions of eigenvectors matter. They still give useful bounds.
 
 \begin{theorem}[Weyl, 1912]\label{linear:thm:weyl}
-For Hermitian $A,B$ of size $n$ and indices with $i+j-1\le n$,
-\[
-\lambda_{i+j-1}(A+B)\le\lambda_i(A)+\lambda_j(B).
-\]
+If $A$ and $B$ are Hermitian of size $n$ and $i+j-1\le n$, then
+\[\lambda_{i+j-1}(A+B)\le\lambda_i(A)+\lambda_j(B).\]
 \end{theorem}
 \begin{proof}
-Let $U$ be spanned by the eigenvectors of $A$ for $\lambda_i(A),\dots,\lambda_n(A)$, and $U'$ by those of $B$ for
-$\lambda_j(B),\dots,\lambda_n(B)$. Then $\dim U=n-i+1$, $\dim U'=n-j+1$, and $\dim(U\cap U')\ge n-i-j+2=n-k+1$ with
-$k=i+j-1$. On $U$, $R_A\le\lambda_i(A)$, and on $U'$, $R_B\le\lambda_j(B)$, by~\eqref{linear:eq:rayleigh}. So on a subspace $W$ of
-$U\cap U'$ of dimension $n-k+1$, $R_{A+B}=R_A+R_B\le\lambda_i(A)+\lambda_j(B)$, and the min-max formula of
-Theorem~\ref{linear:thm:courantfischer} gives $\lambda_k(A+B)\le\max_WR_{A+B}\le\lambda_i(A)+\lambda_j(B)$.
+Let $U$ span the eigenvectors of $A$ from index $i$ onward, and $U'$ those of $B$ from index $j$ onward. With $k=i+j-1$, their intersection has dimension at least $(n-i+1)+(n-j+1)-n=n-k+1$. On $U$, $R_A\le\lambda_i(A)$; on $U'$, $R_B\le\lambda_j(B)$. Choose $W\subseteq U\cap U'$ of dimension $n-k+1$. There $R_{A+B}=R_A+R_B\le\lambda_i(A)+\lambda_j(B)$. The min-max formula gives the result.
 \end{proof}
 
 \begin{corollary}[stability of eigenvalues]\label{linear:cor:weylpert}
-For Hermitian $A,B$ and every $k$, $\lambda_n(B)\le\lambda_k(A+B)-\lambda_k(A)\le\lambda_1(B)$. In particular
-$|\lambda_k(A+B)-\lambda_k(A)|\le\|B\|$, where $\|B\|=\max(|\lambda_1(B)|,|\lambda_n(B)|)$ is the operator norm of $B$.
+For Hermitian $A,B$ and every $k$,
+\[\lambda_n(B)\le\lambda_k(A+B)-\lambda_k(A)\le\lambda_1(B).\]
+Consequently $|\lambda_k(A+B)-\lambda_k(A)|\le\|B\|$, where $\|B\|=\max(|\lambda_1(B)|,|\lambda_n(B)|)$ is the operator norm.
 \end{corollary}
 \begin{proof}
-Weyl with $j=1$ gives $\lambda_k(A+B)\le\lambda_k(A)+\lambda_1(B)$. Applied to $A+B$ and $-B$, it gives $\lambda_k(A)\le
-\lambda_k(A+B)+\lambda_1(-B)=\lambda_k(A+B)-\lambda_n(B)$. For the operator norm, $\|Bx\|^2=\sum_i\lambda_i(B)^2|c_i|^2\le
-\max_i\lambda_i(B)^2\|x\|^2$ in an eigenbasis, with equality on an eigenvector.
+Set $j=1$ in Weyl's inequality for the upper bound. Apply it again to $(A+B)+(-B)=A$ to obtain the lower bound, since $\lambda_1(-B)=-\lambda_n(B)$. In an eigenbasis of $B$, $\|Bx\|^2=\sum_i\lambda_i(B)^2|c_i|^2\le\max_i|\lambda_i(B)|^2\|x\|^2$, with equality on a corresponding unit eigenvector. This proves the norm formula.
 \end{proof}
 
-Contrast with Appendix~\ref{linear:ch:eigen}, where a perturbation of size $10^{-6}$ moves the eigenvalues of a $12\times12$ Jordan
-block by about $0.3$ (Figure~\ref{linear:fig:perturb}). Hermitian matrices are perfectly stable: eigenvalues move no more than the matrix does.
-This is why numerical analysts love symmetric problems (Exercise~\ref{linear:ex:nonnormal} compares the two worlds).
+Hermitian eigenvalues move no farther than the matrix in operator norm. Nonnormal matrices can behave quite differently: Appendix~\ref{linear:ch:eigen} illustrates a perturbation of size $10^{-6}$ moving eigenvalues of a $12\times12$ Jordan block by about $0.3$ (Figure~\ref{linear:fig:perturb}). Exercise~\ref{linear:ex:nonnormal} gives a two-dimensional example with exact formulas.
 
 \begin{remark}
-Weyl's inequalities are only the first of many. In 1962 Alfred Horn conjectured a complete list of linear inequalities
-describing all possible triples of spectra $(\lambda(A),\lambda(B),\lambda(A+B))$, defined recursively in terms of smaller
-triples. The conjecture was proved in 1998--1999 by Klyachko, using geometric invariant theory, and by Knutson and Tao,
-whose ``honeycombs'' proved the saturation property it needed. The same inequalities govern tensor products of
-representations of $GL_n$ and intersections of Schubert varieties: see Fulton's survey in the sources.
+Horn conjectured a complete recursive list of inequalities for the spectra of $A$, $B$ and $A+B$ in 1962. Klyachko and Knutson--Tao proved the conjecture in 1998--1999, using geometric invariant theory and honeycombs; the latter established the needed saturation property. These inequalities also describe tensor-product questions for $GL_n$ and intersections of Schubert varieties. Fulton's survey in the sources explains these connections; none is used in our proofs.
 \end{remark}
 
 \section{Diagonals and spectra: Schur and Horn}\label{linear:sec:schurhorn}
 
-For $x\in\R^n$, write $x^\downarrow$ for its entries in decreasing order. We say that $x$ is \emph{majorised} by $y$, written
-$x\prec y$, if
-\[
-\sum_{i=1}^kx^\downarrow_i\le\sum_{i=1}^ky^\downarrow_i\quad(1\le k\le n),\qquad\text{with equality for }k=n.
-\]
-Informally, the entries of $y$ are more spread out than those of $x$: $y$ can be flattened into $x$ by moving mass from
-large entries to small ones. For instance $(\frac13,\frac13,\frac13)\prec x\prec(1,0,0)$ for every probability vector $x$. A matrix with
-non-negative entries whose rows and columns all sum to $1$ is \emph{doubly stochastic}; permutation matrices are the
-simplest examples. We need one lemma about them.
+For $x\in\R^n$, let $x^\downarrow$ list its coordinates in decreasing order. The relation $x\prec y$, read ``$x$ is majorised by $y$'', means
+\[\sum_{i=1}^kx_i^\downarrow\le\sum_{i=1}^ky_i^\downarrow\quad(1\le k\le n),\qquad\sum_{i=1}^nx_i=\sum_{i=1}^ny_i.\]
+The partial sums say that $y$ allows larger concentrations of mass. For a probability vector $x$, for example, $(1/3,1/3,1/3)\prec x\prec(1,0,0)$ in dimension three. A \emph{doubly stochastic} matrix has nonnegative entries and every row and column sum equal to $1$. Permutation matrices are examples. A linear expression on such a matrix can always be improved to one on a permutation matrix.
 
 \begin{lemma}\label{linear:lem:birkhoff}
-Let $S$ be doubly stochastic and $(c_{ij})$ real numbers. There is a permutation $\sigma$ with $\sum_ic_{i\sigma(i)}\le
-\sum_{i,j}c_{ij}s_{ij}$.
+For doubly stochastic $S=(s_{ij})$ and real coefficients $c_{ij}$, some permutation $\sigma$ satisfies $\sum_ic_{i\sigma(i)}\le\sum_{i,j}c_{ij}s_{ij}$.
 \end{lemma}
 \begin{proof}
-Call an entry of $S$ fractional if it lies strictly between $0$ and $1$. If there is none, $S$ is a permutation matrix and
-we are done. Otherwise, each row containing a fractional entry contains at least two (its entries sum to $1$), and so does
-each column. In the bipartite graph whose vertices are the rows and the columns, with an edge $\{i,j\}$ for each fractional
-$s_{ij}$, every non-isolated vertex has degree at least $2$, so walking along edges without immediately going back must
-eventually revisit a vertex: there is a cycle, which alternates between rows and columns and has even length. Add $\varepsilon$
-and $-\varepsilon$ alternately to the entries of $S$ along the cycle. Every row and column of the cycle receives one $+\varepsilon$
-and one $-\varepsilon$, so the sums are unchanged. The quantity $f(S)=\sum c_{ij}s_{ij}$ changes by $\varepsilon\delta$ for a
-fixed $\delta$; choose the sign of $\varepsilon$ with $\varepsilon\delta\le0$, and increase $|\varepsilon|$ until some entry of
-the cycle reaches $0$ or $1$. The new matrix is doubly stochastic, $f$ has not increased, and it has fewer fractional entries.
-Repeating, we reach a permutation matrix.
+Call an entry fractional if it is strictly between $0$ and $1$. With no fractional entries, each row and column has exactly one $1$, so $S$ is a permutation matrix. Otherwise every row or column containing a fractional entry contains at least two, since its sum is the integer $1$. Form a bipartite graph with rows and columns as vertices and fractional entries as edges. Each nonisolated vertex has degree at least two. Following edges without immediately retracing one eventually produces a cycle; bipartiteness makes its length even. Alternately add $\varepsilon$ and subtract $\varepsilon$ around the cycle. Row and column sums do not change. The objective changes by $\varepsilon\delta$ for a fixed real $\delta$. Choose the sign so this is nonpositive, then increase $|\varepsilon|$ until an affected entry first reaches $0$ or $1$. All entries remain in $[0,1]$ and the number of fractional entries decreases. Finitely many repetitions produce the desired permutation.
 \end{proof}
 
-(Lemma~\ref{linear:lem:birkhoff} is the heart of Birkhoff's theorem: the doubly stochastic matrices are exactly the convex
-combinations of permutation matrices. We will only need the lemma.)
+This cycle argument underlies Birkhoff's theorem that doubly stochastic matrices are convex combinations of permutation matrices. The lemma alone is enough for our eigenvalue estimates.
 
 \begin{theorem}[Schur, 1923]\label{linear:thm:schurmaj}
-The diagonal of a Hermitian matrix is majorised by its eigenvalues: $(a_{11},\dots,a_{nn})\prec(\lambda_1,\dots,\lambda_n)$.
+For a Hermitian matrix, its diagonal is majorised by its eigenvalue vector: $(a_{11},\dots,a_{nn})\prec(\lambda_1,\dots,\lambda_n)$.
 \end{theorem}
 \begin{proof}
-Write $A=UDU^*$. Then $a_{ii}=\sum_j|u_{ij}|^2\lambda_j$, and the matrix $(|u_{ij}|^2)$ is doubly stochastic because the rows
-and columns of $U$ are unit vectors. The traces agree, which is the case $k=n$. Let $I$ be the set of indices of the $k$
-largest diagonal entries, and $t_j=\sum_{i\in I}|u_{ij}|^2$. Then $0\le t_j\le1$, $\sum_jt_j=k$, and
-\[
-\sum_{j\le k}\lambda_j-\sum_{i\in I}a_{ii}=\sum_{j\le k}(1-t_j)\lambda_j-\sum_{j>k}t_j\lambda_j
-\ge\lambda_k\sum_{j\le k}(1-t_j)-\lambda_k\sum_{j>k}t_j=\lambda_k\Bigl(k-\sum_jt_j\Bigr)=0,
-\]
-using $\lambda_j\ge\lambda_k$ for $j\le k$ and $\lambda_j\le\lambda_k$ for $j>k$.
+From $A=UDU^*$, each $a_{ii}=\sum_j|u_{ij}|^2\lambda_j$. The matrix $(|u_{ij}|^2)$ is doubly stochastic, since rows and columns of $U$ are unit vectors. The total sums agree by the trace identity. For the $k$ largest diagonal entries, let $I$ be their index set and set $t_j=\sum_{i\in I}|u_{ij}|^2$. Then $0\le t_j\le1$ and $\sum_jt_j=k$. Since the eigenvalues are decreasing,
+\[\begin{aligned}
+\sum_{j\le k}\lambda_j-\sum_{i\in I}a_{ii}
+&=\sum_{j\le k}(1-t_j)\lambda_j-\sum_{j>k}t_j\lambda_j\\
+&\ge\lambda_k\left(\sum_{j\le k}(1-t_j)-\sum_{j>k}t_j\right)=0.
+\end{aligned}\]
+These are exactly the majorisation inequalities.
 \end{proof}
 
-Applied in any orthonormal basis, Schur's theorem says that for orthonormal vectors $x_1,\dots,x_k$,
-$\sum_{i\le k}\langle Ax_i,x_i\rangle\le\lambda_1+\dots+\lambda_k$, with equality for eigenvectors: \emph{Ky Fan's maximum
-principle} (Exercise~\ref{linear:ex:kyfan}). The converse of Schur's theorem is the surprise of this section.
+Changing the orthonormal basis shows that $\sum_{i\le k}\langle Ax_i,x_i\rangle\le\lambda_1+\cdots+\lambda_k$ for every orthonormal family of size $k$. The top eigenvectors attain equality. This is Ky Fan's maximum principle, developed in Exercise~\ref{linear:ex:kyfan}. Majorisation also gives a sufficient condition for a diagonal, not just a necessary one.
 
 \begin{theorem}[Horn, 1954]\label{linear:thm:horn}
-If $d\prec\lambda$ in $\R^n$, there is a real symmetric matrix with diagonal $d$ and eigenvalues $\lambda$.
+Whenever $d\prec\lambda$ in $\R^n$, a real symmetric matrix exists with diagonal $d$ and eigenvalues $\lambda$.
 \end{theorem}
 \begin{proof}
-We show that there is a real orthogonal $Q$ such that $Q\Lambda Q^{\mathsf T}$, with $\Lambda=\operatorname{diag}(\lambda)$,
-has diagonal $d$. Conjugating by permutation matrices reorders diagonals and spectra, so we may assume that $d$ and
-$\lambda$ are both decreasing. We argue by induction on $n$, the case $n=1$ being $d_1=\lambda_1$.
+We construct an orthogonal conjugate of $\Lambda=\operatorname{diag}(\lambda)$ with the prescribed diagonal. Permutations let us assume $d$ and $\lambda$ are decreasing. For $n=1$, equality of totals gives the result. Suppose $n\ge2$ and use induction.
 
-Let $n\ge2$. We have $\lambda_1\ge d_1$ (majorisation with $k=1$), and $d_1\ge\frac1n\sum d_i=\frac1n\sum\lambda_i\ge
-\lambda_n$, so there is an index $k\le n-1$ with $\lambda_k\ge d_1\ge\lambda_{k+1}$. Choose $c\in[0,1]$ with
-$c^2\lambda_k+(1-c^2)\lambda_{k+1}=d_1$, put $s=\sqrt{1-c^2}$, and conjugate the block $\operatorname{diag}(\lambda_k,
-\lambda_{k+1})$ by the rotation $\bigl(\begin{smallmatrix}c&-s\\s&c\end{smallmatrix}\bigr)$:
-\[
-\begin{pmatrix}c&-s\\s&c\end{pmatrix}\begin{pmatrix}\lambda_k&0\\0&\lambda_{k+1}\end{pmatrix}\begin{pmatrix}c&s\\-s&c\end{pmatrix}
-=\begin{pmatrix}d_1&cs(\lambda_k-\lambda_{k+1})\\cs(\lambda_k-\lambda_{k+1})&\lambda_k+\lambda_{k+1}-d_1\end{pmatrix}.
-\]
-After moving index $k$ to the front, $\Lambda$ is orthogonally similar to $M=\bigl(\begin{smallmatrix}d_1&r^{\mathsf T}\\r&
-\Lambda'\end{smallmatrix}\bigr)$, where $\Lambda'$ is diagonal with entries
-\[
-\lambda'=(\lambda_1,\dots,\lambda_{k-1},\ \lambda_k+\lambda_{k+1}-d_1,\ \lambda_{k+2},\dots,\lambda_n).
-\]
-This vector is decreasing, because its $k$-th entry lies in $[\lambda_{k+1},\lambda_k]$. We claim $(d_2,\dots,d_n)\prec
-\lambda'$. The totals agree. For $m\le k-1$, the sum of the first $m$ entries of $\lambda'$ is $\sum_{i\le m}\lambda_i\ge
-m\lambda_k\ge md_1\ge\sum_{i=2}^{m+1}d_i$. For $m\ge k$, it is $\sum_{i\le m+1}\lambda_i-d_1\ge\sum_{i\le m+1}d_i-d_1=
-\sum_{i=2}^{m+1}d_i$. By induction there is an orthogonal $Q'$ with $Q'\Lambda'Q'^{\mathsf T}$ having diagonal $(d_2,\dots,
-d_n)$. Then $\operatorname{diag}(1,Q')\,M\,\operatorname{diag}(1,Q'^{\mathsf T})=\bigl(\begin{smallmatrix}d_1&(Q'r)^{\mathsf
-T}\\Q'r&Q'\Lambda'Q'^{\mathsf T}\end{smallmatrix}\bigr)$ has diagonal $d$ and is orthogonally similar to $\Lambda$.
+Majorisation gives $\lambda_1\ge d_1$, while $d_1\ge n^{-1}\sum_i d_i=n^{-1}\sum_i\lambda_i\ge\lambda_n$. Choose $k\le n-1$ with $\lambda_k\ge d_1\ge\lambda_{k+1}$. Some $0\le c\le1$ satisfies $c^2\lambda_k+(1-c^2)\lambda_{k+1}=d_1$. Put $s=\sqrt{1-c^2}$ and rotate these two coordinates:
+\[\begin{pmatrix}c&-s\\s&c\end{pmatrix}
+\begin{pmatrix}\lambda_k&0\\0&\lambda_{k+1}\end{pmatrix}
+\begin{pmatrix}c&s\\-s&c\end{pmatrix}
+=\begin{pmatrix}d_1&cs(\lambda_k-\lambda_{k+1})\\cs(\lambda_k-\lambda_{k+1})&\lambda_k+\lambda_{k+1}-d_1\end{pmatrix}.\]
+Move the first of these coordinates to the front. The resulting matrix has form $M=\bigl(\begin{smallmatrix}d_1&r^{\mathsf T}\\r&\Lambda'\end{smallmatrix}\bigr)$, with $\Lambda'$ diagonal and entries
+\[\lambda'=(\lambda_1,\dots,\lambda_{k-1},\lambda_k+\lambda_{k+1}-d_1,\lambda_{k+2},\dots,\lambda_n).\]
+The inserted entry lies between $\lambda_{k+1}$ and $\lambda_k$, so this list is decreasing. We need $(d_2,\dots,d_n)\prec\lambda'$. The totals agree. For $m<k$, the first $m$ entries of $\lambda'$ sum to $\sum_{i\le m}\lambda_i\ge m\lambda_k\ge md_1\ge\sum_{i=2}^{m+1}d_i$. For $m\ge k$, they sum to $\sum_{i\le m+1}\lambda_i-d_1\ge\sum_{i=2}^{m+1}d_i$. Induction supplies $Q'$ with diagonal $(d_2,\dots,d_n)$ in $Q'\Lambda'Q'^{\mathsf T}$. Conjugating $M$ by $\operatorname{diag}(1,Q')$ leaves its first diagonal entry fixed and installs the remaining ones. It stays orthogonally similar to $\Lambda$, so its spectrum is unchanged.
 \end{proof}
 
-So the second question of the opening has answer yes: $(1,1,1)\prec(3,0,0)$, and indeed the all-ones matrix $J$ has
-diagonal $(1,1,1)$ and eigenvalues $3,0,0$. The proof is an algorithm: $n-1$ plane rotations, each of which puts one diagonal entry in place. Exercise~\ref{linear:ex:hornsmall} runs it by hand.
+The all-ones matrix answers the second opening question: its diagonal is $(1,1,1)$ and its spectrum is $(3,0,0)$. Horn's proof constructs all admissible diagonals with successive plane rotations, fixing one entry at a time. Exercise~\ref{linear:ex:hornsmall} gives a small calculation.
 
 \section{How far eigenvalues move}
 
-Corollary~\ref{linear:cor:weylpert} bounds each eigenvalue separately by the operator norm. Measuring the perturbation with the
-Frobenius norm $\|M\|_F=\bigl(\sum_{i,j}|m_{ij}|^2\bigr)^{1/2}=\sqrt{\operatorname{tr}M^*M}$, which is unitarily invariant, gives
-a bound for all eigenvalues at once, and for normal matrices too.
+The operator norm bounds each Hermitian eigenvalue separately. To bound their combined movement, use the Frobenius norm $\|M\|_F=(\sum_{i,j}|m_{ij}|^2)^{1/2}=\sqrt{\operatorname{tr}M^*M}$. Unitary changes of basis preserve it. The resulting theorem applies even to normal matrices with complex spectra.
 
 \begin{theorem}[Hoffman--Wielandt, 1953]\label{linear:thm:hoffmanwielandt}
-Let $A$ and $B$ be normal with eigenvalues $\alpha_1,\dots,\alpha_n$ and $\beta_1,\dots,\beta_n$. There is a permutation $\sigma$
-with
-\[
-\sum_{i=1}^n|\alpha_i-\beta_{\sigma(i)}|^2\le\|A-B\|_F^2.
-\]
-If $A$ and $B$ are Hermitian, one can take the eigenvalues of both in decreasing order: $\sum_i(\lambda_i(A)-\lambda_i(B))^2
-\le\|A-B\|_F^2$.
+For normal matrices $A,B$ with eigenvalues $\alpha_1,\dots,\alpha_n$ and $\beta_1,\dots,\beta_n$, some permutation $\sigma$ satisfies
+\[\sum_{i=1}^n|\alpha_i-\beta_{\sigma(i)}|^2\le\|A-B\|_F^2.\]
+For Hermitian $A,B$, decreasing order is an admissible pairing: $\sum_i(\lambda_i(A)-\lambda_i(B))^2\le\|A-B\|_F^2$.
 \end{theorem}
 \begin{proof}
-Write $A=UD_\alpha U^*$ and $B=VD_\beta V^*$, and $W=U^*V$, unitary. By unitary invariance,
-\[
-\|A-B\|_F^2=\|D_\alpha W-WD_\beta\|_F^2=\sum_{i,j}|\alpha_i-\beta_j|^2|w_{ij}|^2,
-\]
-since the $(i,j)$ entry of $D_\alpha W-WD_\beta$ is $(\alpha_i-\beta_j)w_{ij}$. The matrix $(|w_{ij}|^2)$ is doubly stochastic,
-and Lemma~\ref{linear:lem:birkhoff} with $c_{ij}=|\alpha_i-\beta_j|^2$ gives the permutation. In the Hermitian case, if
-$\alpha_i>\alpha_l$ but $\beta_{\sigma(i)}<\beta_{\sigma(l)}$, swapping $\sigma(i)$ and $\sigma(l)$ changes the sum by
-\[
-(\alpha_i-\beta_{\sigma(l)})^2+(\alpha_l-\beta_{\sigma(i)})^2-(\alpha_i-\beta_{\sigma(i)})^2-(\alpha_l-\beta_{\sigma(l)})^2
-=-2(\alpha_i-\alpha_l)(\beta_{\sigma(l)}-\beta_{\sigma(i)})<0,
-\]
-so a minimising permutation can be taken order-preserving.
+Write $A=UD_\alpha U^*$, $B=VD_\beta V^*$ and $W=U^*V$. Unitary invariance gives
+\[\|A-B\|_F^2=\|D_\alpha W-WD_\beta\|_F^2=\sum_{i,j}|\alpha_i-\beta_j|^2|w_{ij}|^2.\]
+The last identity follows entry by entry. Since $(|w_{ij}|^2)$ is doubly stochastic, Lemma~\ref{linear:lem:birkhoff} with $c_{ij}=|\alpha_i-\beta_j|^2$ gives the required permutation. For real spectra, an inverted pairing with $\alpha_i>\alpha_l$ and $\beta_{\sigma(i)}<\beta_{\sigma(l)}$ can be improved by swapping the two partners. The change is
+\[-2(\alpha_i-\alpha_l)(\beta_{\sigma(l)}-\beta_{\sigma(i)})<0.\]
+Thus a minimum can be chosen to match both decreasing lists.
 \end{proof}
 
 \begin{beauty}
-The eigenvalues of a Hermitian matrix are defined by a polynomial equation, yet everything in this chapter came from
-optimisation: an eigenvalue is a max of mins of an average. From that one idea, interlacing, stability and convexity follow
-in a few lines each, and Schur's and Horn's theorems say that the diagonals compatible with a spectrum form exactly the
-convex polytope cut out by majorisation, the permutohedron (Rado's theorem identifies it with the convex hull of the
-permutations of the spectrum). The analysis of eigenvalues is geometry in disguise.
+An eigenvalue starts as a root of a polynomial, yet its variational description turns comparison into geometry. Min-max gives interlacing and stability. Majorisation describes exactly which diagonals can accompany a fixed Hermitian spectrum. These diagonals form a convex polytope, the permutohedron; Rado's theorem identifies it with the convex hull of the permuted spectrum. The two pictures agree: rotating an eigenbasis redistributes the diagonal entries without changing their total.
 \end{beauty}
 
-\section{What we proved, and what comes next}
+\section{From eigenvalues to singular values}
 
-The two questions of the opening are answered. No symmetric matrix has diagonal $(3,0,0)$ and eigenvalues $(2,2,-1)$, because a diagonal entry is a Rayleigh quotient and cannot exceed the largest eigenvalue. A
-symmetric matrix with diagonal $(1,1,1)$ and eigenvalues $(3,0,0)$ exists, and Horn's theorem says exactly when one does (Theorems~\ref{linear:thm:schurmaj} and~\ref{linear:thm:horn}).
+Rayleigh quotients rule out diagonal $(3,0,0)$ for spectrum $(2,2,-1)$. Schur--Horn accepts diagonal $(1,1,1)$ for spectrum $(3,0,0)$. Both tests rely on the orthonormal eigenbasis supplied by the spectral theorem. Min-max and doubly stochastic matrices then quantify comparisons: corners interlace, Hermitian perturbations have controlled eigenvalue shifts, and Hoffman--Wielandt pairs entire normal spectra.
 
-Behind both answers is one theorem and one idea. The theorem: a normal operator has an orthonormal basis of eigenvectors (Theorem~\ref{linear:thm:spectral}). The idea: each eigenvalue of a Hermitian matrix is a max of
-mins of the Rayleigh quotient (Theorem~\ref{linear:thm:courantfischer}). From the idea came interlacing (Theorem~\ref{linear:thm:interlacing}), Weyl's inequalities (Theorem~\ref{linear:thm:weyl}), and the fact that the
-eigenvalues of a Hermitian matrix move no further than the matrix does (Corollary~\ref{linear:cor:weylpert}, Theorem~\ref{linear:thm:hoffmanwielandt}).
+A rectangular matrix has no eigenvalue equation on a single underlying space. Chapter~\ref{linear:ch:svd} replaces eigenvalues by singular values and uses them to find the best approximation by a matrix of smaller rank.
 
-All of this needs a square matrix that commutes with its adjoint. A rectangular matrix has no eigenvalues at all. What plays their part? Chapter~\ref{linear:ch:svd} answers with the singular values, and they turn out to
-measure how well a matrix can be approximated by a simpler one.
+\begin{figure}[ht]
+\centering\fig{ch03-rw-diagonals}
+\caption{For spectrum $(3,2,1)$, Schur--Horn allows exactly the triples with sum $6$ and $1\le d_i\le3$. In that plane these inequalities cut out a hexagon. Its centre is $(2,2,2)$; the six corners are permutations of the spectrum.}\label{fig:v8c03diagonals}
+\end{figure}
+\begin{figure}[ht]
+\centering\fig{ch03-rw-shifts}
+\caption{Adding $\varepsilon I$ to $\operatorname{diag}(3,1)$ shifts each eigenvalue by $\varepsilon$. Both Weyl's individual bound and Hoffman--Wielandt's sum of squared shifts are equalities.}\label{fig:v8c03shifts}
+\end{figure}
 
 \section{Exercises}
 
 \begin{exercise}[$\star$]\label{linear:ex:normaliff}
-Show that $A$ is normal if and only if $\|Ax\|=\|A^*x\|$ for all $x$. Deduce directly that an eigenvector of a normal $A$
-for $\lambda$ is an eigenvector of $A^*$ for $\bar\lambda$.
+Prove that $A$ is normal exactly when $\|Ax\|=\|A^*x\|$ for every $x$. Apply this criterion to show that $Ax=\lambda x$ for normal $A$ implies $A^*x=\bar\lambda x$.
 \end{exercise}
-
 \begin{exercise}[$\star$]\label{linear:ex:hornsmall}
-Find a real symmetric matrix with diagonal $(2,1,0)$ and eigenvalues $(3,0,0)$, by following the proof of
-Theorem~\ref{linear:thm:horn}. Is there one with diagonal $(2,2,-1)$ and eigenvalues $(3,0,0)$?
+Use the rotations in Horn's proof to construct a real symmetric matrix with diagonal $(2,1,0)$ and spectrum $(3,0,0)$. Decide whether diagonal $(2,2,-1)$ is possible for that same spectrum.
 \end{exercise}
-
 \begin{exercise}[$\star$]\label{linear:ex:pathgraph}
-Let $A_n$ be the adjacency matrix of the path with $n$ vertices (ones just above and below the diagonal). Show that the
-vectors $v_k=\bigl(\sin\frac{jk\pi}{n+1}\bigr)_{j=1}^n$ are eigenvectors, with eigenvalues $2\cos\frac{k\pi}{n+1}$, and check
-the interlacing of Theorem~\ref{linear:thm:interlacing} between $A_{n-1}$ and $A_n$.
+The path adjacency matrix $A_n$ has ones immediately above and below the diagonal and zeros elsewhere. Prove that $v_k=(\sin(jk\pi/(n+1)))_{j=1}^n$ is an eigenvector with eigenvalue $2\cos(k\pi/(n+1))$. Verify interlacing between $A_n$ and its corner $A_{n-1}$.
 \end{exercise}
-
 \begin{exercise}[$\star\star$]\label{linear:ex:degree}
-Let $A$ be the adjacency matrix of a graph with average degree $\bar d$ and maximum degree $\Delta$. Show that $\bar d\le
-\lambda_1(A)\le\Delta$, with equality on the left if and only if the graph is regular.
+For a finite graph's adjacency matrix $A$, with average degree $\bar d$ and maximum degree $\Delta$, prove $\bar d\le\lambda_1(A)\le\Delta$. Show that the first inequality is an equality exactly for regular graphs.
 \end{exercise}
-
 \begin{exercise}[$\star$]\label{linear:ex:nonnormal}
-For $A=\bigl(\begin{smallmatrix}0&1\\0&0\end{smallmatrix}\bigr)$ and $E=\bigl(\begin{smallmatrix}0&0\\\varepsilon&0
-\end{smallmatrix}\bigr)$, $\varepsilon>0$, compute the eigenvalues of $A+E$. Show that both Corollary~\ref{linear:cor:weylpert} and
-Theorem~\ref{linear:thm:hoffmanwielandt} fail for this pair when $\varepsilon<1$.
+Take $A=\bigl(\begin{smallmatrix}0&1\\0&0\end{smallmatrix}\bigr)$ and $E=\bigl(\begin{smallmatrix}0&0\\\varepsilon&0\end{smallmatrix}\bigr)$ with $\varepsilon>0$. Compute the spectrum of $A+E$ and show that the bounds of Corollary~\ref{linear:cor:weylpert} and Theorem~\ref{linear:thm:hoffmanwielandt} fail for these matrices when $\varepsilon<1$.
 \end{exercise}
-
 \begin{exercise}[$\star\star$]\label{linear:ex:rankone}
-Let $A$ be Hermitian and $v$ a vector. Show that the eigenvalues of $A+vv^*$ interlace those of $A$:
-$\lambda_1(A+vv^*)\ge\lambda_1(A)\ge\lambda_2(A+vv^*)\ge\lambda_2(A)\ge\dots\ge\lambda_n(A+vv^*)\ge\lambda_n(A)$.
+If $A$ is Hermitian and $v$ is a vector, prove the rank-one interlacing inequalities
+\[\lambda_1(A+vv^*)\ge\lambda_1(A)\ge\lambda_2(A+vv^*)\ge\cdots\ge\lambda_n(A+vv^*)\ge\lambda_n(A).\]
 \end{exercise}
-
 \begin{exercise}[$\star\star$]\label{linear:ex:kyfan}
-(Ky Fan, 1949.) Show that $\lambda_1(A)+\dots+\lambda_k(A)=\max\sum_{i=1}^k\langle Ax_i,x_i\rangle$ over orthonormal families
-$(x_1,\dots,x_k)$. Deduce that $\lambda_1+\dots+\lambda_k$ is a convex function of $A$, and that
-$\sum_{i\le k}\lambda_i(A+B)\le\sum_{i\le k}\lambda_i(A)+\sum_{i\le k}\lambda_i(B)$.
+\emph{Ky Fan's principle (1949).} Prove $\lambda_1(A)+\cdots+\lambda_k(A)=\max\sum_{i=1}^k\langle Ax_i,x_i\rangle$, where the maximum ranges over orthonormal families of size $k$. Deduce convexity of the sum of the top $k$ eigenvalues and the inequality $\sum_{i\le k}\lambda_i(A+B)\le\sum_{i\le k}\lambda_i(A)+\sum_{i\le k}\lambda_i(B)$.
 \end{exercise}
-
 \begin{exercise}[$\star\star$]\label{linear:ex:sqrtpsd}
-Show that a positive semidefinite matrix $A$ has a unique positive semidefinite square root $\sqrt A$, and that $\sqrt A$
-is a polynomial in $A$.
+For positive semidefinite $A$, prove existence and uniqueness of a positive semidefinite square root. Show that this square root equals a polynomial in $A$.
 \end{exercise}
-
 \begin{exercise}[$\star\star$]\label{linear:ex:simultaneous}
-Show that commuting Hermitian matrices $A$ and $B$ have a common orthonormal eigenbasis. Is this true for commuting normal
-matrices?
+Prove that two commuting Hermitian matrices share an orthonormal eigenbasis. Determine whether commuting normal matrices have the same property.
 \end{exercise}
-
 \begin{exercise}[$\star\star$]\label{linear:ex:realnormal}
-Let $A$ be a real normal matrix. Show that there is a real orthogonal $Q$ such that $Q^{\mathsf T}AQ$ is block diagonal
-with blocks $(a)$ of size $1$ and $\bigl(\begin{smallmatrix}a&-b\\b&a\end{smallmatrix}\bigr)$ of size $2$. What does this say
-about a rotation of $\R^3$?
+Prove that every real normal $A$ has an orthogonal change of basis making it block diagonal, with blocks $(a)$ or $\bigl(\begin{smallmatrix}a&-b\\b&a\end{smallmatrix}\bigr)$. Interpret this form for a rotation of $\R^3$.
 \end{exercise}
-
 \begin{exercise}[$\star\star\star$]\label{linear:ex:bordered}
-Let $\lambda_1>\mu_1>\lambda_2>\mu_2>\dots>\mu_{n-1}>\lambda_n$. Show that there are real $b_1,\dots,b_{n-1}$ and $c$ such that
-the matrix $\bigl(\begin{smallmatrix}D&b\\b^{\mathsf T}&c\end{smallmatrix}\bigr)$, with $D=\operatorname{diag}(\mu_1,\dots,
-\mu_{n-1})$, has eigenvalues $\lambda_1,\dots,\lambda_n$. (This is the converse of Cauchy's interlacing.)
+Given strict interlacing $\lambda_1>\mu_1>\lambda_2>\cdots>\mu_{n-1}>\lambda_n$, construct real $c$ and $b_i$ so that $\bigl(\begin{smallmatrix}D&b\\b^{\mathsf T}&c\end{smallmatrix}\bigr)$, with $D=\operatorname{diag}(\mu_1,\dots,\mu_{n-1})$, has spectrum $(\lambda_1,\dots,\lambda_n)$. This proves a converse to Cauchy interlacing.
+\end{exercise}
+\begin{exercise}[$\star\star\star$]\label{linear:ex:vonneumann}
+\emph{Von Neumann's trace inequality for Hermitian matrices.} Prove $\operatorname{tr}(AB)\le\sum_i\lambda_i(A)\lambda_i(B)$ for Hermitian $A,B$, and characterise equality.
 \end{exercise}
 
-\begin{exercise}[$\star\star\star$]\label{linear:ex:vonneumann}
-(von Neumann's trace inequality, Hermitian case.) Show that $\operatorname{tr}(AB)\le\sum_i\lambda_i(A)\lambda_i(B)$ for
-Hermitian $A,B$. When is there equality?
+\begin{exercise}[$\star$]\label{ex:v8c03a}
+For $A=\bigl(\begin{smallmatrix}2&1\\1&2\end{smallmatrix}\bigr)$, find an orthonormal eigenbasis and its two spectral projections. Use them to compute $A^m$ for every integer $m\ge0$, then give $A^3$ explicitly.
+\end{exercise}
+\begin{exercise}[$\star\star$]\label{ex:v8c03b}
+Compress $D=\operatorname{diag}(4,2,-1)$ to the subspace with orthonormal basis $(e_1+e_3)/\sqrt2,e_2$. Compute the compression matrix and its ordered eigenvalues. Check each interlacing bound against the spectrum of $D$.
+\end{exercise}
+\begin{exercise}[$\star$]\label{ex:v8c03c}
+For nonnegative $a,b,c$ with $a+b+c=1$, construct a positive semidefinite matrix with diagonal $(a,b,c)$ and spectrum $(1,0,0)$. Give its entries for $(a,b,c)=(1/2,1/3,1/6)$. Why could no negative diagonal entry occur for this spectrum?
+\end{exercise}
+\begin{exercise}[$\star\star$]\label{ex:v8c03d}
+Let $A=\operatorname{diag}(3,1)$ and $\varepsilon>0$. Show that $A+\varepsilon I$ attains equality in both Weyl's perturbation bound and Hoffman--Wielandt. Next replace the perturbation by $\bigl(\begin{smallmatrix}0&\varepsilon\\\varepsilon&0\end{smallmatrix}\bigr)$. Compute the two eigenvalue shifts and prove that their common absolute value is at most $\varepsilon^2/2$.
 \end{exercise}
 
 \section{Hints}
 
 \begin{hint}{linear:ex:normaliff}
-$\|Ax\|^2-\|A^*x\|^2=\langle(A^*A-AA^*)x,x\rangle$, and a Hermitian operator with all Rayleigh quotients zero is zero. Then
-apply the first part to $A-\lambda I$.
+Apply the quadratic form of $A^*A-AA^*$ to every vector, then to an eigenbasis of that Hermitian matrix. Use the result for $A-\lambda I$.
 \end{hint}
 \begin{hint}{linear:ex:hornsmall}
-Here $\lambda_1=3\ge d_1=2\ge\lambda_2=0$. For the second, check the partial sums.
+The first rotation needs $3c^2=2$. For the proposed second diagonal, compare the sums of its largest two entries.
 \end{hint}
 \begin{hint}{linear:ex:pathgraph}
-$\sin(j-1)\theta+\sin(j+1)\theta=2\cos\theta\sin j\theta$, and $\sin0=\sin(n+1)\theta_k=0$.
+Use $\sin((j-1)\theta)+\sin((j+1)\theta)=2\cos\theta\sin(j\theta)$, including the zero boundary values.
 \end{hint}
 \begin{hint}{linear:ex:degree}
-Use the Rayleigh quotient of the all-ones vector, and look at the largest coordinate of an eigenvector.
+Test the Rayleigh quotient on the all-ones vector. For the upper bound, inspect an eigenvector at a coordinate of maximum absolute value.
 \end{hint}
 \begin{hint}{linear:ex:nonnormal}
-The characteristic polynomial is $X^2-\varepsilon$.
+Expand the characteristic polynomial to get $X^2-\varepsilon$.
 \end{hint}
 \begin{hint}{linear:ex:rankone}
-Weyl's inequalities with $B=vv^*$, whose eigenvalues are $\|v\|^2,0,\dots,0$.
+The perturbation is positive semidefinite, with at most one nonzero eigenvalue. Combine the stability corollary with Weyl's inequality at $j=2$.
 \end{hint}
 \begin{hint}{linear:ex:kyfan}
-Extend the family to an orthonormal basis and apply Theorem~\ref{linear:thm:schurmaj} to the matrix of $A$ in that basis.
+Start an orthonormal basis with the given family and apply Schur's majorisation theorem to the resulting diagonal.
 \end{hint}
 \begin{hint}{linear:ex:sqrtpsd}
-A square root commutes with $A$, so it preserves the eigenspaces of $A$.
+Interpolate the square-root function on the finite spectrum. A second square root must commute with $A$ and preserve its eigenspaces.
 \end{hint}
 \begin{hint}{linear:ex:simultaneous}
-$B$ preserves each eigenspace of $A$ and is Hermitian there.
+Use the eigenspaces of $A$ as invariant subspaces for $B$. In the normal case, interpolation makes $B^*$ a polynomial in $B$.
 \end{hint}
 \begin{hint}{linear:ex:realnormal}
-For a non-real eigenvalue $a+ib$ with eigenvector $x+iy$, show that $x\perp y$, $\|x\|=\|y\|$, and that $\operatorname{span}(x,y)$
-and its orthogonal are invariant.
+Pair the conjugate eigenvectors $x+iy$ and $x-iy$. Their orthogonality gives $x\perp y$ and $\|x\|=\|y\|$.
 \end{hint}
 \begin{hint}{linear:ex:bordered}
-Expand $\det(XI-M)=(X-c)\prod_i(X-\mu_i)-\sum_ib_i^2\prod_{j\ne i}(X-\mu_j)$ and use partial fractions for
-$\prod_j(X-\lambda_j)/\prod_i(X-\mu_i)$.
+Compare $\det(XI-M)/\prod_i(X-\mu_i)$ with the partial fractions of $\prod_j(X-\lambda_j)/\prod_i(X-\mu_i)$. Interlacing fixes the signs of the residues.
 \end{hint}
 \begin{hint}{linear:ex:vonneumann}
-Diagonalise both, as in the proof of Theorem~\ref{linear:thm:hoffmanwielandt}, and use Lemma~\ref{linear:lem:birkhoff} and a swapping argument.
+Expand the trace in two eigenbases and use the doubly stochastic lemma and rearrangement. For equality, vary $B$ by plane rotations in an eigenbasis of $A$; equality must remain a maximum.
+\end{hint}
+\begin{hint}{ex:v8c03a}
+Use the unit vectors $(1,1)/\sqrt2$ and $(1,-1)/\sqrt2$. Their projection matrices add to $I$.
+\end{hint}
+\begin{hint}{ex:v8c03b}
+The quotient on the mixed first vector is the average of $4$ and $-1$.
+\end{hint}
+\begin{hint}{ex:v8c03c}
+Take an outer product of a unit vector whose squared coordinates are $a,b,c$.
+\end{hint}
+\begin{hint}{ex:v8c03d}
+For the second perturbation, the characteristic equation is $(X-2)^2=1+\varepsilon^2$. Rationalise $\sqrt{1+\varepsilon^2}-1$.
 \end{hint}
 
 \section{Solutions}
 
 \begin{solution}{linear:ex:normaliff}
-\idea A Hermitian operator is determined by its quadratic form, so ``same norms'' should mean ``same $A^*A$ and $AA^*$''.
-\writeup $\|Ax\|^2-\|A^*x\|^2=\langle A^*Ax,x\rangle-\langle AA^*x,x\rangle=\langle Hx,x\rangle$ with $H=A^*A-AA^*$ Hermitian.
-If $A$ is normal, this vanishes. Conversely, if $\langle Hx,x\rangle=0$ for all $x$, then all eigenvalues of $H$ are zero
-(take $x$ an eigenvector), and $H=0$ by the spectral theorem. If $A$ is normal, so is $A-\lambda I$, whose adjoint is
-$A^*-\bar\lambda I$; applying the first part to it, $Ax=\lambda x$ gives $\|(A^*-\bar\lambda)x\|=\|(A-\lambda)x\|=0$.
+\idea The difference of the two squared lengths is the quadratic form of a Hermitian matrix. Such a form determines the matrix.
+\writeup Put $H=A^*A-AA^*$. Then $\|Ax\|^2-\|A^*x\|^2=\langle Hx,x\rangle$. Normality makes this zero. Conversely, if it vanishes for all $x$, test on an eigenbasis of $H$ to see that every eigenvalue is zero, hence $H=0$. A normal $A$ also makes $A-\lambda I$ normal. Its norm identity applied to $Ax=\lambda x$ gives $\|(A^*-\bar\lambda I)x\|=0$, proving the second assertion.
 \end{solution}
-
 \begin{solution}{linear:ex:hornsmall}
-\idea Run the induction of Horn's proof by hand: one rotation places $d_1$, and the rest is a $2\times2$ problem.
-\writeup With $\lambda=(3,0,0)$ and $d=(2,1,0)$: $k=1$, and $3c^2=2$ gives $c=\sqrt{2/3}$, $s=\sqrt{1/3}$. Conjugating
-$\operatorname{diag}(3,0)$ by the rotation gives $\bigl(\begin{smallmatrix}2&\sqrt2\\\sqrt2&1\end{smallmatrix}\bigr)$, so
-$\Lambda$ is orthogonally similar to
-\[
-M=\begin{pmatrix}2&\sqrt2&0\\\sqrt2&1&0\\0&0&0\end{pmatrix},
-\]
-and $\lambda'=(1,0)$ must be turned into $(d_2,d_3)=(1,0)$: nothing to do. So $M$ itself works: its diagonal is $(2,1,0)$
-and, being $\operatorname{diag}(\text{rotated }2\times2,0)$, it has eigenvalues $3,0,0$. For diagonal $(2,2,-1)$: the
-partial sums are $2,4,3$ against $3,3,3$, and $4>3$, so there is no such matrix, by Theorem~\ref{linear:thm:schurmaj}.
+\idea One plane rotation already installs the two nonzero diagonal entries in this rank-one case.
+\writeup Take $c=\sqrt{2/3}$ and $s=\sqrt{1/3}$. Rotating $\operatorname{diag}(3,0)$ gives $\bigl(\begin{smallmatrix}2&\sqrt2\\\sqrt2&1\end{smallmatrix}\bigr)$. Appending a zero row and column gives
+\[M=\begin{pmatrix}2&\sqrt2&0\\\sqrt2&1&0\\0&0&0\end{pmatrix},\]
+which has diagonal $(2,1,0)$ and spectrum $(3,0,0)$. For diagonal $(2,2,-1)$, the top two entries sum to $4$, exceeding the top-two eigenvalue sum $3$. Schur's necessary condition rules it out.
 \end{solution}
-
 \begin{solution}{linear:ex:pathgraph}
-\idea Eigenvectors of a second-difference operator are sampled sines, the discrete vibrating string.
-\writeup With $\theta=\frac{k\pi}{n+1}$, $(A_nv_k)_j=\sin(j-1)\theta+\sin(j+1)\theta=2\cos\theta\sin j\theta$ for $1\le j\le n$,
-where the terms $\sin0\cdot\theta$ and $\sin(n+1)\theta$ that appear at the ends are $0$. The $n$ values $2\cos\frac{k\pi}
-{n+1}$, $k=1,\dots,n$, are distinct, so they are all the eigenvalues. $A_{n-1}$ is the top-left corner of $A_n$, and the
-interlacing $\cos\frac{k\pi}{n+1}\ge\cos\frac{k\pi}n\ge\cos\frac{(k+1)\pi}{n+1}$ holds because $\frac k{n+1}\le\frac kn\le
-\frac{k+1}{n+1}$ and cosine decreases on $[0,\pi]$.
+\idea A sampled sine solves the second-order recurrence for an eigenvector of a path.
+\writeup With $\theta=k\pi/(n+1)$, each coordinate satisfies $(A_nv_k)_j=\sin((j-1)\theta)+\sin((j+1)\theta)=2\cos\theta\sin(j\theta)$. The boundary terms are zero because $\sin0=\sin((n+1)\theta)=0$. The $n$ eigenvalues $2\cos(k\pi/(n+1))$ are distinct and therefore exhaust the spectrum. For $1\le k\le n-1$, $k/(n+1)\le k/n\le(k+1)/(n+1)$. Cosine decreases on $[0,\pi]$, giving the two required interlacing inequalities.
 \end{solution}
-
 \begin{solution}{linear:ex:degree}
-\idea A lower bound for $\lambda_1$ needs one good test vector; an upper bound needs control of an eigenvector, best at its
-largest coordinate.
-\writeup With $\mathbf 1$ the all-ones vector, $R_A(\mathbf 1)=\frac{\sum_{i,j}a_{ij}}n=\frac{2|E|}n=\bar d$, so
-$\lambda_1\ge\bar d$, with equality if and only if $\mathbf 1$ is an eigenvector for $\lambda_1$ (equality in a Rayleigh
-bound happens only on the top eigenspace, by~\eqref{linear:eq:rayleigh}), that is, all degrees are equal. For the upper bound, let
-$Ax=\lambda_1x$ and $|x_i|$ be the largest coordinate. Then $\lambda_1|x_i|=\bigl|\sum_{j\sim i}x_j\bigr|\le\deg(i)|x_i|\le
-\Delta|x_i|$.
+\idea One test vector gives the lower bound; one coordinate of a genuine eigenvector gives the upper bound.
+\writeup The all-ones vector has quotient $R_A(\mathbf1)=2|E|/n=\bar d$. Thus $\lambda_1\ge\bar d$. Equality in the weighted-average formula~\eqref{linear:eq:rayleigh} forces $\mathbf1$ to lie in the top eigenspace, meaning all row sums, hence all degrees, are equal. A regular graph attains that equality. For the upper bound choose $Ax=\lambda_1x$ and a nonzero coordinate with maximum $|x_i|$. Since $\lambda_1\ge\bar d\ge0$,
+\[\lambda_1|x_i|=\left|\sum_{j\sim i}x_j\right|\le\deg(i)|x_i|\le\Delta|x_i|.\]
+Divide by $|x_i|$.
 \end{solution}
-
 \begin{solution}{linear:ex:nonnormal}
-\idea The smallest Jordan block of Appendix~\ref{linear:ch:eigen}, as a counterexample.
-\writeup $\chi_{A+E}=X^2-\varepsilon$, so the eigenvalues are $\pm\sqrt\varepsilon$, while those of $A$ are $0,0$. The
-perturbation has operator norm $\varepsilon$ and Frobenius norm $\varepsilon$, but the eigenvalues moved by $\sqrt\varepsilon>
-\varepsilon$, and $\sum|\alpha_i-\beta_{\sigma(i)}|^2=2\varepsilon>\varepsilon^2$. Normality (here, of $A$) is essential.
+\idea An exact two-dimensional calculation shows why a normality hypothesis matters.
+\writeup The characteristic polynomial is $X^2-\varepsilon$, so $A+E$ has eigenvalues $\pm\sqrt\varepsilon$, while $A$ has two zero eigenvalues. Both norms of $E$ are $\varepsilon$. For $0<\varepsilon<1$, each shift has size $\sqrt\varepsilon>\varepsilon$, and the sum of squared shifts is $2\varepsilon>\varepsilon^2=\|E\|_F^2$. These violate the proposed bounds when their matrix hypotheses are omitted.
 \end{solution}
-
 \begin{solution}{linear:ex:rankone}
-\idea Adding a positive semidefinite matrix can only push eigenvalues up, and a rank-one one cannot push any of them past
-the previous one.
-\writeup $B=vv^*$ has eigenvalues $\|v\|^2,0,\dots,0$. Corollary~\ref{linear:cor:weylpert} gives $\lambda_k(A+B)\ge\lambda_k(A)+
-\lambda_n(B)=\lambda_k(A)$. Weyl's inequality with $i=k-1$, $j=2$ gives $\lambda_k(A+B)\le\lambda_{k-1}(A)+\lambda_2(B)=
-\lambda_{k-1}(A)$ for $k\ge2$.
+\idea Positivity pushes all eigenvalues upward. Only one positive direction is available, limiting how far the lower eigenvalues can rise.
+\writeup Since $B=vv^*\succeq0$, the stability corollary gives $\lambda_k(A+B)\ge\lambda_k(A)$. For $n\ge2$, $B$ has eigenvalues $\|v\|^2,0,\dots,0$. Weyl with $i=k-1$ and $j=2$ yields $\lambda_k(A+B)\le\lambda_{k-1}(A)$ for $k\ge2$. Together these are the asserted interlacing chain. In dimension one, only the positivity inequality remains.
 \end{solution}
-
 \begin{solution}{linear:ex:kyfan}
-\idea The diagonal of $A$ in a basis starting with $x_1,\dots,x_k$ contains the numbers $\langle Ax_i,x_i\rangle$, and Schur
-bounds the sum of any $k$ diagonal entries.
-\writeup Extend to an orthonormal basis $x_1,\dots,x_n$; the matrix of $A$ in it is Hermitian with the same eigenvalues and
-diagonal entries $\langle Ax_i,x_i\rangle$. The sum of any $k$ diagonal entries is at most the sum of the $k$ largest, which
-is at most $\lambda_1+\dots+\lambda_k$ by Theorem~\ref{linear:thm:schurmaj}. Eigenvectors give equality. A maximum of linear
-functions of $A$ is convex, and $\max(f+g)\le\max f+\max g$ gives the last inequality.
+\idea Schur bounds the sum of the first $k$ diagonal entries in any orthonormal basis. An eigenbasis attains the bound.
+\writeup Extend the chosen family to an orthonormal basis. The matrix of $A$ in that basis has diagonal entries $\langle Ax_i,x_i\rangle$ and unchanged eigenvalues. Any $k$ diagonal entries sum to at most the top $k$ diagonal entries, whose sum is at most $\lambda_1+\cdots+\lambda_k$. Equality is attained by the top eigenvectors. A maximum of linear functions of $A$ is convex. Finally, the maximum of a sum is at most the sum of the separate maxima, proving the bound for $A+B$.
 \end{solution}
-
 \begin{solution}{linear:ex:sqrtpsd}
-\idea Existence is the functional calculus; for uniqueness, anything commuting with $A$ lives on its eigenspaces.
-\writeup Write $A=\sum_\lambda\lambda P_\lambda$ and set $\sqrt A=\sum_\lambda\sqrt\lambda P_\lambda$, positive semidefinite.
-By Lagrange interpolation there is a polynomial $p$ with $p(\lambda)=\sqrt\lambda$ at the eigenvalues, and $p(A)=\sqrt A$.
-If $S\succeq0$ and $S^2=A$, then $S$ commutes with $A=S^2$, so $S$ preserves each eigenspace $E_\lambda$ of $A$. On
-$E_\lambda$, $S$ is Hermitian with eigenvalues $\mu\ge0$ satisfying $\mu^2=\lambda$, so $\mu=\sqrt\lambda$ and $S=\sqrt\lambda I$
-there. Hence $S=\sqrt A$.
+\idea The spectral decomposition defines the candidate. Any other positive square root must have the same value on each eigenspace.
+\writeup Define $S=\sum_\lambda\sqrt\lambda P_\lambda$. It is positive semidefinite and $S^2=A$. Interpolating $p(\lambda)=\sqrt\lambda$ at the finitely many distinct eigenvalues gives $p(A)=S$. If $R\succeq0$ and $R^2=A$, it commutes with $A$ and preserves each eigenspace $E_\lambda$. The restriction of $R$ there is Hermitian, with nonnegative eigenvalues $\mu$ satisfying $\mu^2=\lambda$. Every such eigenvalue is $\sqrt\lambda$, so the restriction is $\sqrt\lambda I$. Thus $R=S$.
 \end{solution}
-
 \begin{solution}{linear:ex:simultaneous}
-\idea Diagonalise $A$ first; $B$ cannot mix its eigenspaces.
-\writeup If $Ax=\lambda x$, then $A(Bx)=BAx=\lambda Bx$, so $B$ preserves $E_\lambda(A)$, and $B|_{E_\lambda}$ is Hermitian.
-Choose an orthonormal eigenbasis of $B|_{E_\lambda}$ in each eigenspace of $A$ and put them together: the eigenspaces are
-mutually orthogonal, so this is an orthonormal basis of eigenvectors of both. For commuting normal matrices the same
-argument works, since $B|_{E_\lambda}$ is normal (its adjoint is $B^*|_{E_\lambda}$, because $B^*$ also commutes with $A$:
-$B^*$ is a polynomial in $B$, by the spectral decomposition and Lagrange interpolation, as in the previous solution).
+\idea Commutation prevents $B$ from mixing different eigenspaces of $A$. Diagonalise within each of those spaces.
+\writeup If $Ax=\lambda x$, then $A(Bx)=B(Ax)=\lambda Bx$, so $B$ preserves $E_\lambda(A)$. For Hermitian $B$, each restriction is Hermitian. Choose its orthonormal eigenbasis on each $E_\lambda$ and unite them; the eigenspaces of $A$ are mutually orthogonal. For normal $B$, use interpolation on its spectrum to write $B^*=p(B)$. It too commutes with $A$, so both $B$ and $B^*$ preserve each $E_\lambda$. The restrictions are therefore normal with adjoint $B^*|_{E_\lambda}$, and the same construction works.
 \end{solution}
-
 \begin{solution}{linear:ex:realnormal}
-\idea Complexify, use the complex spectral theorem, and pair each non-real eigenvector with its conjugate.
-\writeup Real eigenvalues give real eigenvectors (solve a real linear system). Let $\lambda=a+ib$ with $b\ne0$ and
-$A(x+iy)=\lambda(x+iy)$, with $x,y$ real. Taking real and imaginary parts, $Ax=ax-by$ and $Ay=bx+ay$, so $P=\operatorname{span}
-(x,y)$ is invariant and $A$ acts on it, in the basis $(x,y)$ up to scaling, by $\bigl(\begin{smallmatrix}a&b\\-b&a
-\end{smallmatrix}\bigr)$. Since $A$ is real, $x-iy$ is an eigenvector for $\bar\lambda\ne\lambda$, so it is orthogonal to
-$x+iy$ (Corollary~\ref{linear:cor:hermitian}): $\langle x+iy,x-iy\rangle=\|x\|^2-\|y\|^2+2i\langle x,y\rangle=0$, so $\|x\|=\|y\|$
-and $x\perp y$. Normalising and swapping $x,y$ if needed gives an orthonormal basis of $P$ with matrix $\bigl(\begin{smallmatrix}
-a&-b\\b&a\end{smallmatrix}\bigr)$. By Exercise~\ref{linear:ex:normaliff}, $x\pm iy$ are also eigenvectors of $A^{\mathsf T}=A^*$, so
-$A^{\mathsf T}$ preserves $P$ and $A$ preserves $P^\perp$; $A|_{P^\perp}$ is again normal, and induction finishes. A rotation
-$Q$ of $\R^3$ ($Q^{\mathsf T}Q=I$, $\det Q=1$) has eigenvalues of modulus $1$, so its blocks are $\pm1$ and rotation blocks
-$\bigl(\begin{smallmatrix}\cos\theta&-\sin\theta\\\sin\theta&\cos\theta\end{smallmatrix}\bigr)$; with $\det=1$ in dimension $3$
-there is a block $(1)$: every rotation of space has an axis (Euler, 1776).
+\idea A conjugate pair of complex eigendirections becomes a real invariant plane.
+\writeup For a nonreal eigenvalue $a+ib$, choose $x+iy$ with real $x,y$ and $b\ne0$. The eigenvector equation gives $Ax=ax-by$ and $Ay=bx+ay$. Since $A$ is real, $x-iy$ is an eigenvector for $a-ib$ and is orthogonal to $x+iy$. Expanding gives $\|x\|^2-\|y\|^2+2i\langle x,y\rangle=0$, so $x\perp y$ and their norms are equal and nonzero. In the normalised basis $(y,x)$, the invariant plane has matrix $\bigl(\begin{smallmatrix}a&-b\\b&a\end{smallmatrix}\bigr)$. Exercise~\ref{linear:ex:normaliff} shows that $A^*$ also preserves this plane. Its orthogonal complement is therefore invariant for both $A$ and $A^*$, with normal restriction. Real eigenvalues similarly yield real invariant lines. Induction gives the block form. For a rotation in $\R^3$, orthogonality makes each real block $\pm1$ and each plane block a rotation. Their determinant product is $1$, so at least one real block is $1$. Its eigenvector is the rotation axis.
 \end{solution}
-
 \begin{solution}{linear:ex:bordered}
-\idea The characteristic polynomial of a bordered diagonal matrix divided by $\prod(X-\mu_i)$ is ``$X-c$ minus a sum of
-simple fractions'', so we must show that $f/g$ has that shape with positive numerators. Interlacing is exactly what makes the
-signs right.
-\writeup Let $f=\prod_j(X-\lambda_j)$ and $g=\prod_i(X-\mu_i)$. Expanding $\det(XI-M)$ along the last row and column (or by
-the Schur complement $X-c-b^{\mathsf T}(XI-D)^{-1}b$, times $g$),
-\[
-\det(XI-M)=g(X)\Bigl(X-c-\sum_i\frac{b_i^2}{X-\mu_i}\Bigr).
-\]
-The partial fraction decomposition of $f/g$, with $\deg f=\deg g+1$ and distinct simple poles, is
-$\frac fg=X-c_0-\sum_i\frac{r_i}{X-\mu_i}$ with $c_0=\sum_j\lambda_j-\sum_i\mu_i$ and $r_i=-\frac{f(\mu_i)}{g'(\mu_i)}$.
-Now $f(\mu_i)=\prod_j(\mu_i-\lambda_j)$ has exactly $i$ negative factors ($j\le i$), and $g'(\mu_i)=\prod_{l\ne i}(\mu_i-\mu_l)$
-has exactly $i-1$ ($l<i$). So $f(\mu_i)$ and $g'(\mu_i)$ have opposite signs and $r_i>0$. Take $c=c_0$ and $b_i=\sqrt{r_i}$:
-then $\det(XI-M)=f$.
+\idea Interlacing makes the residues have exactly the signs needed to be negatives of squares.
+\writeup Put $f(X)=\prod_j(X-\lambda_j)$ and $g(X)=\prod_i(X-\mu_i)$. Expanding the bordered determinant gives
+\[\det(XI-M)=g(X)\left(X-c-\sum_i\frac{b_i^2}{X-\mu_i}\right).\]
+Partial fractions give $f/g=X-c_0-\sum_i r_i/(X-\mu_i)$, where $c_0=\sum_j\lambda_j-\sum_i\mu_i$ and $r_i=-f(\mu_i)/g'(\mu_i)$. Strict interlacing makes $f(\mu_i)$ have $i$ negative factors and $g'(\mu_i)$ have $i-1$. Hence $r_i>0$. Choosing $c=c_0$ and $b_i=\sqrt{r_i}$ makes the two polynomials equal, which gives the prescribed spectrum.
+\end{solution}
+\begin{solution}{linear:ex:vonneumann}
+\idea Two eigenbases express the trace as a doubly stochastic average. Rearrangement maximises the pairing; equality forces the two matrices to share compatible eigendirections.
+\writeup With $A=UD_\alpha U^*$, $B=VD_\beta V^*$ and $W=U^*V$, we have $\operatorname{tr}(AB)=\sum_{i,j}\alpha_i\beta_j|w_{ij}|^2$. Apply Lemma~\ref{linear:lem:birkhoff} to $-\alpha_i\beta_j$ to find a permutation with $\operatorname{tr}(AB)\le\sum_i\alpha_i\beta_{\sigma(i)}$. Removing an inverted pair increases this sum by $(\alpha_i-\alpha_l)(\beta_{\sigma(l)}-\beta_{\sigma(i)})\ge0$. Thus decreasing lists give its maximum.
+
+A common orthonormal basis ordering both spectra decreasingly gives equality. Conversely, assume equality and work in a basis where $A=\operatorname{diag}(\alpha)$ is decreasing. Among all unitary conjugates of $B$, the present trace is maximal. Conjugate $B$ by a real rotation of coordinates $i,j$ and differentiate the trace at angle zero. Maximality gives $(\alpha_i-\alpha_j)\operatorname{Re}b_{ij}=0$. Multiplying coordinate $i$ by $i$ first preserves the trace and replaces this real part by $-\operatorname{Im}b_{ij}$, so $(\alpha_i-\alpha_j)\operatorname{Im}b_{ij}=0$ too. Hence $B$ preserves every eigenspace of $A$. Diagonalise $B$ within those spaces. If two resulting pairs satisfy $\alpha_i>\alpha_j$ but $\beta_i<\beta_j$, swapping them strictly increases the trace, contradicting maximality. Ordering within tied blocks therefore gives a common eigenbasis ordering both spectra decreasingly. This proves the full equality characterisation.
 \end{solution}
 
-\begin{solution}{linear:ex:vonneumann}
-\idea Same computation as Hoffman--Wielandt: the trace is a doubly stochastic average of products $\alpha_i\beta_j$, and
-a linear function of a doubly stochastic matrix is extremal at a permutation; then rearrange.
-\writeup With $A=UD_\alpha U^*$, $B=VD_\beta V^*$ and $W=U^*V$, $\operatorname{tr}(AB)=\operatorname{tr}(D_\alpha WD_\beta
-W^*)=\sum_{i,j}\alpha_i\beta_j|w_{ij}|^2$. Lemma~\ref{linear:lem:birkhoff} applied to $c_{ij}=-\alpha_i\beta_j$ gives $\sigma$ with
-$\operatorname{tr}(AB)\le\sum_i\alpha_i\beta_{\sigma(i)}$. If $\alpha_i>\alpha_l$ and $\beta_{\sigma(i)}<\beta_{\sigma(l)}$,
-swapping increases the sum by $(\alpha_i-\alpha_l)(\beta_{\sigma(l)}-\beta_{\sigma(i)})>0$, so the sorted pairing is the
-largest: $\operatorname{tr}(AB)\le\sum_i\lambda_i(A)\lambda_i(B)$. Equality holds when $A$ and $B$ have a common orthonormal
-eigenbasis ordering both spectra the same way (then $W$ is a permutation matching sorted to sorted); conversely one can show
-that equality forces such a basis.
+\begin{solution}{ex:v8c03a}
+\idea Once the eigenspaces are known, powers act separately on the two perpendicular lines.
+\writeup The eigenvectors $u_+=(1,1)/\sqrt2$ and $u_-=(1,-1)/\sqrt2$ have eigenvalues $3$ and $1$. Their projections are $P_+=\frac12\bigl(\begin{smallmatrix}1&1\\1&1\end{smallmatrix}\bigr)$ and $P_-=\frac12\bigl(\begin{smallmatrix}1&-1\\-1&1\end{smallmatrix}\bigr)$. Since $P_+P_-=0$ and $P_++P_-=I$, $A^m=3^mP_++P_-$ for every $m\ge0$. Thus $A^3=\bigl(\begin{smallmatrix}14&13\\13&14\end{smallmatrix}\bigr)$.
+\end{solution}
+\begin{solution}{ex:v8c03b}
+\idea Compression keeps the quadratic form on the chosen plane. The mixed vector averages two diagonal entries.
+\writeup For $u=(e_1+e_3)/\sqrt2$ and $v=e_2$, $\langle Du,u\rangle=(4-1)/2=3/2$, $\langle Dv,v\rangle=2$, and the cross terms vanish. The compression is $\operatorname{diag}(3/2,2)$, with ordered spectrum $(2,3/2)$. Interlacing reads $4\ge2\ge2$ and $2\ge3/2\ge-1$, as required.
+\end{solution}
+\begin{solution}{ex:v8c03c}
+\idea A unit vector's outer product is projection onto its span, with prescribed squared coordinates on the diagonal.
+\writeup Set $v=(\sqrt a,\sqrt b,\sqrt c)$ and $A=vv^{\mathsf T}$. Then $\|v\|=1$, $Av=v$, and $A$ vanishes on $v^\perp$, proving the spectrum $(1,0,0)$ and positivity. Its diagonal is $(a,b,c)$. For the specified triple,
+\[A=\begin{pmatrix}1/2&1/\sqrt6&1/\sqrt{12}\\1/\sqrt6&1/3&1/\sqrt{18}\\1/\sqrt{12}&1/\sqrt{18}&1/6\end{pmatrix}.\]
+Any matrix with this Hermitian spectrum is positive semidefinite, so $a_{ii}=e_i^*Ae_i\ge0$. Negative diagonal entries are impossible.
+\end{solution}
+\begin{solution}{ex:v8c03d}
+\idea A scalar perturbation shifts all eigendirections equally. The off-diagonal perturbation has an exact quadratic formula.
+\writeup Adding $\varepsilon I$ gives eigenvalues $3+\varepsilon,1+\varepsilon$. Each shift equals the perturbation norm $\varepsilon$, and their squared sum is $2\varepsilon^2=\|\varepsilon I\|_F^2$. For the second perturbation, the eigenvalues solve $(X-2)^2=1+\varepsilon^2$, so they are $2\pm\sqrt{1+\varepsilon^2}$. Their shifts from $3,1$ are $\delta,-\delta$, where
+\[\delta=\sqrt{1+\varepsilon^2}-1=\frac{\varepsilon^2}{\sqrt{1+\varepsilon^2}+1}\le\frac{\varepsilon^2}{2}.\]
+This proves the claimed smaller movement without a numerical approximation.
 \end{solution}
 
 \section*{Sources and further reading}
-
 \begin{itemize}
-\item A.-L.~Cauchy, \emph{Sur l'\'equation \`a l'aide de laquelle on d\'etermine les in\'egalit\'es s\'eculaires des
-mouvements des plan\`etes}, Exercices de math\'ematiques 4 (1829): reality of the eigenvalues and interlacing.
+\item A.-L.~Cauchy, \emph{Sur l'\'equation \`a l'aide de laquelle on d\'etermine les in\'egalit\'es s\'eculaires des mouvements des plan\`etes}, Exercices de math\'ematiques 4 (1829), treats real eigenvalues and interlacing.
 \item J.~W.~Strutt, Lord Rayleigh, \emph{The Theory of Sound}, Macmillan, 1877.
-\item D.~Hilbert, \emph{Grundz\"uge einer allgemeinen Theorie der linearen Integralgleichungen} (Erste Mitteilung), G\"ottinger
-Nachrichten (1904), 49--91; L.~A.~Steen, \emph{Highlights in the history of spectral theory}, American Mathematical Monthly
-80 (1973), 359--381, for the story and the quotation.
-\item E.~Fischer, \emph{\"Uber quadratische Formen mit reellen Koeffizienten}, Monatshefte f\"ur Mathematik und Physik 16
-(1905), 234--249; R.~Courant, \emph{\"Uber die Eigenwerte bei den Differentialgleichungen der mathematischen Physik},
-Mathematische Zeitschrift 7 (1920), 1--57.
-\item H.~Weyl, \emph{Das asymptotische Verteilungsgesetz der Eigenwerte linearer partieller Differentialgleichungen},
-Mathematische Annalen 71 (1912), 441--479.
-\item I.~Schur, \emph{\"Uber eine Klasse von Mittelbildungen mit Anwendungen auf die Determinantentheorie}, Sitzungsberichte
-der Berliner Mathematischen Gesellschaft 22 (1923), 9--20; A.~Horn, \emph{Doubly stochastic matrices and the diagonal of a
-rotation matrix}, American Journal of Mathematics 76 (1954), 620--630; N.~N.~Chan and K.-H.~Li, \emph{Diagonal elements and
-eigenvalues of a real symmetric matrix}, Journal of Mathematical Analysis and Applications 91 (1983), 562--566 (the
-rotation proof given here).
-\item A.~J.~Hoffman and H.~W.~Wielandt, \emph{The variation of the spectrum of a normal matrix}, Duke Mathematical Journal 20
-(1953), 37--39; G.~Birkhoff, \emph{Tres observaciones sobre el \'algebra lineal}, Revista Universidad Nacional de Tucum\'an,
-Serie A, 5 (1946), 147--151.
-\item K.~Fan, \emph{On a theorem of Weyl concerning eigenvalues of linear transformations I}, Proceedings of the National
-Academy of Sciences 35 (1949), 652--655.
-\item W.~Fulton, \emph{Eigenvalues, invariant factors, highest weights, and Schubert calculus}, Bulletin of the AMS 37 (2000),
-209--249; A.~Knutson and T.~Tao, \emph{Honeycombs and sums of Hermitian matrices}, Notices of the AMS 48 (2001), 175--186.
-\item R.~Bhatia, \emph{Matrix Analysis}, Springer, 1997, Chapters II--III and VI; R.~A.~Horn and C.~R.~Johnson, \emph{Matrix
-Analysis}, 2nd ed., Cambridge University Press, 2013, Chapter~4.
+\item D.~Hilbert, \emph{Grundz\"uge einer allgemeinen Theorie der linearen Integralgleichungen} (Erste Mitteilung), G\"ottinger Nachrichten (1904), 49--91; L.~A.~Steen, \emph{Highlights in the history of spectral theory}, American Mathematical Monthly 80 (1973), 359--381, gives the historical account and attributed quotation.
+\item E.~Fischer, \emph{\"Uber quadratische Formen mit reellen Koeffizienten}, Monatshefte f\"ur Mathematik und Physik 16 (1905), 234--249; R.~Courant, \emph{\"Uber die Eigenwerte bei den Differentialgleichungen der mathematischen Physik}, Mathematische Zeitschrift 7 (1920), 1--57.
+\item H.~Weyl, \emph{Das asymptotische Verteilungsgesetz der Eigenwerte linearer partieller Differentialgleichungen}, Mathematische Annalen 71 (1912), 441--479.
+\item I.~Schur, \emph{\"Uber eine Klasse von Mittelbildungen mit Anwendungen auf die Determinantentheorie}, Sitzungsberichte der Berliner Mathematischen Gesellschaft 22 (1923), 9--20; A.~Horn, \emph{Doubly stochastic matrices and the diagonal of a rotation matrix}, American Journal of Mathematics 76 (1954), 620--630; N.~N.~Chan and K.-H.~Li, \emph{Diagonal elements and eigenvalues of a real symmetric matrix}, Journal of Mathematical Analysis and Applications 91 (1983), 562--566, presents the rotation proof used here.
+\item A.~J.~Hoffman and H.~W.~Wielandt, \emph{The variation of the spectrum of a normal matrix}, Duke Mathematical Journal 20 (1953), 37--39; G.~Birkhoff, \emph{Tres observaciones sobre el \'algebra lineal}, Revista Universidad Nacional de Tucum\'an, Serie A, 5 (1946), 147--151.
+\item K.~Fan, \emph{On a theorem of Weyl concerning eigenvalues of linear transformations I}, Proceedings of the National Academy of Sciences 35 (1949), 652--655.
+\item W.~Fulton, \emph{Eigenvalues, invariant factors, highest weights, and Schubert calculus}, Bulletin of the AMS 37 (2000), 209--249; A.~Knutson and T.~Tao, \emph{Honeycombs and sums of Hermitian matrices}, Notices of the AMS 48 (2001), 175--186.
+\item R.~Bhatia, \emph{Matrix Analysis}, Springer, 1997, Chapters II--III and VI; R.~A.~Horn and C.~R.~Johnson, \emph{Matrix Analysis}, 2nd ed., Cambridge University Press, 2013, Chapter~4.
 \end{itemize}
