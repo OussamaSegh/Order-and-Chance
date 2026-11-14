@@ -1,22 +1,20 @@
 # Description
 
-An ant living on a surface cannot see it bend, yet it can measure its curvature. A rotation by a full turn looks like no rotation at all, yet an electron can tell the difference. And the eigenvalues of a random unitary matrix repel each other with exactly the law that the zeros of the Riemann zeta function seem to obey. This book is about the mathematics behind these three facts: the geometry and topology of curved spaces, and the groups that move them.
+A triangle on a sphere can have three right angles. A loop through a torus can resist every attempt to shrink it to a point. A random unitary matrix has eigenvalues whose spacing obeys an exact law. This volume develops the geometry and topology that make sense of these examples.
 
-It begins with differential geometry. Smooth manifolds are built from the inverse function theorem; vector fields generate flows, with Lie's bracket and Frobenius' theorem; differential forms turn the theorems of Green, Gauss and Stokes into a single line and prove Brouwer's fixed point theorem in every dimension. Curvature follows, from Gauss's Theorema Egregium to the Gauss-Bonnet theorem, where a local quantity integrates to a global invariant, and the hairy ball theorem drops out.
+The first four chapters build differential geometry from calculus. The inverse function theorem leads to smooth manifolds. Vector fields generate flows, and their commutators measure the order in which motions are performed. Differential forms give Stokes' theorem and a proof of Brouwer's fixed point theorem. Curvature follows, with Gauss's Theorema Egregium and Gauss–Bonnet connecting local measurements to the shape of a whole surface.
 
-Then algebraic topology. The fundamental group and covering spaces turn the winding number into a group, compute the fundamental groups of surfaces, and prove that subgroups of free groups are free. Homology counts holes in every dimension and proves invariance of domain, the Borsuk-Ulam theorem and the ham sandwich theorem.
+Fundamental groups and covering spaces record how loops can deform. They lead to the classification of connected coverings and to the theorem that subgroups of free groups are free. Homology counts holes in higher dimensions and proves invariance of domain, the Borsuk–Ulam theorem and the ham sandwich theorem.
 
-The last five chapters bring geometry back to algebra, probability and number theory. Matrix Lie groups and their Lie algebras, with the double cover of the rotation group by the unit quaternions and Dirac's belt trick. Haar measure and Weyl's integration formula, which give the joint law of the eigenvalues of a random unitary matrix and prove Dyson's pair correlation formula, the one Montgomery found among the zeros of zeta. The hyperbolic plane and the modular group, where the geodesic flow is a matrix product and continued fractions are the records of geodesics crossing the Farey tessellation. The Riemann mapping theorem, which maps every simply connected region other than the plane onto the disc without changing an angle. And integral geometry, where the only symmetric measure on lines resolves Bertrand's paradox and turns Buffon's needle into Crofton's formula for the length of any curve.
+The final five chapters connect geometry with algebra, probability and number theory. Matrix Lie groups relate rotations to quaternions. Haar measure gives a geometric meaning to uniform choice, and Weyl's integration formula yields the eigenvalue law and Dyson's pair correlation for random unitary matrices. The comparison with zeta zeros is carefully distinguished from a proof: the full pair-correlation law remains conjectural. Hyperbolic geometry turns geodesic motion into matrix multiplication and continued fractions into records of crossings. The Riemann mapping theorem constructs holomorphic bijections onto the disc. Integral geometry uses an invariant measure on lines to measure curves through their intersections.
 
-Eleven appendices carry the elementary geometry behind it all: Klein's programme, inversion, projective geometry, conics and quadrics, cubic curves, lattices and sphere packings, non-Euclidean geometry and convex bodies.
+Eleven appendices develop transformations, inversion, projective geometry, conics, quadratic forms and quadrics, plane and cubic curves, lattices and sphere packings, non-Euclidean geometry, convex bodies, and curvature of curves and polyhedra.
 
-The numbered theorems are proved. A few named results are quoted and marked, among them the general de Rham theorem, the classification of surfaces, Hopf's ergodicity theorem, Hadwiger's theorem, Adams' count of vector fields, the intrinsic form of Bézout's theorem, and associativity of the chord-and-tangent law for every triple. Every chapter opens with the story and the people behind the idea, and ends with exercises chosen for their beauty, each with a hint and a solution that explains how the argument is found.
-
-Written for the reader who wants to understand, not to pass an examination.
+The book assumes earlier volumes' calculus, complex analysis, topology, integration and algebra. Proofs are developed step by step; advanced results quoted without proof are identified. The cubic-curve appendix proves associativity under an explicit distinctness hypothesis and points to Volume 13 for the full group law. Exercises have difficulty ratings, useful hints and complete solutions, each beginning with the idea of the argument. Sources and further reading accompany the chapters, and a selective index locates named statements.
 
 # Keywords
 
-differential geometry with complete proofs
+differential geometry and curvature
 algebraic topology and homology
 Lie groups and quaternions
 random matrices and zeta zeros

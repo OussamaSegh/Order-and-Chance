@@ -14,9 +14,18 @@
   is `False`, `LicenseShortName` and `UsageTerms` are `Public domain`, and its
   creation-date field is `1863`. The page's rights statement says the work is
   public domain in its country of origin and life-plus-70-or-shorter jurisdictions.
-  The actual downloaded rights metadata, including the qualification concerning
-  country-specific US tags, is preserved in `riemann-source-evidence.json`;
-  it has not been replaced with an invented named-author death date or US tag.
+  The actual downloaded rights metadata, including the source page's
+  qualification concerning country-specific US tags, is preserved in
+  `riemann-source-evidence.json`. US publication evidence was independently
+  verified: the same underlying photograph appears as the frontispiece in
+  the **1892** edition of *Bernhard Riemann's Gesammelte mathematische Werke
+  und wissenschaftlicher Nachlass*, Teubner, Leipzig. See the
+  [digitised volume](https://archive.org/details/bernhardriemann01riemgoog),
+  scanned PDF page 14 (also repeated on page 10). The portrait was visually
+  compared with the Commons source on 14 November 2026. Publication in 1892
+  places the work outside the US 95-year term; this is not inferred solely
+  from the photograph's creation date. Scan URL and SHA-256 are in the evidence
+  record. No photographer name or death date is invented.
 - Verified from the live Commons imageinfo API on **14 November 2026**:
   <https://commons.wikimedia.org/w/api.php?action=query&format=json&titles=File%3AGeorg_Friedrich_Bernhard_Riemann.jpeg&prop=imageinfo&iiprop=url%7Csize%7Cextmetadata>.
 - Native file: **903 × 986 pixels**, **255,626 bytes**, unedited. At the series
