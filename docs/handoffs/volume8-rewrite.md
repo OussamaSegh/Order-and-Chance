@@ -70,8 +70,8 @@ Four new exercises per chapter, after the last existing exercise, each with a hi
 | --- | --- |
 | — | Draft pull request opened: https://github.com/OussamaSegh/Order-and-Chance/pull/242 |
 | — | Preface, blurb, `kdp.md`, About the Cover, portrait macro and credits | Done |
-| 1–13 | Sentence rewrite, two figures, four exercises | Done; final review and full-format validation pending |
-| 14–16, A–F | Sentence rewrite, two figures, four exercises | In progress |
+| 1–14 | Sentence rewrite, two figures, four exercises | Done; final review and full-format validation pending |
+| 15–16, A–F | Sentence rewrite, two figures, four exercises | In progress |
 
 Portraits on disk, not yet placed in the chapters: Banach, Hilbert, Cayley, Kirchhoff, Fredholm, Fourier, Poisson, Gauss, Haar, Hadamard, Cauchy, Tauber, Riemann, Jordan, Frobenius, Schwarz, Lyapunov. Credits are in `volume8-analysis/photos/CREDITS.md`. Place each at the first real mention. Do not invent a caption.
 
@@ -180,3 +180,10 @@ Chapter 13 is rewritten through invariant means, Hausdorff's paradox, real/circl
 The abstract-group mean argument now explicitly permits arbitrary groups rather than inheriting the topological section's countability assumption. Haar uniqueness retains the sigma-finite measure-uniqueness step and justifies compact support of the distance cutoffs. The Q_p self-duality proof now checks both directions of the compact-convergence topology, using annihilators of compact open subgroups. The rational-quotient exercise likewise verifies its topological identification. The Folland reference names the book without the previous unsupported chapter locator. General Haar existence, nonabelian uniqueness and general Pontryagin duality are clearly quoted, not prerequisites silently assumed proved.
 
 The Chapter 12 checkpoint exits 0 at 473 print pages, 626 whole boxes, with no overflow or unresolved references. Chapter 13 awaits its checkpoint build.
+
+
+Chapter 14 is rewritten through Dixon's homology proof, strip growth, Hadamard factorisation and Mellin inversion, including every original exercise/hint/solution. Its two new plates show Gaussian damping on a strip and the geometric-level Mellin poles. Exercises `ex:v8c14a`–`d` treat annular residue cancellation, an order-one-half product, the exact scale equation and a Mellin pair obtained from a Laplace integral. All original labels, numbered triples and figures are preserved, with 56 appended exercises and 4959 cross-volume statements.
+
+The homological-connectivity prompt now explains why a nonempty bounded complement is impossible, rather than suggesting the exterior of a disc as a positive example. Riemann mapping explicitly excludes the whole plane. The order definition handles nonzero constants using max(e,M(r)); the product lemma explicitly handles identically zero factors, whose finite zero multiplicity would otherwise be undefined. Hadamard's derivative step now derives the estimate from Borel–Caratheodory and Cauchy's formula. The finite-zero solution does not assume a nonzero constant polynomial has modulus at least one. The maximum-level proof justifies continuity and weighted integrability before inversion and proves its strict 1.6e-6 amplitude bound by Gamma reflection, a geometric-series majorant and exact rational Taylor bounds. Bourgain's exponent is described as a historical 2017 result rather than a current-record claim.
+
+The Chapter 13 checkpoint exits 0 at 479 print pages, 628 whole boxes, with no overflow or unresolved references. Chapter 14 awaits its PDF checkpoint.
