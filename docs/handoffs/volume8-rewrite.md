@@ -70,22 +70,21 @@ Four new exercises per chapter, after the last existing exercise, each with a hi
 | --- | --- |
 | — | Draft pull request opened: https://github.com/OussamaSegh/Order-and-Chance/pull/242 |
 | — | Preface, blurb, `kdp.md`, About the Cover, portrait macro and credits | Done |
-| 1–16, A–E | Sentence rewrite, two figures, four exercises | Done; final review and full-format validation pending |
-| F | Sentence rewrite, two figures, four exercises | In progress |
+| 1–16, A–F | Sentence rewrite, two figures, four exercises | Done; final review and full-format validation pending |
 
-Portraits on disk, not yet placed in the chapters: Banach, Hilbert, Cayley, Kirchhoff, Fredholm, Fourier, Poisson, Gauss, Haar, Hadamard, Cauchy, Tauber, Riemann, Jordan, Frobenius, Schwarz, Lyapunov. Credits are in `volume8-analysis/photos/CREDITS.md`. Place each at the first real mention. Do not invent a caption.
+All seventeen portraits are placed in the chapters: Banach, Hilbert, Cayley, Kirchhoff, Fredholm, Fourier, Poisson, Gauss, Haar, Hadamard, Cauchy, Tauber, Riemann, Jordan, Frobenius, Schwarz, Lyapunov. Credits are in `volume8-analysis/photos/CREDITS.md` and repeated at each placement.
 
 The Volume 8 cover note changed `common/cover-notes.json`. `tools/series_cover.py --check` passes. The Volume 3 inventory and conceptual snapshot were restamped for that one hash. No Volume 3 anchor or status changed.
 
 ## Build
 
-Not yet. When the manuscript is in, `./build.sh --pdf-only volume8-analysis` and the EPUB. No overfull boxes, no undefined references. Page count must stay between 300 and 600.
+PDF checkpoints through Appendix E exit 0; the latest is 487 print pages with no overflow or unresolved reference. The complete-manuscript PDF build is running. The full EPUB build and final exact-head CI remain pending.
 
 ## Remains
 
-Every chapter, the preface, the blurb, `kdp.md`, the About the Cover note, portraits, two new figures per chapter, four new exercises per chapter. Then the local build, then CI.
+Final mathematical and visual review, complete PDF/EPUB validation, citation and register checks, PR readiness, and exact-head CI. The user subsequently authorised review and merge; that supersedes the original no-merge pause for these rewrite PRs.
 
-The independent review is a separate agent. This file does not contain that review.
+The final review and its validation evidence will be recorded separately under `docs/review/`. No independent agent review is claimed.
 
 ## Continuation, 14 November 2026
 
@@ -226,7 +225,7 @@ The Appendix B checkpoint exits 0 at 485 print pages, 645 whole boxes, with no o
 
 Appendix D is rewritten through inner products, Gram–Schmidt/QR, projections, least squares/Gauss–Markov, Gram and Cauchy determinants, orthogonal polynomials, quadrature, adjoints and Cholesky, including all original exercises/hints/solutions. Two added plates show weighted residuals and the three-node Gauss rule. Exercises `ex:v8cDa`–`d` compute a weighted fit, a least-norm interpolating quadratic, the first three-node quadrature error, and products of projections. Original numbers/labels/figures pass the audits, eligible prose is rewritten, and citations pass at 4983 statements with 80 appended exercises.
 
-The positive-integral inner product now explicitly has a<b, and the orthogonal-polynomial interval has nonempty interior. The quadrature-convergence exercise specifies continuity on the compact closure: the former wording allowed bounded open intervals with functions having no uniform polynomial approximant. The correction and its purpose are explicit in the exercise and proof. Repeated Cauchy nodes are handled before factoring. The unused beta_0 in the monic recurrence is assigned an arbitrary positive value; the ratio formula remains for n>=1. Strict zero interlacing is justified by the positive recurrence excluding common roots. The Hilbert-determinant decay is expressed logarithmically from the exact product, avoiding an ambiguous ratio asymptotic. The obtuse-vector induction only projects a putative oversized family, avoiding a zero-projection inference for two opposite vectors. Reciprocal sums in the Muntz exercise omit a possible initial zero exponent. The Gaussian covariance discussion distinguishes interpolating covariances from mixture entropy in later review.
+The positive-integral inner product now explicitly has a<b, and the orthogonal-polynomial interval has nonempty interior. The quadrature-convergence exercise specifies continuity on the compact closure: the former wording allowed bounded open intervals with functions having no uniform polynomial approximant. The correction and its purpose are explicit in the exercise and proof. Repeated Cauchy nodes are handled before factoring. The unused beta_0 in the monic recurrence is assigned an arbitrary positive value; the ratio formula remains for n>=1. Strict zero interlacing is justified by the positive recurrence excluding common roots. The Hilbert-determinant decay is expressed logarithmically from the exact product, avoiding an ambiguous ratio asymptotic. The obtuse-vector induction only projects a putative oversized family, avoiding a zero-projection inference for two opposite vectors. Reciprocal sums in the Muntz exercise omit a possible initial zero exponent.
 
 The Appendix C checkpoint exits 0 at 487 print pages, 647 whole boxes, with no overflow or unresolved references. Appendix D awaits its checkpoint.
 
@@ -236,3 +235,10 @@ Appendix E is rewritten through Loewner order, square-root monotonicity, Schur c
 The recent Hadamard status was checked against the primary arXiv:2610.27175 v2 abstract and PDF (3 November 2026): the report verifies all twelve previously open orders below 2000, including 668. The dated attribution and bibliography are retained, without treating a numerical check as a theorem proof. Square roots and simultaneous diagonalisation use earlier main-chapter results, not later exercise premises. The squaring counterexample uses exact rational determinants. Loewner's quoted characterisation specifies analytic continuation and real values on the interval, includes constant functions with nonnegative imaginary part, and places log on the positive rather than closed nonnegative interval. The entropy interpretation concerns Gaussian laws with interpolated covariances, distinguishing them from a mixture distribution. The Hilbert proof justifies the improper midpoint endpoint and absolute double-series convergence; its optimal constant is now proved by the appended exercise. Hadamard row normalisation is stated correctly as making the first row all ones. Walsh characters are attached to the binary additive group rather than ordinary cyclic convolution.
 
 The Appendix D checkpoint exits 0 at 485 print pages, 650 whole boxes, with no overflow or unresolved references. Appendix E awaits its checkpoint.
+
+
+Appendix F is rewritten through matrix powers, continuous and discrete stability, Lyapunov energy, Chebyshev/heavy-ball acceleration, Kalman controllability and Maxwell's cubic. Lyapunov's portrait completes all seventeen placements. Two new plates show a contracting energy ellipse and the least-energy cart trajectory. Exercises `ex:v8cFa`–`d` prove an exact transient maximum, solve a triangular Lyapunov equation, give a quantitative perturbation certificate and compute the cart's minimum energy. All 505 original printed statement/exercise triples still match main, with 88 appended exercises and 44 added figures. Original figure environments and captions remain byte-identical. Cross-volume citations match 4991 statements. All eligible prose is rewritten except the deliberately retained literal Maxwell epigraph.
+
+Explicit repairs: the matrix size is positive where a maximum over eigenvalues is used. The transient example states its polynomial prefactor beside the frozen figure caption. The phase-portrait discussion distinguishes Hurwitz attraction from the Lyapunov stability of a centre. Chebyshev acceleration retains the full m<=L scope with a separate m=L singleton case; its divided expression is used only for m<L. The polynomial normalisation is justified for affine Krylov iterates. Heavy-ball includes the nilpotent m=L case, and its endpoint Jordan exercise separates that case from the positive-rate k*q^k asymptotic. Kalman's proof uses closure of a finite-dimensional column space when taking series and integrals. The logarithmic-norm solution gives the exact initial norm derivative rather than falsely claiming an e^(4t) trajectory. The cubic example's two right-half-plane roots are justified algebraically.
+
+The Appendix E PDF checkpoint exits 0 at 487 print pages, 655 whole boxes, maximum height 391.2 pt, with no overflow or unresolved references. The complete-manuscript build is running.
