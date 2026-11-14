@@ -70,8 +70,8 @@ Four new exercises per chapter, after the last existing exercise, each with a hi
 | --- | --- |
 | — | Draft pull request opened: https://github.com/OussamaSegh/Order-and-Chance/pull/242 |
 | — | Preface, blurb, `kdp.md`, About the Cover, portrait macro and credits | Done |
-| 1–16, A | Sentence rewrite, two figures, four exercises | Done; final review and full-format validation pending |
-| B–F | Sentence rewrite, two figures, four exercises | In progress |
+| 1–16, A–B | Sentence rewrite, two figures, four exercises | Done; final review and full-format validation pending |
+| C–F | Sentence rewrite, two figures, four exercises | In progress |
 
 Portraits on disk, not yet placed in the chapters: Banach, Hilbert, Cayley, Kirchhoff, Fredholm, Fourier, Poisson, Gauss, Haar, Hadamard, Cauchy, Tauber, Riemann, Jordan, Frobenius, Schwarz, Lyapunov. Credits are in `volume8-analysis/photos/CREDITS.md`. Place each at the first real mention. Do not invent a caption.
 
@@ -208,3 +208,10 @@ Appendix A is rewritten through bases, quotients, duality, annihilators, transpo
 Exact algebra replaces the Lights Out example's unsupported rank computation: a row recurrence and displayed terminal matrices give the 3-, 4-, 5- and 6-board claims. Its longer verification is ordinary prose outside the unbreakable example box, with the original claims still in the example. Quotient factorisation proofs are explicitly dimension-free before their polynomial/function examples. The constant-polynomial quotient and n=0 difference-operator cases are handled. The infinite algebraic bidual remark gives the basis-extension obstruction. The additive-function exercise now specifies nondegenerate intervals, since a singleton cannot support an unbounded function; its density claim is also justified. Fisher's Gram proof treats m<=1 separately, avoiding its formerly unjustified nonnegative-diagonal claim in the vacuous single-set case. The trigonometric interpolation solution retains the literal prerequisite phrase required by the citation test while rewriting the containing explanation.
 
 The Chapter 16 PDF checkpoint exits 0 at 483 print pages, 638 whole boxes, with no overflow or unresolved references. Appendix A awaits its checkpoint.
+
+
+Appendix B is rewritten through signed volume, exterior powers, Cauchy–Binet, complementary minors, condensation, LGV and lozenge counts, including every original exercise/hint/solution. New plates show the squared-minor area calculation and the zero-divisor distinction in condensation. Exercises `ex:v8cBa`–`d` compare real and finite-field Gram determinants, expose diagonal perturbation failure, evaluate a binomial Vandermonde determinant, and derive a tiling recurrence. The original numbered triples, labels and figure environments pass; eligible prose is rewritten; citations pass at 4975 statements with 72 appended exercises.
+
+Explicit repairs: Pluecker's proof now avoids division by two and its converse realises the original six-tuple, not only a rescaled tuple. Its geometric interpretation concerns two-planes in R4/projective lines in P3, rather than lines in R4. The condensation identity has its valid recurrence index ranges stated; the arrays still cover k=0 through n. A+tI remains valid for extending polynomial identities, but does not universally repair the condensation algorithm: independent generic entry variables do, and the new exercise gives I4+tI as an exact counterexample. Exterior-product independence is proved by the universal property before the later Laplace exercise, and the zero/top/over-dimension exterior conventions are defined. The compound-eigenvalue exercise cites the earlier main-chapter triangularisation rather than a later appendix. The polygon convention specifies simple counterclockwise boundary; self-intersections give signed winding area. General MacMahon enumeration and the limit-shape theorem are clearly quoted, while small cases are proved exactly. The MacMahon bibliography is corrected to Combinatory Analysis vol. II (1916), not a nonexistent third volume.
+
+The Appendix A checkpoint exits 0 at 485 print pages, 642 whole boxes, with no overflow or unresolved references. All 20 citation tests pass. Appendix B awaits its checkpoint.
