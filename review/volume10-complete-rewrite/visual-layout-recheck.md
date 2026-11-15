@@ -61,3 +61,8 @@ statement/exercise/figure numbers, exercise content, original figure blocks and
 cover artwork are unchanged by this repair. This report does not claim that the
 parent's final PDF/full builds, print export, EPUB or published-artifact reruns
 have already passed.
+
+The coordinating writer copied these exact accepted replacement bytes into the
+three repository paths. The initial complete full build on book sources 8506bdfa
+exited 0 at 279 print pages with 34 EPUB plates; it is historical because its
+three diagram labels still needed this visual repair. Both final builds are rerun.
