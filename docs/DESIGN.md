@@ -8,9 +8,14 @@ the note documentation and manifest hashes. No motif or lettering changed.
 The Volume 3 conceptual register receives the required hash-only refresh because
 it includes that shared JSON; review classifications remain unchanged.
 
-Fresh successful baseline: 189 print pages. Final source/build/publication evidence
-will be recorded in `review/volume10-complete-rewrite/` and on PR #245. No final
-count or successful publication is asserted at this checkpoint. No KDP upload.
+Baseline: 189 print pages. Final local PDF-only and complete builds both exit 0
+at 279 print pages; reading PDF 280. The cover/spine inputs are actual 279 and
+even-rounded 280 pages, producing a 0.6572-inch spine. Approved typography is
+unchanged; the result is below the 300-page aim without padding. All 22 added
+figures and the credited 358.79-ppi portrait were inspected. Final local evidence
+is in `review/volume10-complete-rewrite/final-validation.md`; exact-SHA remote CI,
+merge and published downloads are recorded on PR #245's live acceptance receipt.
+No KDP upload.
 
 ---
 

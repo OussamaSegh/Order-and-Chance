@@ -25,8 +25,8 @@ recorded as FAILED, not successful validation. Installed declared dependencies
 using `uv pip install --python /workspace/order-chance-venv/bin/python -r tools/requirements-build.txt`
 (exit 0). With the approved activation script, the repeated exact command
 `./build.sh --pdf-only volume10-abstraction` exited 0 at **189 print pages**.
-The full build, baseline EPUB, final mathematics and final publication are not yet
-validated. See the distinct historical baseline log/artifact record.
+This paragraph records the initial baseline only. Final local validation is
+separate below; no baseline EPUB was required or claimed.
 
 ## Work ownership and acceptance
 
@@ -42,6 +42,14 @@ with stars, hints and complete idea/writeup solutions after original lists.
 Totals required: 22 new figures and 44 new exercises. No appendix is printed.
 Original section/statement/exercise/equation/figure numbering remains protected.
 No photography count is imposed; only useful verified public-domain images qualify.
-Current state: baseline captured, rewrites and initial review underway. No final
-review, green final-head CI, merge or exact-merge publication is claimed.
+Current source state: all eleven units completely rewritten and separately
+reviewed; exactly 22 new figures, 44 solved exercises and one verified portrait.
+Both final local builds exit 0 at 279 print pages. See [final validation](final-validation.md),
+[visual inspection](final-visual-check.md), [mathematical review](final-mathematical-review.md),
+[editorial review](final-editorial-review.md) and [correction index](corrections-and-review-index.md).
+The source is ready for exact-head CI and normal merge. Their actual run IDs,
+merge SHA and downloaded release/Pages verification belong in the
+[live acceptance receipt](https://github.com/OussamaSegh/Order-and-Chance/pull/245#issuecomment-6892058253).
+The 279-page result is below the 300-page aim; no padding/type changes were used.
+Reviews are separate AI reviews, not human certification.
 No Amazon KDP upload.
