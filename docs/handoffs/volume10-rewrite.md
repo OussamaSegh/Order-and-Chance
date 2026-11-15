@@ -1,3 +1,45 @@
+# Active complete rewrite — PR #245
+
+Starting main `59014a9aad3454ad60786c6549c81fcac88df9df`; branch
+`codex/volume10-complete-rewrite`; actual folder `volume10-abstraction`.
+Printed order: eleven chapters in three parts, no appendices. All eleven units,
+all original proofs/exercises/hints/solutions and front/back publication copy are
+completely rewritten. Each chapter has two added figures and four solved exercises
+(22/44 total). One verified public-domain Hilbert portrait has adjacent credit,
+source evidence and 358.79 effective print ppi. Original numbering, complete figure
+blocks, original artwork and identifiers are preserved.
+
+All chapters pass separate source reviews by agents who did not write them. These
+are AI reviews, not human certification. All mathematical corrections and fixing
+commits appear in the [review index](../../review/volume10-complete-rewrite/corrections-and-review-index.md).
+[Final mathematical](../../review/volume10-complete-rewrite/final-mathematical-review.md)
+and [editorial](../../review/volume10-complete-rewrite/final-editorial-review.md) reports
+cover the complete manuscript. The final three diagram label fixes were separately
+accepted and rechecked in the actual rebuilt book.
+
+Both required final local builds exit 0 on book-source SHA
+`1750bf575024a4fbc3564019018e42e94f4a5384`: 279 print pages, 280 reading pages,
+zero overfull boxes or undefined references/citations. Spine uses even-rounded 280
+pages (0.6572 inches). The result falls below the 300-page aim; no padding or
+compressed typography was introduced. The paperback ISBN remains unassigned blank.
+
+[Final validation](../../review/volume10-complete-rewrite/final-validation.md)
+records exact commands, exit codes, artifact hashes/sizes, 20 citation tests,
+5,162 statement cross-reference check, all 641 publishing tests, all eleven
+numerical scripts, preservation/addition audits and required Volume 3 hash-only
+register/inventory refreshes. Final EPUB is 16,432,344 bytes; all 10,449 package
+links/media/fragment targets resolve. Actual PDF, every new figure, photograph,
+wrap and representative EPUB exercises/hints/solutions were visually inspected.
+Historical failures/checkpoints remain separate from these final local results.
+
+Final-head CI, normal merge and exact-merge publication/download verification are
+tracked in the [live PR acceptance receipt](https://github.com/OussamaSegh/Order-and-Chance/pull/245#issuecomment-6892058253).
+This source handoff does not anticipate future remote results. Remaining remote
+work is complete only when that receipt supplies successful exact-SHA runs and
+matching actual release/Pages artifacts. Nothing has been uploaded to Amazon KDP.
+
+---
+
 # Handoff: Volume 10 rewrite
 
 Volume 10, *Abstraction*, is being rewritten to `docs/plan/MASTER-PLAN-V5-V15.md` and `docs/plan/book-10.md`. Read this file first. It is updated after every chapter.

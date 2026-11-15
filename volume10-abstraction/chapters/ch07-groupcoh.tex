@@ -1,102 +1,169 @@
 \chapter{Group Cohomology}
 
 \begin{center}\itshape
-Why is carrying a digit hard for children? When a group acts on an abelian group, three small cohomology groups answer three old questions: which elements are fixed, which ``twisted homomorphisms'' are trivial, and which group extensions exist. The answers
-include Hilbert's Theorem~90, the Schur--Zassenhaus theorem, and the carry digit of school arithmetic.
+Adding $7$ and $5$ in base ten gives a units digit $2$ and a carry $1$. The carry remembers information lost on reducing modulo ten. Its associativity rule is a cocycle identity, and its cohomology class explains why changing the digit symbols cannot remove it.
 \end{center}
 
-Add $27$ and $45$ the way a child does. The units give $7+5=12$: write $2$, carry $1$. The tens give $2+4+1=7$. The carry is the one non-obvious step, and children struggle with it for good reason, as Daniel Isaksen
-explained in 2002 in the \emph{American Mathematical Monthly}: the carry is a \emph{cocycle}. Write a number below $100$ as a pair of digits $(a,x)$, tens and units, each in $\Z/10$. Then
+Write an integer modulo $100$ as $10a+x$, where $a,x\in\{0,\ldots,9\}$. Adding two such numbers gives
 \[
-(a,x)+(b,y)=\bigl(a+b+c(x,y),\ x+y\bigr),\qquad c(x,y)=\begin{cases}1&\text{if }x+y\ge10,\\0&\text{otherwise,}\end{cases}
+(a,x)+(b,y)=\bigl(a+b+c(x,y),\ x+y\bigr),
+\qquad c(x,y)=\begin{cases}0&x+y<10,\\1&x+y\ge10,\end{cases}
 \]
-with all digit arithmetic modulo $10$. The function $c$ glues two copies of $\Z/10$ into $\Z/100$, and no clever choice of digit symbols can make the carry disappear: if it could, $\Z/100$ would be $\Z/10\times\Z/10$, in which every
-element has order dividing $10$. This chapter shows that the carry is a non-trivial element of a group $H^2(\Z/10,\Z/10)\cong\Z/10$, which classifies all the ways of building a group of order $100$ from two copies of $\Z/10$ (one of them is $\Z/10\times\Z/10$, four are copies of $\Z/100$, and the others are $\Z/20\times\Z/5$ and $\Z/50\times\Z/2$).
+where each resulting coordinate is read modulo ten. For $27+45$, the units calculation contributes the carry $c(7,5)=1$, and the tens calculation becomes $2+4+1=7$.
 
-The same group $H^2$ was met long before it had a name. Otto Hölder in 1893 and Otto Schreier in 1926 described all extensions of one group by another using ``factor systems'', which are cocycles. Issai Schur used them
-in 1904 for projective representations. And in 1897, in his \emph{Zahlbericht}, the report on algebraic number theory that the German Mathematical Society had commissioned from him, David Hilbert proved as his ninetieth
-theorem a statement about norms in cyclic extensions of number fields. ``Theorem~90'' kept its number, and became, in the hands of Emmy Noether and Andreas Speiser, the statement that a first cohomology group vanishes.
-Cohomology of groups as a theory came in the 1940s, from Heinz Hopf's work in topology and from Eilenberg and Mac Lane; in Chapter~7's language $H^n(G,A)=\operatorname{Ext}^n_{\Z[G]}(\Z,A)$, an identification this volume states and does not need. This chapter uses only degrees $0$, $1$ and $2$, written by hand. The notation $H^n(G,A)$, with the index up and the group first, is the cohomology of a group; it is not the homology $H_n$ of a space in Volume~9.
+One might try to choose different representatives for the units digits and make the correction disappear. That cannot work: without a carry the resulting group would be $(\Z/10)^2$, whose elements all have order dividing ten. The original group $\Z/100$ has an element of order $100$. A change of representatives changes the formula for the correction, but cannot change this obstruction.
+
+Isaksen's 2002 account of elementary arithmetic describes this correction as a cocycle. We will prove that it generates
+$H^2(\Z/10,\Z/10)\cong\Z/10$, where the action on the second group is trivial. This group classifies extensions with that \emph{fixed action} and with fixed identifications of the kernel and quotient. It does not classify all groups of order $100$, or all possible actions. Its ten extension classes have four possible abelian middle-group types: $(\Z/10)^2$, $\Z/20\times\Z/5$, $\Z/50\times\Z/2$, and $\Z/100$. We will account for the repetitions.
+
+The same calculation has a long algebraic history. H\"older and Schreier described group extensions by factor systems, which we now call cocycles. Schur used related systems for projective representations in 1904. Hilbert's ninetieth theorem in the \emph{Zahlbericht} (1897) concerned norms in cyclic number-field extensions. Noether and Speiser helped put that theorem into the broader language of Galois actions. The number survived as the name Hilbert's Theorem~90.
+
+The general cohomology theory took shape in the 1940s through work of Hopf, Eilenberg and Mac Lane. It fits Chapter~7's resolution method through the quoted identification
+$H^n(G,A)=\operatorname{Ext}^n_{\Z[G]}(\Z,A)$, with $\Z$ carrying the trivial action. The group ring can be noncommutative, so this identification belongs to the general module version of that theory; we will not use it as a premise here. Degrees zero, one and two have direct definitions that we can work with entirely by hand. The upper index distinguishes this cohomology from the space homology $H_n$ in Volume~9.
 
 \section{Cochains and the first cohomology groups}
 
-Let $G$ be a group. A \emph{$G$-module} is an abelian group $A$, written additively, with an action of $G$ by automorphisms: $g\cdot(a+b)=g\cdot a+g\cdot b$, $(gh)\cdot a=g\cdot(h\cdot a)$, $1\cdot a=a$. Equivalently, a module over the
-group ring $\Z[G]$. Examples: any abelian group with the \emph{trivial} action; $\Z$ with $\Z/2$ acting by $\pm1$; for a Galois extension $L/K$ with group $G$, the additive group $L$ and the multiplicative group $L^\times$ (written
-multiplicatively, of course); for $A\trianglelefteq E$ abelian with $E/A=G$, the group $A$ with $G$ acting by conjugation (Section~\ref{sec:extensions}).
+Let a group $G$ act by automorphisms on an abelian group $A$. We write $A$ additively and use $g\cdot a$ for the action. Thus
+\[
+g\cdot(a+b)=g\cdot a+g\cdot b,\qquad
+(gh)\cdot a=g\cdot(h\cdot a),\qquad1\cdot a=a.
+\]
+Such an $A$ is a \emph{$G$-module}, equivalently a left module over $\Z[G]$. In the trivial action every element of $G$ fixes every element of $A$. Another example is the sign action of $\Z/2$ on $\Z$, where the nonidentity element sends $a$ to $-a$. A Galois group acts on both $L$ and $L^\times$; we keep multiplicative notation for the latter. An abelian normal subgroup of an extension also acquires an action by conjugation, which we will check below.
+
+A cochain is simply a function of group elements with values in $A$. Its coboundary compares the values before and after multiplying arguments.
 
 \begin{definition}\label{def:cochains}
-The \emph{$n$-cochains} are the functions $f\colon G^n\to A$ (for $n=0$, the elements of $A$). The \emph{coboundaries} $d\colon C^n\to C^{n+1}$ are, for $n=0,1,2$,
+For $n\ge0$, let $C^n(G,A)$ be the abelian group of functions $G^n\to A$, with pointwise addition; identify $C^0(G,A)$ with $A$. The low-degree coboundary maps are
 \[
-\begin{gathered}
-(da)(g)=g\cdot a-a,\qquad(df)(g,h)=g\cdot f(h)-f(gh)+f(g),\\
-(df)(g,h,k)=g\cdot f(h,k)-f(gh,k)+f(g,hk)-f(g,h).
-\end{gathered}
+\begin{aligned}
+(da)(g)&=g\cdot a-a,\\
+(df)(g,h)&=g\cdot f(h)-f(gh)+f(g),\\
+(df)(g,h,k)&=g\cdot f(h,k)-f(gh,k)+f(g,hk)-f(g,h).
+\end{aligned}
 \]
-A direct computation, which the reader should do once, gives $d\circ d=0$. Write $Z^n=\ker d$ (\emph{cocycles}), $B^n=\operatorname{im}d$ (\emph{coboundaries}), and $H^n(G,A)=Z^n/B^n$, with $B^0=0$.
+Here the second line takes $f\in C^1$ and the third takes $f\in C^2$. They satisfy $d^2=0$ in the degrees needed below. Set
+$Z^n=\ker d$, $B^n=\operatorname{im}d$, with $B^0=0$. For $n=0,1,2$ the quotient $H^n(G,A)=Z^n/B^n$ is the \emph{cohomology group}; its numerator consists of \emph{cocycles} and its denominator of \emph{coboundaries}.
 \end{definition}
 
-Unwinding: $H^0(G,A)=A^G$ is the group of fixed points. A $1$-cocycle is a \emph{crossed homomorphism}, $f(gh)=f(g)+g\cdot f(h)$, and the coboundaries are the \emph{principal} ones, $f(g)=g\cdot a-a$. If $G$ acts trivially, the
-coboundaries are $0$ and $H^1(G,A)=\operatorname{Hom}(G,A)$. A $2$-cocycle satisfies
+The cancellation behind $d^2=0$ is worth seeing. For $a\in A$,
 \[
-g\cdot f(h,k)+f(g,hk)=f(gh,k)+f(g,h),
+g\cdot(h\cdot a-a)-(gh\cdot a-a)+(g\cdot a-a)=0.
 \]
-an identity that will turn out to be associativity in disguise. A $2$-cocycle is \emph{normalised} if $f(1,g)=f(g,1)=0$ for all $g$.
+For a one-cochain $f$, expand $d(df)$ using the last line of the definition. The terms involving $gh\cdot f(k)$ cancel because $g\cdot(h\cdot f(k))=gh\cdot f(k)$; the terms involving $g\cdot f(hk)$, $g\cdot f(h)$, $f(ghk)$, $f(gh)$ and $f(g)$ cancel in pairs. This proves $B^2\subseteq Z^2$, so the quotient defining $H^2$ is legitimate.
+
+In degree zero, $H^0(G,A)=A^G=\{a:g\cdot a=a\text{ for all }g\}$.
+A one-cocycle satisfies
+\[
+f(gh)=f(g)+g\cdot f(h).
+\]
+It is called a \emph{crossed homomorphism}. A one-coboundary has the special form $f(g)=g\cdot a-a$ and is called principal. With the trivial action every principal crossed homomorphism is zero, and the cocycle identity is the usual homomorphism identity. Hence $H^1(G,A)=\operatorname{Hom}(G,A)$ in that case. In particular, the action must always be specified before a cohomology group can be computed.
+
+For two-cocycles the equation is
+\[
+g\cdot f(h,k)+f(g,hk)=f(gh,k)+f(g,h).
+\]
+We will obtain exactly this equation by expanding an associative product in two ways. A two-cocycle is \emph{normalised} when $f(1,g)=f(g,1)=0$ for every $g$. This makes the identity element of its extension easier to write.
 
 \begin{lemma}\label{lem:normalised}
-Every $2$-cocycle is cohomologous to a normalised one.
+Every two-cocycle differs from a normalised two-cocycle by a coboundary.
 \end{lemma}
 
 \begin{proof}
-Put $g=h=1$ in the cocycle identity: $f(1,k)=f(1,1)$ for all $k$. Put $h=k=1$: $g\cdot f(1,1)=f(g,1)$. Let $b\in C^1$ be the constant function $b(g)=f(1,1)$; then $(db)(g,h)=g\cdot f(1,1)$. Now
-$(f-db)(1,k)=f(1,1)-f(1,1)=0$ and $(f-db)(g,1)=g\cdot f(1,1)-g\cdot f(1,1)=0$.
+Let $a=f(1,1)$. Taking $g=h=1$ in the cocycle equation gives $f(1,k)=a$. Taking $h=k=1$ gives $f(g,1)=g\cdot a$. Define the one-cochain $b(g)=a$ for every $g$. Its coboundary is
+$(db)(g,h)=g\cdot a-a+a=g\cdot a$. Therefore
+$(f-db)(1,k)=0$ and $(f-db)(g,1)=0$. Since $d(db)=0$, subtracting this coboundary retains the cocycle identity and gives the required representative.
 \end{proof}
 
-The first cohomology group has a concrete meaning for semidirect products. If $G$ acts on $A$, the \emph{semidirect product} $A\rtimes G$ is the set $A\times G$ with $(a,g)(b,h)=(a+g\cdot b,gh)$. A
-\emph{complement} of $A=\{(a,1)\}$ is a subgroup $K$ with $K\cap A=\{0\}$ and $AK=A\rtimes G$; the subgroup $\{(0,g)\}$ is one.
+Degree one describes a question about subgroups. Given an action of $G$ on $A$, the semidirect product has multiplication
+\[
+(a,g)(b,h)=(a+g\cdot b,gh)
+\quad\text{on }A\times G.
+\]
+Identify $A$ with the subgroup $A\times\{1\}$. A \emph{complement} is a subgroup $K$ such that $K\cap A=\{0\}$ and $AK=A\rtimes G$. The subgroup $\{(0,g):g\in G\}$ is one complement; others can sit differently inside the same group.
 
 \begin{proposition}\label{prop:complements}
-The complements of $A$ in $A\rtimes G$ are the subgroups $K_f=\{(f(g),g):g\in G\}$ for $f\in Z^1(G,A)$, and $K_f,K_{f'}$ are conjugate by an element of $A$ if and only if $f-f'\in B^1$. So $H^1(G,A)$ is in bijection with the
-$A$-conjugacy classes of complements.
+Complements of $A$ in $A\rtimes G$ are exactly the graphs
+\[
+K_f=\{(f(g),g):g\in G\},\qquad f\in Z^1(G,A).
+\]
+Two such complements are conjugate by an element of $A$ exactly when their cocycles differ by an element of $B^1(G,A)$. Thus $H^1(G,A)$ parametrises the $A$-conjugacy classes of complements.
 \end{proposition}
 
 \begin{proof}
-A complement $K$ meets each coset $A\times\{g\}$ in exactly one element (if two, their quotient is in $K\cap A$; at least one, since $AK$ is everything), so $K=\{(f(g),g)\}$ for a function $f$. It is a subgroup if and only if
-$(f(g),g)(f(h),h)=(f(g)+g\cdot f(h),gh)$ equals $(f(gh),gh)$, that is, if and only if $f$ is a crossed homomorphism; conversely every such $K_f$ is a complement. Conjugating by $(a,1)$:
+The projection $K\to G$ is injective because its kernel is $K\cap A$, and onto because $AK=A\rtimes G$. Hence a complement is the graph of one function $f:G\to A$.
+For a graph to be closed under multiplication, the product above requires
+$f(gh)=f(g)+g\cdot f(h)$.
+Conversely, this identity gives $f(1)=0$ and
+$f(g^{-1})=-g^{-1}\cdot f(g)$, so the graph contains the identity, is closed under products and inverses, and is a subgroup. Its projection onto $G$ is an isomorphism, giving both complement conditions.
+
+Conjugation by $(a,1)$ sends an element of the graph to
 \[
-(a,1)(f(g),g)(-a,1)=\bigl(a+f(g)-g\cdot a,\ g\bigr),
+(a,1)(f(g),g)(-a,1)=(a+f(g)-g\cdot a,g).
 \]
-so $(a,1)K_f(a,1)^{-1}=K_{f-da}$.
+The new graph is therefore $K_{f-da}$. Every coboundary arises this way, and equality of graphs means equality of their functions. This proves both directions of the conjugacy assertion.
 \end{proof}
+
+For the sign action on $\Z$, a crossed homomorphism is determined by the integer $x=f(\sigma)$, with no restriction: the relation $\sigma^2=1$ gives $x-x=0$. Principal values are $-2a$. Thus two graph complements differ by conjugation with a translation precisely when their integer parameters have the same parity. The two classes will also have a reflection picture.
 
 \section{Hilbert's Theorem 90}
 
+In a Galois action, the one-cocycles have an unexpected simplification: all of them are principal. The proof uses the linear independence of distinct field automorphisms, proved in Volume~3, Lemma~10.15.
+
 \begin{theorem}[Hilbert, Noether, Speiser]\label{thm:hilbert90}
-Let $L/K$ be a finite Galois extension with group $G$. Then $H^1(G,L^\times)=1$ and $H^1(G,L)=0$.
+For a finite Galois extension $L/K$ with group $G$,
+\[
+H^1(G,L^\times)=1,\qquad H^1(G,L)=0.
+\]
+The first expression uses multiplicative notation and the second additive notation.
 \end{theorem}
 
 \begin{proof}
-\emph{Multiplicative.} A $1$-cocycle is a map $f\colon G\to L^\times$ with $f(\sigma\tau)=f(\sigma)\,\sigma(f(\tau))$. The elements of $G$ are distinct automorphisms of $L$, so by Dedekind's lemma (Volume~3, Lemma~10.15, whose proof
-works over any field) the map $\sum_{\tau}f(\tau)\tau\colon L\to L$ is not zero: choose $c$ with $b=\sum_\tau f(\tau)\tau(c)\ne0$. Then
+\emph{Multiplicative cocycles.} Suppose
+$f(\sigma\tau)=f(\sigma)\sigma(f(\tau))$ with every $f(\tau)\ne0$.
+By the independence of the automorphisms, the function
+$\sum_{\tau\in G}f(\tau)\tau:L\to L$ is not the zero function. Choose $c\in L$ for which
+$b=\sum_\tau f(\tau)\tau(c)\ne0$.
+For $\sigma\in G$, the cocycle identity gives
 \[
-\sigma(b)=\sum_\tau\sigma(f(\tau))\,\sigma\tau(c)=\sum_\tau f(\sigma)^{-1}f(\sigma\tau)\,\sigma\tau(c)=f(\sigma)^{-1}b,
+\begin{aligned}
+\sigma(b)
+ &=\sum_\tau\sigma(f(\tau))\,\sigma\tau(c)\\
+ &=f(\sigma)^{-1}\sum_\tau f(\sigma\tau)\,\sigma\tau(c)
+ =f(\sigma)^{-1}b.
+\end{aligned}
 \]
-since $\sigma\tau$ runs over $G$ with $\tau$. So $f(\sigma)=b\,\sigma(b)^{-1}$, a coboundary (written multiplicatively).
+The last equality reindexes the finite sum by $\sigma\tau$. Therefore
+$f(\sigma)=b/\sigma(b)$. In our convention a principal multiplicative cocycle has the form $\sigma(a)/a$; take $a=b^{-1}$. This proves that every class is the identity class.
 
-\emph{Additive.} The trace $\operatorname{Tr}=\sum_\tau\tau$ is not zero, again by Dedekind's lemma, and it is $K$-linear with values in $K$; choose $c$ with $\operatorname{Tr}(c)=1$. For a cocycle $f(\sigma\tau)=f(\sigma)+\sigma(f(\tau))$, put
-$b=\sum_\tau f(\tau)\tau(c)$. Then
+\emph{Additive cocycles.} The trace map
+$\operatorname{Tr}_{L/K}=\sum_{\tau\in G}\tau$ is nonzero by the same independence lemma. Its values lie in $K$, because any element of $G$ permutes the summands, and it is $K$-linear. Choose an element with nonzero trace and divide it by that trace to obtain $c$ with $\operatorname{Tr}(c)=1$. This argument also works when the characteristic divides $|G|$; it does not divide by $|G|$.
+
+For an additive cocycle $f$, put
+$b=\sum_\tau f(\tau)\tau(c)$. Now
 \[
-\sigma(b)=\sum_\tau\bigl(f(\sigma\tau)-f(\sigma)\bigr)\sigma\tau(c)=b-f(\sigma)\operatorname{Tr}(c)=b-f(\sigma),
+\begin{aligned}
+\sigma(b)
+ &=\sum_\tau\bigl(f(\sigma\tau)-f(\sigma)\bigr)\sigma\tau(c)\\
+ &=b-f(\sigma)\operatorname{Tr}(c)=b-f(\sigma).
+\end{aligned}
 \]
-so $f(\sigma)=b-\sigma(b)$.
+Thus $f(\sigma)=b-\sigma(b)=d(-b)(\sigma)$ is principal. This proves the additive vanishing.
 \end{proof}
 
+For a cyclic extension, one element determines the whole cocycle. Its compatibility with the cyclic relation is exactly the norm-one or trace-zero condition.
+
 \begin{corollary}[Theorem~90 of the \emph{Zahlbericht}]\label{cor:hilbert90}
-If $L/K$ is cyclic with generator $\sigma$ and $N(x)=x\,\sigma(x)\cdots\sigma^{n-1}(x)=1$, then $x=b/\sigma(b)$ for some $b\in L^\times$. If $\operatorname{Tr}(x)=0$, then $x=b-\sigma(b)$ for some $b\in L$.
+Let $L/K$ be cyclic Galois of degree $n$, generated by $\sigma$. If
+$N(x)=x\sigma(x)\cdots\sigma^{n-1}(x)=1$, there is $b\in L^\times$ with $x=b/\sigma(b)$. If $\operatorname{Tr}(x)=0$, there is $b\in L$ with $x=b-\sigma(b)$.
 \end{corollary}
 
 \begin{proof}
-Define $f(\sigma^i)=x\,\sigma(x)\cdots\sigma^{i-1}(x)$ for $0\le i<n$. Then $f(\sigma^i\sigma^j)=f(\sigma^i)\sigma^i(f(\sigma^j))$: for $i+j<n$ both sides are the product of $\sigma^k(x)$ for $k<i+j$, and for $i+j\ge n$ the right side is
-$\prod_{k<i+j}\sigma^k(x)=N(x)\,\sigma^n\bigl(f(\sigma^{i+j-n})\bigr)=f(\sigma^{i+j-n})$, as $\sigma^n=\mathrm{id}$ and $N(x)=1$. So $f$ is a cocycle, and $x=f(\sigma)=b/\sigma(b)$ by the theorem. The additive case is the same with sums.
+For norm-one $x$, set $f(1)=1$ and
+$f(\sigma^i)=\prod_{k=0}^{i-1}\sigma^k(x)$ for $1\le i<n$.
+Concatenating two products gives the cocycle identity if $i+j<n$. If $i+j\ge n$, the extra full cycle of factors is $N(x)=1$, so the same identity holds after reducing the exponent modulo $n$. Theorem~\ref{thm:hilbert90} now gives $x=f(\sigma)=b/\sigma(b)$ when $n>1$. If $n=1$, the norm condition already says $x=1$, and $b=1$ suffices.
+
+For trace-zero $x$, replace products by sums and define
+$f(\sigma^i)=\sum_{k=0}^{i-1}\sigma^k(x)$. A full cycle has sum zero, so this is an additive cocycle. The additive part of the theorem gives the required expression. In the degree-one case the trace condition is $x=0$, which has the same conclusion.
 \end{proof}
 
 \begin{figure}[ht]
@@ -107,248 +174,415 @@ $\prod_{k<i+j}\sigma^k(x)=N(x)\,\sigma^n\bigl(f(\sigma^{i+j-n})\bigr)=f(\sigma^{
 \end{figure}
 
 \begin{example}\label{ex:pythagoras}
-For $\Q(i)/\Q$, $\sigma$ is complex conjugation and $N(a+bi)=a^2+b^2$. A rational point $(a,b)$ on the unit circle is an element of norm $1$, so $a+bi=\beta/\bar\beta$ with $\beta\in\Q(i)^\times$, and after clearing denominators
-$\beta=m+ni$ with $m,n\in\Z$. Then
+For $\Q(i)/\Q$, the nonidentity automorphism is conjugation and
+$N(a+bi)=a^2+b^2$. A rational point $(a,b)$ on the unit circle therefore gives a norm-one element $a+bi$. The corollary writes it as $\beta/\bar\beta$. Clearing denominators in $\beta$ does not change the quotient, so take $\beta=m+ni$ with integers $m,n$ not both zero. Then
 \[
-a+bi=\frac{m+ni}{m-ni}=\frac{(m+ni)^2}{m^2+n^2}=\frac{m^2-n^2}{m^2+n^2}+\frac{2mn}{m^2+n^2}\,i.
+\frac{\beta}{\bar\beta}
+=\frac{(m+ni)^2}{m^2+n^2}
+=\frac{m^2-n^2}{m^2+n^2}
+ +\frac{2mn}{m^2+n^2}i.
 \]
-This is the classical parametrisation of Pythagorean triples $(m^2-n^2,2mn,m^2+n^2)$ (Volume~2, Chapter~8, Theorem~8.1), now seen as the vanishing of a cohomology group (Figure~\ref{fig:rationalcircle}).
+This recovers the Pythagorean-triple parametrisation of Volume~2, Theorem~8.1. Choosing $n=0$ gives $(1,0)$, while $m=0$ gives $(-1,0)$, so the endpoints are included. Positive $m,n$ give the upper semicircle illustrated in Figure~\ref{fig:rationalcircle}.
 \end{example}
+
+For $(a,b)\ne(-1,0)$ the line from $(-1,0)$ has slope
+$b/(a+1)=n/m$. Figure~\ref{fig:rationalcircle} draws selected secants to show that construction; its plotted points include the coprime pairs $1\le m,n\le7$. Taking $m=2,n=1$ gives $(3/5,4/5)$, so $3^2+4^2=5^2$ is one small check of the formula.
+
+The complement calculation has an equally concrete picture. Let $(a,1)$ act on the real line by translation $r\mapsto r+a$ and let $(0,\sigma)$ act by reflection $r\mapsto-r$. Then $(x,\sigma)$ reflects in the point $x/2$. Integer translations move its mirror by an integer, preserving whether that point is an integer or a half-integer. Figure~\ref{fig:v10new-ch08-complements} shows the two conjugacy classes found above.
+
+\begin{figure}[ht]
+\centering
+\fig{v10-new-ch08-complements}
+\caption{Complements for the sign action of $\Z/2$ on $\Z$ are reflections $r\mapsto x-r$. Their mirrors lie at $x/2$. Conjugation by the translation $r\mapsto r+1$ replaces $x$ by $x+2$, so integer mirrors and half-integer mirrors give the two classes in $H^1\cong\Z/2$.}
+\label{fig:v10new-ch08-complements}
+\end{figure}
 
 \section{Extensions and the second cohomology group}\label{sec:extensions}
 
-Let $1\to A\xrightarrow{}E\xrightarrow{\pi}G\to1$ be an extension of groups with $A$ abelian (written additively inside $E$ when convenient). Then $G$ acts on $A$ by $g\cdot a=s\,a\,s^{-1}$ for any $s\in E$ with $\pi(s)=g$: another
-choice $s'=bs$ with $b\in A$ gives the same result, as $A$ is abelian. Two extensions $E$, $E'$ of $G$ by the $G$-module $A$ are \emph{equivalent} if an isomorphism $E\to E'$ is the identity on $A$ and compatible with the maps to $G$.
+Consider an extension $1\to A\to E\xrightarrow{\pi}G\to1$ with abelian kernel $A$. We identify that kernel with its image. If $s\in E$ lies above $g\in G$, define $g\cdot a=sas^{-1}$. Replacing $s$ by $bs$ for $b\in A$ leaves the answer unchanged, since elements of $A$ commute. Conjugation is an automorphism, and multiplication of lifts verifies the action law. Thus the extension determines a $G$-module structure on $A$.
+
+We fix this action. An equivalence of extensions is an isomorphism of middle groups that fixes $A$ pointwise and induces the identity on $G$. Allowing automorphisms of the two ends would give a coarser classification; it is not the relation used for $H^2$.
 
 \begin{theorem}[Schreier]\label{thm:h2ext}
-Let $A$ be a $G$-module. The equivalence classes of extensions of $G$ by $A$ inducing the given action are in bijection with $H^2(G,A)$. The class $0$ corresponds to the semidirect product $A\rtimes G$.
+For a fixed $G$-module $A$, equivalence classes of group extensions of $G$ by $A$ inducing that action are in bijection with $H^2(G,A)$. The zero class is the class of the semidirect product $A\rtimes G$.
 \end{theorem}
 
 \begin{proof}
-\emph{From an extension to a class.} Choose a \emph{section} $s\colon G\to E$, $\pi s=\mathrm{id}$, with $s(1)=1$. Since $\pi(s(g)s(h))=\pi(s(gh))$, there is $f(g,h)\in A$ with
+\emph{Record the defect of a section.} Choose a set-theoretic section $s:G\to E$ with $s(1)=1$. For each pair $g,h$, the elements $s(g)s(h)$ and $s(gh)$ have the same image in $G$, so there is a unique $f(g,h)\in A$ satisfying
 \[
-s(g)s(h)=f(g,h)\,s(gh),
+s(g)s(h)=f(g,h)s(gh).
 \]
-a product in $E$. Expand $s(g)s(h)s(k)$ in two ways:
+The products here are in $E$, although we add the kernel elements when recording the resulting equation. Expanding a triple product gives
 \[
-\begin{gathered}
-\bigl(s(g)s(h)\bigr)s(k)=f(g,h)s(gh)s(k)=f(g,h)f(gh,k)s(ghk),\\
-s(g)\bigl(s(h)s(k)\bigr)=s(g)f(h,k)s(hk)=\bigl(g\cdot f(h,k)\bigr)s(g)s(hk)=\bigl(g\cdot f(h,k)\bigr)f(g,hk)s(ghk).
-\end{gathered}
+\begin{aligned}
+(s(g)s(h))s(k)&=f(g,h)f(gh,k)s(ghk),\\
+s(g)(s(h)s(k))&=(g\cdot f(h,k))f(g,hk)s(ghk).
+\end{aligned}
 \]
-In additive notation for $A$, $f(g,h)+f(gh,k)=g\cdot f(h,k)+f(g,hk)$: $f$ is a $2$-cocycle, normalised since $s(1)=1$. Another section is $s'(g)=b(g)s(g)$ with $b\colon G\to A$, $b(1)=0$, and then
-\[
-s'(g)s'(h)=b(g)\bigl(g\cdot b(h)\bigr)s(g)s(h)=b(g)\bigl(g\cdot b(h)\bigr)f(g,h)\,b(gh)^{-1}s'(gh),
-\]
-so $f'=f+db$. Equivalent extensions give the same cocycles for corresponding sections. So the class of $f$ in $H^2(G,A)$ depends only on the class of the extension.
+Equality and cancellation yield
+$f(g,h)+f(gh,k)=g\cdot f(h,k)+f(g,hk)$. Thus $f$ is a two-cocycle. It is normalised because $s(1)=1$.
 
-\emph{From a cocycle to an extension.} By Lemma~\ref{lem:normalised}, every class contains a normalised cocycle $f$. Let $E_f=A\times G$ with
+Another section is $s'(g)=b(g)s(g)$ with $b(1)=0$. Moving a kernel element past $s(g)$ applies the action of $g$. Consequently its defect is
 \[
-(a,g)(b,h)=\bigl(a+g\cdot b+f(g,h),\ gh\bigr).
+f'(g,h)=b(g)+g\cdot b(h)+f(g,h)-b(gh)=f(g,h)+(db)(g,h).
 \]
-Associativity: the first coordinates of the products $\bigl((a,g)(b,h)\bigr)(c,k)$ and
-$(a,g)\bigl((b,h)(c,k)\bigr)$ are
+Changing the section therefore changes only the cocycle representative. An equivalence transports a section and preserves the defect, so an extension class determines a cohomology class.
+
+\emph{Build the group from a defect.} Choose a normalised representative $f$ using Lemma~\ref{lem:normalised}. On $A\times G$ put
 \[
-\begin{gathered}
+(a,g)(b,h)=(a+g\cdot b+f(g,h),gh).
+\]
+The two possible first coordinates in a triple product are
+\[
+\begin{aligned}
 a+g\cdot b+f(g,h)+gh\cdot c+f(gh,k),\\
-a+g\cdot b+gh\cdot c+g\cdot f(h,k)+f(g,hk),
-\end{gathered}
+a+g\cdot b+gh\cdot c+g\cdot f(h,k)+f(g,hk).
+\end{aligned}
 \]
-equal by the cocycle identity. The identity element is
-$(0,1)$ (by normalisation), and $\bigl(-g^{-1}\cdot a-f(g^{-1},g),\,g^{-1}\bigr)$ is a left inverse of $(a,g)$, which suffices. The maps $a\mapsto(a,1)$ and $(a,g)\mapsto g$ make $E_f$ an extension, inducing the given action since
-$(0,g)(a,1)(0,g)^{-1}=(g\cdot a,1)$; with the section $s(g)=(0,g)$ its cocycle is $f$, because $(0,g)(0,h)=(f(g,h),gh)=(f(g,h),1)(0,gh)$.
+They are equal by the cocycle identity, proving associativity. Normalisation gives identity $(0,1)$. A left inverse of $(a,g)$ is
+\[
+\bigl(-g^{-1}\cdot a-f(g^{-1},g),g^{-1}\bigr).
+\]
+Every element has such a left inverse; an associative monoid in which every element has a left inverse is a group. Indeed, if $yx=1$ and $zy=1$, then $z=z(yx)=(zy)x=x$, so $xy=zy=1$ as well.
+The maps $a\mapsto(a,1)$ and $(a,g)\mapsto g$ give an extension, and conjugation by $(0,g)$ acts on its kernel as $g$ does on $A$. The section $g\mapsto(0,g)$ has defect exactly $f$.
 
-\emph{Inverse bijections.} If $E$ has a section $s$ with cocycle $f$, the map $E_f\to E$, $(a,g)\mapsto a\,s(g)$, is bijective, compatible with the maps from $A$ and to $G$, and a homomorphism:
-$a\,s(g)\,b\,s(h)=a\,(g\cdot b)\,s(g)s(h)=\bigl(a+g\cdot b+f(g,h)\bigr)s(gh)$. So every extension is equivalent to $E_f$ for each of its cocycles $f$. In particular, if $f'=f+db$ are normalised (then $b(1)=(db)(1,1)=0$), the extension $E_f$ has the
-section $g\mapsto(b(g),g)$, whose cocycle is $f'$ by the first part, so $E_f$ is equivalent to $E_{f'}$. Thus extension classes and cohomology classes correspond bijectively.
+\emph{Verify the correspondence.} Starting from an extension and its section, the map
+\[
+E_f\longrightarrow E,\qquad(a,g)\longmapsto a\,s(g)
+\]
+is bijective: every element has exactly one such form. The defect identity makes it multiplicative, and it fixes the kernel and quotient. Thus it is an equivalence.
+If $f'=f+db$ with both cocycles normalised, then evaluating at $(1,1)$ gives $b(1)=0$. The section $g\mapsto(b(g),g)$ inside $E_f$ has defect $f'$, so $E_f$ and $E_{f'}$ are equivalent. This proves that the construction depends only on the cohomology class. The preceding paragraph shows that its two constructions are inverse.
 
-Finally $f=0$ gives the multiplication $(a,g)(b,h)=(a+g\cdot b,gh)$ of $A\rtimes G$; and an extension has class $0$ if and only if it has a section that is a homomorphism, that is, if and only if it \emph{splits}.
+For $f=0$ the multiplication is the semidirect-product law. More generally a zero class allows a section with defect zero, which is a homomorphic section. Conversely a homomorphic section has zero defect. Hence zero class and splitting are equivalent.
 \end{proof}
 
-When $G$ acts trivially and $A$ is central, $H^2(G,A)$ classifies \emph{central} extensions. When moreover $G$ is abelian and only abelian $E$ are wanted, one restricts to symmetric cocycles, and gets back
-$\operatorname{Ext}^1_\Z(G,A)$ of Chapter~7; this comparison is not proved here, and Example~\ref{ex:carry} checks it for cyclic groups.
+With trivial action the kernel is central. If $G$ is also abelian, the resulting group is abelian exactly when its normalised cocycle is symmetric: compare $(0,g)(0,h)$ and $(0,h)(0,g)$. Restricting to abelian extensions then recovers the Ext classification from Chapter~7. The general comparison is quoted here; for cyclic $G$ the explicit formulas below verify it directly.
 
 \section{Cyclic groups, and carrying}
 
-For a cyclic group everything is explicit. Let $G=\langle\sigma\rangle$ have order $n$, and let $N=1+\sigma+\dots+\sigma^{n-1}$ act on $A$; then $N(A)\subseteq A^G$, since $\sigma N=N$.
+Write $G=\langle\sigma\rangle$ with finite order $n\ge1$. The endomorphism
+$N=1+\sigma+\cdots+\sigma^{n-1}$ of $A$ is called the norm. Its image lies in $A^G$, since applying $\sigma$ permutes the summands. A lift of $\sigma$ in an extension need not have order $n$; its $n$th power will be the invariant that classifies the extension.
 
 \begin{theorem}\label{thm:h2cyclic}
-For $G$ cyclic of order $n$ and any $G$-module $A$, $H^2(G,A)\cong A^G/N(A)$. The class of $a\in A^G$ is represented by the cocycle
+For a cyclic group $G$ of order $n\ge1$ acting on $A$, there is an isomorphism
 \[
-f_a(\sigma^i,\sigma^j)=\begin{cases}a&\text{if }i+j\ge n,\\0&\text{if }i+j<n,\end{cases}\qquad0\le i,j<n.
+H^2(G,A)\cong A^G/N(A).
+\]
+For $a\in A^G$, the corresponding class has representative
+\[
+f_a(\sigma^i,\sigma^j)=
+\begin{cases}a&i+j\ge n,\\0&i+j<n,\end{cases}
+\qquad 0\le i,j<n.
 \]
 \end{theorem}
 
 \begin{proof}
-\emph{$f_a$ is a cocycle.} Let $g=\sigma^i$, $h=\sigma^j$, $k=\sigma^l$ with $0\le i,j,l<n$. Since $a$ is fixed by $G$, the identity $g\cdot f(h,k)+f(g,hk)=f(gh,k)+f(g,h)$ says that the number of ``carries'' is the same when the digits
-$i,j,l$ are added modulo $n$ as $i+(j+l)$ or as $(i+j)+l$; both numbers equal $\lfloor(i+j+l)/n\rfloor$. It is normalised. In $E_{f_a}$, the element $t=(0,\sigma)$ satisfies $t^i=(0,\sigma^i)$ for $i<n$ (no carry yet) and
-$t^n=t^{n-1}t=(f_a(\sigma^{n-1},\sigma),1)=(a,1)$.
+\emph{Dispose of the trivial group.} If $n=1$, a normalised two-cocycle has only the value $f(1,1)=0$, so $H^2=0$. Also $A^G=A$ and $N=1$, giving $A/N(A)=0$. The displayed $f_a$ is zero for every $a$, as required. In the rest of the proof take $n\ge2$.
 
-\emph{An invariant of extensions.} Given an extension $1\to A\to E\to G\to1$, choose $t\in E$ mapping to $\sigma$. Then $t^n\in A$, and it is fixed by $G$, since $\sigma$ acts by conjugation by $t$, which commutes with $t^n$. Another choice is
-$t'=bt$ with $b\in A$, and
+\emph{Check the carry cocycle.} In three residues $i,j,k\in\{0,\ldots,n-1\}$, the total number of carries, counting a possible second carry, is $\lfloor(i+j+k)/n\rfloor$. Either parenthesisation of the sum gives that number. Since the action fixes $a$, multiplying the carry count by $a$ gives
+$\sigma^i\cdot f_a(\sigma^j,\sigma^k)+f_a(\sigma^i,\sigma^{j+k})
+=f_a(\sigma^{i+j},\sigma^k)+f_a(\sigma^i,\sigma^j)$,
+with exponents read modulo $n$. Thus $f_a$ is a normalised cocycle. In its extension, $t=(0,\sigma)$ satisfies $t^i=(0,\sigma^i)$ for $0\le i<n$ and $t^n=(a,1)$.
+
+\emph{Extract the invariant.} In any extension choose a lift $t$ of $\sigma$. Then $t^n\in A$, and conjugation by $t$ fixes $t^n$, so $a=t^n$ belongs to $A^G$. Changing the lift to $bt$ with $b\in A$ gives
 \[
-(bt)^n=b\cdot(tbt^{-1})\cdot(t^2bt^{-2})\cdots(t^{n-1}bt^{-(n-1)})\cdot t^n,
+(bt)^n=b\,(tbt^{-1})\,(t^2bt^{-2})\cdots
+(t^{n-1}bt^{-(n-1)})\,t^n.
 \]
-that is, additively, $t'^n=N(b)+t^n$. So $\Phi(E)=[t^n]\in A^G/N(A)$ depends only on $E$ (and only on its equivalence class).
+In additive notation on $A$, the new power is $N(b)+a$. Therefore $[a]\in A^G/N(A)$ depends only on the extension class.
 
-\emph{$\Phi$ is a bijection.} If $t^n=a$, the section $s(\sigma^i)=t^i$ ($0\le i<n$) has cocycle exactly $f_a$: $t^it^j$ is $t^{i+j}$ if $i+j<n$ and $a\,t^{i+j-n}$ otherwise. So $E$ is equivalent to $E_{f_a}$. Hence
-$\Phi(E_{f_a})=[a]$ (so $\Phi$ is onto), and if $\Phi(E)=\Phi(E')$, choose $t$ in $E$ and $t'$ in $E'$ with $t^n=a$, $t'^n=a+N(b)$; replacing $t$ by $bt$ gives $E\simeq E_{f_{a+N(b)}}\simeq E'$, so $\Phi$ is injective.
-Since $f_a+f_{a'}=f_{a+a'}$, the inverse map $[a]\mapsto[f_a]$ is a homomorphism.
+\emph{Recover the extension and prove uniqueness.} The section $s(\sigma^i)=t^i$ has no defect before a full cycle, and has defect $a$ when $i+j\ge n$. Hence its cocycle is $f_a$, so every extension is equivalent to one of the displayed models. Each $a$ occurs because $E_{f_a}$ has $t^n=a$.
+If $a'$ differs from $a$ by $N(b)$, replacing $t$ by $bt$ changes the model to one with parameter $a'$, proving equivalence. Conversely equivalence can only change $a$ by such a norm, by the lift computation. We have a bijection of the stated quotients. Finally $f_a+f_{a'}=f_{a+a'}$, so the bijection is an isomorphism of abelian groups, not only a bijection of sets.
 \end{proof}
 
+For the trivial action, $N$ is multiplication by $n$, and the formula becomes $H^2(\Z/n,A)\cong A/nA$. This agrees with the cyclic Ext calculation in Chapter~7. For a nontrivial action the numerator can shrink as well as the denominator; both the fixed points and the norm matter.
+
 \begin{example}[carrying]\label{ex:carry}
-Let $A=\Z/b$ with trivial action of $G=\Z/b$ (written additively, with generator $1$ and $\sigma^i=i$). Then $A^G=\Z/b$ and $N(x)=bx=0$, so $H^2(\Z/b,\Z/b)\cong\Z/b$. The cocycle $f_1(x,y)=1$ if $x+y\ge b$, $0$ otherwise, for digits
-$0\le x,y<b$, is the carry of base-$b$ addition, and the extension it defines is $\Z/b^2$, with $(a,x)$ standing for the number $ab+x$. It generates $H^2$, and its multiples $f_a$, $a\in\Z/b$, give the $b$ classes. For $a=0$ the
-extension is $\Z/b\times\Z/b$. In general $t=(0,1)$ has $t^b=(a,0)$, so $t$ has order $b$ times the order of $a$, and $E_{f_a}\cong\Z/b^2$ exactly when $a$ is a unit modulo $b$: there are $\varphi(b)$ inequivalent extensions with
-middle group $\Z/b^2$, as in Example~\ref{ex:extzp}. For $b=10$ the other classes give $\Z/20\times\Z/5$ and $\Z/50\times\Z/2$ (Exercise~\ref{ex:carry10}).
+Fix an integer base $b\ge2$ and give $A=\Z/b$ the trivial action of $G=\Z/b$. Then $A^G=A$ and $N(A)=bA=0$, so
+$H^2(\Z/b,\Z/b)\cong\Z/b$.
+The usual carry cocycle is $f_1(x,y)=1$ if $x+y\ge b$ and zero otherwise, for standard digit representatives $0\le x,y<b$. The map
+$(a,x)\mapsto ba+x\pmod{b^2}$ identifies its extension with $\Z/b^2$.
+
+Multiplying the cocycle by $a\in\Z/b$ gives all $b$ extension classes. The zero class gives $(\Z/b)^2$. In the class with carry $a$, the lift $t=(0,1)$ satisfies $t^b=(a,0)$. Its order is $b$ times the order of $a$: a power can be the identity only when its exponent is divisible by $b$, and the remaining condition is that the corresponding multiple of $a$ vanish. The group is abelian because the action is trivial and the carry is symmetric. It is generated by the kernel and $t$, so every element is killed by $b$ times the order of $a$. Hence the middle group is cyclic of order $b^2$ exactly when $a$ is a unit modulo $b$. There are $\varphi(b)$ such extension classes. For $b=10$, the remaining nonzero classes have types $\Z/20\times\Z/5$ and $\Z/50\times\Z/2$, as computed in Exercise~\ref{ex:carry10}.
 \end{example}
+
+The carry is needed for associativity as well as for remembering the quotient. In base four, $3+2$ gives residue one and one carry; adding another one gives residue two. If we add $2+1$ first there is no carry at that stage, but $3+3$ then produces one. The two total carry counts agree. Figure~\ref{fig:v10new-ch08-carry} displays all pairs and this particular associativity check.
+
+\begin{figure}[ht]
+\centering
+\fig{v10-new-ch08-carry}
+\caption{The base-four carry is $c(x,y)=\lfloor(x+y)/4\rfloor$. The rust cells mark pairs that produce one carry. For the triple $(3,2,1)$, the two parenthesisations give carry totals $1+0$ and $0+1$, both equal to $\lfloor6/4\rfloor$. This equality is the two-cocycle identity.}
+\label{fig:v10new-ch08-carry}
+\end{figure}
 
 \section{The Schur--Zassenhaus theorem}
 
+When a finite group acts on a finite abelian group of coprime order, averaging removes both degree-one and degree-two obstructions. We can prove this directly without dividing by a group order inside the coefficient group.
+
 \begin{proposition}\label{prop:killed}
-Let $G$ be finite of order $m$. Then $m\cdot H^n(G,A)=0$ for $n=1,2$. If moreover $A$ is finite of order prime to $m$, then $H^1(G,A)=H^2(G,A)=0$.
+If $G$ is finite of order $m$, then multiplication by $m$ kills $H^n(G,A)$ for $n=1,2$. If $A$ is also finite and $\gcd(|A|,m)=1$, then
+$H^1(G,A)=0=H^2(G,A)$.
 \end{proposition}
 
 \begin{proof}
-For a $1$-cocycle, $f(hg)=f(h)+h\cdot f(g)$; summing over $g\in G$ and putting $b=\sum_gf(g)$ gives $b=mf(h)+h\cdot b$, so $mf(h)=b-h\cdot b=(d(-b))(h)$, a coboundary. For a $2$-cocycle, sum the identity
-$g\cdot f(h,k)-f(gh,k)+f(g,hk)-f(g,h)=0$ over $k\in G$, and put $c(g)=\sum_kf(g,k)$: since $hk$ runs over $G$ with $k$, this gives $g\cdot c(h)-c(gh)+c(g)-mf(g,h)=0$, so $mf=dc$. Finally, if $|A|=r$ is prime to $m$, then
-$H^n$ is killed by $r$ (since $A$ is) and by $m$, hence by $\gcd(r,m)=1$.
+For a one-cocycle put $b=\sum_{g\in G}f(g)$. Summing
+$f(hg)=f(h)+h\cdot f(g)$ over $g$ gives
+$b=mf(h)+h\cdot b$. Hence
+$mf(h)=b-h\cdot b=d(-b)(h)$, so the multiple of its class is zero.
+
+For a two-cocycle, sum
+$g\cdot f(h,k)-f(gh,k)+f(g,hk)-f(g,h)=0$ over $k\in G$.
+With $c(g)=\sum_k f(g,k)$, the result is
+\[
+g\cdot c(h)-c(gh)+c(g)-mf(g,h)=0,
+\]
+because multiplication by $h$ permutes the summation index in the third term. Thus $mf=dc$ and again the class is killed by $m$.
+
+If $|A|=r$, multiplication by $r$ kills every cochain, hence every cohomology class. Choose integers $u,v$ with $um+vr=1$. A class killed by both $m$ and $r$ is then killed by $1$, so is zero. This proves both vanishing statements, including the cases $m=1$ or $r=1$.
 \end{proof}
 
+The two vanishing statements have different jobs: $H^2=0$ produces a complement, and $H^1=0$ makes complements conjugate.
+
 \begin{theorem}[Schur, 1904; Zassenhaus, 1937]\label{thm:sz}
-Let $E$ be a finite group and $A$ an abelian normal subgroup with $|A|$ prime to $|E/A|$. Then $A$ has a complement in $E$, and any two complements are conjugate.
+Let $E$ be finite and let $A$ be an abelian normal subgroup such that $\gcd(|A|,|E/A|)=1$. Then $A$ has a complement in $E$, and any two complements are conjugate.
 \end{theorem}
 
 \begin{proof}
-By Proposition~\ref{prop:killed}, $H^2(E/A,A)=0$, so the extension splits (Theorem~\ref{thm:h2ext}): $E\cong A\rtimes G$ with $G=E/A$, and $A$ has a complement. Two complements $K$, $K'$ of $A$ are complements in $A\rtimes G$,
-and $H^1(G,A)=0$ together with Proposition~\ref{prop:complements} shows that they are conjugate by an element of $A$.
+Set $G=E/A$ and give $A$ its conjugation action. Proposition~\ref{prop:killed} gives $H^2(G,A)=0$. By Theorem~\ref{thm:h2ext}, the extension has zero class and splits. A homomorphic section embeds $G$ as a complement, and identifies $E$ with $A\rtimes G$.
+Under this identification any other complement is a graph complement from Proposition~\ref{prop:complements}. Since $H^1(G,A)=0$ as well, every graph cocycle is principal. That proposition therefore conjugates any two complements by an element of $A$, proving even this more precise form of conjugacy.
 \end{proof}
 
-The theorem holds without assuming $A$ abelian, and that case is not proved here. The existence of a complement follows by induction on $|E|$, using Sylow subgroups and the abelian case. The conjugacy of complements in general requires knowing that $A$ or
-$E/A$ is solvable, and one of them has odd order since their orders are coprime; so the general conjugacy statement rests on the Feit--Thompson theorem of 1963, that groups of odd order are solvable, a 255-page proof.
+The full Schur--Zassenhaus theorem also allows nonabelian $A$; we quote that extension of the theorem and do not apply it in any proof here. Its usual existence proof uses induction and Sylow subgroups. For conjugacy it suffices that one of $A$ and $E/A$ be solvable. Their coprime orders make at least one of them odd, so the Feit--Thompson theorem on odd-order groups supplies solvability in the general finite case. This is a much deeper input than the averaging argument for abelian $A$.
 
 \begin{beauty}
-Hilbert's Theorem~90 found the rational points on a circle; in the hands of later mathematicians, $H^1(\operatorname{Gal}(L/K),\cdot)$ became the general tool for \emph{twisted forms}. Two objects defined over $K$ that become
-isomorphic over $L$, like two quadratic forms or two algebras, differ by a $1$-cocycle with values in the automorphism group, and the cohomology class is exactly the obstruction to their being isomorphic over $K$. Theorem~90, in the form $H^1(G,\mathrm{GL}_n(L))=1$ that Speiser proved in 1919, says
-that for vector spaces there is no obstruction at all: a vector space over $L$ with a compatible action of the Galois group comes from a vector space over $K$. This principle, \emph{Galois descent}, is how modern algebraic
-geometry moves objects between fields, and $H^2(G,L^\times)$, the \emph{Brauer group}, classifies the central simple algebras over $K$ split by $L$, such as Hamilton's quaternions over $\R$, and is one of the pillars of class field theory.
+A change of coordinates can turn a structure defined over $K$ into a familiar one over a larger field $L$. The obstruction to making that change already over $K$ is often described by a one-cocycle in an automorphism group. This is a quoted preview of \emph{Galois descent}; for nonabelian automorphism groups its $H^1$ is a pointed set, rather than the abelian group defined above. Speiser's matrix form of Theorem~90 says $H^1(G,\mathrm{GL}_n(L))=1$ for finite Galois $L/K$, giving descent for vector spaces with compatible semilinear action.
+
+In degree two, $H^2(G,L^\times)$ is the \emph{relative} Brauer group $\operatorname{Br}(L/K)$: it describes classes of central simple $K$-algebras split by $L$, with the Brauer equivalence relation. It need not be the whole Brauer group of $K$. Hamilton's quaternion algebra gives a familiar class split by $\C/\R$. These further classifications are pointers, not consequences proved by the low-degree extension arguments in this chapter.
 \end{beauty}
 
 \section{What we proved, and what comes next}
 
-The opening asked why carrying is hard. The carry is a $2$-cocycle that is not a coboundary (Example~\ref{ex:carry}): $H^2$ classifies extensions
-(Theorem~\ref{thm:h2ext}), for a cyclic group it is $A^G/N(A)$ (Theorem~\ref{thm:h2cyclic}), and the carry is the class that builds $\Z/100$ out of two
-copies of $\Z/10$. The other two questions had answers too. $H^0$ is the fixed points. $H^1$ counts complements up to conjugacy
-(Proposition~\ref{prop:complements}), and for the multiplicative group of a Galois extension it vanishes: Hilbert's Theorem~90
-(Theorem~\ref{thm:hilbert90}), which found every rational point on the circle. A finite group kills its own cohomology
-(Proposition~\ref{prop:killed}), which gave Schur--Zassenhaus (Theorem~\ref{thm:sz}) for an abelian normal subgroup.
+The carry survives a change of digit representatives because its class in $H^2$ is nonzero. A different representative changes the defect of a section by a coboundary; a zero class would give a homomorphic section and a split extension. For a cyclic quotient, the power of a lifted generator makes the classification computable.
 
-Cohomology of groups studies a group through the modules it acts on. The next chapter turns this round and studies the modules themselves: a
-representation of a finite group is a module over its group algebra $\C[G]$, and that algebra turns out to be a product of matrix algebras, one for
-each irreducible representation.
+Degree one had its own geometric meaning: complements in a semidirect product are graphs of crossed homomorphisms. Coboundaries record precisely their conjugation by kernel elements. Hilbert's Theorem~90 removes this obstruction for a Galois action on a field, whereas the sign action on $\Z$ leaves two classes. The action, not only the two abstract groups, is part of the data.
+
+We have used modules to ask questions about a group's extensions. The next chapter asks how the modules themselves break into irreducible pieces. Over $\C$, a finite group algebra is a product of matrix algebras, and induction builds its representations from subgroups. That gives another route from a group law to calculations we can carry out.
 
 \section{Exercises}
 
 \begin{exercise}[$\star$]\label{ex:h1sign}
-Let $G=\Z/2=\{1,\sigma\}$ act on $\Z$ by $\sigma\cdot a=-a$. Compute $H^0$, $H^1$ and $H^2$ (the latter with Theorem~\ref{thm:h2cyclic}), and do the same for the trivial action.
+For $G=\Z/2=\{1,\sigma\}$ acting on $\Z$ by $\sigma\cdot a=-a$, compute $H^0(G,\Z)$, $H^1(G,\Z)$ and $H^2(G,\Z)$. Use Theorem~\ref{thm:h2cyclic} for the last group. Repeat all three calculations for the trivial action, and explain the contrast.
 \end{exercise}
 
 \begin{exercise}[$\star$]\label{ex:carry10}
-In the setting of Example~\ref{ex:carry} with $b=10$, show that the extension with ``carry $a$'' is isomorphic, as a group, to $\Z/100$ when $\gcd(a,10)=1$, to $\Z/20\times\Z/5$ when $a=5$, to $\Z/50\times\Z/2$ when $a\in\{2,4,6,8\}$, and to
-$(\Z/10)^2$ when $a=0$. How many inequivalent extensions have middle group $\Z/100$?
+For the base-ten carry extensions of Example~\ref{ex:carry}, determine the middle group for every $a\in\Z/10$. Prove it is $\Z/100$ for $\gcd(a,10)=1$, $\Z/20\times\Z/5$ for $a=5$, $\Z/50\times\Z/2$ for $a=2,4,6,8$, and $(\Z/10)^2$ for $a=0$. How many distinct extension classes have the cyclic middle group?
 \end{exercise}
 
 \begin{exercise}[$\star\star$]\label{ex:quaternion}
-The quaternion group $Q_8=\{\pm1,\pm i,\pm j,\pm k\}$ is a central extension of $G=\{1,\bar i,\bar j,\bar k\}\cong(\Z/2)^2$ by $A=\{\pm1\}\cong\Z/2$. Compute its cocycle for the section $\bar g\mapsto g$ ($g\in\{1,i,j,k\}$), and show that it
-is not a coboundary in two ways: directly, and by finding the complements.
+Regard $Q_8=\{\pm1,\pm i,\pm j,\pm k\}$ as an extension of
+$G=\{1,\bar i,\bar j,\bar k\}\cong(\Z/2)^2$ by $A=\{\pm1\}\cong\Z/2$. Use the section taking $1,\bar i,\bar j,\bar k$ to $1,i,j,k$ to compute the full cocycle table. Prove that its class is nonzero both from that table and from the impossibility of a complement.
 \end{exercise}
 
 \begin{exercise}[$\star\star$]\label{ex:cyclich1}
-For $G=\langle\sigma\rangle$ cyclic of order $n$, show that $H^1(G,A)\cong\ker N/(\sigma-1)A$. Deduce Corollary~\ref{cor:hilbert90} again from Theorem~\ref{thm:hilbert90}, and conversely.
+If $G=\langle\sigma\rangle$ has finite order $n\ge1$, prove
+$H^1(G,A)\cong\ker N/(\sigma-1)A$.
+Use this description to show that, for a \emph{cyclic} Galois extension, the multiplicative and additive vanishing conclusions of Theorem~\ref{thm:hilbert90} are equivalent to the respective norm-one and trace-zero assertions of Corollary~\ref{cor:hilbert90}. This converse concerns the cyclic case, not the general finite Galois theorem.
 \end{exercise}
 
 \begin{exercise}[$\star\star$]\label{ex:artinschreier}
-(Artin--Schreier.) Let $K$ have characteristic $p$ and $L/K$ be cyclic of degree $p$ with generator $\sigma$. Show that there is $\alpha\in L$ with $\sigma(\alpha)=\alpha+1$, and that $\alpha$ is a root of $x^p-x-a$ with $a=\alpha^p-\alpha\in K$.
+Let $K$ have characteristic $p$ and let $L/K$ be cyclic of degree $p$, generated by $\sigma$. Find $\alpha\in L$ with $\sigma(\alpha)=\alpha+1$. Prove that
+$\alpha^p-\alpha=a\in K$ and that $\alpha$ is a root of $x^p-x-a$. Explain why $L=K(\alpha)$; this is the Artin--Schreier description of this extension.
 \end{exercise}
 
 \begin{exercise}[$\star\star\star$]\label{ex:order20}
-Use Theorem~\ref{thm:sz} to show that every group of order $20$ is a semidirect product $\Z/5\rtimes Q$ with $|Q|=4$, and that there are exactly five groups of order $20$ up to isomorphism.
+Prove using Theorem~\ref{thm:sz} that every group of order $20$ has the form $\Z/5\rtimes Q$ for a group $Q$ of order four. Classify the possible actions up to the isomorphisms that they give, and show that exactly five isomorphism classes of groups result.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:v10new-ch08-inversion}
+Let $G=\Z/2=\langle\sigma\rangle$ act on $A=\Z/4$ by inversion, $\sigma\cdot a=-a$. Compute $H^0,H^1,H^2$ directly from the low-degree definitions and Theorem~\ref{thm:h2cyclic}. Show that the two extension classes have middle groups the dihedral group of order eight and $Q_8$, respectively. Distinguish the groups by counting involutions.
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:v10new-ch08-affine}
+Let $G=\Z/3=\langle\sigma\rangle$ act on $A=\Z^2$ by the matrix
+$T=\begin{pmatrix}0&-1\\1&-1\end{pmatrix}$.
+Compute $H^0,H^1,H^2$, deriving any one-cocycle formula you need from the definition. For $x=(1,0)$ show that the affine map $v\mapsto Tv+x$ has order three, has a fixed point in $\Q^2$, and has no fixed point in $\Z^2$. Relate that obstruction to its nonzero $H^1$ class.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:v10new-ch08-quadratic90}
+Let $L/K$ be a quadratic Galois extension with nonidentity automorphism $\sigma$. For $x\in L^\times$ with $x\sigma(x)=1$, give an explicit nonzero $b$ with $x=b/\sigma(b)$, without using a sum over an unspecified element. Treat $x=1$, $x=-1$ and characteristic two carefully. If $K=\mathbb F_q$ and $L=\mathbb F_{q^2}$, deduce that the norm-one subgroup has $q+1$ elements and identify it with $L^\times/K^\times$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:v10new-ch08-averaging}
+Let $G$ have finite order $m$ and let $A$ be a $G$-module on which multiplication by $m$ is an automorphism of the abelian group. Prove $H^1(G,A)=H^2(G,A)=0$ by giving an explicit primitive of each cocycle. Apply this to a vector space over a field of characteristic zero or characteristic prime to $m$, and explain why no finiteness assumption on $A$ is needed.
 \end{exercise}
 
 \section{Hints}
 
 \begin{hint}{ex:h1sign}
-For the sign action, a crossed homomorphism is determined by $f(\sigma)$, with no condition. $N=1+\sigma$ is $0$ on $\Z$.
+Write a one-cocycle by the single value $x=f(\sigma)$ and impose the relation $\sigma^2=1$. For the sign action $N=1+\sigma$ is zero; for the trivial action it is multiplication by two.
 \end{hint}
 
 \begin{hint}{ex:carry10}
-The element $t=(0,1)$ satisfies $t^{10}=(a,0)$; compute its order and the order of the group it generates.
+Use generators $u,t$ with $10u=0$ and $10t=au$. The order of $t$ distinguishes the possible exponents; the classification of finite abelian groups then finishes the calculation.
 \end{hint}
 
 \begin{hint}{ex:quaternion}
-$ij=k$, $ji=-k$, $i^2=-1$. A complement would be a subgroup of order $4$ not containing $-1$.
+The table entry is $s(g)s(h)s(gh)^{-1}\in\{\pm1\}$. A normalised coboundary takes value $+1$ on $(\bar i,\bar i)$, while $i^2=-1$. Every order-four subgroup of $Q_8$ contains $-1$.
 \end{hint}
 
 \begin{hint}{ex:cyclich1}
-A crossed homomorphism is determined by $x=f(\sigma)$, and $f(\sigma^n)=f(1)=0$ is the condition $N(x)=0$.
+Induction expresses $f(\sigma^i)$ as a partial norm sum of $x=f(\sigma)$. The full cycle forces $N(x)=0$. In multiplicative notation the partial sums become partial products.
 \end{hint}
 
 \begin{hint}{ex:artinschreier}
-$\operatorname{Tr}(1)=p=0$. Apply the additive Theorem~90 to $x=-1$.
+The trace of $-1$ is $-p=0$. Use the additive corollary with that element, then apply $\sigma$ to $\alpha^p-\alpha$.
 \end{hint}
 
 \begin{hint}{ex:order20}
-The Sylow $5$-subgroup is normal; count the homomorphisms $Q\to\operatorname{Aut}(\Z/5)\cong\Z/4$ up to automorphisms of $Q$.
+Count Sylow five-subgroups first. For each of $Q=\Z/4$ and $Q=(\Z/2)^2$, consider homomorphisms into
+$\operatorname{Aut}(\Z/5)\cong\Z/4$, and allow changes of generators of $Q$.
+\end{hint}
+
+\begin{hint}{ex:v10new-ch08-inversion}
+All values $f(\sigma)$ define one-cocycles. The fixed subgroup is $\{0,2\}$ and the norm is zero. An extension has generators $u,t$ with $u^4=1$, $tut^{-1}=u^{-1}$, and $t^2=1$ or $u^2$.
+\end{hint}
+
+\begin{hint}{ex:v10new-ch08-affine}
+Check $T^2+T+I=0$. Principal values form $(T-I)\Z^2$. For the fixed point equation solve $(I-T)v=x$ over $\Q$, and use the integer congruence defining that image over $\Z$.
+\end{hint}
+
+\begin{hint}{ex:v10new-ch08-quadratic90}
+Try $b=1+x$ whenever it is nonzero. If that vanishes and the characteristic is not two, use $c-\sigma(c)$ for $c\notin K$. For the finite-field count use the kernel of $b\mapsto b/\sigma(b)$.
+\end{hint}
+
+\begin{hint}{ex:v10new-ch08-averaging}
+In Proposition~\ref{prop:killed}, $mf=d(-b)$ in degree one and $mf=dc$ in degree two. The inverse of multiplication by $m$ commutes with the $G$-action, so it also commutes with $d$.
 \end{hint}
 
 \section{Solutions}
 
 \begin{solution}{ex:h1sign}
-\idea For a cyclic group of order $2$, a crossed homomorphism is one value, and the norm is $1+\sigma$.
-\writeup Sign action: $H^0=\{a:-a=a\}=0$. A crossed homomorphism has $f(1)=0$ and $f(\sigma)=x$, and the condition $f(\sigma^2)=f(\sigma)+\sigma f(\sigma)=x-x=0$ always holds; the principal ones are $\sigma\cdot b-b=-2b$. So
-$H^1=\Z/2$. By Theorem~\ref{thm:h2cyclic}, $H^2=A^G/N(A)=0/0=0$. Trivial action: $H^0=\Z$, $H^1=\operatorname{Hom}(\Z/2,\Z)=0$, and $H^2=\Z/2\Z$ since $N(a)=2a$: the non-trivial class is the extension $\Z\xrightarrow2\Z$, that is
-$0\to\Z\to\Z\to\Z/2\to0$, while the sign action's $H^1=\Z/2$ reflects the two conjugacy classes of complements $\{(0,1),(0,\sigma)\}$ and $\{(0,1),(1,\sigma)\}$ in the infinite dihedral group $\Z\rtimes\Z/2$.
+\idea A cyclic relation imposes one equation on the value of a crossed homomorphism, and principal values give the quotient.
+\writeup For the sign action, an invariant integer satisfies $a=-a$, hence $a=0$ and $H^0=0$. A crossed homomorphism has $f(1)=0$ and arbitrary value $f(\sigma)=x\in\Z$: the relation requires $x+\sigma x=x-x=0$, which is automatic. A principal value is $\sigma a-a=-2a$, so $H^1=\Z/2$. The norm is zero and the invariant subgroup is zero, giving $H^2=0$ by Theorem~\ref{thm:h2cyclic}. The two one-cohomology classes correspond to the integer and half-integer reflection mirrors in Figure~\ref{fig:v10new-ch08-complements}.
+
+For the trivial action, all integers are fixed, so $H^0=\Z$. A crossed homomorphism is a homomorphism $\Z/2\to\Z$; its generator value must satisfy $2x=0$, hence $x=0$ and $H^1=0$. The norm is multiplication by two, giving $H^2=\Z/2$. The nonzero two-class is represented by the extension
+$0\to\Z\xrightarrow{2}\Z\to\Z/2\to0$; in its middle group a lift of the nonidentity quotient element squares, in additive language doubles, to the odd kernel generator. The zero class instead gives $\Z\times\Z/2$.
 \end{solution}
 
 \begin{solution}{ex:carry10}
-\idea The group is abelian, generated by $t=(0,1)$ and $A$, with $10t=(a,0)$; its isomorphism type follows from the order of $t$.
-\writeup $E_a$ is abelian (the cocycle is symmetric and the action trivial), of order $100$, generated by $u=(1,0)$ and $t=(0,1)$, with relations $10u=0$, $10t=au$. If $\gcd(a,10)=1$, $t$ has order $10\cdot10=100$ and $E_a=\Z/100$. If $a=5$,
-$t$ has order $20$, and $E_a$ has exponent $20$; since $|E_a|=100=20\cdot5$, it is $\Z/20\times\Z/5$ (the only abelian group of order $100$ and exponent $20$). If $a\in\{2,4,6,8\}$, $t$ has order $50$ and $E_a\cong\Z/50\times\Z/2$. If $a=0$,
-$E_a=(\Z/10)^2$. So the $\varphi(10)=4$ classes $a=1,3,7,9$ give $\Z/100$: four inequivalent extensions with the same middle group.
+\idea The carry extension is an abelian group with two generators and two relations, so its element orders determine the finite abelian type.
+\writeup Trivial action and symmetry of the carry make $E_a$ abelian. Its generators $u=(1,0)$ and $t=(0,1)$ satisfy
+$10u=0$, $10t=au$, and its order is $100$ because its underlying set is $(\Z/10)^2$. The order of $t$ is $10$ times the order of $a$ in $\Z/10$.
+If $a=1,3,7,9$, this is $100$, so $t$ generates $E_a\cong\Z/100$.
+If $a=5$, it is $20$. Both generators are killed by $20$, so the exponent is exactly $20$. The classification of finite abelian groups now gives $\Z/20\times\Z/5$: its two-primary part has order four and exponent four, and its five-primary part has order $25$ and exponent five.
+If $a=2,4,6,8$, the order of $t$ is $50$ and the exponent is $50$. The five-primary part is cyclic of order $25$ and the two-primary part is $(\Z/2)^2$, giving $\Z/50\times\Z/2$.
+For $a=0$, the multiplication has no carry and is the direct product $(\Z/10)^2$.
+The theorem gives distinct extension classes for distinct $a$. Thus exactly $\varphi(10)=4$ inequivalent extensions share the cyclic middle group $\Z/100$.
 \end{solution}
 
 \begin{solution}{ex:quaternion}
-\idea Compute $s(g)s(h)s(gh)^{-1}$ in a table; non-triviality shows up on the diagonal.
-\writeup With $s(\bar g)=g$, the cocycle is $f(\bar g,\bar h)=s(\bar g)s(\bar h)s(\bar g\bar h)^{-1}$. For instance
+\idea Associativity of the quaternion multiplication produces the cocycle automatically; its diagonal values prevent it from being a coboundary.
+\writeup In multiplicative notation the table of
+$f(g,h)=s(g)s(h)s(gh)^{-1}$ is
 \[
-f(\bar i,\bar i)=i\cdot i=-1,\qquad f(\bar i,\bar j)=ij\,k^{-1}=1,\qquad f(\bar j,\bar i)=ji\,k^{-1}=-1,
+\begin{array}{c|rrrr}
+f&1&\bar i&\bar j&\bar k\\\hline
+1&1&1&1&1\\
+\bar i&1&-1&1&-1\\
+\bar j&1&-1&-1&1\\
+\bar k&1&1&-1&-1
+\end{array}
 \]
-and likewise $f(\bar j,\bar j)=f(\bar k,\bar k)=-1$, with $f=1$ when an argument is $1$. In multiplicative notation with trivial action, a coboundary is $(db)(g,h)=b(g)b(h)b(gh)^{-1}$ with $b\colon G\to\{\pm1\}$. Then $(db)(1,1)=b(1)$ and $(db)(\bar i,\bar i)=b(\bar i)^2b(1)^{-1}=b(1)$, as $b(\bar i)^2=1$. If $f=db$,
-then $b(1)=f(1,1)=1$ and so $f(\bar i,\bar i)=1$; but $f(\bar i,\bar i)=-1$. Contradiction. Alternatively, a complement would be a subgroup of order $4$ meeting $\{\pm1\}$ trivially; but every element of $Q_8$
-other than $\pm1$ has order $4$ and square $-1$, so every subgroup of order $4$ contains $-1$.
+For example, $ij=k$ gives $f(\bar i,\bar j)=1$, whereas $ji=-k$ gives $f(\bar j,\bar i)=-1$. The kernel is central, so the action is trivial.
+If $f=db$ for $b:G\to\{\pm1\}$, normalisation gives $b(1)=f(1,1)=1$. But then
+$(db)(\bar i,\bar i)=b(\bar i)^2b(1)^{-1}=1$, contradicting the table entry $-1$. Thus the class is nonzero.
+
+A complement would have order four and meet $\{\pm1\}$ only in $1$. Every element outside $\{\pm1\}$ has square $-1$, so any subgroup containing such an element also contains $-1$. A subgroup of order four must contain one, making the intersection nontrivial. No complement exists. Theorem~\ref{thm:h2ext} therefore gives the same nonzero conclusion from nonsplitting.
 \end{solution}
 
 \begin{solution}{ex:cyclich1}
-\idea A crossed homomorphism on a cyclic group is determined by its value on the generator, subject to one condition.
-\writeup If $f$ is a crossed homomorphism and $x=f(\sigma)$, then $f(\sigma^i)=x+\sigma x+\dots+\sigma^{i-1}x$ by induction, and $0=f(1)=f(\sigma^n)=N(x)$. Conversely, for $x\in\ker N$ this formula defines a crossed homomorphism, as in the proof of
-Corollary~\ref{cor:hilbert90}. Principal ones have $x=\sigma a-a$. So $H^1\cong\ker N/(\sigma-1)A$. For $A=L^\times$ this says: $H^1=1$ if and only if every element of norm $1$ is $b/\sigma(b)$, which is the corollary (with
-$\sigma(b)/b$ or $b/\sigma(b)$, the same up to replacing $b$ by $b^{-1}$).
+\idea The value on a cyclic generator determines a crossed homomorphism, and the full cycle gives its only restriction.
+\writeup If $x=f(\sigma)$, repeated use of the cocycle identity gives
+$f(\sigma^i)=x+\sigma x+\cdots+\sigma^{i-1}x$.
+The relation $\sigma^n=1$ forces $N(x)=0$. Conversely, for $x\in\ker N$ this formula defines a one-cocycle: concatenating partial sums proves the identity until an exponent reaches $n$, and a wraparound changes the sum by $N(x)=0$. A principal cocycle has generator value $(\sigma-1)a$. These values lie in $\ker N$ because $N(\sigma-1)=0$, giving
+$H^1(G,A)\cong\ker N/(\sigma-1)A$.
+For $n=1$, $N=1$, both sides are zero and the same description holds.
+
+For a cyclic Galois extension and additive $A=L$, vanishing says precisely that every trace-zero $x$ is $\sigma(a)-a$, equivalently $b-\sigma(b)$ after replacing $a$ by $-b$. For multiplicative $A=L^\times$, the same argument uses products: generator values have norm one and principal values are $\sigma(a)/a$, equivalently $b/\sigma(b)$ after inversion. Thus each cyclic vanishing statement implies the corresponding corollary, and each assertion of the corollary kills every one-cocycle in that cyclic action. This establishes the claimed cyclic equivalence. It makes no reduction of a general finite Galois group to a cyclic one.
 \end{solution}
 
 \begin{solution}{ex:artinschreier}
-\idea An element moved by $\sigma$ exactly by $+1$ is a root of an Artin--Schreier polynomial.
-\writeup $\operatorname{Tr}(-1)=-p=0$, so by Corollary~\ref{cor:hilbert90} (additive) $-1=b-\sigma(b)$, that is $\sigma(b)=b+1$; put $\alpha=b$. Then $\sigma^i(\alpha)=\alpha+i$, so $\alpha\notin K$ and its conjugates
-$\alpha,\alpha+1,\dots,\alpha+p-1$ are distinct: $L=K(\alpha)$ since $[L:K]=p$ is prime. Finally $\sigma(\alpha^p-\alpha)=(\alpha+1)^p-(\alpha+1)=\alpha^p+1-\alpha-1=\alpha^p-\alpha$ (Frobenius is additive in characteristic $p$), so
-$a=\alpha^p-\alpha$ is fixed by $G$ and lies in $K$, and $\alpha$ is a root of $x^p-x-a$.
+\idea In characteristic $p$, the constant $-1$ has trace zero, so the additive theorem supplies an element shifted by one.
+\writeup The trace of $-1$ is $-p=0$. By Corollary~\ref{cor:hilbert90}, write
+$-1=b-\sigma(b)$ and put $\alpha=b$. Then $\sigma(\alpha)=\alpha+1$. Induction gives
+$\sigma^i(\alpha)=\alpha+i$ for $0\le i<p$. These are distinct, since the prime subfield has $p$ elements. In particular $\alpha\notin K$, and the tower law in the degree-$p$ extension forces $K(\alpha)=L$.
+The characteristic-$p$ binomial formula gives
+\[
+\sigma(\alpha^p-\alpha)
+=(\alpha+1)^p-(\alpha+1)=\alpha^p-\alpha.
+\]
+This element is fixed by the generating automorphism, hence by all of $G$, so it is $a\in K$. Thus $\alpha$ is a root of $x^p-x-a$, and its degree is $p$. The argument includes $p=2$; there $-1=1$ and the same equations remain valid.
 \end{solution}
 
 \begin{solution}{ex:order20}
-\idea The Sylow $5$-subgroup is normal of order prime to its index; Schur--Zassenhaus splits the group, and the semidirect products are classified by actions.
-\writeup The number of Sylow $5$-subgroups divides $4$ and is $\equiv1\pmod5$, so it is $1$: $A\cong\Z/5$ is normal. As $\gcd(5,4)=1$, Theorem~\ref{thm:sz} gives a complement $Q$ of order $4$, so $E\cong\Z/5\rtimes_\rho Q$ with
-$\rho\colon Q\to\operatorname{Aut}(\Z/5)\cong(\Z/5)^\times\cong\Z/4$. Semidirect products for $\rho$ and $\rho\circ\alpha$, $\alpha\in\operatorname{Aut}Q$, are isomorphic. For $Q=\Z/4$: $\rho$ trivial ($\Z/20$), of image of order $2$
-(the generator acts by $-1$: the dicyclic group of order $20$), or injective (the two injective maps differ by the automorphism $-1$ of $\Z/4$: the Frobenius group $\Z/5\rtimes\Z/4$, the affine maps $x\mapsto ax+b$ of $\mathbb F_5$). For
-$Q=(\Z/2)^2$: $\rho$ trivial ($\Z/10\times\Z/2$) or with image $\{\pm1\}$ (all three such maps are permuted by $\operatorname{Aut}Q$: the dihedral group of order $20$). These five groups are pairwise non-isomorphic. The Sylow $2$-subgroup of $\Z/5\rtimes Q$ is isomorphic to $Q$. The two abelian ones differ by it, and so does the dihedral group from the other two non-abelian ones; and the dicyclic group has
-centre of order $2$ (the square of the generator of $Q$ acts trivially), while the Frobenius group has trivial centre. So there are exactly five.
+\idea The normal Sylow subgroup supplies an abelian kernel of coprime index. Classifying its complement actions then gives a short list of groups.
+\writeup The number of Sylow five-subgroups divides four and is congruent to one modulo five, so it is one. Its unique subgroup $A$ is cyclic of order five and normal. Theorem~\ref{thm:sz} gives a complement $Q$ of order four, so
+$E\cong A\rtimes_\rho Q$, where
+$\rho:Q\to\operatorname{Aut}(A)\cong\Z/4$.
+Changing generators of $Q$ precomposes $\rho$ with an automorphism; changing a generator of $A$ conjugates the image in its automorphism group, which is abelian and thus leaves that image action unchanged.
+
+If $Q=\Z/4$, the image of a generator can have order one, two or four. The two order-four choices are exchanged by the automorphism that inverts the generator. The three resulting groups are the cyclic group $\Z/20$, the inversion-action semidirect product (the dicyclic group of order $20$), and the faithful-action group of affine maps $x\mapsto ax+b$ of $\mathbb F_5$.
+If $Q=(\Z/2)^2$, the image is trivial or has order two. All three nonzero maps to the order-two subgroup of $\Z/4$ differ by automorphisms of $Q$. The resulting groups are
+$\Z/5\times(\Z/2)^2\cong\Z/10\times\Z/2$ and the dihedral group of order $20$.
+
+This list exhausts all homomorphisms and hence all groups. To separate its entries, their Sylow two-subgroups distinguish the cyclic-complement cases from the elementary-abelian-complement cases. In each family the trivial action gives an abelian group and the nontrivial action does not. Of the two remaining nonabelian cyclic-complement groups, the inversion-action group has centre of order two, generated by the square of its complement generator; the faithful affine group has trivial centre. Indeed a central element must centralise $A$, forcing its complement component to lie in the action kernel, and it must be fixed by the complement, forcing its $A$ component to be zero in either nontrivial action. The five groups are therefore pairwise nonisomorphic.
+\end{solution}
+
+\begin{solution}{ex:v10new-ch08-inversion}
+\idea Inversion makes every possible generator value a one-cocycle, while only the two fixed elements can be powers of an extension lift.
+\writeup The invariant subgroup of $\Z/4$ is $\{0,2\}\cong\Z/2$, so $H^0\cong\Z/2$. A one-cocycle is determined by $x=f(\sigma)$, and the relation requires $x+\sigma x=x-x=0$, which always holds. Principal values are $-2a$, whose subgroup is $\{0,2\}$. Therefore $H^1\cong(\Z/4)/\{0,2\}\cong\Z/2$. The norm $1+\sigma$ is zero, giving $H^2\cong\{0,2\}\cong\Z/2$.
+
+Write the generator of the kernel multiplicatively as $u$, of order four, and a lift of $\sigma$ as $t$. The action gives $tut^{-1}=u^{-1}$. The two possible classes are represented by $t^2=1$ and $t^2=u^2$. Both groups have order eight by their cocycle construction, and every element is $u^i$ or $u^it$ for $0\le i<4$.
+For $t^2=1$, all four elements $u^it$ are involutions, and $u^2$ is another one. This is the usual rotation-reflection presentation of the dihedral group of the square.
+For $t^2=u^2$, one has $(u^it)^2=t^2=u^2$ for every $i$, so all four outside elements have order four; among the kernel elements only $u^2$ is an involution. Sending $u\mapsto i$, $t\mapsto j$ identifies this presentation with $Q_8$, since $jij^{-1}=i^{-1}$ and $j^2=i^2=-1$. The different involution counts distinguish the middle groups as well as the extension classes.
+\end{solution}
+
+\begin{solution}{ex:v10new-ch08-affine}
+\idea The relation $I+T+T^2=0$ removes the one-cocycle constraint, but an integer index-three image leaves a nonzero quotient.
+\writeup Direct multiplication gives $T^2+T+I=0$ and $T^3=I$. The fixed equations
+$(-b,a-b)=(a,b)$ imply $a=-b$ and $a=2b$, hence $3b=0$ in $\Z$ and $a=b=0$. Thus $H^0=0$. A one-cocycle is determined by $x=f(\sigma)$, and the sole cyclic condition is
+$(I+T+T^2)x=0$, which holds for every $x\in\Z^2$. Conversely the partial sums $0,x,x+Tx$ define a one-cocycle because their full sum is zero. Principal values are $(T-I)A$.
+
+For $(a,b)\in\Z^2$,
+$(T-I)(a,b)=(-a-b,a-2b)$.
+Its two coordinates sum to $-3b$, so this image lies in
+$\{(r,s):r+s\equiv0\pmod3\}$. Conversely, if $r+s$ is divisible by three, put $b=-(r+s)/3$ and $a=-r-b$; these integers give the required preimage. Hence
+$H^1\cong\Z/3$, via the sum of coordinates modulo three. Since $A^G=0$, Theorem~\ref{thm:h2cyclic} gives $H^2=0$.
+
+The affine map $F(v)=Tv+x$ with $x=(1,0)$ satisfies
+$F^3(v)=T^3v+(I+T+T^2)x=v$, and it is not the identity since $F(0)=x\ne0$. Thus its order is three. Solving $(I-T)v=x$ gives $v=(2/3,1/3)$, so there is a rational fixed point. The class of $x$ in $A/(T-I)A$ has coordinate sum one, so $x\notin(I-T)A$; there is no integer fixed point. Translating coordinates by an integer vector changes $x$ by a principal value. The nonzero class therefore measures exactly this obstruction to moving the fixed point to the integer lattice origin.
+\end{solution}
+
+\begin{solution}{ex:v10new-ch08-quadratic90}
+\idea The norm-one identity makes $1+x$ a useful eigenvector for conjugation; only its possible vanishing needs a separate choice.
+\writeup If $x=1$, take $b=1$ in every characteristic. If $x\ne1$ and $x\ne-1$, take $b=1+x$. It is nonzero and
+$\sigma(b)=1+x^{-1}=x^{-1}(1+x)$, so $b/\sigma(b)=x$.
+The same formula also works for any $x\ne-1$ without the initial separation of $x=1$ whenever $1+x\ne0$.
+If $x=-1\ne1$, the characteristic is not two. Choose $c\in L\setminus K$ and let $b=c-\sigma(c)$. It is nonzero, since the fixed field of $\sigma$ is $K$, and $\sigma(b)=-b$, giving $b/\sigma(b)=-1$. In characteristic two the case $x=-1$ coincides with $x=1$ and was already handled by $b=1$. This exhausts every norm-one element.
+
+For finite fields, the homomorphism
+$\psi:L^\times\to L^\times$, $b\mapsto b/\sigma(b)$, lands in the norm-one subgroup because the product with its conjugate is one. The explicit construction proves surjectivity onto that subgroup. Its kernel consists exactly of nonzero fixed elements, namely $K^\times$. Thus the induced isomorphism
+$L^\times/K^\times\cong\ker N$ gives
+$|\ker N|=(q^2-1)/(q-1)=q+1$. This count uses neither cyclicity of the multiplicative group nor a separate norm-surjectivity theorem.
+\end{solution}
+
+\begin{solution}{ex:v10new-ch08-averaging}
+\idea Inverting the group order on the coefficient group turns the averaged coboundary formulas into primitives of the original cocycles.
+\writeup Let $u:A\to A$ be the inverse of multiplication by $m$. It is an additive automorphism. It commutes with each $G$-action map: both $g\cdot u(a)$ and $u(g\cdot a)$ are the unique element whose $m$-fold multiple is $g\cdot a$. Applying $u$ pointwise to cochains therefore commutes with the coboundary $d$.
+
+For a one-cocycle, put $b=\sum_gf(g)$. The calculation of Proposition~\ref{prop:killed} gives $mf=d(-b)$. Apply $u$ to obtain
+$f=d(-u(b))$. For a two-cocycle put $c(g)=\sum_kf(g,k)$; the same proposition gives $mf=dc$, hence $f=d(u\circ c)$. Every cocycle in these two degrees is a coboundary, proving both vanishing statements.
+If $A$ is a vector space over a field where $m\ne0$, scalar multiplication by $m$ has inverse scalar multiplication by $m^{-1}$. The hypotheses therefore hold for characteristic zero and for characteristic prime to $m$, in any dimension and over any such field. Only sums indexed by the finite group were used, so the size of the coefficient group need not be finite.
 \end{solution}
 
 \section*{Sources and further reading}
