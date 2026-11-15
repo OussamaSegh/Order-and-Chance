@@ -56,3 +56,8 @@ The group and ring functor examples preserve their original content and order.
 Executed source comparison (Python, exit 0): no missing original labels;
 numbered section titles/order identical; figures 1→3; exercises 6→10.
 No build was run by this writer; the parent owns the sole build process.
+
+## Integrated fixing commits
+
+25ea2a53 (initial rewrite), ee5c8ac6 (separate-review precision repair). These commits fix the original problems and prerequisite gaps
+listed above; separate review records distinguish any additional draft-only fixes.

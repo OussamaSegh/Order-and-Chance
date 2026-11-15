@@ -84,3 +84,8 @@ Source-only checks: all original labels and exact original figure block retained
 10 exercise environments (6+4) and 3 figure environments (1+2). Parent must
 verify built numbering, full layout/artifacts, numerical illustrations, and the
 separate mathematical/editorial review. No numerical experiment is a proof.
+
+## Integrated fixing commits
+
+c42d33c6 (initial rewrite), ee5c8ac6 (Russian-coordinate scale). These commits fix the original problems and prerequisite gaps
+listed above; separate review records distinguish any additional draft-only fixes.

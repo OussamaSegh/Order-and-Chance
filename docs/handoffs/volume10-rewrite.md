@@ -1,15 +1,41 @@
-# Active complete-rewrite workstream — 15 November 2026
+# Active complete rewrite — PR #245
 
-Current work continues the earlier rewrite below. The immutable new baseline is
-main `59014a9aad3454ad60786c6549c81fcac88df9df`, branch
-`codex/volume10-complete-rewrite`, actual directory `volume10-abstraction`.
-The fresh successful baseline build has **189 print pages**. Earlier counts and
-completion claims below apply only to the earlier, narrower rewrite.
+Current request starts from main `59014a9aad3454ad60786c6549c81fcac88df9df`,
+branch `codex/volume10-complete-rewrite`, actual folder `volume10-abstraction`.
+[PR #245](https://github.com/OussamaSegh/Order-and-Chance/pull/245) continues
+merged #220. The new baseline is immutable and distinct from the old narrower
+rewrite below. Printed order: eleven chapters, no appendices.
 
-Durable current records: [review directory](../../review/volume10-complete-rewrite/README.md).
-Eleven printed chapters, no appendices; full rewriting and separate review are
-underway. Final local validation, CI, merge and published-artifact verification
-remain outstanding. Required additions: 22 illustrations, 44 solved exercises.
+All eleven chapters are fully rewritten, including all original statements,
+proofs, examples, exercises, hints and solutions. All eleven now pass separate
+source mathematical/editorial reviews by agents who did not write them; these
+are AI reviews, not human certification. Source records:
+[review index](../../review/volume10-complete-rewrite/corrections-and-review-index.md),
+[math review](../../review/volume10-complete-rewrite/final-mathematical-review.md),
+[editorial review](../../review/volume10-complete-rewrite/final-editorial-review.md).
+Each chapter has exactly two new figures and four new fully solved exercises:
+22 figures and 44 exercises total. One independently verified public-domain
+Hilbert portrait has source evidence, adjacent credit and 358.8 effective print ppi.
+
+Baseline PDF: 189 print pages. Fresh post-rewrite PDF-only build on book sources
+`8506bdfa11c5094b6c598643b4e55d8946ad6ee9` exits 0 at 279 print pages, with no
+overfull boxes or unresolved references/citations. This is below the 300-page aim;
+no padding or typography compression was introduced. Covers use actual 279 pages,
+even-rounded 280 for the spine. Full EPUB conversion is still running at this
+checkpoint. Visual review found label-placement improvements in three NEW diagrams;
+they require focused fixes, rechecks and a final rebuild before acceptance.
+
+Actual passed checks so far: 20 citation tests; cross-volume citations matching
+5,162 numbered statements; original 270 labels, 114 structural numbers, 12 figure
+files, complete original figure blocks and 2 cover artwork files preserved;
+exact 22 figure/44 exercise additions; all 11 numerical illustration scripts; all
+641 publishing tests; Volume 3 register 1,177 accepted/19 unchanged pending, with
+inventory and conceptual hash-only refreshes for the shared Volume 10 cover note.
+Failed/intermediate builds and CI runs remain separate historical evidence.
+
+Remaining: final diagram layout repairs and builds, actual EPUB/media/link and
+rendered inspection, final-head green CI, ready transition, normal merge and exact
+merge-commit release/Pages verification. No completed merge/publication is claimed.
 Nothing has been uploaded to Amazon KDP.
 
 ---

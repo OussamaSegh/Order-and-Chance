@@ -83,3 +83,12 @@ identical; both original figure blocks literal; figures2→4; exercises12→16.
 Executed exact integer arithmetic for operation-count differences, exit0:
 D1=-13, D2=-135, D9=-12729073, D10=175399785.
 No build was run by this writer; the parent controls the build process.
+
+## Integrated fixing commits
+
+b03ed741 (initial rewrite), ee5c8ac6 (preserve characteristic-three Waring identity). These commits fix the original problems and prerequisite gaps
+listed above; separate review records distinguish any additional draft-only fixes.
+
+Final Waring scope: the polynomial identity holds over every field. The explicit
+four-pure-tensor formula is proved by ordered entries in characteristic other
+than 2, including 3; the first draft's R/C-only restriction was removed in ee5c8ac6.

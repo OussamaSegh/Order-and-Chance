@@ -45,3 +45,8 @@ n=1 task; all corrected before commit. Source math checked; no rendered inspecti
 or successful final build is claimed in this writer record.
 
 Fixing commit: supplied in final correction ledger after integration.
+
+## Integrated fixing commits
+
+c9f0258a. These commits fix the original problems and prerequisite gaps
+listed above; separate review records distinguish any additional draft-only fixes.

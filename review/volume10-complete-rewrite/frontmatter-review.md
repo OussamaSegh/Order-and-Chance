@@ -84,7 +84,7 @@ Final source hashes at this review checkpoint:
 | Path | SHA-256 |
 | --- | --- |
 | `volume10-abstraction/chapters/preface.tex` | `6952790ab8601591b3f0988f0e0ea565eab955636201335e87e880da27cc75e8` |
-| `volume10-abstraction/blurb.tex` | `d0fa5b17dccd289205b1df91d529ba19bd6cd1c4b4519c8339d8894327dec1c2` |
+| `volume10-abstraction/blurb.tex` | `69cc5072a20c6ad709d5f5880684ac5d5355f80f540a5de16442389ed9b5abc2` |
 | `volume10-abstraction/kdp.md` | `45532376caa9cfbadb06335784977030543aab3e2f4ac4ed0f8445d2ccb7a545` |
 | `volume10-abstraction/about-the-cover.tex` | `3a3b59e8aebd0df84f49e940576561230477b2a85b804a58f72fa18b8129348e` |
 | `volume10-abstraction/main.tex` | `3258df9a11587f0ef2e958be0337ead33a30c6f8dfe3a83367408bb4cad2e6b5` |
@@ -96,3 +96,13 @@ Final source hashes at this review checkpoint:
 Any subsequent edits to these files require a focused recheck. Overall source
 acceptance also depends on the disjoint chapter reviewers and final preservation
 records; this review does not certify production artifacts or publication.
+
+## Focused production-copy recheck
+
+Read the final standalone-cover compatibility change in blurb.tex: replacing
+\Z by \mathbb{Z} changes the TeX spelling of the same integer-ring notation,
+not its mathematical content. Read the added About the Cover sentence, “The
+quotient removes dependence on the chosen lift.” This accurately describes the
+connecting homomorphism's cokernel class. The canonical and generated notes agree,
+and the existing TikZ-generator identification is retained. Updated hashes above
+record these exact reviewed files. No new finding was introduced.

@@ -69,3 +69,8 @@ substring; every baseline original label remains; ten exercise and three figure
 environments occur (6+4 and 1+2). Parent must verify compiled numbers, layout,
 EPUB and separate mathematical/editorial review. Numerical checks are illustrations,
 not proof substitutes.
+
+## Integrated fixing commits
+
+2d3fe09c (initial rewrite), ee5c8ac6 (notation and fixed-point-key precision). These commits fix the original problems and prerequisite gaps
+listed above; separate review records distinguish any additional draft-only fixes.

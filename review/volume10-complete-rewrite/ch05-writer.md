@@ -31,3 +31,8 @@ Actual earlier prerequisites consulted: Volume 3 ring/zero-ring convention, UFD/
 - Numbered-environment comparison: original kind/label sequence preserved, followed by four exercises.
 - Counts: 3 figures, 10 exercises, 10 hints, 10 solutions (original counts: 1,6,6,6).
 - No build or rendered-page review was run by this writing agent. Parent owns builds, printed-number checks and visual review. These source checks do not replace separate review.
+
+## Integrated fixing commits
+
+291af767. These commits fix the original problems and prerequisite gaps
+listed above; separate review records distinguish any additional draft-only fixes.

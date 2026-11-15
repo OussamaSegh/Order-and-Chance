@@ -1,19 +1,27 @@
-# Required Volume 3 register refresh
+# Required Volume 3 validation-record refresh
 
-The register failed after the authorized Volume 10 About the Cover copy edit,
-because its whole-volume conceptual snapshot includes common/cover-notes.json.
-Compared every old/new snapshot entry: only that JSON file changed. Only its
-Volume 10 about field changed; Volume 3 cover copy/art/mathematics did not.
-Refreshed the snapshot and matching snapshot hashes without changing any review
-classification, anchor, prerequisite evidence or acceptance status.
+Volume 10's authorized About the Cover copy is stored in the shared
+common/cover-notes.json. The Volume 3 conceptual snapshot and inventory both
+fingerprint that file. The initial register and later CI inventory gate failed
+because the retained hashes still described the old copy.
 
-Old snapshot: `0b4d77a6f6abdfbdbea57e0acca23c0ce79e17fde63c128ed2724341da4b56e2`.
-New snapshot: `2cf413ff25d0b68a6856bbe43941a10104b2cb55df713b26afdd5e1152ac16de`.
-This required validation record is the only Volume 3 file change.
+Compared every old/new snapshot and inventory entry. The only input whose bytes
+changed is common/cover-notes.json, and only its Volume 10 about field changed.
+Volume 3 source, mathematics, art, copy, anchors, dependencies and all review
+classifications are unchanged. Required record changes are exactly:
+review/volume3-internal/concepts.json and inventory.json.
 
-The CI copy guard requires the provenance phrase “TikZ cover generator”. Restored
-that precise phrase in the Volume10 note (no artwork change); final snapshot
-is `5cf23ada895083439e3c85a30e07351f285f7bf5cf0503932ac7cfe39f8572ef`. Only the same shared JSON hash changes.
+Starting conceptual snapshot:
+`0b4d77a6f6abdfbdbea57e0acca23c0ce79e17fde63c128ed2724341da4b56e2`.
+Final conceptual snapshot:
+`09dce5a7fd978cf3beceb3588108e71404b8fa4a201205340d8a2037b7b9313a`.
+Final shared JSON SHA256:
+`e2b0dab1f51fb19b768f2c882b83f64c1d74baafd6e1ae244716e2a49538460e`.
 
-Final cover note retains the generator phrase and required80–150word length.
-Snapshot `09dce5a7fd978cf3beceb3588108e71404b8fa4a201205340d8a2037b7b9313a` again changes only the same Volume10 about-field hash.
+The cover-note generator requires 80–150 words and the provenance phrase
+“TikZ cover generator”. Both guards are retained. Intermediate copy/hash
+checkpoints are historical and are not final validation. The final inventory
+comparison has only supporting_sources changed, and within that list only the
+shared JSON hash. `inventory.py --check` and `registers.py` both exit 0;
+the register retains 1,177 accepted-internal and 19 pre-existing pending items.
+This refresh does not claim fresh mathematical certification of Volume 3.

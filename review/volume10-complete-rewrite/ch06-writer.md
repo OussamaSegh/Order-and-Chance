@@ -32,3 +32,8 @@ Actual Volume 3 statements checked with the current statement walker: Theorem 6.
 - Original section heading sequence identical.
 - Counts: 3 figures, 10 exercises, 10 hints, 10 solutions (original: 1,6,6,6).
 - No build, numerical script or rendered artifact inspection was run by this writing agent. Parent owns production and visual checks. Separate mathematical/editorial review is still required; this is a writer record.
+
+## Integrated fixing commits
+
+ee5c8ac6. These commits fix the original problems and prerequisite gaps
+listed above; separate review records distinguish any additional draft-only fixes.

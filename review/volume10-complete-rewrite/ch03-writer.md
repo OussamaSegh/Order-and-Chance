@@ -32,3 +32,8 @@ Exactly four new graded exercises follow the original six, with useful hints and
 ## Checks actually performed
 
 A local source inventory compared all original environment counts, every original label, and the complete ordered numbered-section list against the original captured source: no missing labels or changed counts/order. Figure block preservation was checked by retaining the exact captured block rather than retyping it. No build or rendered inspection is claimed in this writer record; parent owns those checks. The independent reviewer has sent initial boundary-case findings, incorporated above. Separate final review remains required.
+
+## Integrated fixing commits
+
+25ea2a53 (mathematical rewrite), ee5c8ac6 (new-diagram arrow). These commits fix the original problems and prerequisite gaps
+listed above; separate review records distinguish any additional draft-only fixes.

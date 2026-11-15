@@ -84,3 +84,8 @@ original labels are present, and the complete original figure block is verbatim.
 No local PDF or full build was run by this writer; parent owns build integration,
 rendered checks, fixing commits and final receipts. This writer pass does not
 claim independent mathematical certification. Separate review remains required.
+
+## Integrated fixing commits
+
+c42d33c6. These commits fix the original problems and prerequisite gaps
+listed above; separate review records distinguish any additional draft-only fixes.

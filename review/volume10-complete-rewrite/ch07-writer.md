@@ -66,3 +66,8 @@ present and the original figure block occurs verbatim. This is a structural
 check, not a PDF build or independent mathematical certification. No build was
 run by this writer. Parent owns integration, fixing-commit receipts and final
 production validation. Independent final review remains required.
+
+## Integrated fixing commits
+
+291af767. These commits fix the original problems and prerequisite gaps
+listed above; separate review records distinguish any additional draft-only fixes.

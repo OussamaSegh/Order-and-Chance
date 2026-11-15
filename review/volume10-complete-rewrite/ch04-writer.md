@@ -38,3 +38,8 @@ The requested unnumbered Hilbert portrait macro is placed after the first substa
 ## Checks actually run
 
 A source inventory compared all original formal-environment counts, all original labels, and the entire ordered numbered-section list against the initial source: counts and order match, and no label is missing. The original figure block was copied verbatim. An intermediate parent build identified an unsupported arrow style in the separate Chapter 3 new lifting diagram; it has been replaced by a normal arrow labelled “inclusion”. I have not run a build or claimed rendered inspection. Separate final mathematical/editorial review and production checks remain parent tasks.
+
+## Integrated fixing commits
+
+b03ed741 (mathematical rewrite), ee5c8ac6 (reduced-basis precision). These commits fix the original problems and prerequisite gaps
+listed above; separate review records distinguish any additional draft-only fixes.
