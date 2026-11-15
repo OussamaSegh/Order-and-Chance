@@ -101,3 +101,19 @@ respective original lists. Printed-number verification awaits the final build.
 The parent has acknowledged these repairs. No other blocking mathematical flaw
 was found in this chapter at this review checkpoint. Final status requires
 reading the repairs and rechecking the exact final source after any later edits.
+
+## Repair recheck — source phase accepted
+
+Read the writer repairs. Both stray exponent commas are removed; the growth
+caption now says sixth absolute trace moment; the first two dimension tasks retain
+n=1 while the adjoint-weight task says n at least two; and the closing bridge
+uses the full Volume 11 subtitle. Their solutions remain valid in the clarified
+ranges. The complete original figure block remains byte-for-byte present.
+Rechecked chapter SHA-256:
+`eb9365cf3548b70e63534b91ed573e3c695e9a5f3a02fe04451c1ef5a65fb63c`.
+
+All findings from this Chapter 11 source review are resolved. This is source
+mathematical/editorial acceptance of this chapter at the recorded hash, pending
+whole-volume prerequisite/citation/numbering checks, rendered artifact inspection
+and any later source changes. No independent second-reader certification of
+production artifacts or unreviewed later changes is implied.

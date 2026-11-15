@@ -61,7 +61,7 @@ The cover draws regular heptagons in the Poincaré disc, with three meeting at e
 
 Cover illustration: the snake lemma and its connecting homomorphism; see About the Cover.
 
-Two exact rows are joined by three vertical maps. Their kernels sit above them and their cokernels below. The long diagonal connects the last kernel to the first cokernel: it is the connecting homomorphism in the snake lemma. Chapter 3 constructs that map by lifting an element, following it down the diagram and taking a quotient class. The cover draws this diagram with the series cover generator. Its shape records a proof that will be used again in homological algebra.
+Two exact rows are joined by three vertical maps. Their kernels sit above them and their cokernels below. The long diagonal connects the last kernel to the first cokernel: it is the connecting homomorphism in the snake lemma. Chapter 3 constructs that map by lifting an element, following it down the diagram and taking a quotient class. The drawing uses the book's TikZ cover generator. Its shape records a proof that will be used again in homological algebra. The quotient removes dependence on the chosen lift.
 
 ## Volume 11 — Randomness
 
