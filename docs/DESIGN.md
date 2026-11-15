@@ -1,3 +1,19 @@
+# Volume 10 complete rewrite production — 15 November 2026
+
+The manuscript rewrite preserves design 5e, original figure blocks and all cover
+artwork. Its additions use the shared figure palette and unnumbered credited
+portrait presentation. Only Volume 10's About the Cover prose changes in
+`common/cover-notes.json`; `tools/series_cover.py` synchronizes its generated note,
+the note documentation and manifest hashes. No motif or lettering changed.
+The Volume 3 conceptual register receives the required hash-only refresh because
+it includes that shared JSON; review classifications remain unchanged.
+
+Fresh successful baseline: 189 print pages. Final source/build/publication evidence
+will be recorded in `review/volume10-complete-rewrite/` and on PR #245. No final
+count or successful publication is asserted at this checkpoint. No KDP upload.
+
+---
+
 # Figure captions — 6 November 2026
 
 Only the caption under a figure changes. It is 8.75 pt on a 12 pt baseline, set in 92.5 percent of the text block. The label is `Figure 2.` in genuine Fira Sans SemiBold: the word and the period are charcoal, the numeral is rust, and the tracking is normal. The prose is Fira Sans Book, left aligned. Mathematics in that caption follows the 8.75 pt size. Text inside figures, table captions, body type, and figure geometry stay as they are on main. Details are in `docs/design/interior.md`.

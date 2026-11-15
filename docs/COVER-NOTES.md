@@ -61,7 +61,7 @@ The cover draws regular heptagons in the Poincaré disc, with three meeting at e
 
 Cover illustration: the snake lemma and its connecting homomorphism; see About the Cover.
 
-Two exact rows, three vertical maps, kernels along the top and cokernels along the bottom, and one long diagonal from the last kernel to the first cokernel. That diagonal is the connecting homomorphism of the snake lemma. Henri Cartan and Samuel Eilenberg set the lemma down in this form in Homological Algebra (1956), and it has been the first diagram chase of the subject ever since. This volume proves it in the chapter Tensors and Exactness, and uses it again when homological algebra begins in earnest. The drawing was computed by the book's own TikZ cover generator.
+Two exact rows are joined by three vertical maps. Their kernels sit above them and their cokernels below. The long diagonal connects the last kernel to the first cokernel: it is the connecting homomorphism in the snake lemma. Chapter 3 constructs that map by lifting an element, following it down the diagram and taking a quotient class. The cover draws this diagram with the series cover generator. Its shape records a proof that will be used again in homological algebra.
 
 ## Volume 11 — Randomness
 
