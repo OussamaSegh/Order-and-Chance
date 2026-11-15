@@ -5,86 +5,69 @@ Nine points are worth but eight.
 \upshape(title of R.~E.~Bradley and L.~Stemkoski's account of Euler's letter to Cramer of 1744)
 \end{center}
 
-In 1720 the young Scottish mathematician Colin Maclaurin, in his \emph{Geometria Organica}, noticed something odd. A curve of degree $n$ in the plane is given by an equation with
-$\frac{(n+1)(n+2)}2$ coefficients, defined up to a common factor, so it should be determined by $\frac{n(n+3)}2$ of its points: a line by $2$ points,
-a conic by $5$, a cubic by $9$. On the other hand two curves of degrees $m$ and $n$ meet, as people already suspected, in $mn$ points. Two cubics meet in
-$9$ points. But then these $9$ points cannot determine a cubic, since at least two cubics pass through them. Gabriel Cramer and Leonhard Euler,
-who were writing books on curves at the time, corresponded about it, and in a letter to Cramer of 20 October 1744 Euler explained the way out: when nine
-points are the intersection of two cubics, they are special, they impose only eight conditions, and infinitely many cubics pass through them. Euler
-published the explanation in 1750, the year of Cramer's treatise on curves, and the puzzle is now called Cramer's paradox.
+A line is determined by two points, a conic by five general-position points. Counting coefficients suggests nine points for a cubic. Yet two different cubics can meet in nine points. How can those nine determine either one uniquely?
 
-The answer turned into one of the great theorems of classical geometry, the theorem of Cayley and Bacharach: any cubic through eight of the nine
-points passes through the ninth. And the count $mn$ became Bézout's theorem, published by \'Etienne B\'ezout in 1779. This chapter proves both with one
-tool, the resultant, which decides by a determinant whether two polynomials have a common root. As a reward, Pascal's theorem of Appendix~D drops out
-in a few lines, and the next chapter will use Cayley--Bacharach to prove that the points of a cubic curve form a group.
+They cannot: intersection points need not impose independent conditions. In his letter to Cramer of 20 October 1744, Euler explained that these nine conditions can have only eight independent parts. Maclaurin had noticed the puzzle in his \emph{Geometria Organica} (1720); Euler's published explanation and Cramer's treatise both appeared in 1750. The resulting Cramer paradox leads to the concrete Cayley--Bacharach theorem proved below: a cubic through eight of nine distinct intersections must pass through the ninth.
+
+Our main calculation is a determinant, the resultant. It detects common polynomial factors and counts projected intersections. We will prove B\'ezout's degree bound and an intersection count with multiplicities defined using a chosen projection point. The intrinsic multiplicity, and independence from that choice, are deeper results previewed in Volume~13, Chapter~14. We do not need them as premises here.
+
+The prerequisites are Volume~3's polynomials, unique factorization, Gauss's lemma and determinants, together with Appendix~C's projective plane. Passing to an algebraically closed field allows every one-variable polynomial to split. Real drawings remain useful examples, but the full intersection count belongs to that larger projective setting.
 
 \begin{think}
-How many points can a circle and the graph of $y=x^3-3x$ have in common? Draw them. Now try two circles: Bézout's theorem promises $2\times2=4$
-intersection points, but two circles never meet in more than two. Where are the other two?
+A circle can meet a cubic graph in six real points. Two ordinary circles have at most two real intersections, although their degrees suggest four. Which points does the real affine picture leave out?
 \end{think}
-
-\emph{What this appendix connects, and what it assumes.} It connects the intersection of two plane curves with one determinant, the
-resultant: B\'ezout's theorem, a bound on the singular points of a curve, and the Cayley--Bacharach theorem that resolves Cramer's paradox. It assumes
-polynomials over a field, determinants and the projective plane of Appendix~C. B\'ezout's theorem is proved here with multiplicities defined relative
-to an auxiliary point; the intrinsic multiplicity and the general theorem are proved in Volume~13, Chapter~14.
 
 \section{The resultant}
 
-Let $A$ be a commutative ring (for us a field, or a polynomial ring over a field) and
+Take a commutative ring $A$ and polynomials written with fixed degree bounds $m,n\ge1$:
 \[
-f=a_0x^m+a_1x^{m-1}+\dots+a_m,\qquad g=b_0x^n+b_1x^{n-1}+\dots+b_n
+f=a_0x^m+a_1x^{m-1}+\cdots+a_m,\qquad
+g=b_0x^n+b_1x^{n-1}+\cdots+b_n.
 \]
-with coefficients in $A$, $m,n\ge1$. The \emph{Sylvester matrix} $S(f,g)$ is the $(m+n)\times(m+n)$ matrix whose rows are the coefficient vectors of
-$x^{n-1}f,\dots,xf,f,x^{m-1}g,\dots,xg,g$, written in the basis $x^{m+n-1},\dots,x,1$. So it has $n$ rows of $a$'s and $m$ rows of $b$'s, each shifted one
-step to the right from the row above. The \emph{resultant} is $\operatorname{Res}(f,g)=\det S(f,g)$. For instance, for $m=2$, $n=1$,
+Their \emph{Sylvester matrix} has rows the coefficient vectors of $x^{n-1}f,\ldots,f,x^{m-1}g,\ldots,g$, in descending powers from $x^{m+n-1}$ to $1$. Its determinant is the \emph{resultant} $\operatorname{Res}(f,g)$. For degree bounds two and one it is
 \[
-\operatorname{Res}(a_0x^2+a_1x+a_2,\ b_0x+b_1)=\det\begin{pmatrix}a_0&a_1&a_2\\b_0&b_1&0\\0&b_0&b_1\end{pmatrix}.
+\det\begin{pmatrix}a_0&a_1&a_2\\b_0&b_1&0\\0&b_0&b_1\end{pmatrix}.
 \]
+Leading coefficients may vanish for this matrix definition. The common-factor test below requires that the degree bounds be the actual degrees; that distinction matters when coefficients are specialized.
 
 \begin{proposition}\label{geometry:prop:resultant}
 \begin{enumerate}
-\item There are polynomials $u,v\in A[x]$ with $\deg u<n$, $\deg v<m$ and $uf+vg=\operatorname{Res}(f,g)$.
-\item If $A$ is a field and $a_0b_0\ne0$, then $\operatorname{Res}(f,g)=0$ if and only if $f$ and $g$ have a common factor of positive degree.
+\item There exist $u,v\in A[x]$, of degrees less than $n,m$ respectively, such that $uf+vg=\operatorname{Res}(f,g)$.
+\item Over a field with $a_0b_0\ne0$, the resultant vanishes exactly when $f,g$ have a common factor of positive degree.
 \end{enumerate}
 \end{proposition}
-
 \begin{proof}
-A row vector
-\[
-c=(u_{n-1},\dots,u_0,v_{m-1},\dots,v_0)
-\]
-gives $u=\sum u_ix^i$, $v=\sum v_ix^i$, and $cS$ is the coefficient vector of $uf+vg$. (1) Let
-$c$ be the last row of the adjugate matrix of $S$. Since $\operatorname{adj}(S)S=\det(S)I$, $cS=(0,\dots,0,\det S)$, which says
-$uf+vg=\operatorname{Res}(f,g)$; the entries of the adjugate are polynomials in the coefficients.
+For a coefficient row $c=(u_{n-1},\ldots,u_0,v_{m-1},\ldots,v_0)$, multiplication $cS$ gives the coefficient row of $uf+vg$. Take $c$ to be the last row of $\operatorname{adj}(S)$. The identity $\operatorname{adj}(S)S=(\det S)I$ gives a row with only its constant entry nonzero, proving the first assertion even over a ring.
 
-(2) Over a field, $\det S=0$ if and only if $cS=0$ for some nonzero $c$, that is, $uf+vg=0$ with $\deg u<n$, $\deg v<m$ and $(u,v)\ne(0,0)$. If $h$ is
-a common factor of positive degree, $u=g/h$ and $v=-f/h$ work. Conversely, suppose $uf=-vg$ with $(u,v)\ne0$. Then $v\ne0$, since $v=0$ would give
-$uf=0$ and $u=0$. If $f$ and $g$ had no common factor, $f$ would divide $vg$ and hence $v$, impossible since $0\le\deg v<m=\deg f$.
+Over a field, $\det S=0$ exactly when a nonzero row $c$ has $cS=0$. A common factor $h$ gives such a relation with $u=g/h$, $v=-f/h$, meeting the degree bounds. Conversely a nonzero relation $uf=-vg$ has $v\ne0$, since $f\ne0$. If $f,g$ were coprime, Euclid's lemma would imply $f\mid v$, contradicting $\deg v<\deg f$. This proves the equivalence.
 \end{proof}
 
-Over an algebraically closed field, a common factor of positive degree is the same as a common root. So the resultant is a single polynomial in the
-coefficients that vanishes exactly when the two equations have a common solution. Exercise~\ref{geometry:ex:resproduct} gives the formula
-$\operatorname{Res}(f,g)=a_0^nb_0^m\prod_{i,j}(\alpha_i-\beta_j)$ in terms of the roots.
+Over an algebraically closed field, a common positive-degree factor is equivalent to a common root. The determinant therefore turns two equations into one equation in their coefficients. The root-product formula, proved in the exercises, is
+\[
+\operatorname{Res}(f,g)=a_0^nb_0^m\prod_{i,j}(\alpha_i-\beta_j).
+\]
+Repeated roots are included in those lists.
 
 \section{Plane curves}
 
-Let $K$ be a field. A \emph{plane curve of degree $d$} is a nonzero homogeneous polynomial $F\in K[x,y,z]$ of degree $d$, up to a nonzero factor; its
-points are the $[p]\in\mathbb P^2$ with $F(p)=0$. A line, a conic and a cubic have degrees $1$, $2$, $3$. Since $K[x,y,z]$ has unique factorisation,
-$F$ is a product of irreducible factors, the \emph{components} of the curve. Homogeneous polynomials of degree $d$ form a vector space of dimension
-$\binom{d+2}2=\frac{(d+1)(d+2)}2$ (the monomials $x^iy^jz^k$ with $i+j+k=d$), so curves of degree $d$ form a projective space of dimension
-$\frac{d(d+3)}2$. Asking a curve to pass through a point is one linear condition on the coefficients, and therefore:
+A \emph{plane curve of degree $d\ge1$} means a nonzero homogeneous polynomial $F(x,y,z)$ of that degree, up to multiplication by a nonzero scalar. Its $K$-points satisfy $F=0$ in $\mathbb P^2(K)$. Specifying the polynomial, rather than just its point set, keeps repeated factors and finite-field equations distinct. Its irreducible factors are its \emph{components}.
+
+There are $\binom{d+2}{2}$ monomials of degree $d$, counted by the triples of nonnegative exponents with sum $d$. Thus their coefficient space has that dimension, and its projectivization has dimension $D=d(d+3)/2$. Each point imposes one homogeneous linear condition.
 
 \begin{proposition}\label{geometry:prop:dimcurves}
-Through any $\frac{d(d+3)}2$ points of $\mathbb P^2(K)$ passes a curve of degree $d$.
+Through any $d(d+3)/2$ points of $\mathbb P^2(K)$ there is a curve of degree $d$.
 \end{proposition}
+\begin{proof}
+The $D$ evaluation conditions act on a vector space of dimension $D+1$. Their common kernel has dimension at least one, whether or not the conditions are independent. Any nonzero kernel vector is the required homogeneous polynomial. Repeated prescribed points only repeat conditions and do not spoil existence.
+\end{proof}
 
-A line meets a curve of degree $d$ in at most $d$ points, unless it is a component: restricted to the line, $F$ becomes a binary form of degree $d$, which
-either is zero or has at most $d$ roots.
+On a line, a homogeneous degree-$d$ form becomes a binary form. Unless it vanishes identically there, it has at most $d$ projective roots. Vanishing identically means the line's linear equation divides $F$: after taking that line as $z=0$, every surviving monomial contains $z$. Thus a line meets a curve in at most $d$ points unless it is a component.
 
-A point $P$ of the curve $F$ is \emph{singular} if $F_x(P)=F_y(P)=F_z(P)=0$, and \emph{smooth} otherwise; at a smooth point the \emph{tangent line} is
-$F_x(P)x+F_y(P)y+F_z(P)z=0$. By Euler's formula $xF_x+yF_y+zF_z=dF$, in an affine chart $z=1$ a point is singular if and only if $f=f_x=f_y=0$, where
-$f(x,y)=F(x,y,1)$. Figure~\ref{geometry:fig:singular} shows the three kinds of singular cubics: a node, where two branches cross, a cusp, and the node of the folium of
-Descartes.
+A curve point is \emph{singular} if all three partial derivatives of $F$ vanish there, and \emph{smooth} otherwise. At a smooth point $P$, the tangent is
+\[
+F_x(P)x+F_y(P)y+F_z(P)z=0.
+\]
+It contains $P$ by Euler's identity $xF_x+yF_y+zF_z=dF$, obtained term by term. In the chart $z=1$, singularity is equivalent to $f=f_x=f_y=0$ for $f(x,y)=F(x,y,1)$: Euler's identity then supplies $F_z=0$ too. This argument remains valid when the characteristic divides $d$.
 
 \begin{figure}[ht]
 \centering
@@ -96,87 +79,58 @@ points are in rust.}
 
 \section{B\'ezout's theorem}
 
-To intersect two curves $F$ and $G$, we eliminate one variable with the resultant. Assume $O=[0:0:1]$ is on neither curve. Then the coefficient of
-$z^m$ in $F$ is $F(0,0,1)\ne0$, and we can write
+Choose a point $O=[0:0:1]$ off both curves, of degrees $m,n$. Their expansions in $z$ are
 \[
-F=a_0z^m+a_1(x,y)z^{m-1}+\dots+a_m(x,y),\qquad G=b_0z^n+b_1(x,y)z^{n-1}+\dots+b_n(x,y),
+F=a_0z^m+a_1(x,y)z^{m-1}+\cdots+a_m(x,y),\quad
+G=b_0z^n+b_1(x,y)z^{n-1}+\cdots+b_n(x,y),
 \]
-with $a_0,b_0$ nonzero constants and $a_k,b_k$ homogeneous of degree $k$ in $x,y$. Let $R(x,y)=\operatorname{Res}_z(F,G)$, the resultant with
-respect to $z$, a polynomial in $x$ and $y$.
+where $a_0,b_0$ are nonzero constants and $a_k,b_k$ are homogeneous of degree $k$. Form $R(x,y)=\operatorname{Res}_z(F,G)$. Its roots describe directions from $O$ to intersections.
 
 \begin{lemma}\label{geometry:lem:reshomog}
-$R$ is homogeneous of degree $mn$, or zero.
+The resultant $R$ is zero or homogeneous of degree $mn$.
 \end{lemma}
-
 \begin{proof}
-Index the rows and columns of the Sylvester matrix from $0$. In row $r<n$ the entry in column $c$ is $a_{c-r}$ (zero if $c-r\notin[0,m]$), and in row
-$n+r$ it is $b_{c-r}$. Replacing $(x,y)$ by $(tx,ty)$ multiplies $a_k$ and $b_k$ by $t^k$. Multiply row $r$ and row $n+r$ by $t^r$, and divide column $c$
-by $t^c$: the entry $a_{c-r}t^{c-r}$ becomes $a_{c-r}$, and similarly for $b$. Hence
+Index columns from zero. In a row shifted by $r$ from an $a$-row the column-$c$ entry is $a_{c-r}$, of degree $c-r$; in a $b$-row it is $b_{c-r}$ with the same degree. A nonzero determinant term uses each column once and each row once. Its degree is therefore
 \[
-R(tx,ty)\cdot t^{\sum_{r<n}r+\sum_{r<m}r}=t^{\sum_{c<m+n}c}\,R(x,y),
+\sum_{c=0}^{m+n-1}c-\sum_{r=0}^{n-1}r-\sum_{r=0}^{m-1}r=mn.
 \]
-and $\frac{(m+n)(m+n-1)}2-\frac{n(n-1)}2-\frac{m(m-1)}2=mn$.
+All its terms have this degree, so cancellation either leaves that homogeneous degree or gives zero. The argument is a formal polynomial calculation over any field, not a test at scalar values.
 \end{proof}
 
 \begin{theorem}[B\'ezout, with multiplicities relative to a point $O$; the intrinsic form is proved in Volume~13, Chapter~14]\label{geometry:thm:bezout}
-Let $F$ and $G$ be plane curves of degrees $m$ and $n$ over a field $K$, with no common component. Then they meet in at most $mn$ points.
-If $K$ is algebraically closed, then for every point $O$ chosen as in the proof each common point $P$ has a multiplicity $I_P(F,G)\ge1$, defined below
-relative to $O$, and
+If plane curves $F,G$ of degrees $m,n$ have no common component, they meet in at most $mn$ geometric points. Over an algebraically closed field, every projection point $O$ off the curves and off the lines joining distinct common points defines positive integer multiplicities $I_P(F,G)$ as below, with
 \[
 \sum_{P\in F\cap G}I_P(F,G)=mn.
 \]
 \end{theorem}
-
 \begin{proof}
-We first assume $K$ algebraically closed, and come back to the general case at the end.
+First take an algebraically closed field, which is infinite. A nonzero polynomial cannot vanish everywhere over an infinite field: regard it as a polynomial in one variable and induct on the number of variables using its coefficient polynomials. Hence a point off $FG$ exists; move it to $O=[0:0:1]$.
 
-\emph{The resultant is not zero.} Choose coordinates with $O=[0:0:1]$ on neither curve; this is possible because the nonzero polynomial $FG$ does not
-vanish on all of $\mathbb P^2(K)$ ($K$ is infinite). If $R=0$, Proposition~\ref{geometry:prop:resultant} applied over the field $K(x,y)$ gives a common factor of
-$F$ and $G$ of positive degree in $z$ in $K(x,y)[z]$, and by Gauss's lemma a common factor in $K[x,y][z]$, which is excluded. So $R$ is a nonzero form of
-degree $mn$ by Lemma~\ref{geometry:lem:reshomog}.
+The resultant $R$ is nonzero. Otherwise the resultant criterion over $K(x,y)$ would give a common positive-$z$-degree factor, and Gauss's lemma would give a common factor in $K[x,y,z]$, contrary to hypothesis. Thus $R$ has degree $mn$.
 
-\emph{Roots of $R$ are lines through $O$.} Fix $(x_0,y_0)\ne(0,0)$. Since $a_0,b_0$ are nonzero constants, $R(x_0,y_0)$ is the resultant of the
-one-variable polynomials $F(x_0,y_0,z)$ and $G(x_0,y_0,z)$ of degrees $m$ and $n$, so it vanishes if and only if they have a common root $z_0$, that is, if and only
-if the line through $O$ and $[x_0:y_0:0]$ contains a common point $[x_0:y_0:z_0]$ of $F$ and $G$.
+For each direction $[x_0:y_0]$, the specialized polynomials in $z$ retain degrees $m,n$, because their leading coefficients are nonzero constants. Therefore $R(x_0,y_0)=0$ exactly when that line through $O$ contains a common point. There are at most $mn$ such lines. Choose a second point $O'$ off both curves and off these finitely many lines. The same argument puts all common points on at most $mn$ lines through $O'$. No line in the first collection equals a line in the second, so their pairwise intersections give at most $(mn)^2$ points. Finiteness is now proved without assuming it to choose the original projection.
 
-\emph{Finiteness.} So $F\cap G$ is contained in at most $mn$ lines through $O$. Choose a second point $O'$ on neither curve and on none of these lines;
-the same argument puts $F\cap G$ in at most $mn$ lines through $O'$. A line through $O$ and a line through $O'$ are distinct, so they meet in one point, and
-$F\cap G$ has at most $(mn)^2$ points.
+Rechoose $O$ off the curves and off every line joining two common points. Each root direction of its resultant now contains exactly one common point. Thus the common points correspond bijectively to the distinct roots of the nonzero binary form $R$. Define $I_P(F,G)$ to be the order of its corresponding root. Factorization over the algebraically closed field gives total order $mn$, proving both assertions there.
 
-\emph{Counting.} Now choose $O$ on neither curve and on none of the finitely many lines joining two points of $F\cap G$. Then each line through $O$
-contains at most one point of $F\cap G$, so $P\mapsto(\text{the line }OP)$ is a bijection from $F\cap G$ to the roots of $R$ in $\mathbb P^1$. There are at
-most $mn$ of them. Define $I_P(F,G)$ as the multiplicity of the corresponding root of $R$. Over an algebraically closed field the form $R$ is a product of
-$mn$ linear factors, so the multiplicities add up to $mn$.
-
-\emph{Other fields.} Over any field $K$, the points of $F\cap G$ over $K$ are among the points over an algebraic closure $\overline K$,
-and $F,G$ still have no common component over $\overline K$ (a common factor over $\overline K$ would give, through the resultant, $R=0$, and $R$ does not
-depend on the field). So there are at most $mn$ of them.
+For a general field, coprimality survives extension to its algebraic closure. To check this directly, a proposed new common factor must depend on some variable, say $z$. Over the original fraction field $K(x,y)$ the two polynomials are coprime by Gauss's lemma, so their $z$-resultant is nonzero. It remains a nonzero polynomial after coefficient extension, whereas a positive-$z$-degree common factor would make it zero. This is impossible. If one polynomial has degree zero in the chosen variable, it cannot have such a factor in the first place. The same argument applies whichever variable the proposed factor depends on. We may therefore apply the algebraically closed case. Its bound includes all geometric points, hence all $K$-points as well.
 \end{proof}
 
-The multiplicity was defined using a choice of $O$, and in this appendix the choice is part of the definition: $I_P(F,G)$ always means the multiplicity
-relative to a point $O$ fixed in advance, and every count below uses one such $O$ for all the points at once. In fact it does not depend on that choice, and
-it can be defined intrinsically as the dimension of a local ring (Fulton's \emph{Algebraic Curves}, Chapter~3); Volume~13, Chapter~14 proves B\'ezout's theorem
-with that multiplicity. We do not prove the independence here and never use it. We do need to know that tangency and singular points count at least twice.
-Call $O$ \emph{admissible} for $F$ and $G$ if it is on neither curve, on no line joining two common points, and on none of the tangent lines to $G$ at
-common points where $G$ is smooth. There are only finitely many lines to avoid, so admissible points exist.
+Here $I_P$ means a root order for one fixed separating projection $O$. The independence of that choice is not proved here. The intrinsic theory defines the same number by local algebra; Fulton's Chapter~3 and Volume~13, Chapter~14 explain it. For our applications we choose a single $O$ for the entire count.
+
+Call $O$ \emph{admissible} if it also avoids the tangent lines of $G$ at the common points where $G$ is smooth. Only finitely many lines are excluded, so such choices exist over the algebraically closed field.
 
 \begin{lemma}\label{geometry:lem:singularmult}
-Let $O$ be admissible and $P\in F\cap G$. If $P$ is a singular point of $F$, then $I_P(F,G)\ge2$.
+For an admissible $O$ and a common point $P$ singular on $F$, the relative multiplicity satisfies $I_P(F,G)\ge2$.
 \end{lemma}
-
 \begin{proof}
-A linear change of the coordinates $x,y$ (leaving $z$ alone) fixes $O$ and changes $R$ by the same substitution, so we may assume $P=[0:1:z_0]$; then the
-line $OP$ is $x=0$ and the root of $R$ corresponding to $P$ is $[0:1]$. Set $y=1$ and write $f(x,z)=F(x,1,z)$, $g(x,z)=G(x,1,z)$ and $r(x)=R(x,1)$. By
-Proposition~\ref{geometry:prop:resultant}, $r(x)=u(x,z)f(x,z)+v(x,z)g(x,z)$ for some polynomials $u,v$, for all $x$ and $z$. At the point $(0,z_0)$ we have $f=g=0$, and
-$f_x=f_z=0$ because $P$ is singular on $F$. Differentiating the identity with respect to $z$ (the left side does not depend on $z$) and with respect to
-$x$, at $(0,z_0)$:
+Change the direction coordinates $x,y$ so $P=[0:1:z_0]$, keeping $O$ fixed. This only changes variables in the resultant and preserves root orders. Set $f(x,z)=F(x,1,z)$, $g(x,z)=G(x,1,z)$ and $r(x)=R(x,1)$. The adjugate identity gives $r=uf+vg$ with polynomial $u,v$. At $(0,z_0)$ we have $f=g=f_x=f_z=0$. Differentiating gives
 \[
-0=v(0,z_0)\,g_z(0,z_0),\qquad r'(0)=v(0,z_0)\,g_x(0,z_0).
+0=vg_z,\qquad r'(0)=vg_x,
 \]
-If $g_z(0,z_0)\ne0$, the first equation gives $v(0,z_0)=0$, so $r'(0)=0$. If $g_z(0,z_0)=0$ and $g_x(0,z_0)=0$, then $r'(0)=0$ directly. The remaining case,
-$g_z=0\ne g_x$, means that $G$ is smooth at $P$ with tangent line $x=0$, the line $OP$, which admissibility excludes. So $r(0)=r'(0)=0$: the root is at
-least double.
+with all right-side values taken at that point. If $g_z\ne0$, the first equality gives $v=0$ and hence $r'(0)=0$. If $g_x=g_z=0$, the second gives it directly. The remaining case $g_z=0\ne g_x$ would make $G$ smooth with tangent $x=0$, the line $OP$, excluded by admissibility. Thus $r(0)=r'(0)=0$, so the root order is at least two, in every characteristic.
 \end{proof}
+
+The same calculation handles a shared tangent at two smooth branches. At the common point, differentiating $r=uf+vg$ gives $0=uf_z+vg_z$ and $r'=uf_x+vg_x$. A common tangent means these two gradients are proportional, with $g_z\ne0$ by admissibility; the first equality then forces the second to vanish. Such a tangency also has root order at least two.
 
 \begin{figure}[ht]
 \centering
@@ -185,99 +139,72 @@ least double.
 \label{geometry:fig:bezout}
 \end{figure}
 
-The two circles of the opening question meet in at most $2$ points of the affine plane, and B\'ezout's theorem promises $4$. The missing two are at
-infinity: every circle passes through the two \emph{circular points} $[1:\pm i:0]$ (Exercise~\ref{geometry:ex:circularpoints}). B\'ezout's count is honest only
-in the complex projective plane.
+Every ordinary circle passes through the two complex infinity points $[1:i:0],[1:-i:0]$. Distinct nonconcentric circles with two real intersections consequently have four complex projective intersections. Distinct concentric circles have only the two circular points, with a shared tangent at each. Our double-order argument and the total four then give order exactly two at each. The exercise checks these statements from the equations. B\'ezout counts over the complex projective plane; it never promises four distinct real points.
 
 \section{How many singular points?}
 
-A curve can have many singular points if it is reducible: $d$ lines in general position have $\binom d2$ crossing points. Irreducible curves are
-much more restricted.
+A union of $d$ lines in general position has $\binom d2$ crossings. Irreducibility severely lowers the possible singular-point count. We first justify the supply of smooth points that the counting proof will need.
+
+Over an algebraically closed field, an irreducible curve of degree at least two has infinitely many points. In an affine chart its irreducible polynomial is nonconstant and, after interchanging variables if necessary, has positive degree in $y$. For all but finitely many $x$ its leading coefficient in $y$ is nonzero, so it has a root in $y$. Infinitely many distinct first coordinates give infinitely many points.
+
+At least one partial derivative of an irreducible form is nonzero. In characteristic zero this follows termwise. In characteristic $p$, all partials zero would force every exponent to be divisible by $p$; since the algebraically closed field has $p$th roots of coefficients, the form would be a $p$th power, contradicting irreducibility. A nonzero derivative has smaller degree and no common component with the curve. B\'ezout therefore bounds their intersections, including all singular points, by a finite number. Infinitely many smooth points remain.
+
+For degree two there is also a direct argument valid in characteristic two. Move a singular point to $[0:0:1]$. In the general quadratic
+\[
+ax^2+bxy+cy^2+dxz+eyz+fz^2,
+\]
+its value forces $f=0$ and its first two partials force $d=e=0$. What remains is a binary quadratic, which splits over the algebraically closed field into two linear factors. Hence an irreducible conic is smooth.
 
 \begin{theorem}\label{geometry:thm:singbound}
-An irreducible plane curve of degree $d$ over an algebraically closed field has at most $\frac{(d-1)(d-2)}2$ singular points.
+For an irreducible degree-$d$ plane curve over an algebraically closed field, the number of singular points is at most $(d-1)(d-2)/2$.
 \end{theorem}
-
 \begin{proof}
-For $d=1$ there is nothing to prove, and for $d=2$ an irreducible conic is smooth (Exercise~\ref{geometry:ex:irreducibleconic}). Let $d\ge3$ and suppose $F$ has
-$N=\frac{(d-1)(d-2)}2+1$ singular points. Choose also $d-3$ further points of $F$, smooth and distinct (an irreducible curve of degree $d\ge2$ has
-infinitely many points: every line through a point of it meets it again, by the factorisation of the binary form). That is
-$N+d-3=\frac{(d-2)(d+1)}2$ points, while curves of degree $d-2$ form a projective space of dimension $\frac{(d-2)(d+1)}2$. By
-Proposition~\ref{geometry:prop:dimcurves} some curve $G$ of degree $d-2$ passes through all of them. It has no common component with $F$, which is irreducible of
-larger degree. Choose an admissible $O$. By Lemma~\ref{geometry:lem:singularmult}, each singular point counts at least twice, so
+A line is smooth, and the local quadratic argument handles $d=2$. For $d\ge3$, suppose there are
+$N=(d-1)(d-2)/2+1$ distinct singular points. Choose $d-3$ further distinct smooth points, possible by the preceding argument. The total is $(d-2)(d+1)/2$, so the coefficient-count proposition gives a curve $G$ of degree $d-2$ through them. It shares no component with the larger-degree irreducible $F$. For an admissible $O$, each chosen singular point contributes at least two and each further point at least one. Thus
 \[
-\sum_PI_P(F,G)\ge2N+(d-3)=(d-1)(d-2)+2+d-3=d(d-2)+1,
+\sum_PI_P(F,G)\ge2N+d-3=d(d-2)+1,
 \]
-which contradicts B\'ezout's theorem: the sum is exactly $d(d-2)$.
+contradicting B\'ezout's total $d(d-2)$. This proves the bound.
 \end{proof}
 
-The bound is sharp: the nodal cubic has $1=\frac{2\cdot1}2$ singular point, and the lemniscate of Bernoulli is an irreducible quartic with $3$
-(Exercise~\ref{geometry:ex:lemniscate}). Curves that reach the bound can be parametrised by rational functions, like the circle in
-Appendix~D and the nodal cubic in Exercise~\ref{geometry:ex:nodalparam}. More generally, $\frac{(d-1)(d-2)}2$ minus the number of singular points, each counted with a
-suitable weight, is the \emph{genus} of the curve, which Volume~13 studies, and the curves of genus $0$ are exactly the ones with a rational parametrisation.
+The nodal cubic reaches its bound of one, and the complex lemniscate quartic reaches three, as the exercises verify. The deeper genus formula uses a singularity correction at each point, which can exceed one; subtracting merely the number of singular points is not the general formula. We quote that the resulting geometric genus is zero exactly for rational curves over an algebraically closed field. Over a smaller field, a genus-zero curve also needs a rational point to obtain a parametrization there. Neither classification is a premise of the count above.
 
 \section{Cayley--Bacharach}
 
-We now resolve Cramer's paradox. Recall that points \emph{impose independent conditions} on curves of degree $d$ if the linear conditions ``$F(p_i)=0$''
-are linearly independent, equivalently if for each $i$ there is a curve of degree $d$ through all the points except $p_i$.
+Distinct prescribed points \emph{impose independent conditions} on degree-$d$ forms when their evaluation conditions are linearly independent. Equivalently, for each point there is a form vanishing at all the others and not at that point. Indeed these forms give nonzero multiples of the coordinate vectors in the evaluation map's image, so that map is onto. This is what coefficient counting alone cannot guarantee.
 
 \begin{lemma}\label{geometry:lem:fivepointsconics}
-Five points of $\mathbb P^2(K)$, no four of them collinear, impose independent conditions on conics.
+Five distinct projective points with no four collinear impose independent conditions on conics.
 \end{lemma}
-
 \begin{proof}
-Let $p$ be one of the points and $q_1,\dots,q_4$ the others; we need a conic through the $q_i$ missing $p$. If three of the $q_i$ lie on a line $L$, say
-$q_1,q_2,q_3$, then $p\notin L$ (no four collinear); take $L$ together with a line through $q_4$ missing $p$. Otherwise no three of the $q_i$ are collinear.
-If $p$ is not on the pair of lines $q_1q_2\cup q_3q_4$, we are done. If it is, say on $q_1q_2$, use $q_1q_3\cup q_2q_4$ instead: $p\in q_1q_3$ would make $p$ the
-intersection $q_1$ of $q_1q_2$ and $q_1q_3$, and $p\in q_2q_4$ would make $p=q_2$; both are impossible.
+Fix one point $p$ and call the other four $q_1,\ldots,q_4$. If three of the latter lie on $L$, then $p\notin L$; take $L$ together with a line through the remaining point missing $p$. Such a line exists since a pencil has at least three lines. In the remaining case, each triple among the $q_i$ is noncollinear. If $q_1q_2\cup q_3q_4$ misses $p$, it is our conic. If not, rename so $p\in q_1q_2$. Then $q_1q_3\cup q_2q_4$ misses $p$: an intersection with the first would force $p=q_1$, and with the second $p=q_2$, both impossible. In every case a conic separates $p$ from the other four.
 \end{proof}
 
 \begin{lemma}\label{geometry:lem:eightpoints}
-Eight distinct points of $\mathbb P^2(K)$, no four collinear and no seven on a conic, impose independent conditions on cubics.
+Eight distinct projective points with no four collinear and no seven on a conic impose independent conditions on cubics.
 \end{lemma}
-
 \begin{proof}
-By symmetry it suffices to find a cubic through $p_1,\dots,p_7$ that misses $p_8$.
+Separate $p_8$ from $p_1,\ldots,p_7$; symmetry will do the rest. If three of the first seven lie on $L$, then $p_8\notin L$. The five-point lemma supplies a conic through the other four missing $p_8$. Its union with $L$ is the desired cubic.
 
-\emph{Case A: three of $p_1,\dots,p_7$ lie on a line $L$.} Then $p_8\notin L$. The other four of $p_1,\dots,p_7$, together with $p_8$, are five points with no four
-collinear, so by Lemma~\ref{geometry:lem:fivepointsconics} there is a conic $Q$ through the four that misses $p_8$. The cubic $L\cup Q$ works.
+Otherwise every five of the first seven determine a nondegenerate conic. If six lie on one conic, it misses $p_8$ by hypothesis; adjoining a line through the seventh point missing $p_8$ works. We may therefore assume no six lie on a conic. For each of the $21$ pairs $\{i,j\}$ from the first seven, let $Q_{ij}$ be the conic through the other five. The cubic $Q_{ij}\cup p_ip_j$ contains all seven. At most three of the pair-lines can contain $p_8$: any two such pairs sharing an index would put three of the first seven on one line. Thus at least eighteen pairs have lines missing $p_8$.
 
-\emph{Case B: no three of $p_1,\dots,p_7$ are collinear.} Then any five of them lie on a unique conic, which is nondegenerate (Theorem~\ref{geometry:thm:fivepoints}).
-If six of them lie on a conic $Q$, then $p_8\notin Q$ (no seven on a conic), and $Q$ together with a line through the seventh point that misses $p_8$ works. So
-assume no six of $p_1,\dots,p_7$ are on a conic. For a pair $\{i,j\}\subset\{1,\dots,7\}$ let $S$ be the complementary five points and $C_S$ the conic through
-them; the cubic $C_S\cup p_ip_j$ passes through $p_1,\dots,p_7$. If it misses $p_8$ for some pair, we are done. The pairs whose line contains $p_8$ are
-pairwise disjoint (two of them sharing $p_i$ would put three of $p_1,\dots,p_7$ on the line $p_8p_i$), so there are at most $3$ of them, and at least $18$ of
-the $21$ pairs have $p_8\notin p_ip_j$. Suppose that for all of these $p_8\in C_S$. Among $18$ pairs, two share a point (pairwise disjoint pairs from
-seven points number at most $3$), and then their complements $S,S'$ share four points. The conics $C_S$ and $C_{S'}$ both contain these four points and $p_8$;
-two distinct nondegenerate conics meet in at most $4$ points by B\'ezout, so $C_S=C_{S'}$, which then contains $S\cup S'$, six of the points
-$p_1,\dots,p_7$. This was excluded.
+If any corresponding conic also misses $p_8$, we are done. Otherwise all eighteen conics contain $p_8$. Two of their pairs share an index, since a collection of disjoint pairs from seven points has size at most three. Their complementary five-point sets share four points. The two nondegenerate conics contain those four and $p_8$, so B\'ezout forces them equal. That conic contains the union of the complementary sets, six of the first seven, contradicting our assumption. A separating cubic must therefore exist.
 \end{proof}
 
 \begin{theorem}[Cayley--Bacharach for cubics]\label{geometry:thm:cayleybacharach}
-Let $C_1$ and $C_2$ be cubics over a field with no common component, meeting in nine distinct points. Then every cubic through eight of the
-nine points passes through the ninth.
+If two cubics over a field share no component and meet in nine distinct points, every cubic through any eight of those points passes through the ninth.
 \end{theorem}
-
 \begin{proof}
-No four of the nine points are on a line $L$: otherwise $L$ would meet $C_1$ in four points, so $L$ would be a component of $C_1$, and likewise of $C_2$.
-No seven are on a conic $Q$: if $Q$ is irreducible, B\'ezout ($7>6$) makes it a component of $C_1$ and of $C_2$; if $Q$ is a pair of lines, one of them
-contains four of the points. So any eight of the points satisfy Lemma~\ref{geometry:lem:eightpoints}, and the cubics through them form a vector space of dimension
-$10-8=2$. It contains the forms $C_1$ and $C_2$, which are not proportional, so it is exactly the pencil $\lambda C_1+\mu C_2$. Every member vanishes at the ninth
-point.
+Four common points on one line would make that line a component of both cubics by the degree-three line bound. Seven on an irreducible conic would similarly force that conic to be a component of both by B\'ezout. A reducible conic containing seven would have a line containing at least four; a repeated line is excluded for the same reason. Thus any eight satisfy the preceding lemma. Cubic forms have dimension ten, so those eight independent conditions leave a two-dimensional vector space. The two given cubic forms are independent and belong to it; they span it. Every form in that pencil vanishes at the ninth point, proving the assertion.
 \end{proof}
 
-This is the resolution of Cramer's paradox: the nine common points of two cubics impose only eight conditions on cubics, so they lie on a whole pencil of
-them. Here is the reward.
+Thus the nine intersections impose precisely eight independent conditions: any eight already do, and the ninth adds none. They determine a whole pencil $\lambda F+\mu G$, rather than one cubic. That is Euler's resolution in linear-algebra language.
 
 \begin{corollary}[Pascal, again]\label{geometry:cor:pascalcb}
-Let $A,B,C,D,E,F$ be six points of a nondegenerate conic $Q$. Then $X=AB\cap DE$, $Y=BC\cap EF$ and $Z=CD\cap FA$ are collinear.
+For six distinct points $A,B,C,D,E,F$ on a nondegenerate conic, the points $X=AB\cap DE$, $Y=BC\cap EF$, $Z=CD\cap FA$ are collinear.
 \end{corollary}
-
 \begin{proof}
-Let $C_1=AB\cup CD\cup EF$ and $C_2=BC\cup DE\cup FA$, two cubics made of three lines each (Figure~\ref{geometry:fig:pascalcb}). Each line of $C_1$ meets each line of
-$C_2$ once, and the nine meeting points are $A,B,C,D,E,F,X,Y,Z$. They are distinct (a line meets $Q$ in at most two points, so no three of the six are
-collinear, and none of $X,Y,Z$ is one of the six), and the cubics share no line. The cubic $Q\cup XY$ passes through the eight points $A,\dots,F,X,Y$, so by
-Theorem~\ref{geometry:thm:cayleybacharach} it passes through $Z$. But $Z$ is on $CD$, which meets $Q$ only at $C$ and $D$, so $Z\notin Q$. Hence $Z\in XY$.
+Take the line-union cubics $C_1=AB\cup CD\cup EF$, $C_2=BC\cup DE\cup FA$. Their nine cross-intersections are $A,B,C,D,E,F,X,Y,Z$. No three of the conic points are collinear, so no cross-intersection $X,Y,Z$ equals a vertex and no line component is shared. They are pairwise distinct too: $X=Y$ would force that point to be $AB\cap BC=B$ and put $B$ on $DE$; $Y=Z$ would force $C$ on $EF$; $X=Z$ would force $D$ on $AB$. Each contradicts the line bound. Cayley--Bacharach applies to these nine distinct points. The cubic $Q\cup XY$ contains the first eight, so contains $Z$. But $Z\in CD$ is neither $C$ nor $D$ and therefore is not on $Q$. Hence $Z\in XY$.
 \end{proof}
 
 \begin{figure}[ht]
@@ -289,214 +216,270 @@ line $XY$ is a cubic through eight of them, so it contains the ninth, $Z$.}
 \end{figure}
 
 \begin{remark}
-The general Cayley--Bacharach theorem replaces cubics by curves of degrees $m$ and $n$ meeting in $mn$ points: a curve of degree $m+n-3$ through all but one of
-them passes through the last. It follows from Max Noether's ``$AF+BG$'' theorem, proved in Volume~13, Chapter~14. The history, from Chasles and Cayley to
-Bacharach, and the modern view are told by Eisenbud, Green and Harris in the article listed below. Theorem~\ref{geometry:thm:cayleybacharach} is proved in this appendix and applied in Appendix~G, where it gives the
-associativity of the group law on a cubic.
+The general Cayley--Bacharach statement concerns curves of degrees $m,n$ with $mn$ distinct intersections and degree $m+n-3$ forms through all but one. We quote this extension; its proof through Noether's theorem belongs to Volume~13, Chapter~14. Eisenbud, Green and Harris explain its history and modern forms. Our cubic case is proved here. Appendix~G uses it to compare the two association constructions when their nine intersections are distinct; handling every tangent and coincidence requires more work than that generic comparison.
 \end{remark}
+
+\FloatBarrier
+\begin{figure}[ht]
+\centering
+\fig{v9-appf-cusp-multiplicity}
+\caption{The cusp $y^2=x^3$ and the secant $y=x$ meet with orders two at $(0,0)$ and one at $(1,1)$. The tangent $y=0$ instead puts all three orders at the cusp. A line missing the tangent direction need not have order one at a singular point.}
+\label{fig:v9-cusp-multiplicity}
+\end{figure}
+\begin{figure}[ht]
+\centering
+\fig{v9-appf-grid-weights}
+\caption{Weights on the grid $\{-1,0,1\}^2$. For any polynomial $H$ of total degree at most three, the weighted sum of its nine values is zero. The last value is consequently determined by the other eight. The formula is derived from elementary interpolation in Exercise~\ref{ex:v9-grid-interpolation}.}
+\label{fig:v9-grid-weights}
+\end{figure}
+
+A determinant has now connected three kinds of information: common roots, intersection counts and dependencies among prescribed values. Singularities consume extra intersection orders, and the nine cubic intersections carry one unavoidable dependence. The exercises make those orders and dependencies explicit. Appendix~G then uses the same nine-point theorem to study chords on a smooth cubic.
+\FloatBarrier
 
 \section{Exercises}
 
 \begin{exercise}[$\star$]\label{geometry:ex:reslinear}
-Show that $\operatorname{Res}(ax^2+bx+c,\ x-t)=at^2+bt+c$.
+Using the stated Sylvester-row convention, prove $\operatorname{Res}(ax^2+bx+c,x-t)=at^2+bt+c$.
 \end{exercise}
-
 \begin{exercise}[$\star$]\label{geometry:ex:discriminant}
-Compute $\operatorname{Res}(f,f')$ for $f=x^2+px+q$, and explain why it vanishes exactly when $f$ has a double root.
+For $f=x^2+px+q$, compute the resultant with its derivative, using declared degree bounds two and one. Explain over every field why its vanishing is equivalent to a repeated root over an algebraic closure, including characteristic two.
 \end{exercise}
-
 \begin{exercise}[$\star\star$]\label{geometry:ex:resproduct}
-Let $f=a_0\prod_{i=1}^m(x-\alpha_i)$ and $g=b_0\prod_{j=1}^n(x-\beta_j)$. Prove that $\operatorname{Res}(f,g)=a_0^nb_0^m\prod_{i,j}(\alpha_i-\beta_j)$.
+For actual degrees $m,n$ and root lists with multiplicity, prove the identity
+$\operatorname{Res}(f,g)=a_0^nb_0^m\prod_{i,j}(\alpha_i-\beta_j)$.
 \end{exercise}
-
 \begin{exercise}[$\star\star$]\label{geometry:ex:circularpoints}
-Show that every circle $x^2+y^2+2axz+2byz+cz^2=0$ passes through the circular points $[1:\pm i:0]$. Find the four intersections promised by B\'ezout
-for two non-concentric circles that meet in two real points, and for two concentric circles.
+Prove that every ordinary real circle, homogenized as $x^2+y^2+2axz+2byz+cz^2=0$, passes through $[1:\pm i:0]$. Account for all four intersection orders of two distinct nonconcentric circles meeting in two real points, and of two distinct concentric circles. Use one admissible projection point for each count.
 \end{exercise}
-
 \begin{exercise}[$\star$]\label{geometry:ex:folium}
-Show that the folium $x^3+y^3=3xyz$ has exactly one singular point in $\mathbb P^2(\mathbb C)$, find its two tangent lines, and parametrise the
-curve by the lines $y=tx$ through it.
+For the complex projective folium $x^3+y^3=3xyz$, find all singular points and the tangent directions there. Parametrize it by $y=tx$, including infinity parameters and points at infinity.
 \end{exercise}
-
 \begin{exercise}[$\star$]\label{geometry:ex:nodalparam}
-Parametrise the nodal cubic $y^2=x^2(x+1)$ and the cuspidal cubic $y^2=x^3$ by rational functions, using the lines through the singular point.
+Parametrize the complex nodal cubic $y^2z=x^2(x+z)$ and cusp $y^2z=x^3$ using lines through their singular point. Describe which parameter values represent that point and the projective infinity point.
 \end{exercise}
-
 \begin{exercise}[$\star\star$]\label{geometry:ex:lemniscate}
-Find the singular points of the lemniscate $(x^2+y^2)^2=x^2-y^2$ in $\mathbb P^2(\mathbb C)$ and compare with Theorem~\ref{geometry:thm:singbound}.
+Find every singular point of the complex projective lemniscate $(x^2+y^2)^2=z^2(x^2-y^2)$. Prove its irreducibility and compare its count with the singular-point bound.
 \end{exercise}
-
 \begin{exercise}[$\star$]\label{geometry:ex:irreducibleconic}
-Show that a conic with a singular point over an algebraically closed field is a pair of lines (possibly equal). Deduce that irreducible conics are smooth.
+Over an algebraically closed field of any characteristic, show that a homogeneous quadratic with a singular projective point is a pair of lines, possibly equal. Deduce smoothness of irreducible conics without dividing by two.
 \end{exercise}
-
 \begin{exercise}[$\star\star$]\label{geometry:ex:polarcurve}
-Let $F$ be a smooth curve of degree $d\ge2$ over $\mathbb C$ and $Q=[q]$ a point. Show that the points of $F$ whose tangent passes through $Q$ lie on the
-\emph{polar curve} $q_0F_x+q_1F_y+q_2F_z=0$, and deduce that at most $d(d-1)$ tangents to $F$ pass through a point not on $F$: six for a smooth cubic.
+Let $F$ be a smooth complex plane curve of degree $d\ge2$ and $Q=[q]$ a projective point. Show that its contact points for tangents through $Q$ lie on the polar form $q_0F_x+q_1F_y+q_2F_z$. Prove that this form is nonzero for this particular $Q$. Deduce that a point off $F$ admits at most $d(d-1)$ distinct tangents, in particular at most six for a smooth cubic.
 \end{exercise}
-
 \begin{exercise}[$\star$]\label{geometry:ex:cramergrid}
-The cubics $x^3-xz^2$ and $y^3-yz^2$ meet in the nine points $\{-1,0,1\}^2$ of the affine plane. Find all cubics through these nine points.
+Over a field of characteristic different from two, find all cubic forms through the nine affine grid points $\{-1,0,1\}^2$, the intersections of $x^3-xz^2$ and $y^3-yz^2$.
 \end{exercise}
-
 \begin{exercise}[$\star\star$]\label{geometry:ex:cbpappus}
-Deduce Pappus' theorem (Theorem~\ref{geometry:thm:pappusline}) from Theorem~\ref{geometry:thm:cayleybacharach}.
+Derive Pappus from the cubic Cayley--Bacharach theorem. Verify its nine-distinct-intersections hypothesis rather than invoking a limiting argument.
+\end{exercise}
+\begin{exercise}[$\star\star\star$]\label{geometry:ex:braikenridge}
+For six distinct points $A,\ldots,F$ with no three collinear, suppose the nine points consisting of those six and $X=AB\cap DE$, $Y=BC\cap EF$, $Z=CD\cap FA$ are distinct. Prove the Braikenridge--Maclaurin converse: if $X,Y,Z$ are collinear, the six original points lie on a conic.
 \end{exercise}
 
-\begin{exercise}[$\star\star\star$]\label{geometry:ex:braikenridge}
-(Braikenridge and Maclaurin) Let $A,\dots,F$ be six points, no three collinear, such that the nine points $A,\dots,F$, $X=AB\cap DE$, $Y=BC\cap EF$,
-$Z=CD\cap FA$ are distinct. Show that if $X,Y,Z$ are collinear, the six points lie on a conic: the converse of Pascal's theorem.
+\begin{exercise}[$\star\star$]\label{ex:v9-resultant-specialization}
+Over $\mathbb Q$, compute the degree-one resultant of $f_s(x)=sx+1$ and $g_s(x)=sx+2$. Does its zero parameter give a common affine root? Homogenize both with the same degree bound and explain what happens at infinity. Compare with $f=x^2-u$, $g=x-v$: compute their resultant and prove every zero pair $(u,v)$ does give a common affine root. Identify the hypothesis preventing a false positive in the second example.
+\end{exercise}
+\begin{exercise}[$\star\star$]\label{ex:v9-cusp-orders}
+Over $\mathbb C$, intersect $F=y^2z-x^3$ with $G=y-ax$ for every $a\in\mathbb C$. Use the admissible projection point $O=[0:1:1]$ and coordinates $x=X$, $y=Z$, $z=Y+Z$. Compute the $Z$-resultant and all relative intersection orders. Explain the change at $a=0$ and check the total degree count.
+\end{exercise}
+\begin{exercise}[$\star\star\star$]\label{ex:v9-grid-interpolation}
+Let $A=\{a_1,\ldots,a_m\}$ and $B=\{b_1,\ldots,b_n\}$ be distinct-element sets in a field, with $m,n\ge2$. Set $p(x)=\prod_i(x-a_i)$, $q(y)=\prod_j(y-b_j)$. Prove that every polynomial $H$ of total degree at most $m+n-3$ satisfies
+\[
+\sum_{i,j}\frac{H(a_i,b_j)}{p'(a_i)q'(b_j)}=0.
+\]
+Deduce that all but one grid values determine the last. Show the degree limit is sharp and derive the weights in Figure~\ref{fig:v9-grid-weights} for the real three-by-three grid.
+\end{exercise}
+\begin{exercise}[$\star\star$]\label{ex:v9-positive-characteristic-tangents}
+Over an algebraically closed field of characteristic two, prove $XZ+Y^2=0$ is smooth and every tangent passes through the off-conic point $[0:1:0]$. Explain why the complex polar-bound exercise cannot be transferred unchanged to this setting. Next, in characteristic $p$, show the Fermat curve $X^{p+1}+Y^{p+1}+Z^{p+1}=0$ is smooth. Show each polar is a $p$th power of a linear form, and count its distinct tangents through $[0:0:1]$.
 \end{exercise}
 
 \section{Hints}
 
 \begin{hint}{geometry:ex:reslinear}
-Expand the $3\times3$ Sylvester determinant along the first row.
+Expand the three-by-three determinant with rows $(a,b,c),(1,-t,0),(0,1,-t)$.
 \end{hint}
 \begin{hint}{geometry:ex:discriminant}
-$f'=2x+p$; the Sylvester matrix is $3\times3$.
+The matrix rows are $(1,p,q),(2,p,0),(0,2,p)$. If $2=0$, analyze the constant derivative directly.
 \end{hint}
 \begin{hint}{geometry:ex:resproduct}
-Treat the $\alpha_i,\beta_j$ as indeterminates. The resultant vanishes when $\alpha_i=\beta_j$; compare degrees, then evaluate at $\alpha=0$.
+First treat the roots as independent indeterminates over $\mathbb Z$. Each difference divides the determinant. Compare total degrees and specialize all $\alpha_i$ to zero to determine the factor.
 \end{hint}
 \begin{hint}{geometry:ex:circularpoints}
-Subtract the equations of two circles: what is left factors, one factor being $z$.
+Subtract the circle equations. The difference is $z$ times the radical-axis form; for concentric circles it is a nonzero multiple of $z^2$.
 \end{hint}
 \begin{hint}{geometry:ex:folium}
-Compute the three partial derivatives. The lowest-degree part of the equation at the origin gives the tangent lines.
+The third partial is $-3xy$. The homogeneous parametrization avoids losing the parameters with $1+t^3=0$.
 \end{hint}
 \begin{hint}{geometry:ex:nodalparam}
-Substitute $y=tx$ and cancel the double root $x=0$.
+Substitution by $y=tx$ removes the double factor at the origin. Homogenize the parameter to inspect its infinity value.
 \end{hint}
 \begin{hint}{geometry:ex:lemniscate}
-Homogenise, then look at $z=0$ and at $z=1$ separately.
+Check $z=0$ and $z=1$ separately. For irreducibility, try $x=(t+t^3)/(1+t^4)$, $y=(t-t^3)/(1+t^4)$ and find four distinct images on $x=1/2$.
 \end{hint}
 \begin{hint}{geometry:ex:irreducibleconic}
-At a singular point $P$ of $q(x)=x^{\mathsf T}Ax$, $AP=0$. Move $P$ to $[0:0:1]$.
+Move the singular point to $[0:0:1]$ and use the six monomial coefficients. The value and two partial derivatives remove all terms involving $z$.
 \end{hint}
 \begin{hint}{geometry:ex:polarcurve}
-The tangent at $P$ is $\sum F_i(P)x_i=0$. For the count, use B\'ezout; a smooth curve is irreducible.
+A smooth complex projective curve cannot have two components. If the polar for your nonzero $q$ vanished, move $Q$ to a coordinate point and integrate the zero partial in characteristic zero.
 \end{hint}
 \begin{hint}{geometry:ex:cramergrid}
-Check the hypotheses of Lemma~\ref{geometry:lem:eightpoints} for eight of the nine points.
+Verify the eight-point independence hypotheses and compare the two displayed cubic forms.
 \end{hint}
 \begin{hint}{geometry:ex:cbpappus}
-Use the hexagon $AB'CA'BC'$ of Exercise~\ref{geometry:ex:pascalpappus}, and the cubic $\ell\cup\ell'\cup XY$.
+Use the alternating hexagon from Appendix~D. Equality of two extra intersection points forces one of the original vertices to lie on the other base line.
 \end{hint}
 \begin{hint}{geometry:ex:braikenridge}
-Take the conic through $A,B,C,D,E$ and the Pascal line: together they are a cubic through eight of the nine points.
+Adjoin the line $XYZ$ to the conic through $A,B,C,D,E$ and apply Cayley--Bacharach with $F$ as the missing point.
+\end{hint}
+\begin{hint}{ex:v9-resultant-specialization}
+The small determinant is $a_0b_1-a_1b_0$. At $s=0$ both leading coefficients vanish.
+\end{hint}
+\begin{hint}{ex:v9-cusp-orders}
+The new forms are $Z^3+YZ^2-X^3$ and $Z-aX$. For a cubic and a monic linear polynomial, the resultant is minus the cubic's value at the linear root.
+\end{hint}
+\begin{hint}{ex:v9-grid-interpolation}
+Compare the coefficient of $x^{m-1}$ in Lagrange interpolation for $x^k$, $k<m$. Apply the resulting one-dimensional sums to each monomial of $H$.
+\end{hint}
+\begin{hint}{ex:v9-positive-characteristic-tangents}
+Differentiate before importing the characteristic-zero argument. In an algebraically closed characteristic-$p$ field every coefficient has a unique $p$th root.
 \end{hint}
 
 \section{Solutions}
 
 \begin{solution}{geometry:ex:reslinear}
-\idea The Sylvester matrix is small enough to expand.
-\writeup With $m=2$, $n=1$ the rows are $(a,b,c)$, $(1,-t,0)$, $(0,1,-t)$, and
-$\det=a(t^2-0)-b(-t-0)+c(1-0)=at^2+bt+c$. This is $f(t)$, as it should be: $x-t$ and $f$ have a common root exactly when $f(t)=0$.
+\idea The determinant evaluates the quadratic at the linear polynomial's root.
+\writeup Its rows are $(a,b,c),(1,-t,0),(0,1,-t)$. Expanding along the first row gives $at^2+bt+c$, including vanishing coefficients. The sign is positive because the first declared degree is two.
 \end{solution}
-
 \begin{solution}{geometry:ex:discriminant}
-\idea A double root is a common root of $f$ and $f'$.
-\writeup The rows are $(1,p,q)$, $(2,p,0)$, $(0,2,p)$, and $\det=1\cdot p^2-p\cdot2p+q\cdot4=4q-p^2$. This vanishes exactly when the discriminant
-$p^2-4q$ does. By Proposition~\ref{geometry:prop:resultant}, it vanishes if and only if $f$ and $f'$ have a common root, which happens exactly when $f$ has a double root.
+\idea Repeated roots are detected by the derivative, but a dropped derivative degree needs its own check.
+\writeup The determinant is $p^2-2p^2+4q=4q-p^2$. In characteristic different from two, the common-factor criterion applies to $f,f'=2x+p$ and gives exactly a repeated root. In characteristic two the answer is $p^2$. If $p\ne0$, the derivative is the nonzero constant $p$, so no root repeats. If $p=0$, over the algebraic closure $x^2+q=(x+\sqrt q)^2$ and its root repeats. Thus the determinant criterion remains correct here, although the proposition's actual-degree hypothesis cannot be used for the degree-dropped derivative.
 \end{solution}
-
 \begin{solution}{geometry:ex:resproduct}
-\idea A polynomial that vanishes whenever $\alpha_i=\beta_j$ is divisible by $\alpha_i-\beta_j$; the degrees then leave room for only a constant.
-\writeup Work in the polynomial ring over $\mathbb Z$ in the variables $a_0$, $b_0$, $\alpha_1,\dots,\alpha_m$ and $\beta_1,\dots,\beta_n$, a unique factorisation domain. The coefficients are
-$a_k=(-1)^ka_0e_k(\alpha)$ and $b_k=(-1)^kb_0e_k(\beta)$, where $e_k$ are the elementary symmetric polynomials. The resultant $\rho$ is a polynomial in these
-variables. Setting $\alpha_i=\beta_j$ gives two polynomials with a common root, so $\rho$ vanishes; as a polynomial in $\alpha_i$ it is therefore divisible by
-$\alpha_i-\beta_j$. These $mn$ factors are distinct primes, so their product $\pi$ divides $\rho$. The argument of Lemma~\ref{geometry:lem:reshomog} shows that every term
-of the determinant has total weight $mn$ when $a_k,b_k$ have weight $k$; since $a_k$ has degree $k$ in the $\alpha$'s, $\rho$ has total degree at most $mn$ in the
-$\alpha$'s and $\beta$'s, like $\pi$. So $\rho=c\,\pi$ with $c\in\mathbb Z[a_0,b_0]$. Each term of the determinant contains $n$ entries from the $a$-rows and $m$ from the
-$b$-rows, so $c=\lambda a_0^nb_0^m$ for an integer $\lambda$. Finally set all $\alpha_i=0$: then $f=a_0x^m$, and the Sylvester matrix is block triangular with
-$a_0$ on the first $n$ diagonal entries and a lower triangular block with $b_n$ on the diagonal, so $\rho=a_0^nb_n^m$. Since $b_n=(-1)^nb_0\prod\beta_j$, this is
-$a_0^nb_0^m\prod_j(-\beta_j)^m=a_0^nb_0^m\prod_{i,j}(0-\beta_j)$, so $\lambda=1$.
-\end{solution}
+\idea Universal polynomial divisibility accounts for every root difference and determines the constant without assuming distinct roots.
+\writeup Work over the unique factorization domain $\mathbb Z[a_0,b_0,\alpha_1,\ldots,\alpha_m,\beta_1,\ldots,\beta_n]$. The coefficients are elementary symmetric polynomials times $a_0,b_0$. Whenever $\alpha_i=\beta_j$, the resultant vanishes over the fraction field by the common-root criterion. Polynomial division by the monic linear expression $\alpha_i-\beta_j$ then shows this expression divides the universal resultant. These distinct prime factors have product of degree $mn$ in the roots.
 
+The determinant degree argument assigns weight $k$ to $a_k,b_k$ and gives weight $mn$. Those coefficients have root-degree $k$, so the resultant's total root-degree is at most $mn$. Thus only a root-independent factor remains. Each determinant term uses $n$ rows of $a$-coefficients and $m$ of $b$-coefficients, so that factor is $c\,a_0^nb_0^m$ for an integer $c$. Set all $\alpha_i=0$. Then $f=a_0x^m$ and the block-triangular Sylvester determinant is $a_0^nb_n^m$. Since $b_n=(-1)^nb_0\prod_j\beta_j$, this equals $a_0^nb_0^m\prod_{i,j}(0-\beta_j)$, forcing $c=1$. Specialization proves the identity for all root lists, including coincidences.
+\end{solution}
 \begin{solution}{geometry:ex:circularpoints}
-\idea All circles share two points at infinity, which is why two circles have only two ``real'' intersections left.
-\writeup At $z=0$ the equation becomes $x^2+y^2=0$, whose solutions are $[1:i:0]$ and $[1:-i:0]$. For two circles $C$ and $C'$, the difference of the equations is
-$z\,\ell$ with $\ell=2(a-a')x+2(b-b')y+(c-c')z$. So $C\cap C'=C\cap(\{z=0\}\cup\{\ell=0\})$: the two circular points, plus the points of $C$ on the line $\ell=0$, the
-\emph{radical axis}. If the circles meet in two real points, these are the two points on the radical axis, and with the circular points we get $2+2=4$. For
-concentric circles $a=a'$ and $b=b'$, so the difference is $(c-c')z^2$: the circles meet only at the circular points, each counted twice. Their tangents there
-coincide (the circles are tangent at infinity), which is why the multiplicity is $2$.
-\end{solution}
+\idea The radical axis accounts for the finite intersections; common tangency accounts for repeated orders at infinity.
+\writeup At $z=0$ every circle gives $x^2+y^2=0$, yielding exactly $[1:\pm i:0]$. Subtracting two circle equations gives
+\[
+z\bigl(2(a-a')x+2(b-b')y+(c-c')z\bigr)=0.
+\]
+For nonconcentric circles the second factor is their radical axis. If they meet in two real points, these together with the two circular points give four distinct intersections. B\'ezout's sum four makes each order one for any admissible separating $O$.
 
+For distinct concentric circles the difference is $(c-c')z^2$ with $c\ne c'$, so only the two circular points remain. Their tangent coefficients are $[2x:2y:2ax+2by]$ at $z=0$, independent of the radius coefficient $c$. Thus both circles share a tangent at each point. The unnumbered tangency argument above gives order at least two for a common admissible $O$; the total four forces exactly two at each. This uses only the relative multiplicities proved here.
+\end{solution}
 \begin{solution}{geometry:ex:folium}
-\idea Singular points are common zeros of the three partial derivatives.
-\writeup With $F=x^3+y^3-3xyz$: $F_x=3x^2-3yz$, $F_y=3y^2-3xz$, $F_z=-3xy$. From $F_z=0$, $x=0$ or $y=0$. If $x=0$ then $F_y=3y^2=0$, so $y=0$; if $y=0$ then
-$x=0$. The only candidate is $[0:0:1]$, which is on the curve. In the chart $z=1$ the equation is $-3xy+(x^3+y^3)=0$; its lowest-degree part $-3xy$ shows two
-branches with tangents $x=0$ and $y=0$: a node. Substituting $y=tx$ gives $x^3(1+t^3)=3tx^2$, so apart from the double root $x=0$ the line meets the curve at
-$x=\frac{3t}{1+t^3}$, $y=\frac{3t^2}{1+t^3}$.
+\idea The partials find the singular point; the pencil through it supplies the parametrization and both branches.
+\writeup The derivatives are $3x^2-3yz$, $3y^2-3xz$, $-3xy$. Their common zero in projective space is $[0:0:1]$: the third forces $x=0$ or $y=0$, and the first two then force both zero. In the affine chart the lowest-degree term is $-3xy$, suggesting the two axes. Substitution $y=tx$ gives the projective parametrization
+\[
+[3t:3t^2:1+t^3],\qquad t\in\mathbb C.
+\]
+Its homogeneous parameter form is $[3uv^2:3u^2v:v^3+u^3]$ for $t=u/v$. At $t=0$ and $t=\infty$ it gives the singular point. Near zero, $y/x=t\to0$, giving the horizontal tangent; near infinity, $x/y=1/t\to0$, giving the vertical tangent. They are distinct, hence a node. The three roots of $1+t^3=0$ give the three infinity points, none lost by using homogeneous coordinates. Every other point has $x\ne0$ and is recovered from $t=y/x$.
 \end{solution}
-
 \begin{solution}{geometry:ex:nodalparam}
-\idea A line through a double point meets a cubic in only one more point.
-\writeup For $y^2=x^2(x+1)$, $y=tx$ gives $t^2x^2=x^2(x+1)$, so $x=t^2-1$ and $y=t(t^2-1)$. For $y^2=x^3$, $y=tx$ gives $t^2x^2=x^3$, so $x=t^2$, $y=t^3$. In both cases
-every point except the singular one corresponds to exactly one $t$.
+\idea Remove the double origin intersection and retain the remaining point of each pencil line.
+\writeup Substitution yields $x=t^2-1,y=t(t^2-1)$ for the node and $x=t^2,y=t^3$ for the cusp. Their projective parametrizations are respectively
+\[
+[u^2v-v^3:u(u^2-v^2):v^3],\qquad
+[u^2v:u^3:v^3].
+\]
+They have no simultaneous zero. At $v=0$ both give $[0:1:0]$, the unique infinity point. The node is represented by $t=1,-1$; the cusp by $t=0$. Every finite nonsingular point has $x\ne0$ and determines $t=y/x$, so these lists cover all points and describe the only repetitions. The node's leading equation $y^2-x^2=0$ gives tangents $y=\pm x$, while the cusp has the repeated leading tangent $y=0$.
 \end{solution}
-
 \begin{solution}{geometry:ex:lemniscate}
-\idea The lemniscate has a node at the origin and two more singular points hiding at the circular points.
-\writeup Homogenise: $F=(x^2+y^2)^2-z^2(x^2-y^2)$, with $F_x=4x(x^2+y^2)-2xz^2$, $F_y=4y(x^2+y^2)+2yz^2$, $F_z=-2z(x^2-y^2)$. At $z=0$, $F_z=0$ and $F_x,F_y$
-vanish when $x^2+y^2=0$: the circular points $[1:\pm i:0]$, which lie on the curve. At $z=1$, $F_z=0$ gives $x^2=y^2$. If $y\ne0$, $F_y=0$ gives
-$x^2+y^2=-\frac12$, so $x^2=-\frac14\ne0$, and then $F_x=x(4(x^2+y^2)-2)=-4x\ne0$; so $y=0$, then $x=0$: the origin, a node. That is three singular points, the
-maximum $\frac{3\cdot2}2$ allowed for an irreducible quartic.
+\idea Find the singularities directly, then prove one irreducible component already has degree four.
+\writeup For $F=(x^2+y^2)^2-z^2(x^2-y^2)$,
+\[
+F_x=4x(x^2+y^2)-2xz^2,\quad F_y=4y(x^2+y^2)+2yz^2,
+\quad F_z=-2z(x^2-y^2).
+\]
+At $z=0$, the singular curve points are exactly $[1:\pm i:0]$. In the affine chart $z=1$, the equation $F_z=0$ forces $x^2=y^2$. If $y\ne0$, $F_y=0$ forces $x^2+y^2=-1/2$, whence $F_x=-4x\ne0$, impossible. The remaining point is $(0,0)$, which is singular. Thus there are exactly three.
 
-The lemniscate is indeed irreducible. One checks that $x=\frac{t+t^3}{1+t^4}$, $y=\frac{t-t^3}{1+t^4}$ satisfies the equation: $x^2+y^2=\frac{2t^2}{1+t^4}$ and
-$x^2-y^2=(x+y)(x-y)=\frac{4t^4}{(1+t^4)^2}$. Since $K(t)$ has no zero divisors, some irreducible factor $G$ of $F$ vanishes on this parametrisation. The line
-$x=\frac12$ meets it where $t^4-2t^3-2t+1=0$; dividing by $t^2$ and setting $u=t+\frac1t$ gives $u^2-2u-2=0$, so $u=1\pm\sqrt3$, and the four roots $t$ are
-distinct. They give four distinct points, because $t\mapsto(x,y)$ is injective away from $t=0$: the ratio $\frac yx=\frac{1-t^2}{1+t^2}$ determines $t^2$, and
-$x$ changes sign with $t$. So the line $x=\frac12$, which is not a component, meets $G$ in four points, $\deg G\ge4$, and $G=F$.
+For irreducibility, the rational functions
+\[
+x(t)=\frac{t+t^3}{1+t^4},\qquad y(t)=\frac{t-t^3}{1+t^4}
+\]
+satisfy $F=0$: their squared sum is $2t^2/(1+t^4)$ and their squared difference is $4t^4/(1+t^4)^2$. Since $\mathbb C(t)$ has no zero divisors, some irreducible factor $G$ of $F$ vanishes identically on this parametrization. The condition $x(t)=1/2$ gives $t^4-2t^3-2t+1=0$. Its roots are nonzero, and division by $t^2$ gives $(t+t^{-1})^2-2(t+t^{-1})-2=0$. The two values $1\pm\sqrt3$ are distinct and neither is $2$ or $-2$, so they give four distinct roots $t$. None is a pole: a common zero of the denominator and numerator would require $t^2=-1$ and $t^4=-1$ simultaneously.
+
+Their image points are distinct too. Since $x=1/2\ne0$, $y/x=(1-t^2)/(1+t^2)$ determines $t^2$, while changing $t$ to $-t$ changes the nonzero $x$ sign. Thus $G$ meets $x=1/2$ in four distinct points. That line is not $G$, since $x(t)$ is not constant. The line bound gives $\deg G\ge4$, and $\deg F=4$ forces $F$ irreducible up to scalar. Its three singular points therefore reach $(4-1)(4-2)/2=3$.
 \end{solution}
-
 \begin{solution}{geometry:ex:irreducibleconic}
-\idea A singular quadratic form has a kernel, and a binary quadratic form splits over an algebraically closed field.
-\writeup For $F=x^{\mathsf T}Ax$, the gradient is $2Ax$, so $P=[p]$ is singular exactly when $Ap=0$. Choose coordinates with $p=e_3$. Then the third row and column of
-$A$ are zero, and $F$ is a binary quadratic form in $x,y$, which factors into two linear forms over an algebraically closed field: two lines through $P$, or a
-double line. So a conic with a singular point is reducible, and an irreducible conic is smooth.
+\idea Use monomial coefficients, so characteristic two causes no exception.
+\writeup Move the singular point to $[0:0:1]$ and write the general quadratic as $ax^2+bxy+cy^2+dxz+eyz+fz^2$. Its value gives $f=0$; the $x$- and $y$-partials give $d=e=0$. The remaining binary quadratic splits over an algebraically closed field, producing two lines through the singular point, possibly equal. Hence an irreducible conic cannot be singular. The proof nowhere replaces the gradient by $2Ax$.
 \end{solution}
-
 \begin{solution}{geometry:ex:polarcurve}
-\idea Tangency through $Q$ is one more equation, of degree $d-1$.
-\writeup The tangent at a smooth point $P$ is $\sum_iF_i(P)x_i=0$, so it passes through $Q$ if and only if $\sum_iq_iF_i(P)=0$: $P$ lies on the polar curve
-$G=q_0F_x+q_1F_y+q_2F_z$, of degree $d-1$. The form $G$ is not zero for a suitable $Q$: if $F_x,F_y,F_z$ were linearly dependent, then after a linear change of
-coordinates $F$ would not involve one variable, and it would be a union of lines through a point, which is singular for $d\ge2$. A smooth curve is irreducible
-(two components would meet, by B\'ezout, and a common point of two components is singular), and $\deg G<\deg F$, so $F$ and $G$ have no common component. By
-B\'ezout they meet in at most $d(d-1)$ points, so at most $d(d-1)$ tangents pass through $Q$. For a smooth cubic, at most $6$; one finds numerically
-exactly $6$ for random $Q$.
-\end{solution}
+\idea The actual polar must be nonzero before B\'ezout can count its intersections.
+\writeup At a smooth point $P$, the tangent contains $Q$ exactly when $G(P)=\sum_iq_iF_i(P)=0$. A smooth complex plane curve is irreducible: repeated factors make every point of that component singular, while two distinct components meet by B\'ezout and their product has zero gradient at a common point. Each positive-degree component has geometric points, as follows by restricting to a suitable line and factoring.
 
+For this particular nonzero $q$, suppose $G$ were zero as a polynomial. Choose a linear coordinate system with its last basis vector $q$. The corresponding partial derivative of the transformed form is zero. In characteristic zero this means the form is independent of that coordinate, hence a binary homogeneous form of degree $d$. Over $\mathbb C$ it factors into lines through the last coordinate point; at that point its value and all first partials vanish for $d\ge2$. This contradicts smoothness. Thus $G$ is a nonzero degree-$(d-1)$ form. Irreducibility and its smaller degree exclude a common component with $F$. B\'ezout gives at most $d(d-1)$ contact points, and therefore at most that many distinct tangent lines through $Q$. For $d=3$ the upper bound is six. No numerical test is needed to assert this bound, nor does the argument claim every point realizes it.
+\end{solution}
 \begin{solution}{geometry:ex:cramergrid}
-\idea This is Cramer's paradox in miniature: nine points, one pencil.
-\writeup The two cubics are $x(x-z)(x+z)$ and $y(y-z)(y+z)$, three vertical and three horizontal lines with no common component, meeting in the nine grid
-points. A line contains at most three of them, so no four are collinear. A conic meets each horizontal line $y=c$ in at most two points unless it contains it; a
-conic containing seven grid points would therefore contain a horizontal line and then lie on a pair of lines, which contain at most six grid points. So
-any eight of the nine points impose independent conditions by Lemma~\ref{geometry:lem:eightpoints}, and the cubics through all nine form exactly the pencil
-$\lambda(x^3-xz^2)+\mu(y^3-yz^2)$, as in the proof of Theorem~\ref{geometry:thm:cayleybacharach}.
+\idea Independent evaluation conditions leave exactly the displayed two-dimensional pencil.
+\writeup The forms $F=x(x-z)(x+z)$, $G=y(y-z)(y+z)$ share no component and meet exactly in the nine grid points; at infinity both would require $x=y=0$, impossible. The characteristic restriction makes the three row and column coordinates distinct. Any nonvertical line meets each of the three columns at most once, and a vertical line has only three grid points; thus no four are collinear. A conic with seven grid points must contain some horizontal row by the line bound. Its other line can supply at most three further grid points, so a conic contains at most six. Any eight therefore impose independent cubic conditions, leaving dimension two. Since $F,G$ are independent and vanish at all nine, every cubic through all nine is $\lambda F+\mu G$, with $(\lambda,\mu)\ne(0,0)$ for a curve.
 \end{solution}
-
 \begin{solution}{geometry:ex:cbpappus}
-\idea Pappus is Pascal for the degenerate conic $\ell\cup\ell'$, and Cayley--Bacharach does not mind degenerate conics.
-\writeup With $A,B,C\in\ell$ and $A',B',C'\in\ell'$ (all different from $\ell\cap\ell'$), take the cubics $C_1=AB'\cup CA'\cup BC'$ and $C_2=B'C\cup A'B\cup C'A$.
-Intersecting each line of $C_1$ with each line of $C_2$ gives the nine points $B',X,A$, then $C,A',Y$, then $Z,B,C'$, where $X=AB'\cap A'B$, $Y=AC'\cap A'C$,
-$Z=BC'\cap B'C$. Assume these nine points are distinct (the general case; the degenerate cases follow by a limiting argument or by Appendix~C). The cubic
-$\ell\cup\ell'\cup XY$ passes through $A,B,C,A',B',C',X,Y$, so it contains $Z$. If $Z\in\ell$, then $Z$, being on $BC'$, would be $B$, and then $B$ would lie on
-$B'C$, a line meeting $\ell$ only at $C$; so $Z\notin\ell$, and similarly $Z\notin\ell'$. Hence $Z\in XY$.
+\idea The alternating hexagon gives nine distinct intersections even though its base conic is reducible.
+\writeup Use the standard Pappus hypotheses: distinct triples $A,B,C\in\ell$ and $A',B',C'\in\ell'$, avoiding $\ell\cap\ell'$. Take
+\[
+C_1=AB'\cup CA'\cup BC',\qquad
+C_2=B'C\cup A'B\cup C'A.
+\]
+Their line components are different, since each cross-line is uniquely specified by its two intersections with the base lines. Their nine cross-intersections are the six vertices and $X=AB'\cap A'B$, $Y=AC'\cap A'C$, $Z=BC'\cap B'C$. None of the last three is a vertex: a cross-line's only point on either base is its designated endpoint, and each paired cross-line has different endpoints there. They are pairwise distinct. For example $X=Y$ lies on $AB'$ and $AC'$, so equals $A$, already excluded; $X=Z$ similarly equals $B$, and $Y=Z$ equals $C'$. Thus Cayley--Bacharach applies over any field, without limits. The cubic $\ell\cup\ell'\cup XY$ contains eight points and therefore $Z$. The same endpoint argument puts $Z$ off both base lines, so $Z\in XY$, proving Pappus.
+\end{solution}
+\begin{solution}{geometry:ex:braikenridge}
+\idea Attach the alleged Pascal line to the five-point conic, then force the sixth point onto that conic.
+\writeup Let $Q$ be the unique nondegenerate conic through $A,B,C,D,E$, and let $\ell$ contain $X,Y,Z$. The line-union cubics $AB\cup CD\cup EF$ and $BC\cup DE\cup FA$ share no component by the no-three-collinear hypothesis and meet in the nine stated distinct points. The cubic $Q\cup\ell$ contains all except possibly $F$, so Cayley--Bacharach puts $F$ on it too. If $F\in\ell$, the distinct points $F,Z$ force $\ell=FA$, and the distinct points $F,Y$ force $\ell=EF$. Then $A,E,F$ are collinear, contradiction. Hence $F\in Q$, proving the converse.
 \end{solution}
 
-\begin{solution}{geometry:ex:braikenridge}
-\idea Run the proof of Corollary~\ref{geometry:cor:pascalcb} backwards: the conic through five of the points and the Pascal line make a cubic through eight of the nine points.
-\writeup Let $C_1=AB\cup CD\cup EF$ and $C_2=BC\cup DE\cup FA$. As in Corollary~\ref{geometry:cor:pascalcb} they meet exactly in the nine distinct points
-$A,\dots,F,X,Y,Z$, and they share no line (no three of the six points are collinear). Let $Q$ be the conic through $A,B,C,D,E$ and $\ell$ the line containing
-$X,Y,Z$. The cubic $Q\cup\ell$ passes through the eight points $A,B,C,D,E,X,Y,Z$, so by Theorem~\ref{geometry:thm:cayleybacharach} it passes through $F$. If $F$ were on
-$\ell$, then $\ell$ would contain $F$ and $Z$, two distinct points of the line $FA$, so $\ell=FA\ni A$; and it would contain $F$ and $Y$, so $\ell=EF\ni E$; then
-$A,E,F$ would be collinear. So $F\in Q$: the six points lie on a conic.
+\begin{solution}{ex:v9-resultant-specialization}
+\idea Specialization can lower both degrees and create a common infinity root in the fixed-degree homogenizations.
+\writeup The determinant is $\det\left(\begin{smallmatrix}s&1\\s&2\end{smallmatrix}\right)=s$. Yet $g_s-f_s=1$, so the two affine equations have no simultaneous solution for any parameter. At $s=0$ they are the nonzero constants one and two; their actual degrees are zero, outside the common-root proposition's hypotheses for degree one. The degree-one homogenizations are $sX+Z$ and $sX+2Z$. At zero both vanish at $[1:0]$, an infinity point, explaining the vanished determinant. In contrast $\operatorname{Res}(x^2-u,x-v)=v^2-u$. Its vanishing gives the explicit common root $x=v$. The leading coefficients stay equal to one, so specialization never changes either degree and the common-root criterion remains applicable.
+\end{solution}
+\begin{solution}{ex:v9-cusp-orders}
+\idea The separating resultant exhibits the individual orders directly.
+\writeup In the given coordinates, $O=[0:0:1]$ and
+\[
+F=Z^3+YZ^2-X^3,\qquad G=Z-aX.
+\]
+Both have nonzero constant leading coefficient in $Z$. The root-product formula gives
+\[
+R(X,Y)=-F(X,Y,aX)
+=X^2\bigl((1-a^3)X-a^2Y\bigr).
+\]
+If $a\ne0$, the two distinct root directions give order two at the cusp $[x:y:z]=[0:0:1]$ and order one at $[a^2:a^3:1]$. They are separated because the second root direction has $X\ne0$. The point $O=[0:1:1]$ is off both curves and off their joining line $G$; since $G$ is a line, its tangent is that same line, so $O$ is admissible. At $a=0$ the resultant is $X^3$ and the only intersection is the cusp with order three. This line $y=0$ is the cusp's tangent. In both cases the total is $3\cdot1=3$. The computation also shows explicitly why a nontangent line can have order two at a singular point.
+\end{solution}
+\begin{solution}{ex:v9-grid-interpolation}
+\idea Each low-degree monomial has one exponent too small to survive the weighted one-dimensional sum.
+\writeup The distinct roots give $p'(a_i)=\prod_{k\ne i}(a_i-a_k)\ne0$. For $0\le r<m$, elementary interpolation says
+\[
+x^r=\sum_i a_i^r\frac{p(x)}{(x-a_i)p'(a_i)}.
+\]
+The difference has degree at most $m-1$ and vanishes at all $m$ distinct $a_i$, proving the identity. Comparing leading coefficients yields $\sum_i a_i^r/p'(a_i)=0$ for $r<m-1$, and one for $r=m-1$. The same holds for $q$.
+
+For $H=x^ry^s$ with $r+s\le m+n-3$, either $r<m-1$ or $s<n-1$. Its double sum factors into the two one-variable sums and one vanishes. Linearity proves the displayed identity for every allowed $H$. Since every grid weight is nonzero, solve it for any one missing value. Sharpness follows from
+\[
+\prod_{i\ne i_0}(x-a_i)\prod_{j\ne j_0}(y-b_j),
+\]
+of degree $m+n-2$, which vanishes at every grid point except $(a_{i_0},b_{j_0})$, where it is nonzero. Thus at that degree the zero polynomial and this polynomial agree at all the other points but differ at the last.
+
+For $\{-1,0,1\}$ over $\mathbb R$, $p=x^3-x$ gives reciprocal derivatives $(1/2,-1,1/2)$. Multiplying the double weights by four gives the product pattern $(1,-2,1)\otimes(1,-2,1)$: corners one, edge midpoints minus two, centre four. These are the figure's weights, and the degree threshold is three.
+\end{solution}
+\begin{solution}{ex:v9-positive-characteristic-tangents}
+\idea Zero and repeated polars expose the precise role of characteristic zero.
+\writeup In characteristic two the gradient of $XZ+Y^2$ is $(Z,0,X)$. It cannot vanish at a curve point: $X=Z=0$ would force $Y=0$. Thus the conic is smooth. Every tangent has zero $Y$-coefficient and passes through $Q=[0:1:0]$, which is off the conic. The polar for this actual nonzero $Q$ is identically zero. There are infinitely many distinct tangents, one for each of the infinitely many conic points by the line bound. Consequently the complex bound $d(d-1)$ is false without its field qualification.
+
+For the Fermat form of degree $p+1$, the gradient is $(X^p,Y^p,Z^p)$, so it too is smooth. For any nonzero $q$, its polar is
+\[
+q_0X^p+q_1Y^p+q_2Z^p
+=(q_0^{1/p}X+q_1^{1/p}Y+q_2^{1/p}Z)^p.
+\]
+The roots of coefficients exist and are unique because the field is algebraically closed and Frobenius is injective. At $Q=[0:0:1]$, which is off the curve, the polar is $Z^p$. Contact points satisfy $Z=0$ and $X^{p+1}+Y^{p+1}=0$. Neither $X$ nor $Y$ is zero, and the polynomial in $X/Y$ has $p+1$ distinct roots, since its derivative is $X^p$ in that coordinate and never zero at a root. Their tangent coefficients $[X^p:Y^p:0]$ are distinct by injectivity of Frobenius. Hence precisely $p+1$ distinct tangents pass through $Q$. The repeated polar explains why the degree-product count $p(p+1)$ can exceed the distinct-contact count; it is not a numerical discrepancy.
 \end{solution}
 
 \section*{Sources and further reading}
+
+Gibson offers further computations with resultants and plane drawings. Fulton develops intrinsic intersection multiplicities; Kirwan connects these examples with the geometry of complex curves. Eisenbud, Green and Harris place the nine-point theorem in its broader setting. The historical records below identify the letter and publications behind Cramer's paradox.
 
 \begin{itemize}
 \item R.~E.~Bradley and L.~Stemkoski, \emph{When nine points are worth but eight: Euler's resolution of Cramer's paradox}, Convergence (MAA), online (Maclaurin's

@@ -1,275 +1,222 @@
 \chapter{Smooth Manifolds}
 
 \begin{center}\itshape
-A sphere is round, but a small piece of it looks flat. Can we do calculus on a space that is flat only in small pieces, and say what its
-dimension is, without ever drawing it inside a bigger space? A manifold is a space in which every small piece looks like a piece of $\R^n$, glued to its
-neighbours smoothly enough that calculus survives the gluing. The inverse function theorem says when a map can be undone locally; it is the one tool from
-which all the definitions, all the examples and the first two great theorems of the subject follow.
+On a small patch of a sphere you can describe a point with two coordinates. Near the north pole one pair works; near the equator another pair is more convenient. Can calculus survive these changes of coordinates? A smooth manifold is a space on which it can. Its local coordinate systems need not fit into one global picture, but they must agree smoothly wherever they overlap.
 \end{center}
 
-On 10 June 1854 a shy twenty-seven-year-old gave the trial lecture that would allow him to teach at the University of G\"ottingen. The custom was that
-the candidate proposed three topics and the faculty chose the first. Bernhard Riemann's third topic was ``the hypotheses which lie at the foundations of
-geometry''. Gauss, who was seventy-seven and had thought about the subject for half a century, chose the third. According to Dedekind, who knew both men,
-Gauss came out of the lecture deeply impressed, and on the way home spoke of it to his colleague Wilhelm Weber with the highest praise and an excitement
-that was rare for him. The text was published only in 1868, two years after Riemann's death.
+On 10 June 1854 Bernhard Riemann gave his qualifying lecture at G\"ottingen. Of his three proposed topics, Gauss chose the third: ``the hypotheses which lie at the foundations of geometry''. Dedekind's account describes how deeply the lecture impressed Gauss. The text appeared in 1868, after Riemann's death.
 
-The lecture contains almost no formulas. Its key word is \emph{Mannigfaltigkeit}, a ``manifoldness'': a collection of objects each of which is fixed by
-$n$ numbers that can vary continuously, like the positions of a point in space, the colours, or the states of a mechanical system. Riemann's proposal was
-that the geometry of such a thing is not given in advance by an ambient space; it is given by a rule for measuring lengths of small displacements, which
-may change from place to place. That is the curvature of Chapter~4, and sixty years later it was the framework of general relativity.
+Riemann's \emph{Mannigfaltigkeit}, a ``manifoldness'', was a collection whose nearby objects could be specified by continuously varying numbers. Geometry would come from measuring small displacements within that collection, rather than from an assumed surrounding Euclidean space. Chapter~4 develops this idea through lengths and curvature. First we need to say precisely how local coordinates fit together.
 
-What a manifold \emph{is} took another eighty years to say precisely. Poincar\'e, in his \emph{Analysis Situs} of 1895, described manifolds of $\R^N$ by
-equations and by parametrizations, which are two of the four equivalent descriptions of Section~\ref{sec:submanifolds}. Hermann Weyl, in his 1913 book
-on Riemann surfaces, gave the first definition that does not mention any ambient space: a space covered by overlapping neighbourhoods, each identified
-with a disc. Hassler Whitney, in 1936, made it the modern definition for every dimension, and proved in the same paper that nothing was lost: every
-abstract manifold sits inside some $\R^N$. We prove the easy half of Whitney's theorem at the end of this chapter.
+\portrait{riemann}{Bernhard Riemann (1826--1866). Photograph, 1863; photographer unrecorded. Public domain, via Wikimedia Commons.}
 
-The engine of everything is the inverse function theorem, which we prove from Banach's fixed point theorem. A robot arm is a good example to keep in
-mind throughout: its possible positions form a manifold, the points where it loses a degree of freedom are the critical points of a smooth map, and
-Sard's theorem, which we prove in the case of equal dimensions, says that such bad positions are rare.
+Weyl's 1913 treatment of Riemann surfaces defined spaces through overlapping coordinate neighbourhoods. Whitney's 1936 work established the smooth manifold framework in general dimensions and proved embedding theorems linking it to submanifolds of Euclidean space. We will prove a compact version using coordinate functions and smooth cutoffs; the stronger bounds will be quoted explicitly.
+
+A two-link robot arm supplies a concrete example. Its two joint angles describe a torus of configurations, while the hand moves in the plane. Some configurations let the hand move in two independent directions; at others, those directions collapse into one. Derivatives detect that distinction. The inverse and implicit function theorems turn derivative information into local coordinate descriptions.
 
 \section{Calculus in \texorpdfstring{$\R^n$}{R\^{}n}, quickly}
 
-We use the Euclidean norm $|x|$ on $\R^n$ and the operator norm $\|A\|=\sup_{|v|\le1}|Av|$ on linear maps. An open set is always non-empty unless we say
-otherwise.
+Dimensions are nonnegative integers. The space $\R^0$ consists of one point; its empty coordinate list and empty determinant, equal to one, follow the usual linear-algebra conventions. We allow empty open sets, where assertions about all their points are vacuous. On positive-dimensional Euclidean spaces use the Euclidean norm $|x|$ and operator norm $\|A\|=\sup_{|v|\le1}|Av|$.
 
 \begin{definition}
-Let $U\subset\R^n$ be open and $f\colon U\to\R^m$. The map $f$ is \emph{differentiable at $a\in U$} if there is a linear map $Df(a)\colon\R^n\to\R^m$
-with
+For open $U\subset\R^n$, a map $f:U\to\R^m$ is \emph{differentiable at $a$} if a linear map $Df(a)$ satisfies
 \[
-f(a+h)=f(a)+Df(a)h+o(|h|)\qquad(h\to0).
+f(a+h)=f(a)+Df(a)h+o(|h|)\quad(h\to0).
 \]
-It is \emph{$C^1$} if it is differentiable at every point and $a\mapsto Df(a)$ is continuous, $C^k$ if moreover $Df$ is $C^{k-1}$, and \emph{smooth}
-($C^\infty$) if it is $C^k$ for every $k$.
+It is \emph{$C^1$} when its derivative exists everywhere and depends continuously on the point. Inductively it is \emph{$C^k$} when $Df$ is $C^{k-1}$, and \emph{smooth}, or $C^\infty$, when it is $C^k$ for every finite $k$.
 \end{definition}
 
-The matrix of $Df(a)$ is the Jacobian matrix of partial derivatives $\partial_jf_i(a)$, since $h=te_j$ in the definition gives the partial derivative.
+The derivative's matrix is the Jacobian $(\partial_jf_i)$: take increments along the coordinate axes in the definition. In dimension zero there is only the unique map from the zero tangent space, so differentiability has no conditions to check.
 
 \begin{proposition}[chain rule]\label{prop:chain}
-If $f$ is differentiable at $a$ and $g$ is differentiable at $f(a)$, then $g\circ f$ is differentiable at $a$ and $D(g\circ f)(a)=Dg(f(a))\,Df(a)$. If
-$f$ and $g$ are $C^k$, so is $g\circ f$.
+If $f$ is differentiable at $a$ and $g$ at $f(a)$, then $gf$ is differentiable at $a$ and
+\[
+D(gf)(a)=Dg(f(a))Df(a).
+\]
+Composing $C^k$ maps gives a $C^k$ map.
 \end{proposition}
 \begin{proof}
-Write $A=Df(a)$, $B=Dg(b)$ with $b=f(a)$, and $f(a+h)=b+k(h)$ with $k(h)=Ah+\varepsilon_1(h)|h|$, $\varepsilon_1(h)\to0$. Then $|k(h)|\le(\|A\|+1)|h|$ for small
-$h$, and
+Put $A=Df(a)$, $B=Dg(f(a))$, and write $f(a+h)-f(a)=k=Ah+\varepsilon(h)|h|$, where $\varepsilon(h)\to0$. Then $|k|\le(\|A\|+1)|h|$ for small $h$. The second differentiability expansion gives
 \[
-g(b+k)-g(b)-BAh=B\varepsilon_1(h)|h|+\varepsilon_2(k)|k|,
+g(f(a)+k)-g(f(a))-BAh=B\varepsilon(h)|h|+\eta(k)|k|,
 \]
-where $\varepsilon_2(k)\to0$ as $k\to0$. Both terms are $o(|h|)$. For the regularity, $D(g\circ f)=(Dg\circ f)\cdot Df$ is a product of continuous
-matrix-valued maps, and by induction on $k$, if $f,g$ are $C^k$ then $Dg\circ f$ and $Df$ are $C^{k-1}$, so $D(g\circ f)$ is $C^{k-1}$ (products of
-$C^{k-1}$ maps are $C^{k-1}$, by the case of the bilinear product map).
+with $\eta(k)\to0$; define the remainder as zero at $k=0$. Both terms are $o(|h|)$, proving the formula. For regularity, $D(gf)=(Dg\circ f)Df$. Matrix multiplication is bilinear and smooth, so induction on $k$ makes this derivative $C^{k-1}$ whenever $f,g$ are $C^k$.
 \end{proof}
 
 \begin{proposition}\label{prop:partials}
-If all partial derivatives $\partial_jf_i$ exist and are continuous on $U$, then $f$ is $C^1$.
+If all first partial derivatives of $f:U\to\R^m$ exist and are continuous, then $f$ is $C^1$.
 \end{proposition}
 \begin{proof}
-It suffices to treat $m=1$. Fix $a$, and for small $h$ go from $a$ to $a+h$ along the coordinate directions: with $a^{(0)}=a$ and
-$a^{(j)}=a^{(j-1)}+h_je_j$,
+Treat one component at a time. Near $a$, a sufficiently small coordinate box lies in $U$. Move from $a$ to $a+h$ along its coordinate directions, with $a^{(j)}=a+\sum_{i\le j}h_ie_i$. The one-variable mean value theorem gives
 \[
-f(a+h)-f(a)=\sum_{j=1}^n\bigl(f(a^{(j)})-f(a^{(j-1)})\bigr)=\sum_{j=1}^nh_j\,\partial_jf(c^{(j)})
+f(a+h)-f(a)=\sum_{j=1}^nh_j\partial_jf(c_j),
 \]
-by the one-variable mean value theorem, with $c^{(j)}$ on the segment $[a^{(j-1)},a^{(j)}]$. Since $c^{(j)}\to a$ as $h\to0$ and $\partial_jf$ is continuous,
-$\partial_jf(c^{(j)})=\partial_jf(a)+o(1)$, and the sum is $\sum_jh_j\partial_jf(a)+o(|h|)$.
+where $c_j$ lies on the $j$th segment (a zero increment contributes zero). Each $c_j\to a$, so continuity replaces $\partial_jf(c_j)$ by $\partial_jf(a)+o(1)$. The finite sum of errors is $o(|h|)$, proving differentiability with the continuous Jacobian. A zero-dimensional domain or target makes the assertion immediate.
 \end{proof}
 
-The mean value theorem fails for vector-valued maps: $t\mapsto e^{it}$ has $f(2\pi)-f(0)=0$ although $f'$ never vanishes. What survives is an inequality,
-and it is all we need.
+For vector-valued maps the mean value theorem need not give a single intermediate derivative: $t\mapsto e^{it}$ has equal values at $0,2\pi$ but never has zero derivative. A norm estimate does survive.
 
 \begin{lemma}[mean value inequality]\label{lem:mvi}
-Let $f\colon U\to\R^m$ be $C^1$ and let the segment $[x,y]$ lie in $U$. If $\|Df\|\le L$ on $[x,y]$, then $|f(y)-f(x)|\le L|y-x|$.
+If $f:U\to\R^m$ is $C^1$, $[x,y]\subset U$, and $\|Df\|\le L$ on that segment, then $|f(y)-f(x)|\le L|y-x|$.
 \end{lemma}
 \begin{proof}
-Let $u$ be a unit vector with $\langle u,f(y)-f(x)\rangle=|f(y)-f(x)|$ and $g(t)=\langle u,f(x+t(y-x))\rangle$ for $t\in[0,1]$. By the chain rule
-$g'(t)=\langle u,Df(x+t(y-x))(y-x)\rangle$, so $|g'(t)|\le L|y-x|$, and the one-variable mean value theorem gives
+If $f(y)=f(x)$, including every map to $\R^0$, the assertion is immediate. Otherwise choose $u=(f(y)-f(x))/|f(y)-f(x)|$. Apply the one-variable mean value theorem to $g(t)=\langle u,f(x+t(y-x))\rangle$. The chain rule gives $|g'(t)|\le L|y-x|$, so
 $|f(y)-f(x)|=g(1)-g(0)\le L|y-x|$.
 \end{proof}
 
 \begin{lemma}\label{lem:glnopen}
-The set $\mathrm{GL}_n(\R)$ of invertible matrices is open in $M_n(\R)$, and inversion $A\mapsto A^{-1}$ is smooth on it. If $\|A-I\|\le\frac12$, then
-$A$ is invertible and $\|A^{-1}\|\le2$.
+The invertible matrices $\mathrm{GL}_n(\R)$ form an open subset of $M_n(\R)$, and inversion is smooth there. If $\|A-I\|\le1/2$, then $A$ is invertible with $\|A^{-1}\|\le2$.
 \end{lemma}
 \begin{proof}
-$\mathrm{GL}_n(\R)=\det^{-1}(\R\setminus\{0\})$ and $\det$ is a polynomial in the entries, so the set is open. By Cramer's rule each entry of $A^{-1}$ is a
-polynomial in the entries of $A$ divided by $\det A$, a smooth function on $\mathrm{GL}_n(\R)$. If $\|A-I\|\le\frac12$, then
-$|Av|\ge|v|-|(A-I)v|\ge\frac12|v|$, so $A$ is injective, hence invertible, and $|A^{-1}w|\le2|w|$.
+The determinant is a polynomial, so its nonzero set is open. Cramer's rule expresses inverse entries as polynomials divided by that nonzero determinant, giving smoothness. Also
+\[
+|Av|\ge|v|-|(A-I)v|\ge\tfrac12|v|.
+\]
+Thus $A$ is injective, hence invertible in finite equal dimensions; putting $v=A^{-1}w$ gives the inverse bound. For $n=0$ the unique empty matrix is the identity and inverse, and the assertions hold directly.
 \end{proof}
 
 \subsection*{The inverse function theorem}
 
-A linear map $\R^n\to\R^n$ can be undone if and only if it is invertible. The inverse function theorem says that a smooth map can be undone \emph{near a
-point} as soon as its linear approximation at that point can.
+Near a point, a differentiable map looks like its derivative. If that linear map is invertible and nearby derivatives remain close to it, we can solve $f(x)=y$ by a contraction. That closeness is why continuity of the derivative matters.
 
 \begin{definition}
-Let $U,V\subset\R^n$ be open. A \emph{$C^k$ diffeomorphism} $f\colon U\to V$ is a bijection such that $f$ and $f^{-1}$ are $C^k$. A \emph{diffeomorphism}
-is a $C^\infty$ one.
+For open $U,V\subset\R^n$, a \emph{$C^k$ diffeomorphism} is a bijection $f:U\to V$ such that both $f$ and $f^{-1}$ are $C^k$. A \emph{diffeomorphism} without a specified $k$ means a smooth one.
 \end{definition}
 
 \begin{theorem}[inverse function theorem]\label{thm:inverse}
-Let $U\subset\R^n$ be open, $k\in\{1,2,\dots,\infty\}$, $f\colon U\to\R^n$ a $C^k$ map and $a\in U$ with $Df(a)$ invertible. There are open sets $V\ni a$
-and $W\ni f(a)$ such that $f$ restricts to a $C^k$ diffeomorphism $V\to W$. Its inverse $g$ satisfies $Dg(y)=Df(g(y))^{-1}$.
+Let $f:U\to\R^n$ be $C^k$, where $U$ is open and $k\in\{1,2,\ldots,\infty\}$. If $a\in U$ and $Df(a)$ is invertible, there are open neighbourhoods $V$ of $a$ and $W$ of $f(a)$ for which $f|_V:V\to W$ is a $C^k$ diffeomorphism. For the inverse $g:W\to V$, differentiation gives $Dg(y)=Df(g(y))^{-1}$.
 \end{theorem}
 \begin{proof}
-\emph{Reduction.} Replacing $f$ by $x\mapsto Df(a)^{-1}\bigl(f(a+x)-f(a)\bigr)$, which changes nothing in the statement, we may assume $a=0$,
-$f(0)=0$ and $Df(0)=I$.
+The zero-dimensional case is a map between single points. Otherwise translate the source and target and multiply by $Df(a)^{-1}$. It suffices to prove the result with $a=f(a)=0$ and $Df(0)=I$.
 
-\emph{Injectivity on a ball.} By continuity of $Df$, choose $r>0$ with $\bar B(0,2r)\subset U$ and $\|Df(x)-I\|\le\frac12$ for $|x|\le2r$. Let
-$\varphi(x)=x-f(x)$. Then $\|D\varphi\|\le\frac12$ on the convex set $\bar B(0,2r)$, so by Lemma~\ref{lem:mvi}, $|\varphi(x)-\varphi(x')|\le\frac12|x-x'|$ there,
-and
+Choose $r>0$ with $\bar B(0,2r)\subset U$ and $\|Df(x)-I\|\le1/2$ there. The map $\phi(x)=x-f(x)$ is $1/2$-Lipschitz on this convex ball by the mean value inequality. Hence
 \[
-|f(x)-f(x')|\ge|x-x'|-|\varphi(x)-\varphi(x')|\ge\tfrac12|x-x'|.
+|f(x)-f(x')|\ge|x-x'|-|\phi(x)-\phi(x')|\ge\tfrac12|x-x'|,
 \]
-In particular $f$ is injective on $\bar B(0,2r)$.
-
-\emph{Surjectivity onto a ball.} Let $|y|<r$ and $T_y(x)=y+\varphi(x)$, so that $T_y(x)=x$ if and only if $f(x)=y$. For $|x|\le2r$,
-$|T_y(x)|\le|y|+|\varphi(x)-\varphi(0)|<r+\frac12\cdot2r=2r$. So $T_y$ maps the complete metric space $\bar B(0,2r)$ into itself, and is a
-$\frac12$-contraction. By Banach's fixed point theorem (Volume~7, Theorem~2.12) it has a unique fixed point, which lies in the open ball $B(0,2r)$.
-
-Let $W=B(0,r)$ and $V=B(0,2r)\cap f^{-1}(W)$. Both are open, $0\in V$, and $f\colon V\to W$ is a bijection. Let $g\colon W\to V$ be its inverse. The
-inequality above, with $x=g(y)$ and $x'=g(y')$, says $|g(y)-g(y')|\le2|y-y'|$, so $g$ is continuous.
-
-\emph{Differentiability.} Fix $y\in W$, let $x=g(y)$ and $A=Df(x)$, invertible with $\|A^{-1}\|\le2$ by Lemma~\ref{lem:glnopen}. For $y+k\in W$ put
-$h=g(y+k)-x$, so $|h|\le2|k|$ and $h\to0$ as $k\to0$. Since $f(x+h)=y+k$,
+so $f$ is injective there. To find a preimage for $|y|<r$, set $T_y(x)=y+\phi(x)$. For $|x|\le2r$,
 \[
-k=Ah+\varepsilon(h)|h|\quad\text{with }\varepsilon(h)\to0,
+|T_y(x)|\le|y|+\tfrac12|x|<2r.
 \]
-and therefore
-\[
-g(y+k)-g(y)-A^{-1}k=h-A^{-1}(Ah+\varepsilon(h)|h|)=-A^{-1}\varepsilon(h)|h|,
-\]
-whose norm is at most $2|\varepsilon(h)|\cdot2|k|=o(|k|)$. So $g$ is differentiable at $y$ with $Dg(y)=Df(g(y))^{-1}$.
+Thus $T_y$ is a contraction of the complete closed ball into itself. Banach's theorem (Volume~7, Theorem~2.12) gives a unique fixed point, lying in the open ball, and its fixed-point equation is $f(x)=y$.
 
-\emph{Regularity.} The formula says $Dg=\mathrm{inv}\circ Df\circ g$, with $\mathrm{inv}$ the smooth inversion map of Lemma~\ref{lem:glnopen}. Since $g$
-is continuous and $Df$ is continuous, $Dg$ is continuous and $g$ is $C^1$. If $g$ is $C^j$ for some $j<k$, then $Df\circ g$ is $C^{j}$ (as $Df$ is
-$C^{k-1}$ and $j\le k-1$), so $Dg$ is $C^j$ and $g$ is $C^{j+1}$. By induction $g$ is $C^k$.
+Take $W=B(0,r)$ and $V=B(0,2r)\cap f^{-1}(W)$. They are open neighbourhoods and $f:V\to W$ is bijective. The preceding lower bound gives its inverse $g$ the estimate $|g(y)-g(y')|\le2|y-y'|$, in particular continuity.
+
+Fix $x=g(y)$ and $A=Df(x)$. The matrix lemma makes $A$ invertible with inverse norm at most two. For small target increment $u$ write $h=g(y+u)-x$, so $|h|\le2|u|$. Differentiability of $f$ gives $u=Ah+\varepsilon(h)|h|$, and therefore
+\[
+g(y+u)-g(y)-A^{-1}u=-A^{-1}\varepsilon(h)|h|=o(|u|).
+\]
+This proves the inverse derivative formula. Its right side is continuous, so $g$ is $C^1$. If $g$ is $C^j$ with $j<k$, the formula, smooth matrix inversion and $Df\in C^{k-1}$ make $Dg$ a $C^j$ map, hence $g$ is $C^{j+1}$. Induct to $k$, or to every finite order when $k=\infty$, then undo the normalization.
 \end{proof}
 
 \begin{think}
-The function $f(x)=x+2x^2\sin\frac1x$, with $f(0)=0$, is differentiable everywhere and $f'(0)=1$. Yet it is injective on no neighbourhood of $0$. Find
-points where $f'<0$ arbitrarily close to $0$. Which line of the proof breaks?
+Set $f(x)=x+2x^2\sin(1/x)$ for $x\ne0$ and $f(0)=0$. Its derivative at zero is one, but at $x=1/(2\pi j)$ its derivative is $-1$. Why can it be injective on no interval about zero? Which uniform derivative estimate in the proof is unavailable?
 \end{think}
 
-The theorem has a twin, which solves equations for some of the variables in terms of the others.
-
 \begin{theorem}[implicit function theorem]\label{thm:implicit}
-Let $U\subset\R^n\times\R^m$ be open, $F\colon U\to\R^m$ a $C^k$ map, and $(a,b)\in U$ with $F(a,b)=0$ and with $D_yF(a,b)$, the derivative with respect
-to the last $m$ variables, invertible. There are open sets $A\ni a$ in $\R^n$ and $B\ni b$ in $\R^m$ with $A\times B\subset U$, and a $C^k$ map
-$h\colon A\to B$, such that for $(x,y)\in A\times B$:
+Let $F:U\to\R^m$ be $C^k$, $k\ge1$ or $k=\infty$, on open $U\subset\R^n\times\R^m$. Suppose $F(a,b)=0$ and the derivative $D_yF(a,b)$ in the last $m$ variables is invertible. There are open neighbourhoods $A$ of $a$, $B$ of $b$, with $A\times B\subset U$, and a $C^k$ map $h:A\to B$ such that
 \[
-F(x,y)=0\iff y=h(x).
+F(x,y)=0\quad\Longleftrightarrow\quad y=h(x)\qquad((x,y)\in A\times B).
 \]
 \end{theorem}
 \begin{proof}
-Let $\Phi(x,y)=(x,F(x,y))$. Its Jacobian at $(a,b)$ is the block matrix $\bigl(\begin{smallmatrix}I&0\\ D_xF&D_yF\end{smallmatrix}\bigr)$, invertible.
-By Theorem~\ref{thm:inverse} there are open $V\ni(a,b)$ and $W\ni(a,0)$ with $\Phi\colon V\to W$ a $C^k$ diffeomorphism. Its inverse fixes the first
-coordinate, so it has the form $\Psi(x,z)=(x,\psi(x,z))$ with $\psi$ of class $C^k$. Choose open balls $A_0\ni a$ and $B\ni b$ with $A_0\times B\subset V$,
-and let
+Retain the $x$ coordinates and replace $y$ by the equations: put $\Phi(x,y)=(x,F(x,y))$. Its derivative is the invertible block matrix
+$\bigl(\begin{smallmatrix}I&0\\D_xF&D_yF\end{smallmatrix}\bigr)$ at $(a,b)$. The inverse theorem gives a diffeomorphism $\Phi:V\to W$ near $(a,b)$ and $(a,0)$. Its inverse keeps the first coordinate, so write it as $(x,z)\mapsto(x,\psi(x,z))$.
+
+Choose product neighbourhoods $A_0\times B\subset V$ of $(a,b)$ and restrict to the open set
 \[
-A=\{x\in A_0:\ (x,0)\in W\text{ and }\psi(x,0)\in B\},
+A=\{x\in A_0:(x,0)\in W,\ \psi(x,0)\in B\}.
 \]
-an open set containing $a$, since $\psi(a,0)=b$. Put $h(x)=\psi(x,0)$ for $x\in A$; it is $C^k$ with values in $B$, and $F(x,h(x))=0$ because
-$\Phi(\Psi(x,0))=(x,0)$. Conversely, if $(x,y)\in A\times B$ and $F(x,y)=0$, then $(x,y)$ and $(x,h(x))$ both lie in $V$ and have the same image $(x,0)$
-under $\Phi$, which is injective on $V$, so $y=h(x)$.
+It contains $a$. Set $h(x)=\psi(x,0)$. The inverse identities give $F(x,h(x))=0$. Any other zero $(x,y)\in A\times B$ has the same $\Phi$ image $(x,0)$, and injectivity on $V$ forces $y=h(x)$. This also covers zero-sized coordinate blocks with their usual empty-matrix conventions.
 \end{proof}
 
 \section{Submanifolds of \texorpdfstring{$\R^N$}{R\^{}N}}\label{sec:submanifolds}
 
 \begin{definition}
-A subset $M\subset\R^N$ is a \emph{$k$-dimensional submanifold} if every $p\in M$ has an open neighbourhood $U$ in $\R^N$ with a diffeomorphism $\varphi$
-from $U$ onto an open set $V\subset\R^N$ that \emph{straightens} $M$:
+A subset $M\subset\R^N$ is a \emph{$k$-dimensional submanifold} if every $p\in M$ has an ambient open neighbourhood $U$ and a diffeomorphism $\varphi:U\to V\subset\R^N$ such that
 \[
 \varphi(M\cap U)=V\cap(\R^k\times\{0\}).
 \]
+Thus smooth coordinates turn $M$ locally into a coordinate plane.
 \end{definition}
 
-So near each of its points, $M$ is a piece of a $k$-plane seen through a smooth change of coordinates. This is the cleanest definition and the least
-practical one: nobody describes the sphere by giving a straightening map. In practice a submanifold comes as the solution set of equations, as a graph,
-or as the image of a parametrization, and the following theorem says that all four are the same thing.
+For a sphere, equations are easier to write than a straightening map. For a graph, a parametrization is easier still. The next theorem lets us use whichever description the problem supplies, provided its derivative and topology meet the stated conditions.
 
 \begin{theorem}[four descriptions]\label{thm:fourdesc}
-Let $M\subset\R^N$, $p\in M$ and $0\le k\le N$. The following are equivalent.
+For $p\in M\subset\R^N$ and $0\le k\le N$, the following local descriptions are equivalent.
 \begin{enumerate}[label=(\alph*)]
-\item \emph{Straightening:} there is a diffeomorphism $\varphi\colon U\to V$ between open sets of $\R^N$, with $p\in U$ and
-$\varphi(M\cap U)=V\cap(\R^k\times\{0\})$.
-\item \emph{Equations:} there are an open $U\ni p$ and a smooth $F\colon U\to\R^{N-k}$ with $M\cap U=F^{-1}(0)$ and $DF(x)$ surjective for every
-$x\in M\cap U$.
-\item \emph{Graph:} after a permutation of the coordinates of $\R^N=\R^k\times\R^{N-k}$, there are open sets $\Omega\subset\R^k$ and $B\subset\R^{N-k}$ with
-$p\in\Omega\times B$, and a smooth $g\colon\Omega\to B$, such that $M\cap(\Omega\times B)$ is the graph of $g$.
-\item \emph{Parametrization:} there are an open $\Omega\subset\R^k$, an open $U\ni p$ and a smooth $\psi\colon\Omega\to\R^N$ such that $\psi$ is injective,
-$D\psi(x)$ is injective for every $x$, $\psi(\Omega)=M\cap U$, and $\psi$ is a homeomorphism from $\Omega$ onto $M\cap U$.
+\item \emph{Straightening.} A diffeomorphism $\varphi:U\to V$ of ambient open sets, with $p\in U$, satisfies $\varphi(M\cap U)=V\cap(\R^k\times\{0\})$.
+\item \emph{Equations.} On some open $U\ni p$ there is a smooth $F:U\to\R^{N-k}$ with $M\cap U=F^{-1}(0)$ and $DF(x)$ surjective at every $x\in M\cap U$.
+\item \emph{Graph.} After permuting ambient coordinates, there are open $\Omega\subset\R^k$, $B\subset\R^{N-k}$ and smooth $g:\Omega\to B$ such that $p\in\Omega\times B$ and $M\cap(\Omega\times B)=\{(x,g(x)):x\in\Omega\}$.
+\item \emph{Parametrization.} There are open $\Omega\subset\R^k$, ambient open $U\ni p$, and smooth $\psi:\Omega\to\R^N$ such that $\psi$ is injective, each $D\psi(x)$ is injective, its image is $M\cap U$, and $\psi:\Omega\to M\cap U$ is a homeomorphism.
 \end{enumerate}
-So $M$ is a $k$-dimensional submanifold if and only if one of them holds at every point of $M$.
+Consequently any one of these descriptions at every point characterizes a $k$-dimensional submanifold.
 \end{theorem}
 \begin{proof}
-(a)$\Rightarrow$(b). Let $F$ be the last $N-k$ coordinates of $\varphi$. Then $F^{-1}(0)=\varphi^{-1}(V\cap(\R^k\times\{0\}))=M\cap U$, and the rows of
-$DF(x)$ are the last $N-k$ rows of the invertible matrix $D\varphi(x)$, which are independent; so $DF(x)$ has rank $N-k$.
+(a)$\Rightarrow$(b): take $F$ to be the last $N-k$ components of $\varphi$. Its zero set is the straightened plane's inverse image. Those rows of the invertible derivative $D\varphi$ are independent, giving surjectivity.
 
-(b)$\Rightarrow$(c). The $(N-k)\times N$ matrix $DF(p)$ has rank $N-k$, so it has $N-k$ independent columns. Permute the coordinates so that they are the
-last ones, write points as $(x,y)\in\R^k\times\R^{N-k}$ and $p=(a,b)$; then $D_yF(a,b)$ is invertible. Theorem~\ref{thm:implicit} gives $A\ni a$, $B\ni b$
-and $h$; shrinking $A$ and $B$ to balls we may assume $A\times B\subset U$. Then $M\cap(A\times B)=F^{-1}(0)\cap(A\times B)$ is the graph of $h$. Take
-$\Omega=A$, $g=h$.
+(b)$\Rightarrow$(c): choose $N-k$ independent columns of $DF(p)$ and permute them to the last positions. The derivative in those variables is invertible. The implicit theorem produces product neighbourhoods on which the zeros are the graph of a smooth $g$ taking values in the chosen second neighbourhood.
 
-(c)$\Rightarrow$(d). Let $\psi(x)=(x,g(x))$ on $\Omega$, followed by the inverse permutation of coordinates. It is smooth and injective, its derivative
-$\bigl(\begin{smallmatrix}I\\ Dg\end{smallmatrix}\bigr)$ is injective, its image is $M\cap(\Omega\times B)$ with $\Omega\times B$ open, and its inverse on
-the image is the projection $(x,y)\mapsto x$, which is continuous.
+(c)$\Rightarrow$(d): set $\psi(x)=(x,g(x))$, then undo the coordinate permutation. Its derivative has an identity block, so is injective; projection onto the first coordinates is its continuous inverse on the image.
 
-(d)$\Rightarrow$(a). Let $\psi(x_0)=p$. The $N\times k$ matrix $D\psi(x_0)$ has rank $k$, so it has $k$ independent rows; permute the coordinates so that
-they are the first $k$. Define $\Theta\colon\Omega\times\R^{N-k}\to\R^N$ by $\Theta(x,z)=\psi(x)+(0,z)$. Its Jacobian at $(x_0,0)$ is
-$\bigl(\begin{smallmatrix}D_1\psi&0\\ D_2\psi&I\end{smallmatrix}\bigr)$ with $D_1\psi(x_0)$ invertible, so by Theorem~\ref{thm:inverse} $\Theta$ restricts to a
-diffeomorphism from an open $V'\ni(x_0,0)$ onto an open $U'\ni p$. Note that $\Theta(x,0)=\psi(x)$.
-
-Here the homeomorphism condition enters. The set $\Omega_0=\{x:(x,0)\in V'\}$ is open in $\Omega$, so $\psi(\Omega_0)$ is open in $M\cap U$, that is,
-$\psi(\Omega_0)=M\cap O$ for some open $O\subset U$. Let $U''=U'\cap O$ and $V''=V'\cap\Theta^{-1}(U'')$. We claim
+(d)$\Rightarrow$(a): write $\psi(x_0)=p$. Choose $k$ independent rows of $D\psi(x_0)$ and move them to the first positions. The map
 \[
-\Theta\bigl(V''\cap(\R^k\times\{0\})\bigr)=M\cap U''.
+\Theta(x,z)=\psi(x)+(0,z),\qquad (x,z)\in\Omega\times\R^{N-k},
 \]
-If $(x,0)\in V''$, then $\Theta(x,0)=\psi(x)$ lies in $M$ and in $U''$. Conversely, if $q\in M\cap U''$, then $q\in M\cap O=\psi(\Omega_0)$, so $q=\psi(x)=\Theta(x,0)$
-with $(x,0)\in V'$, and $\Theta(x,0)\in U''$ gives $(x,0)\in V''$. So $\varphi=(\Theta|_{V''})^{-1}\colon U''\to V''$ straightens $M$ near $p$.
+has invertible derivative at $(x_0,0)$: its blocks are
+$\bigl(\begin{smallmatrix}D_1\psi&0\\D_2\psi&I\end{smallmatrix}\bigr)$ with $D_1\psi$ invertible. Restrict it to a diffeomorphism $V'\to U'$ about those points.
+
+We must exclude parts of $M$ whose parameters lie outside this inverse neighbourhood. The set $\Omega_0=\{x:(x,0)\in V'\}$ is open, so the homeomorphism hypothesis makes $\psi(\Omega_0)$ open in $M\cap U$. Write it as $M\cap O$ for ambient open $O\subset U$. Set $U''=U'\cap O$ and $V''=V'\cap\Theta^{-1}(U'')$. A point of $M\cap U''$ has the form $\psi(x)=\Theta(x,0)$ with $(x,0)\in V'$, and hence in $V''$. Conversely every such zero-$z$ point maps into $M\cap U''$. Thus $\Theta^{-1}:U''\to V''$ straightens exactly the desired part of $M$. Empty minors in the cases $k=0$ or $k=N$ are identities on zero-dimensional spaces, so the same argument includes them.
 \end{proof}
 
 \begin{think}
-The curve $\psi(t)=(\sin2t,\sin t)$ on $\Omega=\left]0,2\pi\right[$ is injective and its derivative never vanishes, but its image, a figure eight, is not a
-submanifold at the origin (Exercise~\ref{ex:nosubmanifold}). Which hypothesis of (d) fails, and where in the proof was it used?
+The map $\psi(t)=(\sin2t,\sin t)$ on $0<t<2\pi$ is injective and has nonzero derivative, but its image crosses itself at the origin. Exercise~\ref{ex:nosubmanifold} will prove that the image is not a submanifold there. The parameter near zero approaches the image of $t=\pi$. Which topological hypothesis in (d) fails?
 \end{think}
 
-The number $k$ is determined by $M$: we will see in Section~\ref{sec:tangent} that it is the dimension of a vector space attached to each point. A
-$0$-dimensional submanifold is a set of isolated points, an $N$-dimensional one is an open set.
+A zero-dimensional submanifold consists of isolated points; a full-dimensional one is open in the ambient space. For a nonempty submanifold, its dimension will be recovered as a tangent-space dimension in Section~\ref{sec:tangent}. The empty set satisfies the local definition vacuously, so its dimension, when specified, is an assigned convention.
 
 \begin{example}[spheres]\label{ex:spheres}
-$S^n=\{x\in\R^{n+1}:|x|=1\}$ is the zero set of $F(x)=|x|^2-1$, and $DF(x)h=2\langle x,h\rangle$ is a non-zero linear form when $x\ne0$. By (b), $S^n$ is an
-$n$-dimensional submanifold of $\R^{n+1}$.
+For $n\ge0$, the sphere $S^n\subset\R^{n+1}$ is the zero set of $F(x)=|x|^2-1$. At a zero,
+$DF(x)h=2\langle x,h\rangle$ is a nonzero linear form and hence surjective. Description (b) gives an $n$-dimensional submanifold, including the two isolated points of $S^0$.
 \end{example}
 
 \begin{example}[the orthogonal group]\label{ex:on}
-Let $\mathrm{Sym}_n$ be the space of symmetric $n\times n$ matrices, of dimension $\frac{n(n+1)}2$, and $F\colon M_n(\R)\to\mathrm{Sym}_n$,
-$F(X)=X^\top X-I$, so that $\mathrm O(n)=F^{-1}(0)$. Expanding $F(X+H)$ gives
+Symmetric $n\times n$ matrices form a real vector space $\mathrm{Sym}_n$ of dimension $n(n+1)/2$. For $F(X)=X^\top X-I$, the orthogonal matrices are $F^{-1}(0)$, and expansion gives
 \[
 DF(X)H=H^\top X+X^\top H.
 \]
-If $X\in\mathrm O(n)$ and $S\in\mathrm{Sym}_n$, then $H=\frac12XS$ satisfies $H^\top X=\frac12SX^\top X=\frac12S$ and $X^\top H=\frac12S$, so
-$DF(X)H=S$: the derivative is surjective onto $\mathrm{Sym}_n$. By (b), $\mathrm O(n)$ is a submanifold of $M_n(\R)=\R^{n^2}$ of dimension
-\[
-n^2-\tfrac{n(n+1)}2=\tfrac{n(n-1)}2.
-\]
-It is compact, being closed and bounded (each column is a unit vector). The determinant is $\pm1$ on $\mathrm O(n)$, so $\mathrm{SO}(n)=\mathrm O(n)\cap\{\det>0\}$
-is open in $\mathrm O(n)$, hence also a submanifold of dimension $\frac{n(n-1)}2$. For $n=2$ this is a circle; for $n=3$ it is three-dimensional, which
-matches the count ``an axis (two parameters) and an angle (one)''.
+If $X^\top X=I$ and $S$ is symmetric, choose $H=XS/2$; then $DF(X)H=S$. The derivative is onto, so $\mathrm O(n)$ is a submanifold of dimension
+$n^2-n(n+1)/2=n(n-1)/2$. It is closed and bounded, since its columns have unit length, hence compact. The positive-determinant subset $\mathrm{SO}(n)$ is open in $\mathrm O(n)$ and has the same dimension. In dimension zero both groups consist of the single empty identity matrix. For $n=2$, $\mathrm{SO}(2)$ is a circle; for $n=3$ its dimension matches ``an axis (two parameters) and an angle (one)''.
 \end{example}
 
-The rotations of space form a smooth three-dimensional manifold; Chapter~7 will show it is $\R P^3$, and that the quaternions of Volume~3 are its double
-cover.
+Chapter~7 will identify $\mathrm{SO}(3)$ with $\R P^3$ through the quaternion double cover. For now the equations alone have supplied its manifold structure.
 
 \begin{example}[Cassini ovals]\label{ex:cassini}
-Let $f(x,y)=(x^2+y^2)^2-2(x^2-y^2)$. Writing $z=x+iy$ one checks $f=|z-1|^2|z+1|^2-1$, so the level set $f=c$ is the set of points whose distances to
-$\pm1$ have product $\sqrt{1+c}$: a Cassini oval. The gradient is
+For
 \[
-\nabla f=\bigl(4x(x^2+y^2-1),\ 4y(x^2+y^2+1)\bigr),
+f(x,y)=(x^2+y^2)^2-2(x^2-y^2)=|z-1|^2|z+1|^2-1,
 \]
-which vanishes only at $(0,0)$ and $(\pm1,0)$, with values $0$ and $-1$. So every level $c>-1$ other than $0$ is a curve, by (b); for
-$-1<c<0$ it has two components, for $c>0$ one (Figure~\ref{fig:cassini}). The level $0$ is Jacob Bernoulli's lemniscate, a figure eight, which is not a
-submanifold at the origin; the level $-1$ is the two points $(\pm1,0)$, which \emph{is} a $0$-dimensional submanifold: the condition in (b) is
-sufficient, not necessary.
+the level $f=c$ fixes the product of distances to $\pm1$ at $\sqrt{1+c}$ when $c\ge-1$. Its gradient is
+\[
+\nabla f=(4x(x^2+y^2-1),\ 4y(x^2+y^2+1)).
+\]
+It vanishes only at $0$ and $(\pm1,0)$, with respective values $0,-1,-1$. Every nonempty level with $c>-1$, $c\ne0$, is therefore a smooth curve.
+
+Polar coordinates give the component count: for $u=x^2+y^2>0$, the equation is $u^2-2u\cos2\theta=c$. If $c>0$, exactly one root is positive for every angle, giving one oval. If $-1<c<0$, positive roots exist in two angular intervals about the positive and negative horizontal axes; the two radial roots meet at each interval's ends, giving two ovals. At $c=0$ the branches form Bernoulli's crossing lemniscate, which is not a smooth submanifold at the crossing. At $c=-1$ only $(\pm1,0)$ remain, a zero-dimensional submanifold; below $-1$ the level is empty. A vanishing derivative of one defining function does not rule out a manifold: description (b) asks for the existence of a suitable defining function.
 \end{example}
+
+Here is a direct check at the crossing. Set
+\[
+H(t,v)=t^2(1+v^2)^2-2(1-v^2).
+\]
+At $(0,1)$ and $(0,-1)$, $H=0$ and $\partial_vH=4v\ne0$.
+Theorem~\ref{thm:implicit} gives smooth functions $v_\pm(t)$ with
+$v_\pm(0)=\pm1$ and $H(t,v_\pm(t))=0$.
+The curves $\gamma_\pm(t)=(t,tv_\pm(t))$ lie on $f=0$ and have
+independent initial velocities $(1,1)$ and $(1,-1)$. The level set is
+neither locally a single point nor open, so a submanifold chart would
+have to straighten it to a line. The chart's invertible derivative
+would then send both velocities into that one line, contradicting
+their independence.
 
 \begin{figure}[ht]
 \centering
@@ -282,355 +229,299 @@ a manifold there. The marked points are the three critical points, where $f$ tak
 
 \section{Abstract manifolds}\label{sec:abstract}
 
-The torus as a surface of revolution in $\R^3$ is a submanifold, but so is the flat torus $S^1\times S^1\subset\R^4$, and they are ``the same''. The
-space of lines through the origin of $\R^3$ is clearly a two-dimensional object, but it is not given to us inside any $\R^N$. Weyl's insight was to
-build a manifold from its charts.
+The torus can be drawn in $\R^3$ as a doughnut or in $\R^4$ as $S^1\times S^1$. Its local calculus does not need either drawing. The space of lines through the origin of $\R^3$ is another example where coordinates are easier to supply than an ambient picture.
 
 \begin{definition}
-A \emph{topological manifold of dimension $n$} is a topological space $M$ that is Hausdorff, has a countable basis of open sets, and in which every point
-has an open neighbourhood $U$ homeomorphic to an open subset of $\R^n$. Such a homeomorphism $\varphi\colon U\to\varphi(U)\subset\R^n$ is a
-\emph{chart}. Two charts $(U,\varphi)$, $(U',\varphi')$ are \emph{compatible} if the \emph{transition map}
+A \emph{topological $n$-manifold} is a Hausdorff space with a countable open basis in which each point has an open neighbourhood $U$ homeomorphic to an open subset of $\R^n$. We call this homeomorphism $\varphi:U\to\varphi(U)$ a \emph{chart}. Two charts are \emph{compatible} when both transition maps
 \[
-\varphi'\circ\varphi^{-1}\colon\varphi(U\cap U')\to\varphi'(U\cap U')
+\varphi'\varphi^{-1}:\varphi(U\cap U')\to\varphi'(U\cap U'),\qquad
+\varphi\varphi'^{-1}
 \]
-is smooth, and so is its inverse $\varphi\circ\varphi'^{-1}$. An \emph{atlas} is a family of pairwise compatible charts whose domains cover $M$.
+are smooth on their domains. An \emph{atlas} is a covering family of pairwise compatible charts.
 \end{definition}
 
 \begin{proposition}\label{prop:maxatlas}
-Every atlas $\mathcal A$ is contained in a unique maximal atlas, the set $\bar{\mathcal A}$ of all charts compatible with every chart of $\mathcal A$.
+Every atlas $\mathcal A$ lies in a unique maximal atlas: the family $\bar{\mathcal A}$ of all charts compatible with every chart in $\mathcal A$.
 \end{proposition}
 \begin{proof}
-We must show that two charts $(U,\varphi)$, $(U',\varphi')$ of $\bar{\mathcal A}$ are compatible with each other. Smoothness is local, so fix
-$x=\varphi(q)$ with $q\in U\cap U'$, and a chart $(U_0,\varphi_0)\in\mathcal A$ at $q$. Near $x$,
+Take two charts in $\bar{\mathcal A}$ and a point in their overlap. Choose a chart $\varphi_0$ of $\mathcal A$ about that point. Locally their transition factors as
 \[
-\varphi'\circ\varphi^{-1}=(\varphi'\circ\varphi_0^{-1})\circ(\varphi_0\circ\varphi^{-1}),
+\varphi'\varphi^{-1}=(\varphi'\varphi_0^{-1})(\varphi_0\varphi^{-1}),
 \]
-a composite of smooth maps. Any atlas containing $\mathcal A$ consists of charts compatible with $\mathcal A$, so it lies in $\bar{\mathcal A}$, which
-is therefore maximal and unique.
+a composition of smooth maps; the inverse factors in the reverse direction. Smoothness is local, so the two charts are compatible everywhere on the overlap. Any atlas extending $\mathcal A$ consists of charts in this family. Hence the family is itself the unique maximal extension.
 \end{proof}
 
 \begin{definition}
-A \emph{smooth manifold} is a topological manifold with a maximal atlas, its \emph{smooth structure}; to give one it suffices to give any atlas. A map
-$f\colon M\to N$ between smooth manifolds is \emph{smooth} if it is continuous and $\psi\circ f\circ\varphi^{-1}$ is smooth for all charts $\varphi$ of $M$
-and $\psi$ of $N$, where defined. A \emph{diffeomorphism} is a smooth bijection with a smooth inverse.
+A \emph{smooth manifold} is a topological manifold with a maximal atlas, its \emph{smooth structure}. Giving any atlas determines that structure. A map $f:M\to N$ is \emph{smooth} if it is continuous and all coordinate expressions $\psi f\varphi^{-1}$ are smooth where defined. A \emph{diffeomorphism} is a smooth bijection with smooth inverse.
 \end{definition}
 
-Because the transition maps are smooth, it is enough to check smoothness of $f$ for one chart around each point of $M$ and one around its image. A chart
-$\varphi\colon U\to\varphi(U)$ is itself a diffeomorphism, when $U$ and $\varphi(U)$ carry the obvious structures.
+It is enough to check one source chart near each point and one target chart near its image: other choices compose with smooth transitions. Each chart is itself a diffeomorphism onto its Euclidean coordinate domain. A zero-manifold is discrete and, by its countable basis, at most countable. The empty manifold is allowed with an assigned dimension.
 
 \begin{proposition}\label{prop:subisman}
-A $k$-dimensional submanifold $M\subset\R^N$, with the subspace topology, is a smooth manifold: for each straightening map $\varphi\colon U\to V$, the
-map $\pi\circ\varphi|_{M\cap U}$, where $\pi(x_1,\dots,x_N)=(x_1,\dots,x_k)$, is a chart, and these charts form an atlas. For this structure, the
-restriction to $M$ of a smooth map defined on an open set of $\R^N$ is smooth.
+A $k$-dimensional submanifold $M\subset\R^N$, with its subspace topology, is a smooth manifold. For each straightening $\varphi:U\to V$, its chart is $\pi\varphi|_{M\cap U}$, where $\pi$ projects to the first $k$ coordinates. The restriction to $M$ of a smooth ambient map is smooth for this structure.
 \end{proposition}
 \begin{proof}
-Hausdorff and a countable basis are inherited from $\R^N$. The map $\pi\circ\varphi$ is a homeomorphism from $M\cap U$ onto the open set
-$\{x\in\R^k:(x,0)\in V\}$, with inverse $x\mapsto\varphi^{-1}(x,0)$. For two straightenings $\varphi$, $\varphi'$, the transition map is
-$x\mapsto\pi\varphi'\varphi^{-1}(x,0)$, a restriction of the smooth map $\pi\circ\varphi'\circ\varphi^{-1}$ to an open part of $\R^k\times\{0\}$, hence
-smooth. Finally, if $f$ is smooth on an open set of $\R^N$, then in the chart it reads $x\mapsto f(\varphi^{-1}(x,0))$, which is smooth.
+The Hausdorff property and countable basis pass from Euclidean space to its subspace. The chart image is the open set $\{x:(x,0)\in V\}$, and its inverse is $x\mapsto\varphi^{-1}(x,0)$. Transitions have the form $x\mapsto\pi\varphi'\varphi^{-1}(x,0)$, so are smooth. An ambient smooth map $f$ restricts in these coordinates to $x\mapsto f(\varphi^{-1}(x,0))$, also smooth.
 \end{proof}
 
+We will also use the corresponding target fact. A map into an embedded submanifold is smooth exactly when its ambient composite is smooth. In a target straightening chart the ambient expression takes values $(g(x),0)$, and its first coordinates $g$ are exactly the submanifold coordinates. The same observation works in a manifold chart once embedded submanifolds are defined below.
+
 \begin{example}[products and tori]
-If $M$ and $N$ are smooth manifolds of dimensions $m$ and $n$, the charts $\varphi\times\psi$ form an atlas on $M\times N$, of dimension $m+n$: transition
-maps are products of transition maps. The $n$-torus $T^n=S^1\times\dots\times S^1$ is a smooth manifold of dimension $n$, and also a submanifold of
-$\R^{2n}$, by (b) applied to the $n$ equations $x_{2j-1}^2+x_{2j}^2=1$.
+Product charts on $M\times N$ have product transition maps, hence give dimension $\dim M+\dim N$. The product is Hausdorff and has a countable product basis. In particular $T^n=(S^1)^n$ is an $n$-manifold. As a subset of $\R^{2n}$ it is also defined by $x_{2j-1}^2+x_{2j}^2=1$; the derivatives of these $n$ equations are independent, giving the same smooth structure by the product charts. The empty product $T^0$ is one point.
 \end{example}
 
 \begin{example}[projective space]\label{ex:rpn}
-Let $\R P^n$ be the set of lines through $0$ in $\R^{n+1}$, the quotient of $\R^{n+1}\setminus\{0\}$ by $x\sim\lambda x$ ($\lambda\ne0$), with the quotient
-topology; write $[x]=[x_0:\dots:x_n]$. The quotient map $\pi$ is open, because $\pi^{-1}(\pi(O))=\bigcup_{\lambda\ne0}\lambda O$ is open when $O$ is.
-\begin{itemize}
-\item \emph{Charts.} On the open set $U_i=\{[x]:x_i\ne0\}$ let $\varphi_i([x])=\bigl(\frac{x_j}{x_i}\bigr)_{j\ne i}\in\R^n$. It is a homeomorphism onto
-$\R^n$, with inverse $u\mapsto[u_0:\dots:1:\dots:u_n]$ ($1$ in position $i$). On $\varphi_i(U_i\cap U_j)$ the transition map $\varphi_j\circ\varphi_i^{-1}$
-divides every coordinate by $u_j\ne0$, after inserting a $1$ in position $i$: it is smooth.
-\item \emph{Countable basis.} $\R P^n$ is the union of $n+1$ open sets homeomorphic to $\R^n$.
-\item \emph{Hausdorff.} The map $P([x])=\frac{xx^\top}{|x|^2}$ is well defined and continuous on $\R P^n$, with values in the matrices. It is injective,
-because $P([x])$ is the orthogonal projection onto the line $\R x$, which determines the line. Two points with distinct images under a continuous
-injective map into a Hausdorff space have disjoint neighbourhoods.
-\end{itemize}
-Moreover $\R P^n=\pi(S^n)$ is compact.
+The real projective space $\R P^n$ consists of lines in $\R^{n+1}$, with $[x]=[x_0:\cdots:x_n]$ identifying $x$ and $\lambda x$ for $\lambda\ne0$. Give it the quotient topology from $\R^{n+1}\setminus\{0\}$. The quotient map $\pi$ is open, since $\pi^{-1}\pi(O)=\bigcup_{\lambda\ne0}\lambda O$ is open for open $O$.
+
+On $U_i=\{[x]:x_i\ne0\}$ define $\varphi_i([x])=(x_j/x_i)_{j\ne i}$. This is a homeomorphism to $\R^n$: its inverse inserts $1$ in position $i$ and applies the quotient map, while its forward continuity follows from the quotient property. To change from chart $i$ to chart $j$, divide the inserted coordinate list by its nonzero $j$th coordinate and omit that coordinate. These rational expressions and their inverses are smooth.
+
+The $n+1$ chart domains give a countable basis. To check Hausdorffness, use the continuous map
+\[
+[x]\longmapsto\frac{xx^\top}{|x|^2}.
+\]
+It is injective because its matrix is the orthogonal projection onto the line $\R x$. Distinct image matrices have disjoint neighbourhoods, whose inverse images separate the original points. Thus $\R P^n$ is a smooth $n$-manifold. It is compact, being the image of $S^n$ under $\pi$; for $n=0$ it is one point.
 \end{example}
 
 \begin{remark}
-The two topological conditions are not decoration. The \emph{line with two origins}, two copies of $\R$ glued along $\R\setminus\{0\}$, has an atlas of two
-charts with identity transition maps, but its two origins cannot be separated: it is not Hausdorff, and a sequence $\frac1k$ has two limits.
-Second-countability excludes monsters such as the long line, and it is what makes partitions of unity, below, countable.
+Local Euclidean coordinates alone do not force the Hausdorff property. Glue two real lines along every nonzero point. The resulting line has two origins with identity chart transitions, but every neighbourhood of one origin meets every neighbourhood of the other. The sequence $1/j$ converges to both. The countable-basis condition is separate too; among other things it will give us a countable collection of coordinate cutoffs for global constructions.
 \end{remark}
 
 \subsection*{Bump functions and partitions of unity}
 
-Analytic functions are rigid: one that vanishes on an open set vanishes everywhere. Smooth functions are not, and this flexibility is what makes smooth
-manifolds pleasant to work with.
+A real analytic function on a connected open domain that vanishes on a nonempty open subset vanishes everywhere. Smooth functions can instead be one near a point and zero outside a small neighbourhood. These cutoffs let us extend local constructions and add them without disturbing distant points.
 
 \begin{lemma}\label{lem:bump}
-The function $h(t)=e^{-1/t}$ for $t>0$, $h(t)=0$ for $t\le0$, is smooth on $\R$. Hence $\beta(t)=\frac{h(t)}{h(t)+h(1-t)}$ is a smooth function with
-$\beta=0$ on $\left]-\infty,0\right]$ and $\beta=1$ on $[1,+\infty[$, and $b(x)=\beta(2-|x|)$ is a smooth function on $\R^n$ with $0\le b\le1$, $b=1$ on
-$\bar B(0,1)$ and $b=0$ outside $B(0,2)$.
+The function $h(t)=e^{-1/t}$ for $t>0$ and $h(t)=0$ for $t\le0$ is smooth. Consequently
+\[
+\beta(t)=\frac{h(t)}{h(t)+h(1-t)}
+\]
+is smooth, equals zero for $t\le0$ and one for $t\ge1$. The function $b(x)=\beta(2-|x|)$ on $\R^n$ is smooth, lies between zero and one, equals one on $\bar B(0,1)$ and vanishes outside $B(0,2)$.
 \end{lemma}
 \begin{proof}
-For $t>0$, induction shows $h^{(k)}(t)=P_k(\frac1t)e^{-1/t}$ for a polynomial $P_k$, which tends to $0$ as $t\to0^+$ since $e^{-s}$ beats every power of $s$.
-Suppose $h^{(k)}$ exists on $\R$, is continuous, and vanishes on $\left]-\infty,0\right]$. Then $h^{(k)}(t)/t\to0$ as $t\to0^\pm$, so $h^{(k+1)}(0)=0$ exists and
-$h^{(k+1)}$ is continuous at $0$. The denominator of $\beta$ never vanishes, since $t$ and $1-t$ are not both $\le0$. Finally $b$ is smooth away from $0$,
-where $|x|$ is smooth, and equal to $1$ on $B(0,1)$.
+For $t>0$, every derivative of $h$ has the form $P(1/t)e^{-1/t}$ for a polynomial $P$, by differentiation and induction. It tends to zero faster than any positive power of $t$. Starting with continuity at zero, the quotient $h^{(j)}(t)/t\to0$ proves that the next derivative exists there and equals zero. Its positive-side formula also tends to zero, so that derivative is continuous. Induction proves smoothness across zero.
+
+The denominator defining $\beta$ is positive, because $t$ and $1-t$ cannot both be nonpositive. Its values and bounds follow immediately. The norm is smooth off zero; near zero $b$ is constant one, so no norm singularity remains. In $\R^0$, $b$ is simply one on its single point, with compact support.
 \end{proof}
 
 \begin{theorem}[partitions of unity]\label{thm:partition}
-Let $M$ be a smooth manifold and $(O_i)_{i\in I}$ an open cover. There is a countable family of smooth functions $\rho_j\colon M\to[0,1]$ such that each
-support $\operatorname{supp}\rho_j=\overline{\{\rho_j\ne0\}}$ is compact and contained in some $O_i$, each point has a neighbourhood meeting only finitely
-many supports, and $\sum_j\rho_j=1$.
+For every open cover $(O_i)_{i\in I}$ of a smooth manifold $M$, there is a countable family of smooth $\rho_j:M\to[0,1]$ such that:
+\begin{itemize}
+\item every support $\operatorname{supp}\rho_j=\overline{\{\rho_j\ne0\}}$ is compact and lies in some $O_i$;
+\item every point has a neighbourhood meeting only finitely many supports;
+\item $\sum_j\rho_j=1$.
+\end{itemize}
 \end{theorem}
 \begin{proof}
-\emph{Precompact basis.} Each point $p$ has a chart $\varphi$ with $\varphi(p)=0$, and for small $r$ the set $\varphi^{-1}(B(0,r))$ has compact closure
-$\varphi^{-1}(\bar B(0,r))$ (compact sets are closed in a Hausdorff space). The members of a countable basis that lie in such a set are still a basis,
-so $M$ has a countable basis $B_1,B_2,\dots$ of open sets with compact closures.
+The empty manifold admits the empty family. Otherwise small coordinate balls with their closures inside a chart have compact closures in $M$; Hausdorffness makes those closures closed. Restrict a countable basis to its members lying in such balls. This is still a basis, all of whose members have compact closure. Enumerate it as $B_1,B_2,\ldots$, repeating members if it is finite.
 
-\emph{Exhaustion.} Let $K_1=\bar B_1$. Given the compact $K_m$, it is covered by finitely many $B_l$; let $j\ge m+1$ be such that $K_m\subset B_1\cup\dots\cup B_j$
-and let $K_{m+1}=\bar B_1\cup\dots\cup\bar B_j$. Then the $K_m$ are compact, $K_m\subset\operatorname{int}K_{m+1}$, and $\bigcup_mK_m=M$ since
-$B_m\subset K_m$. Put $K_0=K_{-1}=\emptyset$.
+Build compact sets $K_m$ exhausting $M$. Begin with $K_1=\bar B_1$. Given $K_m$, choose $j\ge m+1$ so that $B_1,\ldots,B_j$ cover it, and let $K_{m+1}=\bigcup_{i\le j}\bar B_i$. Then $K_m\subset\operatorname{int}K_{m+1}$ and $B_m\subset K_m$, so the $K_m$ exhaust $M$. Put $K_0=K_{-1}=\emptyset$.
 
-\emph{Bumps.} The set $A_m=K_m\setminus\operatorname{int}K_{m-1}$ is compact, and contained in the open set $W_m=\operatorname{int}K_{m+1}\setminus K_{m-2}$.
-For each $p\in A_m$ choose $i$ with $p\in O_i$, a chart $\varphi$ with $\varphi(p)=0$, and $r>0$ with $\varphi^{-1}(\bar B(0,2r))\subset O_i\cap W_m$. The
-function $\sigma_p=b(\varphi/r)$ on the chart domain, extended by $0$, is smooth on $M$: its support $\varphi^{-1}(\bar B(0,2r))$ is compact, hence closed,
-and off it $\sigma_p$ vanishes on an open set. It equals $1$ on $\varphi^{-1}(B(0,r))$, and finitely many of these sets cover $A_m$. Collect the
-corresponding $\sigma_p$ for all $m$: a countable family $(\sigma_j)$.
+The compact layer $A_m=K_m\setminus\operatorname{int}K_{m-1}$ lies in the open region $W_m=\operatorname{int}K_{m+1}\setminus K_{m-2}$. About each $p\in A_m$ choose a chart centred at zero and a small $r$ such that the closed coordinate ball of radius $2r$ lies inside some $O_i\cap W_m$. Scale the preceding bump to this ball and extend it by zero outside the chart. Its compact support stays inside the chart, so this extension is smooth. It equals one on the smaller radius-$r$ ball. Finitely many smaller balls cover $A_m$; retain their bumps. Doing this for each layer produces a countable family $\sigma_j$ whose positive regions cover $M$.
 
-\emph{Normalization.} A point of $\operatorname{int}K_m$ has a neighbourhood that misses $W_{m'}$ for $m'\ge m+2$, hence meets only the finitely many
-supports coming from $m'\le m+1$. So $\sigma=\sum_j\sigma_j$ is locally a finite sum of smooth functions, hence smooth, and $\sigma\ge1$ everywhere since
-the sets $A_m$ cover $M$. Put $\rho_j=\sigma_j/\sigma$.
+The family is locally finite. If a point lies in $\operatorname{int}K_m$, that neighbourhood misses every $W_{m'}$ with $m'\ge m+2$, and there are only finitely many retained bumps in the earlier layers. Thus $\sigma=\sum_j\sigma_j$ is smooth and everywhere at least one. Set $\rho_j=\sigma_j/\sigma$. Normalization preserves supports and local finiteness and makes their sum one.
 \end{proof}
 
 \section{Tangent spaces}\label{sec:tangent}
 
-For a submanifold there is an obvious candidate: the set of velocities of curves drawn on it.
+For a sphere, a curve's velocity at $p$ lies in the plane perpendicular to $p$. The following calculation turns that picture into a definition independent of any particular equations.
 
 \begin{proposition}\label{prop:tangentsub}
-Let $M\subset\R^N$ be a $k$-dimensional submanifold and $p\in M$. Let $T_pM$ be the set of velocities $\gamma'(0)$ of smooth curves
-$\gamma\colon\left]-\varepsilon,\varepsilon\right[\to\R^N$ with values in $M$ and $\gamma(0)=p$. For any $F$ as in Theorem~\ref{thm:fourdesc}(b) and any $\psi$
-as in (d) with $\psi(x_0)=p$,
+Let $M\subset\R^N$ be a $k$-dimensional submanifold. At $p\in M$, let $T_pM$ be the set of velocities $\gamma'(0)$ of smooth curves in $M$ with $\gamma(0)=p$, defined on an interval about zero. For any local equation map $F$ from Theorem~\ref{thm:fourdesc}(b) and parametrization $\psi$ from (d), with $\psi(x_0)=p$,
 \[
 T_pM=\operatorname{im}D\psi(x_0)=\ker DF(p).
 \]
-In particular $T_pM$ is a $k$-dimensional vector space, and $k$ is determined by $M$.
+It is a $k$-dimensional vector space, so a nonempty submanifold determines its dimension.
 \end{proposition}
 \begin{proof}
-If $v\in\R^k$, the curve $t\mapsto\psi(x_0+tv)$ lies in $M$ and has velocity $D\psi(x_0)v$, so $\operatorname{im}D\psi(x_0)\subset T_pM$. If $\gamma$ is a curve in $M$,
-then $F(\gamma(t))=0$ near $t=0$, and differentiating gives $DF(p)\gamma'(0)=0$, so $T_pM\subset\ker DF(p)$. The first space has dimension $k$ because
-$D\psi(x_0)$ is injective, the last has dimension $N-(N-k)=k$ because $DF(p)$ is surjective, so the three coincide.
+Every $v\in\R^k$ gives the curve $\psi(x_0+tv)$ with velocity $D\psi(x_0)v$. Conversely, along any curve in $M$, the local equation $F\gamma=0$ gives $DF(p)\gamma'(0)=0$. Therefore
+\[
+\operatorname{im}D\psi(x_0)\subset T_pM\subset\ker DF(p).
+\]
+The first and last spaces have dimension $k$, by injectivity of $D\psi$ and surjectivity of $DF$. They must coincide, proving the claim even though we had not initially assumed the middle set was a vector space.
 \end{proof}
 
-For $S^n$ this gives $T_pS^n=p^\perp$, and for $\mathrm O(n)$ at the identity, $T_I\mathrm O(n)=\{H:H^\top+H=0\}$, the skew-symmetric matrices. These are
-the first examples of Lie algebras, the subject of Chapter~7.
+Thus $T_pS^n=p^\perp$, and $T_I\mathrm O(n)$ consists of skew-symmetric matrices $H^\top+H=0$. Chapter~7 will use this latter space as a Lie algebra.
 
-On an abstract manifold there is nothing for a curve to have a velocity in. The way out is to remember what a tangent vector \emph{does}: it
-differentiates functions. If $v=\gamma'(0)$, then $f\mapsto(f\circ\gamma)'(0)$ is linear and obeys the Leibniz rule.
+On an abstract manifold there is no surrounding vector space for a velocity to belong to. Instead record how that velocity differentiates smooth functions. Along a curve, $f\mapsto(f\gamma)'(0)$ is linear and obeys the product rule.
 
 \begin{definition}
-Let $M$ be a smooth manifold and $C^\infty(M)$ the algebra of smooth functions $M\to\R$. A \emph{tangent vector at $p$} is a linear map
-$v\colon C^\infty(M)\to\R$ with $v(fg)=f(p)\,v(g)+g(p)\,v(f)$. They form a vector space $T_pM$, the \emph{tangent space}.
+A \emph{tangent vector at $p$} on a smooth manifold $M$ is a linear map $v:C^\infty(M)\to\R$ satisfying the Leibniz rule
+\[
+v(fg)=f(p)v(g)+g(p)v(f).
+\]
+Such maps, also called derivations at $p$, form the vector space $T_pM$.
 \end{definition}
 
 \begin{lemma}\label{lem:derivlocal}
-Let $v\in T_pM$. Then $v$ kills constants, and if $f=g$ on a neighbourhood of $p$, then $v(f)=v(g)$.
+A tangent vector kills constant functions, and $v(f)=v(g)$ whenever $f=g$ on a neighbourhood of $p$.
 \end{lemma}
 \begin{proof}
-$v(1)=v(1\cdot1)=2v(1)$, so $v(1)=0$. If $f=g$ on an open $O\ni p$, take a smooth $\chi$ with $\chi(p)=1$ and support in $O$ (a bump in a chart, as in the
-proof of Theorem~\ref{thm:partition}). Then $\chi(f-g)=0$, so $0=v(\chi(f-g))=\chi(p)v(f-g)+(f-g)(p)v(\chi)=v(f-g)$.
+The identity $v(1)=v(1\cdot1)=2v(1)$ gives $v(1)=0$, then linearity handles all constants. If $f-g$ vanishes on open $O\ni p$, choose a chart bump $\chi$ equal to one at $p$, supported in $O$. The function $\chi(f-g)$ vanishes everywhere, so the product rule gives
+$0=\chi(p)v(f-g)+(f-g)(p)v(\chi)=v(f-g)$.
 \end{proof}
 
+This lemma lets us differentiate local coordinate functions: multiply them by a bump equal to one near $p$, extend by zero, and the answer is independent of the extension.
+
 \begin{lemma}[Hadamard]\label{lem:hadamard}
-Let $f$ be smooth on a ball $B\subset\R^n$ centred at $a$. There are smooth $g_1,\dots,g_n$ on $B$ with $g_i(a)=\partial_if(a)$ and
-$f(x)=f(a)+\sum_i(x_i-a_i)g_i(x)$.
+For smooth $f$ on a ball $B\subset\R^n$ centred at $a$, there are smooth $g_i$ with $g_i(a)=\partial_if(a)$ and
+\[
+f(x)=f(a)+\sum_{i=1}^n(x_i-a_i)g_i(x).
+\]
 \end{lemma}
 \begin{proof}
-$f(x)-f(a)=\int_0^1\frac{\dd}{\dd t}f(a+t(x-a))\dd t=\sum_i(x_i-a_i)\int_0^1\partial_if(a+t(x-a))\dd t$. Put $g_i(x)=\int_0^1\partial_if(a+t(x-a))\dd t$; it is smooth
-by differentiation under the integral sign, every derivative of the integrand being continuous on the compact $[0,1]\times\bar B'$ for slightly smaller
-closed balls $\bar B'$.
+Integrate along the segment from $a$ to $x$:
+\[
+f(x)-f(a)=\int_0^1\sum_i(x_i-a_i)\partial_if(a+t(x-a))\,\dd t.
+\]
+Take $g_i$ to be the integral of the corresponding partial derivative. On each smaller closed ball, all derivatives of the integrand are continuous on its product with $[0,1]$, so differentiation under the integral proves smoothness. At $x=a$ the integral equals $\partial_if(a)$. In dimension zero the empty sum states that a function on a point is constant.
 \end{proof}
 
 \begin{theorem}\label{thm:tangentbasis}
-Let $(U,\varphi)$ be a chart at $p$ with coordinates $\varphi=(x^1,\dots,x^n)$. The maps
+For a chart $(U,\varphi)$ about $p$, with coordinates $(x^1,\ldots,x^n)$, the derivations
 \[
-\frac{\partial}{\partial x^i}\Big|_p\colon f\mapsto\partial_i(f\circ\varphi^{-1})(\varphi(p))
+\frac{\partial}{\partial x^i}\Big|_p:f\longmapsto
+\partial_i(f\varphi^{-1})(\varphi(p))
 \]
-form a basis of $T_pM$. In particular $\dim T_pM=n$.
+form a basis of $T_pM$. Consequently $T_pM$ has dimension $n$.
 \end{theorem}
 \begin{proof}
-They are tangent vectors by the Leibniz rule for partial derivatives. Translate so that $\varphi(p)=0$, choose $\varepsilon$ with
-$B(0,\varepsilon)\subset\varphi(U)$, and a smooth $\chi$ on $M$, equal to $1$ near $p$, whose support is a compact subset of $\varphi^{-1}(B(0,\varepsilon))$
-(Lemma~\ref{lem:bump}: take $\chi=b(4\varphi/\varepsilon)$). The functions $X^j=\chi x^j$, extended by $0$, are smooth on $M$ and agree with $x^j$ near $p$, so by
-Lemma~\ref{lem:derivlocal} $\frac{\partial}{\partial x^i}|_p(X^j)=\delta_{ij}$: the $n$ vectors are independent.
+They satisfy Leibniz by the ordinary partial-derivative product rule. Translate coordinates so $\varphi(p)=0$ and choose $B(0,\varepsilon)\subset\varphi(U)$. A bump $\chi$ equal to one near $p$ and with compact support inside this ball gives globally smooth functions $X^j=\chi x^j$, extended by zero. Their coordinate partials at $p$ are $\delta_{ij}$, proving independence.
 
-Let $v\in T_pM$ and $f\in C^\infty(M)$. Lemma~\ref{lem:hadamard} on $B(0,\varepsilon)$ gives $f\circ\varphi^{-1}(y)=f(p)+\sum_iy_ig_i(y)$ with
-$g_i(0)=\partial_i(f\circ\varphi^{-1})(0)$. The functions $G_i=\chi\cdot(g_i\circ\varphi)$, extended by $0$, are smooth on $M$, and near $p$ we have
-$f=f(p)+\sum_iX^iG_i$. By Lemma~\ref{lem:derivlocal} and the Leibniz rule,
+For any $v\in T_pM$, apply Hadamard's lemma to $f\varphi^{-1}$. With local $g_i$ as there, extend $G_i=\chi(g_i\varphi)$ by zero. Near $p$,
+$f=f(p)+\sum_iX^iG_i$. Locality and the Leibniz rule imply
 \[
-v(f)=\sum_i\bigl(v(X^i)G_i(p)+X^i(p)v(G_i)\bigr)=\sum_iv(X^i)\,\frac{\partial f}{\partial x^i}\Big|_p,
+v(f)=\sum_i v(X^i)G_i(p)
+=\sum_i v(X^i)\partial_i(f\varphi^{-1})(0),
 \]
-since $X^i(p)=0$. So $v=\sum_iv(X^i)\frac{\partial}{\partial x^i}|_p$.
+since $X^i(p)=0$. Thus the coordinate derivations span. For $n=0$, every function is locally constant at $p$, so every derivation is zero and the empty basis has dimension zero.
 \end{proof}
 
 \begin{definition}
-The \emph{differential} of a smooth $F\colon M\to N$ at $p$ is the linear map $dF_p\colon T_pM\to T_{F(p)}N$, $dF_p(v)(g)=v(g\circ F)$.
+The \emph{differential} of smooth $F:M\to N$ is
+\[
+dF_p:T_pM\to T_{F(p)}N,\qquad (dF_pv)(g)=v(gF).
+\]
 \end{definition}
 
-The chain rule $d(G\circ F)_p=dG_{F(p)}\circ dF_p$ is now a tautology. In charts $(x^i)$ at $p$ and $(y^j)$ at $F(p)$, the matrix of $dF_p$ in the bases of
-Theorem~\ref{thm:tangentbasis} is the Jacobian matrix of $y\circ F\circ x^{-1}$, by the chain rule of Proposition~\ref{prop:chain}; so a diffeomorphism has
-invertible differentials, and $dF_p$ is the abstract face of the derivative.
+Composition and Leibniz show that this really is a tangent vector at $F(p)$ and depends linearly on $v$. Applying the definition twice gives $d(GF)_p=dG_{F(p)}dF_p$. In coordinate bases its matrix is the Jacobian of the coordinate expression of $F$. Thus differentials of diffeomorphisms are invertible, and the smooth dimension of a nonempty manifold does not depend on its compatible chart choice.
 
-The two definitions of the tangent space agree for submanifolds. If $M\subset\R^N$ and $w=\gamma'(0)$ is a velocity, then $f\mapsto(f\circ\gamma)'(0)$ is a
-derivation that depends only on $w$: writing $\gamma=\psi\circ c$ near $0$ with $c=\psi^{-1}\circ\gamma$ (smooth, since $\psi^{-1}=\pi\circ\varphi$ is the
-restriction of a smooth map), $(f\circ\gamma)'(0)=D(f\circ\psi)(x_0)\,D\psi(x_0)^{-1}w$. This is linear in $w$, and injective because the coordinate
-functions of $\R^N$, restricted to $M$, recover $w$. Both spaces have dimension $k$, so the map is an isomorphism, and we will use whichever picture is
-more convenient.
+For an embedded submanifold, the velocity and derivation descriptions agree. If $\gamma'(0)=w$ and $\gamma=\psi c$ locally, then $c=\psi^{-1}\gamma$ is smooth: in a straightening neighbourhood the inverse parametrization is smooth by the four descriptions. The linear map $D\psi(x_0)$ is an isomorphism from $\R^k$ onto its image $T_pM$; write its inverse on that image as $L$. Then
+\[
+(f\gamma)'(0)=D(f\psi)(x_0)Lw.
+\]
+This depends only on $w$, satisfies Leibniz, and is injective in $w$ because the restricted ambient coordinate functions recover its components. Both tangent spaces have dimension $k$, so it is an isomorphism. We can use either description.
 
 \section{The regular value theorem}
 
 \begin{definition}
-Let $F\colon M\to N$ be smooth. A point $p$ is \emph{critical} if $dF_p$ is not surjective, and \emph{regular} otherwise; a point $q\in N$ is a
-\emph{critical value} if $F^{-1}(q)$ contains a critical point, and a \emph{regular value} otherwise (including when $F^{-1}(q)$ is empty). The map $F$ is
-an \emph{immersion} if every $dF_p$ is injective, a \emph{submersion} if every $dF_p$ is surjective, and an \emph{embedding} if it is an immersion and a
-homeomorphism onto its image.
+For smooth $F:M\to N$, a point $p$ is \emph{regular} if $dF_p$ is surjective, and \emph{critical} otherwise. A value $q\in N$ is \emph{regular} if every point of $F^{-1}(q)$ is regular, including an empty fibre; it is \emph{critical} otherwise. An \emph{immersion} has injective differentials everywhere, a \emph{submersion} has surjective differentials everywhere, and an \emph{embedding} is an immersion that is a homeomorphism onto its image.
 \end{definition}
 
 \begin{definition}
-A subset $S$ of an $n$-dimensional manifold $M$ is a \emph{$k$-dimensional embedded submanifold} if every $p\in S$ is in the domain of a chart $(U,\varphi)$
-of $M$ with $\varphi(S\cap U)=\varphi(U)\cap(\R^k\times\{0\})$.
+A subset $S$ of an $n$-manifold $M$ is a \emph{$k$-dimensional embedded submanifold} if every point of $S$ has a chart $(U,\varphi)$ of $M$ with
+\[
+\varphi(S\cap U)=\varphi(U)\cap(\R^k\times\{0\}).
+\]
 \end{definition}
 
-Exactly as in Proposition~\ref{prop:subisman}, the maps $\pi\circ\varphi|_{S\cap U}$ make $S$ a smooth manifold, the inclusion $\iota\colon S\to M$ is smooth, and
-$d\iota_p$ is injective (in these charts $\iota$ reads $x\mapsto(x,0)$). For $M=\R^N$ we recover the submanifolds of Section~\ref{sec:submanifolds}.
+Projecting these straightening charts to their first $k$ coordinates gives $S$ a smooth structure, as in Proposition~\ref{prop:subisman}. Inclusion is smooth with injective differential; in coordinates it is $x\mapsto(x,0)$. A map taking values in $S$ is smooth exactly when its composite with inclusion is smooth, by the same first-coordinate argument used earlier.
 
 \begin{theorem}[regular value theorem]\label{thm:regularvalue}
-Let $F\colon M\to N$ be smooth, $\dim M=m$, $\dim N=n$, and let $q$ be a regular value with $S=F^{-1}(q)$ non-empty. Then $S$ is an embedded submanifold of
-$M$ of dimension $m-n$, and $T_pS=\ker dF_p$ for every $p\in S$.
+Let $F:M\to N$ be smooth with dimensions $m,n$. If $q$ is a regular value and $S=F^{-1}(q)$ is nonempty, then $S$ is an embedded submanifold of dimension $m-n$, and its tangent space, identified by inclusion, is $T_pS=\ker dF_p$.
 \end{theorem}
 \begin{proof}
-Let $p\in S$, and choose charts $\varphi$ at $p$ and $\psi$ at $q$ with $\varphi(p)=0$, $\psi(q)=0$, and $F$ mapping the domain of $\varphi$ into that of $\psi$.
-Then $G=\psi\circ F\circ\varphi^{-1}$ is a smooth map from an open set of $\R^m$ to $\R^n$, and $\varphi(S\cap U)=G^{-1}(0)$. The Jacobian $DG(x)$ is surjective
-at every point of $G^{-1}(0)$, because these points come from regular points of $F$. By (b)$\Rightarrow$(a) of Theorem~\ref{thm:fourdesc} there is a diffeomorphism
-$\theta$ near $0$ in $\R^m$ with $\theta(G^{-1}(0))=\R^{m-n}\times\{0\}$ locally, and $\theta\circ\varphi$ is the required chart of $M$.
+At $p\in S$, surjectivity forces $m\ge n$. Choose charts centred at $p,q$ and restrict the source so its image lies in the target chart. The coordinate expression $G$ has zero set corresponding to $S$ and surjective derivative at its zeros. The equations-to-straightening part of Theorem~\ref{thm:fourdesc} supplies the required local chart. The dimension is $m-n$.
 
-Since $F\circ\iota$ is constant on $S$, $dF_p\circ d\iota_p=0$, so $d\iota_p(T_pS)\subset\ker dF_p$. Both have dimension $m-n$ (the kernel because $dF_p$ is
-surjective), so they are equal.
+Since $F$ is constant on $S$, differentiating its composite with inclusion gives $T_pS\subset\ker dF_p$. Both spaces have dimension $m-n$, so they coincide. An empty fibre is still a regular-value fibre by definition, but no nonempty manifold of negative dimension is being asserted. When $n=0$, all differentials are onto and the fibres are open subsets of $M$, consistent with dimension $m$.
 \end{proof}
 
 \begin{proposition}\label{prop:embedding}
-If $F\colon M\to N$ is an embedding, then $F(M)$ is an embedded submanifold of $N$, and $F$ is a diffeomorphism from $M$ onto $F(M)$. If $M$ is compact,
-every injective immersion is an embedding.
+An embedding $F:M\to N$ has embedded-submanifold image, and is a diffeomorphism onto that image. If $M$ is compact, every injective immersion $M\to N$ is an embedding.
 \end{proposition}
 \begin{proof}
-Work near $p\in M$ in charts $\varphi$ at $p$ and $\psi$ at $F(p)$; then $\psi\circ F\circ\varphi^{-1}$ is an injective immersion of an open set of $\R^m$, and
-a homeomorphism onto its image, which is open in $\psi(F(M)\cap V)$ because $F$ is a homeomorphism onto $F(M)$. The proof of (d)$\Rightarrow$(a) in
-Theorem~\ref{thm:fourdesc} applies verbatim and produces the straightening chart. In that chart and in $\varphi$, $F$ reads $x\mapsto(x,0)$, so $F\colon M\to F(M)$ has a smooth inverse. If $M$ is compact, a continuous injection into the Hausdorff space $N$ maps closed
-(hence compact) sets to compact (hence closed) sets, so it is a homeomorphism onto its image.
+Choose source and target charts near $p,F(p)$. The coordinate map is an injective immersion, and its image is locally open in the full image because $F$ is a homeomorphism onto that image. The parametrization-to-straightening argument in Theorem~\ref{thm:fourdesc} applies, after restricting target neighbourhoods to exclude other image pieces. It supplies embedded charts in which $F$ is $x\mapsto(x,0)$. The inverse on the image is projection and hence smooth.
+
+For compact $M$, a continuous injection into Hausdorff $N$ sends closed sets, which are compact, to compact and hence closed sets. Its inverse on the image is continuous. Thus an injective immersion is an embedding. Empty source cases are vacuous.
 \end{proof}
 
 \section{Sard's theorem in equal dimensions}
 
-Critical points can be plentiful: a constant map has only critical points. Critical \emph{values} cannot. Arthur Sard proved in 1942 that the critical
-values of a smooth map always form a set of measure zero; we prove the case of equal dimensions, which is the one Chapter~4 will use, and which needs
-only $C^1$.
+A derivative can lose rank at many source points; a constant map loses rank everywhere when its target has positive dimension. The images of those points occupy much less space. Sard's theorem makes that statement precise. The equal-dimensional case needed in Chapter~4 has a short $C^1$ proof.
 
 \begin{lemma}\label{lem:nullsets}
-Let $U\subset\R^n$ be open and $f\colon U\to\R^n$ a $C^1$ map. If $Z\subset U$ has Lebesgue measure zero, so does $f(Z)$.
+A $C^1$ map $f:U\to\R^n$ on open $U\subset\R^n$ sends every Lebesgue-null subset $Z$ to a null subset.
 \end{lemma}
 \begin{proof}
-$U$ is a countable union of closed cubes, so it suffices to treat $Z\cap Q$ for a closed cube $Q\subset U$. On the compact convex $Q$, $\|Df\|\le L$ for
-some $L$, so $f$ is $L$-Lipschitz there by Lemma~\ref{lem:mvi}. Given $\varepsilon>0$, Lebesgue measure is outer regular (Volume~7, Proposition~7.12), so the null set $Z\cap Q$ lies in an
-open set of measure less than $\varepsilon$; that open set is a disjoint union of countably many dyadic cubes (as in the proof of the same proposition). Call
-them $C_j$, of sides $s_j$, so that $\sum_js_j^n<\varepsilon$. The set $f(C_j\cap Q)$ has diameter at most $L\sqrt n\,s_j$, so it lies in a cube of volume
-$(2L\sqrt n)^ns_j^n$, and $f(Z\cap Q)$ is covered by cubes of total volume at most $(2L\sqrt n)^n\varepsilon$.
+For $n=0$, Lebesgue measure is counting measure on a point, and the only null set is empty. Suppose $n\ge1$. Cover $U$ by countably many closed cubes lying inside $U$; it is enough to consider $Z\cap Q$ for one such cube. Compactness bounds $\|Df\|$ on $Q$ by some $L\ge1$, and the mean value inequality makes $f$ $L$-Lipschitz there.
+
+For $\varepsilon>0$, nullness and outer regularity (Volume~7, Proposition~7.12) give a countable cube cover $C_j$ of $Z\cap Q$, with side lengths $s_j$ and $\sum_js_j^n<\varepsilon$. One may obtain it from the dyadic-cube construction used there. For each nonempty $C_j\cap Q$, the image has diameter at most $L\sqrt n\,s_j$ and fits inside an axis-aligned cube of side $2L\sqrt n\,s_j$. Thus the image of $Z\cap Q$ has outer measure at most $(2L\sqrt n)^n\varepsilon$. Let $\varepsilon$ tend to zero, then take the countable union over $Q$.
 \end{proof}
 
 \begin{theorem}[Sard, equal dimensions]\label{thm:sard}
-Let $U\subset\R^n$ be open and $f\colon U\to\R^n$ a $C^1$ map, and let $C=\{x\in U:\det Df(x)=0\}$ be its set of critical points. Then $f(C)$ has
-measure zero.
+For a $C^1$ map $f:U\to\R^n$ on open $U\subset\R^n$, let $C=\{x:\det Df(x)=0\}$. Then $f(C)$ has Lebesgue measure zero.
 \end{theorem}
 \begin{proof}
-Again it suffices to show that $f(C\cap Q)$ is null for a closed cube $Q\subset U$, of side $\ell$. Let $M=\max_Q\|Df\|$. Fix $\varepsilon>0$. By Heine's
-theorem (Volume~7, Theorem~4.9) $Df$ is uniformly continuous on $Q$: there is $\delta>0$ with $\|Df(x)-Df(y)\|\le\varepsilon$ when $|x-y|\le\delta$. Cut
-$Q$ into $k^n$ subcubes of side $\frac\ell k$, with $k$ so large that their diameter $d=\frac{\sqrt n\,\ell}k$ is at most $\delta$.
+If $n=0$, the empty derivative has determinant one, so $C$ is empty. Let $n\ge1$. Again restrict to a closed cube $Q\subset U$, of side $\ell$. Put $M=\max_Q\|Df\|$. For any $\varepsilon>0$, uniform continuity of $Df$ on $Q$ (Volume~7, Theorem~4.9) gives a distance $\delta>0$ within which derivative differences have norm at most $\varepsilon$. Subdivide $Q$ into $k^n$ cubes of diameter $d=\sqrt n\,\ell/k\le\delta$.
 
-Let $Q'$ be a subcube containing a critical point $c$. For $x\in Q'$, the map $x\mapsto f(x)-Df(c)x$ has derivative of norm at most $\varepsilon$ on
-$Q'$, so by Lemma~\ref{lem:mvi}
+If a subcube $Q'$ contains a critical point $c$, subtract the linear map $Df(c)$ from $f$. Its derivative differs from zero by at most $\varepsilon$ on $Q'$, so
 \[
-\bigl|f(x)-f(c)-Df(c)(x-c)\bigr|\le\varepsilon|x-c|\le\varepsilon d.
+|f(x)-f(c)-Df(c)(x-c)|\le\varepsilon|x-c|\le\varepsilon d
+\qquad(x\in Q').
 \]
-Since $Df(c)$ is singular, its image lies in a hyperplane $H$. So $f(Q')$ lies within distance $\varepsilon d$ of the set $f(c)+\{w\in H:|w|\le Md\}$. In an
-orthonormal basis whose last vector is normal to $H$, this neighbourhood is contained in a box with $n-1$ sides of length $2(M+\varepsilon)d$ and one side
-of length $2\varepsilon d$. Lebesgue measure is invariant under rotations (Volume~7, Theorem~9.7), so
+The singular linear image lies in a hyperplane $H$, and has norm at most $Md$. Consequently $f(Q')$ lies inside the $\varepsilon d$-neighbourhood of a radius-$Md$ disc in $f(c)+H$. In coordinates with last axis normal to $H$, this fits in a box with $n-1$ sides $2(M+\varepsilon)d$ and one side $2\varepsilon d$. Rotation invariance of Lebesgue measure (Volume~7, Theorem~9.7) gives
 \[
-\lambda^*\bigl(f(Q')\bigr)\le2^n(M+\varepsilon)^{n-1}\varepsilon\,d^n.
+\lambda^*(f(Q'))\le2^n(M+\varepsilon)^{n-1}\varepsilon d^n.
 \]
-There are at most $k^n$ subcubes, and $k^nd^n=n^{n/2}\ell^n$, so
+Only cubes containing critical points are needed, and there are at most $k^n$ of them. Since $k^nd^n=n^{n/2}\ell^n$,
 \[
-\lambda^*\bigl(f(C\cap Q)\bigr)\le2^n(M+\varepsilon)^{n-1}n^{n/2}\ell^n\,\varepsilon.
+\lambda^*(f(C\cap Q))\le
+2^n(M+\varepsilon)^{n-1}n^{n/2}\ell^n\varepsilon.
 \]
-This holds for every $\varepsilon>0$, so $f(C\cap Q)$ is null.
+Let $\varepsilon\downarrow0$. This proves nullness on each $Q$, then on all of $U$ by the countable cube cover.
 \end{proof}
 
 \begin{beauty}
-The proof is one picture: near a critical point the map squashes a small cube of size $d$ into a pancake of thickness $\varepsilon d$, so the image has
-volume $\varepsilon d^n$ instead of $d^n$. Summing over the cubes, the critical values fill a fraction $\varepsilon$ of the space, for every $\varepsilon$.
-The critical points themselves can fill a whole open set (for a constant map they are everything); what is small is always the set of values.
+At a critical point the derivative puts a whole small cube into a hyperplane. The nonlinear error thickens that flat image by only $\varepsilon d$. Its volume is therefore proportional to $\varepsilon d^n$, rather than merely $d^n$. Summing over roughly $d^{-n}$ cubes leaves a bound proportional to $\varepsilon$, which can be made arbitrarily small. The critical points may fill the source, but their values cannot fill an open region of a positive-dimensional target.
 \end{beauty}
 
-On a manifold, a set $Z\subset N$ has \emph{measure zero} if $\psi(Z\cap V)$ is Lebesgue-null for every chart $(V,\psi)$. By Lemma~\ref{lem:nullsets}
-applied to the transition maps, it suffices to check this on the charts of one atlas.
+A subset $Z\subset N$ is \emph{null on the manifold} when its image in every target chart is Lebesgue-null. The preceding null-set lemma applied to transition maps makes this independent of the chosen atlas.
 
 \begin{corollary}\label{cor:sardmfd}
-Let $F\colon M\to N$ be a smooth map between manifolds of the same dimension. Its set of critical values has measure zero; in particular its regular
-values are dense in $N$.
+For a smooth map between manifolds of equal dimension, the critical values form a null set and the regular values are dense in the target.
 \end{corollary}
 \begin{proof}
-Since $M$ has a countable basis, countably many charts $(U_i,\varphi_i)$ cover it: the members of the basis that lie in some chart domain
-cover $M$, and for each of them we pick one such chart. Fix a chart $(V,\psi)$ of $N$. In the coordinates $G_i=\psi\circ F\circ\varphi_i^{-1}$ on $\varphi_i(U_i\cap F^{-1}(V))$, a point is
-critical for $F$ exactly when it is critical for $G_i$, because charts have invertible differentials. So $\psi(\text{critical values}\cap V)$ is the union over
-$i$ of the critical values of the $G_i$, a countable union of null sets by Theorem~\ref{thm:sard}. A null set contains no non-empty open set of
-$\R^n$, so its complement is dense.
+A countable basis lets us choose countably many source charts covering $M$: choose a containing chart for each basis member that lies in some chart domain. Fix a target chart $(V,\psi)$. In each source chart $\varphi_i$, restrict to the preimage of $V$ and use the equal-dimensional theorem for $\psi F\varphi_i^{-1}$. Invertible chart differentials preserve the condition of being critical. Thus the critical values in $V$ are a countable union of null coordinate sets, hence null. In positive dimension a nonempty open set has positive measure, so the complement is dense. In dimension zero every differential is the surjective map between zero vector spaces, so every value is regular. Empty source or target cases satisfy the assertions as well.
 \end{proof}
 
 \begin{remark}
-The full theorem of Sard (1942) says that for a $C^r$ map $\R^m\to\R^n$ with $r\ge\max(m-n+1,1)$ the critical values are null; A.~P.~Morse had proved the
-case $n=1$ in 1939. The smoothness hypothesis cannot be weakened to $C^1$ when $m>n$: Whitney constructed in 1935 a $C^1$ function on $\R^2$ which is not
-constant on a connected arc of critical points, so that its critical values fill an interval. When $m<n$ every point is critical and the theorem says
-that the image is null, which Exercise~\ref{ex:minisard} proves directly.
+We quote the general Morse--Sard theorem: for $n\ge1$, a $C^r$ map $\R^m\to\R^n$ has null critical values if $r\ge\max(m-n+1,1)$. Morse proved the scalar-target case in 1939 and Sard the general result in 1942. The equal-dimensional proof above does not establish the general case. Whitney's 1935 example of a $C^1$ function on $\R^2$, nonconstant along a connected arc of critical points, shows why more smoothness can be needed: its critical values contain an interval. When $m<n$, every differential fails to be surjective, and Exercise~\ref{ex:minisard} proves nullness of the whole image directly. A zero-dimensional target has no critical points.
 \end{remark}
 
 \section{Every compact manifold lives in some \texorpdfstring{$\R^N$}{R\^{}N}}
 
 \begin{theorem}[Whitney, easy version]\label{thm:whitney}
-Every compact smooth manifold $M$ admits an embedding into some $\R^N$. Consequently $M$ is diffeomorphic to a submanifold of $\R^N$.
+Every compact smooth manifold embeds into some Euclidean space $\R^N$ and is therefore diffeomorphic to an embedded submanifold there.
 \end{theorem}
 \begin{proof}
-Let $n=\dim M$. For each $p\in M$ choose a chart $(U,\varphi)$ with $\varphi(p)=0$, $\bar B(0,2r)\subset\varphi(U)$, and the bump $\rho=b(\varphi/r)$ of
-Lemma~\ref{lem:bump}, extended by $0$: it is smooth on $M$, its support is a compact subset of $U$, and it equals $1$ on the open set
-$W=\varphi^{-1}(B(0,r))\ni p$. By compactness finitely many of the $W$ cover $M$; call the corresponding data $(U_i,\varphi_i,\rho_i,W_i)$, $1\le i\le s$.
-The functions $\rho_i\varphi_i$, extended by $0$ outside $U_i$, are smooth on $M$ (smooth on $U_i$, and zero on the open set $M\setminus\operatorname{supp}\rho_i$;
-these two sets cover $M$). Define
+The empty manifold has its unique embedding into $\R^0$. For nonempty $M$ of dimension $n$, choose about each point a chart $(U_i,\varphi_i)$ and a bump $\rho_i$ supported compactly inside that chart, equal to one on a smaller open $W_i$. Compactness lets finitely many $W_i$, $1\le i\le s$, cover $M$.
+
+Extend $\rho_i\varphi_i$ and $\rho_i$ by zero off the chart. They are smooth because their supports stay compactly inside it. Define
 \[
-F=(\rho_1\varphi_1,\dots,\rho_s\varphi_s,\rho_1,\dots,\rho_s)\colon M\to\R^{sn+s}.
+F=(\rho_1\varphi_1,\ldots,\rho_s\varphi_s,\rho_1,\ldots,\rho_s)
+:M\to\R^{sn+s}.
 \]
-\emph{Injective.} If $F(p)=F(q)$, pick $i$ with $p\in W_i$. Then $\rho_i(q)=\rho_i(p)=1$, so $q\in U_i$, and
-$\varphi_i(q)=\rho_i\varphi_i(q)=\rho_i\varphi_i(p)=\varphi_i(p)$; since $\varphi_i$ is injective, $p=q$.
+The last coordinates record which cutoffs are active; they prevent chart values zero from being confused with points outside that chart.
 
-\emph{Immersion.} On the open set $W_i$ the component $\rho_i\varphi_i$ equals the chart $\varphi_i$, whose differential is an isomorphism. So for
-$p\in W_i$, $dF_p$ is injective already on these $n$ coordinates.
-
-By Proposition~\ref{prop:embedding}, $F$ is an embedding and a diffeomorphism onto the submanifold $F(M)$.
+If $F(p)=F(q)$, choose $i$ with $p\in W_i$. Then $\rho_i(q)=\rho_i(p)=1$, so $q$ lies in the same chart, and equality of the $\rho_i\varphi_i$ coordinates gives $\varphi_i(p)=\varphi_i(q)$. Thus $p=q$. Near $p\in W_i$, these coordinates equal the chart itself, so $dF_p$ is injective. We have an injective immersion from a compact manifold, hence an embedding by Proposition~\ref{prop:embedding}. In dimension zero the coordinate blocks are empty, but the cutoff coordinates still distinguish the finitely many points, and injectivity of the differential from the zero tangent space is automatic.
 \end{proof}
 
 \begin{remark}
-Whitney's 1936 paper proves much more: every $n$-dimensional manifold, compact or not, embeds in $\R^{2n+1}$. The idea is to start from the embedding above
-and project it to hyperplanes one direction at a time; Sard's theorem, applied to suitable maps into the sphere of directions, shows that almost every
-direction can be projected away while the map stays an injective immersion, as long as $N>2n+1$. In 1944 Whitney reached $\R^{2n}$, which is optimal: the
-projective plane $\R P^2$ does not embed in $\R^3$ (a fact we quote and do not prove), although it embeds in $\R^4$ (Exercise~\ref{ex:rp2}).
+Whitney's 1936 theorem gives the much sharper embedding into $\R^{2n+1}$, for compact and noncompact smooth $n$-manifolds. For the compact case, the construction above can be followed by successive projections: appropriate Sard arguments exclude directions that identify two points or kill a tangent direction while the ambient dimension is too large. The noncompact case requires an additional global construction; neither sharper theorem is proved here.
+
+In 1944 Whitney obtained embeddings into $\R^{2n}$ for $n\ge1$. The restriction excludes zero-dimensional counterexamples such as two points, which cannot embed into the single point $\R^0$. The projective plane illustrates the strength of the positive-dimensional bound: it embeds into $\R^4$ by Exercise~\ref{ex:rp2}, but does not embed into $\R^3$, a fact we quote without proof.
 \end{remark}
 
-Whitney's theorem closes the circle that Riemann opened. Riemann wanted geometry intrinsic, read from inside, without an ambient space; Weyl and Whitney
-made that precise with charts; and Whitney then showed that every intrinsic manifold could, after all, be placed in an ambient space. What is gained by
-the abstract point of view is not more manifolds but more freedom: we can now work with $\R P^n$, with groups of matrices and with the configuration
-spaces of robot arms without first choosing how to draw them.
+Charts let us do calculus without choosing an ambient picture. The compact embedding proves that this viewpoint still describes familiar submanifolds somewhere in Euclidean space, while leaving us free to choose coordinates suited to the problem. For the robot arm, its configuration torus and its hand-position map serve different jobs: one describes possible states, the other the output of each state.
 
 \begin{figure}[ht]
 \centering
@@ -641,212 +532,285 @@ Exercise~\ref{ex:twolinkarm}: there, the two solutions merge and the arm loses a
 \label{fig:arm}
 \end{figure}
 
+\begin{figure}[ht]
+\centering
+\fig{v9-ch01-schur-chart}
+\caption{Near a matrix with an invertible $r\times r$ minor $A$, rank $r$ forces $D=CA^{-1}B$. The blocks $A,B,C$ are free coordinates; $D$ is determined. Their total number of entries is $r^2+r(n-r)+(m-r)r=r(m+n-r)$. Exercise~\ref{ex:v9-rank-matrix-chart} proves the chart and its tangent-space formula.}
+\label{fig:v9-rank-matrix-chart}
+\end{figure}
+
+\begin{figure}[ht]
+\centering
+\fig{v9-ch01-critical-image}
+\caption{For $f(x,y)=(x,y^2)$, the square $[-h,h]^2$ maps onto $[-h,h]\times[0,h^2]$. The panels use the same axis scale, with $h=1/2$. The source area is $4h^2$ and the image area $2h^3$; their ratio tends to zero with $h$. The critical diameter $y=0$ maps to a line segment.}
+\label{fig:v9-critical-image}
+\end{figure}
+
 \section{What we proved, and what comes next}
 
-The opening asked whether calculus can live on a space that is flat only in small pieces. It can, and one theorem carries the weight. The inverse
-function theorem (Theorem~\ref{thm:inverse}), proved from Banach's fixed point theorem, says that a map whose derivative is invertible can be undone
-near the point. From it came the implicit function theorem, the four equivalent descriptions of a submanifold (Theorem~\ref{thm:fourdesc}) and the
-regular value theorem (Theorem~\ref{thm:regularvalue}): the sphere, the orthogonal group and the Cassini ovals are manifolds because a derivative is
-onto.
+A sphere's coordinate patch is not flat as a geometric surface, but its coordinates take values in a Euclidean open set, where ordinary calculus applies. Smooth transitions make those local calculations agree. The tangent space can be found from parametrized velocities, kernels of equation derivatives, or derivations on functions; all three descriptions give the same linear information.
 
-Charts then freed us from the ambient space. Projective space became a manifold without being drawn anywhere, and the tangent space became a space of
-derivations, of the right dimension (Theorem~\ref{thm:tangentbasis}). Two theorems say that the freedom costs nothing. Sard's theorem in equal dimensions
-(Theorem~\ref{thm:sard}) says that critical values are rare, and the easy Whitney theorem (Theorem~\ref{thm:whitney}) puts every compact manifold back
-inside some $\R^N$.
+Invertible derivatives supplied inverse coordinates, and surjective derivatives supplied level-set coordinates. The arm's singular configurations show why the rank condition matters. Sard's equal-dimensional theorem explains why their output values are small in measure, while smooth bumps let us combine local coordinates into the compact embedding.
 
-A tangent vector is still one arrow at one point. The next chapter asks what happens when an arrow is chosen at every point at once. Following the
-arrows gives a flow, and the question of whether a sphere can carry a nowhere-zero field of arrows has a surprising answer: in even dimension, it cannot.
+A tangent vector so far belongs to one point. Chapter~2 chooses vectors smoothly at every point and follows their arrows to build flows. It will also ask which spheres can carry such an arrow field without a zero.
 
 \section{Exercises}
 
 \begin{exercise}[$\star$]\label{ex:cubeinverse}
-\emph{The hypotheses of the inverse function theorem.} (a) Show that $f(x)=x^3$ is a smooth bijection of $\R$ whose inverse is not differentiable at $0$.
-(b) Let $f(x,y)=(e^x\cos y,e^x\sin y)$. Show that $Df(x,y)$ is invertible everywhere but $f$ is not injective. What does the inverse function theorem
-give for $f$, and how is $f$ related to the complex exponential?
+\emph{Local inverses and their limits.} (a) Prove that $x\mapsto x^3$ is a smooth bijection of $\R$ whose inverse is not differentiable at zero. (b) For $f(x,y)=(e^x\cos y,e^x\sin y)$, show that the derivative is invertible everywhere but $f$ is not injective. Describe the inverses supplied locally by the inverse function theorem and relate them to the complex exponential.
 \end{exercise}
-
 \begin{exercise}[$\star$]\label{ex:matrixgroups}
-\emph{More matrix groups.} (a) Show that $\mathrm{SL}_n(\R)=\{\det=1\}$ is a submanifold of $M_n(\R)$ of dimension $n^2-1$. (Differentiate
-$t\mapsto\det((1+t)X)$.) (b) Show that $\mathrm U(n)=\{X\in M_n(\C):X^*X=I\}$ is a submanifold of $M_n(\C)=\R^{2n^2}$ of dimension $n^2$. (c) Show that
-$\det\colon\mathrm U(n)\to S^1$ is a submersion and deduce that $\mathrm{SU}(n)$ is a submanifold of dimension $n^2-1$. (d) Identify the tangent spaces at
-$I$ of $\mathrm{SL}_n(\R)$, $\mathrm U(n)$ and $\mathrm{SU}(n)$.
+\emph{Special and unitary matrices.} Let $n\ge1$. (a) Show that $\mathrm{SL}_n(\R)=\{\det=1\}$ has dimension $n^2-1$ as a submanifold of $M_n(\R)$. (b) Show that $\mathrm U(n)=\{X\in M_n(\C):X^*X=I\}$ is a real submanifold of dimension $n^2$. (c) Prove that $\det:\mathrm U(n)\to S^1$ is a submersion and deduce that $\mathrm{SU}(n)$ has dimension $n^2-1$. (d) Find their tangent spaces at the identity.
 \end{exercise}
-
 \begin{exercise}[$\star$]\label{ex:twolinkarm}
-\emph{The two-link arm.} Let $\ell_1>\ell_2>0$ and $E\colon T^2\to\R^2=\C$, $E(\theta_1,\theta_2)=\ell_1e^{i\theta_1}+\ell_2e^{i(\theta_1+\theta_2)}$, the
-position of the hand of an arm whose shoulder turns by $\theta_1$ and elbow by $\theta_2$. (a) Show that the critical points of $E$ are the
-configurations with $\theta_2\in\{0,\pi\}$. (b) Show that the critical values are the two circles $|w|=\ell_1\pm\ell_2$. (c) Show that every $w$ with
-$\ell_1-\ell_2<|w|<\ell_1+\ell_2$ has exactly two preimages, every $w$ on the circles exactly one, and every other $w$ none (Figure~\ref{fig:arm}).
+\emph{The hand of a two-link arm.} Let $\ell_1>\ell_2>0$, and use angles modulo $2\pi$ on the configuration torus. The hand-position map is
+\[
+E(\theta_1,\theta_2)=\ell_1e^{i\theta_1}+\ell_2e^{i(\theta_1+\theta_2)}\in\C=\R^2.
+\]
+(a) Find its critical points. (b) Prove that its critical values are the circles $|w|=\ell_1\pm\ell_2$. (c) Show that the open annulus between them has two preimages per point, each boundary circle has one, and all other points have none, as in Figure~\ref{fig:arm}.
 \end{exercise}
-
 \begin{exercise}[$\star$]\label{ex:nosubmanifold}
-\emph{Two non-examples.} (a) Show that the cone $\{(x,y,z):x^2+y^2=z^2\}$ is not a submanifold of $\R^3$ of any dimension. (Look at curves through $0$.)
-(b) Let $\psi(t)=(\sin2t,\sin t)$. Show that $\psi$ is an injective immersion of $\left]0,2\pi\right[$ into $\R^2$, but that its image is not a submanifold.
-Why does this not contradict Theorem~\ref{thm:fourdesc}?
+\emph{A cone and a crossing.} (a) Show that $x^2+y^2=z^2$ is not a submanifold of $\R^3$ near zero, of any dimension. Use velocities of curves through the vertex. (b) Show that $\psi(t)=(\sin2t,\sin t)$ is an injective immersion on $0<t<2\pi$, but its image is not a submanifold at zero. Identify the missing hypothesis in Theorem~\ref{thm:fourdesc}(d).
 \end{exercise}
-
 \begin{exercise}[$\star$]\label{ex:stereographic}
-\emph{Stereographic projection.} Let $N=(0,\dots,0,1)$ and $S=-N$ in $S^n\subset\R^{n+1}$, and write $x=(x',x_{n+1})$. Let
-$\sigma_N(x)=\frac{x'}{1-x_{n+1}}$ on $S^n\setminus\{N\}$ and $\sigma_S(x)=\frac{x'}{1+x_{n+1}}$ on $S^n\setminus\{S\}$. (a) Show that
-$\sigma_N^{-1}(y)=\frac{(2y,|y|^2-1)}{|y|^2+1}$. (b) Show that $\sigma_S\circ\sigma_N^{-1}(y)=\frac y{|y|^2}$ on $\R^n\setminus\{0\}$, so the two charts form an
-atlas. (c) Show that this atlas defines the same smooth structure as Proposition~\ref{prop:subisman}.
+\emph{Coordinates from a pole.} On $S^n$, $n\ge0$, let $N=(0,\ldots,0,1)$ and $S=-N$. For $x=(x',x_{n+1})$ set
+\[
+\sigma_N(x)=\frac{x'}{1-x_{n+1}},\qquad
+\sigma_S(x)=\frac{x'}{1+x_{n+1}}
+\]
+on the respective punctured spheres. (a) Prove that $\sigma_N^{-1}(y)=(2y,|y|^2-1)/(1+|y|^2)$. (b) Compute $\sigma_S\sigma_N^{-1}(y)=y/|y|^2$ on the overlap. (c) Prove that these charts give the sphere's submanifold smooth structure, and explain the zero-dimensional case.
 \end{exercise}
-
 \begin{exercise}[$\star$]\label{ex:minisard}
-\emph{Curves do not fill the plane.} Let $U\subset\R^m$ be open and $f\colon U\to\R^n$ a $C^1$ map, with $m<n$. Show that $f(U)$ has measure zero. Compare
-with Lebesgue's continuous surjection of $[0,1]$ onto the square (Volume~7, Exercise~4.7).
+\emph{A smooth curve cannot fill a square.} If $f:U\subset\R^m\to\R^n$ is $C^1$ on an open set and $m<n$, prove that $f(U)$ is null. Include $m=0$. Compare this with the continuous space-filling map in Volume~7, Exercise~4.7.
+\end{exercise}
+\begin{exercise}[$\star\star$]\label{ex:rp2}
+\emph{A projective plane in four dimensions.} For $v=(x,y,z)\in S^2$ define
+\[
+\tilde F(v)=(x^2-y^2,xy,xz,yz).
+\]
+(a) Prove that it induces a smooth $F:\R P^2\to\R^4$. (b) Recover $x^2+y^2$ and the matrix $vv^\top$ from its value, proving injectivity on projective points. (c) Prove that $F$ is an immersion and hence an embedding of a compact surface.
 \end{exercise}
 
-\begin{exercise}[$\star\star$]\label{ex:rp2}
-\emph{The projective plane in $\R^4$.} For $v=(x,y,z)\in S^2$ let $\tilde F(v)=(x^2-y^2,\,xy,\,xz,\,yz)$. (a) Show that $\tilde F$ induces a smooth map
-$F\colon\R P^2\to\R^4$. (b) Show that $F$ is injective. (Compute $x^2+y^2$ from $F$.) (c) Show that $F$ is an immersion, and conclude that $\R P^2$ is
-diffeomorphic to a compact surface in $\R^4$.
+\begin{exercise}[$\star\star$]\label{ex:v9-defining-function}
+\emph{The set can be smooth when the equation is not regular.} Put $g(x,y)=x^4+y^4-1$, and denote its zero set by $M=g^{-1}(0)$. (a) Prove that $M$ is a compact smooth curve diffeomorphic to $S^1$. (b) Compute its tangent at $(a,b)$ and an explicit local graph near $(1,0)$. (c) For $G=g^2$, find all critical values and describe each level type as its value varies. Explain why zero fails to be a regular value of $G$ even though $G^{-1}(0)=M$ is smooth.
+\end{exercise}
+\begin{exercise}[$\star\star$]\label{ex:v9-rank-matrix-chart}
+\emph{Matrices of a fixed rank.} For $0\le r\le\min(m,n)$, let $\mathcal R_r\subset M_{m,n}(\R)$ consist of rank-$r$ matrices. (a) On a neighbourhood where an $r\times r$ minor $A$ is invertible, write $X=\bigl(\begin{smallmatrix}A&B\\C&D\end{smallmatrix}\bigr)$ and show that rank $r$ is equivalent to $D=CA^{-1}B$. Prove that $\mathcal R_r$ is a manifold of dimension $r(m+n-r)$. (b) Compute its tangent space at $\bigl(\begin{smallmatrix}I_r&0\\0&0\end{smallmatrix}\bigr)$. (c) If $0<r<\min(m,n)$, show that the set of matrices of rank at most $r$ is not a submanifold near zero. Treat $r=0$ separately.
+\end{exercise}
+\begin{exercise}[$\star\star\star$]\label{ex:v9-transverse-intersections}
+\emph{When two submanifolds cross cleanly.} Embedded submanifolds $M,N\subset\R^q$, of dimensions $m,n$, meet \emph{transversely} if $T_pM+T_pN=\R^q$ at each $p\in M\cap N$. (a) If the intersection is nonempty and transverse, prove it is an embedded submanifold of dimension $m+n-q$, with tangent $T_pM\cap T_pN$. Use local equation maps and verify their combined surjectivity. (b) Apply this to $S^2$ and the plane $z=c$. Explain the two tangent cases and why nontransversality does not by itself rule out a manifold intersection.
+\end{exercise}
+\begin{exercise}[$\star\star$]\label{ex:v9-proper-exhaustion}
+\emph{A smooth function measuring escape.} A continuous map is \emph{proper} if inverse images of compact sets are compact. (a) Use a locally finite partition of unity with compact supports to build a smooth proper $f:M\to[1,\infty)$ on every nonempty smooth manifold. Try $f=\sum_jj\rho_j$. (b) Prove that a sequence leaves every compact subset of $M$ exactly when $f$ tends to infinity along it; deduce that $f$ is unbounded if $M$ is noncompact. (c) For compact $K\subset O$, $O$ open in $M$, construct a smooth $\chi:M\to[0,1]$ equal to one near $K$ and compactly supported in $O$. Use it to extend a smooth function on $O$ to all of $M$, agreeing near $K$.
 \end{exercise}
 
 \section{Hints}
 
 \begin{hint}{ex:cubeinverse}
-(a) Compute the difference quotient of $x^{1/3}$ at $0$. (b) $\det Df=e^{2x}$, and $f(x,y+2\pi)=f(x,y)$.
+The inverse difference quotient at zero is $y^{-2/3}$. For (b), compute the determinant and compare $y$ with $y+2\pi$.
 \end{hint}
 \begin{hint}{ex:matrixgroups}
-(b) Copy Example~\ref{ex:on} with Hermitian matrices, of real dimension $n^2$. (c) $t\mapsto e^{it}X$ is a curve in $\mathrm U(n)$.
+Differentiate $\det((1+t)X)$ on $\det X=1$. For unitary matrices replace symmetric matrices by Hermitian matrices, a real space of dimension $n^2$. For the determinant submersion use $e^{it}X$.
 \end{hint}
 \begin{hint}{ex:twolinkarm}
-Two vectors $a,b\in\C$ are dependent over $\R$ if and only if $\operatorname{Im}(a\bar b)=0$. For (c), $|w|^2=\ell_1^2+\ell_2^2+2\ell_1\ell_2\cos\theta_2$.
+The derivative columns are $iE$ and $i\ell_2e^{i(\theta_1+\theta_2)}$. For the preimage count, compute $|E|^2$ and solve for $\cos\theta_2$ first.
 \end{hint}
 \begin{hint}{ex:nosubmanifold}
-Use Proposition~\ref{prop:tangentsub}: find curves through $0$ whose velocities span too much. For (b), the formula for $\psi$ also makes sense near $t=0$.
+Find curve velocities spanning the whole ambient space. That would force the set to be open. For the crossing image, points $(\varepsilon,0)$ with $\varepsilon\ne0$ are missing.
 \end{hint}
 \begin{hint}{ex:stereographic}
-For (c), $\sigma_N$ is the restriction of a smooth map on $\{x_{n+1}\ne1\}$, so the chain rule applied to $\sigma_N\circ\sigma_N^{-1}=\mathrm{id}$ shows
-$\sigma_N^{-1}$ is an immersion.
+Substitute the proposed inverse and check its norm. For compatibility with the submanifold atlas, use the ambient smooth formulas in both directions and the target-coordinate fact proved after Proposition~\ref{prop:subisman}.
 \end{hint}
 \begin{hint}{ex:minisard}
-Extend $f$ to $U\times\R^{n-m}$ without using the new variables.
+Define $G(x,z)=f(x)$ on $U\times\R^{n-m}$ and apply the null-set lemma to $U\times\{0\}$.
 \end{hint}
 \begin{hint}{ex:rp2}
-(b) $(x^2+y^2)^2=(x^2-y^2)^2+4x^2y^2$. (c) Show that if $h\perp v$ and $D\tilde F(v)h=0$, then $hv^\top+vh^\top$ is diagonal; apply it to $v$.
+Use $(x^2+y^2)^2=(x^2-y^2)^2+4x^2y^2$. For immersion, if $h\perp v$ and $D\tilde F(v)h=0$, examine the diagonal matrix $hv^\top+vh^\top$ and multiply it by $v$.
+\end{hint}
+\begin{hint}{ex:v9-defining-function}
+The radial map $u\mapsto u/(u_1^4+u_2^4)^{1/4}$ sends $S^1$ to $M$. For $G$, use $DG=2gDg$ and solve $g=\pm\sqrt c$ for a level value $c\ge0$.
+\end{hint}
+\begin{hint}{ex:v9-rank-matrix-chart}
+Invertible block row and column operations turn $X$ into blocks $A$ and $D-CA^{-1}B$. At the indicated base matrix the first derivative of $CA^{-1}B$ is zero. Rank-one coordinate matrix lines pass through zero in the rank-at-most set.
+\end{hint}
+\begin{hint}{ex:v9-transverse-intersections}
+If $T_pM=\ker DF$ and $T_pN=\ker DG$, the row spaces of $DF,DG$ are their orthogonal complements. The rows of the combined equation map are independent exactly when these complements intersect only in zero.
+\end{hint}
+\begin{hint}{ex:v9-proper-exhaustion}
+Outside the first $N$ supports, the weighted sum is at least $N+1$. For the cutoff choose finitely many bumps equal to one near points of $K$, and use $1-\prod_i(1-\chi_i)$.
 \end{hint}
 
 \section{Solutions}
 
 \begin{solution}{ex:cubeinverse}
-\idea Each part removes one hypothesis and watches the conclusion fail: first invertibility of the derivative, then the word ``locally''.
-\writeup (a) $f$ is smooth and strictly increasing with limits $\pm\infty$, so it is a bijection, with inverse $g(y)=y^{1/3}$ (the real cube root). At $0$,
-$\frac{g(y)-g(0)}y=y^{-2/3}\to+\infty$, so $g$ is not differentiable at $0$. The inverse function theorem does not apply there, since $f'(0)=0$. If $g$ were
-differentiable at $0$, the chain rule applied to $f\circ g=\mathrm{id}$ would give $f'(0)g'(0)=1$, impossible: a smooth map with a singular derivative
-never has a differentiable inverse. (b) $Df=\bigl(\begin{smallmatrix}e^x\cos y&-e^x\sin y\\ e^x\sin y&e^x\cos y\end{smallmatrix}\bigr)$, with determinant
-$e^{2x}>0$. But $f(x,y+2\pi)=f(x,y)$. In complex notation $f(x,y)=e^{x+iy}$, the complex exponential. The theorem gives local inverses: these are the
-branches of the logarithm, each defined on a small disc avoiding $0$. A global inverse does not exist, for the same reason that the logarithm has no
-continuous branch on $\C\setminus\{0\}$ (Volume~8, Chapter~14). Being locally invertible everywhere is a statement about each point, and injectivity is a
-statement about pairs of points; no amount of local information gives the second.
+\idea An invertible derivative guarantees a local differentiable inverse. A bijection can lack that derivative condition, and local inverses at every point can still belong to a map that repeats globally.
+\writeup (a) The cube function is smooth, strictly increasing and has limits of both signs at infinity, so it is bijective. Its inverse is the real cube root. At zero its difference quotient is $y^{1/3}/y=y^{-2/3}\to\infty$, so it is not differentiable. The missing hypothesis is $f'(0)\ne0$. Indeed a differentiable inverse would give $f'(0)g'(0)=1$ by the chain rule, impossible.
+
+(b) The Jacobian is
+\[
+Df=\begin{pmatrix}e^x\cos y&-e^x\sin y\\e^x\sin y&e^x\cos y\end{pmatrix},
+\qquad\det Df=e^{2x}>0.
+\]
+Yet replacing $y$ by $y+2\pi$ leaves $f$ unchanged. In complex notation $f(x,y)=e^{x+iy}$. Near any source point, the inverse theorem gives a branch of the logarithm on a sufficiently small target neighbourhood avoiding zero. These different branches need not agree globally; the periodicity already prevents a global inverse for this map. The obstruction to a single logarithm branch on $\C^*$ was discussed in Volume~8, Chapter~14.
 \end{solution}
 
 \begin{solution}{ex:matrixgroups}
-\idea A group defined by an equation $\Phi(X)=c$ is a manifold as soon as the derivative of $\Phi$ is onto at every solution, and the group structure
-helps produce a preimage: one only needs to move along a curve that changes $\Phi$ in a known way.
-\writeup (a) $\det((1+t)X)=(1+t)^n\det X$, so for $\det X=1$ the derivative of $\det$ at $X$ in the direction $X$ is $n\ne0$. A non-zero linear form on
-$M_n(\R)$ is surjective onto $\R$, so by (b) of Theorem~\ref{thm:fourdesc} $\mathrm{SL}_n(\R)$ is a submanifold of dimension $n^2-1$.
+\idea Differentiate each defining equation and produce a direction that changes it arbitrarily. At the identity the same derivative gives the tangent-space equation.
+\writeup (a) For $\det X=1$,
+\[
+\left.\frac{\dd}{\dd t}\det((1+t)X)\right|_{t=0}=n\ne0.
+\]
+Thus the determinant derivative is a nonzero linear functional, hence surjective onto $\R$. The four descriptions give dimension $n^2-1$. The restriction $n\ge1$ matters: the empty determinant for $n=0$ is constant one, so the formula would incorrectly give dimension $-1$ for a point.
 
-(b) Let $\mathrm{Herm}_n$ be the real vector space of Hermitian matrices; a Hermitian matrix is fixed by $n$ real diagonal entries and $\frac{n(n-1)}2$
-complex entries above the diagonal, so $\dim_\R\mathrm{Herm}_n=n^2$. Let $F(X)=X^*X-I\in\mathrm{Herm}_n$. Then $DF(X)H=H^*X+X^*H$, and for $X\in\mathrm U(n)$,
-$S\in\mathrm{Herm}_n$, the matrix $H=\frac12XS$ gives $H^*X+X^*H=\frac12SX^*X+\frac12X^*XS=S$. So $\mathrm U(n)$ is a submanifold of dimension $2n^2-n^2=n^2$.
+(b) Hermitian matrices have $n$ real diagonal entries and $n(n-1)/2$ arbitrary complex entries above the diagonal, a total real dimension $n^2$. For $F(X)=X^*X-I$, expansion gives $DF(X)H=H^*X+X^*H$. At a unitary $X$, every Hermitian $S$ is the image of $H=XS/2$. The zero set is therefore a submanifold of real dimension $2n^2-n^2=n^2$.
 
-(c) The determinant of a unitary matrix has modulus $1$, so $\det$ maps $\mathrm U(n)$ smoothly to $S^1$ (Proposition~\ref{prop:subisman}). For
-$X\in\mathrm U(n)$ the curve $t\mapsto e^{it}X$ lies in $\mathrm U(n)$ and $\det(e^{it}X)=e^{int}\det X$ has derivative $in\det X\ne0$ at $t=0$. So the image
-of $d\det_X$ contains a non-zero vector of the line $T_{\det X}S^1$, and $\det$ is a submersion. By Theorem~\ref{thm:regularvalue},
-$\mathrm{SU}(n)=\det^{-1}(1)$ is an embedded submanifold of $\mathrm U(n)$ of dimension $n^2-1$; composing the charts, it is also a submanifold of
-$M_n(\C)$.
+(c) The determinant of a unitary matrix has modulus one. Its ambient polynomial formula and the target-submanifold coordinate fact make $\det:\mathrm U(n)\to S^1$ smooth. The curve $e^{it}X$ is unitary and its determinant is $e^{int}\det X$, with nonzero tangent vector $in\det X$. Since the target tangent is one-dimensional, the differential is onto. The regular-value theorem makes $\mathrm{SU}(n)$ an embedded submanifold of dimension $n^2-1$. Combining its local straightening charts with those of $\mathrm U(n)$ gives the same embedded description in the full matrix space.
 
-(d) By Proposition~\ref{prop:tangentsub} and Theorem~\ref{thm:regularvalue}, tangent spaces are kernels. The derivative of $\det$ at $I$ is the trace
-(expand $\det(I+tH)=1+t\operatorname{tr}H+O(t^2)$), so $T_I\mathrm{SL}_n(\R)=\{\operatorname{tr}H=0\}$. $T_I\mathrm U(n)=\{H^*+H=0\}$, the skew-Hermitian
-matrices, and $T_I\mathrm{SU}(n)$ is the set of skew-Hermitian matrices of trace $0$. These are the Lie algebras $\mathfrak{sl}_n$, $\mathfrak u(n)$,
-$\mathfrak{su}(n)$ of Chapter~7.
+(d) Expanding the determinant by permutations gives $\det(I+tH)=1+t\operatorname{tr}H+O(t^2)$. Its derivative at $I$ is the trace, so
+\[
+T_I\mathrm{SL}_n(\R)=\{H:\operatorname{tr}H=0\},\qquad
+T_I\mathrm U(n)=\{H:H^*+H=0\}.
+\]
+On the second space the trace is purely imaginary; its zero kernel is
+$T_I\mathrm{SU}(n)=\{H:H^*+H=0,\ \operatorname{tr}H=0\}$. These spaces become $\mathfrak{sl}_n,\mathfrak u(n),\mathfrak{su}(n)$ in Chapter~7.
 \end{solution}
 
 \begin{solution}{ex:twolinkarm}
-\idea The derivative of $E$ has two columns, the velocities of the hand when one joint moves; they are dependent exactly when the arm is straight or
-folded, because then both joints move the hand perpendicular to the same line.
-\writeup (a) In the coordinates $(\theta_1,\theta_2)$ (local charts of $T^2$), $\partial_{\theta_1}E=iE$ and $\partial_{\theta_2}E=i\ell_2e^{i(\theta_1+\theta_2)}$.
-With $a=iE$ and $b=i\ell_2e^{i(\theta_1+\theta_2)}$,
+\idea Each derivative column is a hand velocity caused by moving one joint. When the links line up, those two velocities point along one line instead of spanning the plane.
+\writeup (a) In local angle coordinates the derivative columns are $a=iE$ and $b=i\ell_2e^{i(\theta_1+\theta_2)}$. Two complex vectors are real-linearly dependent exactly when $\operatorname{Im}(a\bar b)=0$. Here
 \[
-a\bar b=E\,\ell_2e^{-i(\theta_1+\theta_2)}=\ell_2(\ell_1e^{-i\theta_2}+\ell_2),
+a\bar b=\ell_2(\ell_1e^{-i\theta_2}+\ell_2),\qquad
+\operatorname{Im}(a\bar b)=-\ell_1\ell_2\sin\theta_2.
 \]
-whose imaginary part is $-\ell_1\ell_2\sin\theta_2$. The real $2\times2$ Jacobian is singular if and only if this vanishes, that is, $\theta_2\in\{0,\pi\}$.
+Thus the critical configurations have $\theta_2=0$ or $\pi$ modulo $2\pi$.
 
-(b) $|E|=|\ell_1+\ell_2e^{i\theta_2}|$, which is $\ell_1+\ell_2$ when $\theta_2=0$ and $\ell_1-\ell_2$ when $\theta_2=\pi$. As $\theta_1$ varies the critical
-values sweep these two circles.
+(b) At these configurations, $|E|=|\ell_1+\ell_2e^{i\theta_2}|$ is respectively $\ell_1+\ell_2$ or $\ell_1-\ell_2$. Varying $\theta_1$ sweeps every point on the corresponding circle.
 
-(c) Since $|E|^2=\ell_1^2+\ell_2^2+2\ell_1\ell_2\cos\theta_2$, a preimage of $w$ must have $\cos\theta_2=c=\frac{|w|^2-\ell_1^2-\ell_2^2}{2\ell_1\ell_2}$. This has
-two solutions $\pm\theta_2$ if $|c|<1$, which is equivalent to $\ell_1-\ell_2<|w|<\ell_1+\ell_2$; one if $c=\pm1$; none otherwise. For each such $\theta_2$
-the complex number $u=\ell_1+\ell_2e^{i\theta_2}$ is non-zero (as $\ell_1>\ell_2$) and $|u|=|w|$, so $e^{i\theta_1}=\frac wu$ determines $\theta_1$ uniquely
-modulo $2\pi$. Hence two, one or no preimages. The two preimages are the elbow-up and elbow-down postures; as $w$ approaches a boundary circle they merge,
-and at the merger the arm can no longer move its hand radially: the critical points are the singular configurations of robotics. Their images are two
-circles, of measure zero, as Corollary~\ref{cor:sardmfd} predicts.
+(c) A preimage of $w$ must satisfy
+\[
+\cos\theta_2=\frac{|w|^2-\ell_1^2-\ell_2^2}{2\ell_1\ell_2}.
+\]
+There are two angle solutions in the open annulus, one on each boundary and none elsewhere. For each solution, $u=\ell_1+\ell_2e^{i\theta_2}$ is nonzero because $\ell_1>\ell_2$, and $|u|=|w|$. Thus $e^{i\theta_1}=w/u$ determines the other angle uniquely. The two interior solutions are the elbow-up and elbow-down configurations. At the boundary they merge, and the radial hand velocity is lost. The two critical-value circles are null sets, consistent with Sard.
 \end{solution}
 
 \begin{solution}{ex:nosubmanifold}
-\idea If a set is a $k$-dimensional submanifold, its tangent space at a point is $k$-dimensional, and every curve in the set has its velocity there.
-So it is enough to exhibit curves whose velocities span more than the set can afford.
-\writeup (a) Suppose the cone $K$ is a $k$-dimensional submanifold near $0$. For each angle $\alpha$, the curve $t\mapsto(t\cos\alpha,t\sin\alpha,t)$ lies on $K$, so
-$(\cos\alpha,\sin\alpha,1)\in T_0K$. Three such vectors (for $\alpha=0,\frac\pi2,\pi$) are independent, so $k=3$, and a $3$-dimensional submanifold of $\R^3$ is
-an open set (in (a) of Theorem~\ref{thm:fourdesc}, $\varphi(K\cap U)=V$, so $K\cap U=U$). But no ball around $0$ lies in $K$: it contains $(0,0,t)$ for small
-$t\ne0$, and $0\ne t^2$.
+\idea Velocities in a submanifold must lie in one linear tangent space. Enough independent velocities force full ambient dimension, which would make the set open.
+\writeup (a) For each $\alpha$, the curve $t\mapsto(t\cos\alpha,t\sin\alpha,t)$ lies in the cone through zero. The velocities for $\alpha=0,\pi/2,\pi$ are independent and span $\R^3$. If the cone were a submanifold near zero, its tangent space would be three-dimensional. A full-dimensional submanifold is open there. But every neighbourhood of zero contains $(0,0,t)$, $t\ne0$, which is not on the cone. This is a contradiction.
 
-(b) $\psi'(t)=(2\cos2t,\cos t)$ vanishes only if $\cos t=0$ and $\cos2t=2\cos^2t-1=0$, impossible. If $\psi(t)=\psi(s)$, then $\sin s=\sin t$, so $s=t$ or
-$s=\pi-t$ modulo $2\pi$; in the second case $\sin2s=-\sin2t$, which forces $\sin2t=0$, and the only candidate $t=\pi$ would need $s\in\{0,2\pi\}$, outside the
-interval. So $\psi$ is an injective immersion. Let $S=\psi(\left]0,2\pi\right[)$. The curve $c(t)=(\sin2t,\sin t)$ for $|t|<\varepsilon$ lies in $S$ (for
-$t<0$, $c(t)=\psi(t+2\pi)$; for $t>0$, $c(t)=\psi(t)$; and $c(0)=\psi(\pi)$), with velocity $(2,1)$, and $t\mapsto\psi(\pi+t)$ has velocity $(2,-1)$.
-As in (a), if $S$ were a submanifold it would be $2$-dimensional, hence open in $\R^2$ near $0$, but $S$ is the image of a $C^1$ curve, which has measure
-zero (Exercise~\ref{ex:minisard}). No contradiction with Theorem~\ref{thm:fourdesc}: $\psi$ is not a homeomorphism onto $S$, since
-$\psi(\frac1k)\to\psi(\pi)$ while $\frac1k\not\to\pi$. The branch arriving at the origin along $t\to0$ is ``far'' in the parameter and ``near'' in the image.
+(b) The derivative $(2\cos2t,\cos t)$ never vanishes: $\cos t=0$ makes $\cos2t=-1$. For injectivity, if $\sin s=\sin t$, then either $s=t$ or $s=\pi-t$ modulo $2\pi$. In the second case equality of $\sin2s,\sin2t$ forces $\sin2t=0$. The possibilities $t=\pi/2,3\pi/2$ give $s=t$ again; $t=\pi$ would require $s=0$ or $2\pi$, outside the domain. Thus there are no distinct equal-image parameters.
+
+The image contains the smooth curve $(\sin2t,\sin t)$ for small positive and negative $t$: use the original parameters $t$ and $t+2\pi$, respectively, and use $\pi$ at $t=0$. Its velocity at zero is $(2,1)$. The original curve near parameter $\pi$ has velocity $(2,-1)$. These are independent, so a submanifold image would be open near zero. Yet any image point with second coordinate zero has parameter $\pi$ and first coordinate zero; all $(\varepsilon,0)$ with $\varepsilon\ne0$ are missing. Hence the image is not open. The failed hypothesis is homeomorphism onto the image: $\psi(1/j)\to\psi(\pi)$ while $1/j$ does not approach $\pi$.
 \end{solution}
 
 \begin{solution}{ex:stereographic}
-\idea Stereographic projection is the line through the pole and the point, cut by the equatorial plane; inverting it is solving a quadratic that has one
-known root, the pole.
-\writeup (a) Let $x=\frac{(2y,|y|^2-1)}{|y|^2+1}$. Then $|x|^2=\frac{4|y|^2+(|y|^2-1)^2}{(|y|^2+1)^2}=1$, $x\ne N$, and $1-x_{n+1}=\frac2{|y|^2+1}$, so
-$\sigma_N(x)=y$. Conversely $\sigma_N$ is injective on $S^n\setminus\{N\}$: from $y=\sigma_N(x)$ one computes $|y|^2=\frac{1-x_{n+1}^2}{(1-x_{n+1})^2}=\frac{1+x_{n+1}}{1-x_{n+1}}$, which
-determines $x_{n+1}$, and then $x'=(1-x_{n+1})y$. So $\sigma_N$ is a bijection onto $\R^n$ with the stated inverse, both continuous: a chart. (b) For
-$y\ne0$, $1+x_{n+1}=\frac{2|y|^2}{|y|^2+1}$ and $x'=\frac{2y}{|y|^2+1}$, so $\sigma_S(x)=\frac y{|y|^2}$, a smooth map of $\R^n\setminus\{0\}$ that is its own inverse. By symmetry
-the same holds the other way. (c) $\sigma_N$ is the restriction to $S^n$ of the smooth map $x\mapsto\frac{x'}{1-x_{n+1}}$ on $\{x_{n+1}\ne1\}$, so it is smooth
-for the submanifold structure (Proposition~\ref{prop:subisman}). Its inverse $\sigma_N^{-1}$ is smooth from $\R^n$ to $\R^{n+1}$, and from
-$\sigma_N\circ\sigma_N^{-1}=\mathrm{id}$ the chain rule gives that $D\sigma_N^{-1}(y)$ is injective; together with (a), $\sigma_N^{-1}$ is a parametrization in the
-sense of (d). In a straightening chart $\varphi$, the map $\pi\circ\varphi\circ\sigma_N^{-1}$ is smooth, and its inverse $\sigma_N\circ\varphi^{-1}(\cdot,0)$ is
-smooth too; so the stereographic charts are compatible with the charts of Proposition~\ref{prop:subisman}, and the two atlases lie in the same maximal atlas.
+\idea Solve the line-from-the-pole construction explicitly, then use its smooth formulas to compare atlases.
+\writeup (a) For the proposed $x$, its squared norm is
+\[
+\frac{4|y|^2+(|y|^2-1)^2}{(1+|y|^2)^2}=1,
+\]
+and $1-x_{n+1}=2/(1+|y|^2)>0$, giving $\sigma_N(x)=y$. Conversely $y=\sigma_N(x)$ satisfies
+$|y|^2=(1+x_{n+1})/(1-x_{n+1})$, which determines $x_{n+1}$ and then $x'=(1-x_{n+1})y$. The map and inverse are continuous by their formulas, giving a chart.
+
+(b) On the overlap $y\ne0$, substitution yields $1+x_{n+1}=2|y|^2/(1+|y|^2)$ and hence $\sigma_S\sigma_N^{-1}(y)=y/|y|^2$. This smooth map is its own inverse.
+
+(c) The chart map is the restriction of the ambient smooth expression $x'/(1-x_{n+1})$. Its inverse has ambient smooth components by (a), and takes values in $S^n$, so it is smooth into the sphere by the target-coordinate fact after Proposition~\ref{prop:subisman}. Thus it is a diffeomorphism for the sphere's submanifold structure, and its transitions with the straightening charts are smooth in both directions. The maximal atlas is the same. For $n=0$, each punctured sphere is one point mapping to $\R^0$; the overlap is empty, so no value of $y/|y|^2$ at zero is required.
 \end{solution}
 
 \begin{solution}{ex:minisard}
-\idea A map from a lower dimension is a map from the full dimension that ignores some variables; then every point is critical, and the null-set lemma
-does the rest.
-\writeup Let $G(x,z)=f(x)$ on the open set $U\times\R^{n-m}\subset\R^n$. It is $C^1$, and $f(U)=G(U\times\{0\})$. The set $U\times\{0\}$ has measure zero in
-$\R^n$ (it lies in a hyperplane), so $f(U)$ is null by Lemma~\ref{lem:nullsets}. Lebesgue's curve is continuous but not $C^1$, nor even Lipschitz: the
-proof of the lemma only needs a bound $|f(x)-f(y)|\le L|x-y|$, which turns a cover by small cubes into a cover by cubes of comparable size, and the same
-proof shows that a Lipschitz curve has a null image. A space-filling curve must therefore stretch small intervals into comparatively huge sets, and
-this is exactly what continuity alone allows.
+\idea Add variables that the map ignores. Its lower-dimensional source then sits inside a null subset of an equal-dimensional source, where the null-set lemma applies.
+\writeup Put $G(x,z)=f(x)$ on $U\times\R^{n-m}\subset\R^n$. It is $C^1$, and $U\times\{0\}$ lies in a hyperplane since $n-m>0$. That set is null, by Fubini or a direct box cover, so Lemma~\ref{lem:nullsets} makes $f(U)=G(U\times\{0\})$ null. This includes $m=0$: the source is empty or a point and the image has at most one point in positive-dimensional $\R^n$.
+
+The continuous square-filling curve of Volume~7 cannot be $C^1$. Nor can it be Lipschitz: the same cube-cover argument shows that the image of a bounded interval under a Lipschitz map to the plane is null (subdivide into intervals of length $\delta$, giving order $\delta^{-1}$ image boxes of area order $\delta^2$). Continuity alone does not supply that linear distance bound.
 \end{solution}
 
 \begin{solution}{ex:rp2}
-\idea The map remembers the products of pairs of coordinates, which is almost the matrix $vv^\top$, and that matrix determines the line. For the immersion
-one uses the same idea infinitesimally: the derivative of $v\mapsto vv^\top$ is $h\mapsto hv^\top+vh^\top$, which cannot vanish on $h\perp v$.
-\writeup (a) $\tilde F(-v)=\tilde F(v)$, since each component is quadratic. The quotient map $\pi\colon S^2\to\R P^2$ restricts, on each open hemisphere
-where one coordinate is positive, to a diffeomorphism onto a chart domain of Example~\ref{ex:rpn}: on $\{z>0\}$, followed by the chart
-$[x:y:z]\mapsto(\frac xz,\frac yz)$, it reads $(x,y,z)\mapsto(\frac xz,\frac yz)$, with smooth inverse $(u,s)\mapsto\frac{(u,s,1)}{\sqrt{1+u^2+s^2}}$. So
-$F=\tilde F\circ(\pi|_{\text{hemisphere}})^{-1}$ is well defined and smooth on each chart domain.
+\idea Quadratic coordinates ignore the sign of $v$ but retain its line. Their derivative must be checked separately; recovering the line continuously does not itself prove immersion.
+\writeup (a) Every component is even, so $\tilde F(-v)=\tilde F(v)$ and the quotient map induces a well-defined continuous $F$. On a projective chart choose the representative on the unit sphere with the chart's distinguished coordinate positive. For example on $z\ne0$ that section is
+\[
+(u,s)\longmapsto\frac{(u,s,1)}{\sqrt{1+u^2+s^2}}.
+\]
+It is smooth, and composing it with $\tilde F$ gives the coordinate expression of $F$. The other charts work identically, proving smoothness.
 
-(b) Let $(a,b,c,d)=\tilde F(v)$ with $|v|=1$. Since $(x^2+y^2)^2=(x^2-y^2)^2+4x^2y^2=a^2+4b^2$, we get $x^2+y^2=\sqrt{a^2+4b^2}$, hence
-$x^2=\frac{\sqrt{a^2+4b^2}+a}2$, $y^2=\frac{\sqrt{a^2+4b^2}-a}2$ and $z^2=1-x^2-y^2$. Together with $xy=b$, $xz=c$, $yz=d$, all the entries of $vv^\top$ are
-determined by $F([v])$. The matrix $vv^\top$ is the projection onto the line $\R v$, so $[v]$ is determined.
+(b) Write $\tilde F(v)=(a,b,c,d)$. The identity $(x^2+y^2)^2=a^2+4b^2$ gives
+\[
+x^2=\frac{\sqrt{a^2+4b^2}+a}{2},\quad
+y^2=\frac{\sqrt{a^2+4b^2}-a}{2},\quad z^2=1-x^2-y^2.
+\]
+Together with $xy=b,xz=c,yz=d$, these determine $vv^\top$, the orthogonal projection onto $\R v$. Its image determines $[v]$, proving injectivity. We use the square root only for uniqueness, not for differentiating an inverse at zero.
 
-(c) Since $\pi$ is a local diffeomorphism, $F$ is an immersion if $D\tilde F(v)$ is injective on $T_vS^2=v^\perp$. Let $h\perp v$ with $D\tilde F(v)h=0$:
+(c) Let $h\perp v$ and $D\tilde F(v)h=0$. Its component equations are
 \[
 2xh_1-2yh_2=0,\quad yh_1+xh_2=0,\quad zh_1+xh_3=0,\quad zh_2+yh_3=0.
 \]
-The last three say that the symmetric matrix $P=hv^\top+vh^\top$ has zero off-diagonal entries; its diagonal is $(2xh_1,2yh_2,2zh_3)$. Put $s=xh_1=yh_2$.
-From $\langle v,h\rangle=0$, $zh_3=-2s$, so $P=\operatorname{diag}(2s,2s,-4s)$. On the other hand $Pv=h|v|^2+v\langle h,v\rangle=h$. Hence
-$h=(2sx,2sy,-4sz)$, and then $s=xh_1=2sx^2$ and $s=yh_2=2sy^2$. If $s\ne0$ this gives $x^2=y^2=\frac12$, so $z=0$ and $-2s=zh_3=0$, a contradiction. So
-$s=0$, $P=0$ and $h=Pv=0$. Finally $\R P^2=\pi(S^2)$ is compact, so by Proposition~\ref{prop:embedding} $F$ is an embedding and $\R P^2$ is diffeomorphic
-to the compact surface $F(\R P^2)\subset\R^4$.
+For $P=hv^\top+vh^\top$, the last three make its off-diagonal entries zero. Put $s=xh_1=yh_2$. Orthogonality gives $zh_3=-2s$, so $P=\operatorname{diag}(2s,2s,-4s)$. But $Pv=h|v|^2+v\langle h,v\rangle=h$. Hence $h=(2sx,2sy,-4sz)$ and $s=2sx^2=2sy^2$. If $s\ne0$, this forces $x^2=y^2=1/2$, so $z=0$, contradicting $zh_3=-2s$. Thus $s=0$, $P=0$ and $h=0$.
+
+The sphere-to-projective quotient is locally a diffeomorphism by the same chart sections as in (a), so this injective tangent derivative proves that $F$ is an immersion. Its compact source makes it an embedding by Proposition~\ref{prop:embedding}. Its image is the required compact surface in $\R^4$.
+\end{solution}
+
+\begin{solution}{ex:v9-defining-function}
+\idea A regular equation supplies a good local coordinate, but the same zero set can be described by an equation whose first derivative hides all that information.
+\writeup (a) On $M$, $Dg=(4x^3,4y^3)$ cannot vanish, since that would force $x=y=0$ and $g=-1$. Thus $M$ is a one-dimensional submanifold. It is closed and bounded, hence compact. Define
+\[
+\Phi:S^1\to M,\qquad \Phi(u)=\frac{u}{(u_1^4+u_2^4)^{1/4}}.
+\]
+The denominator is positive and smooth near $S^1$; the target-coordinate fact makes $\Phi$ smooth into $M$. Its inverse is $p\mapsto p/|p|$, also smooth, and the compositions are identities by positive homogeneity. Hence $M$ is diffeomorphic to the circle.
+
+(b) The tangent at $(a,b)\in M$ is $\{(u,v):a^3u+b^3v=0\}$. Near $(1,0)$ choose the positive root
+\[
+x=(1-y^4)^{1/4},\qquad |y|<1.
+\]
+It is smooth near zero, with derivative zero there, giving the vertical tangent line at $(1,0)$.
+
+(c) Since $DG=2gDg$, the critical points are $M$ and the origin. Their values are zero and one. Negative levels are empty. For $0<c<1$, the equations $x^4+y^4=1\pm\sqrt c$ give two disjoint scaled copies of $M$. At $c=0$ there is just $M$, at $c=1$ there is the outer curve $x^4+y^4=2$ together with the isolated origin, and for $c>1$ only the outer curve remains. Every value outside $\{0,1\}$ is regular, including empty negative levels. At zero all derivatives of $G$ vanish along its fibre, so it is not a regular value. The regular-value theorem is a sufficient criterion for the equation being used; it does not say that a submanifold cannot admit a different, singular defining equation.
+\end{solution}
+
+\begin{solution}{ex:v9-rank-matrix-chart}
+\idea An invertible minor identifies the independent rows and columns. Every remaining entry is then forced by those rows and columns, leaving three freely variable blocks.
+\writeup (a) When $A$ is invertible, block elimination gives
+\[
+\begin{pmatrix}I&0\\-CA^{-1}&I\end{pmatrix}
+X
+\begin{pmatrix}I&-A^{-1}B\\0&I\end{pmatrix}
+=\begin{pmatrix}A&0\\0&D-CA^{-1}B\end{pmatrix}.
+\]
+Both multipliers are invertible, so the rank equals $r+\operatorname{rank}(D-CA^{-1}B)$. It is $r$ exactly when $D=CA^{-1}B$. Smooth inversion makes this a graph over the open set of $A,B,C$ with $\det A\ne0$. These are ambient block coordinates, so the four descriptions give an embedded submanifold of dimension
+\[
+r^2+r(n-r)+(m-r)r=r(m+n-r).
+\]
+Every rank-$r$ matrix has such a minor, after row and column permutations, which are invertible linear changes of ambient coordinates. For $r=0$ the graph consists only of the zero matrix, with dimension zero; this also covers zero matrix sizes. For maximal $r$, zero-sized blocks simply impose no extra equations.
+
+(b) At $A=I_r$, $B=C=D=0$, the derivative of $CA^{-1}B$ is zero because every first-order term still contains $B$ or $C$. The tangent consists of all block matrices $\bigl(\begin{smallmatrix}H_{11}&H_{12}\\H_{21}&0\end{smallmatrix}\bigr)$, with no restriction on the first three blocks, as the dimension count predicts.
+
+(c) If $r\ge1$, every line $tE_{ij}$ lies in the rank-at-most-$r$ set. Their velocities at zero span all $mn$ ambient directions. If this set were a submanifold near zero, its tangent would have full dimension and it would be open there. But matrices of rank $r+1$, formed by putting a small nonzero scalar on $r+1$ diagonal positions, lie arbitrarily near zero and outside the set. This contradiction proves singularity at zero for $0<r<\min(m,n)$. For $r=0$ the set is the single zero matrix and is a valid zero-dimensional submanifold.
+\end{solution}
+
+\begin{solution}{ex:v9-transverse-intersections}
+\idea Equations for both submanifolds must remain independent when combined. Transversality says exactly that their normal directions have no common nonzero vector.
+\writeup (a) At a point $p$ of the intersection, choose local equation maps $F$ for $M$ and $G$ for $N$, with surjective derivatives to $\R^{q-m}$ and $\R^{q-n}$. Shrink to a common ambient neighbourhood. Their row spaces are $(T_pM)^\perp$ and $(T_pN)^\perp$: each annihilates the relevant kernel and has its full codimension. Since
+\[
+(T_pM+T_pN)^\perp=(T_pM)^\perp\cap(T_pN)^\perp,
+\]
+transversality makes these row spaces intersect trivially. Their combined rows are therefore independent, so $D(F,G)$ is surjective at every intersection point. Its zero set is locally $M\cap N$. The regular-value theorem gives dimension
+$q-((q-m)+(q-n))=m+n-q$, which is necessarily nonnegative at any transverse intersection point. Its tangent is the combined kernel $\ker DF\cap\ker DG=T_pM\cap T_pN$. The local statements provide the embedded-submanifold charts over the whole intersection.
+
+(b) The equation normals for the sphere and plane are $2(x,y,z)$ and $(0,0,1)$. On their intersection these are independent exactly when $(x,y)\ne(0,0)$. For $|c|<1$ the intersection is the circle $x^2+y^2=1-c^2$, $z=c$, transverse and one-dimensional. At $c=\pm1$ the intersection is a single pole, the normals are parallel and transversality fails. That point is still a zero-dimensional submanifold, though the transverse dimension formula would have given one. For $|c|>1$ there is no intersection. Thus failure of this sufficient hypothesis does not settle whether the intersection is a manifold or what its dimension is.
+\end{solution}
+
+\begin{solution}{ex:v9-proper-exhaustion}
+\idea A locally finite sum is smooth without convergence estimates near a point. Increasing weights force small function values to occur inside only finitely many compact supports.
+\writeup (a) Apply the partition theorem to the cover $\{M\}$ to get $\rho_1,\rho_2,\ldots$; pad a finite family with zeros if necessary. Set $f=\sum_jj\rho_j$. Local finiteness makes it smooth and $f\ge\sum_j\rho_j=1$. For any real $R$, choose a positive integer $N>R$. Outside the first $N$ supports all active weights are at least $N+1$, so $f\ge N+1>R$. Therefore
+\[
+\{f\le R\}\subset\bigcup_{j=1}^N\operatorname{supp}\rho_j.
+\]
+The sublevel is closed and the right side is compact, so the sublevel is compact. The inverse image of any compact subset of $[1,\infty)$ is a closed subset of a sufficiently large compact sublevel, proving properness.
+
+(b) If $p_i$ leaves every compact set, it eventually lies outside each compact sublevel, so $f(p_i)\to\infty$. Conversely $f$ is bounded on any compact set, so divergence of its values eventually excludes that set. If $M$ were noncompact but $f$ bounded above, one sublevel would equal $M$, contradicting its compactness. Compact manifolds cause no problem: every continuous real-valued function on them is proper, and no sequence can leave the whole compact manifold.
+
+(c) Choose at each point of $K$ a bump $\chi_i$ supported compactly in $O$ and equal to one on a smaller neighbourhood. Finitely many such smaller neighbourhoods cover $K$. Then
+\[
+\chi=1-\prod_i(1-\chi_i)
+\]
+is smooth, lies in $[0,1]$, equals one near $K$, and is supported in the finite compact union of those supports inside $O$. If $K$ is empty, take $\chi=0$. For smooth $a:O\to\R$, define $\chi a$ on $O$ and zero elsewhere. The compact support inside $O$ makes the extension smooth across its boundary, and it agrees with $a$ near $K$.
 \end{solution}
 
 \section*{Sources and further reading}
@@ -864,9 +828,4 @@ H.~Whitney, ``Differentiable manifolds'', \emph{Ann.\ of Math.} 37 (1936), 645--
 (1942), 883--890; A.~P.~Morse, ``The behavior of a function on its critical set'', \emph{Ann.\ of Math.} 40 (1939), 62--70; H.~Whitney, ``A function not
 constant on a connected set of critical points'', \emph{Duke Math.\ J.} 1 (1935), 514--517.
 
-Our treatment of the inverse function theorem follows W.~Rudin, \emph{Principles of Mathematical Analysis}, 3rd ed. (McGraw-Hill, 1976), Chapter~9; the
-four descriptions of submanifolds and the tangent space follow J.~Lafontaine, \emph{An Introduction to Differential Manifolds} (Springer, 2015), and the
-abstract theory J.~M.~Lee, \emph{Introduction to Smooth Manifolds}, 2nd ed. (Springer, 2013), Chapters~1--5, where the general Sard theorem and the
-strong Whitney embedding theorem are also proved. J.~Milnor, \emph{Topology from the Differentiable Viewpoint} (University Press of Virginia, 1965), proves
-Sard's theorem in forty lines and is the model for everything in Chapter~3. For the robotics, J.~J.~Craig, \emph{Introduction to Robotics: Mechanics and
-Control}, 3rd ed. (Pearson, 2005), Chapters~4--5, discusses workspaces and singular configurations of arms.
+For the inverse-function argument, read W.~Rudin, \emph{Principles of Mathematical Analysis}, 3rd ed. (McGraw-Hill, 1976), Chapter~9. J.~Lafontaine, \emph{An Introduction to Differential Manifolds} (Springer, 2015), develops the local descriptions and tangent spaces; J.~M.~Lee, \emph{Introduction to Smooth Manifolds}, 2nd ed. (Springer, 2013), Chapters~1--5, gives a broader account of charts and embedded manifolds. Lee also proves the general Sard and strong Whitney theorems quoted here. J.~Milnor, \emph{Topology from the Differentiable Viewpoint} (University Press of Virginia, 1965), offers a short geometric route to Sard and the ideas used in Chapter~3. For the arm example and its mechanical meaning, see J.~J.~Craig, \emph{Introduction to Robotics: Mechanics and Control}, 3rd ed. (Pearson, 2005), Chapters~4--5.

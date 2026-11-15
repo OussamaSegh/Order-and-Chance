@@ -5,141 +5,102 @@ It is written in the language of mathematics, and its characters are triangles, 
 \upshape(Galileo Galilei, \emph{The Assayer}, 1623, translated by Stillman Drake)
 \end{center}
 
-Around 200 BC, Apollonius of Perga wrote eight books on the curves you get by cutting a cone with a plane. He gave them the names we
-still use: ellipse, parabola and hyperbola, from Greek words for falling short, being equal and exceeding. Four of the books survive in Greek,
-three more only in an Arabic translation made in Baghdad, and the eighth is lost. For eighteen centuries the conics were a beautiful and
-useless subject. Then, within a few decades, they turned out to be the shapes of the world. Johannes Kepler, who had studied the special points of
-the conics in his book on optics of 1604 and called them \emph{foci}, ``hearths'', after the burning point of a mirror, found in 1609 that Mars moves
-on an ellipse with the Sun at a focus. Galileo showed that a thrown stone flies along a parabola. And in February 1640 Blaise Pascal, sixteen years old,
-had a short \emph{Essay pour les coniques} printed in a few copies. Its first lemma contains the theorem that he called, according to later
-tradition, the \emph{mystic hexagram}: the three pairs of opposite sides of a hexagon inscribed in a conic meet in three collinear points.
+An ellipse and a parabola look different on paper. Seen projectively, each is the same curve with a different line chosen as infinity. That change of viewpoint explains why a single construction can parametrize them, why their tangent lines obey the same rules, and why six points on any of them produce Pascal's line.
 
-Projective geometry explains why the three curves of Apollonius are one: an ellipse, a parabola and a hyperbola are the same projective conic,
-seen in charts where the line at infinity misses it, touches it or cuts it. This chapter proves that all nondegenerate conics with a point are
-projectively the same, that five points determine a conic, Pascal's theorem with the help of the cross-ratio, and the theory of poles and polars
-that turns a conic into a machine exchanging points and lines. We end with Poncelet's porism for two circles, a closing theorem as surprising
-as Steiner's in Appendix~B, with a proof that uses a hidden invariant measure.
+Apollonius studied cone sections around 200 BC. Of his eight books, four survive in Greek and three through an Arabic translation; the eighth is lost. Kepler used the word \emph{focus}, or hearth, in his optics of 1604 and found Mars's elliptical orbit in 1609. Galileo's projectile parabola assumes uniform gravity and no air resistance. Pascal's short \emph{Essay pour les coniques}, printed in February 1640 when he was sixteen, recorded the hexagon theorem that we will prove below. These are different reasons for caring about the same family of curves.
+
+We need Appendix~C's projective coordinates and Volume~3's linear algebra. Symmetric matrices will encode conics, but the classification results of the next appendix are not prerequisites: each property used here will be proved here. At the end, two nested circles give a closing problem whose solution comes from choosing the right way to measure arcs.
 
 \begin{think}
-Take two circles, one inside the other. From a point of the outer circle draw a tangent to the inner one, follow it to the outer circle, draw the
-other tangent from there, and continue. Sometimes the zigzag closes after three steps, forming a triangle. If it closes for one starting point,
-should it close for every starting point?
+Draw a tangent from a point of an outer circle to an inner circle, follow the chord to its other endpoint, and continue consistently in the same direction. If the chain closes from one starting point, must it close from every starting point?
 \end{think}
-
-\emph{What this appendix connects, and what it assumes.} It connects Apollonius' conics with quadratic forms in three variables, and so with
-the projective geometry of Appendix~C: parametrisations, Pascal's theorem, poles and polars, Poncelet's porism. It assumes Appendix~C and the algebra of
-symmetric matrices. Appendix~E classifies the forms behind the conics.
 
 \section{Conics and quadratic forms}
 
-Throughout the chapter $K$ is a field in which $1+1\ne0$, such as $\mathbb Q$, $\mathbb R$, $\mathbb C$ or $\mathbb F_p$ with $p$ odd.
+Let $K$ be a field of characteristic different from two, so $2=1+1\ne0$. Examples include $\mathbb Q,\mathbb R,\mathbb C$ and finite fields of odd order.
 
 \begin{definition}\label{geometry:def:conic}
-Let $A$ be a nonzero symmetric $3\times3$ matrix over $K$, with quadratic form $q(x)=x^{\mathsf T}Ax$ and bilinear form $\beta(x,y)=x^{\mathsf T}Ay$.
-The \emph{conic} $\mathcal C_A$ is the set of points $[x]\in\mathbb P^2(K)$ with $q(x)=0$. It is \emph{nondegenerate} if $\det A\ne0$.
+For a nonzero symmetric $3\times3$ matrix $A$ over $K$, put $q(x)=x^{\mathsf T}Ax$ and $\beta(x,y)=x^{\mathsf T}Ay$. Its \emph{conic} $\mathcal C_A$ is the set of projective points $[x]$ satisfying $q(x)=0$. It is \emph{nondegenerate} when $A$ is invertible.
 \end{definition}
 
-The condition $q(x)=0$ does not depend on the representative, since $q(\lambda x)=\lambda^2q(x)$. In the affine chart $z=1$ the equation becomes a
-general equation of degree two, $ax^2+bxy+cy^2+dx+ey+f=0$. Degenerate conics are less interesting: for example $xy=0$ is a pair of lines and $x^2=0$ a
-double line. Since $1+1\ne0$, the form $\beta$ is recovered from $q$ by $2\beta(x,y)=q(x+y)-q(x)-q(y)$.
+Homogeneity, $q(\lambda x)=\lambda^2q(x)$, makes the equation independent of representatives. In the chart $z=1$ it becomes $ax^2+bxy+cy^2+dx+ey+f=0$. Degenerate forms can give two lines, as in $xy=0$, or a repeated line, as in $x^2=0$. Some real forms have no projective points at all. The polarization identity
+\[
+2\beta(x,y)=q(x+y)-q(x)-q(y)
+\]
+recovers the bilinear form from its quadratic form; this is why characteristic two is excluded here.
 
 \begin{proposition}\label{geometry:prop:conicline}
-Let $\mathcal C$ be a nondegenerate conic.
+For a nondegenerate conic $\mathcal C$:
 \begin{enumerate}
-\item $\mathcal C$ contains no line, and a line meets $\mathcal C$ in at most two points.
-\item Let $P=[p]\in\mathcal C$. The line $T_P=\{[x]:\beta(p,x)=0\}$, the \emph{tangent} at $P$, meets $\mathcal C$ only at $P$. Every other line through
-$P$ meets $\mathcal C$ in exactly one more point.
+\item No line is contained in $\mathcal C$, and any line contains at most two points of $\mathcal C$.
+\item At $P=[p]\in\mathcal C$, the line $T_P:\beta(p,x)=0$ meets $\mathcal C$ only at $P$. Every other line through $P$ has exactly one further conic point. We call $T_P$ the \emph{tangent}.
 \end{enumerate}
 \end{proposition}
-
 \begin{proof}
-(1) Suppose $\mathcal C$ contains the line given by a plane $V\subset K^3$. Then $q=0$ on $V$, so $\beta=0$ on $V\times V$ by the polarisation
-formula, and $V\subset V^\perp=\{y:\beta(v,y)=0\text{ for all }v\in V\}$. Since $A$ is invertible, $V^\perp$ is the kernel of the map
-$y\mapsto(\beta(v_1,y),\beta(v_2,y))$ for a basis $v_1,v_2$ of $V$, and these two linear forms $v_i^{\mathsf T}A$ are independent, so
-$\dim V^\perp=1<2=\dim V$, a contradiction. Now let $L$ be any line, spanned by $u,v$. The restriction $q(su+tv)$ is a binary quadratic form in
-$(s,t)$, not identically zero by what we just proved, so it has at most two roots $[s:t]$ in $\mathbb P^1(K)$.
+If a two-dimensional subspace $V$ gave a line in $\mathcal C$, then $q$ would vanish on $V$. Polarization would make $\beta$ vanish on $V\times V$, so $V\subseteq V^\perp$. For a basis $v_1,v_2$ of $V$, the two rows $v_i^{\mathsf T}A$ are independent because $A$ is invertible. Their common kernel $V^\perp$ has dimension one, contradicting $\dim V=2$. On any line with basis $u,v$, the binary quadratic $q(su+tv)$ is therefore nonzero and has at most two projective roots. To see the root count including infinity, dehomogenize with $t=1$; if the infinity root occurs, the coefficient of $s^2$ vanishes and the remaining affine polynomial has degree at most one.
 
-(2) Note that $T_P$ is a line, because $Ap\ne0$, and it contains $P$, because $\beta(p,p)=q(p)=0$. Let $L$ be a line through $P$ and $R=[r]$ another
-point of $L$. Then
+Now $Ap\ne0$ makes $T_P$ a line, and $q(p)=0$ puts $P$ on it. On a line through $P$, choose another representative $r$. Then
 \[
-q(sp+tr)=2st\,\beta(p,r)+t^2q(r)=t\bigl(2s\,\beta(p,r)+t\,q(r)\bigr).
+q(sp+tr)=t\bigl(2s\beta(p,r)+tq(r)\bigr).
 \]
-The root $t=0$ is $P$. If $L=T_P$, then $\beta(p,r)=0$ and $q(r)\ne0$ (otherwise $q$ would vanish on $L$), so $P$ is the only point. If $L\ne T_P$,
-then $\beta(p,r)\ne0$ and the second root $[s:t]=[q(r):-2\beta(p,r)]$ gives one more point, $[q(r)p-2\beta(p,r)r]\ne P$.
+If the line is tangent, $\beta(p,r)=0$ and $q(r)\ne0$, otherwise the whole line would be in the conic. Its only root is $t=0$, namely $P$. On a different line $\beta(p,r)\ne0$; the second root $[q(r):-2\beta(p,r)]$ has nonzero second coordinate and gives exactly one more point.
 \end{proof}
 
-How many points determine a conic? A symmetric matrix has six entries, so conics form a projective space of dimension $5$, and each point imposes one
-linear condition: we expect five points to determine one conic.
+A quadratic form in three variables has six coefficients up to a common factor. Five points impose five linear conditions. Counting alone suggests uniqueness; the following proof verifies that those conditions really are independent under the stated geometric hypothesis.
 
 \begin{theorem}\label{geometry:thm:fivepoints}
-Through five points of $\mathbb P^2(K)$, no three of them collinear, there passes exactly one conic, and it is nondegenerate.
+Five distinct points of $\mathbb P^2(K)$ with no three collinear determine exactly one conic equation up to a nonzero scalar. Its conic is nondegenerate.
 \end{theorem}
-
 \begin{proof}
-By Proposition~\ref{geometry:prop:frames} we may assume that four of the points are $[1:0:0]$, $[0:1:0]$, $[0:0:1]$ and $[1:1:1]$; call the fifth $[u:v:w]$. A
-conic through the first three has no $x^2$, $y^2$, $z^2$ terms, so its equation is $ayz+bxz+cxy=0$. It passes through $[1:1:1]$ if and only if
-$a+b+c=0$, and through the fifth point if and only if $avw+buw+cuv=0$. The fifth point is not on the line $z=0$ through the first two points, so
-$w\ne0$, and in the same way $u,v\ne0$. The two linear conditions on $(a,b,c)$ are independent unless $(vw,uw,uv)$ is proportional to $(1,1,1)$, that
-is unless $u=v=w$, which would make the fifth point equal to the fourth. So the solutions form a one-dimensional space: there is exactly one conic.
+Move the first four points to $[1:0:0],[0:1:0],[0:0:1],[1:1:1]$ using a frame map. Write the fifth as $[u:v:w]$. All three entries are nonzero, since a zero entry would put it on a coordinate side. A quadratic through the coordinate points has equation $ayz+bxz+cxy=0$. The last two point conditions are
+\[
+a+b+c=0,\qquad avw+buw+cuv=0.
+\]
+The rows are independent: proportionality would give $vw=uw=uv$ up to one common nonzero factor, hence $u=v=w$, repeating the fourth point. Thus the coefficient solution space has dimension one.
 
-Its matrix has zero diagonal and off-diagonal entries $a/2$, $b/2$, $c/2$, and determinant $abc/4$. If $a=0$, then $b=-c\ne0$ and the second condition
-reads $bu(w-v)=0$, so $v=w$; but then the fifth point lies on the line $y=z$ through $[1:0:0]$ and $[1:1:1]$, which is excluded. Similarly $b\ne0$
-and $c\ne0$, so the conic is nondegenerate.
+Its symmetric matrix has determinant $abc/4$. If $a=0$, the first condition gives $b=-c\ne0$ and the second gives $v=w$. The fifth point would then lie on $y=z$, the line through the first and fourth points. This is forbidden. The same reasoning gives $b,c\ne0$. Hence the matrix is invertible, and moving coordinates back preserves both uniqueness and nondegeneracy.
 \end{proof}
 
 \section{Parametrising a conic}
 
-Proposition~\ref{geometry:prop:conicline} gives a bijection between the lines through a point $P$ of $\mathcal C$ and the points of $\mathcal C$: send a line to its
-second intersection point, and the tangent to $P$ itself. Lines through $P$ form a projective line, so a conic with one point looks like
-$\mathbb P^1(K)$. Here is the cleanest form of this.
+Start with one conic point $P$. Every line through it has a second intersection, except its tangent, which we assign back to $P$. This is a bijection between the pencil at $P$ and the conic. Thus a single known point lets the whole conic be described by a projective-line parameter.
 
 \begin{theorem}[Normal form]\label{geometry:thm:normalform}
-Every nondegenerate conic with at least one point is projectively equivalent to the conic $y^2=xz$, which is the image of
+Every nondegenerate conic over $K$ that has a $K$-point is projectively equivalent to $y^2=xz$. This conic is parametrized bijectively by
 \[
-\varphi:\mathbb P^1(K)\to\mathbb P^2(K),\qquad \varphi(t)=[1:t:t^2],\quad \varphi(\infty)=[0:0:1].
+\varphi(t)=[1:t:t^2]\quad(t\in K),\qquad
+\varphi(\infty)=[0:0:1].
 \]
 \end{theorem}
-
 \begin{proof}
-Let $P\in\mathcal C$. A line through $P$ other than the tangent meets $\mathcal C$ in a second point $Q\ne P$. The tangents $T_P$ and $T_Q$ are distinct
-lines (each meets $\mathcal C$ only at its own point), so they meet at a point $R$, and $R\notin\mathcal C$, since $R\in T_P\cap\mathcal C$ would force $R=P$
-and similarly $R=Q$. The points $P,R,Q$ are not collinear (the line $PQ$ is not tangent at $P$, while $PR=T_P$), so we may take coordinates with
-$P=[1:0:0]$, $R=[0:1:0]$, $Q=[0:0:1]$. Then $q(e_1)=q(e_3)=0$, and since $R$ lies on $T_P$ and $T_Q$, $\beta(e_1,e_2)=\beta(e_3,e_2)=0$. So the only
-nonzero entries of $A$ are $\beta(e_1,e_3)=b$ and $q(e_2)=c$, and the equation is $cy^2+2bxz=0$, with $b,c\ne0$ because $\det A\ne0$. Replacing the
-coordinate $x$ by $-\frac{c}{2b}x$ gives $c(y^2-xz)=0$. Finally, $y^2=xz$ with $x\ne0$ means $[x:y:z]=[1:t:t^2]$ for $t=y/x$, and with $x=0$ it means
-$y=0$, the point $[0:0:1]$.
+Choose a conic point $P$ and a nontangent line through it, giving another conic point $Q$. Such a line exists since a pencil has at least three lines. The two tangents meet at $R$, which cannot be on the conic: the first tangent has only $P$ on it, the second only $Q$. Also $P,R,Q$ are noncollinear. Choose them as the coordinate points in that order. The two zero values $q(e_1)=q(e_3)=0$ and tangent incidences $\beta(e_1,e_2)=\beta(e_3,e_2)=0$ leave
+\[
+q(x,y,z)=cy^2+2bxz.
+\]
+Invertibility gives $b,c\ne0$. Substituting $x_{\rm old}=-c x_{\rm new}/(2b)$ gives $c(y^2-x_{\rm new}z)$. Finally a point of $y^2=xz$ with $x\ne0$ is uniquely $[1:t:t^2]$; if $x=0$, then $y=0$ and it is $[0:0:1]$. This proves the normal form and the parameter claim.
 \end{proof}
 
-Over $\mathbb R$, the circle $x^2+y^2=z^2$ is nondegenerate and has points, so \emph{every nondegenerate real conic with a point is a projective image
-of the circle}. Over $\mathbb C$ every conic has points (a line meets it where a binary quadratic form vanishes, and that form has a root), so there is
-only one nondegenerate complex conic. Over $\mathbb R$ the remaining case, a nondegenerate conic without points, is projectively $x^2+y^2+z^2=0$; this
-follows from Sylvester's law of inertia in Appendix~E.
+The real circle $x^2+y^2=z^2$ has points and is nondegenerate, so every nonempty nondegenerate real conic is a projective image of it. Over $\mathbb C$ a homogeneous binary quadratic always has a projective root, so every conic has a point and there is just one nondegenerate projective type. Over $\mathbb R$ a nondegenerate form without zeros is definite: two opposite signs on the unit sphere would give a zero along a path between them. Orthogonalizing a basis for this definite bilinear form and rescaling its vectors gives $\pm(x^2+y^2+z^2)$. This proves the remaining empty real type locally; Appendix~E will develop the full classification.
 
-Over $\mathbb Q$ the theorem has an arithmetic meaning. If a conic with rational coefficients has one rational point, the lines with rational slope
-through it give all the others, and the circle $x^2+y^2=1$ gives the Pythagorean triples (Exercise~\ref{geometry:ex:pythagorean}). But a conic may have no
-rational point at all: $x^2+y^2=3$ is an example (Exercise~\ref{geometry:ex:nothree}). Deciding which conics have a rational point is a theorem of Legendre,
-proved in Volume~13.
+Over $\mathbb Q$, having a point is a genuine restriction. Rational lines through a rational point give all the other rational points. This produces Pythagorean triples from the unit circle, while $x^2+y^2=3$ has no rational point, as the exercises show. The general arithmetic criterion is previewed in Volume~13, not needed here.
 
 \section{Ellipse, parabola, hyperbola}
 
-In the real affine plane, a nondegenerate conic with points meets the line at infinity in $0$, $1$ or $2$ points. It is called an \emph{ellipse}, a
-\emph{parabola} or a \emph{hyperbola} accordingly. For $x^2/a^2+y^2/b^2=1$ the points at infinity solve $x^2/a^2+y^2/b^2=0$: none. For $y=x^2$,
-homogenised to $yz=x^2$, the only point at infinity is $[0:1:0]$, where the line at infinity is tangent. For $xy=1$ they are $[1:0:0]$ and $[0:1:0]$,
-the directions of the two asymptotes. So the three curves of Apollonius are one projective curve, seen in three different charts.
+Choose a real affine chart. Its line at infinity meets a nonempty nondegenerate conic in zero, one or two points; these cases are called an \emph{ellipse}, \emph{parabola} and \emph{hyperbola}. For $x^2/a^2+y^2/b^2=1$, there are no infinity points. For $y=x^2$, homogenization gives $yz=x^2$ and the one infinity point $[0:1:0]$. For $xy=1$, the two infinity points are $[1:0:0],[0:1:0]$, giving the asymptote directions. These are three affine views of the same projective conic.
 
 \begin{proposition}[Focus and directrix]\label{geometry:prop:focus}
-Let $F$ be a point, $D$ a line not through $F$, and $e>0$. The set of points $P$ with $PF=e\cdot d(P,D)$ is a nondegenerate conic. It is an ellipse
-if $e<1$, a parabola if $e=1$ and a hyperbola if $e>1$.
+Let $F$ be a real point, $D$ a real line not through it, and $e>0$. The locus $PF=e\,d(P,D)$ is a nondegenerate conic: an ellipse for $e<1$, a parabola for $e=1$, and a hyperbola for $e>1$.
 \end{proposition}
-
 \begin{proof}
-Take $F=(0,0)$ and $D$ the line $x=k$ with $k\ne0$. Squaring the condition gives $x^2+y^2=e^2(x-k)^2$, that is,
+Use Euclidean coordinates with $F=(0,0)$ and $D:x=k$, where $k\ne0$. Both distances are nonnegative, so squaring is equivalent to the original condition and gives
 \[
-(1-e^2)x^2+y^2+2e^2kx-e^2k^2=0,\qquad
-A=\begin{pmatrix}1-e^2&0&e^2k\\0&1&0\\e^2k&0&-e^2k^2\end{pmatrix}.
+(1-e^2)x^2+y^2+2e^2kx-e^2k^2=0.
 \]
-Expanding along the middle row, $\det A=-(1-e^2)e^2k^2-e^4k^2=-e^2k^2\ne0$. The conic has a point, the point of the segment from $F$ to $D$ dividing it
-in the ratio $e:1$. Its points at infinity satisfy $(1-e^2)x^2+y^2=0$: there are none if $e<1$, one if $e=1$ and two if $e>1$.
+Its homogeneous matrix is
+\[
+\begin{pmatrix}1-e^2&0&e^2k\\0&1&0\\e^2k&0&-e^2k^2\end{pmatrix},
+\]
+with determinant $-e^2k^2\ne0$. A point exists on the segment from $F$ to its perpendicular foot on $D$, at distance $e|k|/(1+e)$ from $F$. At infinity the equation is $(1-e^2)x^2+y^2=0$, with respectively zero, one or two projective solutions, proving the classification.
 \end{proof}
 
 \begin{figure}[ht]
@@ -151,74 +112,51 @@ tangent to the plane touch it at the foci $F_1$ and $F_2$.}
 \end{figure}
 
 \begin{beauty}
-Why is the section of a cone by a plane an ellipse with two foci? In 1822 Germinal Pierre Dandelin gave a proof that needs no formula at all. Put in the
-cone two spheres, each touching the cone along a circle and touching the cutting plane, one above and one below it (Figure~\ref{geometry:fig:dandelin}). Let
-them touch the plane at $F_1$ and $F_2$. For a point $P$ of the section, the line from $P$ to the vertex of the cone touches the two spheres at
-points $Q_1$ and $Q_2$ of the two circles of contact. Two tangent segments from a point to a sphere have the same length, so $PF_1=PQ_1$ and
-$PF_2=PQ_2$, and therefore
+Dandelin's 1822 construction explains the two foci of an elliptical cone section. Place two spheres inside the cone, tangent to the cutting plane on opposite sides and tangent to the cone along circles. Let $F_1,F_2$ be their plane-contact points. A generator through a section point $P$ meets the sphere-contact circles at $Q_1,Q_2$, with $P$ between them. Tangent segments from the same point to a sphere have equal lengths: the two right triangles formed with the sphere centre have the same hypotenuse and radius. Hence $PF_i=PQ_i$ and
 \[
-PF_1+PF_2=PQ_1+PQ_2=Q_1Q_2,
+PF_1+PF_2=PQ_1+PQ_2=Q_1Q_2.
 \]
-the distance between the two circles measured along the cone, which is the same for every $P$. The points $F_1,F_2$ are the foci.
+The last generator segment has a fixed length between the two contact circles. Thus the section has constant sum of distances to $F_1,F_2$, the focal property of the ellipse. The illustrated elliptical placement is essential to the sum; other cone sections require their corresponding placements.
 \end{beauty}
 
 \section{The cross-ratio on a conic, and Pascal's theorem}
 
-Four lines through a point $O$ have a cross-ratio: the cross-ratio of their intersections with any line $m$ not through $O$. It does not depend on
-$m$, by Proposition~\ref{geometry:prop:perspectivity}: two such lines are related by central projection from $O$.
+Four distinct lines through a point have a cross-ratio: intersect them with any line missing that point and take the cross-ratio of the four intersections. Changing the cutting line is central projection, so Appendix~C proves that the answer is independent of the cut.
 
 \begin{theorem}[Chasles and Steiner]\label{geometry:thm:chaslesconic}
-Let $A,B,C,D$ be four distinct points of a nondegenerate conic $\mathcal C$. For a point $P\in\mathcal C$ different from them, the cross-ratio of the
-lines $PA,PB,PC,PD$ does not depend on $P$.
+For four distinct points $A,B,C,D$ on a nondegenerate conic, the cross-ratio $(PA,PB;PC,PD)$ is independent of the choice of conic point $P$ different from them.
 \end{theorem}
-
 \begin{proof}
-By Theorem~\ref{geometry:thm:normalform} we may take $\mathcal C$ to be $y^2=xz$, with $A=\varphi(a)$, $B=\varphi(b)$, $C=\varphi(c)$, $D=\varphi(d)$ and
-$P=\varphi(s)$. Assume first that $s\ne\infty$. For $t\ne s$,
+Use $\varphi(t)=[1:t:t^2]$. For finite $s\ne t$ the joining line is
 \[
-(1,s,s^2)\times(1,t,t^2)=(t-s)\,\bigl(st,\,-(s+t),\,1\bigr),
+\varphi(s)\varphi(t)=[st:-(s+t):1],
 \]
-so the line $P\varphi(t)$ is $[st:-(s+t):1]$. It meets the line $x=0$, which does not pass through $P=[1:s:s^2]$, at
-$(st,-s-t,1)\times(1,0,0)=(0,1,s+t)$, the point with coordinate $s+t$ on that line. So the cross-ratio of the four lines is
-$(s+a,s+b;s+c,s+d)=(a,b;c,d)$, since a translation is a M\"obius map (if one of $a,b,c,d$ is $\infty$, its line meets $x=0$ at $[0:0:1]$, which is
-the point $\infty$ there, and the conclusion is the same). This does not depend on $s$. If $s=\infty$, the projective map $[x:y:z]\mapsto[z:y:x]$
-preserves the conic and sends $\varphi(t)$ to $\varphi(1/t)$, which reduces to the first case and gives $(1/a,1/b;1/c,1/d)=(a,b;c,d)$.
+by dividing their cross product by $t-s$. Intersect with $x=0$, a line missing $\varphi(s)$, to get $[0:1:s+t]$. Its projective-line coordinate $z/y$ is $s+t$. For $t=\infty$, the joining line meets at $[0:0:1]$, its infinity point. Thus the cross-ratio of the pencil at $\varphi(s)$ is $(s+a,s+b;s+c,s+d)=(a,b;c,d)$, since translation preserves cross-ratios. If $s=\infty$, interchange $x,z$ first. This preserves the conic and replaces parameters by $1/t$, another projectivity, so the same answer follows.
 \end{proof}
 
-So four points on a conic have a cross-ratio of their own, and the parametrisation $\varphi$ is the dictionary: it equals the cross-ratio of the
-parameters. The converse, due to Steiner, describes every conic as the locus of the intersections of corresponding lines of two pencils related
-by a projective map; see Coxeter's \emph{Projective Geometry} in the sources. We need one more lemma.
+We can therefore speak of the cross-ratio of four conic points: it is the cross-ratio of their parameters. A related Steiner construction intersects corresponding lines of two projectively related pencils. Choosing two distinct points of this conic as centres and matching the lines with the same parameter recovers the conic, including the tangent at either centre when its parameter occurs. Arbitrary pencil matchings can degenerate, so those hypotheses matter. Coxeter develops the general construction.
 
 \begin{lemma}\label{geometry:lem:perspectivity}
-Let $L\ne M$ be lines meeting at $C$, and $h:L\to M$ a projective map with $h(C)=C$. Then $h$ is a central projection from some point $O$ on neither line.
+If distinct projective lines $L,M$ meet at $C$ and a projectivity $h:L\to M$ fixes $C$, then $h$ is central projection from a point off both lines.
 \end{lemma}
-
 \begin{proof}
-Choose two more points $B,U$ of $L$, and let $V=h(B)$, $D=h(U)$; these are points of $M$ different from $C$. The lines $BV$ and $UD$ are distinct
-(if they were equal, the line would meet $L$ in $B$ and $U$, so it would be $L$, but $V\notin L$). Let $O$ be their intersection. If $O$ were on $L$, it
-would be $B$ (the only point of $BV$ on $L$) and also $U$; so $O\notin L$, and similarly $O\notin M$. The central projection from $O$ maps $C,B,U$ to
-$C,V,D$, like $h$; both are projective maps $L\to M$, so they are equal by Proposition~\ref{geometry:prop:frames}.
+Choose distinct $B,U\in L\setminus\{C\}$ and put $V=h(B),D=h(U)$. The joining lines $BV,UD$ are distinct: equality would contain both $B,U$ and hence be $L$, although $V\notin L$. Their intersection $O$ lies off $L$, since otherwise it would equal both $B,U$, and similarly off $M$. Projection from $O$ agrees with $h$ at $C,B,U$, so the frames proposition makes the maps equal everywhere. This is also the criterion proved in Appendix~C's final exercise.
 \end{proof}
 
 \begin{theorem}[Pascal]\label{geometry:thm:pascal}
-Let $A,B,C,D,E,F$ be six distinct points of a nondegenerate conic. Then the points
+For six distinct points $A,B,C,D,E,F$ on a nondegenerate conic, the three points
 \[
-X=AB\cap DE,\qquad Y=BC\cap EF,\qquad Z=CD\cap FA
+X=AB\cap DE,\quad Y=BC\cap EF,\quad Z=CD\cap FA
 \]
 are collinear.
 \end{theorem}
-
 \begin{proof}
-By Theorem~\ref{geometry:thm:chaslesconic}, the pencils at $E$ and at $A$ through the points $B,C,D,F$ have the same cross-ratio:
-$(EB,EC;ED,EF)=(AB,AC;AD,AF)$. Cut the first pencil by the line $BC$, which does not pass through $E$ (a line meets the conic at most twice). The four
-lines meet it at $B$, $C$, $U=ED\cap BC$ and $Y$. Cut the second pencil by the line $CD$; the four lines meet it at $V=AB\cap CD$, $C$, $D$ and $Z$. So
+At $E$ and $A$, the cross-ratios of the pencils through $B,C,D,F$ agree. Cutting the first pencil by $BC$, and the second by $CD$, gives
 \[
-(B,C;U,Y)=(V,C;D,Z).
+(B,C;U,Y)=(V,C;D,Z),\quad
+U=ED\cap BC,\ V=AB\cap CD.
 \]
-The points $B,C,U$ are distinct ($U=B$ would put $B,D,E$ on a line), and so are $V,C,D$. Let $h:BC\to CD$ be the projective map with $h(B)=V$, $h(C)=C$,
-$h(U)=D$. It preserves cross-ratios, so $(V,C;D,h(Y))=(B,C;U,Y)=(V,C;D,Z)$, and $h(Y)=Z$ (Theorem~\ref{geometry:thm:crossratio}). By
-Lemma~\ref{geometry:lem:perspectivity}, $h$ is the central projection from $O=BV\cap UD$. But $BV$ is the line $AB$ and $UD$ is the line $DE$, so $O=X$. Hence
-$Z$, the image of $Y$, lies on the line $XY$.
+Every cut is allowed since a line has at most two conic points. The triples $B,C,U$ and $V,C,D$ are distinct for the same reason. There is a unique projectivity $h:BC\to CD$ taking $B,C,U$ to $V,C,D$. Cross-ratio invariance and injectivity of normalization give $h(Y)=Z$. Since $h(C)=C$, the lemma makes it projection from $BV\cap UD=AB\cap DE=X$. Thus $Y$ and $Z$ lie on one line through $X$, as required.
 \end{proof}
 
 \begin{figure}[ht]
@@ -228,47 +166,41 @@ $Z$, the image of $Y$, lies on the line $XY$.
 \label{geometry:fig:pascal}
 \end{figure}
 
-Pascal's theorem has a dual. The tangent lines of a nondegenerate conic $\mathcal C_A$ form a conic in the dual plane: the tangent at $[p]$ is the
-line $[Ap]$, and $\ell=Ap$ satisfies $p^{\mathsf T}Ap=0$ if and only if $\ell^{\mathsf T}A^{-1}\ell=0$. So the dual of Pascal's theorem is a theorem
-about hexagons circumscribed about a conic: Brianchon's theorem of 1806 (Exercise~\ref{geometry:ex:brianchon}). When the conic degenerates into two lines,
-Pascal's theorem becomes Pappus' theorem of Appendix~C (Exercise~\ref{geometry:ex:pascalpappus}).
+The tangent at $[p]$ has coefficient vector $Ap$. These tangent lines form the nondegenerate conic $\ell^{\mathsf T}A^{-1}\ell=0$ in the dual plane. Applying Pascal there gives Brianchon's 1806 theorem for six tangents: the three opposite-vertex diagonals are concurrent. The exercise supplies its precise translation. For a pair of base lines, Pascal's incidence pattern becomes Pappus; our nondegenerate proof does not establish that limiting case, which Appendix~C proved directly.
 
 \begin{remark}
-Six points on a conic can be ordered into a hexagon in $60$ ways, which gives $60$ Pascal lines. They meet three by three in $20$ Steiner points,
-and in other remarkable ways studied by Steiner, Kirkman, Cayley and Salmon; the configuration is described in Conway and Ryba's article listed in the
-sources. A second proof of Pascal's theorem, by cubic curves, is in Appendix~F.
+The $6!$ orderings, modulo six cyclic shifts and reversal, give $60$ indexed Pascal lines. Special point configurations can make some coincide. For a generic choice the associated triple intersections include twenty Steiner points and further configurations studied by Kirkman, Cayley and Salmon. These incidence results are quoted in Conway and Ryba's account below. Appendix~F will give another proof of Pascal using cubic curves.
 \end{remark}
 
 \section{Poles and polars}
 
 \begin{definition}
-Let $\mathcal C=\mathcal C_A$ be nondegenerate. The \emph{polar} of a point $P=[p]$ is the line $[Ap]=\{[x]:\beta(p,x)=0\}$, and $P$ is the \emph{pole} of
-this line.
+For a nondegenerate conic $\mathcal C_A$, the \emph{polar} of $P=[p]$ is the line with coefficient vector $Ap$, or equation $\beta(p,x)=0$. Conversely, $P$ is the \emph{pole} of that line.
 \end{definition}
 
-Since $A$ is invertible, this is a bijection between points and lines, and it preserves incidence in a twisted way: $P$ lies on the polar of $Q$
-if and only if $\beta(q,p)=0$, if and only if $Q$ lies on the polar of $P$. This symmetry is \emph{La Hire's theorem}. The polar of a point of
-$\mathcal C$ is its tangent.
+Invertibility of $A$ makes polarity a bijection between points and lines. Symmetry gives
+\[
+P\in\operatorname{polar}(Q)\quad\Longleftrightarrow\quad
+\beta(q,p)=0\quad\Longleftrightarrow\quad Q\in\operatorname{polar}(P).
+\]
+This reciprocal incidence is La Hire's theorem. On the conic itself, the polar is the tangent.
 
 \begin{proposition}\label{geometry:prop:polar}
 Let $P\notin\mathcal C$.
 \begin{enumerate}
-\item A point $T$ of $\mathcal C$ lies on the polar of $P$ if and only if the tangent at $T$ passes through $P$. So if two tangents can be drawn from
-$P$, the polar is the line through their points of contact.
-\item If a line through $P$ meets $\mathcal C$ in two points $M,N$ and the polar of $P$ in $Q$, then $(M,N;P,Q)=-1$.
+\item A conic point $T$ lies on the polar of $P$ exactly when its tangent passes through $P$. If there are two such tangents, their contact points determine the polar.
+\item If a line through $P$ cuts the conic at distinct points $M,N$ and meets the polar at $Q$, then $(M,N;P,Q)=-1$.
 \end{enumerate}
 \end{proposition}
-
 \begin{proof}
-(1) Both conditions say $\beta(t,p)=0$. (2) The point $P$ is not on its polar, since $\beta(p,p)=q(p)\ne0$; so the line meets the polar in one point
-$Q=[r]$, with $\beta(p,r)=0$. Then $q(sp+tr)=s^2q(p)+t^2q(r)$, because the cross term vanishes. If $q(r)$ were $0$ the only root would be $s=0$,
-giving one point; so $q(r)\ne0$ and the two roots are $t/s=\pm\lambda$ with $\lambda^2=-q(p)/q(r)$. In the coordinate $t/s$ on the line, $P=0$, $Q=\infty$,
-$M=\lambda$, $N=-\lambda$, and $(\lambda,-\lambda;0,\infty)=\frac{0-\lambda}{0+\lambda}=-1$.
+The first assertion is precisely $\beta(t,p)=0$. For the second, $q(p)\ne0$ says $P$ is off its polar, so $Q=[r]$ is a distinct point and $\beta(p,r)=0$. Along this line,
+\[
+q(sp+tr)=s^2q(p)+t^2q(r).
+\]
+If $q(r)=0$, its only projective root would be $s=0$, contrary to the two intersections. Hence $q(r)\ne0$. The roots in coordinate $t/s$ are $\lambda,-\lambda$, where $\lambda^2=-q(p)/q(r)\ne0$. In that coordinate $P=0,Q=\infty$, so $(\lambda,-\lambda;0,\infty)=-1$.
 \end{proof}
 
-So the polar of $P$ is the locus of the harmonic conjugates of $P$ with respect to the pairs of points where lines through $P$ cut the conic
-(Figure~\ref{geometry:fig:polar}). Combined with the harmonic construction of Appendix~C, this lets you draw the tangents to a conic from an outside point
-with a straightedge alone (Exercise~\ref{geometry:ex:tangentconstruct}).
+Thus every secant through $P$ supplies a polar point by harmonic conjugation. We have not claimed that such secants exist over every field; an empty real conic has none. For a drawn real ellipse and an exterior point there are plenty of secants. Two of them let a straightedge construct the polar and then its two contact points, as the exercise explains.
 
 \begin{figure}[ht]
 \centering
@@ -280,54 +212,60 @@ conic at $M$ and $N$, the polar cuts at the harmonic conjugate $Q$ of $P$.}
 
 \section{Poncelet's porism}
 
-Let $\Gamma$ be a circle and $\omega$ a circle strictly inside it. For $x\in\Gamma$, of the two tangents from $x$ to $\omega$ take the one that has
-$\omega$ on its right when you walk along it from $x$, and let $T(x)$ be the second point where it meets $\Gamma$. The sequence $x,T(x),T^2(x),\dots$
-is a zigzag of chords of $\Gamma$ tangent to $\omega$. Poncelet stated in his \emph{Trait\'e} of 1822 that whether it closes up does not depend on the
-starting point.
+Let the outer circle $\Gamma$ have centre $o$ and radius $R>0$, and let the inner circle $\omega$ have centre $c$ and radius $r>0$, with $|c-o|+r<R$. At $x\in\Gamma$, choose the directed tangent chord that keeps $\omega$ on its right, and call its other endpoint $T(x)$. Following $T$ means always advancing by the same rule; reversing along the last chord is not allowed.
 
 \begin{theorem}[Poncelet's porism for two circles]\label{geometry:thm:poncelet}
-If $T^n(x)=x$ for one point $x\in\Gamma$, then $T^n(y)=y$ for every $y\in\Gamma$.
+For every positive integer $n$, if $T^n(x)=x$ for one $x\in\Gamma$, then $T^n(y)=y$ for every $y\in\Gamma$.
 \end{theorem}
 
-The proof finds a way of measuring arcs of $\Gamma$ for which $T$ is a rotation. For $x\in\Gamma$, let $t(x)>0$ be the length of the tangent segment
-from $x$ to $\omega$; it is a continuous function, with $t(x)^2=|x-c|^2-r^2$ where $c$ and $r$ are the centre and the radius of $\omega$. Measure arcs
-of $\Gamma$ by
+The useful arc density is the reciprocal of the tangent length:
 \[
-\mu(I)=\int_I\frac{ds}{t},
+t(x)=\sqrt{|x-c|^2-r^2}>0,\qquad
+\mu(I)=\int_I\frac{ds}{t(x)}.
 \]
-where $ds$ is arc length.
+Strict containment keeps $t$ positive on the whole circle, so this gives a finite positive measure to every nonempty arc.
 
 \begin{lemma}\label{geometry:lem:poncelet}
-$T$ is an orientation preserving homeomorphism of $\Gamma$ and $\mu(T(I))=\mu(I)$ for every arc $I$.
+The map $T$ is an orientation-preserving homeomorphism of $\Gamma$, and $\mu(T(I))=\mu(I)$ for every arc $I$.
 \end{lemma}
-
 \begin{proof}
-The tangent line depends continuously on $x$, so $T$ is continuous; it is bijective, since the inverse map is the same construction with the other
-tangent. Let $x'$ be close to $x$, just after it counterclockwise, and let $M$ be the point where the chords $x\,T(x)$ and $x'\,T(x')$ cross. Two chords of
-a circle cross exactly when their endpoints alternate around the circle, so $T(x')$ comes just after $T(x)$: $T$ preserves the orientation.
+We first make the tangent construction smooth. Let $J(a,b)=(-b,a)$, rotation by a positive right angle, and set $v=x-c$, $D=|v|$. The outward unit normal at the chosen contact point is
+\[
+n=\frac{rv-t(x)Jv}{D^2}.
+\]
+Indeed $|n|=1$ and $n\cdot v=r$. Put $p=c+rn$ and $d=-Jn$. Direct substitution gives $x=p-t(x)d$. The directed line $x+ud$ therefore touches the inner circle at $p$ and keeps its centre on its right. Since $p$ lies strictly inside $\Gamma$, the other outer-circle intersection is
+\[
+y=T(x)=x+\ell d,\qquad \ell=-2(x-o)\cdot d>t(x)>0.
+\]
+All these expressions are smooth on $\Gamma$. Moreover $y=p+t(y)d$. The reverse construction using the other tangent recovers $x$ from $y$, proving bijectivity and hence the homeomorphism claim.
 
-The triangles $Mxx'$ and $M\,T(x')\,T(x)$ are similar: their angles at $M$ are vertical angles, and the angles at $x$ and at $T(x')$ are inscribed
-angles on the same arc from $x'$ to $T(x)$. Therefore
+Use counterclockwise arc-length coordinates at both $x,y$. Their positive unit tangents are $u=J(x-o)/R$ and $w=J(y-o)/R$. The chord-endpoint identity gives
 \[
-\frac{|x'-x|}{|T(x')-T(x)|}=\frac{|M-x|}{|M-T(x')|}.
+n\cdot u=\frac{d\cdot(x-o)}R<0,\qquad
+n\cdot w=-n\cdot u>0.
 \]
-Let $x'\to x$. The two chords are tangent to $\omega$ at points $P'$ and $P$, and $M$ is the meeting point of these tangents, at distance
-$r\tan(\theta/2)$ from $P$, where $\theta$ is the angle between the radii $cP$ and $cP'$; so $M\to P$. Hence $|M-x|\to|P-x|=t(x)$ and
-$|M-T(x')|\to|P-T(x)|=t(T(x))$. As chords and arcs are equivalent for nearby points, in an arc-length coordinate $T$ has the derivative
+Locally write $n'=\theta'Jn$, differentiating with respect to arc length at $x$. Differentiate $n\cdot(x-c)=r$ and $n\cdot(y-c)=r$, using $x-c=rn+t(x)Jn$ and $y-c=rn-t(y)Jn$. This yields
 \[
-T'=\frac{t\circ T}{t},
+n\cdot u=-\theta't(x),\qquad
+T' n\cdot w=\theta't(y).
 \]
-a continuous positive function. By the change of variables formula,
-$\mu(T(I))=\int_I\frac{T'(s)}{t(T(s))}\,ds=\int_I\frac{ds}{t(s)}=\mu(I)$.
+The nonzero quantities above allow division, giving
+\[
+T'=\frac{t(T(x))}{t(x)}>0.
+\]
+Thus $T$ preserves orientation. Finally change variables on an arc:
+\[
+\mu(T(I))=\int_I\frac{T'}{t(T(x))}\,ds
+=\int_I\frac{ds}{t(x)}=\mu(I).
+\]
 \end{proof}
 
 \begin{proof}[Proof of Theorem~\ref{geometry:thm:poncelet}]
-Write $[x,y]$ for the counterclockwise arc from $x$ to $y$, and let $g(x)=\mu([x,T(x)])$. For $x'$ just after $x$, both $\mu([x,T(x')])=\mu([x,x'])+g(x')$
-and $\mu([x,T(x')])=g(x)+\mu([T(x),T(x')])$ hold, and $\mu([T(x),T(x')])=\mu(T([x,x']))=\mu([x,x'])$ by the lemma and the orientation. So $g(x')=g(x)$:
-the function $g$ is locally constant, hence constant on the connected circle, equal to some $g_0$. Fix $x_0\in\Gamma$ and let
-$F(x)=\frac{2\pi}{\mu(\Gamma)}\mu([x_0,x])$, an angle defined modulo $2\pi$. Then $F$ is a homeomorphism from $\Gamma$ to the circle of angles, and
-$F(T(x))=F(x)+\alpha$ modulo $2\pi$, with $\alpha=2\pi g_0/\mu(\Gamma)$. In the coordinate $F$, the map $T$ is the rotation by $\alpha$. A rotation
-satisfies $T^n(x)=x$ for one point if and only if $n\alpha\in2\pi\mathbb Z$, and then it holds for every point.
+Choose a basepoint $x_0$ and define a circle coordinate modulo $2\pi$ by
+\[
+F(x)=\frac{2\pi}{\mu(\Gamma)}\mu([x_0,x]),
+\]
+where arcs run counterclockwise. Positive continuous density makes $F$ an orientation-preserving homeomorphism. In this coordinate $T$ preserves ordinary arc length. For nearby $a,b$, preservation says that the difference between their image coordinates equals their original difference. Thus $F(T(x))-F(x)$ is locally constant modulo $2\pi$, and connectedness makes it one constant $\alpha$. Therefore $FTF^{-1}$ is rotation by $\alpha$. An $n$th iterate of this rotation fixes a point exactly when $n\alpha\in2\pi\mathbb Z$, and then it fixes every point. Conjugating back proves the porism.
 \end{proof}
 
 \begin{figure}[ht]
@@ -338,235 +276,293 @@ starting points give three triangles, each inscribed in the outer circle and cir
 \label{geometry:fig:poncelet}
 \end{figure}
 
-When do the triangles close? The inversion appendix proves Euler's formula $OI^2=R(R-2r)$ for a triangle with circumcentre $O$ and incentre $I$.
-Exercise~\ref{geometry:ex:chappleeuler} shows that the converse is the closing condition: the Poncelet zigzag between two
-circles closes after three steps exactly when $d^2=R^2-2Rr$. For quadrilaterals the condition, found by Nicolaus Fuss, is
+Euler's formula from Appendix~B, $d^2=R^2-2Rr$, is exactly the triangle-closing condition. Its necessity comes from the circumcircle and incircle of a triangle; its sufficiency still requires constructing one triangle, done in the exercises. The quadrilateral condition found by Fuss is
 \[
-\frac1{(R-d)^2}+\frac1{(R+d)^2}=\frac1{r^2},
+\frac1{(R-d)^2}+\frac1{(R+d)^2}=\frac1{r^2}.
 \]
-which a numerical calculation tests numerically.
+A new exercise proves it, rather than leaving a numerical drawing to support the formula.
 
 \begin{remark}
-Poncelet's theorem holds for any two nondegenerate conics in general position, over $\mathbb C$, and the proof is the same idea in disguise: the
-pairs (point of the first conic, tangent line to the second through it) form an elliptic curve, a torus, and the Poncelet map is a translation on it.
-Jacobi gave an analytic proof with elliptic functions in 1828, and Cayley found explicit closing conditions for every $n$; see Griffiths and Harris and
-the book of Dragovi\'c and Radnovi\'c. The cubic curves of Appendix~G are these elliptic curves.
+A broader algebraic Poncelet theorem applies to suitable pairs of nondegenerate complex conics. We quote it here. In the transverse case, the curve of pairs consisting of an outer-conic point and an inner-conic tangent through it is a smooth genus-one curve. Two incidence involutions compose to a translation on that curve; finite order is consequently independent of the initial pair. This is not a single-valued tangent choice on the complex conic itself, nor a claim that every degenerate pair gives a smooth torus. Jacobi's 1828 elliptic-function proof and Cayley's closure criteria are treated by the sources below. Appendix~G introduces cubic models, but the circle proof above uses only real geometry and integration.
 \end{remark}
+
+\FloatBarrier
+\begin{figure}[ht]
+\centering
+\fig{v9-appd-pell-parametrization}
+\caption{A line of slope $t$ through $P=(0,1)$ meets $y^2=2x^2+1$ again at a rational point when $t$ is rational. The displayed choice $t=1$ gives $(2,3)$. The vertical parameter gives $(0,-1)$; the tangent parameter $t=0$ returns $P$.}
+\label{fig:v9-pell-parametrization}
+\end{figure}
+\begin{figure}[ht]
+\centering
+\fig{v9-appd-fuss-kite}
+\caption{A symmetric Poncelet quadrilateral $ABCD$ with $AC$ a diameter. At $B$ the two tangents are perpendicular. Their unit-normal components give $r^2/(R-d)^2+r^2/(R+d)^2=1$, Fuss's condition. Here $R=1$, $d=3/10$, $r=91/(10\sqrt{218})$.}
+\label{fig:v9-fuss-kite}
+\end{figure}
+
+Projective coordinates have joined several familiar facts: one conic point supplies a parameter, the bilinear form supplies tangents and polars, and cross-ratio supplies Pascal's line. Poncelet adds a different kind of coordinate, measuring arcs by $ds/t$ so that a moving construction becomes a fixed rotation. The exercises use both ideas before Appendix~E turns to quadratic forms in any dimension.
+\FloatBarrier
 
 \section{Exercises}
 
 \begin{exercise}[$\star$]\label{geometry:ex:fivepoints}
-Find the conic through $(0,0)$, $(1,0)$, $(0,1)$, $(1,2)$, $(2,1)$. What kind of conic is it, and what is its centre?
+Find the real conic through $(0,0),(1,0),(0,1),(1,2),(2,1)$. Classify it and determine its centre.
 \end{exercise}
-
 \begin{exercise}[$\star$]\label{geometry:ex:tangentellipse}
-Show that the polar of $(x_0,y_0)$ with respect to the ellipse $x^2/a^2+y^2/b^2=1$ is the line $xx_0/a^2+yy_0/b^2=1$. Deduce the equation of the
-tangent at a point of the ellipse.
+For $a,b>0$, find the polar of $(x_0,y_0)$ for $x^2/a^2+y^2/b^2=1$. Deduce its tangent equation when $(x_0,y_0)$ lies on the ellipse.
 \end{exercise}
-
 \begin{exercise}[$\star$]\label{geometry:ex:parabolareflect}
-Let $\mathcal P$ be the parabola with focus $F=(0,f)$ and directrix $y=-f$. Show that the tangent at $P\in\mathcal P$ is the perpendicular bisector of
-$FH$, where $H$ is the foot of the perpendicular from $P$ to the directrix. Deduce that light arriving parallel to the axis is reflected through the focus.
+Let $f>0$ and consider the parabola with focus $F=(0,f)$ and directrix $y=-f$. For a parabola point $P$, let $H$ be its perpendicular foot on the directrix. Prove that its tangent is the perpendicular bisector of $FH$. Show that a downward vertical ray reflects from it towards $F$.
 \end{exercise}
-
 \begin{exercise}[$\star$]\label{geometry:ex:pythagorean}
-Find all rational points of $x^2+y^2=1$ by drawing lines through $(-1,0)$, and deduce the formula $(m^2-n^2,2mn,m^2+n^2)$ for the Pythagorean triples.
+Use lines through $(-1,0)$ to parametrize every rational point of $x^2+y^2=1$. Deduce the Pythagorean-triple formula $(m^2-n^2,2mn,m^2+n^2)$ up to scaling and the usual changes of sign and order.
 \end{exercise}
-
 \begin{exercise}[$\star$]\label{geometry:ex:nothree}
-Show that the conic $x^2+y^2=3$ has no rational point.
+Prove that $x^2+y^2=3$ has no rational solution.
 \end{exercise}
-
 \begin{exercise}[$\star$]\label{geometry:ex:pascalpappus}
-Let $\ell,\ell'$ be two lines, $A,B,C\in\ell$ and $A',B',C'\in\ell'$. Show that Pascal's statement for the hexagon $AB'CA'BC'$ inscribed in the
-degenerate conic $\ell\cup\ell'$ is exactly Pappus' theorem.
+On distinct lines $\ell,\ell'$, choose triples of distinct points $A,B,C$ and $A',B',C'$, all off their intersection. Verify that Pascal's incidence statement for the hexagon $AB'CA'BC'$ is Pappus. Explain why the nondegenerate Pascal proof alone does not prove this case.
 \end{exercise}
-
 \begin{exercise}[$\star$]\label{geometry:ex:brianchon}
-State and prove Brianchon's theorem: if a hexagon is circumscribed about a nondegenerate conic (its six sides are tangent lines), its three main
-diagonals are concurrent.
+State and prove Brianchon's theorem for six distinct tangent lines to a nondegenerate conic: the diagonals joining opposite vertices of the resulting hexagon are concurrent.
 \end{exercise}
-
 \begin{exercise}[$\star\star$]\label{geometry:ex:conesection}
-Let $\Pi$ be a plane of $\mathbb R^3$ not through $0$, with equation $ax+by+cz=1$. Show that the section of the cone $x^2+y^2=z^2$ by $\Pi$ is an ellipse
-if $|c|>\sqrt{a^2+b^2}$, a parabola if $|c|=\sqrt{a^2+b^2}$ and a hyperbola if $|c|<\sqrt{a^2+b^2}$. (Think of $\Pi$ as an affine chart of
-$\mathbb P^2(\mathbb R)$.)
+A real plane $\Pi:ax+by+cz=1$ cuts $x^2+y^2=z^2$. Prove the section is an ellipse, parabola or hyperbola according as $|c|$ is greater than, equal to or less than $\sqrt{a^2+b^2}$. Interpret the plane as an affine projective chart.
 \end{exercise}
-
 \begin{exercise}[$\star\star$]\label{geometry:ex:tangentconstruct}
-A conic is drawn on paper and $P$ is a point outside it. With a straightedge only, construct the two tangents from $P$.
+A real conic is drawn and a point $P$ admits two distinct real tangents to it. Construct both tangents with a straightedge alone, allowing intersections with the drawn curve. Explain your choice of auxiliary secants.
 \end{exercise}
-
 \begin{exercise}[$\star$]\label{geometry:ex:concentric}
-Let $\Gamma$ and $\omega$ be concentric circles of radii $R>r$. Show that $T$ is a rotation, and that the Poncelet zigzag closes into a convex $n$-gon
-if and only if $r=R\cos(\pi/n)$. When does it close at all?
+For concentric circles of radii $0<r<R$, prove that the consistently directed Poncelet map is a rotation. Determine its signed angle with the right-side convention. Show its chain is a convex $n$-gon exactly when $r=R\cos(\pi/n)$, $n\ge3$, and characterize every closing star polygon.
 \end{exercise}
-
 \begin{exercise}[$\star\star$]\label{geometry:ex:chappleeuler}
-Let $\Gamma,\omega$ have radii $R>r$ and centres at distance $d$, with $\omega$ inside $\Gamma$. Using Euler's formula and Theorem~\ref{geometry:thm:poncelet},
-show that if $d^2=R^2-2Rr$, then every point of $\Gamma$ is a vertex of a triangle inscribed in $\Gamma$ and circumscribed about $\omega$, and that if
-one such triangle exists then $d^2=R^2-2Rr$.
+For strictly nested circles of radii $R,r>0$ and centre distance $d$, prove that the Poncelet chain closes after three steps exactly when $d^2=R^2-2Rr$. In that case show every outer-circle point is a vertex of a triangle inscribed in the outer circle and circumscribed about the inner one.
+\end{exercise}
+\begin{exercise}[$\star$]\label{geometry:ex:apolloniuscircle}
+For distinct real points $A,B$ and $k>0$, $k\ne1$, prove that $PA=k\,PB$ describes a circle. Find its centre and radius, and show inversion in it exchanges $A,B$.
 \end{exercise}
 
-\begin{exercise}[$\star$]\label{geometry:ex:apolloniuscircle}
-Let $A\ne B$ be points and $k>0$, $k\ne1$. Show that the set of points $P$ with $PA=k\cdot PB$ is a circle (the circle of Apollonius), and that $A$ and
-$B$ are inverse points with respect to it.
+\begin{exercise}[$\star\star$]\label{ex:v9-finite-conic-tangents}
+In $\mathbb P^2(\mathbb F_q)$ with $q$ odd, take $\mathcal C:y^2=xz$. Count its points and tangents. Prove that each off-conic point admits either two or zero tangents, and count the points of each type. For $P=[u:v:w]\notin\mathcal C$, express the two-tangent criterion in terms of whether $v^2-uw$ is a square. Include $u=0$ and the tangent at infinity.
+\end{exercise}
+\begin{exercise}[$\star\star\star$]\label{ex:v9-pell-conic}
+Parametrize every rational point of $y^2=2x^2+1$ by lines through $(0,1)$, including the vertical and tangent parameters. Show that the matrix $A=\left(\begin{smallmatrix}3&2\\4&3\end{smallmatrix}\right)$ preserves this conic and generates all its integer points with $x\ge0,y>0$ from $(0,1)$. Supply a descent proof of completeness, then obtain all other integer points by signs.
+\end{exercise}
+\begin{exercise}[$\star\star$]\label{ex:v9-poncelet-frequency}
+For the strictly nested circles of the porism, put $M=\int_\Gamma ds/t$ and let $\alpha$ be the conjugate rotation angle. Prove that the Poncelet map preserves the probability measure $ds/(Mt)$. If $\alpha/(2\pi)$ is irrational, show every orbit is dense and, for every continuous $h$, its time average equals $M^{-1}\int_\Gamma h\,ds/t$. Deduce the limiting frequency in any arc. Finally bound the normalized arc coordinate's derivative using $R,d,r$ and identify the concentric case.
+\end{exercise}
+\begin{exercise}[$\star\star\star$]\label{ex:v9-fuss-quadrilateral}
+Prove Fuss's quadrilateral criterion for strictly nested circles:
+\[
+T^4=\mathrm{id}\quad\Longleftrightarrow\quad
+\frac1{(R-d)^2}+\frac1{(R+d)^2}=\frac1{r^2}.
+\]
+Place the centres on the horizontal axis. For necessity, use reflection and the porism to show that an orbit starting at the rightmost point has the leftmost point opposite it. For sufficiency, construct the symmetric kite in Figure~\ref{fig:v9-fuss-kite}. Explain why no orbit has period one or two.
 \end{exercise}
 
 \section{Hints}
 
 \begin{hint}{geometry:ex:fivepoints}
-Write $ax^2+bxy+cy^2+dx+ey+f=0$ and solve the five linear equations. The centre is where the gradient vanishes.
+Solve for the six quadratic coefficients up to scale, then translate to a critical point of the polynomial.
 \end{hint}
 \begin{hint}{geometry:ex:tangentellipse}
-The matrix is $\mathrm{diag}(1/a^2,1/b^2,-1)$; the polar of a point of the conic is the tangent.
+Multiply $[x_0:y_0:1]$ by the diagonal matrix of the homogeneous equation.
 \end{hint}
 \begin{hint}{geometry:ex:parabolareflect}
-$PF=PH$, so $P$ is on the perpendicular bisector of $FH$. Check that this line meets the parabola only at $P$.
+Write $P=(u,u^2/(4f))$. Check a double root on the proposed tangent, then reflect the downward vector rather than just its unoriented line.
 \end{hint}
 \begin{hint}{geometry:ex:pythagorean}
-The second intersection of $y=t(x+1)$ with the circle has rational coordinates when $t$ is rational, and conversely.
+Substitute $y=t(x+1)$ and factor out the known intersection $x=-1$.
 \end{hint}
 \begin{hint}{geometry:ex:nothree}
-Clear denominators and work modulo $3$.
+Clear denominators with a primitive integer triple and reduce modulo three.
 \end{hint}
 \begin{hint}{geometry:ex:pascalpappus}
-List the three pairs of opposite sides of the hexagon.
+Write the six sides in order, then pair sides one and four, two and five, three and six.
 \end{hint}
 \begin{hint}{geometry:ex:brianchon}
-The tangent lines form a conic in the dual plane; apply Pascal there.
+Use the conic with matrix $A^{-1}$ in the dual plane and translate Pascal's joins and intersections back.
 \end{hint}
 \begin{hint}{geometry:ex:conesection}
-The line at infinity of the chart is the set of lines through $0$ parallel to $\Pi$. Count the lines of the cone in the plane $ax+by+cz=0$.
+The infinity directions are cone generators in $ax+by+cz=0$. Rotate the first two coordinates before counting them.
 \end{hint}
 \begin{hint}{geometry:ex:tangentconstruct}
-Find two points of the polar of $P$ using two lines through $P$ and the harmonic construction of Appendix~C.
+Four intersections from two secants through $P$ form a quadrangle. Its other two diagonal points determine the polar.
 \end{hint}
 \begin{hint}{geometry:ex:concentric}
-The chord tangent to $\omega$ subtends a fixed angle at the centre.
+The half-angle $\theta$ of a tangent chord satisfies $\cos\theta=r/R$. Check the direction from the rightmost outer-circle point.
 \end{hint}
 \begin{hint}{geometry:ex:chappleeuler}
-For the first part you need one triangle. Look among isosceles triangles inscribed in a circle of radius $R$.
+Euler gives necessity. For existence, vary an isosceles triangle continuously from a flat limit to the equilateral triangle, then align its two centres.
 \end{hint}
 \begin{hint}{geometry:ex:apolloniuscircle}
-Use complex numbers and expand $|z-a|^2=k^2|z-b|^2$.
+Expand squared distances and complete the square. Check the two radius vectors have the same direction and product of lengths equal to the squared radius.
+\end{hint}
+\begin{hint}{ex:v9-finite-conic-tangents}
+The finite tangents have coefficients $[s^2:-2s:1]$ and the remaining tangent is $x=0$. Count intersections of pairs of tangents using duality.
+\end{hint}
+\begin{hint}{ex:v9-pell-conic}
+Substitute $y=1+tx$. For integer completeness apply $A^{-1}$ and prove its new nonnegative $x$ is strictly smaller unless $x=0$.
+\end{hint}
+\begin{hint}{ex:v9-poncelet-frequency}
+Transport uniform angular measure through $F$. Use the irrational-rotation result already used in Chapter~2; bounds on $|x-c|$ give bounds on $t$.
+\end{hint}
+\begin{hint}{ex:v9-fuss-quadrilateral}
+Reflection in the centres' axis conjugates $T$ to $T^{-1}$. A four-cycle through a fixed reflection point has its opposite vertex fixed too. The adjacent tangent lines at an endpoint of a diameter are perpendicular at their intersection on the outer circle.
 \end{hint}
 
 \section{Solutions}
 
 \begin{solution}{geometry:ex:fivepoints}
-\idea Five points give five linear equations for six unknown coefficients.
-\writeup The point $(0,0)$ gives $f=0$; $(1,0)$ gives $a+d=0$; $(0,1)$ gives $c+e=0$; then $(1,2)$ gives $a+2b+4c+d+2e=0$, i.e.\ $2b+2c=0$, and $(2,1)$
-gives $4a+2b+c+2d+e=0$, i.e.\ $2a+2b=0$. So $a=c=-b$, $d=e=b$, and with $b=-1$ the conic is
-\[
-x^2-xy+y^2-x-y=0.
-\]
-It is symmetric in $x$ and $y$. Its points at infinity satisfy $x^2-xy+y^2=0$, which has no real solution (the discriminant is $1-4<0$), so it is an
-ellipse. The gradient $(2x-y-1,\,2y-x-1)$ vanishes at $(1,1)$, the centre. As a check, $(2,2)$, the reflection of $(0,0)$ in the centre, is also on the curve.
+\idea Solve the linear interpolation conditions and inspect the translated quadratic.
+\writeup Substitution into $ax^2+bxy+cy^2+dx+ey+f$ gives $f=0$, $d=-a$, $e=-c$, $b=-c$ and $a=-b$. Taking $a=1$ yields $x^2-xy+y^2-x-y=0$. Its gradient vanishes at $(1,1)$. With $X=x-1,Y=y-1$ the equation becomes $X^2-XY+Y^2=1$. Since this is $(X-Y/2)^2+3Y^2/4=1$, it is an ellipse centred at $(1,1)$. This also verifies nondegeneracy directly.
 \end{solution}
-
 \begin{solution}{geometry:ex:tangentellipse}
-\idea The polar is a matrix times a vector.
-\writeup The conic is $q(x,y,z)=x^2/a^2+y^2/b^2-z^2$ with $A=\mathrm{diag}(1/a^2,1/b^2,-1)$. The polar of $[x_0:y_0:1]$ is $[x_0/a^2:y_0/b^2:-1]$, the line
-$xx_0/a^2+yy_0/b^2=1$. For a point of the ellipse the polar is the tangent (Proposition~\ref{geometry:prop:conicline}), so the tangent at $(x_0,y_0)$ is
-$xx_0/a^2+yy_0/b^2=1$.
+\idea Polarity reads the line coefficients from one matrix-vector product.
+\writeup The homogeneous matrix is $\operatorname{diag}(a^{-2},b^{-2},-1)$. Multiplying by $(x_0,y_0,1)$ gives the polar $xx_0/a^2+yy_0/b^2=1$. At a conic point the polar is its tangent by Proposition~\ref{geometry:prop:conicline}, giving the same formula for the tangent there.
 \end{solution}
-
 \begin{solution}{geometry:ex:parabolareflect}
-\idea The tangent at $P$ is the line that the reflection exchanging $F$ and $H$ fixes.
-\writeup The parabola is $x^2=4fy$. Let $P=(u,u^2/4f)$, so $H=(u,-f)$. The perpendicular bisector of $FH$ passes through the midpoint $(u/2,0)$ and is
-perpendicular to $H-F=(u,-2f)$, so its equation is $u(x-u/2)-2fy=0$, that is $y=\frac{u}{2f}x-\frac{u^2}{4f}$. It passes through $P$, and
-substituting into $x^2=4fy$ gives $x^2-2ux+u^2=(x-u)^2=0$: it meets the parabola only at $P$, so it is the tangent. The reflection in the tangent
-exchanges $F$ and $H$, so it maps the line $PH$, which is vertical, to the line $PF$. A ray coming down parallel to the axis along $HP$ is reflected
-along $PF$, into the focus. This is why satellite dishes and the mirrors of telescopes are parabolic.
+\idea The equidistance construction identifies the tangent; a vector check determines the reflected ray's direction.
+\writeup The focus-directrix equation is $x^2=4fy$. Put $P=(u,u^2/(4f))$ and $H=(u,-f)$. The perpendicular bisector of $FH$ has equation
+\[
+u(x-u/2)-2fy=0.
+\]
+It passes through $P$, and substituting into the parabola gives $(x-u)^2=0$, so it is the tangent. Reflection across it exchanges $F,H$. For the direction, its normal is $N=(u,-2f)$. Reflection sends the downward unit vector $v=(0,-1)$ to
+\[
+v-2\frac{v\cdot N}{|N|^2}N
+=\frac{(-4fu,\,4f^2-u^2)}{u^2+4f^2}
+=\frac{4f}{u^2+4f^2}(F-P).
+\]
+The multiplier is positive because $f>0$, so the outgoing ray points towards the focus, including the vertex case $u=0$.
 \end{solution}
-
 \begin{solution}{geometry:ex:pythagorean}
-\idea Rational lines through a rational point cut the conic again at rational points.
-\writeup Substituting $y=t(x+1)$ into $x^2+y^2=1$ gives $(x+1)\bigl((1+t^2)x-(1-t^2)\bigr)=0$, so the second point is
-$\bigl(\frac{1-t^2}{1+t^2},\frac{2t}{1+t^2}\bigr)$. It is rational if $t$ is, and conversely $t=y/(x+1)$ is rational if the point is. So the rational points
-are $(-1,0)$ and these. A Pythagorean triple $a^2+b^2=c^2$ gives the rational point $(a/c,b/c)$; with $t=n/m$ in lowest terms, the point is
-$\bigl(\frac{m^2-n^2}{m^2+n^2},\frac{2mn}{m^2+n^2}\bigr)$, so $(a,b,c)$ is proportional to $(m^2-n^2,2mn,m^2+n^2)$. The precise statement for primitive
-triples (with $m,n$ coprime of opposite parity) is proved in Volume~2, Chapter~8, Theorem~8.1.
+\idea A rational slope determines the second intersection rationally.
+\writeup Substitution gives
+\[
+(x+1)((1+t^2)x-(1-t^2))=0.
+\]
+Thus the second point is $((1-t^2)/(1+t^2),2t/(1+t^2))$. Every rational point other than $(-1,0)$ gives the rational slope $t=y/(x+1)$, and the vertical parameter gives that omitted point. With $t=n/m$, clearing denominators gives $(m^2-n^2,2mn,m^2+n^2)$. Every nonzero Pythagorean triple produces a rational circle point on dividing by its hypotenuse, so this gives the formula up to proportionality, signs and interchanging legs. The exact primitive opposite-parity classification is Volume~2, Theorem~8.1.
 \end{solution}
-
 \begin{solution}{geometry:ex:nothree}
-\idea Squares modulo $3$ are $0$ and $1$, so a sum of two squares divisible by $3$ needs both divisible by $3$.
-\writeup Suppose $x^2+y^2=3$ with $x,y$ rational. Writing $x=a/c$, $y=b/c$ with a common denominator gives integers with $a^2+b^2=3c^2$, and we may assume
-$\gcd(a,b,c)=1$. Modulo $3$, $a^2+b^2\equiv0$, and since squares are $0$ or $1$ modulo $3$, this forces $a\equiv b\equiv0$. Then $9\mid a^2+b^2=3c^2$,
-so $3\mid c^2$ and $3\mid c$, contradicting $\gcd(a,b,c)=1$.
+\idea A primitive common denominator contradicts divisibility by three.
+\writeup A rational solution would give integers $a,b,c$ with $c\ne0$, $a^2+b^2=3c^2$ and $\gcd(a,b,c)=1$. Squares modulo three are zero or one; hence both $a,b$ must be divisible by three. The equation then makes $c^2$ divisible by three and therefore $c$ divisible by three too, contradicting primitivity. No rational point exists.
 \end{solution}
-
 \begin{solution}{geometry:ex:pascalpappus}
-\idea Read off the opposite sides.
-\writeup The sides of the hexagon $AB'CA'BC'$ are $AB'$, $B'C$, $CA'$, $A'B$, $BC'$, $C'A$, and opposite sides are the first and fourth, the second and fifth,
-the third and sixth. Their meeting points are $AB'\cap A'B=X$, $B'C\cap BC'=Z$ and $CA'\cap C'A=Y$, the three points of Pappus' theorem (Theorem~\ref{geometry:thm:pappusline}).
-So Pascal's statement for this hexagon is Pappus' theorem. Our proof of Pascal does not apply to a degenerate conic, but Appendix~C proved this case
-directly. Pascal and Pappus are two faces of one theorem about six points on a conic, as Appendix~F will show with cubic curves.
+\idea The alternating vertices lie on a reducible quadratic, but their incidence statement has already been proved directly.
+\writeup The six sides are $AB',B'C,CA',A'B,BC',C'A$. Opposite pairs meet at $AB'\cap A'B$, $B'C\cap BC'$, $CA'\cap C'A$, exactly the three Pappus points. Thus the claimed collinearity is Pappus. The quadratic defining $\ell\cup\ell'$ is degenerate, so the conic parametrization and no-three-collinear facts used in our Pascal proof are unavailable. Appendix~C's direct proof establishes this case independently; it is not an automatic application of the nondegenerate theorem.
 \end{solution}
-
 \begin{solution}{geometry:ex:brianchon}
-\idea Dualise Pascal, using that the tangent lines of a conic form a conic of the dual plane.
-\writeup Let the sides $a,b,c,d,e,f$ of the hexagon be tangent to $\mathcal C_A$, with vertices $a\cap b$, $b\cap c$, \dots, $f\cap a$. As shown before the
-statement, the tangent lines are the points of the nondegenerate conic $\mathcal C_{A^{-1}}$ of the dual plane. Apply Pascal's theorem there to the
-six ``points'' $a,\dots,f$. The ``line'' joining $a$ and $b$ is the point $a\cap b$; the ``meeting point'' of the ``lines'' $ab$ and $de$ is the line
-through the vertices $a\cap b$ and $d\cap e$, a main diagonal of the hexagon. Pascal says the three such ``points'' are ``collinear'', that is, the
-three main diagonals pass through one point.
+\idea The six tangent lines are six points of the dual conic.
+\writeup Let the distinct tangent lines be $a,b,c,d,e,f$ in cyclic order. Their adjacent intersections are the vertices. No three of these lines are concurrent, since a line in the dual plane meets its nondegenerate conic in at most two points, so the opposite-vertex joins are defined. Pascal on the dual conic says the dual intersections of $ab$ with $de$, of $bc$ with $ef$, and of $cd$ with $fa$ are collinear. Back in the original plane these three dual points are the lines
+\[
+(a\cap b)(d\cap e),\quad(b\cap c)(e\cap f),\quad(c\cap d)(f\cap a).
+\]
+Dual collinearity is their concurrence, exactly Brianchon's conclusion.
 \end{solution}
-
 \begin{solution}{geometry:ex:conesection}
-\idea Apollonius' cone is the projective conic $x^2+y^2=z^2$, and a cutting plane is an affine chart.
-\writeup Each point of $\Pi$ spans a line through $0$, and the lines through $0$ that meet $\Pi$ are exactly those not parallel to it. So $\Pi$ is an
-affine chart of $\mathbb P^2(\mathbb R)$, whose line at infinity consists of the lines through $0$ in the plane $\Pi_0:ax+by+cz=0$. The section of the
-cone is the conic $x^2+y^2=z^2$ seen in this chart, and its points at infinity are the lines of the cone lying in $\Pi_0$. Rotate about the $z$-axis so
-that $b=0$, $a\ge0$; then $\sqrt{a^2+b^2}$ becomes $a$. If $c\ne0$, on $\Pi_0$ we have $z=-ax/c$, and the cone gives $y^2=(a^2/c^2-1)x^2$: only the
-origin if $a<|c|$, one line ($y=0$) if $a=|c|$, two lines if $a>|c|$. If $c=0$, then $a>0$ and $\Pi_0$ is $x=0$, meeting the cone in the two lines $y=\pm z$.
-So the section is an ellipse, a parabola or a hyperbola as stated: a plane less steep than the cone gives an ellipse, a plane parallel to a generator
-a parabola, and a steeper plane a hyperbola.
+\idea An affine section chooses which cone directions count as infinity.
+\writeup A point of $\Pi$ represents its line through the origin. Every direction except those in $ax+by+cz=0$ meets $\Pi$ exactly once, so $\Pi$ is an affine chart of the projective plane. The homogeneous circle conic $x^2+y^2=z^2$ appears as the required section in this chart. Rotate about the $z$-axis to replace $(a,b)$ by $(a_0,0)$ with $a_0=\sqrt{a^2+b^2}$. If $c\ne0$, the infinity equation gives $z=-a_0x/c$, so cone directions satisfy
+\[
+y^2=(a_0^2/c^2-1)x^2.
+\]
+There are zero, one or two projective solutions as $a_0<|c|$, $a_0=|c|$, $a_0>|c|$. If $c=0$, then $a_0>0$ because the plane equation is nonzero, and the two directions are $x=0,y=\pm z$. These counts give precisely the three classifications. The nondegenerate real projective conic has infinitely many points, so removing at most two infinity points leaves a nonempty section.
 \end{solution}
 
 \begin{solution}{geometry:ex:tangentconstruct}
-\idea Draw two secants from $P$; the four points they cut out form a quadrangle whose other two diagonal points lie on the polar of $P$.
-\writeup Draw two lines through $P$ meeting the conic at $M_1,N_1$ and $M_2,N_2$. Let $R=M_1M_2\cap N_1N_2$ and $S=M_1N_2\cap N_1M_2$, and let the line $RS$ meet
-$M_1N_1$ at $C$ and $M_2N_2$ at $D$. Apply Theorem~\ref{geometry:thm:harmonic} to the quadrangle with $E=M_1$, $F=M_2$, $G=N_1$, $H=N_2$: then $EF\cap GH=R$,
-$EH\cap FG=S$, $EG\cap RS=C$ and $FH\cap RS=D$, so $(R,S;C,D)=-1$. Project the line $RS$ onto the line $M_1N_1$ from $M_2$: $R$ goes to $M_1$, $S$ to $N_1$,
-$C$ to itself and $D$ to $M_2D\cap M_1N_1=P$. So $(M_1,N_1;C,P)=-1$, hence $(M_1,N_1;P,C)=-1$ (exchanging the last two points inverts the cross-ratio), and
-$C$ lies on the polar of $P$ by Proposition~\ref{geometry:prop:polar}. In the same way $D$ does. Since $C\ne D$ (they lie on different lines through $P$ and are
-not $P$), the polar is the line $CD=RS$. It meets the conic at the points of contact $T_1,T_2$, and the tangents are $PT_1$ and $PT_2$.
-\end{solution}
-
-\begin{solution}{geometry:ex:concentric}
-\idea By symmetry every tangent chord looks the same from the centre.
-\writeup A chord of $\Gamma$ tangent to $\omega$ is at distance $r$ from the centre, so it subtends the angle $2\theta$ at the centre, with $\cos\theta=r/R$.
-All the chords are oriented the same way, so $T$ is the rotation by $2\theta$. The zigzag is a convex $n$-gon, going once around, when $2\theta=2\pi/n$,
-that is $r=R\cos(\pi/n)$. It closes at all if and only if $\theta/\pi$ is rational: if $\theta=\pi k/n$ in lowest terms, it closes after $n$ steps,
-going $k$ times around, as a star polygon.
-\end{solution}
-
-\begin{solution}{geometry:ex:chappleeuler}
-\idea Euler's formula gives the necessary condition; for sufficiency, Poncelet reduces everything to finding a single triangle.
-\writeup If a triangle is inscribed in $\Gamma$ and circumscribed about $\omega$, then $\Gamma$ is its circumcircle and $\omega$ its incircle, and Euler's
-formula gives $d^2=OI^2=R^2-2Rr$. Conversely, assume $d^2=R^2-2Rr$. Consider isosceles triangles inscribed in a circle of radius $R$: their inradius
-depends continuously on the apex angle, tends to $0$ when the triangle flattens, and equals $R/2$ for the equilateral triangle. Since $d^2\ge0$ we
-have $r\le R/2$, so by the intermediate value theorem one of these triangles has inradius exactly $r$. By Euler's formula, the distance between its
-circumcentre and incentre is $\sqrt{R^2-2Rr}=d$. Move it by an isometry taking its circumcentre to the centre of $\Gamma$ and its incentre to the
-centre of $\omega$: it is now inscribed in $\Gamma$ and circumscribed about $\omega$. Its vertices give a point $x$ with $T^3(x)=x$, possibly after
-reversing the order of the vertices to match the orientation of $T$. By Theorem~\ref{geometry:thm:poncelet}, $T^3(y)=y$ for every $y$. The zigzag from $y$
-cannot close after one step, since a chord has two distinct ends, so it is a triangle.
-\end{solution}
-
-\begin{solution}{geometry:ex:apolloniuscircle}
-\idea The condition is quadratic with the same coefficient for $x^2$ and $y^2$, and no $xy$ term: a circle.
-\writeup With complex coordinates $z,a,b$, the condition $|z-a|^2=k^2|z-b|^2$ expands to
-$(1-k^2)|z|^2-2\,\mathrm{Re}\bigl(z(\bar a-k^2\bar b)\bigr)+|a|^2-k^2|b|^2=0$. Dividing by $1-k^2$ and completing the square gives $|z-c|^2=\rho^2$ with
+\idea The other diagonal points of an inscribed quadrangle lie on the required polar.
+\writeup Choose two distinct secants through $P$ with conic intersections $M_1,N_1$ and $M_2,N_2$. Choose them generically so auxiliary intersections are finite; a drawn ellipse always permits this choice. Put
 \[
-c=\frac{a-k^2b}{1-k^2},\qquad \rho=\frac{k\,|a-b|}{|1-k^2|}.
+R=M_1M_2\cap N_1N_2,\quad S=M_1N_2\cap N_1M_2,
 \]
-Then $c-a=\frac{k^2(a-b)}{1-k^2}$ and $c-b=\frac{a-b}{1-k^2}$ are positive multiples of the same vector, so $A$ and $B$ lie on the same ray from $c$, and
-$|c-a|\,|c-b|=\frac{k^2|a-b|^2}{(1-k^2)^2}=\rho^2$: they are inverse in the circle (Definition~\ref{geometry:def:inversion}).
+and let $C=RS\cap M_1N_1$, $D=RS\cap M_2N_2$. The harmonic construction on the quadrangle $E=M_1,F=M_2,G=N_1,H=N_2$ gives $(R,S;C,D)=-1$. Project from $M_2$ onto $M_1N_1$. The four points go to $M_1,N_1,C,P$, so $(M_1,N_1;C,P)=-1$. Exchanging the last two entries inverts the cross-ratio, still $-1$. Proposition~\ref{geometry:prop:polar} places $C$ on the polar; the same argument puts $D$ there. They are distinct since their secants meet only at $P$, which is off its polar. Thus $RS=CD$ is the polar. Intersect it with the drawn conic at the contact points $T_1,T_2$ and draw $PT_1,PT_2$.
+
+This is a projective construction; if a required point is at infinity its joins are interpreted projectively. For a literal finite drawing the contact points must be finite as well. In the ellipse case this is automatic. In a hyperbola chart an infinity contact means its tangent is an asymptote; the projective construction specifies that line, rather than a finite point to mark on the paper.
+\end{solution}
+\begin{solution}{geometry:ex:concentric}
+\idea Rotational symmetry makes the chord's angular step constant.
+\writeup The tangent chord has distance $r$ from the common centre. Its smaller central angle is $2\theta$ with $\theta=\arccos(r/R)\in(0,\pi/2)$. At $(R,0)$, keeping the inner circle on the right chooses the chord heading down and left. Thus $T$ is rotation by $-2\theta$ in the counterclockwise angle convention. A convex $n$-gon is obtained exactly when $\theta=\pi/n$, giving $r=R\cos(\pi/n)$ and $n\ge3$. More generally the chain closes exactly when $\theta/\pi=k/n$ is rational. In lowest terms $0<k<n/2$, its first return is after $n$ steps, winding clockwise $k$ times; it is convex for $k=1$ and a star polygon otherwise. Irrational ratios never return.
+\end{solution}
+\begin{solution}{geometry:ex:chappleeuler}
+\idea Construct one triangle with the correct inradius, then transport it and use the porism.
+\writeup A triangle inscribed in $\Gamma$ and circumscribed about $\omega$ has circumradius $R$, inradius $r$ and centre distance $d$. Euler's formula proves necessity. Conversely the equality forces $0<r\le R/2$. In a continuous family of inscribed isosceles triangles, the inradius approaches zero at a flat limit and equals $R/2$ at the equilateral triangle. For example choose vertices $(R,0),R(\cos\theta,\sin\theta),R(\cos\theta,-\sin\theta)$ with $\theta$ from a small positive value to $2\pi/3$; area divided by semiperimeter proves the asserted continuity and limit. The intermediate value theorem supplies inradius $r$. Euler's formula then gives centre distance $d$. A Euclidean isometry aligns the two centres with those of the prescribed circles; if $d=0$, only the common centre needs aligning. Orient the triangle so its interior lies on the right: its tangent steps follow $T$. The porism now closes every orbit in three steps. A step cannot fix a point, because its chord passes through the interior of the outer disk. Nor can two steps return: that would reverse the same chord, placing the inner circle on the left. Hence every such orbit has exactly three vertices and is the required triangle.
+\end{solution}
+\begin{solution}{geometry:ex:apolloniuscircle}
+\idea Completing the square also gives the inversion relation.
+\writeup With complex coordinates $a,b,z$, expand $|z-a|^2=k^2|z-b|^2$ and divide by $1-k^2\ne0$. The result is $|z-c|^2=\rho^2$, where
+\[
+c=\frac{a-k^2b}{1-k^2},\qquad \rho=\frac{k|a-b|}{|1-k^2|}>0.
+\]
+The vectors $c-a=k^2(a-b)/(1-k^2)$ and $c-b=(a-b)/(1-k^2)$ have the same direction and their lengths have product $\rho^2$. Neither point is the centre. Consequently the inversion formula from Appendix~B exchanges $A,B$.
+\end{solution}
+
+\begin{solution}{ex:v9-finite-conic-tangents}
+\idea Duality bounds tangent multiplicity; the tangent equation gives the square test.
+\writeup The parametrization gives $q+1$ points and distinct tangents. At $\varphi(s)$ for finite $s$, the tangent is $s^2x-2sy+z=0$; at infinity it is $x=0$. Through $P=[u:v:w]$, the finite tangent parameters satisfy
+\[
+us^2-2vs+w=0.
+\]
+If $u\ne0$, the nonzero discriminant $4(v^2-uw)$ gives two roots when $v^2-uw$ is a square and no roots otherwise. The discriminant cannot be zero because $P$ is off the conic. There is no infinity tangent in this case. If $u=0$, then $v\ne0$, again because $P$ is off the conic. There is one finite root $w/(2v)$ and the infinity tangent, so two in all; here $v^2-uw=v^2$ is a nonzero square. Scaling the point multiplies this expression by a square, making the test well-defined.
+
+Any two distinct tangents meet off the conic, since a tangent has only its own contact point on the conic. No three are concurrent, by the line-intersection bound for the dual conic. Thus choosing a tangent pair counts each two-tangent point once, giving $\binom{q+1}{2}=q(q+1)/2$. There are $(q^2+q+1)-(q+1)=q^2$ off-conic points, leaving $q(q-1)/2$ with no tangents. This includes every odd $q$, including $q=3$.
+\end{solution}
+\begin{solution}{ex:v9-pell-conic}
+\idea Rational slopes parametrize the curve; a preserving integer matrix admits a decreasing inverse step.
+\writeup Substitute $y=1+tx$ to obtain $x((t^2-2)x+2t)=0$. For rational $t$, $t^2\ne2$, so the second point is
+\[
+x=\frac{2t}{2-t^2},\qquad y=\frac{2+t^2}{2-t^2}.
+\]
+At $t=0$ it is the double intersection $(0,1)$. The vertical parameter gives $(0,-1)$. Every remaining rational point has $x\ne0$ and the rational slope $t=(y-1)/x$, proving completeness. Figure~\ref{fig:v9-pell-parametrization} shows $t=1$.
+
+The matrix sends $(x,y)$ to $(3x+2y,4x+3y)$; expansion verifies $(4x+3y)^2-2(3x+2y)^2=y^2-2x^2$. Its determinant is one and its inverse sends $(x,y)$ to $(3x-2y,3y-4x)$, preserving integer points too. For an integer solution with $x>0,y>0$, $x=1$ is impossible, so $x\ge2$. The equation gives
+\[
+\sqrt2\,x<y\le\tfrac32x,
+\]
+the upper inequality following from $2x^2+1\le9x^2/4$ at $x\ge2$. Hence $0\le3x-2y<x$, and $3y-4x>0$. The inverse step reduces a nonnegative integer $x$ strictly until $x=0$, when $y=1$. Reversing the steps proves every point in this quadrant is $A^n(0,1)$, $n\ge0$. The first are $(0,1),(2,3),(12,17),(70,99)$. Independent sign changes of $x,y$ preserve the equation and produce all other integer points; $y=0$ never occurs.
+\end{solution}
+\begin{solution}{ex:v9-poncelet-frequency}
+\idea The invariant arc coordinate turns the orbit problem into a rotation problem with known uniform averages.
+\writeup The lemma gives preservation of $\mu$, so dividing by $M=\mu(\Gamma)>0$ gives an invariant probability measure. The homeomorphism $F$ pushes it to uniform angular measure, since $dF=(2\pi/M)ds/t$. For irrational $\alpha/(2\pi)$ the rotation orbit is dense and equidistributed, by the irrational-rotation result used in Chapter~2 (Volume~5, Corollary~6.14). Apply it to the continuous function $h\circ F^{-1}$ and change variables:
+\[
+\lim_{N\to\infty}\frac1N\sum_{j=0}^{N-1}h(T^jx)
+=\frac1M\int_\Gamma\frac{h}{t}\,ds.
+\]
+For an arc $I$, approximate its indicator above and below by continuous functions whose integrals differ arbitrarily little. This is possible because $ds/t$ has continuous bounded density and endpoints have measure zero. The resulting visiting frequency is $M^{-1}\int_I ds/t$.
+
+Put $t_- =\sqrt{(R-d)^2-r^2}$ and $t_+=\sqrt{(R+d)^2-r^2}$. Strict containment gives $0<t_-\le t(x)\le t_+$. The normalized coordinate $u=F/(2\pi)$ satisfies
+\[
+\frac1{Mt_+}\le\frac{du}{ds}\le\frac1{Mt_-},\qquad
+\frac{2\pi R}{t_+}\le M\le\frac{2\pi R}{t_-}.
+\]
+For concentric circles, $t$ is constant, $u$ is ordinary normalized arc length, and the invariant measure is uniform. When $d>0$, $t$ varies, so equal-length arcs need not have equal visiting frequencies.
+\end{solution}
+\begin{solution}{ex:v9-fuss-quadrilateral}
+\idea Reflection forces a diameter in a four-cycle; perpendicular tangent lines then give the metric condition.
+\writeup Let $A=(R,0)$, $C=(-R,0)$, and inner centre $I=(d,0)$, choosing any axis if $d=0$. Reflection $\sigma$ in that axis reverses the right-side convention, so $\sigma T\sigma=T^{-1}$. There are no period-one points, since each chosen chord crosses the disk interior, and no period-two points, since reversing a chord puts the inner circle on the wrong side.
+
+If $T^4$ fixes any point, the porism makes $T^4=\mathrm{id}$. The point $T^2(A)$ is fixed by $\sigma$, since $\sigma T^2(A)=T^{-2}(A)=T^2(A)$. It is not $A$ by the period-two exclusion, so it is $C$. Writing $B$ for the upper intermediate vertex, the lower one is its reflection. The quadrilateral is a convex kite, and $\angle ABC=\pi/2$ by the diameter theorem.
+
+Set $a=R-d>r$, $b=R+d>r$. The upper tangent lines from $A,C$ have inward-facing normal directions that, up to an overall sign, may be written
+\[
+n_A=(r/a,\sqrt{1-r^2/a^2}),\quad
+n_C=(-r/b,\sqrt{1-r^2/b^2}).
+\]
+Perpendicularity of the lines is $n_A\cdot n_C=0$. Both square roots are positive, so squaring this equality is reversible and gives
+\[
+(1-r^2/a^2)(1-r^2/b^2)=r^4/(a^2b^2)
+\quad\Longleftrightarrow\quad r^2/a^2+r^2/b^2=1.
+\]
+This proves necessity.
+
+Conversely that condition makes the two upper tangents perpendicular. Their intersection is explicitly
+\[
+B=\left(\frac{2R^2d}{R^2+d^2},\frac{R(R^2-d^2)}{R^2+d^2}\right),
+\]
+which lies on $\Gamma$ and has positive height because $d<R$. This follows also by solving their equations $bx+ay=bR$, $-ax+by=aR$, since the condition says $r=ab/\sqrt{a^2+b^2}$. Its reflection $D$ gives a convex cyclic kite $ABCD$ containing $I$. The four tangent half-planes $bx\pm ay\le bR$ and $-ax\pm by\le aR$ have precisely this kite as their intersection. Each contains the inner disk, since its boundary has distance $r$ from $I$ and $I$ is on its interior side. Thus every contact point belongs to the disk and the kite, so lies on the actual side segment, not its extension. Traversing it with the interior on the right follows $T$ and closes after four steps. The porism finishes sufficiency. The period exclusions show the first return really has four vertices.
 \end{solution}
 
 \section*{Sources and further reading}
+
+Kendig is a friendly continuation of the conic constructions; Coxeter develops their projective setting. For Poncelet, King's paper explains the search for invariant measures, while Dragovi\'c and Radnovi\'c follow the much broader porism and its history. The historical and original records below support the dates and quoted extensions used here.
 
 \begin{itemize}
 \item Galileo Galilei, \emph{The Assayer} (1623), in \emph{Discoveries and Opinions of Galileo}, translated by S.~Drake, Doubleday, 1957, pp.~237--238
