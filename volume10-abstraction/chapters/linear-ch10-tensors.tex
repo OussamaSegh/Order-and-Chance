@@ -121,6 +121,41 @@ The coefficient matrix is square. Proposition~\ref{linear:prop:kronecker}(iii) g
 
 The theorem also explains how to remove an off-diagonal block from a matrix, in Exercise~\ref{linear:ex:roth}. The Lyapunov equation in Volume~8, Theorem~F.5 is a related matrix equation arising in stability. The purpose of vectorisation is not to enlarge a problem needlessly, but to reveal the linear operator whose invertibility is at issue.
 
+
+% V10-EXPANSION WORKED EXAMPLE 1
+\subsection*{Worked example: solving a matrix equation without an eigenbasis}
+
+Take
+\[
+A=\begin{pmatrix}1&1\\0&1\end{pmatrix},\qquad
+B=\begin{pmatrix}0&0\\0&2\end{pmatrix},\qquad C=I_2.
+\]
+The matrix $A$ has only the eigenvalue $1$ and is not diagonalisable: its eigenspace is the line spanned by $e_1$. Nevertheless its spectrum is disjoint from $\{0,2\}$, the spectrum of $B$. Sylvester's theorem therefore promises exactly one solution of $AX-XB=I_2$.
+
+Write $X=(x_1\ x_2)$ by columns. Since $B$ is diagonal, the equation separates into
+\[
+Ax_1=e_1,\qquad (A-2I)x_2=e_2.
+\]
+The first equation gives $x_1=(1,0)^{\mathsf T}$. In the second, the lower coordinate is $-x_{22}=1$, and the upper is $-x_{12}+x_{22}=0$. Hence $x_2=(-1,-1)^{\mathsf T}$ and
+\[
+X=\begin{pmatrix}1&-1\\0&-1\end{pmatrix}.
+\]
+Checking the original equation gives
+\[
+AX=\begin{pmatrix}1&-2\\0&-1\end{pmatrix},\qquad
+XB=\begin{pmatrix}0&-2\\0&-2\end{pmatrix},
+\]
+whose difference is indeed $I_2$.
+
+The vec trick records the same calculation as one four-variable system. In column order its matrix is
+\[
+I_2\otimes A-B^{\mathsf T}\otimes I_2
+ =\begin{pmatrix}
+1&1&0&0\\0&1&0&0\\0&0&-1&1\\0&0&0&-1
+\end{pmatrix}.
+\]
+It acts on $(x_{11},x_{21},x_{12},x_{22})^{\mathsf T}$, with right side $(1,0,0,1)^{\mathsf T}$. Its diagonal entries are the eigenvalue differences $1,1,-1,-1$. They explain uniqueness directly, without diagonalising $A$. The column calculation is smaller to carry out by hand; the Kronecker calculation identifies the operator and continues to work when neither coefficient matrix is diagonal.
+
 \section{Tensors and their rank}
 
 Let $K$ be a field. An array $T=(t_{ijk})$ of format $n_1\times n_2\times n_3$ is an element of the coordinate space denoted $K^{n_1}\otimes K^{n_2}\otimes K^{n_3}$. At this point the notation simply records the three coordinate indices. Chapter~3 will relate it to the coordinate-free tensor product. A \emph{pure tensor} $u\otimes v\otimes w$ has entries $u_iv_jw_k$. If all three vectors are nonzero, it has rank one; if any is zero, the tensor is zero.
@@ -314,6 +349,40 @@ M_1-M_2+M_3+M_6
 \]
 These are exactly the four entries of $AB$. No factors have been commuted, so the computation works in every characteristic and for matrix-valued entries.
 \end{proof}
+
+
+% V10-EXPANSION WORKED EXAMPLE 2
+\subsection*{Worked example: the seven products on actual entries}
+
+For
+\[
+A=\begin{pmatrix}1&2\\3&4\end{pmatrix},\qquad
+B=\begin{pmatrix}5&6\\7&8\end{pmatrix},
+\]
+Strassen's input combinations give
+\[
+\begin{aligned}
+M_1&=5\cdot13=65,&M_2&=7\cdot5=35,\\
+M_3&=1\cdot(-2)=-2,&M_4&=4\cdot2=8,\\
+M_5&=3\cdot8=24,&M_6&=2\cdot11=22,\\
+M_7&=(-2)\cdot15=-30.
+\end{aligned}
+\]
+The output combinations then recover
+\[
+\begin{aligned}
+c_{11}&=65+8-24-30=19,&c_{12}&=-2+24=22,\\
+c_{21}&=35+8=43,&c_{22}&=65-35-2+22=50.
+\end{aligned}
+\]
+Schoolbook multiplication checks these values: $1\cdot5+2\cdot7=19$, $1\cdot6+2\cdot8=22$, $3\cdot5+4\cdot7=43$, and $3\cdot6+4\cdot8=50$.
+
+This example also shows the accounting choice. We used seven scalar multiplications instead of eight, but eighteen additions or subtractions instead of four. If every operation cost the same amount, the totals would be $25$ and $12$, respectively. A smaller multiplication count is not yet a saving in the total count at size two. The benefit emerges when each of the seven products is itself a large block product, while adding two blocks costs only their number of entries.
+
+Reducing the same calculation modulo $2$ supplies a useful characteristic check. The input matrices become
+$\bigl(\begin{smallmatrix}1&0\\1&0\end{smallmatrix}\bigr)$ and
+$\bigl(\begin{smallmatrix}1&0\\1&0\end{smallmatrix}\bigr)$, and the output becomes
+$\bigl(\begin{smallmatrix}1&0\\1&0\end{smallmatrix}\bigr)$. The seven integer products reduce to $1,1,0,0,0,0,0$, giving exactly that result. Subtraction has become addition, but the identity survives. No division by $2$, or by any other nonunit, occurred in the formulas. That is why their scope includes characteristic two as well as real and complex arithmetic.
 
 The seven products do not, by themselves, prove that the total operation count is smaller for every matrix size. Additions matter too. The exponent theorem says what survives when the block procedure is repeated many times.
 
@@ -512,6 +581,23 @@ For real $t$, define multiplication on the two-dimensional real algebra with bas
 For $m,n\ge1$, let $d=\min(m,n)$ and let a unit state have reduced density matrix $\rho_A$. Prove $0\le E\le\log_2d$, with both equality cases, and show that the upper equality is equivalent to all $d$ nonzero eigenvalues being $1/d$. Construct, when $d\ge3$, a state whose two nonzero Schmidt coefficients are equal but whose entropy is strictly below this maximum. Compute $\operatorname{tr}(\rho_A^2)$ for your state and for a maximally entangled one.
 \end{exercise}
 
+
+\begin{exercise}[$\star$]\label{ex:v10exp-ch02-vecsystem}
+For $A=\operatorname{diag}(1,2)$ and $B=\bigl(\begin{smallmatrix}0&1\\0&0\end{smallmatrix}\bigr)$, write $AX+XB=I_2$ as a four-variable system in column-vector order. Solve it and verify the answer by matrix multiplication. Explain why the coefficient matrix is $I_2\otimes A+B^{\mathsf T}\otimes I_2$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:v10exp-ch02-bases}
+Prove that applying invertible linear maps independently to the three factors of a tensor preserves its rank. For $1\le r\le\min(n_1,n_2,n_3)$, deduce that $\sum_{j=1}^r e_j\otimes e_j\otimes e_j$ has rank exactly $r$ over every field. Include the zero-tensor case, and explain why the upper bound alone would not prove the equality.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:v10exp-ch02-transpose}
+For a fixed $n\times n$ matrix $B$ and $m\ge1$, prove that $\operatorname{vec}(XB)=(B\otimes I_m)\operatorname{vec}X$ for every $m\times n$ matrix $X$ if and only if $B=B^{\mathsf T}$. Give a $2\times2$ counterexample to omitting the transpose in the vec trick. Over $\C$, give another counterexample to replacing the transpose by the adjoint. What changes when $m=0$?
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:v10exp-ch02-leastsquares}
+Let normal complex matrices have unitary diagonalizations $A=U\operatorname{diag}(\lambda_i)U^*$ and $B=V\operatorname{diag}(\mu_j)V^*$. For a given $C$, determine all matrices minimising $\|AX-XB-C\|_F$. Express the minimum in terms of $D=U^*CV$, decide when an exact solution exists, and when the minimiser is unique. Explain how a common eigenvalue creates a compatibility condition rather than necessarily making the equation inconsistent.
+\end{exercise}
+
 \section{Hints}
 
 \begin{hint}{linear:ex:kroncommute}
@@ -561,6 +647,20 @@ The output slices are $\operatorname{diag}(1,t)$ and $\bigl(\begin{smallmatrix}0
 \end{hint}
 \begin{hint}{ex:v10new-ch02-entropy-equality}
 Use the logarithm inequality from the text and check when equality can hold at every step. The state $(e_1\otimes e_1+e_2\otimes e_2)/\sqrt2$ has only two nonzero Schmidt coefficients regardless of the ambient dimensions.
+\end{hint}
+
+
+\begin{hint}{ex:v10exp-ch02-vecsystem}
+If $X=(x_{ij})$, its ordered variables are $x_{11},x_{21},x_{12},x_{22}$. The $(1,2)$ equation is $x_{12}+x_{11}=0$.
+\end{hint}
+\begin{hint}{ex:v10exp-ch02-bases}
+An invertible change sends each pure tensor to a pure tensor; apply its inverse for the reverse inequality. Flatten the diagonal tensor to obtain the lower bound.
+\end{hint}
+\begin{hint}{ex:v10exp-ch02-transpose}
+Compare with the proved vec identity. If $(B-B^{\mathsf T})\otimes I_m=0$ and $m\ge1$, inspect its blocks. For the adjoint issue, take $B=\operatorname{diag}(i,1)$ and $X=I_2$.
+\end{hint}
+\begin{hint}{ex:v10exp-ch02-leastsquares}
+Set $Y=U^*XV$ and use invariance of the Frobenius norm under unitary factors. The objective becomes a sum of independent squares $| (\lambda_i-\mu_j)y_{ij}-d_{ij}|^2$.
 \end{hint}
 
 \section{Solutions}
@@ -753,6 +853,49 @@ At $t=0$, use the invertible slice $B$ as the first slice. Its quotient with $A$
 The logarithm argument in the text gives $E\le\log_2r$, with equality only when all $p_s=1/r$. Since $r\le d$, equality in $E\le\log_2d$ requires $r=d$ and all $p_s=1/d$. Conversely those values give $E=\log_2d$ directly. They are the nonzero eigenvalues of $\rho_A$, so this is also the required density-matrix characterisation.
 
 For $d\ge3$, take $\psi=(e_1\otimes e_1+e_2\otimes e_2)/\sqrt2$ in the larger spaces. Its two nonzero probabilities are $1/2,1/2$, so $E=1<\log_2d$. Its purity is $\operatorname{tr}(\rho_A^2)=2(1/2)^2=1/2$. A maximally entangled state $d^{-1/2}\sum_{j=1}^de_j\otimes e_j$ has $d$ nonzero eigenvalues $1/d$ and purity $1/d$. Thus equal nonzero coefficients describe a maximum only after their number is specified.
+\end{solution}
+
+
+\begin{solution}{ex:v10exp-ch02-vecsystem}
+\idea Keep the column order fixed, then solve the resulting triangular system.
+\writeup Direct multiplication gives
+\[
+AX+XB=\begin{pmatrix}x_{11}&x_{12}+x_{11}\\2x_{21}&2x_{22}+x_{21}\end{pmatrix}.
+\]
+The equation is therefore
+\[
+\begin{pmatrix}1&0&0&0\\0&2&0&0\\1&0&1&0\\0&1&0&2\end{pmatrix}
+\begin{pmatrix}x_{11}\\x_{21}\\x_{12}\\x_{22}\end{pmatrix}
+=\begin{pmatrix}1\\0\\0\\1\end{pmatrix}.
+\]
+It gives $x_{11}=1$, $x_{21}=0$, $x_{12}=-1$, $x_{22}=1/2$. For $X=\bigl(\begin{smallmatrix}1&-1\\0&1/2\end{smallmatrix}\bigr)$, the two terms are $AX=\bigl(\begin{smallmatrix}1&-1\\0&1\end{smallmatrix}\bigr)$ and $XB=\bigl(\begin{smallmatrix}0&1\\0&0\end{smallmatrix}\bigr)$, whose sum is $I_2$. The vec formula applied separately to $AX$ and $XB$ gives $I_2\otimes A$ and $B^{\mathsf T}\otimes I_2$, exactly the displayed coefficient matrix. Its diagonal entries are nonzero, so the solution is unique.
+\end{solution}
+
+\begin{solution}{ex:v10exp-ch02-bases}
+\idea Transport a decomposition in both directions, and use a matrix rank that cannot be reduced.
+\writeup If $T=\sum_{s=1}^k u_s\otimes v_s\otimes w_s$, then applying $P\otimes Q\otimes S$ gives the length-$k$ expression $\sum_sPu_s\otimes Qv_s\otimes Sw_s$. Hence the transformed rank is at most the original rank. Applying the invertible map $P^{-1}\otimes Q^{-1}\otimes S^{-1}$ gives the reverse inequality, proving equality over any field.
+
+The displayed diagonal tensor has a length-$r$ expression, giving the upper bound. Its first flattening has one nonzero entry in each of its first $r$ rows, in distinct columns indexed by $(j,j)$, and all other entries zero. Those rows are independent, so the flattening has rank $r$. The tensor-rank lower bound gives the reverse inequality. For the empty sum, all flattenings and the tensor have rank zero. A length-$r$ expression by itself could contain unnecessary or cancelling terms; the independent flattening rows rule that out here.
+\end{solution}
+
+\begin{solution}{ex:v10exp-ch02-transpose}
+\idea The transpose records which input column contributes to which output column.
+\writeup The proved formula gives $\operatorname{vec}(XB)=(B^{\mathsf T}\otimes I_m)\operatorname{vec}X$. Column vectorisation is a bijection onto all coordinate vectors, so the proposed formula for every $X$ is equivalent to $(B-B^{\mathsf T})\otimes I_m=0$. For $m\ge1$, its $(i,j)$ block is $(b_{ij}-b_{ji})I_m$, which is zero precisely when $b_{ij}=b_{ji}$. Thus the condition is exactly symmetry, without complex conjugation.
+
+For $X=I_2$ and $B=\bigl(\begin{smallmatrix}0&1\\0&0\end{smallmatrix}\bigr)$, the correct vector is $(0,0,1,0)^{\mathsf T}$, while $(B\otimes I_2)\operatorname{vec}I_2=(0,1,0,0)^{\mathsf T}$. To distinguish transpose from adjoint, take $B=\operatorname{diag}(i,1)$. The correct output is $(i,0,0,1)^{\mathsf T}$, whereas the adjoint substitution gives $(-i,0,0,1)^{\mathsf T}$. If $m=0$, every vector and matrix involved is empty. Both formulas are vacuous for any $B$, so symmetry cannot be inferred. This is why the positive-row hypothesis is included.
+\end{solution}
+
+\begin{solution}{ex:v10exp-ch02-leastsquares}
+\idea In eigenvector coordinates, minimisation separates into scalar problems, one for each eigenvalue difference.
+\writeup Put $Y=U^*XV$ and $D=U^*CV$. Unitary multiplication preserves the Frobenius norm, so
+\[
+\|AX-XB-C\|_F^2=\sum_{i,j}|(\lambda_i-\mu_j)y_{ij}-d_{ij}|^2.
+\]
+If $\lambda_i\ne\mu_j$, the unique minimising entry is $y_{ij}=d_{ij}/(\lambda_i-\mu_j)$ and its contribution is zero. If $\lambda_i=\mu_j$, the summand is $|d_{ij}|^2$ independently of $y_{ij}$, so that entry is arbitrary. These choices describe every minimiser, with $X=UYV^*$. The minimum norm is
+\[
+\left(\sum_{\lambda_i=\mu_j}|d_{ij}|^2\right)^{1/2}.
+\]
+An exact solution exists precisely when all these compatibility entries vanish. The minimiser is unique precisely when there are no common eigenvalues, since any coinciding pair leaves a freely variable entry. Empty coordinate ranges cause no exception: the empty sum is zero and the empty matrix is the unique candidate. The spectral condition controls uniqueness for every right side, while consistency for a particular right side also depends on its coordinates.
 \end{solution}
 
 \section*{Sources and further reading}
