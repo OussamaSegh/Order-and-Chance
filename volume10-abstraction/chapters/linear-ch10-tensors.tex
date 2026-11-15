@@ -6,169 +6,201 @@ Below we will give an algorithm which computes the coefficients of the product o
 \upshape(Volker Strassen, \emph{Gaussian elimination is not optimal}, 1969)
 \end{center}
 
-How many multiplications does it take to multiply two matrices? This chapter meets the tensor product in its most concrete form,
-as arrays of numbers and the Kronecker product of matrices, where it has a price that can be counted. Chapter~3 then defines the
-tensor product of modules by a universal property, in the language of Chapter~1, and the arrays of this chapter become the case
-of free modules over a field.
+Multiplying two $2\times2$ matrices seems to require eight multiplications. Each of the four output entries is a sum of two products. Could seven products contain enough information to recover all four entries? Strassen's answer was yes. Applied to blocks and repeated, that small saving changes the exponent of the cost for large matrices.
 
-To multiply two $2\times2$ matrices, the schoolbook rule computes eight products of entries: each of the four entries of $AB$ is
-a sum of two products. For a century and a half nobody seriously asked whether eight was necessary; it seemed obvious. In 1969
-Volker Strassen, then at the University of Zurich, set out (so the story goes) to prove that it was, and ended up with an
-algorithm that uses seven. Seven instead of eight is a modest saving, but the algorithm uses only additions and
-products of entries, never their commutativity, so it applies to $2\times2$ \emph{block} matrices whose blocks are themselves large
-matrices. Applied recursively, it multiplies $n\times n$ matrices with about $n^{\log_27}\approx n^{2.807}$ operations instead of
-$n^3$. The paper was two and a half pages long, its title was a provocation, and it started a race that is still on: the best
-exponent known today (2024) is below $2.372$, and nobody knows whether $n^{2+\varepsilon}$ is possible for every $\varepsilon>0$.
+A tensor records the coefficients of a bilinear operation. Decomposing it into simple tensors records an algorithm for that operation. The question about seven multiplications is therefore a question about tensor rank. We begin with arrays in coordinate spaces and the Kronecker product of matrices, so every construction can be calculated. Chapter~3 will define tensor products of modules by a universal property, without a basis.
 
-The right language for this race is the language of tensors. A bilinear map, such as $(A,B)\mapsto AB$, is a three-way array of
-numbers, and the number of multiplications it needs is the \emph{rank} of that array. Tensor rank generalises matrix rank, but it
-is much stranger: it depends on the field, it is not semicontinuous, and computing it is NP-hard. This chapter builds the
-tools (Kronecker products and the vectorisation trick, which make linear equations in matrices tractable), proves Strassen's
-theorem, explores the strange geometry of tensor rank on $2\times2\times2$ arrays, and ends with the one case where everything
-is as nice as for matrices: tensors with two indices, where the singular value decomposition becomes the \emph{Schmidt
-decomposition} of quantum mechanics. The next chapter is the same product for modules: exact sequences, and which of them the tensor product preserves.
+Strassen's 1969 paper, \emph{Gaussian elimination is not optimal}, gave the seven products and the resulting exponent $\log_27\approx2.807$. Their importance lies in the order of the factors: every entry from the first matrix stays to the left of every entry from the second. The formulas therefore work for matrix blocks too. There is no assumption that blocks commute.
+
+The later bounds on the exponent are quoted records, not results proved here. Figure~\ref{linear:fig:omega} records several bounds through 2024. Computing tensor rank in general is NP-hard in the formulations studied by Hillar and Lim; that complexity result is quoted from the source below and will not be used. What we can prove locally already shows why tensors are different from matrices. Their rank can depend on the field, and over $\R$ or $\C$ it can increase at a limit. With only two indices the singular value decomposition restores the familiar matrix theory, in the form called the Schmidt decomposition.
 
 \begin{think}
-Complex numbers are pairs of reals, and $(a+bi)(c+di)=(ac-bd)+(ad+bc)i$ costs four real multiplications. Can you do it with
-three, if additions are free? (Gauss knew how.)
+The usual formula for $(a+bi)(c+di)$ uses $ac,bd,ad,bc$. If additions cost nothing, can three real products recover both its real and imaginary parts? Try using $(a+b)(c+d)$ as one of them.
 \end{think}
 
 \section{Kronecker products and vectorisation}
 
+If a matrix entry is replaced by a whole matrix, dimensions multiply. For example, taking
+$A=\bigl(\begin{smallmatrix}1&2\\0&-1\end{smallmatrix}\bigr)$ gives the block matrix
+$\bigl(\begin{smallmatrix}B&2B\\0&-B\end{smallmatrix}\bigr)$. This replacement is the Kronecker product.
+
 \begin{definition}\label{linear:def:kronecker}
-The \emph{Kronecker product} of $A\in M_{m,n}(\C)$ and $B\in M_{p,q}(\C)$ is the $mp\times nq$ block matrix
+For $A\in M_{m,n}(\C)$ and $B\in M_{p,q}(\C)$, their \emph{Kronecker product} is the $mp\times nq$ matrix
 \[
-A\otimes B=\begin{pmatrix}a_{11}B&\cdots&a_{1n}B\\\vdots&&\vdots\\a_{m1}B&\cdots&a_{mn}B\end{pmatrix}.
+A\otimes B=
+\begin{pmatrix}a_{11}B&\cdots&a_{1n}B\\\vdots&&\vdots\\a_{m1}B&\cdots&a_{mn}B\end{pmatrix}.
 \]
-For vectors this is $(u\otimes v)_{(i,k)}=u_iv_k$, the coordinates being ordered lexicographically.
+The row indices are pairs $(i,k)$ and the column indices pairs $(j,l)$, in lexicographic order; the corresponding entry is $a_{ij}b_{kl}$. For column vectors this gives $(u\otimes v)_{(i,k)}=u_iv_k$.
 \end{definition}
 
+The pair notation avoids guessing where an entry belongs. It also shows how the product acts:
+$(A\otimes B)(x\otimes y)=Ax\otimes By$. Such vector products span the full coordinate space, since the vectors $e_j\otimes e_l$ are its coordinate basis.
+
 \begin{proposition}[rules of the Kronecker product]\label{linear:prop:kronecker}
-Whenever the products are defined:
+For matrices with the indicated operations defined, the following rules hold.
 \begin{enumerate}[label=(\roman*)]
-\item $(A\otimes B)(C\otimes D)=AC\otimes BD$ (the \emph{mixed product rule});
-\item $(A\otimes B)^*=A^*\otimes B^*$, and $(A\otimes B)^{-1}=A^{-1}\otimes B^{-1}$ for invertible $A,B$;
-\item if $A$ ($m\times m$) has eigenvalues $\lambda_1,\dots,\lambda_m$ and $B$ ($p\times p$) has eigenvalues $\mu_1,\dots,\mu_p$ (with
-multiplicity), then $A\otimes B$ has eigenvalues $\lambda_i\mu_k$, and $A\otimes I_p+I_m\otimes B$ has eigenvalues $\lambda_i+\mu_k$;
-\item $\operatorname{tr}(A\otimes B)=\operatorname{tr}A\operatorname{tr}B$, $\det(A\otimes B)=(\det A)^p(\det B)^m$, and
+\item The \emph{mixed product rule} is $(A\otimes B)(C\otimes D)=AC\otimes BD$.
+\item Adjoints and inverses satisfy $(A\otimes B)^*=A^*\otimes B^*$ and, for invertible factors, $(A\otimes B)^{-1}=A^{-1}\otimes B^{-1}$.
+\item If square matrices $A\in M_m(\C)$ and $B\in M_p(\C)$ have eigenvalues $\lambda_i$ and $\mu_k$, counted with algebraic multiplicity, then $A\otimes B$ has eigenvalues $\lambda_i\mu_k$. The matrix $A\otimes I_p+I_m\otimes B$ has eigenvalues $\lambda_i+\mu_k$.
+\item For these square matrices,
+\[
+\operatorname{tr}(A\otimes B)=\operatorname{tr}A\operatorname{tr}B,
+\qquad
+\det(A\otimes B)=(\det A)^p(\det B)^m.
+\]
+For rectangular matrices as well,
 $\operatorname{rank}(A\otimes B)=\operatorname{rank}A\operatorname{rank}B$.
 \end{enumerate}
 \end{proposition}
 \begin{proof}
-(i) The $(i,j)$ block of the left side is $\sum_ka_{ik}B\,c_{kj}D=(AC)_{ij}BD$, the $(i,j)$ block of the right side. (ii) The
-first identity is read off the blocks; the second follows from (i), since $(A\otimes B)(A^{-1}\otimes B^{-1})=I\otimes I=I$.
+\emph{Products and adjoints.} The $(i,j)$ block of the product in (i) is
+\[
+\sum_k(a_{ik}B)(c_{kj}D)=\Bigl(\sum_ka_{ik}c_{kj}\Bigr)BD=(AC)_{ij}BD.
+\]
+The coefficients are scalars, so they commute with the entries of $B$ and $D$. This proves (i). Transposing the index pairs and conjugating every scalar proves the adjoint identity in (ii). Applying (i) to the proposed inverse gives identity matrices in both orders.
 
-(iii) By Schur's triangularisation (Volume~8, Theorem~C.2, orthonormal form), write $A=UTU^*$ and $B=VSV^*$ with $U,V$ unitary and $T,S$ upper triangular, with
-the eigenvalues on their diagonals. By (i) and (ii), $A\otimes B=(U\otimes V)(T\otimes S)(U\otimes V)^*$ with $U\otimes V$ unitary,
-and $T\otimes S$ is upper triangular (its block $(i,j)$ is $t_{ij}S$, zero for $i>j$, and its diagonal blocks $t_{ii}S$ are upper
-triangular), with diagonal entries $t_{ii}s_{kk}=\lambda_i\mu_k$. Likewise $A\otimes I+I\otimes B$ is conjugate to the upper
-triangular $T\otimes I+I\otimes S$, with diagonal $\lambda_i+\mu_k$.
+\emph{Eigenvalues without diagonalisation.} A matrix need not have an eigenbasis. Use Schur triangularisation (Volume~8, Theorem~C.2) instead: $A=UTU^*$, $B=VSV^*$, with $U,V$ unitary and $T,S$ upper triangular. Parts (i) and (ii) make $U\otimes V$ unitary. They also give
+\[
+A\otimes B=(U\otimes V)(T\otimes S)(U\otimes V)^*.
+\]
+The middle matrix is upper triangular: blocks below the block diagonal vanish, and each diagonal block is a scalar times the upper triangular matrix $S$. Its diagonal entries are $\lambda_i\mu_k$. The same change of basis triangularises the Kronecker sum to $T\otimes I+I\otimes S$, whose diagonal entries are $\lambda_i+\mu_k$. This proves (iii), including multiplicities.
 
-(iv) Trace and determinant follow from (iii) ($\prod_{i,k}\lambda_i\mu_k=\prod_i\lambda_i^p\prod_k\mu_k^m$), or directly for the
-trace. For the rank, use the singular value decompositions $A=U_1\Sigma_1V_1^*$, $B=U_2\Sigma_2V_2^*$: then $A\otimes B=(U_1\otimes U_2)
-(\Sigma_1\otimes\Sigma_2)(V_1\otimes V_2)^*$, and $\Sigma_1\otimes\Sigma_2$ is a rectangular diagonal matrix whose non-zero entries are the
-products $\sigma_i(A)\sigma_k(B)$, $\operatorname{rank}A\cdot\operatorname{rank}B$ of them.
+\emph{Trace, determinant and rank.} Sum the diagonal entries in (iii) for the trace; multiply them for the determinant. Each $\lambda_i$ occurs in $p$ products, and each $\mu_k$ in $m$ products, giving the stated powers. No nonzero-eigenvalue assumption is needed.
+
+For rectangular matrices, take singular value decompositions $A=U_1\Sigma_1V_1^*$ and $B=U_2\Sigma_2V_2^*$ (Volume~8, Theorem~4.1). The mixed product rule gives
+\[
+A\otimes B=(U_1\otimes U_2)(\Sigma_1\otimes\Sigma_2)(V_1\otimes V_2)^*.
+\]
+Each nonzero entry of the middle matrix is a product $\sigma_i(A)\sigma_k(B)$. Such an entry has row index $(i,k)$ and column index $(i,k)$ in the respective paired index sets. Distinct pairs occupy distinct rows and distinct columns. Independent row and column permutations therefore put these entries on a rectangular diagonal. There are exactly $\operatorname{rank}A\operatorname{rank}B$ of them. The unitary factors and permutations preserve rank, proving the claim.
 \end{proof}
 
-The proof of (iv) shows more: the singular values of $A\otimes B$ are the products of those of $A$ and $B$, so $\|A\otimes B\|_2=
-\|A\|_2\|B\|_2$. Kronecker products thus carry eigenvalues and singular values along with them, and they explain the spectra of
-many graphs at once.
+The same argument identifies the nonzero singular values of $A\otimes B$ as all products $\sigma_i(A)\sigma_k(B)$. Consequently
+$\|A\otimes B\|_2=\|A\|_2\|B\|_2$. If a factor is zero, both sides vanish. For zero-sized spaces we use the zero operator norm; the rank formulas still hold and empty determinants are $1$.
+
+Kronecker sums occur whenever a system can move in either of two independent coordinate directions.
 
 \begin{example}[grids and cubes]\label{linear:exa:grid}
-The \emph{Cartesian product} $G\mathbin\square H$ of two graphs has vertex set $V(G)\times V(H)$, with $(g,h)\sim(g',h')$ when
-$g\sim g'$ and $h=h'$, or $g=g'$ and $h\sim h'$. Its adjacency matrix is $A_G\otimes I+I\otimes A_H$, so its eigenvalues are the sums
-$\lambda_i(G)+\lambda_k(H)$. The $m\times n$ grid $P_m\mathbin\square P_n$ has eigenvalues $2\cos\frac{\pi i}{m+1}+2\cos\frac{\pi k}
-{n+1}$ (the path $P_m$ has eigenvalues $2\cos\frac{\pi i}{m+1}$, Volume~8, Exercise~3.3); the hypercube $Q_n$, the Cartesian
-product of $n$ copies of $K_2$, has the eigenvalues $\pm1\pm1\dots\pm1$, that is $n-2t$ with multiplicity $\binom nt$, as
-Volume~8, Exercise~5.1 finds with characters. The same computation gives the eigenvalues of the discrete Laplacian on a rectangle, which every
-numerical solver of the heat equation needs.
+The \emph{Cartesian product} of graphs $G\mathbin\square H$ has vertices $(g,h)$. Two vertices are adjacent when exactly one coordinate moves along an edge and the other stays fixed. Its adjacency matrix is therefore
+$A_G\otimes I+I\otimes A_H$. By the preceding proposition its eigenvalues are $\lambda_i(G)+\lambda_k(H)$.
+
+For a grid $P_m\mathbin\square P_n$, use the path eigenvalues of Volume~8, Exercise~3.3 to obtain
+\[
+2\cos\frac{\pi i}{m+1}+2\cos\frac{\pi k}{n+1},
+\qquad 1\le i\le m,\quad1\le k\le n.
+\]
+For the hypercube $Q_n$, each coordinate is a copy of $K_2$, whose eigenvalues are $1,-1$. Adding one choice from each coordinate gives $n-2t$ with multiplicity $\binom nt$. This agrees with the character calculation in Volume~8, Exercise~5.1. The same separation of coordinates will give the grid Laplacian in Exercise~\ref{linear:ex:gridlap}.
 \end{example}
 
-Kronecker products turn linear equations whose unknown is a matrix into ordinary linear systems. Let $\operatorname{vec}X\in\C^{mn}$
-be the vector obtained by stacking the columns of $X\in M_{m,n}(\C)$, the first column on top.
+A matrix equation is a linear system once its unknown entries are placed in a vector. For $X\in M_{m,n}(\C)$, let $\operatorname{vec}X$ mean its columns stacked in order, first column first. Thus
+$\operatorname{vec}\bigl(\begin{smallmatrix}a&b\\c&d\end{smallmatrix}\bigr)=(a,c,b,d)^{\mathsf T}$, not $(a,b,c,d)^{\mathsf T}$. Figure~\ref{fig:v10new-ch02-vectorization} shows this ordering for a rectangular matrix.
 
 \begin{proposition}[the vec trick]\label{linear:prop:vec}
-For matrices of compatible sizes, $\operatorname{vec}(AXB)=(B^{\mathsf T}\otimes A)\operatorname{vec}X$.
+For every compatible triple of matrices,
+$\operatorname{vec}(AXB)=(B^{\mathsf T}\otimes A)\operatorname{vec}X$.
 \end{proposition}
 \begin{proof}
-The $j$-th column of $AXB$ is $AXBe_j=\sum_kb_{kj}AXe_k=\sum_k(b_{kj}A)x_k$, where $x_k$ is the $k$-th column of $X$. The $j$-th block
-row of $B^{\mathsf T}\otimes A$ is $(b_{1j}A,\dots,b_{nj}A)$, and applied to $\operatorname{vec}X=(x_1;\dots;x_n)$ it gives the same
-vector.
+Write $x_k=Xe_k$ for the columns of $X$. The $j$th column of $AXB$ is
+\[
+AXB e_j=A\Bigl(\sum_kb_{kj}x_k\Bigr)=\sum_kb_{kj}Ax_k.
+\]
+The $j$th block row of $B^{\mathsf T}\otimes A$ is $(b_{1j}A,\ldots,b_{nj}A)$. Multiplying it by the stacked vector $(x_1;\ldots;x_n)$ gives exactly that column. Stacking all output columns proves the identity. The transpose here has no complex conjugation: the coefficients needed are $b_{kj}$ themselves.
 \end{proof}
+
+For diagonal $A$ and $B$, the equation $AX-XB=C$ says $(\lambda_i-\mu_j)x_{ij}=c_{ij}$. Disjoint eigenvalues permit division in every entry. The vec trick extends that observation without assuming either matrix is diagonal.
 
 \begin{theorem}[Sylvester's equation]\label{linear:thm:sylvester}
-Let $A\in M_m(\C)$, $B\in M_n(\C)$. The equation $AX-XB=C$ has a unique solution $X\in M_{m,n}(\C)$ for every $C$ if and only if $A$
-and $B$ have no common eigenvalue.
+For $A\in M_m(\C)$ and $B\in M_n(\C)$, the equation $AX-XB=C$ has exactly one solution $X\in M_{m,n}(\C)$ for every $C$ if and only if $A$ and $B$ have no common eigenvalue.
 \end{theorem}
 \begin{proof}
-By Proposition~\ref{linear:prop:vec}, the equation reads $(I_n\otimes A-B^{\mathsf T}\otimes I_m)\operatorname{vec}X=\operatorname{vec}C$, a
-square linear system. By Proposition~\ref{linear:prop:kronecker}(iii), applied to $A$ and $-B^{\mathsf T}$ (which has the eigenvalues
-$-\mu_k$ of $-B$), its matrix has eigenvalues $\lambda_i-\mu_k$. It is invertible exactly when none of these is zero.
+After vectorisation the equation is
+\[
+(I_n\otimes A-B^{\mathsf T}\otimes I_m)\operatorname{vec}X=\operatorname{vec}C.
+\]
+The coefficient matrix is square. Proposition~\ref{linear:prop:kronecker}(iii) gives its eigenvalues $\lambda_i-\mu_j$, since transposition does not change a characteristic polynomial. A square system has a unique solution for every right side precisely when its matrix is invertible, which is precisely when zero is not an eigenvalue. This is the disjointness condition. If one dimension is zero, the unknown space contains only the empty matrix and the condition is vacuous, as it should be.
 \end{proof}
 
-Sylvester's equation is everywhere: in control theory, in the stability of differential equations (Volume~8,
-Theorem~F.5 studies its symmetric cousin, the Lyapunov equation), and in the block diagonalisation of matrices (Exercise~\ref{linear:ex:roth}).
+The theorem also explains how to remove an off-diagonal block from a matrix, in Exercise~\ref{linear:ex:roth}. The Lyapunov equation in Volume~8, Theorem~F.5 is a related matrix equation arising in stability. The purpose of vectorisation is not to enlarge a problem needlessly, but to reveal the linear operator whose invertibility is at issue.
 
 \section{Tensors and their rank}
 
-From now on, a \emph{tensor} of format $n_1\times n_2\times n_3$ over a field $K$ is a three-way array $T=(t_{ijk})$ with entries in
-$K$; the space of such arrays is $K^{n_1}\otimes K^{n_2}\otimes K^{n_3}$. For vectors $u,v,w$, the \emph{rank-one tensor}
-$u\otimes v\otimes w$ has entries $u_iv_jw_k$.
+Let $K$ be a field. An array $T=(t_{ijk})$ of format $n_1\times n_2\times n_3$ is an element of the coordinate space denoted $K^{n_1}\otimes K^{n_2}\otimes K^{n_3}$. At this point the notation simply records the three coordinate indices. Chapter~3 will relate it to the coordinate-free tensor product. A \emph{pure tensor} $u\otimes v\otimes w$ has entries $u_iv_jw_k$. If all three vectors are nonzero, it has rank one; if any is zero, the tensor is zero.
 
 \begin{definition}\label{linear:def:tensorrank}
-The \emph{rank} $R_K(T)$ of a tensor is the least $r$ such that $T=\sum_{s=1}^ru_s\otimes v_s\otimes w_s$ with vectors over $K$.
+The \emph{tensor rank} $R_K(T)$ is the smallest nonnegative integer $r$ for which
+\[
+T=\sum_{s=1}^r u_s\otimes v_s\otimes w_s
+\]
+with all vectors over $K$. The empty sum is allowed, so only the zero tensor has rank zero.
 \end{definition}
 
-For two indices this is the usual rank of a matrix, since $u\otimes v$ is the rank-one matrix $uv^{\mathsf T}$. For three indices, the
-easiest lower bounds come from flattening. The \emph{flattening} $T_{(1)}$ is the $n_1\times n_2n_3$ matrix with rows indexed by $i$
-and columns by pairs $(j,k)$. A rank-one tensor flattens to a rank-one matrix ($u\,(v\otimes w)^{\mathsf T}$), so by subadditivity of
-matrix rank,
-\[
-R(T)\ge\max\bigl(\operatorname{rank}T_{(1)},\operatorname{rank}T_{(2)},\operatorname{rank}T_{(3)}\bigr).
-\]
-For matrices the two notions agree; for tensors the inequality is often strict, as we are about to see.
+Such a decomposition always exists: expand in the coordinate tensors $e_i\otimes e_j\otimes e_k$. For two indices, a pure tensor is the matrix $uv^{\mathsf T}$, and sums of $r$ such matrices have rank at most $r$. Conversely a rank-$r$ matrix factors through $K^r$, yielding a sum of $r$ column-row products. Thus the definition agrees with matrix rank in the two-index case.
 
-Fixing the last index slices a tensor into matrices: $T$ is the pair, triple, \dots\ of $n_1\times n_2$ matrices $T_k=(t_{ijk})_{i,j}$.
-The case $n_1=n_2=n_3=2$ is already full of surprises, and the following lemma decodes it.
+For three indices, regroup two of them to make a matrix. The \emph{first flattening} $T_{(1)}$ has rows indexed by $i$ and columns by $(j,k)$. A pure tensor becomes the matrix $u(v\otimes w)^{\mathsf T}$, of rank at most one. Matrix-rank subadditivity gives
+\[
+R_K(T)\ge\max\{\operatorname{rank}T_{(1)},\operatorname{rank}T_{(2)},\operatorname{rank}T_{(3)}\}.
+\]
+This lower bound is easy to compute, but it need not be sharp. The smallest three-index arrays already show the difference.
+
+For a $2\times2\times2$ tensor, fix the third index to obtain its two \emph{slices} $A=(t_{ij1})$ and $B=(t_{ij2})$. When $A$ is invertible, a rank-two decomposition forces these matrices to share an appropriate pair of rank-one pieces.
 
 \begin{lemma}[the slice test]\label{linear:lem:slices}
-Let $T\in K^2\otimes K^2\otimes K^2$ have slices $A=T_1$ and $B=T_2$, with $A$ invertible. Then $R_K(T)\le2$ if and only if $A^{-1}B$
-is diagonalisable over $K$.
+Suppose $T\in K^2\otimes K^2\otimes K^2$ has first slice $A$ invertible and second slice $B$. Then $R_K(T)\le2$ if and only if $A^{-1}B$ is diagonalisable over $K$.
 \end{lemma}
 \begin{proof}
-Suppose $T=\sum_{s=1}^2u_s\otimes v_s\otimes w_s$ (allowing zero terms). Taking slices, $A=UD_1V^{\mathsf T}$ and $B=UD_2V^{\mathsf T}$, where
-$U=(u_1\;u_2)$, $V=(v_1\;v_2)$ and $D_k=\operatorname{diag}(w_{1k},w_{2k})$. As $A$ is invertible, so are $U$, $V$ and $D_1$, and
-$A^{-1}B=(V^{\mathsf T})^{-1}D_1^{-1}D_2V^{\mathsf T}$ is diagonalisable over $K$.
+\emph{From tensors to matrices.} Suppose $T=u_1\otimes v_1\otimes w_1+u_2\otimes v_2\otimes w_2$, allowing a zero term. Put $U=(u_1\ u_2)$, $V=(v_1\ v_2)$ and $D_k=\operatorname{diag}(w_{1k},w_{2k})$. Then
+\[
+A=UD_1V^{\mathsf T},\qquad B=UD_2V^{\mathsf T}.
+\]
+Invertibility of $A$ forces all three square factors $U,D_1,V^{\mathsf T}$ to be invertible. Hence
+\[
+A^{-1}B=(V^{\mathsf T})^{-1}D_1^{-1}D_2V^{\mathsf T},
+\]
+a similarity to a diagonal matrix over $K$.
 
-Conversely, let $A^{-1}B=PDP^{-1}$ with $D=\operatorname{diag}(d_1,d_2)$ and $P$ invertible over $K$. Then $A=(AP)P^{-1}$ and $B=(AP)D
-P^{-1}$. Writing $a_s$ for the columns of $AP$ and $b_s^{\mathsf T}$ for the rows of $P^{-1}$, $A=\sum_sa_sb_s^{\mathsf T}$ and $B=\sum_sd_sa_s
-b_s^{\mathsf T}$, which is to say $T=\sum_{s=1}^2a_s\otimes b_s\otimes(1,d_s)$.
+\emph{From matrices to tensors.} Conversely write $A^{-1}B=PDP^{-1}$ over $K$, with $D=\operatorname{diag}(d_1,d_2)$. Let $a_s$ be the columns of $AP$, and let $b_s^{\mathsf T}$ be the rows of $P^{-1}$. Then
+\[
+A=\sum_{s=1}^2a_sb_s^{\mathsf T},\qquad
+B=\sum_{s=1}^2d_sa_sb_s^{\mathsf T}.
+\]
+Therefore the original tensor equals $\sum_{s=1}^2a_s\otimes b_s\otimes(1,d_s)$, a decomposition of length two. Invertibility of $A$ also rules out rank one.
 \end{proof}
 
+Diagonalisation can change when the field changes, so the lemma gives a direct way to see the same change in tensor rank.
+
 \begin{example}[the rank depends on the field]\label{linear:exa:rotation}
-Let $T$ have slices $A=I$ and $B=J=\bigl(\begin{smallmatrix}0&-1\\1&0\end{smallmatrix}\bigr)$, the rotation by a quarter turn. Then
-$A^{-1}B=J$ has eigenvalues $\pm i$: it is diagonalisable over $\C$ but not over $\R$. So $R_\C(T)=2$ but $R_\R(T)\ge3$. In fact
-$R_\R(T)=3$, as the decomposition
+Take slices $A=I$ and $B=J=\bigl(\begin{smallmatrix}0&-1\\1&0\end{smallmatrix}\bigr)$. The matrix $A^{-1}B=J$ has eigenvalues $i,-i$. It is diagonalisable over $\C$ and not over $\R$. The slice test and invertibility of $A$ give $R_\C(T)=2$ and $R_\R(T)\ge3$. The following real decomposition gives the matching upper bound:
 \[
-T=(1,1)\otimes(0,1)\otimes(1,0)+(-1,1)\otimes(1,0)\otimes(0,1)+(1,0)\otimes(1,-1)\otimes(1,1)
+T=(1,1)\otimes(0,1)\otimes(1,0)
+ +(-1,1)\otimes(1,0)\otimes(0,1)
+ +(1,0)\otimes(1,-1)\otimes(1,1).
 \]
-shows (check the two slices). The rank of a real tensor can drop when complex numbers are allowed, which never happens for
-matrices. The same tensor appears in disguise in Exercise~\ref{linear:ex:complexmult}: it is the multiplication of complex numbers.
+For its first slice, add $\bigl(\begin{smallmatrix}0&1\\0&1\end{smallmatrix}\bigr)$ and $\bigl(\begin{smallmatrix}1&-1\\0&0\end{smallmatrix}\bigr)$ to get $I$. For its second, add $\bigl(\begin{smallmatrix}-1&0\\1&0\end{smallmatrix}\bigr)$ and $\bigl(\begin{smallmatrix}1&-1\\0&0\end{smallmatrix}\bigr)$ to get $J$. Thus $R_\R(T)=3$. Matrix rank cannot change under extension of the field, because its nonzero minors are unchanged. Tensor rank can. Exercise~\ref{linear:ex:complexmult} finds the same obstruction in complex multiplication viewed over $\R$.
 \end{example}
 
+The next algebraic rank computation is valid over any field. Its statements about limits use $K=\R$ or $\C$ with the usual topology on the entries.
+
 \begin{example}[rank is not semicontinuous]\label{linear:exa:wtensor}
-The tensor
+Let
 \[
-W=e_1\otimes e_1\otimes e_2+e_1\otimes e_2\otimes e_1+e_2\otimes e_1\otimes e_1
+W=e_1\otimes e_1\otimes e_2+e_1\otimes e_2\otimes e_1+e_2\otimes e_1\otimes e_1.
 \]
-(Figure~\ref{linear:fig:wtensor}; physicists call it the W~state of three qubits) has slices $A=\bigl(\begin{smallmatrix}0&1\\1&0
-\end{smallmatrix}\bigr)$ and $B=\bigl(\begin{smallmatrix}1&0\\0&0\end{smallmatrix}\bigr)$, and $A^{-1}B=\bigl(\begin{smallmatrix}0&0\\1&0
-\end{smallmatrix}\bigr)$ is nilpotent and non-zero, hence not diagonalisable over any field. So $R(W)=3$. But for $\varepsilon\ne0$,
+Its slices are $A=\bigl(\begin{smallmatrix}0&1\\1&0\end{smallmatrix}\bigr)$ and $B=\bigl(\begin{smallmatrix}1&0\\0&0\end{smallmatrix}\bigr)$, so
+$A^{-1}B=\bigl(\begin{smallmatrix}0&0\\1&0\end{smallmatrix}\bigr)$. This nonzero nilpotent matrix is not diagonalisable: a diagonal nilpotent matrix would be zero. Thus the slice test gives $R_K(W)>2$, while the displayed three-term sum gives $R_K(W)=3$.
+
+Over $\R$ or $\C$, for $\varepsilon\ne0$ set
 \[
-W_\varepsilon=\frac1\varepsilon\Bigl((e_1+\varepsilon e_2)^{\otimes3}-e_1^{\otimes3}\Bigr)=W+\varepsilon\,(e_1\otimes e_2\otimes e_2+
-e_2\otimes e_1\otimes e_2+e_2\otimes e_2\otimes e_1)+\varepsilon^2e_2^{\otimes3}
+W_\varepsilon=\frac{(e_1+\varepsilon e_2)^{\otimes3}-e_1^{\otimes3}}{\varepsilon}.
 \]
-has rank at most $2$, and $W_\varepsilon\to W$. A limit of tensors of rank $2$ has rank $3$.
+This is a sum of two pure tensors. Expanding its eight entries gives
+\[
+\begin{aligned}
+W_\varepsilon=W+\varepsilon(&e_1\otimes e_2\otimes e_2
+ +e_2\otimes e_1\otimes e_2
+ +e_2\otimes e_2\otimes e_1)\\
+ &+\varepsilon^2 e_2^{\otimes3}.
+\end{aligned}
+\]
+Hence $W_\varepsilon\to W$ although $R_K(W_\varepsilon)\le2<R_K(W)$. Figure~\ref{linear:fig:wtensor} displays the three nonzero entries of $W$. In quantum terminology, its normalised version is the W state of three qubits.
 \end{example}
 
 \begin{figure}[ht]
@@ -179,50 +211,57 @@ $1$; since $A^{-1}B$ is a non-zero nilpotent matrix, $W$ has rank $3$, yet it is
 \label{linear:fig:wtensor}
 \end{figure}
 
-For matrices, the set of matrices of rank at most $r$ is closed (it is defined by the vanishing of minors), and the Eckart--Young
-theorem (Volume~8, Theorem~4.5) gives a best approximation of rank at most $r$. Example~\ref{linear:exa:wtensor} shows that both
-facts fail for tensors: the set of tensors of rank at most $2$ is not closed, and $W$ has no best approximation of rank at most
-$2$, since its distance to that set is $0$ but not attained (Exercise~\ref{linear:ex:noapprox}). Numerical methods that fit low-rank tensor
-models to data meet this phenomenon as ``degenerate'' solutions, in which several rank-one terms grow without bound while
-nearly cancelling. The \emph{border rank} $\underline R(T)$ is the least $r$ such that $T$ is a limit of tensors of rank $r$; so
-$\underline R(W)=2<3=R(W)$.
+The set of matrices of rank at most $r$ is closed, since every $(r+1)$-minor must vanish. The analogous set for three-index tensors need not be closed. For $W$, the distance to the rank-at-most-two set is zero, yet there is no tensor in that set at distance zero. Thus a best low-rank approximation need not exist, unlike the matrix situation in the Eckart--Young theorem (Volume~8, Theorem~4.5).
+
+For tensors over $\R$ or $\C$, the \emph{border rank} $\underline R_K(T)$ is the smallest $r$ such that $T$ is a limit of tensors of rank at most $r$. Here $\underline R_K(W)=2$: the displayed family proves the upper bound, while a rank-two flattening of $W$ rules out a limit of rank-one tensors because matrix rank at most one is closed. Numerically, the approximating terms can become large and nearly cancel while their sum stays small. Exercise~\ref{linear:ex:noapprox} computes the exact norms; this cancellation is an obstruction, not a numerical proof of rank.
 
 \section{Strassen's algorithm}
 
-The product of an $n\times m$ matrix by an $m\times p$ matrix is a bilinear map, and the right way to measure its cost is to count
-multiplications. A \emph{bilinear algorithm} of length $r$ for this product consists of linear forms $\alpha_1,\dots,\alpha_r$ in the
-entries of $A$, linear forms $\beta_1,\dots,\beta_r$ in the entries of $B$, and constant matrices $\Gamma_1,\dots,\Gamma_r$, such that
+Multiplication is bilinear: keeping either input matrix fixed makes the output linear in the other. A \emph{bilinear algorithm} of length $r$ chooses linear forms $\alpha_s$ in entries of $A$, linear forms $\beta_s$ in entries of $B$, and constant output matrices $\Gamma_s$, with
 \[
-AB=\sum_{s=1}^r\alpha_s(A)\,\beta_s(B)\,\Gamma_s\qquad\text{for all }A,B.
+AB=\sum_{s=1}^r\alpha_s(A)\beta_s(B)\Gamma_s
+\qquad\text{for every }A,B.
 \]
-It computes $AB$ with $r$ multiplications, all other operations being additions and multiplications by constants.
+It performs $r$ products involving both inputs. Forming the linear combinations and assembling the output also cost operations, but for a fixed block size their number is fixed. A tensor decomposition records exactly these bilinear products; it is not a claim about every possible computational model.
 
 \begin{definition}\label{linear:def:mmtensor}
-The \emph{matrix multiplication tensor} $\langle n,m,p\rangle$ is the tensor in $K^{nm}\otimes K^{mp}\otimes K^{pn}$ given by
+For $n\times m$ by $m\times p$ products over $K$, the \emph{matrix multiplication tensor} is
 \[
-\langle n,m,p\rangle=\sum_{i=1}^n\sum_{j=1}^m\sum_{k=1}^pe_{ij}\otimes e_{jk}\otimes e_{ki},
+\langle n,m,p\rangle
+ =\sum_{i=1}^n\sum_{j=1}^m\sum_{k=1}^p
+ e_{ij}\otimes e_{jk}\otimes e_{ki}
+ \in K^{nm}\otimes K^{mp}\otimes K^{pn}.
 \]
-where $e_{ij}$ denotes the matrix unit. As a trilinear form it is $(A,B,C)\mapsto\operatorname{tr}(ABC)$.
+Here each $e$ is the coordinate matrix unit in its respective factor. Interpreting the factors as coefficient spaces of linear forms gives the trilinear form $(A,B,C)\mapsto\operatorname{tr}(ABC)$, for $C\in M_{p,n}(K)$.
 \end{definition}
 
+The reversal $ki$ in the third factor is deliberate: it is the index order in $\operatorname{tr}(ABC)=\sum_{i,j,k}a_{ij}b_{jk}c_{ki}$.
+
 \begin{theorem}\label{linear:thm:bilinear}
-The shortest bilinear algorithm for $n\times m$ by $m\times p$ matrix products has length $R(\langle n,m,p\rangle)$.
+The least length of a bilinear algorithm for multiplying an $n\times m$ matrix by an $m\times p$ matrix is $R_K(\langle n,m,p\rangle)$.
 \end{theorem}
 \begin{proof}
-A decomposition $\langle n,m,p\rangle=\sum_{s=1}^ru_s\otimes v_s\otimes w_s$ means, as trilinear forms, that
+Suppose the tensor is $\sum_{s=1}^ru_s\otimes v_s\otimes w_s$. Reading the coefficient arrays as linear forms gives
 \[
-\operatorname{tr}(ABC)=\sum_s\alpha_s(A)\beta_s(B)\gamma_s(C)\qquad\text{for all }A,B,C,
+\operatorname{tr}(ABC)=\sum_{s=1}^r\alpha_s(A)\beta_s(B)\gamma_s(C).
 \]
-with $\alpha_s(A)=\sum u_{s,ij}a_{ij}$ and so on. Since $\operatorname{tr}(ABC)=\sum_{i,k}(AB)_{ik}c_{ki}$, comparing the coefficients of $c_{ki}$ gives $(AB)_{ik}=\sum_s\alpha_s(A)\beta_s(B)w_{s,ki}$: a bilinear
-algorithm of length $r$ with $(\Gamma_s)_{ik}=w_{s,ki}$. The argument can be read backwards: a bilinear algorithm gives
-$\operatorname{tr}(ABC)=\sum_s\alpha_s(A)\beta_s(B)\operatorname{tr}(\Gamma_sC)$, a decomposition of length $r$.
+Write $\gamma_s(C)=\sum_{k,i}w_{s,ki}c_{ki}$. Comparing coefficients of the independent variables $c_{ki}$ gives
+\[
+(AB)_{ik}=\sum_{s=1}^r\alpha_s(A)\beta_s(B)w_{s,ki}.
+\]
+With $(\Gamma_s)_{ik}=w_{s,ki}$ this is a bilinear algorithm of length $r$.
+
+Conversely, multiply an algorithm identity by $C$ and take the trace. It gives
+\[
+\operatorname{tr}(ABC)=\sum_{s=1}^r\alpha_s(A)\beta_s(B)\operatorname{tr}(\Gamma_sC),
+\]
+a decomposition of the trilinear coefficient array into $r$ pure tensors. Each direction preserves the length, so the two minima are equal. If a matrix dimension is zero, the zero operation has empty algorithm and zero tensor, in agreement with the statement.
 \end{proof}
 
-The flattening bound gives $R(\langle n,n,n\rangle)\ge n^2$ (Exercise~\ref{linear:ex:flattening}); the schoolbook algorithm shows
-$R(\langle n,n,n\rangle)\le n^3$. For $n=2$ the bounds are $4$ and $8$.
+The schoolbook algorithm gives $R_K(\langle n,n,n\rangle)\le n^3$. Flattening gives the lower bound $n^2$; the rows have disjoint supports, as Exercise~\ref{linear:ex:flattening} verifies. For $n=2$, the interval $4\le R_K\le8$ leaves room for an improvement.
 
 \begin{theorem}[Strassen, 1969]\label{linear:thm:strassen}
-$R(\langle2,2,2\rangle)\le7$. Explicitly, for $2\times2$ matrices $A,B$ (whose entries may lie in any ring, commutative or not),
+The matrix multiplication tensor satisfies $R_K(\langle2,2,2\rangle)\le7$. More explicitly, the following formulas multiply $2\times2$ matrices over any ring, even a noncommutative ring:
 \[
 \begin{aligned}
 M_1&=(a_{11}+a_{22})(b_{11}+b_{22}),&M_5&=(a_{11}+a_{12})b_{22},\\
@@ -231,42 +270,72 @@ M_3&=a_{11}(b_{12}-b_{22}),&M_7&=(a_{12}-a_{22})(b_{21}+b_{22}),\\
 M_4&=a_{22}(b_{21}-b_{11}),
 \end{aligned}
 \]
-and then
+followed by
 \[
-AB=\begin{pmatrix}M_1+M_4-M_5+M_7&M_3+M_5\\M_2+M_4&M_1-M_2+M_3+M_6\end{pmatrix}.
+AB=\begin{pmatrix}
+M_1+M_4-M_5+M_7&M_3+M_5\\
+M_2+M_4&M_1-M_2+M_3+M_6
+\end{pmatrix}.
 \]
 \end{theorem}
 \begin{proof}
-Expand, keeping every $a$ to the left of every $b$. For instance $M_3+M_5=a_{11}b_{12}-a_{11}b_{22}+a_{11}b_{22}+a_{12}b_{22}=
-a_{11}b_{12}+a_{12}b_{22}$, the $(1,2)$ entry of $AB$; likewise $M_2+M_4=a_{21}b_{11}+a_{22}b_{21}$. For the $(1,1)$ entry,
+Expand by distributivity and retain the order $a$ before $b$. For the off-diagonal entries,
 \[
 \begin{aligned}
-M_1+M_4-M_5+M_7={}&a_{11}b_{11}+a_{11}b_{22}+a_{22}b_{11}+a_{22}b_{22}+a_{22}b_{21}-a_{22}b_{11}\\
-&-a_{11}b_{22}-a_{12}b_{22}+a_{12}b_{21}+a_{12}b_{22}-a_{22}b_{21}-a_{22}b_{22}\\
-={}&a_{11}b_{11}+a_{12}b_{21},
+M_3+M_5
+ &=a_{11}b_{12}-a_{11}b_{22}+a_{11}b_{22}+a_{12}b_{22}\\
+ &=a_{11}b_{12}+a_{12}b_{22},\\
+M_2+M_4
+ &=a_{21}b_{11}+a_{22}b_{11}+a_{22}b_{21}-a_{22}b_{11}\\
+ &=a_{21}b_{11}+a_{22}b_{21}.
 \end{aligned}
 \]
-and the $(2,2)$ entry is checked in the same way (Exercise~\ref{linear:ex:strassen22}). No step uses $ab=ba$.
+For the first diagonal entry, group the terms by the seven-product labels:
+\[
+\begin{aligned}
+M_1+M_4-M_5+M_7
+={}&(a_{11}b_{11}+a_{11}b_{22}+a_{22}b_{11}+a_{22}b_{22})\\
+ &+(a_{22}b_{21}-a_{22}b_{11})
+ -(a_{11}b_{22}+a_{12}b_{22})\\
+ &+(a_{12}b_{21}+a_{12}b_{22}-a_{22}b_{21}-a_{22}b_{22})\\
+={}&a_{11}b_{11}+a_{12}b_{21}.
+\end{aligned}
+\]
+For the second diagonal entry,
+\[
+\begin{aligned}
+M_1-M_2+M_3+M_6
+={}&(a_{11}b_{11}+a_{11}b_{22}+a_{22}b_{11}+a_{22}b_{22})\\
+ &-(a_{21}b_{11}+a_{22}b_{11})
+ +(a_{11}b_{12}-a_{11}b_{22})\\
+ &+(a_{21}b_{11}+a_{21}b_{12}-a_{11}b_{11}-a_{11}b_{12})\\
+={}&a_{21}b_{12}+a_{22}b_{22}.
+\end{aligned}
+\]
+These are exactly the four entries of $AB$. No factors have been commuted, so the computation works in every characteristic and for matrix-valued entries.
 \end{proof}
 
-How Strassen found these formulas he never said in print; they can be derived by hand from the symmetries of the tensor, and
-a numerical calculation rediscovers decompositions of length $7$ numerically. What matters is the recursion.
+The seven products do not, by themselves, prove that the total operation count is smaller for every matrix size. Additions matter too. The exponent theorem says what survives when the block procedure is repeated many times.
 
 \begin{theorem}[the exponent of matrix multiplication]\label{linear:thm:omega}
-If $R(\langle k,k,k\rangle)\le r$ with $r>k^2$, then $n\times n$ matrices can be multiplied with $O(n^{\log_kr})$ arithmetic operations.
-In particular $\omega\le\log_27<2.808$, where $\omega$ is the infimum of the exponents $\tau$ for which $O(n^\tau)$ operations suffice.
+Let $k\ge2$ be an integer. If $R_K(\langle k,k,k\rangle)\le r$ with $r>k^2$, then $n\times n$ matrices over $K$ can be multiplied using $O(n^{\log_kr})$ arithmetic operations. In particular,
+$\omega\le\log_27<2.808$, where $\omega$ is the infimum of exponents $\tau$ for which $O(n^\tau)$ operations suffice.
 \end{theorem}
 \begin{proof}
-A bilinear algorithm of length $r$ for $k\times k$ matrices is an identity between non-commutative polynomials, since every product
-in it has an entry of $A$ on the left and an entry of $B$ on the right (Theorem~\ref{linear:thm:bilinear}). So it applies to $k\times k$
-block matrices whose blocks are $k^{s-1}\times k^{s-1}$ matrices: one product of size $k^s$ costs $r$ products of size $k^{s-1}$, plus
-a fixed number $c$ of block additions and scalings, each costing $k^{2(s-1)}$ operations. With $T(s)$ the cost at size $k^s$,
+Fix a length-$r$ bilinear algorithm at size $k$, adding zero products if necessary. Its identity is a linear combination of monomials with one $a$ entry followed by one $b$ entry. Thus it remains true for blocks: substituting matrices for the entries does not change the order of any factors, and coefficients from $K$ act centrally.
+
+Let $T(s)$ be its cost at size $k^s$, down to scalar products. There are $r$ recursive products at size $k^{s-1}$. All block additions and scalings cost at most $c k^{2s}$ for a constant $c$ depending only on the chosen algorithm. Hence
 \[
-T(s)\le rT(s-1)+c\,k^{2s},\qquad\text{so}\qquad T(s)\le r^sT(0)+c\sum_{j=0}^{s-1}r^jk^{2(s-j)}=r^s\Bigl(T(0)+c\sum_{j=0}^{s-1}\Bigl(\frac{k^2}r
-\Bigr)^{s-j}\Bigr).
+T(s)\le rT(s-1)+ck^{2s}.
 \]
-As $k^2/r<1$, the last sum is bounded by a constant, so $T(s)=O(r^s)=O(N^{\log_kr})$ with $N=k^s$. A matrix of any size $n$ is padded
-with zeros to size $N=k^s$, the least power with $N\ge n$; then $N<kn$, and the cost is $O((kn)^{\log_kr})=O(n^{\log_kr})$.
+Repeated substitution gives
+\[
+T(s)\le r^sT(0)+c\sum_{j=0}^{s-1}r^jk^{2(s-j)}
+ =r^s\left(T(0)+c\sum_{l=1}^{s}(k^2/r)^l\right).
+\]
+The last sum is bounded independently of $s$, because $k^2/r<1$. For $N=k^s$, therefore, $T(s)=O(r^s)=O(N^{\log_kr})$.
+
+For arbitrary positive $n$, pad the inputs by zero rows and columns to the least power $N=k^s\ge n$. Then $N<kn$ except for the harmless initial size $n=1$, and the desired product is the original top-left block of the padded product. The bound becomes $O(n^{\log_kr})$. Apply Strassen with $k=2$, $r=7>4$ to obtain the final inequality.
 \end{proof}
 
 \begin{figure}[ht]
@@ -278,317 +347,412 @@ $2.3729$ (2012), $2.37286$ (2014), and, after three smaller steps, $2.37134$ (20
 \label{linear:fig:omega}
 \end{figure}
 
+Two pictures help keep the implementation separate from the algebra. Figure~\ref{fig:v10new-ch02-vectorization} fixes the column order in the vec trick. Figure~\ref{fig:v10new-ch02-recursion} counts the recursive products before any asymptotic estimate is made.
+
+\begin{figure}[ht]
+\centering
+\fig{v10-new-ch02-vectorization}
+\caption{Column vectorisation of a $2\times3$ matrix. Entries from each column remain together in the vector. This order is why right multiplication by $B$ becomes $B^{\mathsf T}\otimes I$ and left multiplication by $A$ becomes $I\otimes A$.}
+\label{fig:v10new-ch02-vectorization}
+\end{figure}
+
+\begin{figure}[ht]
+\centering
+\fig{v10-new-ch02-recursion}
+\caption{Strassen recursion at $n=2^s$. Depth $j$ contains $7^j$ products of blocks of side $n/2^j$. At depth $s$ there are $7^s$ scalar products. The additions made at depth $j<s$ cost $18\cdot7^j(n/2^{j+1})^2$, which must also be counted.}
+\label{fig:v10new-ch02-recursion}
+\end{figure}
+
 \begin{remark}[records, quoted]
-Strassen's seven is optimal: $R(\langle2,2,2\rangle)=7$, proved by Shmuel Winograd in 1971 (Hopcroft and Kerr had proved it the same
-year for algorithms that do not use commutativity). For $3\times3$ matrices only $19\le R(\langle3,3,3\rangle)\le23$ is known, the upper
-bound being Julian Laderman's algorithm of 1976 and the lower bound Markus Bl\"aser's of 2003. In 2022 a team at DeepMind trained
-a reinforcement learning agent, AlphaTensor, to play a ``game'' whose moves subtract rank-one tensors; it found a decomposition of
-$\langle4,4,4\rangle$ of length $47$ over the field with two elements, beating the $49$ of Strassen's algorithm applied twice. The
-asymptotic records of Figure~\ref{linear:fig:omega} use border rank and tensors other than $\langle n,n,n\rangle$ (Bini's and Sch\"onhage's
-ideas), and they are galactic: the hidden constants make them useless for any matrix that fits in the universe. Strassen's
-algorithm, on the other hand, is used in practice for matrices of size a few thousand.
+Winograd proved in 1971 that seven is optimal for $2\times2$ matrix multiplication; Hopcroft and Kerr proved the corresponding noncommutative result that year. For $3\times3$ multiplication, the bounds quoted here are $19\le R_K(\langle3,3,3\rangle)\le23$ in the settings of the cited small-format results: Laderman's 1976 algorithm supplies $23$, and Bl\"aser's 2003 lower-bound work supplies $19$. These are separate results, not consequences of our flattening bound.
+
+The 2022 AlphaTensor work found a length-$47$ decomposition of $\langle4,4,4\rangle$ over $\mathbb F_2$, compared with the $49$ products obtained by applying Strassen twice. Its field is part of the claim. The asymptotic bounds in Figure~\ref{linear:fig:omega} use further constructions involving border rank and the laser method. Those bounds are dated quotations. Their algorithms can have very large constants, so an asymptotic improvement need not help at practical matrix sizes. Our proof establishes Strassen's exponent without depending on any of these records.
 \end{remark}
 
 \section{Two indices: the Schmidt decomposition}
 
-Tensors with two indices behave as well as matrices, because they \emph{are} matrices. The Hilbert space of a quantum system made of
-two parts, of dimensions $m$ and $n$, is $\C^m\otimes\C^n=\C^{mn}$, with orthonormal basis $e_i\otimes e_j$; a unit vector $\psi=\sum_{i,j}
-\psi_{ij}\,e_i\otimes e_j$ is a \emph{state}. It is a \emph{product state} if $\psi=a\otimes b$, and \emph{entangled} otherwise.
+A two-index tensor is a matrix, but its two vector factors remain useful. The space $\C^m\otimes\C^n=\C^{mn}$ has orthonormal coordinate basis $e_i\otimes e_j$. A unit vector
+$\psi=\sum_{i,j}\psi_{ij}e_i\otimes e_j$ describes a pure state of a two-part quantum system. It is a \emph{product state} if $\psi=a\otimes b$, and otherwise it is \emph{entangled}. These terms will only be used with their stated linear-algebra meaning.
+
+For the Bell vector $\psi=(e_1\otimes e_1+e_2\otimes e_2)/\sqrt2$, the coefficient matrix is $I/\sqrt2$, of rank two. It cannot be a single product. The singular value decomposition describes how many orthogonal products any two-index tensor needs.
 
 \begin{theorem}[Schmidt decomposition]\label{linear:thm:schmidt}
-Every $\psi\in\C^m\otimes\C^n$ can be written
+Every $\psi\in\C^m\otimes\C^n$ has a decomposition
 \[
-\psi=\sum_{s=1}^r\sigma_s\,a_s\otimes b_s,
+\psi=\sum_{s=1}^r\sigma_s a_s\otimes b_s,
 \]
-with $(a_s)$ orthonormal in $\C^m$, $(b_s)$ orthonormal in $\C^n$, and $\sigma_1\ge\dots\ge\sigma_r>0$. The numbers $\sigma_s$ are the
-singular values of the coefficient matrix $\Psi=(\psi_{ij})$, and $r=\operatorname{rank}\Psi$. In particular, $\psi$ is a product
-state if and only if $\operatorname{rank}\Psi=1$, and $\sum_s\sigma_s^2=\|\psi\|^2$.
+where $(a_s)$ and $(b_s)$ are orthonormal families in the respective factors and $\sigma_1\ge\cdots\ge\sigma_r>0$. The coefficients are the nonzero singular values of $\Psi=(\psi_{ij})$, $r=\operatorname{rank}\Psi$, and
+$\sum_s\sigma_s^2=\|\psi\|^2$. The zero tensor has the empty decomposition. For a unit vector $\psi$, being a product state is equivalent to $r=1$.
 \end{theorem}
 \begin{proof}
-The map $\psi\mapsto\Psi$ is a linear isometry from $\C^m\otimes\C^n$ to $M_{m,n}(\C)$ with the Frobenius norm, and it sends $a\otimes b$
-to $ab^{\mathsf T}$. Take a singular value decomposition $\Psi=\sum_s\sigma_su_sv_s^*$ (Volume~8, Theorem~4.1), and set $a_s=u_s$,
-$b_s=\overline{v_s}$; the $b_s$ are orthonormal because the $v_s$ are. Then $\Psi=\sum_s\sigma_sa_sb_s^{\mathsf T}$, which is the
-claimed decomposition. A product $a\otimes b\ne0$ corresponds to a matrix of rank one, and conversely. Finally $\|\psi\|^2=
-\|\Psi\|_F^2=\sum_s\sigma_s^2$.
+The coefficient correspondence $\psi\mapsto\Psi$ is linear and preserves the norm, using the Frobenius norm on matrices. It sends $a\otimes b$ to $ab^{\mathsf T}$, with transpose rather than adjoint. Take the singular value decomposition
+\[
+\Psi=\sum_{s=1}^r\sigma_su_sv_s^*
+\]
+from Volume~8, Theorem~4.1. Set $a_s=u_s$ and $b_s=\overline{v_s}$. Complex conjugation preserves orthonormality, and $b_s^{\mathsf T}=v_s^*$. Thus each matrix term corresponds to $\sigma_sa_s\otimes b_s$, proving the decomposition with the claimed coefficients.
+
+A nonzero product tensor has coefficient matrix of rank one. Conversely a rank-one matrix is a single column-row product, so its tensor is a product. Finally orthonormality of $a_s\otimes b_s$ gives the squared norm as $\sum_s\sigma_s^2$. If $\psi=0$, there are no positive singular values and all assertions use the empty sum.
 \end{proof}
 
-The Schmidt coefficients measure entanglement. If a state $\psi$ is shared by Alice (first factor) and Bob (second factor), all
-that Alice can observe is described by the \emph{reduced density matrix} $\rho_A=\Psi\Psi^*$, a positive semidefinite matrix of trace
-$1$; Bob's is $\rho_B=(\Psi^*\Psi)^{\mathsf T}$. By Theorem~\ref{linear:thm:schmidt} both have the eigenvalues $\sigma_s^2$ (and zeros), so
-Alice and Bob see the same amount of randomness, measured by the \emph{entanglement entropy}
+For a unit state, put $\rho_A=\Psi\Psi^*$ and $\rho_B=(\Psi^*\Psi)^{\mathsf T}$. These are the \emph{reduced density matrices} of the two parts. Each is positive semidefinite of trace one. The decomposition gives the same nonzero eigenvalues $p_s=\sigma_s^2$ for both, although the numbers of zero eigenvalues may differ. Their \emph{entanglement entropy} is
 \[
-E(\psi)=-\sum_s\sigma_s^2\log_2\sigma_s^2.
+E(\psi)=-\sum_{s=1}^r p_s\log_2p_s.
 \]
-It is $0$ for product states and at most $\log_2\min(m,n)$, with equality when all the $\sigma_s$ are equal. The \emph{Bell state}
-$\frac1{\sqrt2}(e_1\otimes e_1+e_2\otimes e_2)$ has $\Psi=\frac1{\sqrt2}I$ and one bit of entanglement, the maximum for two qubits.
-Example~\ref{linear:exa:wtensor} shows that for three parties no such decomposition exists in general: the W~state is not a sum of two
-products, let alone of orthogonal ones.
+Because $0<p_s\le1$, this is nonnegative. It is zero exactly when a single $p_s$ equals one, which means a product state.
+
+For completeness, its upper bound and equality case follow from an elementary logarithm inequality. For $t>0$, $\log t\le t-1$, with equality only at $t=1$. Apply it to $t=1/(rp_s)$, multiply by $p_s$, and sum. Since $\sum_sp_s=1$, the result is
+\[
+-\sum_sp_s\log(rp_s)\le\sum_s(1/r-p_s)=0.
+\]
+Therefore $E(\psi)\le\log_2r\le\log_2\min(m,n)$. Equality in the final bound requires both $r=\min(m,n)$ and $p_s=1/r$ for every $s$. Equal nonzero coefficients alone do not give the maximum if fewer than $\min(m,n)$ are present. The Bell state has two coefficients $1/\sqrt2$, so its entropy is one bit, the maximum for two qubits. With three factors there need not be such a decomposition: the W tensor has rank three although each factor has dimension two.
 
 \section{A gem: three multiplications for complex numbers}
 
-The question of the opening ``Pause and think'' has a cheerful answer. To compute $(a+bi)(c+di)$, form
+Return to the opening question and compute
 \[
-P_1=ac,\qquad P_2=bd,\qquad P_3=(a+b)(c+d),
+P_1=ac,\qquad P_2=bd,\qquad P_3=(a+b)(c+d).
 \]
-and return $(P_1-P_2)+(P_3-P_1-P_2)\,i$. Three real multiplications instead of four, at the price of extra additions. And three is
-optimal: the bilinear map $\C\times\C\to\C$, written over $\R$, is the tensor with slices $\bigl(\begin{smallmatrix}1&0\\0&-1\end{smallmatrix}
-\bigr)$ (real part) and $\bigl(\begin{smallmatrix}0&1\\1&0\end{smallmatrix}\bigr)$ (imaginary part), and the slice test shows that its
-real rank is $3$ (Exercise~\ref{linear:ex:complexmult}). Over $\C$ the rank drops to $2$, because over $\C$ the problem is really two
-independent multiplications in disguise. This trick, often attributed to Gauss, is how large-integer and polynomial
-multiplication beat the schoolbook method: applied recursively to $(a+bX)(c+dX)$ it becomes Karatsuba's algorithm (1960), with
-$O(n^{\log_23})$ digit operations instead of $O(n^2)$.
+Then
+\[
+(a+bi)(c+di)=(P_1-P_2)+(P_3-P_1-P_2)i.
+\]
+The second component works because subtracting $ac$ and $bd$ from $(a+b)(c+d)$ leaves $ad+bc$. This uses three real multiplications, at the expense of extra additions.
+
+Three is also necessary for this bilinear algorithm model. The output slices are
+$\bigl(\begin{smallmatrix}1&0\\0&-1\end{smallmatrix}\bigr)$ and
+$\bigl(\begin{smallmatrix}0&1\\1&0\end{smallmatrix}\bigr)$; their quotient in the slice test is a real quarter-turn. It cannot be diagonalised over $\R$. Exercise~\ref{linear:ex:complexmult} supplies the full real-rank-three and complex-rank-two calculation. Over $\C$ the coordinate forms $a+ib$ and $a-ib$ separate the two products.
+
+The same three-product identity applies to two-term polynomials $(a+bX)(c+dX)$. Recursing on blocks of coefficients gives the Karatsuba method, with exponent $\log_23$ rather than $2$. For digit strings, carries require additional bookkeeping but retain the exponent. The method dates from Karatsuba's work around 1960, published with Ofman in the source listed below. The identity for complex multiplication is often attributed to Gauss; its validity here rests on the displayed calculation.
 
 \begin{beauty}
-Matrix rank is a well-tamed number: it is the same over every field containing the entries, it can only drop in a limit, and the
-singular value decomposition delivers the best approximation of any rank. Add a third index, and all three facts break. Yet
-that wilder notion of rank is exactly the number of multiplications that an algorithm needs, so the ancient task of multiplying
-matrices is secretly a question about the geometry of tensors, and one of the great open problems of mathematics, ``is $\omega=2$?'',
-asks about the rank of one explicit family of arrays of zeros and ones.
+For matrices, rank is unchanged by extending the field, rank-at-most-$r$ sets are closed, and the singular value decomposition gives best low-rank approximations. For three-index tensors, the rotation and W examples show why the first two properties can fail, and the missing best approximation follows from the second failure. Yet this less predictable rank counts exactly the bilinear products needed in an algorithm. Multiplying two arrays of numbers leads to a geometric question about a third array.
 \end{beauty}
 
 \section{What we proved, and what comes next}
 
-The opening asked how many multiplications it takes to multiply two matrices. A bilinear map is a three-way array, and the
-fewest multiplications a bilinear algorithm needs is the rank of that array (Theorem~\ref{linear:thm:bilinear}). Strassen's seven
-products (Theorem~\ref{linear:thm:strassen}), applied to blocks, give $\omega\le\log_27$ (Theorem~\ref{linear:thm:omega}), and the
-three products for complex numbers are the smallest case of the same idea. On the way, Kronecker products carried eigenvalues
-and singular values (Proposition~\ref{linear:prop:kronecker}) and solved Sylvester's equation
-(Theorem~\ref{linear:thm:sylvester}). With three indices, rank turned strange: it depends on the field
-(Example~\ref{linear:exa:rotation}) and it can jump in a limit (Example~\ref{linear:exa:wtensor}). With two indices it is the
-rank of a matrix, and the singular value decomposition became the Schmidt decomposition (Theorem~\ref{linear:thm:schmidt}).
+Seven products determine a $2\times2$ matrix product. Keeping their order intact makes the same formulas work on blocks, and the geometric sum in the cost recurrence gives $\omega\le\log_27$. The tensor records the information shared by those products. A short decomposition is an algorithm, while a flattening supplies an obstruction to making it shorter.
 
-Every space in this chapter was $K^n$, with a basis to write the arrays in. Modules need not have a basis: $\Z/2$ is a
-$\Z$-module with none. The next chapter defines the tensor product with no coordinates at all, by the universal property it
-must have, and finds that over $\Z$ it can kill everything: $\Z/2\otimes\Z/3=0$.
+The examples also put limits on what matrix intuition can do. The choice of field changes whether a slice quotient can be diagonalised. A convergent family can conceal two large cancelling terms and end at a tensor of larger rank. For two factors, orthogonal decomposition survives and the Schmidt coefficients give a direct calculation of entanglement.
+
+Coordinates have served us well here, but a module need not have a basis. The $\Z$-module $\Z/2$ is already an example. Chapter~3 defines the tensor product by the bilinear maps it must represent. In that setting even the calculation $\Z/2\otimes\Z/3=0$ is a question about which maps are possible, linking the computation back to Chapter~1.
 
 \section{Exercises}
 
 \begin{exercise}[$\star$]\label{linear:ex:kroncommute}
-Show that there is a permutation matrix $P$ (the \emph{commutation matrix}) such that $B\otimes A=P(A\otimes B)P^{\mathsf T}$ for all
-$A\in M_m(\C)$, $B\in M_n(\C)$. Deduce that $A\otimes B$ and $B\otimes A$ have the same spectrum.
+For $A\in M_m(\C)$ and $B\in M_n(\C)$, construct a permutation matrix $P$ depending only on $m,n$ such that $B\otimes A=P(A\otimes B)P^{\mathsf T}$. Explain why the two products have identical spectra, including multiplicities.
 \end{exercise}
 
 \begin{exercise}[$\star$]\label{linear:ex:kronnormal}
-Show that $A\otimes B$ is normal (respectively Hermitian positive definite, unitary) when $A$ and $B$ are.
+Prove that the Kronecker product of two normal matrices is normal, that of two Hermitian positive definite matrices is Hermitian positive definite, and that of two unitary matrices is unitary.
 \end{exercise}
 
 \begin{exercise}[$\star\star$]\label{linear:ex:roth}
-Let $A\in M_m(\C)$ and $B\in M_n(\C)$ have no common eigenvalue. Show that $\bigl(\begin{smallmatrix}A&C\\0&B\end{smallmatrix}\bigr)$ is similar to
-$\bigl(\begin{smallmatrix}A&0\\0&B\end{smallmatrix}\bigr)$ for every $C$.
+Suppose $A\in M_m(\C)$ and $B\in M_n(\C)$ have disjoint spectra. Prove that for every $C\in M_{m,n}(\C)$ the block matrices
+$\bigl(\begin{smallmatrix}A&C\\0&B\end{smallmatrix}\bigr)$ and
+$\bigl(\begin{smallmatrix}A&0\\0&B\end{smallmatrix}\bigr)$ are similar.
 \end{exercise}
 
 \begin{exercise}[$\star$]\label{linear:ex:flattening}
-Compute the flattening $\langle n,n,n\rangle_{(1)}$ and show that its rank is $n^2$. Deduce that $R(\langle n,n,n\rangle)\ge n^2$.
+Describe the rows and columns of the first flattening of $\langle n,n,n\rangle$ for $n\ge1$. Prove that its rank is $n^2$, and deduce the lower bound $R_K(\langle n,n,n\rangle)\ge n^2$ over every field.
 \end{exercise}
 
 \begin{exercise}[$\star$]\label{linear:ex:strassen22}
-Check the $(2,2)$ entry in Strassen's formulas, and count the additions: show that one product of size $2n$ costs $7$ products and
-$18$ additions of size $n$.
+Expand the $(2,2)$ output formula in Strassen's algorithm and check its cancellations. Count all additions and subtractions in forming the seven products and assembling the four outputs. Verify that one product of side $2n$ uses seven products of side $n$ and eighteen additions of blocks of side $n$.
 \end{exercise}
 
 \begin{exercise}[$\star\star$]\label{linear:ex:strassencount}
-Let $T(n)$ be the number of arithmetic operations (additions and multiplications of numbers) of Strassen's algorithm, applied
-recursively down to $1\times1$ matrices, for $n=2^s$. Show that $T(n)=7n^{\log_27}-6n^2$, and compare with the $2n^3-n^2$ operations of
-the schoolbook algorithm: from which $n$ on is Strassen better?
+Let $T(n)$ count scalar additions and multiplications when Strassen's algorithm recurses down to size one, with $n=2^s$. Prove
+$T(n)=7n^{\log_27}-6n^2$. Compare this with the schoolbook count $2n^3-n^2$, and find the first power of two from which full recursion is always cheaper.
 \end{exercise}
 
 \begin{exercise}[$\star\star$]\label{linear:ex:complexmult}
-Show that the real rank of the tensor of complex multiplication (slices $\bigl(\begin{smallmatrix}1&0\\0&-1\end{smallmatrix}\bigr)$ and
-$\bigl(\begin{smallmatrix}0&1\\1&0\end{smallmatrix}\bigr)$) is $3$ and its complex rank is $2$. Write the complex decomposition explicitly.
+For the tensor of complex multiplication, with slices
+$\bigl(\begin{smallmatrix}1&0\\0&-1\end{smallmatrix}\bigr)$ and
+$\bigl(\begin{smallmatrix}0&1\\1&0\end{smallmatrix}\bigr)$, prove that the real rank is three and the complex rank is two. Give a complex two-term decomposition explicitly, distinguishing algebraic coordinate forms from complex conjugation of variable coefficients.
 \end{exercise}
 
 \begin{exercise}[$\star$]\label{linear:ex:noapprox}
-Show that $W$ has no best approximation by tensors of rank at most $2$: for every tensor $S$ of rank at most $2$, $\|W-S\|>0$, while
-$\inf_S\|W-S\|=0$ (Frobenius norms). Show also that $\|W_\varepsilon\|$ stays bounded but the two rank-one terms in the definition of
-$W_\varepsilon$ have norm $1/\varepsilon$.
+Over $\R$ or $\C$, use the Frobenius norm to prove that $W$ has no best rank-at-most-two approximation: every such $S$ satisfies $\|W-S\|>0$, but the infimum is zero. For positive real $\varepsilon\to0$, compute the norms of the two pure summands in $W_\varepsilon$. Show that they are respectively $(1+\varepsilon^2)^{3/2}/\varepsilon$ and $1/\varepsilon$, while the norm of their sum stays bounded.
 \end{exercise}
 
 \begin{exercise}[$\star\star$]\label{linear:ex:waring}
-Show that $24xyz=(x+y+z)^3-(-x+y+z)^3-(x-y+z)^3-(x+y-z)^3$. Interpret this as a decomposition of the symmetric tensor
-$\sum_{\text{perm}}e_1\otimes e_2\otimes e_3$ into four rank-one symmetric tensors $\ell\otimes\ell\otimes\ell$.
+Work over $\R$ or $\C$. Verify
+\[
+24xyz=(x+y+z)^3-(-x+y+z)^3-(x-y+z)^3-(x+y-z)^3.
+\]
+Translate this identity into a sum of four symmetric pure tensors for
+$\sum_{\pi\in\mathfrak S_3}e_{\pi(1)}\otimes e_{\pi(2)}\otimes e_{\pi(3)}$.
 \end{exercise}
 
 \begin{exercise}[$\star$]\label{linear:ex:schmidtcheck}
-Find the Schmidt decomposition and the entanglement entropy of $\psi=\frac13(e_1\otimes e_1+2e_1\otimes e_2+2e_2\otimes e_1)$. Is it a
-product state?
+For $\psi=(e_1\otimes e_1+2e_1\otimes e_2+2e_2\otimes e_1)/3$, find a Schmidt decomposition, not only its coefficients. Calculate the entanglement entropy and decide whether $\psi$ is a product state.
 \end{exercise}
 
 \begin{exercise}[$\star\star$]\label{linear:ex:gridlap}
-The \emph{discrete Laplacian} on an $m\times n$ grid with zero boundary values is $L=L_m\otimes I_n+I_m\otimes L_n$, where $L_k$ is the
-$k\times k$ tridiagonal matrix with $2$ on the diagonal and $-1$ beside it. Find its eigenvalues and its condition number, and show that
-the latter grows like $n^2$ for an $n\times n$ grid.
+On an $m\times n$ grid, $m,n\ge1$, let $L=L_m\otimes I_n+I_m\otimes L_n$, where $L_k$ has diagonal entries $2$, adjacent off-diagonal entries $-1$, and zeros elsewhere. This is the discrete Laplacian with zero boundary values. Find every eigenvalue and the exact spectral condition number for rectangular grids. Then show that the condition number grows like $n^2$ on square grids.
 \end{exercise}
 
 \begin{exercise}[$\star\star\star$]\label{linear:ex:border}
-Show that every tensor in $\C^2\otimes\C^2\otimes\C^2$ is a limit of tensors of rank at most $2$: the border rank of every
-$2\times2\times2$ complex tensor is at most $2$. (Start with the tensors whose first slice is invertible.)
+Prove that every complex $2\times2\times2$ tensor is a limit of tensors of rank at most two. Start with an invertible first slice and explain how to remove that assumption. Thus every tensor of this format has complex border rank at most two.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:v10new-ch02-sylvester-obstruction}
+Let $A=\operatorname{diag}(1,2)$ and $B=\operatorname{diag}(2,3)$. Determine exactly which $2\times2$ matrices $C$ permit a solution of $AX-XB=C$, and describe all solutions. For those $C$, prove directly that the associated upper block triangular matrix is similar to $\operatorname{diag}(A,B)$. What fails if the compatibility condition on $C$ fails? Use the eigenspace at eigenvalue $2$ to prove non-similarity in that case.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:v10new-ch02-real-border}
+Consider the real tensor with slices $I$ and $J=\bigl(\begin{smallmatrix}0&-1\\1&0\end{smallmatrix}\bigr)$. Prove that an open neighbourhood of this tensor contains no real tensor of rank at most two. Deduce that its real border rank is three, whereas its complex border rank is two. Use the discriminant of the characteristic polynomial of $A^{-1}B$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:v10new-ch02-quadratic-algebra}
+For real $t$, define multiplication on the two-dimensional real algebra with basis $1,u$ and relation $u^2=t$. Determine the real tensor rank of this multiplication when $t>0$, $t=0$, and $t<0$. Give an explicit three-product algorithm valid for every $t$, and a two-product algorithm when $t>0$. Explain why the repeated eigenvalue at $t=0$ does not yield rank two.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:v10new-ch02-entropy-equality}
+For $m,n\ge1$, let $d=\min(m,n)$ and let a unit state have reduced density matrix $\rho_A$. Prove $0\le E\le\log_2d$, with both equality cases, and show that the upper equality is equivalent to all $d$ nonzero eigenvalues being $1/d$. Construct, when $d\ge3$, a state whose two nonzero Schmidt coefficients are equal but whose entropy is strictly below this maximum. Compute $\operatorname{tr}(\rho_A^2)$ for your state and for a maximally entangled one.
 \end{exercise}
 
 \section{Hints}
 
 \begin{hint}{linear:ex:kroncommute}
-$P$ sends $e_i\otimes e_k$ to $e_k\otimes e_i$. Check the identity on rank-one matrices $A=e_ie_j^{\mathsf T}$, $B=e_ke_l^{\mathsf T}$.
+Permute the basis by $e_i\otimes e_k\mapsto e_k\otimes e_i$, keeping track of the two coordinate orderings.
 \end{hint}
 \begin{hint}{linear:ex:kronnormal}
-Use the mixed product rule, and Proposition~\ref{linear:prop:kronecker}(iii) for positivity.
+Move adjoints through the Kronecker product. For positive definiteness, also use the products of the eigenvalues.
 \end{hint}
 \begin{hint}{linear:ex:roth}
-Conjugate by $\bigl(\begin{smallmatrix}I&X\\0&I\end{smallmatrix}\bigr)$ and use Theorem~\ref{linear:thm:sylvester}.
+Conjugation by $\bigl(\begin{smallmatrix}I&X\\0&I\end{smallmatrix}\bigr)$ changes the upper-right block to $C-AX+XB$.
 \end{hint}
 \begin{hint}{linear:ex:flattening}
-The columns of the flattening are indexed by pairs $(e_{jk},e_{ki})$; which rows do they hit?
+The row indexed by $e_{ij}$ has ones only in columns $(e_{jk},e_{ki})$. Compare the supports of two different rows.
 \end{hint}
 \begin{hint}{linear:ex:strassen22}
-$M_1-M_2+M_3+M_6$: write out the twelve terms.
+There are ten additions in forming the input combinations and eight in combining the outputs. Each subtraction counts as one addition.
 \end{hint}
 \begin{hint}{linear:ex:strassencount}
-$T(n)=7T(n/2)+18(n/2)^2$ and $T(1)=1$.
+Use $T(2^s)=7T(2^{s-1})+18\cdot4^{s-1}$ with $T(1)=1$. For the threshold, study the sign of $2(8/7)^s+5(4/7)^s-7$.
 \end{hint}
 \begin{hint}{linear:ex:complexmult}
-Apply Lemma~\ref{linear:lem:slices}: $A^{-1}B$ is a rotation. For the complex decomposition, the eigenvectors of the rotation are $(1,\mp i)$.
+The quotient of the two slices has eigenvalues $i,-i$. Over $\C$, use the forms $a\pm ib$ and $c\pm id$.
 \end{hint}
 \begin{hint}{linear:ex:noapprox}
-Rank at most $2$ is a property that $W$ does not have, and $W_\varepsilon$ has.
+The three-tensor Frobenius norm multiplies on pure tensors: $\|u\otimes v\otimes w\|=\|u\|\|v\|\|w\|$. Use the displayed expansion of $W_\varepsilon$ for its limit.
 \end{hint}
 \begin{hint}{linear:ex:waring}
-Expand. For the interpretation, identify a cubic form $\sum t_{ijk}x_ix_jx_k$ with a symmetric tensor.
+Compare coefficients of $x^3$, $x^2y$ and $xyz$. A symmetric coefficient tensor contributes six equal entries to the coefficient of $xyz$.
 \end{hint}
 \begin{hint}{linear:ex:schmidtcheck}
-Compute the singular values of $\frac13\bigl(\begin{smallmatrix}1&2\\2&0\end{smallmatrix}\bigr)$.
+The coefficient matrix is the real symmetric matrix $\bigl(\begin{smallmatrix}1&2\\2&0\end{smallmatrix}\bigr)/3$. Normalise vectors $(\lambda,2)$, where $\lambda=(1\pm\sqrt{17})/2$.
 \end{hint}
 \begin{hint}{linear:ex:gridlap}
-The eigenvalues of $L_k=2I-A_k$, with $A_k$ the adjacency matrix of the path, are $2-2\cos\frac{\pi j}{k+1}$ (Volume~8, Exercise~3.3).
+The path adjacency eigenvalues are $2\cos(\pi j/(k+1))$ (Volume~8, Exercise~3.3). The minimum and maximum of the Kronecker sum occur at opposite endpoints of each index range.
 \end{hint}
 \begin{hint}{linear:ex:border}
-Perturb $B$ so that $A^{-1}B$ gets two distinct eigenvalues.
+For an invertible first slice, perturb the quotient of the slices to have distinct complex eigenvalues. For the other tensors, first replace $A$ by $A+\varepsilon I$.
+\end{hint}
+\begin{hint}{ex:v10new-ch02-sylvester-obstruction}
+Compute each equation $(a_i-b_j)x_{ij}=c_{ij}$. If $c_{21}\ne0$, solve the eigenvector equations at $2$ in the $4\times4$ block matrix and compare dimensions.
+\end{hint}
+\begin{hint}{ex:v10new-ch02-real-border}
+At $A=I,B=J$, the discriminant $(\operatorname{tr}(A^{-1}B))^2-4\det(A^{-1}B)$ is $-4$. Invertibility and strict negativity persist under sufficiently small perturbations.
+\end{hint}
+\begin{hint}{ex:v10new-ch02-quadratic-algebra}
+The output slices are $\operatorname{diag}(1,t)$ and $\bigl(\begin{smallmatrix}0&1\\1&0\end{smallmatrix}\bigr)$. At $t=0$, swap them before applying the slice test. When $t>0$, evaluate at $u=\pm\sqrt t$.
+\end{hint}
+\begin{hint}{ex:v10new-ch02-entropy-equality}
+Use the logarithm inequality from the text and check when equality can hold at every step. The state $(e_1\otimes e_1+e_2\otimes e_2)/\sqrt2$ has only two nonzero Schmidt coefficients regardless of the ambient dimensions.
 \end{hint}
 
 \section{Solutions}
 
 \begin{solution}{linear:ex:kroncommute}
-\idea Swapping the two tensor factors is a permutation of coordinates, and it conjugates $A\otimes B$ into $B\otimes A$.
-\writeup Let $P$ be the permutation matrix with $P(e_i\otimes e_k)=e_k\otimes e_i$ ($i\le m$, $k\le n$). For all vectors,
-$P(x\otimes y)=y\otimes x$ by linearity. Then $P(A\otimes B)(x\otimes y)=P(Ax\otimes By)=By\otimes Ax=(B\otimes A)(y\otimes x)=(B\otimes A)
-P(x\otimes y)$. The vectors $x\otimes y$ span $\C^{mn}$, so $P(A\otimes B)=(B\otimes A)P$, and $P^{-1}=P^{\mathsf T}$. Similar matrices
-have the same spectrum.
+\idea Swap the order of the two coordinate indices.
+\writeup Define $P$ by $P(e_i\otimes e_k)=e_k\otimes e_i$. It permutes a basis and is therefore a permutation matrix, with inverse $P^{\mathsf T}$. Linearity gives $P(x\otimes y)=y\otimes x$. Hence
+\[
+P(A\otimes B)(x\otimes y)=By\otimes Ax
+ =(B\otimes A)P(x\otimes y).
+\]
+Pure coordinate tensors span, so $P(A\otimes B)=(B\otimes A)P$. Multiplying on the right by $P^{\mathsf T}$ gives the required similarity, and similarity preserves the characteristic polynomial and all eigenvalue multiplicities.
 \end{solution}
 
 \begin{solution}{linear:ex:kronnormal}
-\idea Every property here is an identity between products and adjoints, and the mixed product rule transports such identities.
-\writeup If $AA^*=A^*A$ and $BB^*=B^*B$, then $(A\otimes B)(A\otimes B)^*=AA^*\otimes BB^*=A^*A\otimes B^*B=(A\otimes B)^*(A\otimes B)$.
-Unitary: $(A\otimes B)(A\otimes B)^*=AA^*\otimes BB^*=I\otimes I=I$. Hermitian positive definite: $A\otimes B$ is Hermitian, and its eigenvalues
-$\lambda_i\mu_k$ are positive.
+\idea Product identities pass to Kronecker products.
+\writeup If the factors are normal, then
+\[
+(A\otimes B)(A\otimes B)^*=AA^*\otimes BB^*
+ =A^*A\otimes B^*B=(A\otimes B)^*(A\otimes B).
+\]
+For unitary factors, both products are $I\otimes I=I$. For Hermitian factors, the adjoint identity gives Hermitian symmetry of the product. If they are also positive definite, their eigenvalues $\lambda_i,\mu_k$ are positive, so every eigenvalue $\lambda_i\mu_k$ of the product is positive. The spectral theorem then makes the product positive definite.
 \end{solution}
 
 \begin{solution}{linear:ex:roth}
-\idea Kill the off-diagonal block with a block shear; the condition that it can be killed is a Sylvester equation.
-\writeup For any $X$,
+\idea Choose a block shear to cancel the unwanted block.
+\writeup The shear $S=\bigl(\begin{smallmatrix}I&X\\0&I\end{smallmatrix}\bigr)$ has inverse $\bigl(\begin{smallmatrix}I&-X\\0&I\end{smallmatrix}\bigr)$. Block multiplication gives
 \[
-\begin{pmatrix}I&X\\0&I\end{pmatrix}\begin{pmatrix}A&C\\0&B\end{pmatrix}\begin{pmatrix}I&-X\\0&I\end{pmatrix}=\begin{pmatrix}A&C-AX+XB\\0&B
-\end{pmatrix}.
+S\begin{pmatrix}A&C\\0&B\end{pmatrix}S^{-1}
+ =\begin{pmatrix}A&C-AX+XB\\0&B\end{pmatrix}.
 \]
-By Theorem~\ref{linear:thm:sylvester} there is $X$ with $AX-XB=C$, and then the right side is block diagonal. (Roth proved in 1952 that
-the converse also holds for each single $C$: the two matrices are similar if and only if $AX-XB=C$ has a solution, with no
-condition on the spectra.)
+By Sylvester's theorem the disjoint-spectrum hypothesis gives a solution of $AX-XB=C$. With that choice the upper-right block vanishes, proving similarity. Roth's general theorem, quoted here only, removes the spectral hypothesis and characterises similarity for each fixed $C$ by solvability of the same equation. The argument just given proves the case asked for without that stronger theorem.
 \end{solution}
 
 \begin{solution}{linear:ex:flattening}
-\idea A flattening that turns out to be a permutation matrix has full rank.
-\writeup The flattening has rows indexed by $e_{ij}$ ($n^2$ of them) and columns by pairs $(e_{j'k},e_{k'i'})$ ($n^4$ of them), with an
-entry $1$ exactly when $j'=j$, $k'=k$ and $i'=i$ for some $k$. So the row of $e_{ij}$ has its ones in the columns $(e_{jk},e_{ki})$,
-$k=1,\dots,n$, and different rows have disjoint supports. The $n^2$ rows are non-zero with disjoint supports, hence independent:
-the rank is $n^2$. So $R(\langle n,n,n\rangle)\ge n^2$.
+\idea Disjoint nonempty row supports force independence, even though the flattening is rectangular.
+\writeup There are $n^2$ rows, indexed by $e_{ij}$ in the first factor, and $n^4$ columns, indexed by pairs $(e_{j'k},e_{k'i'})$ from the other two. In row $e_{ij}$ the entry is one exactly in the columns $(e_{jk},e_{ki})$, for $1\le k\le n$. Such a column determines $i$ and $j$, so it cannot also belong to a different row's support. Each row is nonzero. A linear combination of the rows can vanish only if its coefficient at each row vanishes, by examining a column in that row's support. The rank is therefore $n^2$, and the flattening lower bound gives the tensor-rank assertion over every field.
 \end{solution}
 
 \begin{solution}{linear:ex:strassen22}
-\idea Bookkeeping, with signs.
-\writeup $M_1-M_2+M_3+M_6$ equals
+\idea Keep each input order fixed and count combinations before and after the seven products.
+\writeup Expanding $M_1-M_2+M_3+M_6$ gives
 \[
 \begin{aligned}
-&(a_{11}b_{11}+a_{11}b_{22}+a_{22}b_{11}+a_{22}b_{22})-(a_{21}b_{11}+a_{22}b_{11})+(a_{11}b_{12}-a_{11}b_{22})\\
-&+(a_{21}b_{11}+a_{21}b_{12}-a_{11}b_{11}-a_{11}b_{12})=a_{21}b_{12}+a_{22}b_{22},
+&(a_{11}b_{11}+a_{11}b_{22}+a_{22}b_{11}+a_{22}b_{22})\\
+&\quad-(a_{21}b_{11}+a_{22}b_{11})+(a_{11}b_{12}-a_{11}b_{22})\\
+&\quad+(a_{21}b_{11}+a_{21}b_{12}-a_{11}b_{11}-a_{11}b_{12})\\
+&=a_{21}b_{12}+a_{22}b_{22}.
 \end{aligned}
 \]
-the $(2,2)$ entry of $AB$. Additions: forming the factors of $M_1,\dots,M_7$ costs $2+1+1+1+1+2+2=10$ additions or subtractions of
-blocks, and assembling $AB$ costs $3+1+1+3=8$: in total $18$.
+The cancellations use only additive inverses. Forming the input combinations for $M_1,\ldots,M_7$ costs $2+1+1+1+1+2+2=10$ additions or subtractions. Combining the four outputs costs $3+1+1+3=8$ more. Thus there are eighteen block additions besides the seven block products. Each addition of side-$n$ blocks takes $n^2$ scalar additions.
 \end{solution}
 
 \begin{solution}{linear:ex:strassencount}
-\idea Solve the linear recurrence by guessing the shape $\alpha7^s+\beta4^s$.
-\writeup With $n=2^s$, $T(2^s)=7T(2^{s-1})+18\cdot4^{s-1}$, $T(1)=1$. Try $T(2^s)=\alpha7^s+\beta4^s$: then $\beta4^s=7\beta4^{s-1}+
-\frac{18}44^s$, so $\beta=\frac74\beta+\frac92$ and $\beta=-6$; and $T(1)=\alpha-6=1$ gives $\alpha=7$. Since $7^s=n^{\log_27}$ and $4^s=n^2$,
-$T(n)=7n^{\log_27}-6n^2$. Comparing with $2n^3-n^2$: for $n=2^9=512$, $T=7\cdot7^9-6\cdot512^2\approx2.81\cdot10^8$ against $2.68\cdot10^8$,
-and for $n=2^{10}$, $1.97\cdot10^9$ against $2.15\cdot10^9$. So full recursion pays only from $n=1024$ on. In practice one stops the
-recursion at blocks of size about $64$ and multiplies those the usual way, which makes Strassen useful much earlier.
+\idea Solve the recurrence exactly, then compare signs along all powers of two.
+\writeup Put $t_s=T(2^s)$. The operation count gives $t_s=7t_{s-1}+18\cdot4^{s-1}$, with $t_0=1$. Direct substitution shows that $t_s=7\cdot7^s-6\cdot4^s$ has this initial value and satisfies this recurrence, so induction proves it for all $s\ge0$. Consequently $T(n)=7n^{\log_27}-6n^2$.
+
+Schoolbook multiplication has $n^3$ scalar products and $n^2(n-1)$ scalar additions, hence $2n^3-n^2$. Subtracting Strassen's count at $n=2^s$ gives
+\[
+D_s=2\cdot8^s+5\cdot4^s-7\cdot7^s.
+\]
+At $s=0$ the counts agree. Direct evaluation gives $D_1=-13$, $D_2=-135$, $D_9=-12\,729\,073$, and $D_{10}=175\,399\,785$. The last two signs correspond to rounded costs $2.81\cdot10^8$ against $2.68\cdot10^8$ at $n=512$, and $1.97\cdot10^9$ against $2.15\cdot10^9$ at $n=1024$.
+
+To show that every later power also benefits, divide by $7^s$ and put $q_s=2(8/7)^s+5(4/7)^s-7$. Its difference is
+\[
+q_{s+1}-q_s=\frac{2}{7}(8/7)^s-\frac{15}{7}(4/7)^s
+ =\frac{(4/7)^s}{7}(2^{s+1}-15)>0\quad(s\ge3).
+\]
+Thus $q_s$ is strictly increasing from $s=3$ onwards. Since $q_9<0$, monotonicity gives $q_s<0$ for $3\le s\le9$; the direct checks cover $s=1,2$. Since $q_{10}>0$, every $s\ge10$ gives $q_s>0$. Thus the first persistent improvement is $n=1024$. This count concerns full recursion to scalars; stopping at a block size and using an ordinary algorithm there changes the practical crossover.
 \end{solution}
 
 \begin{solution}{linear:ex:complexmult}
-\idea The slice test turns the question into: is a rotation diagonalisable?
-\writeup Writing $(a+bi)(c+di)=(ac-bd)+(ad+bc)i$, the tensor has slices $A=\bigl(\begin{smallmatrix}1&0\\0&-1\end{smallmatrix}\bigr)$
-(coefficients of $a_ic_j$ in the real part) and $B=\bigl(\begin{smallmatrix}0&1\\1&0\end{smallmatrix}\bigr)$ (imaginary part). Then
-$A^{-1}B=\bigl(\begin{smallmatrix}0&1\\-1&0\end{smallmatrix}\bigr)$, with eigenvalues $\pm i$: not diagonalisable over $\R$, so $R_\R\ge3$
-by Lemma~\ref{linear:lem:slices}, and Gauss's three products give $R_\R\le3$. Over $\C$, the lemma gives $R_\C\le2$; explicitly, with $z=a+bi$
-and $w=c+di$, $zw$ and $\bar z\bar w$ are each one complex product, and
+\idea The slice quotient detects the real obstruction, and two complex evaluation forms give the complex algorithm.
+\writeup With slices $A=\operatorname{diag}(1,-1)$ and $B=\bigl(\begin{smallmatrix}0&1\\1&0\end{smallmatrix}\bigr)$, the quotient is
+$A^{-1}B=\bigl(\begin{smallmatrix}0&1\\-1&0\end{smallmatrix}\bigr)$. It has eigenvalues $i,-i$ and is not diagonalisable over $\R$, so real rank is at least three. The three real products in the text give the reverse bound.
+
+Over $\C$, write $z_+=a+ib$, $z_-=a-ib$, $w_+=c+id$, $w_-=c-id$. These are algebraic linear forms in the coordinates, even when $a,b,c,d$ are themselves complex; the minus form is not then necessarily the complex conjugate of the plus form. The two products give
 \[
-\operatorname{Re}(zw)=\tfrac12\bigl(zw+\bar z\bar w\bigr),\qquad\operatorname{Im}(zw)=\tfrac1{2i}\bigl(zw-\bar z\bar w\bigr),
+ac-bd=\tfrac12(z_+w_++z_-w_-),\qquad
+ad+bc=\tfrac1{2i}(z_+w_+-z_-w_-).
 \]
-where $z=a+ib$, $\bar z=a-ib$ are linear forms in $(a,b)$ and similarly for $w$. So $T=(1,i)\otimes(1,i)\otimes\frac12(1,-i)+(1,-i)\otimes
-(1,-i)\otimes\frac12(1,i)$, of complex rank $2$ (and not $1$, since $A$ has rank $2$).
+Equivalently,
+\[
+T=(1,i)\otimes(1,i)\otimes\tfrac12(1,-i)
+ +(1,-i)\otimes(1,-i)\otimes\tfrac12(1,i).
+\]
+This has length two. The invertible first slice rules out rank one, so complex rank is exactly two.
 \end{solution}
 
 \begin{solution}{linear:ex:noapprox}
-\idea A closed set always contains its limit points; the set of rank-$\le2$ tensors is not closed, and $W$ is a missing limit point.
-\writeup If $\|W-S\|=0$ then $S=W$, which has rank $3$; so $\|W-S\|>0$ for every $S$ of rank at most $2$. But $W_\varepsilon$ has rank at
-most $2$ and $\|W-W_\varepsilon\|\to0$, so the infimum is $0$, not attained. The norm of $W_\varepsilon$ tends to $\|W\|=\sqrt3$, while
-$\|\frac1\varepsilon(e_1+\varepsilon e_2)^{\otimes3}\|=\frac{(1+\varepsilon^2)^{3/2}}{|\varepsilon|}$ and $\|\frac1\varepsilon e_1^{\otimes3}\|=\frac1
-{|\varepsilon|}$ blow up: the two terms nearly cancel.
+\idea A missing limit point gives an unattained infimum, and pure-tensor norms show the cancellation.
+\writeup If $\|W-S\|=0$, then $S=W$, of rank three. Thus every rank-at-most-two $S$ has strictly positive distance from $W$. But $W_\varepsilon$ has rank at most two and tends to $W$, so the infimum of those distances is zero and cannot be attained.
+
+For positive real $\varepsilon$, multiplicativity of the Frobenius norm on pure tensors gives
+\[
+\left\|\varepsilon^{-1}(e_1+\varepsilon e_2)^{\otimes3}\right\|
+ =\frac{(1+\varepsilon^2)^{3/2}}{\varepsilon},\qquad
+\left\|-\varepsilon^{-1}e_1^{\otimes3}\right\|=\frac1\varepsilon.
+\]
+The two norms are not exactly equal, but both tend to infinity. The sum tends to $W$ and therefore its norm tends to $\sqrt3$. In fact the orthogonal coordinate expansion gives $\|W_\varepsilon\|^2=3+3\varepsilon^2+\varepsilon^4$, making its boundedness explicit.
 \end{solution}
 
 \begin{solution}{linear:ex:waring}
-\idea Expand by the multinomial formula; the cubes of the variables and the terms $x^2y$ cancel by symmetry, only $xyz$ survives.
-\writeup In $(\pm x\pm y\pm z)^3$ the coefficient of $xyz$ is $6$ times the product of the three signs, the coefficient of $x^3$ is the
-cube of the sign of $x$, and that of $x^2y$ is $3$ times the sign of $y$. Over the four sign patterns $(+,+,+)$ with weight $+1$ and
-$(-,+,+),(+,-,+),(+,+,-)$ with weight $-1$: the $x^3$ terms give $1-(-1)-1-1=0$, the $x^2y$ terms give $3(1-1-(-1)-1)=0$, and the
-$xyz$ terms give $6(1+1+1+1)=24$. A cubic form $f(x)=\sum t_{ijk}x_ix_jx_k$ with $t$ symmetric is determined by $t$; the form $\ell(x)^3$
-corresponds to $\ell\otimes\ell\otimes\ell$, and $6x_1x_2x_3$ to the sum of the six tensors $e_{\pi(1)}\otimes e_{\pi(2)}\otimes e_{\pi(3)}$. So
-that sum equals $\frac14\bigl(\ell_0^{\otimes3}-\ell_1^{\otimes3}-\ell_2^{\otimes3}-\ell_3^{\otimes3}\bigr)$ with $\ell_0=(1,1,1)$, $\ell_1=(-1,1,1)$,
-$\ell_2=(1,-1,1)$, $\ell_3=(1,1,-1)$.
+\idea Only the term containing all three variables survives the signed sum of cubes.
+\writeup The four sign vectors are $\ell_0=(1,1,1)$, $\ell_1=(-1,1,1)$, $\ell_2=(1,-1,1)$ and $\ell_3=(1,1,-1)$, with weights $+1,-1,-1,-1$. For a pure cube, the $x^3$ coefficient sums to $1-(-1)-1-1=0$; symmetry does the same for $y^3,z^3$. A mixed coefficient such as $x^2y$ sums to $3(1-1-(-1)-1)=0$, and the other such terms vanish too. The $xyz$ coefficient is $6(1+1+1+1)=24$, proving the identity.
+
+Over $\R$ or $\C$, a symmetric cubic coefficient tensor is recovered from its polynomial because the monomial multiplicities $1,3,6$ are nonzero. The polynomial of $\ell^{\otimes3}$ is $(\ell\cdot x)^3$. The sum of the six permutation tensors has polynomial $6xyz$, hence equals
+\[
+\tfrac14\bigl(\ell_0^{\otimes3}-\ell_1^{\otimes3}
+ -\ell_2^{\otimes3}-\ell_3^{\otimes3}\bigr).
+\]
+The field restriction matters for this interpretation: in characteristics two or three, one cannot recover a symmetric tensor from its cubic polynomial by this argument.
 \end{solution}
 
 \begin{solution}{linear:ex:schmidtcheck}
-\idea Schmidt coefficients are singular values; for a symmetric matrix they are the absolute values of the eigenvalues.
-\writeup $\Psi=\frac13\bigl(\begin{smallmatrix}1&2\\2&0\end{smallmatrix}\bigr)$ is symmetric with eigenvalues $\frac13\cdot\frac{1\pm\sqrt{17}}2$,
-so $\sigma_1=\frac{1+\sqrt{17}}6\approx0.854$ and $\sigma_2=\frac{\sqrt{17}-1}6\approx0.521$, and
-$\sigma_1^2+\sigma_2^2=\frac{(1+\sqrt{17})^2+(\sqrt{17}-1)^2}{36}=1$, as it must since $\|\psi\|^2=\frac{1+4+4}9=1$. The vectors $a_s$ are the eigenvectors $u_s$ of $\Psi$, and $b_s=\pm u_s$
-(with the sign of the eigenvalue). The entropy is $-\sum\sigma_s^2\log_2\sigma_s^2\approx0.843$ bits. The state is entangled, since
-$\operatorname{rank}\Psi=2$.
+\idea Diagonalise the real symmetric coefficient matrix, then absorb its negative sign into one tensor factor.
+\writeup Put $\lambda_\pm=(1\pm\sqrt{17})/2$ and
+\[
+u_\pm=\frac{(\lambda_\pm,2)^{\mathsf T}}{\sqrt{\lambda_\pm^2+4}}.
+\]
+They are unit eigenvectors of $\bigl(\begin{smallmatrix}1&2\\2&0\end{smallmatrix}\bigr)$ with eigenvalues $\lambda_\pm$. They are orthogonal because $\lambda_+\lambda_-+4=-4+4=0$. Since $\lambda_+>0>\lambda_-$, a Schmidt decomposition is
+\[
+\psi=\frac{1+\sqrt{17}}6\,u_+\otimes u_+
+ +\frac{\sqrt{17}-1}6\,u_-\otimes(-u_-).
+\]
+Thus $\sigma_1\approx0.854$, $\sigma_2\approx0.521$. Their squared sum is one, either by the displayed formula or by $\|\psi\|^2=(1+4+4)/9=1$. The entropy is
+\[
+-\sigma_1^2\log_2\sigma_1^2-\sigma_2^2\log_2\sigma_2^2\approx0.843\text{ bits}.
+\]
+Both coefficients are nonzero, so the matrix has rank two and the state is entangled.
 \end{solution}
 
 \begin{solution}{linear:ex:gridlap}
-\idea Kronecker sums add eigenvalues; the extreme eigenvalues are at the two ends of the cosine.
-\writeup By Proposition~\ref{linear:prop:kronecker}(iii), the eigenvalues of $L$ are
+\idea The independent coordinate directions add their eigenvalues.
+\writeup The eigenvalues of $L_k=2I-A_{P_k}$ are $2-2\cos(\pi j/(k+1))$, $1\le j\le k$. Hence the eigenvalues of the grid matrix are
 \[
-\lambda_{jk}=4-2\cos\frac{\pi j}{m+1}-2\cos\frac{\pi k}{n+1},\qquad1\le j\le m,\ 1\le k\le n,
+\lambda_{ij}=4-2\cos\frac{\pi i}{m+1}-2\cos\frac{\pi j}{n+1},
+\quad1\le i\le m,\quad1\le j\le n.
 \]
-all positive. $L$ is symmetric positive definite, so its condition number is $\lambda_{\max}/\lambda_{\min}$. For $m=n$,
-$\lambda_{\min}=4-4\cos\frac\pi{n+1}=8\sin^2\frac\pi{2(n+1)}\sim\frac{2\pi^2}{n^2}$ and $\lambda_{\max}=4+4\cos\frac\pi{n+1}\to8$, so
-$\kappa(L)\sim\frac{4n^2}{\pi^2}$. Refining the grid makes the problem quadratically worse conditioned, which is why fast Poisson solvers
-use the eigenbasis (a sine transform, computed by FFT) instead of plain iterations.
+They are positive, and the real symmetric matrix is positive definite. Write $c_m=\cos(\pi/(m+1))$, $c_n=\cos(\pi/(n+1))$. The cosine decreases along each index range. Its extreme negative endpoint is $-c_m$ or $-c_n$, respectively. Thus
+\[
+\kappa_2(L)=\frac{\lambda_{\max}}{\lambda_{\min}}
+ =\frac{4+2c_m+2c_n}{4-2c_m-2c_n}.
+\]
+For $m=n$, $\lambda_{\min}=4-4\cos(\pi/(n+1))=8\sin^2(\pi/(2(n+1)))\sim2\pi^2/n^2$, whereas $\lambda_{\max}\to8$. Therefore $\kappa_2(L)\sim4n^2/\pi^2$. At $m=n=1$, the ratio is one, consistent with the one-entry matrix $(4)$.
 \end{solution}
 
 \begin{solution}{linear:ex:border}
-\idea Diagonalisable matrices are dense, so by the slice test tensors of rank at most $2$ are dense among those with an
-invertible slice; and those are dense among all tensors.
-\writeup \emph{Step 1: $A$ invertible.} Let $M=A^{-1}B$, and triangularise it, $M=P\bigl(\begin{smallmatrix}\lambda&x\\0&\mu\end{smallmatrix}
-\bigr)P^{-1}$. Let $M_\varepsilon=P\bigl(\begin{smallmatrix}\lambda&x\\0&\mu+\varepsilon\end{smallmatrix}\bigr)P^{-1}$: for all small
-$\varepsilon\ne0$ its eigenvalues $\lambda$ and $\mu+\varepsilon$ are distinct, so it is diagonalisable over $\C$. By
-Lemma~\ref{linear:lem:slices} the tensor $T_\varepsilon$ with slices $A$ and $AM_\varepsilon$ has rank at most $2$, and $T_\varepsilon\to T$
-because $AM_\varepsilon\to AM=B$.
+\idea Approximate first by an invertible slice, then by a quotient with distinct eigenvalues.
+\writeup \emph{Invertible first slice.} Let $M=A^{-1}B$. Over $\C$, triangularisation gives $M=P\bigl(\begin{smallmatrix}\lambda&x\\0&\mu\end{smallmatrix}\bigr)P^{-1}$. Replace $\mu$ by $\mu+\varepsilon$. Avoid $\varepsilon=0$ and $\varepsilon=\lambda-\mu$; the resulting matrix $M_\varepsilon$ has distinct eigenvalues and is therefore diagonalisable over $\C$. It converges to $M$. The tensors with slices $A,AM_\varepsilon$ have rank at most two by the slice test and converge to the original tensor.
 
-\emph{Step 2: any $T$.} The polynomial $\det(A+\varepsilon I)$ in $\varepsilon$ has leading term $\varepsilon^2$, so it vanishes for at
-most two values: for all small $\varepsilon\ne0$, the tensor $T'_\varepsilon$ with slices $A+\varepsilon I$ and $B$ has an invertible
-first slice, and $T'_\varepsilon\to T$. Given $m\ge1$, choose $\varepsilon$ with $\|T-T'_\varepsilon\|<\frac1m$, then by Step~1 a tensor
-$S_m$ of rank at most $2$ with $\|T'_\varepsilon-S_m\|<\frac1m$. Then $S_m\to T$.
+\emph{Arbitrary first slice.} The polynomial $\det(A+\delta I)$ has leading term $\delta^2$, so it has at most two roots. Choose nonzero $\delta$ tending to zero and avoiding them. The tensors with slices $A+\delta I,B$ converge to the desired tensor and have invertible first slice. For each integer $q\ge1$, choose one within $1/q$ of the desired tensor, and then, using the preceding step, a rank-at-most-two tensor within $1/q$ of that chosen tensor. The triangle inequality gives an approximation error below $2/q$, which tends to zero. This proves the assertion for all complex tensors of the format.
+\end{solution}
+
+\begin{solution}{ex:v10new-ch02-sylvester-obstruction}
+\idea A common eigenvalue leaves one scalar equation with zero coefficient.
+\writeup The four scalar equations are $-x_{11}=c_{11}$, $-2x_{12}=c_{12}$, $0=c_{21}$ and $-x_{22}=c_{22}$. Thus a solution exists exactly when $c_{21}=0$. All solutions then are
+\[
+X=\begin{pmatrix}-c_{11}&-c_{12}/2\\t&-c_{22}\end{pmatrix},\qquad t\in\C.
+\]
+The block shear from Exercise~\ref{linear:ex:roth} removes $C$, so similarity follows even though the spectra overlap.
+
+If $c_{21}\ne0$, examine an eigenvector $(u,v)$ of the upper block triangular matrix at eigenvalue $2$. The lower equation gives $v=(v_1,0)$, while the second coordinate of $(A-2I)u+Cv=0$ gives $c_{21}v_1=0$. Hence $v_1=0$ and $v=0$; then $u_1=0$, leaving only the free coordinate $u_2$. This eigenspace has dimension one. The block diagonal matrix has dimension two at eigenvalue $2$, one from each block. Similarity preserves eigenspace dimensions, so these matrices cannot be similar.
+\end{solution}
+
+\begin{solution}{ex:v10new-ch02-real-border}
+\idea The lack of real eigenvalues persists in a neighbourhood, so the slice obstruction persists too.
+\writeup At $(A,B)=(I,J)$, $A$ is invertible and $M=A^{-1}B=J$ has discriminant $(\operatorname{tr}M)^2-4\det M=-4$. Inversion is continuous on invertible matrices, as follows from the adjugate formula. Trace and determinant are polynomials in entries. Thus for all sufficiently small real perturbations, $A$ stays invertible and the discriminant stays negative. The quotient then has no real eigenvalues, so cannot be diagonalisable over $\R$. The slice test rules out real rank at most two throughout that neighbourhood.
+
+A sequence of real rank-at-most-two tensors could not converge to a point in this neighbourhood. The real border rank is therefore at least three, and the real three-term decomposition from Example~\ref{linear:exa:rotation} gives the upper bound. Over $\C$, the same example already has rank two, and its invertible slice rules out border rank one by the closed flattening-rank condition. Hence its complex border rank is two.
+\end{solution}
+
+\begin{solution}{ex:v10new-ch02-quadratic-algebra}
+\idea Whether $u^2-t$ splits with distinct real roots determines whether two evaluation products suffice.
+\writeup The product is
+\[
+(a+bu)(c+du)=(ac+tbd)+(ad+bc)u.
+\]
+Three products always suffice: use $P=ac$, $Q=bd$, $R=(a+b)(c+d)$ and output $(P+tQ)+(R-P-Q)u$.
+
+For $t\ne0$, the first slice $A=\operatorname{diag}(1,t)$ is invertible and the second is $B=\bigl(\begin{smallmatrix}0&1\\1&0\end{smallmatrix}\bigr)$. The quotient has characteristic polynomial $X^2-1/t$. If $t>0$, it has distinct real roots; the slice test gives rank two, and the invertible slice prevents rank one. Explicitly put $r=\sqrt t$ and compute $P_+=(a+rb)(c+rd)$, $P_-=(a-rb)(c-rd)$. The output coefficients are $(P_++P_-)/2$ and $(P_+-P_-)/(2r)$, using two products. If $t<0$, the quotient has no real eigenvalues, so rank is greater than two; the three-product algorithm makes it exactly three.
+
+At $t=0$, use the invertible slice $B$ as the first slice. Its quotient with $A$ is $B^{-1}A=\bigl(\begin{smallmatrix}0&0\\1&0\end{smallmatrix}\bigr)$, nonzero nilpotent. Swapping slices is a coordinate permutation and does not change tensor rank. The slice test therefore again gives rank greater than two, and the algorithm gives rank three. A repeated eigenvalue is not enough for diagonalisation; the nonzero nilpotent part is the obstruction.
+\end{solution}
+
+\begin{solution}{ex:v10new-ch02-entropy-equality}
+\idea Entropy sees the number and sizes of the nonzero Schmidt coefficients, rather than only the dimensions of the ambient spaces.
+\writeup Let $p_s=\sigma_s^2>0$, with $\sum_{s=1}^rp_s=1$ and $r\le d$. Each term $-p_s\log_2p_s$ is nonnegative. Equality in the lower bound holds precisely when every nonzero $p_s$ is one; their sum then forces $r=1$. This is exactly the product-state case.
+
+The logarithm argument in the text gives $E\le\log_2r$, with equality only when all $p_s=1/r$. Since $r\le d$, equality in $E\le\log_2d$ requires $r=d$ and all $p_s=1/d$. Conversely those values give $E=\log_2d$ directly. They are the nonzero eigenvalues of $\rho_A$, so this is also the required density-matrix characterisation.
+
+For $d\ge3$, take $\psi=(e_1\otimes e_1+e_2\otimes e_2)/\sqrt2$ in the larger spaces. Its two nonzero probabilities are $1/2,1/2$, so $E=1<\log_2d$. Its purity is $\operatorname{tr}(\rho_A^2)=2(1/2)^2=1/2$. A maximally entangled state $d^{-1/2}\sum_{j=1}^de_j\otimes e_j$ has $d$ nonzero eigenvalues $1/d$ and purity $1/d$. Thus equal nonzero coefficients describe a maximum only after their number is specified.
 \end{solution}
 
 \section*{Sources and further reading}
