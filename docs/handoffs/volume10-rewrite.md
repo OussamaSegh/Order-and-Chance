@@ -1,3 +1,19 @@
+# Active complete-rewrite workstream — 15 November 2026
+
+Current work continues the earlier rewrite below. The immutable new baseline is
+main `59014a9aad3454ad60786c6549c81fcac88df9df`, branch
+`codex/volume10-complete-rewrite`, actual directory `volume10-abstraction`.
+The fresh successful baseline build has **189 print pages**. Earlier counts and
+completion claims below apply only to the earlier, narrower rewrite.
+
+Durable current records: [review directory](../../review/volume10-complete-rewrite/README.md).
+Eleven printed chapters, no appendices; full rewriting and separate review are
+underway. Final local validation, CI, merge and published-artifact verification
+remain outstanding. Required additions: 22 illustrations, 44 solved exercises.
+Nothing has been uploaded to Amazon KDP.
+
+---
+
 # Handoff: Volume 10 rewrite
 
 Volume 10, *Abstraction*, is being rewritten to `docs/plan/MASTER-PLAN-V5-V15.md` and `docs/plan/book-10.md`. Read this file first. It is updated after every chapter.
