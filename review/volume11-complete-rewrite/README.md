@@ -17,3 +17,7 @@ No local TeX build or separate AI/human review has been performed in this sessio
 ## Chapter 2 first implementation (not accepted)
 
 Reworked motivation and truncation explanation; clarified typical St Petersburg scale versus expected payoff and n≥2; corrected the zero-variance domain of Kolmogorov's lower maximal inequality and its application in the three-series theorem; made countable intersection explicit in Etemadi's proof; established finite renewal counts and handled infinite means explicitly; gave the renewal-reward statement its hypotheses. Added two figures and four graded solved exercises. The original label order, complete figure blocks and original exercise lists were preserved. Full proof/editorial review and build remain open.
+
+## Chapter 3 first implementation (not accepted)
+
+Reworked the invariance-principle motivation to distinguish weak convergence from pathwise convergence and to require continuity of path functionals. Repaired the stopping-time and independence justification in the repeated Skorokhod embedding, the degenerate zero-variance case, the Donsker time-window restriction, the maximum's vertex at time zero, the arcsine law's endpoint identification, and the countable-event argument for the LIL. Required positive cell probabilities in Pearson's statistic and positive modulus constants. Added two illustrations and four solved exercises (asymmetric exit, discontinuous occupation functional, Poisson limit and Gaussian path integral). Original labels and figure blocks preserved. Full review and build remain open.
