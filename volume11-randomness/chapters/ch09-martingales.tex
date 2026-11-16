@@ -6,20 +6,15 @@ de Finetti's theorem on exchangeable sequences, the question of when two infinit
 and statistical tests that you may check as often as you like.
 \end{center}
 
-In March 1939, on the eve of the Second World War, a young Frenchman named Jean Ville defended a thesis with a polemical title,
-\emph{\'Etude critique de la notion de collectif}. Its target was Richard von Mises' definition of a random sequence: a ``collective'' was a sequence of
-heads and tails whose frequency of heads tends to $\frac12$ along every subsequence picked by a reasonable selection rule. Ville showed that selection rules are
-too weak a test of randomness. A gambler is more dangerous: for every property that has probability zero for a fair coin, there is a betting strategy, never
-risking more than the gambler owns, whose capital becomes unbounded on every sequence with that property. To describe the gambler's capital Ville borrowed a word from the
-casinos, where a \emph{martingale} was the system of doubling the stake after every loss; the dictionary of the Acad\'emie fran\c caise of 1762 already explains
-that ``to play the martingale is to always bet all that was lost''. A few months later Ville was mobilized; he spent a year at the front and a year in a
-German prison camp. Joseph Doob, who built the general theory in the 1940s, kept Ville's word for his book \emph{Stochastic Processes} of 1953, and it stuck.
+Start with one euro and bet the whole fortune on each toss of a fair coin. After $n$ tosses the fortune is either $2^n$ or zero. Its expected value is still one euro, yet eventually the fortune is zero almost surely. How can the limit lose the expected value?
 
-Volume~4 proved martingale convergence for finite half-open interval partitions under $L^1$ or $L^2$ bounds, and warned that convergence in mean needs something more for general filtrations. This chapter supplies it, as Volume~4 promised:
-uniform integrability, which tells exactly when a martingale is the sequence of predictions of a final outcome. Then we run martingales backwards and obtain the strong law of
-large numbers once again, de Finetti's theorem, which explains why a Bayesian may treat exchangeable data as if they came from an unknown coin, Doob's theorem that Bayesian
-learning succeeds, and Kakutani's dichotomy on infinite products. We end where Ville began: his inequality for non-negative martingales gives statistical tests that remain valid
-however often the experimenter looks at the data, the honest answer to the ``peeking problem'' of online A/B testing.
+Jean Ville's 1939 thesis used betting strategies to study random sequences. Joseph Doob developed the general theory of martingales in the following decades. The betting example shows why convergence alone is not enough: to pass to the limit in the expectation, we must control the rare paths that carry large values.
+
+Uniform integrability supplies exactly that control. It also describes when a martingale consists of conditional expectations of an integrable final value. We first prove this equivalence, then justify optional stopping without a deterministic time bound.
+
+Information need not always grow. By forgetting the order of the first $n$ observations we obtain a decreasing family of information sets. Conditional expectations along that family give another proof of the strong law and lead to de Finetti's theorem: an infinite exchangeable sequence of bits is a mixture of independent coin-tossing laws.
+
+The last two sections ask what can be learned from an infinite sequence. Kakutani's dichotomy identifies when two product laws are perfectly distinguishable. Ville's inequality controls a different question: whether repeated looks at a growing experiment can create a false discovery.
 
 \begin{reminder}[from Volume 4 and Volume 7]
 For an integrable $X$ and a $\sigma$-algebra $\mathcal G$, $\mathbb E[X\mid\mathcal G]$ is the $\mathcal G$-measurable variable with $\mathbb E[\mathbb E[X\mid\mathcal G]\mathbf 1_A]=\mathbb E[X\mathbf 1_A]$ for $A\in\mathcal G$
@@ -67,7 +62,7 @@ $|\mathbb E[M_m\mathbf 1_A]-\mathbb E[M_\infty\mathbf 1_A]|\le\mathbb E|M_m-M_\i
 \end{proof}
 
 A uniformly integrable martingale is thus a sequence of \emph{predictions}: $M_n$ is the best guess of the final value $M_\infty$ with the information of time $n$. The gambler's
-fortune above is not uniformly integrable: it predicts nothing. Which final value does $\mathbb E[X\mid\mathcal F_n]$ converge to? Not $X$ itself, in general, but its best
+fortune above is not uniformly integrable: its current value is not the conditional expectation of its final value, which is zero. Which final value does $\mathbb E[X\mid\mathcal F_n]$ converge to? Not $X$ itself, in general, but its best
 prediction given everything that will ever be known.
 
 \begin{theorem}[L\'evy's upward theorem, 1937]\label{thm:levyup}
@@ -128,7 +123,7 @@ $\mathbb E[M_T\mid\mathcal F_S]=\mathbb E[M_\infty\mid\mathcal F_S]=M_S$.
 \end{proof}
 
 \begin{example}[a gambler against the house]\label{ex:biasedruin}
-A gambler wins $1$ with probability $p$ and loses $1$ with probability $q=1-p$ at each round, with $p<q$: the house has an edge. Starting from $0$ and allowed unlimited credit, what is the
+A gambler wins $1$ with probability $p$ and loses $1$ with probability $q=1-p$ at each round, with $0<p<q$: the house has an edge. Starting from $0$ and allowed unlimited credit, what is the
 probability that the gambler is ever ahead by $a$, a positive integer? Let $S_n$ be the gain and $T$ the first time $S_n=a$ (possibly $T=\infty$). Then $Z_n=(q/p)^{S_n}$ is a martingale,
 since $\mathbb E[(q/p)^{\xi}]=p\cdot\frac qp+q\cdot\frac pq=1$ for a step $\xi$. The stopped martingale $Z_{T\wedge n}$ takes values in $(0,(q/p)^a]$, since $S_{T\wedge n}\le a$, so it is
 uniformly integrable. On $\{T=\infty\}$, $S_n\to-\infty$ by the strong law, and $Z_{T\wedge n}\to0$. By Theorem~\ref{thm:uiost} applied to $Z^T$,
@@ -304,8 +299,8 @@ in an infinite exchangeable sequence, outcomes can never be negatively correlate
 \section{Kakutani's dichotomy}
 
 You are given an infinite sequence of tosses and told that it comes either from a fair coin or from a coin whose bias at toss $n$ is $\frac12+\varepsilon_n$, with $\varepsilon_n\to0$. With the whole infinite sequence in
-hand, can you decide without error? If $\varepsilon_n=\frac1{10}$, certainly: the frequency tells. If $\varepsilon_n=2^{-n}$, certainly not: the two coins differ only in the first few tosses, and those are not enough. Shizuo Kakutani
-proved in 1948 that there is nothing in between: two infinite product measures are either perfectly distinguishable or not distinguishable even with probability one.
+hand, can you decide without error? If $\varepsilon_n=\frac1{10}$, certainly: the frequency tells. If $\varepsilon_n=2^{-n-1}$, the differences decay so fast that the two infinite laws are equivalent, as the theorem below will show. Shizuo Kakutani
+proved in 1948 that there is nothing in between: two infinite product measures with equivalent one-coordinate marginals are either singular or equivalent.
 
 Two probabilities $P$ and $Q$ on the same space are \emph{equivalent} if they have the same null sets, and \emph{mutually singular}, $P\perp Q$, if there is an event $A$ with $P(A)=0$ and $Q(A)=1$ (Volume~7,
 Chapter~10). For probabilities $p$ and $q$ on $\R$ with $q\ll p$, the \emph{Hellinger affinity} is
@@ -354,20 +349,19 @@ since $m\le\sqrt m$ for $0\le m\le1$. Let $A=\limsup_jA_j$. By Borel--Cantelli, 
 \rho(p_n,q_n)=\int\sqrt{\varphi(x)\varphi(x-a_n)}\,\dd x=e^{-a_n^2/8}.
 \]
 So the shifted sequence $(Z_n+a_n)$ of independent standard Gaussians has a law equivalent to that of $(Z_n)$ if $\sum a_n^2<\infty$, and singular otherwise. This is the discrete shadow of the Cameron--Martin
-theorem for Brownian motion: shifting a Brownian path by a function $h$ gives an equivalent law exactly when $h'$ is square integrable.
+theorem for Brownian motion: shifting a Brownian path on a fixed interval $[0,T]$ by a deterministic function $h$ gives an equivalent law exactly when $h(0)=0$, $h$ is absolutely continuous, and $h'\in L^2[0,T]$ (the Cameron--Martin theorem, quoted here).
 
-(b) Let $p_n$ be the fair coin and $q_n$ the coin with $P(1)=\frac12+\varepsilon_n$. Then
+(b) Let $p_n$ be the fair coin and $q_n$ the coin with $P(1)=\frac12+\varepsilon_n$, where $|\varepsilon_n|<1/2$ and $\varepsilon_n\to0$. Then
 \[
 \rho(p_n,q_n)=\frac{\sqrt{1+2\varepsilon_n}+\sqrt{1-2\varepsilon_n}}2=1-\frac{\varepsilon_n^2}2+O(\varepsilon_n^4).
 \]
-Since $\prod(1-u_n)>0$ if and only if $\sum u_n<\infty$ (for $0\le u_n<1$), the biased sequence can be detected with certainty if and only if $\sum\varepsilon_n^2=\infty$. For $\varepsilon_n=\frac12n^{-1/2}$ it can, although the bias
-tends to $0$; for $\varepsilon_n=\frac12n^{-0.51}$ it cannot.
+Since $\prod(1-u_n)>0$ if and only if $\sum u_n<\infty$ (for $0\le u_n<1$), the biased sequence can be detected with certainty if and only if $\sum\varepsilon_n^2=\infty$. For $\varepsilon_n=\frac14n^{-1/2}$ it can, although the bias tends to $0$; for $\varepsilon_n=\frac14n^{-0.51}$ it cannot. The coefficient $1/4$ keeps every marginal equivalent to the fair coin.
 \end{example}
 
 \section{Peeking at the data: Ville's inequality}
 
 An online shop tests a new design of its checkout page. Half the visitors see the old page, half the new one, and the analyst computes, every morning, the usual test statistic: with $n$ visitors per
-group and $D_n$ the difference in the number of purchases, she declares the new page better as soon as the standardized difference exceeds $1.96$, a test ``at level $5\%$''. Each single test does have level $5\%$.
+group and $D_n$ the difference in the number of purchases, she declares a difference as soon as the absolute standardised difference exceeds $1.96$, a two-sided test with asymptotic level $5\%$ at a single fixed look. A one-sided test for improvement would use a different normal critical value.
 But she looks every day, and stops at the first success. By the law of the iterated logarithm (Theorem~\ref{thm:hartmanwintner}), even when the two pages are identical, the standardized difference exceeds
 $1.96$, indeed exceeds any fixed level, infinitely often, almost surely. Given enough patience, the analyst is \emph{certain} to declare a winner that does not exist. A simulation shows how fast: with $30$ looks the
 false alarm rate is about $28\%$, with $100$ looks about $37\%$, not the advertised $5\%$. Armitage, McPherson and Rowe computed
@@ -387,7 +381,7 @@ $\{T\ge k\}\in\mathcal F_{k-1}$, each term has mean $\mathbb E\bigl[\mathbf 1_{\
 \[
 c\,P(T\le n)\le\mathbb E\bigl[M_{T\wedge n}\mathbf 1_{\{T\le n\}}\bigr]\le\mathbb EM_{T\wedge n}\le\mathbb EM_0,
 \]
-using $M_{T\wedge n}=M_T\ge c$ on $\{T\le n\}$ and $M\ge0$. Let $n\to\infty$: $P(T<\infty)\le\mathbb EM_0/c$.
+using $M_{T\wedge n}=M_T\ge c$ on $\{T\le n\}$ and $M\ge0$. Let $n\to\infty$: $P(T<\infty)\le\mathbb EM_0/c$. This bounds the event that the threshold is attained. To handle a supremum equal to $c$ that is never attained, use any $0<d<c$: $\{\sup_nM_n\ge c\}\subseteq\{\exists n:M_n\ge d\}$, whose probability is at most $\mathbb EM_0/d$. Let $d\uparrow c$ to obtain the stated inequality.
 \end{proof}
 
 Think of $M_n$ as the capital of a gambler who bets against the hypothesis, starting with one euro, at fair odds if the hypothesis is true. Ville's inequality says that the chance that the
@@ -400,7 +394,7 @@ Let $X_1,X_2,\dots$ be tosses with values in $\{0,1\}$, $S_n=X_1+\dots+X_n$, and
 M_n=\int_0^1\frac{\theta^{S_n}(1-\theta)^{n-S_n}}{2^{-n}}\,\dd\theta=\frac{2^n\,S_n!\,(n-S_n)!}{(n+1)!}.
 \]
 \begin{enumerate}[label=(\alph*)]
-\item If the coin is fair, $(M_n)$ is a martingale with $M_0=1$, so $P(M_n\ge1/\alpha\text{ for some }n)\le\alpha$ for every $\alpha\in(0,1)$.
+\item If the tosses are independent fair bits, $(M_n)$ is a martingale with $M_0=1$, so $P(M_n\ge1/\alpha\text{ for some }n)\le\alpha$ for every $\alpha\in(0,1)$.
 \item If the tosses are i.i.d.\ with $P(X_i=1)=\theta\neq\frac12$, then $M_n\to\infty$ almost surely: the test rejects the fair coin eventually, with probability $1$.
 \end{enumerate}
 \end{theorem}
@@ -426,8 +420,7 @@ rust line $1/\alpha=20$. Charcoal: ten runs with $\theta=0.58$; each crosses the
 \label{fig:ville}
 \end{figure}
 
-The betting test pays a modest price for its freedom: with a fixed sample size, the classical test needs fewer observations to detect a given bias. But the analyst who cannot resist looking, or who must
-stop early when the evidence is overwhelming, has no honest alternative. Such \emph{e-values}, \emph{confidence sequences} and \emph{anytime-valid} tests, going back to Ville and to Herbert Robbins'
+The betting test pays a modest price for its freedom: with a fixed sample size, the classical test needs fewer observations to detect a given bias. But an analyst who wants to stop early or monitor continuously needs a method with a valid sequential error guarantee. Ville's inequality gives one such method. Such \emph{e-values}, \emph{confidence sequences} and \emph{anytime-valid} tests, going back to Ville and to Herbert Robbins'
 work of 1967--1970, are today a lively part of statistics, driven in part by online experiments (the survey of Ramdas, Gr\"unwald, Vovk and Shafer is a good entry point). Exercise~\ref{ex:confseq} turns the test into a confidence sequence: an interval for an unknown
 bias that is valid at all times simultaneously.
 
@@ -435,6 +428,18 @@ bias that is valid at all times simultaneously.
 In Theorem~\ref{thm:anytime}, the prior on $\theta$ was uniform. What happens with a prior concentrated near $\frac12$? Near $0.9$? A gambler who knows the true $\theta$ would bet with the likelihood ratio
 $\prod(2\theta)^{X_i}(2-2\theta)^{1-X_i}$: how fast does its capital grow, and why is this growth rate the exponent of the Chernoff--Stein lemma (Theorem~\ref{thm:chernoffstein})?
 \end{think}
+
+\begin{figure}[ht]
+\centering\fig{ch09-escaping-mass}
+\caption{The all-in fair betting martingale has a mass $2^{-n}$ at value $2^n$. Its expectation is one at every time, but the nonzero event shrinks to a null set. The tail expectation stays one, so the martingale is not uniformly integrable.}
+\label{fig:v11-ch09-escaping-mass}
+\end{figure}
+
+\begin{figure}[ht]
+\centering\fig{ch09-affinity}
+\caption{Hellinger affinities for shifted standard Gaussian coordinates. For shifts $a_n=n^{-1}$, the product stays positive; for $a_n=n^{-1/2}$, it tends to zero. Kakutani's theorem turns this difference into equivalence versus singularity of the product laws.}
+\label{fig:v11-ch09-affinity}
+\end{figure}
 
 \section{What we proved, and what comes next}
 
@@ -476,12 +481,11 @@ Let $X_1,X_2,\dots$ be i.i.d.\ and $h:\R^2\to\R$ symmetric with $h(X_1,X_2)$ int
 \[
 U_n=\binom n2^{-1}\sum_{1\le i<j\le n}h(X_i,X_j)\longrightarrow\mathbb Eh(X_1,X_2)
 \]
-almost surely and in $L^1$. Example: for $h(x,y)=\frac12(x-y)^2$, $U_n$ is the usual unbiased sample variance.
+almost surely and in $L^1$. Example: if $\mathbb EX_1^2<\infty$, for $h(x,y)=\frac12(x-y)^2$, $U_n$ is the usual unbiased sample variance.
 \end{exercise}
 
 \begin{exercise}[$\star\star$]\label{ex:kakutanipoisson}
-(a) Show that the Hellinger affinity of the Poisson laws with means $\lambda$ and $\mu$ is $e^{-(\sqrt\lambda-\sqrt\mu)^2/2}$. When are the laws of two sequences of independent Poisson variables, with means
-$\lambda_n$ and $\mu_n$, equivalent?
+(a) Show that the Hellinger affinity of the Poisson laws with means $\lambda$ and $\mu$ is $e^{-(\sqrt\lambda-\sqrt\mu)^2/2}$. When are the laws of two sequences of independent Poisson variables, with strictly positive means $\lambda_n$ and $\mu_n$, equivalent?
 (b) In Example~\ref{ex:kakutaniex}~(a) with $\sum a_n^2<\infty$, show that $\frac{\dd Q}{\dd P}=\exp\bigl(\sum_na_nX_n-\frac12\sum_na_n^2\bigr)$, the series converging almost surely under $P$.
 \end{exercise}
 
@@ -490,7 +494,23 @@ For $\theta_0\in(0,1)$ let
 \[
 M_n(\theta_0)=\frac{\int_0^1\theta^{S_n}(1-\theta)^{n-S_n}\,\dd\theta}{\theta_0^{S_n}(1-\theta_0)^{n-S_n}},
 \]
-and let $C_n=\{\theta_0:M_n(\theta_0)<1/\alpha\}$. Show that if the tosses are i.i.d.\ with bias $\theta$, then $P(\theta\in C_n\text{ for all }n)\ge1-\alpha$. Show that $C_n$ is an interval.
+and for $0<\alpha<1$ let $C_n=\{\theta_0\in(0,1):M_n(\theta_0)<1/\alpha\}$. Show that if the tosses are i.i.d.\ with bias $\theta\in(0,1)$, then $P(\theta\in C_n\text{ for all }n)\ge1-\alpha$. Show that $C_n$ is an interval.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:v11-ch09-final}
+Let $X$ be a fair sign, $\mathcal F_0$ trivial and $\mathcal F_n=\sigma(X)$ for $n\ge1$. Compute $M_n=\mathbb E[X\mid\mathcal F_n]$ and verify uniform integrability.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:v11-ch09-two-coins}
+Choose $\Theta=1/4$ or $3/4$ with equal probability, then toss a $\Theta$-coin independently. Compute $P(X_1=1)$, $P(X_1=X_2=1)$, the covariance and $P(X_2=1\mid X_1=1)$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:v11-ch09-shifts}
+For standard Gaussian coordinates compare the shifted product laws with shifts $a_n=n^{-s}$, $s>0$, to the unshifted law. When are they equivalent?
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:v11-ch09-bet}
+Under independent fair bits put $M_n=\prod_{k=1}^n(1+\delta(2X_k-1))$, $0<\delta<1$. Prove the martingale property and bound the chance of reaching $20$. Under independent bits of bias $p$, find the almost sure limit of $n^{-1}\log M_n$.
 \end{exercise}
 
 \section{Hints}
@@ -515,6 +535,22 @@ Lemma~\ref{lem:symm} with $k=2$ gives $U_n=\mathbb E[h(X_1,X_2)\mid\mathcal E_n]
 \end{hint}
 \begin{hint}{ex:confseq}
 For the true $\theta$, $M_n(\theta)$ is a martingale with mean $1$. For the interval, look at $\log M_n(\theta_0)$ as a function of $\theta_0$.
+\end{hint}
+
+\begin{hint}{ex:v11-ch09-final}
+Before the reveal its conditional mean is zero.
+\end{hint}
+
+\begin{hint}{ex:v11-ch09-two-coins}
+Condition on $\Theta$ and compute its first two moments.
+\end{hint}
+
+\begin{hint}{ex:v11-ch09-shifts}
+The affinity product is $\exp(-\sum a_n^2/8)$.
+\end{hint}
+
+\begin{hint}{ex:v11-ch09-bet}
+Each fair factor has conditional mean one; use the strong law for logarithms.
 \end{hint}
 
 \section{Solutions}
@@ -573,9 +609,29 @@ $\frac{\dd Q}{\dd P}$.
 \[
 \theta\cdot\frac{S_n+1}{(n+2)\theta}+(1-\theta)\cdot\frac{n-S_n+1}{(n+2)(1-\theta)}=1.
 \]
-So $M_n(\theta)$ is a non-negative martingale with $M_0(\theta)=1$, and $P(\theta\notin C_n\text{ for some }n)=P(\sup_nM_n(\theta)\ge1/\alpha)\le\alpha$ by Theorem~\ref{thm:ville}. Finally,
+So $M_n(\theta)$ is a non-negative martingale with $M_0(\theta)=1$, and $P(\theta\notin C_n\text{ for some }n)\le P(\sup_nM_n(\theta)\ge1/\alpha)\le\alpha$ by Theorem~\ref{thm:ville}. Finally,
 $\log M_n(\theta_0)=\text{const}-S_n\log\theta_0-(n-S_n)\log(1-\theta_0)$ is a convex function of $\theta_0$ (a sum of convex functions $-\log\theta_0$ and $-\log(1-\theta_0)$ with non-negative coefficients), so its sublevel set
 $C_n$ is an interval.
+\end{solution}
+
+\begin{solution}{ex:v11-ch09-final}
+\idea Before the reveal its conditional mean is zero.
+\writeup We have $M_0=0$ and $M_n=X$ for $n\ge1$. The variables are bounded by one, so their tails vanish uniformly. Their limit is $X$, and $\mathbb E[X\mid\mathcal F_0]=0$ verifies the terminal-value representation.
+\end{solution}
+
+\begin{solution}{ex:v11-ch09-two-coins}
+\idea Condition on $\Theta$ and compute its first two moments.
+\writeup The first moment of $\Theta$ is $1/2$ and the second is $5/16$. Conditional independence gives $P(X_1=1)=1/2$ and $P(X_1=X_2=1)=5/16$. The covariance is $5/16-1/4=1/16$, and the conditional success probability is $(5/16)/(1/2)=5/8$. A first head increases the posterior weight of the more head-prone coin.
+\end{solution}
+
+\begin{solution}{ex:v11-ch09-shifts}
+\idea The affinity product is $\exp(-\sum a_n^2/8)$.
+\writeup The affinity is $e^{-n^{-2s}/8}$ in coordinate $n$. Its product is positive exactly when the series $\sum_n n^{-2s}$ converges, that is $s>1/2$. Kakutani gives equivalence in this case and singularity for $0<s\le1/2$.
+\end{solution}
+
+\begin{solution}{ex:v11-ch09-bet}
+\idea Each fair factor has conditional mean one; use the strong law for logarithms.
+\writeup Each factor is $1+\delta$ or $1-\delta$, both positive. Under fair bits its conditional mean is one, so $M_n$ is a nonnegative martingale with $M_0=1$. Ville's inequality bounds the probability of reaching $20$ by $1/20$. Under bias $p$ the logarithms are i.i.d.\ bounded variables, so the strong law gives $n^{-1}\log M_n\to p\log(1+\delta)+(1-p)\log(1-\delta)$ almost surely. A positive limit gives exponential growth; a negative one gives exponential decay.
 \end{solution}
 
 \section*{Sources and further reading}
