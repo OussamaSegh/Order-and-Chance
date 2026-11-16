@@ -5,21 +5,13 @@ the year when claims are twice the average, the code word that the noise turns i
 How small are their probabilities? Exponentially small, and the exponent is an entropy.
 \end{center}
 
-An insurance company that collects premiums slightly above the expected claims will be ruined only if the claims of the year are far above their
-mean: an event far in the tail of the sum. The Scandinavian actuaries of the early twentieth century needed its probability, and they found that the
-Gaussian approximation is useless there. In 1932 Fredrik Esscher, a Swedish actuary, proposed a trick: change the probabilities, multiplying the law of each claim by
-$e^{\theta x}$ and renormalizing, so that the rare event becomes typical, then pay for the change with an explicit factor. Harald Cramér, who worked on
-insurance mathematics all his life, turned the trick into a theorem for a probability conference held in Geneva in 1937, published in 1938. It was the
-first \emph{large deviation} theorem.
+Suppose a fair coin is tossed a thousand times. The law of large numbers says that the proportion of heads is usually close to $1/2$. The central limit theorem describes deviations of size about $1/\sqrt{1000}$. But what if we ask for at least $600$ heads? That is a fixed displacement of the average from its mean, not a fluctuation on the central-limit scale.
 
-Twenty years later Ivan Sanov, in Moscow, asked the same question one level up: not ``how likely is a strange average?'' but ``how likely is a strange
-histogram?'', and found that the answer is the relative entropy of Volume~4. In the 1960s S.~R.~Srinivasa Varadhan saw a single principle behind these
-results and many others, from diffusions to statistical mechanics; the Abel Prize of 2007 was awarded to him ``for his fundamental contributions to
-probability theory and in particular for creating a unified theory of large deviations''.
+The useful quantity is the logarithm of the probability divided by the number of trials. Cram\'er's theorem says that this quantity has a limit under an exponential-moment condition. Its proof uses an idea introduced by Fredrik Esscher in insurance mathematics in 1932: give large observations more weight until the rare average becomes typical. The change of probability costs an exponential factor. Cram\'er's 1937 conference paper, published in 1938, turned this idea into a limit theorem.
 
-This chapter proves Cram\'er's theorem on the line and Sanov's theorem for finite alphabets, and draws four consequences: the shape of a rare event (the Gibbs
-conditioning principle), the best possible statistical test (a lemma of Chernoff and Stein), the asymptotics of exponential integrals (Varadhan's lemma), and the
-spontaneous magnetization of a toy magnet.
+Sanov's 1957 theorem applies the same question to an entire histogram. For a finite alphabet its rate is relative entropy, the difference between the information cost of the observed frequencies and that of the original law. We can prove this by counting words with prescribed frequencies.
+
+Varadhan's work in the 1960s developed a general theory of large deviations. Here the sample-mean version gives a direct route to a model of a magnet: the same exponential competition between probability and energy produces a change in the most likely magnetization. On the way, we find the typical shape of a conditioned rare event and the error exponent of a statistical test.
 
 \begin{reminder}[from Volume 4]
 Volume~4, Chapter~4, derives the exponential upper bound for sums of independent fair Bernoulli variables by applying Markov's inequality to $e^{\lambda S_n}$. It does not prove the matching logarithmic limit for Bernoulli$(p)$. This chapter proves it: for $0<p<a<1$ and $S_n$ a sum of $n$ independent Bernoulli$(p)$ variables,
@@ -34,7 +26,7 @@ Let $X$ be a real random variable with law $\mu$, not almost surely constant, an
 \begin{equation}\label{eq:cramercond}
 \Lambda(\theta)=\log\mathbb Ee^{\theta X}<\infty\qquad\text{for every }\theta\in\R.
 \end{equation}
-This holds for bounded, Gaussian and Poisson variables; Exercise~\ref{ex:heavyld} shows what goes wrong without it. Let $m=\mathbb EX$, and let $L<M$ be the essential
+This holds for bounded, Gaussian and Poisson variables. The exponential law used in an example below has a moment generating function finite only for $\theta<1$; the general theorem here assumes finiteness everywhere. Exercise~\ref{ex:heavyld} shows what can go wrong without positive exponential moments. Let $m=\mathbb EX$, and let $L<M$ be the essential
 infimum and supremum of $X$ (possibly infinite). For each $\theta$, the \emph{tilted law} is $\mu_\theta(\dd x)=e^{\theta x-\Lambda(\theta)}\mu(\dd x)$: Esscher's trick.
 
 \begin{lemma}[the cumulant generating function]\label{lem:Lambda}
@@ -125,11 +117,10 @@ Finally, for $m<a<M$, apply (b) to $[a,\infty)$ and (c) to $(a,\infty)$; both in
 \end{proof}
 
 The proof of (c) is the heart of the subject. To see a rare event, \emph{change the law} so that it becomes typical, here by tilting until the mean is $x$; the cost of the
-change is the exponential of the relative entropy between the two laws, which is exactly $n\Lambda^*(x)$ (Exercise~\ref{ex:tiltentropy}). This gives an
-algorithm, \emph{importance sampling}, which estimates probabilities of order $10^{-15}$ with a few thousand samples.
+change is the exponential of the relative entropy between the two laws, which is exactly $n\Lambda^*(x)$ (Exercise~\ref{ex:tiltentropy}). This suggests an algorithm, \emph{importance sampling}: sample under the tilted law and multiply the event indicator by the likelihood ratio. The expectation is unchanged. A suitable tilt can greatly reduce the variance for rare-event estimation, although a sample size or accuracy guarantee needs a separate variance calculation.
 
 How good is the exponent alone? Cram\'er's 1938 paper already contained a sharper expansion; in the following form the result is due to Bahadur and Ranga Rao
-(1960): if $X$ is not lattice,
+(1960): for a nonlattice law, an interior threshold $m<a<M$, and a moment generating function finite in a neighbourhood of the positive tilt $\theta_a$, the quoted asymptotic is
 \[
 P(S_n\ge na)\sim\frac{e^{-n\Lambda^*(a)}}{\theta_a\sigma_a\sqrt{2\pi n}},\qquad\sigma_a^2=\Lambda''(\theta_a).
 \]
@@ -222,8 +213,7 @@ P(X_1=a_1,\dots,X_k=a_k\mid E_n)\longrightarrow\nu^*(a_1)\cdots\nu^*(a_k).
 \]
 \end{theorem}
 \begin{proof}
-\emph{The empirical measure concentrates.} Let $\Gamma=\{\nu:\langle f,\nu\rangle\ge x\}$, closed, so $E_n=\{L_n\in\Gamma\}$. Fix $\delta>0$ and let $K=\{\nu\in\Gamma:\max_a|\nu(a)-\nu^*(a)|\ge\delta\}$, a
-compact set on which the continuous function $D(\cdot\|\mu)$ has a minimum, larger than $\Lambda^*(x)$ by Proposition~\ref{prop:gibbsvar}: say $\Lambda^*(x)+2\eta$. By Theorem~\ref{thm:sanov},
+\emph{The empirical measure concentrates.} Let $\Gamma=\{\nu:\langle f,\nu\rangle\ge x\}$, closed, so $E_n=\{L_n\in\Gamma\}$. Fix $\delta>0$ and let $K=\{\nu\in\Gamma:\max_a|\nu(a)-\nu^*(a)|\ge\delta\}$, a compact set. If $K$ is empty there is nothing to prove for this $\delta$. Otherwise the continuous function $D(\cdot\|\mu)$ has a minimum on $K$, larger than $\Lambda^*(x)$ by Proposition~\ref{prop:gibbsvar}: say $\Lambda^*(x)+2\eta$. By Theorem~\ref{thm:sanov},
 $P(L_n\in K)\le e^{-n(\Lambda^*(x)+\eta)}$ for large $n$. On the other side, $\Gamma^\circ$ contains $\{\nu:\langle f,\nu\rangle>x\}$, which contains $\mu_{\theta_y}$ for $x<y<\max f$, with
 $D(\mu_{\theta_y}\|\mu)=\Lambda^*(y)\to\Lambda^*(x)$ as $y\downarrow x$. So $\inf_{\Gamma^\circ}D=\Lambda^*(x)$, and $P(E_n)\ge e^{-n(\Lambda^*(x)+\eta/2)}$ for large $n$. Therefore
 $P(L_n\in K\mid E_n)\to0$.
@@ -284,9 +274,7 @@ So $\liminf\frac1n\log\beta_n(\varepsilon)\ge-D-\delta$.
 \end{proof}
 
 The lemma carries the names of Herman Chernoff and of the Charles Stein of the previous chapter. It says that relative entropy is not only a measure of surprise but the
-exact price of telling two hypotheses apart, and that the first error $\varepsilon$ does not affect the exponent. For the coin, $D(\mu_0\|\mu_1)=0.0204$, so pushing the second error
-down to $10^{-6}$ costs about $\log(10^6)/0.0204\approx680$ tosses, to leading order; the exact optimum for $\varepsilon=0.05$, computed numerically, is about $1000$, because
-the correction to the exponent is of order $n^{-1/2}$. Note the asymmetry: $D(\mu_1\|\mu_0)=0.0201$ is the exponent if the roles are exchanged.
+exact price of telling two hypotheses apart, and that the first error $\varepsilon$ does not affect the exponent. For the coin, $D(\mu_0\|\mu_1)=0.0204$, so $\log(10^6)/0.0204\approx680$ tosses is a leading-order estimate for a second error of $10^{-6}$. It is not a finite-sample guarantee. The finite-sample likelihood-ratio calculation gives a sample size of roughly $1000$ when the first error is constrained to $0.05$; see the numerical comparison in the chapter's verification record. Note the asymmetry: $D(\mu_1\|\mu_0)=0.0201$ is the exponent if the roles are exchanged.
 
 \section{Varadhan's lemma and a toy magnet}
 
@@ -311,7 +299,7 @@ $\mathbb Ee^{nF(S_n/n)}\ge e^{n(F(x)-\varepsilon)}P(|S_n/n-x|<\delta)$, and Theo
 
 \emph{Upper bound on a closed set $C$.} Taking $\theta=\pm1$ in the definition, $\Lambda^*(y)\ge|y|-c$ with $c=\max(\Lambda(1),\Lambda(-1))$. Fix $K>0$ and choose $R$ with $R-c>\sup|F|+K+1$.
 By Theorem~\ref{thm:cramerR}(b) applied to $\{|y|\ge R\}$, $\mathbb E[e^{nF(S_n/n)};|S_n/n|\ge R]\le e^{n\sup|F|}e^{-n(R-c-1)}\le e^{-nK}$ for large $n$. Next, $F$ is uniformly
-continuous on $[-R,R]$: cover $C\cap[-R,R]$ by finitely many closed intervals $J_1,\dots,J_k$, of length so small that $F$ varies by at most $\varepsilon$ on each. By Theorem~\ref{thm:cramerR}(b) for the
+continuous on $[-R,R]$: cover $C\cap[-R,R]$ by finitely many closed intervals $J_1,\dots,J_k$ contained in $[-R,R]$, of length so small that $F$ varies by at most $\varepsilon$ on each. Discard intervals whose intersection with $C$ is empty. By Theorem~\ref{thm:cramerR}(b) for the
 closed set $C\cap J_i$,
 \[
 \limsup_{n\to\infty}\frac1n\log\mathbb E\Bigl[e^{nF(S_n/n)};\frac{S_n}n\in C\cap J_i\Bigr]\le\sup_{C\cap J_i}F-\inf_{C\cap J_i}\Lambda^*\le\sup_{C\cap J_i}(F-\Lambda^*)+\varepsilon.
@@ -344,7 +332,7 @@ $(-1,1)$ and $g'(y)\to-\infty$ as $y\to1$; so maximizers are interior critical p
 critical point. If $\beta>1$, $h(y)=\tanh(\beta y)-y$ is strictly concave on $[0,\infty)$, with $h(0)=0$, $h'(0)=\beta-1>0$ and $h(1)<0$: it has exactly one zero $m^*$ in $(0,1)$. Then
 $g'>0$ on $(0,m^*)$ and $g'<0$ on $(m^*,1)$, so $m^*$ is the maximum on $[0,1]$, and by evenness $\pm m^*$ are the maximizers, while $0$ is not one.
 
-For the concentration, let $C=\{y\in[-1,1]:\operatorname{dist}(y,\mathcal M)\ge\delta\}$, compact. On $C$ the continuous $g$ has maximum $<\max g$, say $\max g-2\eta$. Then
+For the concentration, let $C=\{y\in[-1,1]:\operatorname{dist}(y,\mathcal M)\ge\delta\}$, compact. If $C$ is empty the probability is zero. Otherwise on $C$ the continuous $g$ has maximum $<\max g$, say $\max g-2\eta$. Then
 \[
 P_{n,\beta}\bigl(m_n\in C\bigr)=\frac{\mathbb E[e^{nF(m_n)};m_n\in C]}{\mathbb Ee^{nF(m_n)}},
 \]
@@ -362,6 +350,18 @@ non-Gaussian limit for a sum of $\pm1$ spins.
 \caption{The function $g(y)=\frac\beta2y^2-J(y)$ of the Curie--Weiss model, whose maximum gives the free energy, for $\beta=0.8$, $1$ and $1.5$. At $\beta=1$ the maximum at $0$
 becomes flat; beyond it splits into two, at $\pm m^*(\beta)$ (dots), and the magnet magnetizes.}
 \label{fig:curieweiss}
+\end{figure}
+
+\begin{figure}[ht]
+\centering\fig{ch07-tilt-coin}
+\caption{Tilting a fair Bernoulli law to mean $3/4$ multiplies the odds of heads by $e^\theta=3$. Under the new law, the old rare mean is typical. The exponential cost per observation is $D(3/4\,\|\,1/2)$.}
+\label{fig:v11-ch07-tilt-coin}
+\end{figure}
+
+\begin{figure}[ht]
+\centering\fig{ch07-types-triangle}
+\caption{Types for words of length four on a three-letter alphabet. Each dot is a histogram $(k_1,k_2,k_3)/4$ with $k_1+k_2+k_3=4$. The grid becomes dense in the simplex; Sanov's theorem assigns an entropy cost to regions of this triangle.}
+\label{fig:v11-ch07-types-triangle}
 \end{figure}
 
 \section{What we proved, and what comes next}
@@ -412,6 +412,22 @@ against $P(\text{heads})=0.6$.
 In Theorem~\ref{thm:curieweiss}, show that $m^*(\beta)\sim\sqrt{3(\beta-1)}$ as $\beta\downarrow1$, and that for $\beta>1$ and small $\delta>0$, $P_{n,\beta}(|m_n-m^*|<\delta)\to\frac12$.
 \end{exercise}
 
+\begin{exercise}[$\star$]\label{ex:v11-ch07-tilt}
+Tilt a fair Bernoulli variable to mean $3/4$. Find $\theta$, the two probabilities of the tilted law, and its relative entropy with respect to the original law.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:v11-ch07-type}
+A word of length four is drawn from three equally likely letters. Compute the probability of the type $(1/2,1/4,1/4)$ exactly. Find its entropy and relative entropy, then compare with the bounds in Lemma~\ref{lem:types}.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:v11-ch07-normal}
+Let $X_i$ be independent standard Gaussians and $a>0$. Compare the Chernoff upper bound for $P(S_n\ge na)$ with its exact logarithmic rate. Explain why the upper bound has the correct exponent but is not an asymptotic equivalent.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:v11-ch07-curvature}
+Under the hypotheses of Cram\'er's theorem, write $\sigma^2=\operatorname{Var}X>0$. Show that $(\Lambda^*)''(m)=1/\sigma^2$ and derive $\Lambda^*(m+h)=h^2/(2\sigma^2)+o(h^2)$ as $h\to0$.
+\end{exercise}
+
 \section{Hints}
 
 \begin{hint}{ex:ratefns}
@@ -427,13 +443,26 @@ $S_n/\sqrt n$ is exactly $N(0,1)$; use~\eqref{eq:gausstail}.
 $\Lambda(\theta)=\theta M+\log\mathbb Ee^{\theta(X-M)}$, and $\mathbb Ee^{\theta(X-M)}\downarrow P(X=M)$ as $\theta\to\infty$.
 \end{hint}
 \begin{hint}{ex:heavyld}
-One large value and $n-1$ ordinary ones: by the weak law, $X_2+\dots+X_n\ge(n-1)m-n^{2/3}$ with probability tending to $1$.
+One large value and $n-1$ ordinary ones: compute the finite variance and apply Chebyshev's inequality to the threshold $(n-1)m-n^{2/3}$. The weak law alone does not give this shrinking relative-error scale.
 \end{hint}
 \begin{hint}{ex:testcoin}
 For each $s\in[0,1]$, $\mathbf 1\{P_0(x)<P_1(x)\}\le P_0(x)^{-s}P_1(x)^s$. Multiply by $P_0(x)$ and sum.
 \end{hint}
 \begin{hint}{ex:curieweiss}
 Expand $\tanh u=u-\frac{u^3}3+O(u^5)$, after checking that $m^*(\beta)\to0$. For the second part, use the symmetry $\sigma\mapsto-\sigma$.
+\end{hint}
+
+\begin{hint}{ex:v11-ch07-tilt}
+For Bernoulli$(1/2)$ the tilted success probability is $e^\theta/(1+e^\theta)$.
+\end{hint}
+\begin{hint}{ex:v11-ch07-type}
+There are $4!/(2!1!1!)$ words of the indicated type.
+\end{hint}
+\begin{hint}{ex:v11-ch07-normal}
+Use the Gaussian tail bounds from Chapter~3; keep the polynomial prefactor separate from the exponential.
+\end{hint}
+\begin{hint}{ex:v11-ch07-curvature}
+Differentiate $\Lambda'(\theta_x)=x$ and use $(\Lambda^*)'(x)=\theta_x$.
 \end{hint}
 
 \section{Solutions}
@@ -464,7 +493,7 @@ $\sigma_a=1$, as in the general formula.
 \begin{solution}{ex:endpoint}
 \idea At the top of the support there is nothing to tilt towards: the only way to average $M$ is to be $M$ every time.
 \writeup $S_n\ge nM$ with $X_i\le M$ forces all $X_i=M$, so $P(S_n\ge nM)=p^n$. Next $\theta M-\Lambda(\theta)=-\log\mathbb Ee^{\theta(X-M)}$; as $\theta\to\infty$, $e^{\theta(X-M)}$ decreases to
-$\mathbf 1\{X=M\}$, so by monotone convergence $-\log\mathbb Ee^{\theta(X-M)}$ increases to $-\log p$, and for $\theta\le0$ the expression is at most $0$ by Lemma~\ref{lem:ratefn}(ii). So
+$\mathbf 1\{X=M\}$, so by dominated convergence $-\log\mathbb Ee^{\theta(X-M)}$ increases to $-\log p$, and for $\theta\le0$ the expression is at most $0$ by Lemma~\ref{lem:ratefn}(ii). So
 $\Lambda^*(M)=-\log p$, and the bound of Theorem~\ref{thm:cramerR}(a) is an equality for every $n$. If $P(X=M)=0$, then $P(S_n\ge nM)=0$ and $\Lambda^*(M)=\infty$, consistent with the convention $e^{-\infty}=0$.
 \end{solution}
 
@@ -481,7 +510,7 @@ typical: the opposite of the Gibbs picture.
 \idea Bound an indicator by a power of the likelihood ratio; optimizing the power is a Chernoff bound, and the exponent is symmetric in the two errors.
 \writeup On $B^c$, $P_0(x)<P_1(x)$, so for $s\in[0,1]$, $P_0(x)\le P_0(x)^{1-s}P_1(x)^s$, and $P_0(B^c)\le\sum_xP_0(x)^{1-s}P_1(x)^s=\bigl(\sum_a\mu_0(a)^{1-s}\mu_1(a)^s\bigr)^n$, since the sum
 factorizes over the coordinates. On $B$, $P_1(x)\le P_1(x)^sP_0(x)^{1-s}$, the same bound. Minimize over $s$. For the coins, $\sum_a\mu_0(a)^{1-s}\mu_1(a)^s=0.5^{1-s}(0.6^s+0.4^s)$, minimal at $s=0.498$, which gives $C=0.00508$, about a quarter of $D(\mu_0\|\mu_1)=0.0204$.
-Demanding that both errors be small costs four times as many tosses as the Chernoff--Stein regime, where one error is only required to stay below a fixed $\varepsilon$.
+At the level of these asymptotic exponents, demanding that both errors be small costs about four times as many tosses as the Chernoff--Stein regime, where one error is only required to stay below a fixed $\varepsilon$.
 \end{solution}
 
 \begin{solution}{ex:curieweiss}
@@ -492,6 +521,34 @@ $y_0\in(0,1)$. As $\beta\downarrow1$, $h_\beta(y_0)\to\tanh y_0-y_0<0$, so $h_\b
 $m^{*2}=\frac{3(\beta-1)}{\beta^3}(1+O(m^{*2}))$ and $m^*\sim\sqrt{3(\beta-1)}$.
 \emph{The two states.} The Gibbs weight depends on $\sigma$ only through $(\sum\sigma_i)^2$, so $\sigma\mapsto-\sigma$ preserves $P_{n,\beta}$ and $m_n$ is symmetric. For $\delta<m^*$ the intervals
 $(m^*-\delta,m^*+\delta)$ and its mirror image are disjoint, have equal probabilities, and by Theorem~\ref{thm:curieweiss} their union has probability tending to $1$. Each tends to $\frac12$.
+\end{solution}
+
+\begin{solution}{ex:v11-ch07-tilt}
+\idea The tilted odds are the original odds multiplied by $e^\theta$.
+\writeup Solving $e^\theta/(1+e^\theta)=3/4$ gives $e^\theta=3$, so $\theta=\log3$. The new probabilities are $3/4$ for heads and $1/4$ for tails. Its relative entropy is
+\[
+D=\frac34\log\frac32+\frac14\log\frac12=\frac34\log3-\log2.
+\]
+Also $\Lambda(\theta)=\log((1+e^\theta)/2)=\log2$, so $\theta(3/4)-\Lambda(\theta)$ gives the same answer. This checks the entropy identity directly.
+\end{solution}
+
+\begin{solution}{ex:v11-ch07-type}
+\idea Count the words and multiply by their common probability.
+\writeup There are $12$ words of the specified type, each of probability $3^{-4}=1/81$. Hence the exact type probability is $12/81=4/27$. The entropy is $H=-(1/2)\log(1/2)-2(1/4)\log(1/4)=(3/2)\log2$. Relative entropy against the uniform law is $D=\log3-H$. Thus $e^{-4D}=2^6/3^4=64/81$. The method-of-types bounds are $(5^{-3})(64/81)\le4/27\le64/81$. They are loose at this small sample size but differ only by a polynomial factor as $n$ grows.
+\end{solution}
+
+\begin{solution}{ex:v11-ch07-normal}
+\idea The rate keeps only the exponential part of the Gaussian tail.
+\writeup The rate function is $\Lambda^*(a)=a^2/2$, so Cram\'er's upper bound is $e^{-na^2/2}$. Exactly, $S_n/\sqrt n$ is standard normal. The bounds in Exercise~\ref{ex:gaussprefactor} give
+\[
+P(S_n\ge na)\sim\frac{e^{-na^2/2}}{a\sqrt{2\pi n}}.
+\]
+Dividing the logarithm by $n$ gives $-a^2/2$, since $\log n/n\to0$. But the ratio of the probability to the Chernoff bound tends to zero, not one. The bound is exponentially accurate but misses the vanishing prefactor.
+\end{solution}
+
+\begin{solution}{ex:v11-ch07-curvature}
+\idea The rate's derivative is the tilt, and the derivative of the tilt is the reciprocal variance.
+\writeup The function $\Lambda'$ is a smooth strictly increasing bijection onto the interior of the support interval, with $\Lambda''>0$. Differentiating its inverse gives $\theta_x'=1/\Lambda''(\theta_x)$. By Lemma~\ref{lem:ratefn}, $(\Lambda^*)''(x)=1/\Lambda''(\theta_x)$. At $x=m$, $\theta_m=0$ and $\Lambda''(0)=\sigma^2$, yielding the stated curvature. Since $\Lambda^*(m)=0$ and $(\Lambda^*)'(m)=0$, Taylor's formula gives $\Lambda^*(m+h)=h^2/(2\sigma^2)+o(h^2)$. This explains the local agreement of the Gaussian and large-deviation scales.
 \end{solution}
 
 \section*{Sources and further reading}
