@@ -10,6 +10,10 @@ Scope: 14 printed chapters, with Shuffling Cards at 13 and Sums of Random Pieces
 - Fixed Rademacher moment lemma: its positive probability bound needs strictly positive variance. The zero vector is a counterexample to the original unconditional bound. Expanded the fourth-moment derivation and restricted the later exercise application.
 - Completed exponential-moment equality proof using a uniform second-moment bound, clarified Levy convergence Cauchy criterion and limit identification, and replaced an unnecessary complex random-sign argument for power series radii by Cauchy–Hadamard.
 - Added two mathematical figures (block swap and dyadic sum) after original figures; four graded exercises with hints and full solutions after original lists. The original label sequence and complete original figure blocks were checked unchanged; exercise/hint/solution counts increased by four each. Original artwork files untouched.
-- This is a substantive first pass, not a complete sentence-level rewrite or independent review. The other 13 chapters, full Chapter 1 editorial/proof review, baseline manifest for all units, numerical regression runs, builds, visual inspection and final acceptance remain open.
+- This is a substantive first pass, not a complete sentence-level rewrite or independent review. Chapters 3–14 and further Chapter 2 review, full Chapter 1 editorial/proof review, baseline manifest for all units, numerical regression runs, builds, visual inspection and final acceptance remain open.
 
 No local TeX build or separate AI/human review has been performed in this session. Do not mark the chapter or volume accepted on structural checks alone.
+
+## Chapter 2 first implementation (not accepted)
+
+Reworked motivation and truncation explanation; clarified typical St Petersburg scale versus expected payoff and n≥2; corrected the zero-variance domain of Kolmogorov's lower maximal inequality and its application in the three-series theorem; made countable intersection explicit in Etemadi's proof; established finite renewal counts and handled infinite means explicitly; gave the renewal-reward statement its hypotheses. Added two figures and four graded solved exercises. The original label order, complete figure blocks and original exercise lists were preserved. Full proof/editorial review and build remain open.
