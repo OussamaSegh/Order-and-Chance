@@ -26,11 +26,23 @@ Reworked the invariance-principle motivation to distinguish weak convergence fro
 
 Reworked the introduction to separate uniform distribution-function accuracy, lattice-point accuracy and recurrence. Fixed the Feller-counterexample exercise for negative exponents, the nonintegral exponent in the density local-limit exercise, and positivity of Pearson cell probabilities; corrected the recurrence scope and used grouped-cell maximum likelihood for Weldon's dice (recomputed p=0.3376911823, chi-square=8.1800560, fixed-p chi-square=35.4942986). Added two figures and four complete solved exercises on rare arrays, Bernoulli Berry--Esseen factors, span-two LLT and radial integrability. Original labels and figures preserved. Full review and build remain open.
 
+## Chapter 5 first implementation (not accepted)
+
+Reworked infinite-divisibility/stability motivation. Corrected gamma shape factor in the Lévy measure and compensated drift convention for gamma, compound Poisson and positive stable examples. Handled zero-mass finite measures in the representation and triangular-array limits, boundary atoms, independence in the domain-of-attraction statement, and discrete infinite waiting time versus a weak limit. Added two figures and four fully solved exercises on convolution roots, drift, stable scales and closure. Full review/build remain open.
+
+## Chapter 6 first implementation (not accepted)
+
+Reworked Stein motivation and supplied a direct characteristic-function proof of the Gaussian characterization. Corrected the falling-factorial recursion, zero Wasserstein case, positive Poisson intensity, hypergeometric nondegeneracy and fourth-moment assumptions; justified the exact closest integer head-run length using two adjacent approximations and monotonicity. Added two figures and four solved exercises. Full review/build remain open.
+
+## Chapter 7 first implementation (not accepted)
+
+Reworked large-deviation motivation; distinguished global exponential-moment hypothesis from the exponential example and quoted Bahadur–Rao hypotheses; removed an unsupported importance-sampling guarantee; handled empty conditioning/compact sets, corrected the shrinking-deviation hint and clarified asymptotic testing sample size. Added two figures and four solved exercises on tilting, types, Gaussian tails and rate curvature. Full review/build remain open.
+
 ## Current workstream status
 
-- Chapters 1–4: first implementation committed; complete sentence-level and independent proof/editorial reviews remain open.
-- Chapters 5–14: not yet rewritten in this workstream.
-- Added 8 mathematical figures and 16 graded exercises with hints and full solutions, toward targets of 28 and 56.
-- `check_preservation.py` records the immutable baseline and enforces structural preservation and final per-chapter addition counts. Individual edited sources have been checked for preserved original label order and figure blocks, and four additional exercises/hints/solutions per chapter. The whole-repository audit has not yet run against a local checkout.
-- The grouped-cell dice calculation in Chapter 4 was independently recomputed numerically. Remaining numerical tests, full TeX builds, EPUB/print checks, visual inspection, front/back matter and final exact-head CI are open.
-- PR #247 remains a draft. PR #246 is independent and must pass CI before merging; incorporate it from main before final review.
+- Chapters 1–7: substantive first implementations committed; full sentence-level and independent proof/editorial reviews remain open.
+- Chapters 8–14: not yet implemented in this workstream.
+- Added 14 mathematical figures and 28 graded exercises with hints and full solutions, toward targets of 28 and 56.
+- Each edited chapter checked for preservation of its original label sequence and figure blocks and the four added exercises/hints/solutions. Immutable baseline audit exists; whole-checkout execution remains open.
+- Numerical regressions, full TeX/EPUB/print builds, visual inspection, front/back matter and exact-head CI remain open.
+- PR #247 stays draft; PR #246 is separate, and must pass CI before merge and integration.
