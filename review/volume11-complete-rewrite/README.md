@@ -10,7 +10,7 @@ Scope: 14 printed chapters, with Shuffling Cards at 13 and Sums of Random Pieces
 - Fixed Rademacher moment lemma: its positive probability bound needs strictly positive variance. The zero vector is a counterexample to the original unconditional bound. Expanded the fourth-moment derivation and restricted the later exercise application.
 - Completed exponential-moment equality proof using a uniform second-moment bound, clarified Levy convergence Cauchy criterion and limit identification, and replaced an unnecessary complex random-sign argument for power series radii by Cauchy–Hadamard.
 - Added two mathematical figures (block swap and dyadic sum) after original figures; four graded exercises with hints and full solutions after original lists. The original label sequence and complete original figure blocks were checked unchanged; exercise/hint/solution counts increased by four each. Original artwork files untouched.
-- This is a substantive first pass, not a complete sentence-level rewrite or independent review. Chapters 3–14 and further Chapter 2 review, full Chapter 1 editorial/proof review, baseline manifest for all units, numerical regression runs, builds, visual inspection and final acceptance remain open.
+- This is a substantive first pass, not a complete sentence-level rewrite or independent review. See the current workstream status below; this entry records Chapter 1's implementation only.
 
 No local TeX build or separate AI/human review has been performed in this session. Do not mark the chapter or volume accepted on structural checks alone.
 
@@ -25,3 +25,12 @@ Reworked the invariance-principle motivation to distinguish weak convergence fro
 ## Chapter 4 first implementation (not accepted)
 
 Reworked the introduction to separate uniform distribution-function accuracy, lattice-point accuracy and recurrence. Fixed the Feller-counterexample exercise for negative exponents, the nonintegral exponent in the density local-limit exercise, and positivity of Pearson cell probabilities; corrected the recurrence scope and used grouped-cell maximum likelihood for Weldon's dice (recomputed p=0.3376911823, chi-square=8.1800560, fixed-p chi-square=35.4942986). Added two figures and four complete solved exercises on rare arrays, Bernoulli Berry--Esseen factors, span-two LLT and radial integrability. Original labels and figures preserved. Full review and build remain open.
+
+## Current workstream status
+
+- Chapters 1–4: first implementation committed; complete sentence-level and independent proof/editorial reviews remain open.
+- Chapters 5–14: not yet rewritten in this workstream.
+- Added 8 mathematical figures and 16 graded exercises with hints and full solutions, toward targets of 28 and 56.
+- `check_preservation.py` records the immutable baseline and enforces structural preservation and final per-chapter addition counts. Individual edited sources have been checked for preserved original label order and figure blocks, and four additional exercises/hints/solutions per chapter. The whole-repository audit has not yet run against a local checkout.
+- The grouped-cell dice calculation in Chapter 4 was independently recomputed numerically. Remaining numerical tests, full TeX builds, EPUB/print checks, visual inspection, front/back matter and final exact-head CI are open.
+- PR #247 remains a draft. PR #246 is independent and must pass CI before merging; incorporate it from main before final review.
