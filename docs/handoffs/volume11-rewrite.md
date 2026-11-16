@@ -1,5 +1,7 @@
 # Handoff: Volume 11 rewrite
 
+> **Complete-rewrite follow-up (PR #247):** The original master-plan pass below landed in PR #221. The current deeper rewrite is on `codex/volume11-complete-rewrite`. Read `review/volume11-complete-rewrite/README.md` first for live progress, immutable baseline, numerical checks and outstanding acceptance gates. All fourteen first implementations are committed; do not treat the historical `Done` table below as certification of this follow-up. PR #246 is merged and integrated through PR #248.
+
 Volume 11, *Randomness*, is being rewritten to `docs/plan/MASTER-PLAN-V5-V15.md` and `docs/plan/book-11.md`. Read this file first. It is updated after every chapter.
 
 **Branch and pull request.** Branch `claude/project-thread-pro7lo`, one pull request for the whole volume, as Volumes 5–10 each landed on their own pull request. The master plan and the blueprints are on PR #157 (branch `claude/project-thread-khh5pi`), which stays open. Read the blueprint with `git show origin/claude/project-thread-khh5pi:docs/plan/book-11.md`. Where it differs from the copy on `main` (an older specification that puts the problem chapter in Part I), the blueprint on PR #157 wins.
