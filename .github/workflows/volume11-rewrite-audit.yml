@@ -1,0 +1,23 @@
+name: Volume 11 rewrite audit
+on:
+  pull_request:
+    paths:
+      - 'volume11-randomness/**'
+      - 'review/volume11-complete-rewrite/**'
+      - '.github/workflows/volume11-rewrite-audit.yml'
+permissions:
+  contents: read
+jobs:
+  preservation-and-regressions:
+    # This strict immutable-baseline gate is for the complete-rewrite workstream.
+    if: github.head_ref == 'codex/volume11-complete-rewrite'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - name: Preserve original numbered content and artwork
+        run: python3 review/volume11-complete-rewrite/check_preservation.py --final
+      - name: Check new mathematical examples
+        run: node review/volume11-complete-rewrite/check_new_examples.mjs
