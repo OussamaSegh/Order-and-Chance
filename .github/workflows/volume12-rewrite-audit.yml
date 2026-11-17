@@ -1,0 +1,51 @@
+name: Volume 12 complete-rewrite audit
+on:
+  pull_request:
+    paths:
+      - 'volume12-random-motion/**'
+      - 'review/volume12-complete-rewrite/**'
+      - '.github/workflows/volume12-rewrite-audit.yml'
+permissions:
+  contents: read
+jobs:
+  mathematical-source-regressions:
+    if: github.head_ref == 'codex/volume12-complete-rewrite'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - name: Check original labels, numbering, historical figures, exercises, hints and solutions
+        run: python3 review/volume12-complete-rewrite/check_preservation.py --final
+      - name: New deterministic arithmetic tests for all twelve units
+        run: python3 review/volume12-complete-rewrite/check_new_examples.py
+      - name: Install original numerical-review dependencies
+        run: python3 -m pip install mpmath numpy scipy sympy networkx
+      - name: Original numerical checks for eleven chapters and appendix
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(find review/volume12-rewrite -maxdepth 1 -name 'check_ch*.py' -o -name 'check_appA*.py' | wc -l)" -eq 12
+          for script in review/volume12-rewrite/check_ch*.py review/volume12-rewrite/check_appA*.py; do
+            echo "::group::$script"
+            python3 "$script"
+            echo "::endgroup::"
+          done
+      - name: Inbound and outbound numbered citations of Volume 12
+        run: |
+          python3 - <<'PY'
+          from tools.cross_volume_citations import VOLUMES, number_volume, collect_citations, mismatches, gloss_mismatches
+          books = {n: number_volume(n) for n in VOLUMES}
+          citations = [c for c in collect_citations() if c.volume == 12 or c.source.startswith("volume12-random-motion/")]
+          errors = mismatches(books, citations) + [e for e in gloss_mismatches() if e.startswith("volume12-random-motion/")]
+          print("Checked", len(citations), "Volume 12 numbered cross-volume citations")
+          if errors:
+              raise SystemExit("\n".join(errors))
+          print("PASS: Volume 12 numbered citations")
+          PY
+      - name: Project-wide publishing tests and listing
+        run: |
+          python3 -m pip install -r tools/requirements-test.txt
+          python3 -m unittest discover -s tools -p 'test_*.py'
+          python3 tools/listing.py volume12-random-motion /tmp/volume12-listing.md
