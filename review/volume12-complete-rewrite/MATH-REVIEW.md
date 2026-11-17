@@ -29,3 +29,10 @@ This is an author-side analytical correction, **not** an externally certified pr
 **Chapter 11, branching-random-walk speed (\`thm:brwspeed\`).** The original lower-bound proof chose a surviving lineage using an infinite-horizon event, then asserted its next $\rho$ Gaussian increments were independent of that choice. Infinite survival can depend on those future increments, so the assertion was not justified. The corrected argument selects the lexicographically first qualifying **finite $L$-step good path**, measurable with respect to the increments through depth $r+LK$. Its further increments are genuinely fresh, conditional Gaussian variables; its finite-path failure event is bounded by the infinite-survival failure probability. The Gaussian lower-tail estimate now explicitly assumes $0<b<c^*$, sufficient for the speed limit. This fills a nontrivial dependence gap without weakening the lower bound.
 
 These are mathematical author-side repairs, not a statement that every other proof was independently certified.
+
+
+## Historical and conceptual precision checks
+
+**Robert Brown's 1827 observations.** Brown examined tiny particles *within and released from pollen grains*, not simply moving intact pollen grains. The Chapter 1 opening already said this correctly, but the preface and marketing text had repeated the familiar oversimplification. Those are now aligned with the primary 1828 account, *A brief account of microscopical observations made ... on the particles contained in the pollen of plants* (https://www.physik.uni-augsburg.de/theo1/hanggi/History/Brownian.pdf), and the American Physical Society's historical discussion (https://www.aps.org/apsnews/2016/08/robert-brown-molecular-motion-pollen). Dates 1827 for observation and 1828 for publication are preserved.
+
+**Conformal invariance.** Planar Brownian paths transform under analytic conformal maps after an appropriate *random time change*. The preface and paperback description now state this qualification instead of suggesting exact equality of time-parametrized Brownian laws.
