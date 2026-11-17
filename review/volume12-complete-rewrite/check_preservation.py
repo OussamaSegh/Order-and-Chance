@@ -56,6 +56,28 @@ def audit(require_final):
         orig_fig, fresh_fig = FIGURE.findall(a), FIGURE.findall(b)
         if orig_formal != fresh_formal:
             problems.append(path + ": original numbered formal statements changed")
+        # Compare entire original statement and exercise environments, not just labels.
+        # The only changed original statement is the documented correction of
+        # the sigma=0 boundary case in Chapter 7's Levy--Ito theorem.
+        def original_blocks(text, kinds):
+            result = []
+            for match in STATEMENT.finditer(text):
+                if match.group(1) in kinds:
+                    label_match = LABEL.search(match.group())
+                    result.append((label_match.group(1) if label_match else None, match.group()))
+            return result
+        for kinds, group in ((FORMAL, "formal"), (("exercise", "problem"), "exercise")):
+            before = original_blocks(a, kinds)
+            after = original_blocks(b, kinds)
+            for (label, raw), (new_label, fresh_raw) in zip(before, after):
+                if label != new_label:
+                    problems.append(path + ": original " + group + " label changed in body inventory")
+                if raw != fresh_raw and not (chapter == "ch07-levy" and label == "thm:levyito"):
+                    problems.append(path + ": original " + group + " text changed: " + str(label))
+        # C0 control bytes are invalid in the TeX source. Ordinary newline and
+        # horizontal tab do not count as errors.
+        if any(ord(ch) < 32 and ch not in "\n\t" for ch in b):
+            problems.append(path + ": invalid TeX control character")
         if fresh_ex[:len(orig_ex)] != orig_ex:
             problems.append(path + ": original exercises lost or reordered")
         if fresh_fig[:len(orig_fig)] != orig_fig:
@@ -63,6 +85,10 @@ def audit(require_final):
         if not subsequence(LABEL.findall(a), LABEL.findall(b)):
             problems.append(path + ": original label order changed")
         for kind in ("hint", "solution"):
+            # Every original full hint/solution block survives unchanged.
+            pattern = re.compile(r"\\begin\{" + kind + r"\}\{[^}]+\}[\s\S]*?\\end\{" + kind + r"\}")
+            if not subsequence(pattern.findall(a), pattern.findall(b)):
+                problems.append(path + ": original " + kind + " *body text* changed or lost")
             oa, nb = exercise_keys(a, kind), exercise_keys(b, kind)
             if not subsequence(oa, nb):
                 problems.append(path + ": original " + kind + " keys changed")
