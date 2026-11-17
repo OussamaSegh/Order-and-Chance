@@ -5,33 +5,15 @@ The expected win is infinite. What is a fair price for playing $n$ times?\\
 About $n\log_2n$ euros, and the law of large numbers proves it, in probability but not almost surely.
 \end{center}
 
-Jakob Bernoulli died in 1705 with his book on probability unfinished. His nephew Nicolaus published it in 1713 as \emph{Ars
-Conjectandi}, and its fourth part contains the first limit theorem of probability. Draw with replacement from an urn in which
-the white pebbles make up three fifths of the total. How many draws are needed so that the observed proportion of white is
-within $\frac1{50}$ of $\frac35$, with odds of a thousand to one? Bernoulli proved that a finite number suffices, and computed
-one: $25\,550$. The number is absurdly large, because his inequalities were crude, but the principle was new: frequencies converge
-to probabilities, and one can say how fast. Simeon-Denis Poisson named the principle \emph{la loi des grands nombres} in 1837.
+Suppose you pay for a hundred games in advance. Most prizes are small, but one long run of tails may make the total very large. The expected prize is infinite, so multiplying an expectation by a hundred gives no useful answer. Yet there is a scale on which the total becomes predictable. We will find it by separating the usual prizes from the rare ones.
 
-For two centuries ``converge'' meant ``in probability''. Borel's paper of 1909 (Chapter~1) asked for more: that the
-frequency of heads in one infinite sequence of tosses tends to $\frac12$, for almost every sequence. This is the \emph{strong}
-law, and it is genuinely stronger. Francesco Cantelli proved it in 1917 for variables with four moments, the proof in Volume~4.
-Aleksandr Khintchine proved the weak law for i.i.d.\ variables with a finite mean in 1929, and Kolmogorov the strong law in the same
-generality in 1930, with a proof through random series that we shall meet in Section~\ref{sec:threeseries}. Fifty years later, in 1981,
-Nasrollah Etemadi published a proof in four pages that needs only pairwise independence, and it is the one this chapter gives.
+The story of averages begins with Jakob Bernoulli's \emph{Ars Conjectandi}, published in 1713. He asked how many draws from an urn with three fifths white pebbles would make the observed fraction lie within $1/50$ of $3/5$ with odds of at least a thousand to one. His bound was $25\,550$ draws. The point was not the size of the bound, but that there was a bound: probability predicts the accuracy of a frequency. Poisson later named the principle the law of large numbers.
 
-Then there is the casino of the epigraph, the \emph{St Petersburg game}. Nicolaus Bernoulli, the same nephew, proposed it in a letter
-to Pierre R\'emond de Montmort in 1713; his cousin Daniel Bernoulli analysed it in the proceedings of the St Petersburg academy in 1738
-and gave it its name. The expected gain $\sum_k2^k2^{-k}$ is infinite, yet nobody would pay much to play. Daniel's answer was the
-utility of money, which founded economics' theory of choice. William Feller's answer, in 1945, was a law of large numbers: the
-total gain after $n$ games is $n\log_2n$ to first order, in probability. Fair entrance fees exist after all; they just grow with $n$.
-And the almost sure version fails: infinitely often, the player is far ahead (Exercise~\ref{ex:stpeteas}).
+There are two ways for a sequence of averages to approach a number. Convergence in probability says that the probability of a large error at time $n$ tends to zero. Almost sure convergence says that on almost every infinite path, the error eventually stays small. Borel and Cantelli worked toward the second statement; Khintchine and Kolmogorov established the weak and strong laws for integrable i.i.d.\ variables. We give Etemadi's 1981 proof of the strong law because it works even with pairwise independence.
 
-The chapter has three tools. \emph{Truncation}, which cuts off the rare large values that make the variance infinite. Kolmogorov's
-\emph{three-series theorem}, which says exactly when a series of independent terms converges. And \emph{monotone interpolation}, which
-passes from a sparse geometric subsequence of times to all times. With them we prove Feller's weak law and the St Petersburg price,
-Etemadi's strong law, the three-series theorem with its converse, and the strong law of renewal theory.
+The St Petersburg game goes back to Nicolaus Bernoulli's 1713 letter and Daniel Bernoulli's 1738 study. Feller's 1945 answer is a weak law at the scale $n\log_2 n$. This is a typical-total scale, not a finite expected payoff or a universal rule for a fair wager. We will see why it fails to describe every sufficiently late stage of an individual player's run.
 
-So the question of the epigraph has two parts. What does the law of large numbers need, and what is left of it when the mean is infinite?
+The main tool is truncation: decide how much of a variable to keep, estimate the truncated sum, and then control the discarded part. It will lead from the weak law to the strong law and to Kolmogorov's criterion for a whole independent series. Finally we will reverse the strong law to count renewals by time rather than to count the time of a fixed number of renewals.
 
 \begin{reminder}[from Volumes 1 and 4, and Chapter 1]
 \emph{Chebyshev's inequality} and the weak law for uncorrelated variables with bounded variances (Volume~1, Chapter~10): for pairwise independent
@@ -43,9 +25,7 @@ $\mathbb E|X_1|=\infty$ have $\limsup|S_n|/n=\infty$ (Exercise~\ref{ex:infmean})
 
 \section{Truncation and the weak law}
 
-When the variance is infinite, Chebyshev's inequality is useless as it stands. The remedy is to cut: replace $X$ by $X\mathbf 1_{|X|\le b}$,
-which has all moments, and control separately the probability that the cut made a difference. The following form of the idea works for
-triangular arrays, where the summands may change with $n$.
+If $X$ has infinite variance, Chebyshev cannot directly control its average. Replace it by $X\mathbf1_{\{|X|\le b\}}$: keep the small observations and set the others to zero. The truncated variable has finite variance. For a sum of $n$ terms, the chance that this replacement changes any term is at most the sum of the $n$ discarded-tail probabilities. The cutoff can depend on $n$, which is why we write the summands in a triangular array.
 
 \begin{theorem}[weak law for triangular arrays]\label{thm:wlltriangular}
 For each $n$, let $X_{n,1},\dots,X_{n,n}$ be independent, let $b_n>0$, and let $Y_{n,k}=X_{n,k}\mathbf 1_{|X_{n,k}|\le b_n}$. Suppose
@@ -73,7 +53,7 @@ Let $X_1,X_2,\dots$ be i.i.d.\ with $P(X=2^j)=2^{-j}$ for $j\ge1$, and $S_n=X_1+
 \]
 \end{theorem}
 \begin{proof}
-Apply Theorem~\ref{thm:wlltriangular} with $X_{n,k}=X_k$ and $b_n=n\log_2n$. Since $P(X\ge2^j)=2^{1-j}$, we have $P(X>x)\le2/x$ for all
+For $n\ge2$, apply Theorem~\ref{thm:wlltriangular} with $X_{n,k}=X_k$ and $b_n=n\log_2n$. (The limit is unchanged by omitting $n=1$.) Since $P(X\ge2^j)=2^{1-j}$, we have $P(X>x)\le2/x$ for all
 $x>0$, so (a) is $nP(X>b_n)\le2n/b_n=2/\log_2n\to0$. For (b),
 \[
 \mathbb E[X^2\mathbf 1_{X\le b_n}]=\sum_{j:\,2^j\le b_n}2^{2j}2^{-j}=\sum_{j\le\log_2b_n}2^j\le2b_n,
@@ -111,7 +91,7 @@ Borel--Cantelli says that $X_k=Y_k$ for all large $k$, almost surely. Then $S_n-
 $T_n/n\to\mu$. Also $\mathbb E Y_k=\mathbb E[X_1\mathbf 1_{X_1\le k}]\to\mu$ by monotone convergence, so $\mathbb E T_n/n\to\mu$ (Ces\`aro).
 
 \emph{A variance bound.} The $Y_k$ are pairwise independent, so $\operatorname{Var}T_n=\sum_{k\le n}\operatorname{Var}Y_k\le\sum_{k\le n}\mathbb E Y_k^2$.
-We shall need
+We need a bound that adds up the contributions of every cutoff, rather than estimating each truncated variance by $k^2$.
 \begin{equation}\label{eq:etemadisum}
 \sum_{k\ge1}\frac{\mathbb E Y_k^2}{k^2}\le2\,\mathbb E X_1.
 \end{equation}
@@ -130,13 +110,11 @@ the whole is finite. By Borel--Cantelli, $(T_{k_n}-\mathbb E T_{k_n})/k_n\to0$ a
 \[
 \frac{T_{k_n}}{k_{n+1}}\le\frac{T_m}m\le\frac{T_{k_{n+1}}}{k_n}.
 \]
-As $k_{n+1}/k_n\to\alpha$, we get $\mu/\alpha\le\liminf T_m/m\le\limsup T_m/m\le\alpha\mu$ almost surely. Letting $\alpha\downarrow1$ along a
-sequence, $T_m/m\to\mu$ almost surely.
+As $k_{n+1}/k_n\to\alpha$, we get $\mu/\alpha\le\liminf T_m/m\le\limsup T_m/m\le\alpha\mu$ almost surely. Choose the countable sequence $\alpha_j=1+1/j$. The probability-one events for these geometric subsequences have a probability-one intersection. On that intersection the lower and upper bounds squeeze to $\mu$, so $T_m/m\to\mu$ almost surely.
 \end{proof}
 
 The proof never uses more than pairs of variables at a time: Chebyshev's inequality only sees variances. Everything else is Borel--Cantelli,
-which needs no independence in its first half. The integrability assumption is necessary, by Exercise~\ref{ex:infmean} of Chapter~1: if
-$\mathbb E|X_1|=\infty$, then $\limsup|S_n|/n=\infty$. For non-negative variables, $S_n/n\to\infty$ (Exercise~\ref{ex:infmeanpos}).
+which needs no independence in its first half. For i.i.d.\ variables the integrability assumption is necessary: Exercise~\ref{ex:infmean} of Chapter~1 shows that $\mathbb E|X_1|=\infty$ forces $\limsup|S_n|/n=\infty$. This converse was proved with full independence; we do not need a converse under pairwise independence here. For non-negative variables, $S_n/n\to\infty$ (Exercise~\ref{ex:infmeanpos}).
 
 \begin{figure}[ht]
 \centering\fig{ch02-pareto}
@@ -152,8 +130,7 @@ Chapter~1 settled random signs. For general independent terms, Kolmogorov found 
 for convergence. The converse direction needs a lower bound for the maximum of a walk with bounded steps.
 
 \begin{lemma}[Kolmogorov's other inequality]\label{lem:kolmogorovlower}
-Let $X_1,\dots,X_n$ be independent, with $\mathbb E X_k=0$ and $|X_k|\le c$. Let $S_k=X_1+\dots+X_k$ and $s_n^2=\operatorname{Var}S_n$. Then for
-$a>0$,
+Let $X_1,\dots,X_n$ be independent, with $\mathbb E X_k=0$ and $|X_k|\le c$. Let $S_k=X_1+\dots+X_k$ and $s_n^2=\operatorname{Var}S_n$. If $s_n^2>0$, then for $a>0$,
 \[
 P\Bigl(\max_{k\le n}|S_k|\le a\Bigr)\le\frac{(a+c)^2}{s_n^2}.
 \]
@@ -163,7 +140,7 @@ Let $s_k^2=\operatorname{Var}S_k$. The process $M_k=S_k^2-s_k^2$ is a martingale
 \mid\mathcal F_k]=\operatorname{Var}X_{k+1}$. Let $\tau$ be the first $k\le n$ with $|S_k|>a$, and $\tau=n$ if there is none; it is a bounded
 stopping time, so optional stopping gives $\mathbb E S_\tau^2=\mathbb E s_\tau^2$. Now $|S_\tau|\le a+c$: either $\tau$ is the first exit, and then
 $|S_{\tau-1}|\le a$ and $|X_\tau|\le c$, or there is no exit and $|S_n|\le a$. So $\mathbb E s_\tau^2\le(a+c)^2$. On the event
-$A=\{\max_{k\le n}|S_k|\le a\}$ we have $\tau=n$, so $\mathbb E s_\tau^2\ge s_n^2P(A)$.
+$A=\{\max_{k\le n}|S_k|\le a\}$ we have $\tau=n$, so $\mathbb E s_\tau^2\ge s_n^2P(A)$. Dividing by $s_n^2>0$ proves the bound. If $s_n^2=0$, each centred summand is zero almost surely and $P(A)=1$; the quotient in the statement is not defined.
 \end{proof}
 
 \begin{theorem}[three-series theorem, Kolmogorov]\label{thm:threeseries}
@@ -184,8 +161,7 @@ $\sum Y_n$ then converges almost surely.
 
 To reach the variances, symmetrise: on a product space, let $(Y'_n)$ be an independent copy of $(Y_n)$ (Volume~7, Theorem~7.17), and let
 $Z_n=Y_n-Y'_n$. The $Z_n$ are independent, centred, $|Z_n|\le2c$, $\operatorname{Var}Z_n=2\operatorname{Var}Y_n$, and $\sum Z_n$ converges almost
-surely. Its partial sums $U_n$ are therefore bounded almost surely, so there is $a$ with $P(\sup_n|U_n|\le a)\ge\frac12$. By
-Lemma~\ref{lem:kolmogorovlower}, for every $n$,
+surely. Its partial sums $U_n$ are therefore bounded almost surely, so there is $a>0$ with $P(\sup_n|U_n|\le a)\ge1/2$. For any $n$ with $\operatorname{Var}U_n=0$, the required bound on the variance is immediate. Otherwise Lemma~\ref{lem:kolmogorovlower} gives
 \[
 2\sum_{k\le n}\operatorname{Var}Y_k=\operatorname{Var}U_n\le\frac{(a+2c)^2}{P(\max_{k\le n}|U_k|\le a)}\le2(a+2c)^2.
 \]
@@ -218,8 +194,7 @@ same route, $S_n/n^{1/p}\to0$ almost surely for centred $X$ with $\mathbb E|X|^p
 
 \section{Renewal}
 
-A light bulb is replaced as soon as it fails; the lifetimes $\xi_1,\xi_2,\dots$ are i.i.d., positive, with mean $\mu\in(0,\infty]$. Let
-$T_n=\xi_1+\dots+\xi_n$ be the time of the $n$-th replacement and $N(t)=\max\{n:T_n\le t\}$ the number of replacements by time $t$.
+A light bulb is replaced as soon as it fails; the lifetimes $\xi_1,\xi_2,\dots$ are i.i.d., positive, with mean $\mu\in(0,\infty]$. Put $T_0=0$ and let $T_n=\xi_1+\dots+\xi_n$ be the time of the $n$-th replacement. For $t\ge0$, $N(t)=\max\{n\ge0:T_n\le t\}$ counts replacements by time $t$. Almost surely $T_n\to\infty$: choose $\delta>0$ with $P(\xi_1>\delta)>0$ and use Borel--Cantelli to obtain infinitely many lifetimes exceeding $\delta$. Thus $N(t)$ is finite on these paths.
 
 \begin{theorem}[strong law of renewal]\label{thm:renewal}
 $N(t)/t\to1/\mu$ almost surely as $t\to\infty$ (with $1/\infty=0$).
@@ -230,12 +205,24 @@ $t\to\infty$. By definition $T_{N(t)}\le t<T_{N(t)+1}$, hence
 \[
 \frac{T_{N(t)}}{N(t)}\le\frac t{N(t)}<\frac{T_{N(t)+1}}{N(t)+1}\cdot\frac{N(t)+1}{N(t)}.
 \]
-Both bounds tend to $\mu$ along the path, so $t/N(t)\to\mu$.
+If $\mu<\infty$, both bounds tend to $\mu$; if $\mu=\infty$, the lower bound alone tends to infinity. In either case $t/N(t)\to\mu$, and taking reciprocals proves the claim.
 \end{proof}
 
 The expectation $\mathbb E N(t)/t\to1/\mu$ also holds (the \emph{elementary renewal theorem}), but almost sure convergence does not give it for free;
-Exercise~\ref{ex:wald} proves it with Wald's identity. Renewal processes count failures, arrivals at a server, and the cache misses of an algorithm,
-and Theorem~\ref{thm:renewal} turns statements about one cycle into statements about long-run rates: the \emph{renewal--reward theorem} says that the long-run reward per unit time is the expected reward per cycle divided by the expected cycle length.
+Exercise~\ref{ex:wald} proves it with Wald's identity. For example, a device with mean lifetime $10$ hours is replaced at asymptotic rate $1/10$ per hour. A related consequence concerns rewards paid at completed renewals. If the pairs of lifetimes and rewards are i.i.d., the rewards are integrable, and $0<\mu<\infty$, the strong law applied to the reward sum and Theorem~\ref{thm:renewal} give expected reward per cycle divided by $\mu$ as the almost sure long-run rate.
+
+
+\begin{figure}[ht]
+\centering\fig{ch02-truncation}
+\caption{For a St Petersburg prize $2^j$, the contribution to the truncated expectation is $2^j2^{-j}=1$ at every level included in the cutoff. At cutoff $2^4$, four levels contribute; the discarded levels are rare but carry the same expected contribution each.}
+\label{fig:v11-ch02-truncation}
+\end{figure}
+
+\begin{figure}[ht]
+\centering\fig{ch02-renewal}
+\caption{A renewal count is the inverse of the increasing sequence of arrival times. In this example the lifetimes are $2,1,3,2$; at time $t=5$ exactly two renewals have occurred, since $T_2=3\le5<T_3=6$.}
+\label{fig:v11-ch02-renewal}
+\end{figure}
 
 \begin{beauty}
 The strong law is a statement about a single infinite experiment, and a theorem about averages over all of them; the bridge is measure theory.
@@ -298,7 +285,24 @@ Zygmund, 1937). (Apply the three-series theorem to $X_k/k^{1/p}$, then Kronecker
 Let $S_n$ be a random walk on $\Z$ with i.i.d.\ steps, $\mathbb E|X_1|<\infty$ and $\mathbb E X_1=0$. Let $G_N(x)=\sum_{n=0}^NP(S_n=x)$. (a) Show that
 $G_N(x)\le G_N(0)$ for every $x$ (decompose according to the first visit to $x$). (b) Using the weak law, show that
 $\sum_{|x|\le\varepsilon N}G_N(x)\ge\sum_{n\le N}P(|S_n|\le\varepsilon n)\ge(1-o(1))N$. (c) Deduce that $\sum_nP(S_n=0)=\infty$, so that the walk is recurrent
-(Volume~4, Proposition~8.4). This is the theorem of Chung and Fuchs (1951) in dimension one: every centred integrable walk on $\Z$ returns to $0$.
+(Volume~4, Proposition~8.4). This is the theorem of Chung and Fuchs (1951) in dimension one: every centred integrable walk on $\Z$ returns to $0$ infinitely often almost surely.
+\end{exercise}
+
+
+\begin{exercise}[$\star$]\label{ex:v11-ch02-cutoff}
+For a St Petersburg prize $X$, compute $P(X>2^m)$, $\mathbb E[X\mathbf1_{X\le2^m}]$ and $\mathbb E[X^2\mathbf1_{X\le2^m}]$ for an integer $m\ge1$. What is the probability that at least one of $2^m$ independent prizes exceeds $2^m$? Find its limit as $m\to\infty$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:v11-ch02-pairwise}
+Let $A,B$ be independent fair signs and $C=AB$. Show that $A,B,C$ are pairwise independent but not jointly independent. Make an infinite sequence by concatenating independent copies of this triple. Prove that its averages converge almost surely to zero using Etemadi's theorem.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:v11-ch02-three}
+Let $B_n$ be independent Bernoulli variables with $P(B_n=1)=n^{-\alpha}$ for $\alpha>0$. For which $\alpha$ does $\sum_n B_n$ converge almost surely? For which $\alpha$ does $\sum_n (B_n-n^{-\alpha})/n$ converge almost surely? Justify both claims.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:v11-ch02-renewal}
+Let the independent lifetimes of a renewal process take the values $1$ and $3$ with equal probabilities. At each completed renewal a reward of $\xi_k^2$ is paid, where $\xi_k$ is that lifetime. Find the almost sure limiting renewals per unit time and reward per unit time. Compute $P(N(3)=1)$, $P(N(3)=2)$ and $P(N(3)=3)$.
 \end{exercise}
 
 \section{Hints}
@@ -325,6 +329,20 @@ The three series are $\sum P(|X|^p>k)$, $\sum k^{-2/p}\mathbb E[X^2\mathbf 1_{|X
 \end{hint}
 \begin{hint}{ex:chungfuchs}
 (a) Let $\tau_x$ be the first visit to $x$; after it the walk starts afresh from $x$. (c) Combine (a) and (b): $(2\varepsilon N+1)G_N(0)\ge(1-o(1))N$.
+\end{hint}
+
+
+\begin{hint}{ex:v11-ch02-cutoff}
+Sum the geometric series, then use independence to calculate the chance that no prize exceeds the cutoff.
+\end{hint}
+\begin{hint}{ex:v11-ch02-pairwise}
+List the four possibilities for $(A,B)$, and note that $ABC=1$ always.
+\end{hint}
+\begin{hint}{ex:v11-ch02-three}
+The first series counts successes. For the second use Chapter~1's $L^2$ criterion.
+\end{hint}
+\begin{hint}{ex:v11-ch02-renewal}
+Use the strong law for rewards at completed renewals. For the finite-time calculation, list the first two lifetimes and then, if needed, the third.
 \end{hint}
 
 \section{Solutions}
@@ -431,6 +449,33 @@ so the Ces\`aro average $\frac1N\sum_{n\le N}P(|S_n|\le\varepsilon n)\to1$.
 
 (c) By (a) the left side of (b) is at most $(2\varepsilon N+1)G_N(0)$. Hence $G_N(0)\ge\frac{(1-o(1))N}{2\varepsilon N+1}$, and $\liminf_NG_N(0)\ge\frac1{2\varepsilon}$.
 As $\varepsilon$ is arbitrary, $\sum_nP(S_n=0)=\infty$, and Volume~4, Proposition~8.4 says the walk returns to $0$ infinitely often, almost surely.
+\end{solution}
+
+
+\begin{solution}{ex:v11-ch02-cutoff}
+\idea Each included level contributes one unit to the first moment and $2^j$ to the second.
+\writeup For $m\ge1$, summing over $j>m$ gives $P(X>2^m)=2^{-m}$. The two truncated moments are $\sum_{j=1}^m1=m$ and $\sum_{j=1}^m2^j=2^{m+1}-2$. For $2^m$ independent trials, the probability of at least one exceedance is $1-(1-2^{-m})^{2^m}$. It tends to $1-e^{-1}$ as $m\to\infty$, because $(1-1/k)^k\to e^{-1}$. Thus a cutoff at the number of games has a nonvanishing chance of discarding some prize; Feller uses the larger scale $n\log_2 n$ to avoid that problem.
+\end{solution}
+
+\begin{solution}{ex:v11-ch02-pairwise}
+\idea Any two of the three signs determine the third, but every pair is still uniformly distributed on four possibilities.
+\writeup The four equally likely triples are $(1,1,1)$, $(1,-1,-1)$, $(-1,1,-1)$, and $(-1,-1,1)$. Each pair takes all four possible sign pairs with probability $1/4$, proving pairwise independence. But the product is always $1$, whereas three independent fair signs have product $1$ with probability $1/2$. Concatenate independent triples; variables in different triples are independent and within a triple are pairwise independent. Every variable has the same fair-sign law and finite absolute mean. Theorem~\ref{thm:etemadi} therefore gives almost sure convergence of the averages to the mean $0$ even though joint independence fails.
+\end{solution}
+
+\begin{solution}{ex:v11-ch02-three}
+\idea Uncentred Bernoulli sums count successes; the centred weighted series has summable variances.
+\writeup Since $B_n$ is either $0$ or $1$, $\sum B_n$ is finite exactly when only finitely many successes occur. The two Borel--Cantelli lemmas give convergence almost surely if $\alpha>1$ and divergence almost surely if $0<\alpha\le1$. Now let $Z_n=(B_n-n^{-\alpha})/n$. These variables are independent and centred, with
+\[
+\mathbb E Z_n^2=\frac{n^{-\alpha}(1-n^{-\alpha})}{n^2}\le n^{-2}.
+\]
+The sum of the variances is finite for every $\alpha>0$. Proposition~\ref{prop:l2series} proves almost sure (and $L^2$) convergence of the centred weighted series for every such $\alpha$.
+\end{solution}
+
+\begin{solution}{ex:v11-ch02-renewal}
+\idea The long-run rate uses the first moment of lifetime and the first moment of the reward, not the ratio for a typical individual cycle.
+\writeup The mean lifetime is $(1+3)/2=2$ and the mean reward is $(1+9)/2=5$. The renewal theorem gives $N(t)/t\to1/2$ almost surely; the strong law gives $\sum_{k\le N(t)}\xi_k^2/N(t)\to5$ on the same probability-one event. Multiplication yields the reward rate $5/2$.
+
+At time $3$, if the first lifetime is $3$, exactly one renewal occurs. If the first lifetime is $1$ and the second is $3$, there is also exactly one. These disjoint cases have probabilities $1/2$ and $1/4$, so $P(N(3)=1)=3/4$. Exactly two renewals occur when the first two lifetimes are $1$ and the third is $3$, with probability $1/8$. Exactly three occur when the first three lifetimes are $1$, also with probability $1/8$. The three probabilities sum to one.
 \end{solution}
 
 \section*{Sources and further reading}

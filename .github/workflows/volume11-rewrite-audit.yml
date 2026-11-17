@@ -1,0 +1,50 @@
+name: Volume 11 rewrite audit
+on:
+  pull_request:
+    paths:
+      - 'volume11-randomness/**'
+      - 'review/volume11-complete-rewrite/**'
+      - '.github/workflows/volume11-rewrite-audit.yml'
+permissions:
+  contents: read
+jobs:
+  preservation-and-regressions:
+    # This strict immutable-baseline gate is for the complete-rewrite workstream.
+    if: github.head_ref == 'codex/volume11-complete-rewrite'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - name: Preserve original numbered content and artwork
+        run: python3 review/volume11-complete-rewrite/check_preservation.py --final
+      - name: Check new mathematical examples
+        run: node review/volume11-complete-rewrite/check_new_examples.mjs
+      - name: Install original numerical-review dependencies
+        run: python3 -m pip install mpmath numpy scipy sympy networkx
+      - name: Run original chapter numerical checks
+        working-directory: review/volume11-rewrite
+        shell: bash
+        run: |
+          set -euo pipefail
+          shopt -s nullglob
+          scripts=(check_ch*.py)
+          test "${#scripts[@]}" -ge 14
+          for script in "${scripts[@]}"; do
+            echo "::group::$script"
+            python3 "$script"
+            echo "::endgroup::"
+          done
+      - name: Check numbered cross-volume citations involving Volume 11
+        run: |
+          python3 - <<'PY'
+          from tools.cross_volume_citations import VOLUMES, number_volume, collect_citations, mismatches, gloss_mismatches
+          books = {n: number_volume(n) for n in VOLUMES}
+          cites = [c for c in collect_citations() if c.volume == 11 or c.source.startswith('volume11-randomness/')]
+          errors = mismatches(books, cites) + [e for e in gloss_mismatches() if e.startswith('volume11-randomness/')]
+          print(f'Checked {len(cites)} numbered inbound/outbound citations')
+          if errors:
+              raise SystemExit('\n'.join(errors))
+          print('PASS: Volume 11 numbered cross-volume citations')
+          PY

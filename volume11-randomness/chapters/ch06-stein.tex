@@ -5,23 +5,13 @@ How far, exactly, is a sum of dependent pieces from a Gaussian, or a count of ra
 Stein answered with one integration by parts, and the answer covers colliding hashes, triangles in random graphs and samples without replacement.
 \end{center}
 
-Charles Stein (1920--2016) was a statistician who liked to prove that the obvious thing is wrong. In 1956 he showed that when you estimate three or more
-unrelated means from Gaussian data, the obvious estimator, the vector of sample means, can be beaten uniformly: ``Stein's paradox'', which statisticians
-still argue about over coffee. Fourteen years later, at the Sixth Berkeley Symposium of 1970, he did the same to the central limit theorem. Everybody
-proved it with characteristic functions; Stein proved it with a single identity satisfied by the Gaussian law and by nothing else,
-\[
-\mathbb E f'(Z)=\mathbb E\,Zf(Z),
-\]
-and he showed that when a random variable $W$ \emph{almost} satisfies it, $W$ is \emph{almost} Gaussian, with an explicit error. The paper, published in 1972,
-treated sums of dependent variables, exactly where Fourier methods struggle.
+Suppose we count the collisions among a collection of randomly assigned identifiers. Two collision indicators can depend on the same identifier. Multiplying their characteristic functions would not be justified. Yet the count is often close to Poisson. How can we measure the error without pretending the indicators are independent?
 
-His student Louis Chen, in a Stanford thesis completed in 1971 and a paper of 1975, ran the same idea for the Poisson law. For a decade few people
-noticed; then in 1989 Richard Arratia, Larry Goldstein and Louis Gordon turned the Chen--Stein method into a tool anybody could use, under the title
-``Two moments suffice for Poisson approximations''. Today it is how one proves that the number of hash collisions, of near-birthdays, of triangles in a
-sparse random graph or of long runs of heads is Poisson, with a bound on the error.
+Charles Stein's 1972 paper on normal approximation started from a property of the Gaussian density: its derivative is minus $x$ times the density. Integration by parts converts this into an identity for expectations. More surprisingly, the identity characterises the law. If a variable nearly satisfies the identity for a suitable family of test functions, the discrepancy measures its distance from a Gaussian.
 
-This chapter builds Stein's method twice, for the normal law and for the Poisson law, and uses it on samples without replacement, birthdays and
-hashes, and random graphs.
+Louis Chen's 1971 thesis and 1975 paper adapted the idea to Poisson approximation. In 1989 Arratia, Goldstein and Gordon developed bounds that use the first and second moments of local indicators. Two events may share some randomness; what matters is how their dependence is organised and how often they occur together.
+
+We first solve the normal Stein equation and bound its derivatives. We use the bounds on independent sums, then on an exchangeable pair obtained by making one random change to a sample. We finish with the discrete Poisson equation and apply it to birthdays, hashes and triangles in random graphs. Each example gives an explicit error, rather than just a limiting distribution.
 
 \begin{reminder}[from Volume 4 and Chapters 3 and 4]
 The total variation distance between laws on a countable set is $\|\mu-\nu\|=\max_A|\mu(A)-\nu(A)|$ (Volume~4, Chapter~9), and Le Cam's inequality says that a
@@ -46,9 +36,7 @@ Let $W$ be a random variable with $\mathbb E|W|<\infty$.
 \]
 As $f'$ is bounded, $|f(x)|\le|f(0)|+\|f'\|\,|x|$, so the boundary terms tend to $0$ and both integrals converge absolutely as $R\to\infty$.
 
-(ii) is a consequence of Lemma~\ref{lem:steinsol} below: for $h(x)=\cos tx$ or $h(x)=\sin tx$, that lemma produces a bounded $C^1$ function $f$ with bounded
-derivative such that $f'(w)-wf(w)=h(w)-\mathbb Eh(Z)$ for all $w$, where $Z\sim N(0,1)$. Taking expectations at $w=W$, $\mathbb Eh(W)=\mathbb Eh(Z)$. So $W$ and $Z$
-have the same characteristic function, hence the same law.
+(ii) Let $\chi(t)=\mathbb E e^{itW}$. Since $\mathbb E|W|<\infty$, dominated convergence gives $\chi'(t)=i\mathbb E[We^{itW}]$. Apply the assumed identity to the real and imaginary parts of $f(w)=e^{itw}$; together they give $it\chi(t)=\mathbb E[We^{itW}]$. Hence $\chi'(t)=-t\chi(t)$. Multiplying by $e^{t^2/2}$ shows that $e^{t^2/2}\chi(t)$ has zero derivative and equals $1$ at zero. Thus $\chi(t)=e^{-t^2/2}$, which determines the standard normal law.
 \end{proof}
 
 Part (ii) is the seed of the method. Fix a test function $h$ and solve the \emph{Stein equation}
@@ -63,7 +51,7 @@ The left side is what we want to bound, a question about two laws. The right sid
 can attack it with Taylor's formula, independence, symmetry, whatever structure $W$ has. Everything rests on bounds for the solution~$f$.
 
 \begin{think}
-Why not simply check that $W$ has the Gaussian moments $\mathbb EW^k$? The identity of Lemma~\ref{lem:stein} with $f(w)=w^{k-1}$ gives
+Why not simply check that $W$ has the Gaussian moments $\mathbb EW^k$? The integration-by-parts proof of Lemma~\ref{lem:stein} also applies to polynomials, since the Gaussian density makes every polynomial boundary term vanish and every polynomial moment finite. With $f(w)=w^{k-1}$ it gives
 $\mathbb EZ^k=(k-1)\mathbb EZ^{k-2}$, and the moments do characterize the Gaussian. What does the method of moments \emph{not} give you, that a bound on
 $\mathbb E[f'(W)-Wf(W)]$ for a whole class of $f$ will?
 \end{think}
@@ -174,7 +162,7 @@ P(W\le x)-\Phi(x)\le\mathbb Eh(W)-\mathbb Eh(Z)+\mathbb Eh(Z)-\Phi(x)\\\le\frac{
 \le\frac{d_W}\varepsilon+\frac{\varepsilon\varphi(0)}2.
 \end{gathered}
 \]
-The ramp from $x-\varepsilon$ to $x$ gives the same bound for $\Phi(x)-P(W\le x)$. Take $\varepsilon=\sqrt{2d_W/\varphi(0)}$.
+The ramp from $x-\varepsilon$ to $x$ gives the same bound for $\Phi(x)-P(W\le x)$. If $d_W>0$, take $\varepsilon=\sqrt{2d_W/\varphi(0)}$. If $d_W=0$, let $\varepsilon\downarrow0$ in the same two bounds.
 \end{proof}
 
 \begin{theorem}[CLT with an error in Wasserstein distance]\label{thm:steinclt}
@@ -182,7 +170,7 @@ Let $X_1,\dots,X_n$ be independent, with $\mathbb EX_i=0$, $\sum_i\mathbb EX_i^2
 \[
 d_W(W,Z)\le3\sum_{i=1}^n\mathbb E|X_i|^3.
 \]
-In particular, for i.i.d.\ $\xi_i$ with mean $0$, variance $\sigma^2$ and $\rho=\mathbb E|\xi|^3/\sigma^3$,
+In particular, for i.i.d.\ $\xi_i$ with mean $0$, variance $\sigma^2>0$ and $\rho=\mathbb E|\xi|^3/\sigma^3<\infty$,
 $d_W\bigl(\frac{\xi_1+\dots+\xi_n}{\sigma\sqrt n},Z\bigr)\le\frac{3\rho}{\sqrt n}$.
 \end{theorem}
 \begin{proof}
@@ -242,7 +230,7 @@ Two sanity checks. Taking expectations in the hypothesis gives $\mathbb EW=0$; a
 $\mathbb E[D^2\mid\mathcal G]/(2\lambda)$ always has mean $1$, and the first term of the bound measures how much it fluctuates.
 
 \begin{example}[sampling without replacement]\label{ex:hypergeom}
-An urn holds $N$ balls, $K$ of them white; we draw $m$ without replacement and count the white ones, $S$. This is the situation of every opinion poll, and of
+An urn holds $N\ge2$ balls, $K$ of them white, with $0<K<N$; we draw $1\le m<N$ without replacement and count the white ones, $S$. This is the situation of every opinion poll, and of
 every audit that checks $m$ invoices out of $N$. With $p=K/N$, $\mathbb ES=mp$ and $\sigma^2=\operatorname{Var}S=mp(1-p)\frac{N-m}{N-1}$. Then
 \[
 d_W\Bigl(\frac{S-mp}\sigma,Z\Bigr)\le\frac2\sigma+\frac4N.
@@ -270,12 +258,12 @@ using $\mathbb E|x|\le\sigma$ and $\mathbb E|x^2-\sigma^2|\le2\sigma^2$. Finally
 Theorem~\ref{thm:exch} gives $2\bigl(\frac1{2\sigma}+\frac2N\bigr)+\frac1\sigma$.
 \end{proof}
 
-The bound depends on $m$ and $N$ only through $\sigma$, and does not care whether $m$ is a small or large fraction of $N$, the case where binomial
+The bound depends on the sampling parameters through $\sigma$ and $N$, and does not care whether $m$ is a small or large fraction of $N$, the case where binomial
 approximations fail. For a poll of $m=1000$ out of $N=10^4$ with $p=\frac12$, $\sigma\approx15$ and the bound is $0.13$, while the true distance, computed numerically, is $0.017$. Stein bounds are honest, not tight.
 
 \section{The Chen--Stein method}
 
-The Poisson law has its own integration by parts. If $W\sim$ Poisson$(\lambda)$ and $g$ is bounded on $\N$, then
+The Poisson law has its own integration by parts. If $W\sim$ Poisson$(\lambda)$, with $\lambda>0$, and $g$ is bounded on $\N$, then
 \[
 \mathbb E\,Wg(W)=\sum_{k\ge1}kg(k)e^{-\lambda}\frac{\lambda^k}{k!}=\lambda\sum_{k\ge1}g(k)e^{-\lambda}\frac{\lambda^{k-1}}{(k-1)!}=\lambda\,\mathbb Eg(W+1),
 \]
@@ -318,7 +306,7 @@ $\Delta g_A(k)\le0$. Applying this to $A^c$ and using $g_A=-g_{A^c}$ gives the l
 Finally $1-e^{-\lambda}\le\min(1,\lambda)$.
 \end{proof}
 
-Now let $W=\sum_{\alpha\in\Gamma}I_\alpha$ be a finite sum of indicators, $p_\alpha=\mathbb EI_\alpha$, $\lambda=\sum p_\alpha=\mathbb EW$. Suppose each $\alpha$ has a
+Now let $W=\sum_{\alpha\in\Gamma}I_\alpha$ be a finite sum of indicators, $p_\alpha=\mathbb EI_\alpha$, $\lambda=\sum p_\alpha=\mathbb EW>0$. When $\lambda=0$, every indicator vanishes almost surely and the Poisson approximation is exact. Suppose each $\alpha$ has a
 \emph{neighbourhood} $B_\alpha\ni\alpha$ such that $I_\alpha$ is independent of the family $(I_\beta)_{\beta\notin B_\alpha}$. Put
 \[
 b_1=\sum_{\alpha\in\Gamma}\sum_{\beta\in B_\alpha}p_\alpha p_\beta,\qquad b_2=\sum_{\alpha\in\Gamma}\sum_{\beta\in B_\alpha\setminus\{\alpha\}}\mathbb E[I_\alpha I_\beta].
@@ -354,7 +342,7 @@ inequality by the factor $\min(1,\frac1\lambda)$, as promised in Volume~4. For b
 \section{Birthdays, hashes and triangles}
 
 \begin{example}[birthdays and hash collisions]\label{ex:hashcs}
-Hash $n$ keys independently and uniformly into $d$ buckets, and let $W$ be the number of colliding pairs. Then $\lambda=\binom n2/d$ and
+Hash $n\ge2$ keys independently and uniformly into $d\ge1$ buckets, and let $W$ be the number of colliding pairs. Then $\lambda=\binom n2/d$ and
 \[
 \Bigl|P(\text{no collision})-e^{-\lambda}\Bigr|\le\|\mathcal L(W)-\text{Poisson}(\lambda)\|\le\frac{(4n-7)(1-e^{-\lambda})}d.
 \]
@@ -380,7 +368,7 @@ and the Chen--Stein band of half-width $(4n-7)(1-e^{-\lambda})/365$ (shaded). Th
 \end{figure}
 
 \begin{example}[triangles in a sparse random graph]\label{ex:triangles}
-In the random graph $G(n,p)$ of Volume~4 (each of the $\binom n2$ edges present independently with probability $p$) with $p=c/n$, let $T$ be the number of
+In the random graph $G(n,p)$ of Volume~4 (each of the $\binom n2$ edges present independently with probability $p$) with $p=c/n$, where $c>0$ and $n\ge\max(3,c)$, let $T$ be the number of
 triangles. Then $\|\mathcal L(T)-\text{Poisson}(\lambda_n)\|\le\frac{c^5}{2n}+\frac{c^6}{2n^2}$ with $\lambda_n=\binom n3p^3\to\frac{c^3}6$. In particular
 $P(G(n,c/n)\text{ has no triangle})\to e^{-c^3/6}$.
 \end{example}
@@ -404,6 +392,18 @@ Gordon's paper, and Barbour, Holst and Janson's book, handle such cases with \em
 law of $W-1$ given $I_\alpha=1$, and measure how far it is from $W-I_\alpha$.
 \end{think}
 
+\begin{figure}[ht]
+\centering\fig{ch06-test-ramp}
+\caption{To compare distribution functions, replace the discontinuous test $\mathbf1_{\{w\le x\}}$ by a ramp of width $\varepsilon$. The ramp has Lipschitz constant $1/\varepsilon$; its extra Gaussian expectation is at most $\varepsilon\varphi(0)/2$. Balancing these two errors gives Proposition~\ref{prop:dkdw}.}
+\label{fig:v11-ch06-test-ramp}
+\end{figure}
+
+\begin{figure}[ht]
+\centering\fig{ch06-dependence}
+\caption{A collision indicator for keys $1,2$ depends on the two corresponding hash values. Its neighbourhood contains every pair incident to either key. The pair $(3,4)$ lies outside that neighbourhood; overlapping pairs can be pairwise independent without being jointly independent.}
+\label{fig:v11-ch06-dependence}
+\end{figure}
+
 \section{What we proved, and what comes next}
 
 The epigraph asked how far a sum of dependent pieces is from a Gaussian, and a count of rare events from a Poisson law. Stein's answer starts from
@@ -420,7 +420,7 @@ and Cram\'er found the exact exponent.
 \section{Exercises}
 
 \begin{exercise}[$\star$]\label{ex:gaussmoments}
-Use Lemma~\ref{lem:stein} to compute $\mathbb EZ^{2k}$ for $Z\sim N(0,1)$, and show that $X\sim N(\mu,s^2)$ if and only if $\mathbb E(X-\mu)f(X)=s^2\mathbb Ef'(X)$ for all
+Use Lemma~\ref{lem:stein} to compute $\mathbb EZ^{2k}$ for $Z\sim N(0,1)$, and show that, for an integrable $X$ and $s>0$, $X\sim N(\mu,s^2)$ if and only if $\mathbb E(X-\mu)f(X)=s^2\mathbb Ef'(X)$ for all
 bounded $C^1$ functions $f$ with $f'$ bounded.
 \end{exercise}
 
@@ -429,7 +429,7 @@ Show that $d_W(X_n,Y)\to0$ implies $X_n\Rightarrow Y$.
 \end{exercise}
 
 \begin{exercise}[$\star$]\label{ex:poissonchar}
-Let $W$ take values in $\N$ with $\mathbb EW<\infty$. Show that $W\sim$ Poisson$(\lambda)$ if and only if $\mathbb E\,Wg(W)=\lambda\mathbb Eg(W+1)$ for every bounded $g$. Deduce the
+Let $W$ take values in $\N$ with $\mathbb EW<\infty$, and let $\lambda\ge0$. Show that $W\sim$ Poisson$(\lambda)$ if and only if $\mathbb E\,Wg(W)=\lambda\mathbb Eg(W+1)$ for every bounded $g$. Deduce the
 factorial moments $\mathbb E\,W(W-1)\cdots(W-r+1)=\lambda^r$.
 \end{exercise}
 
@@ -449,9 +449,25 @@ Theorem~\ref{thm:steinclt} cannot be improved.
 \end{exercise}
 
 \begin{exercise}[$\star\star$]\label{ex:exchclt}
-In the setting of Theorem~\ref{thm:steinclt}, let $X_1',\dots,X_n'$ be an independent copy of $X_1,\dots,X_n$, let $J$ be uniform on $\{1,\dots,n\}$ and independent of
+In the setting of Theorem~\ref{thm:steinclt}, assume also $\mathbb E X_i^4<\infty$ for every $i$. Let $X_1',\dots,X_n'$ be an independent copy of $X_1,\dots,X_n$, let $J$ be uniform on $\{1,\dots,n\}$ and independent of
 everything, and $W'=W-X_J+X_J'$. Show that $(W,W')$ is exchangeable with $\mathbb E[W'-W\mid X_1,\dots,X_n]=-\frac Wn$, and deduce from Theorem~\ref{thm:exch} that
 $d_W(W,Z)\le\sqrt{\sum_i\mathbb EX_i^4}+4\sum_i\mathbb E|X_i|^3$.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:v11-ch06-linear}
+Solve the normal Stein equation for $h(w)=w$. Use the solution to recover the mean-zero requirement for a standard normal approximation.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:v11-ch06-shift}
+Let $Z$ be standard normal and $a\in\R$. Prove that $d_W(Z+a,Z)=|a|$. Check that Proposition~\ref{prop:dkdw} then bounds the Kolmogorov distance, and give a separate direct bound using the Gaussian density.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:v11-ch06-clump}
+Let $B$ be Bernoulli$(p)$ with $0<p<1$ and $W=2B$. Use the Chen--Stein theorem with the two indicators both equal to $B$. Calculate $b_1,b_2$ and explain why $b_2$ cannot be ignored even if $p$ is small.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:v11-ch06-independent}
+For independent Bernoulli indicators with success probabilities $p_i$, obtain the Chen--Stein bound with singleton neighbourhoods. For $n$ equal probabilities $\lambda/n$, compare this bound with Le Cam's and find their ratio as $\lambda\downarrow0$.
 \end{exercise}
 
 \section{Hints}
@@ -478,6 +494,19 @@ $W_n$ lives on a lattice of spacing $\delta=\frac2{\sqrt n}$. Test with $h(x)=$ 
 Compute $\mathbb E[X_J'-X_J\mid X]$ and $\mathbb E[(X_J'-X_J)^2\mid X]$, and use Theorem~\ref{thm:exch} with $\mathcal G=\sigma(X_1,\dots,X_n)$. For the third moment, $|a-b|^3\le4(|a|^3+|b|^3)$.
 \end{hint}
 
+\begin{hint}{ex:v11-ch06-linear}
+Try a constant $f$ in $f'-wf=w$.
+\end{hint}
+\begin{hint}{ex:v11-ch06-shift}
+Use the same $Z$ in both variables for the upper bound; test with $h(w)=w$ for the lower bound.
+\end{hint}
+\begin{hint}{ex:v11-ch06-clump}
+The neighbourhood of either indicator contains both; the product of the two indicators is $B$, not $p^2$ in expectation.
+\end{hint}
+\begin{hint}{ex:v11-ch06-independent}
+The off-diagonal sum $b_2$ vanishes.
+\end{hint}
+
 \section{Solutions}
 
 \begin{solution}{ex:gaussmoments}
@@ -499,8 +528,7 @@ Lemma~\ref{lem:stein} concludes.
 \idea Testing the identity on indicators of single points gives a recursion between consecutive probabilities: the recursion of the Poisson law.
 \writeup The direct implication is the computation before~\eqref{eq:chensteineq}. Conversely, take $g=\mathbf 1_{\{k\}}$ with $k\ge1$: $kP(W=k)=\lambda P(W=k-1)$. So
 $P(W=k)=\frac{\lambda^k}{k!}P(W=0)$, and the probabilities add up to $1$ only if $P(W=0)=e^{-\lambda}$. For the factorial moments of $W\sim$ Poisson$(\lambda)$, compute
-directly: $\mathbb E\,W(W-1)\cdots(W-r+1)=\sum_{k\ge r}\frac{k!}{(k-r)!}e^{-\lambda}\frac{\lambda^k}{k!}=\lambda^r\sum_{k\ge r}e^{-\lambda}\frac{\lambda^{k-r}}{(k-r)!}=\lambda^r$. (The identity with
-$g(w)=w(w-1)\cdots(w-r+2)$, justified by truncating $g$ and monotone convergence, gives the same recursion $\mathbb E(W)_r=\lambda\,\mathbb E(W+1)_{r-1}$.)
+directly: $\mathbb E\,W(W-1)\cdots(W-r+1)=\sum_{k\ge r}\frac{k!}{(k-r)!}e^{-\lambda}\frac{\lambda^k}{k!}=\lambda^r\sum_{k\ge r}e^{-\lambda}\frac{\lambda^{k-r}}{(k-r)!}=\lambda^r$. (Alternatively take $g(0)=0$ and $g(w)=(w-1)_{r-1}$ for $w\ge1$, with $(w-1)_0=1$. For $r\ge1$, truncate this nonnegative function and pass to the limit by monotone convergence. Then $Wg(W)=(W)_r$ and $g(W+1)=(W)_{r-1}$, so the identity gives $\mathbb E(W)_r=\lambda\,\mathbb E(W)_{r-1}$.)
 \end{solution}
 
 \begin{solution}{ex:nearbirthday}
@@ -518,8 +546,7 @@ result to Abramson and Moser).
 one start.
 \writeup $p_i=2^{-r-1}$ and $\lambda=n2^{-r-1}$. $I_i$ depends on $X_{i-1},\dots,X_{i+r-1}$, so it is independent of the $I_j$ with $|j-i|>r$; let $B_i=\{j:|j-i|\le r\}$,
 of size at most $2r+1$. If $0<j-i\le r$ then $i\le j-1\le i+r-1$, so $I_i=1$ forces $X_{j-1}=\mathrm H$ and $I_j=1$ forces $X_{j-1}=\mathrm T$: $I_iI_j=0$ and $b_2=0$.
-Then $b_1\le n(2r+1)2^{-2r-2}$, and $\frac{b_1}\lambda\le(2r+1)2^{-r-1}$. For $n=10^6$, $P(W=0)\approx e^{-\lambda}$ is closest to $\frac12$ when $\lambda=n2^{-r-1}$ is
-closest to $\log2$, that is $2^{r+1}\approx1.44\times10^6$, $r=19$, with $\lambda=0.95$, $e^{-\lambda}=0.39$ and error at most $39\cdot2^{-20}<4\times10^{-5}$.
+Then $b_1\le n(2r+1)2^{-2r-2}$, and $\frac{b_1}\lambda\le(2r+1)2^{-r-1}$. For $n=10^6$, the approximations on either side of $1/2$ occur at $r=19$ and $r=20$: they are $e^{-10^6/2^{20}}\approx0.3853$ and $e^{-10^6/2^{21}}\approx0.6207$. Their distances from $1/2$ are about $0.1147$ and $0.1207$. The two error bounds are below $4\times10^{-5}$, so $r=19$ is closer even for the exact probabilities. Monotonicity of $P(W=0)$ in $r$ excludes all other positive integers. At $r=19$ the mean is about $0.95$ and the bound is $39\cdot2^{-20}<4\times10^{-5}$.
 So a million flips contain a run of $19$ heads with probability about $0.61$, and that figure is guaranteed to within $4\times10^{-5}$.
 (Runs starting at $X_0$ are not counted; they add at most $2^{-r}$ to the probability of a long run.)
 \end{solution}
@@ -546,6 +573,32 @@ $\mathbb E[X_J'-X_J\mid X]=\frac1n\sum_j(0-X_j)=-\frac Wn$, so $\lambda=\frac1n$
 \]
 by Cauchy--Schwarz and independence. And $\mathbb E|D|^3=\frac1n\sum_j\mathbb E|X_j'-X_j|^3\le\frac8n\sum_j\mathbb E|X_j|^3$, so $\frac{\mathbb E|D|^3}{2\lambda}\le4\sum_j\mathbb E|X_j|^3$. Theorem~\ref{thm:exch}
 gives the bound. It is weaker than Theorem~\ref{thm:steinclt}, which needs no fourth moments, but its proof never looked inside $W$: only at how $W$ moves.
+\end{solution}
+
+\begin{solution}{ex:v11-ch06-linear}
+\idea A linear test measures exactly the first moment.
+\writeup Since $\mathbb Eh(Z)=0$, the equation is $f'(w)-wf(w)=w$. The constant function $f=-1$ solves it and is the bounded solution (the difference of two solutions is $Ce^{w^2/2}$). Substituting in~\eqref{eq:steinid} gives $\mathbb EW=\mathbb E[0+W]$. For an integrable $W$, the Wasserstein distance to $Z$ is therefore at least $|\mathbb EW|$, because $h(w)=w$ is an admissible test. If the distance tends to zero along a sequence, the means must tend to zero as well.
+\end{solution}
+
+\begin{solution}{ex:v11-ch06-shift}
+\idea A deterministic translation moves every observation by the same amount.
+\writeup For every $1$-Lipschitz $h$, $|\mathbb Eh(Z+a)-\mathbb Eh(Z)|\le\mathbb E|a|=|a|$. The linear test $h(w)=w$ attains equality, so $d_W(Z+a,Z)=|a|$. Proposition~\ref{prop:dkdw} gives $d_K\le(2/\pi)^{1/4}\sqrt{|a|}$. Directly,
+$|P(Z+a\le x)-P(Z\le x)|=|\Phi(x-a)-\Phi(x)|\le\varphi(0)|a|$
+by integrating the density over an interval of length $|a|$. The latter is especially useful for small shifts. Both bounds may also be capped by $1$.
+\end{solution}
+
+\begin{solution}{ex:v11-ch06-clump}
+\idea Rare events can arrive in pairs rather than singly.
+\writeup The two indicators have means $p$ and both neighbourhoods contain both indicators. Thus $\lambda=2p$, $b_1=4p^2$ and $b_2=2p$. The theorem yields
+\[
+\|\mathcal L(W)-\mathrm{Poisson}(2p)\|\le(4p^2+2p)\frac{1-e^{-2p}}{2p}.
+\]
+For comparison, $P(W=1)=0$ whereas the Poisson probability of $1$ is $2pe^{-2p}$. Hence the actual distance is at least $2pe^{-2p}$, of order $p$ as $p\downarrow0$. Keeping only $b_1$ would predict an order-$p^2$ upper bound, which cannot be correct. The joint-occurrence term detects the clumping.
+\end{solution}
+
+\begin{solution}{ex:v11-ch06-independent}
+\idea Independence removes every off-diagonal contribution in the dependence bound.
+\writeup For $B_i=\{i\}$ we have $b_1=\sum_i p_i^2$ and $b_2=0$. At $\lambda=\sum_i p_i>0$ the distance is bounded by $(1-e^{-\lambda})\sum_i p_i^2/\lambda$. For $p_i=\lambda/n$ this is $\lambda(1-e^{-\lambda})/n$, while Le Cam's bound is $\lambda^2/n$. The ratio is $(1-e^{-\lambda})/\lambda$, which tends to $1$ as $\lambda\downarrow0$ by the derivative of the exponential at zero. For large $\lambda$ it is at most $1/\lambda$, giving an improved bound. The case $\lambda=0$ is exact.
 \end{solution}
 
 \section*{Sources and further reading}

@@ -5,22 +5,18 @@ How nearly? Made quantitative, the principle explains why high-dimensional spher
 and why the longest increasing subsequence of a random permutation hardly fluctuates.
 \end{center}
 
-In his lectures on functional analysis of 1922, Paul L\'evy proved that on a high-dimensional sphere, a set of half the area has almost the whole sphere within a short distance of it: the
-measure ``concentrates'' around any equator. For half a century this looked like a curiosity of geometry. Then in 1971 Vitali Milman used it to give a new
-proof of Dvoretzky's theorem on almost Euclidean sections of convex bodies, and saw that the same phenomenon is everywhere: in Gaussian space, on the cube,
-in products of arbitrary probability spaces. Its master was Michel Talagrand, whose 1995 memoir on ``concentration of measure and isoperimetric inequalities
-in product spaces'' gave inequalities strong enough to handle combinatorial problems that had resisted everything else. The Abel Prize of 2024 honoured him
-``for his groundbreaking contributions to probability theory and functional analysis, with outstanding applications in mathematical physics and statistics''.
+A million independent inputs may determine a quantity that is almost predictable. Consider the number of empty boxes when balls are thrown into bins. Moving one ball changes that number by at most one, even though the total depends on every ball. The small influence of each coordinate is what allows a sharp probability estimate.
 
-Volume~4 proved Azuma's inequality for bounded martingale increments. This chapter derives its bounded-differences consequence for independent inputs, sharpens it, and adds the variance version of
-Efron and Stein, proves the Gaussian concentration inequality through the Ornstein--Uhlenbeck semigroup and the logarithmic Sobolev inequality, and ends with
-Talagrand's convex distance inequality. The applications: random projections that compress data without distorting it (Johnson and Lindenstrauss), and Ulam's
-problem on increasing subsequences.
+Paul L\'evy's work on high-dimensional spheres in the 1920s and Vitali Milman's 1971 proof of Dvoretzky's theorem showed that concentration is also geometric. In a Gaussian vector with a million coordinates, the length is close to a thousand: the square of the length is a sum, but the length itself is a nonlinear function. We will bound such functions without reducing every problem to a sum.
+
+Efron--Stein controls variance by replacing one coordinate at a time. McDiarmid turns a deterministic bound on each replacement into an exponential tail. Gaussian concentration uses the Euclidean Lipschitz constant, through a different tool: the Ornstein--Uhlenbeck semigroup. The dimension does not enter the resulting bound.
+
+Finally Talagrand's 1995 convex-distance inequality detects a feature that the earlier bounds miss. To certify a long increasing subsequence, it is enough to exhibit that subsequence; most coordinates need not be checked. The strength of the probability bound can depend on the size of this certificate rather than on the full input size.
 
 \begin{reminder}[from Volume 4, Volume 7 and Chapter 6]
 Hoeffding's lemma: if $Y$ takes values in an interval of length $c$ and $\mathbb EY=0$, then $\mathbb Ee^{\lambda Y}\le e^{\lambda^2c^2/8}$ (Volume~4, Lemma~4.1).
-Azuma's inequality (Volume~4, Theorem~11.10) bounds martingales with bounded increments, adapted to finite partitions. For coordinates taking finitely many values it gives a bounded-differences estimate: if independent coordinates $X_i$ form $F=f(X)$, with $\mathbb E|F|<\infty$, and changing only coordinate $i$ changes $f$ by at most $c_i$, then
-$P(|F-\mathbb EF|\ge t)\le2e^{-t^2/(2C)}$, where $C=\sum_i c_i^2$. To see this, reveal the coordinates one by one and set $M_i=\mathbb E[F\mid X_1,\dots,X_i]$. After the first $i-1$ coordinates are fixed, the possible values of the next conditional average lie in an interval of length at most $c_i$, so $|M_i-M_{i-1}|\le c_i$. Apply Azuma to $M_i$ and $-M_i$. Theorem~\ref{thm:mcdiarmid} below removes the restriction to finitely many values and improves the exponent, using Fubini's theorem (Volume~7, Theorem~9.6) to integrate out the remaining independent coordinates. The Gaussian integration by parts $\mathbb E\,Zf(Z)=\mathbb Ef'(Z)$ is Lemma~\ref{lem:stein}.
+Azuma's inequality (Volume~4, Theorem~11.10) bounds martingales with bounded increments, adapted to finite partitions. For coordinates taking finitely many values it gives a bounded-differences estimate: if independent coordinates $X_i$ form $F=f(X)$, with $\mathbb E|F|<\infty$, and changing only coordinate $i$ changes $f$ by at most $c_i$, then, for $C=\sum_i c_i^2>0$ and $t>0$,
+$P(|F-\mathbb EF|\ge t)\le2e^{-t^2/(2C)}$. If $C=0$, $F$ is constant and the deviation probability is zero. To see this, reveal the coordinates one by one and set $M_i=\mathbb E[F\mid X_1,\dots,X_i]$. After the first $i-1$ coordinates are fixed, the possible values of the next conditional average lie in an interval of length at most $c_i$, so $|M_i-M_{i-1}|\le c_i$. Apply Azuma to $M_i$ and $-M_i$. Theorem~\ref{thm:mcdiarmid} below removes the restriction to finitely many values and improves the exponent, using Fubini's theorem (Volume~7, Theorem~9.6) to integrate out the remaining independent coordinates. The Gaussian integration by parts $\mathbb E\,Zf(Z)=\mathbb Ef'(Z)$ is Lemma~\ref{lem:stein}.
 \end{reminder}
 
 Throughout, $X=(X_1,\dots,X_n)$ has independent coordinates, $X_i$ with law $\mu_i$ on a measurable space $E_i$, and $f:E_1\times\dots\times E_n\to\R$ is measurable. For
@@ -71,19 +67,19 @@ the sequence shows that $L_n$ and $D_n$ have the same law, so $\mathbb EL_n\ge\s
 replacement lowers $L_n$ by at most $1$. So $\sum_i(L_n-L_n^{(i)})_+^2\le|I|=L_n$, and Theorem~\ref{thm:efronstein} gives $\operatorname{Var}L_n\le\mathbb EL_n$.
 \end{proof}
 
-So $L_n$, of order $\sqrt n$, fluctuates by at most $O(n^{1/4})$. This was the question asked by Stanis\l aw Ulam in 1961, and the story ends at the close of
+Thus $\mathbb EL_n$ is of order $\sqrt n$, and the standard deviation is $O(n^{1/4})$. Chebyshev's inequality gives the corresponding fluctuation bound in probability, not a deterministic bound on every permutation. This was the question asked by Stanis\l aw Ulam in 1961, and the story ends at the close of
 the chapter.
 
 \section{Exponential bounds: McDiarmid's inequality}
 
 \begin{theorem}[McDiarmid]\label{thm:mcdiarmid}
-Suppose $|f(x)-f(x^{(i)})|\le c_i$ for all $x$, all $i$ and all replacements of the $i$-th coordinate, and let $C=\sum_ic_i^2$. Then for $t>0$,
+Suppose $|f(x)-f(x^{(i)})|\le c_i$ for all $x$, all $i$ and all replacements of the $i$-th coordinate, and let $C=\sum_ic_i^2>0$. Then for $t>0$,
 \[
 P\bigl(f(X)-\mathbb Ef(X)\ge t\bigr)\le e^{-2t^2/C},\qquad P\bigl(|f(X)-\mathbb Ef(X)|\ge t\bigr)\le2e^{-2t^2/C}.
 \]
 \end{theorem}
 \begin{proof}
-With $g_k$ and $\Delta_k$ as in the previous proof ($f$ is bounded, since changing coordinates one at a time moves it by at most $\sum c_i$), fix $x_1,\dots,x_{k-1}$. As a
+If all $c_i=0$, $f$ is constant, and both deviation probabilities are zero for $t>0$. For $C>0$, use $g_k$ and $\Delta_k$ as in the previous proof ($f$ is bounded, since changing coordinates one at a time moves it by at most $\sum c_i$), fix $x_1,\dots,x_{k-1}$. As a
 function of $z$, $g_k(x_1,\dots,x_{k-1},z)$ is an average over the later coordinates of functions whose values, as $z$ varies, lie in an interval of length $c_k$; so it
 takes values in an interval of length $c_k$, and its $\mu_k$-mean is $g_{k-1}(x_1,\dots,x_{k-1})$. By Hoeffding's lemma,
 \[
@@ -118,10 +114,10 @@ For $h,g\in\mathcal C$ and $t\ge0$, with $Lh=\Delta h-x\cdot\nabla h$:
 \end{lemma}
 \begin{proof}
 Write $\sigma_t=\sqrt{1-e^{-2t}}$ and $Y=e^{-t}x+\sigma_tZ$. (i) If $Z'$ is an independent copy of $Z$, then $e^{-t}Z'+\sigma_tZ$ is centred Gaussian with covariance $(e^{-2t}+\sigma_t^2)I=I$.
-(ii) Differentiate under the expectation. (iv) Apply Lemma~\ref{lem:stein}(i) in the $i$-th coordinate to $u=g\,\partial_ih$ (with the others fixed, then Fubini):
-$\mathbb E[\partial_ig\,\partial_ih+g\,\partial_i^2h]=\mathbb E[Z_ig\,\partial_ih]$; sum over $i$. (iii) By the chain rule, $\frac{\partial}{\partial t}P_th(x)=\mathbb E\bigl[\nabla h(Y)\cdot(-e^{-t}x+\sigma_t'Z)\bigr]$.
+(ii) Differentiate under the expectation. (iv) Apply the Gaussian integration-by-parts calculation of Lemma~\ref{lem:stein}(i) in the $i$-th coordinate to $u=g\,\partial_ih$. Its bounded-derivative hypothesis is not needed here: the exponential growth bounds on $u$ and $\partial_i u$ make the Gaussian-weighted integrals absolutely convergent and the boundary terms vanish. Integrate over the other coordinates by Fubini:
+$\mathbb E[\partial_ig\,\partial_ih+g\,\partial_i^2h]=\mathbb E[Z_ig\,\partial_ih]$; sum over $i$. (iii) For $t>0$, by the chain rule, $\frac{\partial}{\partial t}P_th(x)=\mathbb E\bigl[\nabla h(Y)\cdot(-e^{-t}x+\sigma_t'Z)\bigr]$.
 Gaussian integration by parts in $Z$ turns $\mathbb E[\partial_ih(Y)Z_i]$ into $\sigma_t\mathbb E[\partial_i^2h(Y)]$, and $\sigma_t\sigma_t'=e^{-2t}$. So
-$\frac{\partial}{\partial t}P_th=e^{-2t}P_t(\Delta h)-e^{-t}x\cdot P_t(\nabla h)$, which by (ii) is $\Delta P_th-x\cdot\nabla P_th$.
+$\frac{\partial}{\partial t}P_th=e^{-2t}P_t(\Delta h)-e^{-t}x\cdot P_t(\nabla h)$, which by (ii) is $\Delta P_th-x\cdot\nabla P_th$. This expression extends continuously to $t=0$ by dominated convergence, giving the right derivative at zero.
 \end{proof}
 
 The semigroup trades time for smoothness: it starts from $h$, ends at a constant, and along the way (ii) shrinks gradients at rate $e^{-t}$. Integrating the change
@@ -138,7 +134,7 @@ For $h=e^G$ with $G\in C^2$ having bounded first and second derivatives, writing
 \]
 \end{theorem}
 \begin{proof}
-Let $\phi$ be $C^2$ on the range of the functions involved, and $u_t=P_th$. By Lemma~\ref{lem:ou}(iii) and (iv),
+Write $u_t=P_th$. We use $\phi(u)=u^2$ for the variance proof and $\phi(u)=u\log u$ for the entropy proof. In the first case $u_t$ and its derivatives have exponential growth bounds uniform in $t\ge0$. In the second, boundedness of $\nabla G$ gives both $h(x)\le C e^{c|x|}$ and $h(x)\ge C^{-1}e^{-c|x|}$. The same type of upper and lower bounds hold for $u_t$, uniformly in $t$, by the explicit Gaussian averaging formula. The first and second derivatives of $u_t$ have uniform exponential bounds as well. These estimates give integrable Gaussian dominators for the differentiations, integration by parts and endpoint limits below, including the logarithm and reciprocal of $u_t$ in the entropy case. By Lemma~\ref{lem:ou}(iii) and (iv),
 \[
 \frac{\dd}{\dd t}\mathbb E\phi(u_t(Z))=\mathbb E\bigl[\phi'(u_t)Lu_t\bigr]=-\mathbb E\bigl[\phi''(u_t)|\nabla u_t|^2\bigr].
 \]
@@ -160,13 +156,13 @@ The logarithmic Sobolev inequality is due to Leonard Gross (1975), and the semig
 tensorizes without loss and turns into concentration by a two-line argument found by Ira Herbst in an unpublished letter.
 
 \begin{theorem}[Gaussian concentration]\label{thm:gaussconc}
-Let $F:\R^n\to\R$ be $L$-Lipschitz for the Euclidean norm. Then for $t>0$,
+Let $F:\R^n\to\R$ be $L$-Lipschitz for the Euclidean norm, with $L>0$. Then for $t>0$,
 \[
 P\bigl(F(Z)-\mathbb EF(Z)\ge t\bigr)\le e^{-t^2/2L^2},\qquad\operatorname{Var}F(Z)\le L^2.
 \]
 \end{theorem}
 \begin{proof}
-By scaling, $L=1$. \emph{Smooth case.} Suppose first that $F$ is $C^2$ with bounded second derivatives; being $1$-Lipschitz, $|\nabla F|\le1$. The Poincar\'e inequality gives
+If $L=0$, $F$ is constant and the variance and deviation probabilities vanish. Otherwise divide by $L$ to reduce to $L=1$. \emph{Smooth case.} Suppose first that $F$ is $C^2$ with bounded second derivatives; being $1$-Lipschitz, $|\nabla F|\le1$. The Poincar\'e inequality gives
 $\operatorname{Var}F\le1$. For $\lambda>0$ let $H(\lambda)=\mathbb Ee^{\lambda F(Z)}$. The log-Sobolev inequality for $h=e^{\lambda F}$, for which $|\nabla h|^2/h=\lambda^2|\nabla F|^2h\le\lambda^2h$, reads
 \[
 \lambda H'(\lambda)-H(\lambda)\log H(\lambda)\le\frac{\lambda^2}2H(\lambda)
@@ -176,7 +172,7 @@ $\log\mathbb Ee^{\lambda(F-\mathbb EF)}\le\frac{\lambda^2}2$, and Markov's inequ
 
 \emph{General case.} Let $W$ be a standard Gaussian vector independent of $Z$ and $F_\varepsilon(x)=\mathbb EF(x+\varepsilon W)$. It is $1$-Lipschitz, $|F_\varepsilon-F|\le\varepsilon\mathbb E|W|\le\varepsilon\sqrt n$, and it
 is $C^2$ with bounded second derivatives: differentiating the Gaussian density of $x+\varepsilon W$ twice,
-$\partial_i\partial_jF_\varepsilon(x)=\varepsilon^{-2}\mathbb E[(F(x+\varepsilon W)-F(x))(W_iW_j-\delta_{ij})]$, bounded by $\varepsilon^{-1}\mathbb E[|W|\,|W_iW_j-\delta_{ij}|]$. So
+$\partial_i\partial_jF_\varepsilon(x)=\varepsilon^{-2}\mathbb E[(F(x+\varepsilon W)-F(x))(W_iW_j-\delta_{ij})]$, bounded by $\varepsilon^{-1}\mathbb E[|W|\,|W_iW_j-\delta_{ij}|]$. For $0<2\varepsilon\sqrt n<t$,
 $P(F-\mathbb EF\ge t)\le P(F_\varepsilon-\mathbb EF_\varepsilon\ge t-2\varepsilon\sqrt n)\le e^{-(t-2\varepsilon\sqrt n)^2/2}$ and $\operatorname{Var}F\le(1+\varepsilon\sqrt n)^2$ (Minkowski's inequality for the standard deviations of $F_\varepsilon$ and $F-F_\varepsilon$); let $\varepsilon\to0$.
 \end{proof}
 
@@ -229,8 +225,7 @@ at least $1-N^2e^{-\frac k2(\frac{\varepsilon^2}2-\frac{\varepsilon^3}3)}>0$, fo
 \end{theorem}
 \begin{proof}
 For a fixed unit vector $u$, the coordinates of $\sqrt kAu$ are independent standard Gaussians (each is $\sum_jg_{ij}u_j$ with $g_{ij}$ i.i.d.\ $N(0,1)$ and $\sum u_j^2=1$),
-so $k|Au|^2$ has the law of $Q$ in Lemma~\ref{lem:chisq}, and $|Au|^2\notin[1-\varepsilon,1+\varepsilon]$ with probability at most $2e^{-\frac k2(\frac{\varepsilon^2}2-\frac{\varepsilon^3}3)}$. Apply this to
-$u=\frac{x_i-x_j}{|x_i-x_j|}$ for the $\binom N2<\frac{N^2}2$ pairs and use the union bound. The probability is positive by the choice of $k$.
+so $k|Au|^2$ has the law of $Q$ in Lemma~\ref{lem:chisq}, and $|Au|^2\notin[1-\varepsilon,1+\varepsilon]$ with probability at most $2e^{-\frac k2(\frac{\varepsilon^2}2-\frac{\varepsilon^3}3)}$. Apply this to $u=(x_i-x_j)/|x_i-x_j|$ for all distinct pairs of point values. Coincident points satisfy the conclusion identically. There are at most $\binom N2<N^2/2$ nonzero differences, and use the union bound. The probability is positive by the choice of $k$.
 \end{proof}
 
 For a million points and $\varepsilon=0.1$ the theorem asks for $k\ge11\,842$, independent of $d$: a database of a million documents described by ten million word counts
@@ -307,15 +302,14 @@ P(L_n\ge M_n+t)\le2e^{-t^2/4(M_n+t)},\qquad P(L_n\le M_n-t)\le2e^{-t^2/4M_n}.
 \end{theorem}
 \begin{proof}
 \emph{The certificate.} Let $X_1,\dots,X_n$ be independent with values in a countable totally ordered set, $\ell(x)$ the length of the longest strictly increasing subsequence of
-$x$, and $a\ge0$. Let $A=\{y:\ell(y)\le a\}$. If $\ell(x)=\ell$, let $I$ be the index set of a longest increasing subsequence of $x$ and $\alpha=\mathbf 1_I/\sqrt\ell$. For $y\in A$, the indices of $I$
+$x$, and $a\ge0$. Let $A=\{y:\ell(y)\le a\}$. If $P(X\in A)=0$, the product probability bound below is immediate. Otherwise, for $\ell(x)=\ell\ge a+t>0$, let $I$ be the index set of a longest increasing subsequence of $x$ and $\alpha=\mathbf 1_I/\sqrt\ell$. For $y\in A$, the indices of $I$
 where $y$ agrees with $x$ carry an increasing subsequence of $y$, so there are at most $a$ of them, and $\sum_{x_i\ne y_i}\alpha_i\ge\frac{\ell-a}{\sqrt\ell}$. As $\frac{\ell-a}{\sqrt\ell}$ increases with $\ell$,
 $\ell(x)\ge a+t$ implies $d_T(x,A)\ge\frac t{\sqrt{a+t}}$, and Theorem~\ref{thm:talagrand} gives
 \[
 P(\ell(X)\le a)\,P(\ell(X)\ge a+t)\le e^{-t^2/4(a+t)}.
 \]
 \emph{Back to permutations.} Take $X_i$ uniform on $\{1,\dots,m\}$. With probability at least $1-\binom n2\frac1m$ the values are distinct, and then their relative order is a uniform permutation;
-so as $m\to\infty$ the law of $\ell(X)$ tends to the law of $L_n$, and the inequality holds for $L_n$. With $a=M_n$, $P(L_n\le M_n)\ge\frac12$ gives the first bound; with
-$a=M_n-t$, $P(L_n\ge M_n)\ge\frac12$ gives the second.
+so as $m\to\infty$ the law of $\ell(X)$ tends to the law of $L_n$, and the inequality holds for $L_n$. With $a=M_n$, $P(L_n\le M_n)\ge1/2$ gives the first bound. For $0<t\le M_n$, put $a=M_n-t$ and use $P(L_n\ge M_n)\ge1/2$ for the second. For $t>M_n$ the lower-tail event is empty, so the second bound also holds.
 \end{proof}
 
 Ulam asked in 1961 how $L_n$ behaves. John Hammersley proved in 1972 that $L_n/\sqrt n$ converges in probability to a constant $c$, and in 1977 Benjamin Logan and Larry Shepp, and
@@ -337,6 +331,18 @@ give for $L_n$? For which other functions (the size of a largest clique in a ran
 you find small certificates?
 \end{think}
 
+\begin{figure}[ht]
+\centering\fig{ch08-reveal-tree}
+\caption{Revealing two independent fair signs gives a tree of conditional averages for $F=X_1+X_2$. The initial average is zero; each reveal changes it by at most one. The same reveal-and-control argument works for nonlinear bounded-difference functions.}
+\label{fig:v11-ch08-reveal-tree}
+\end{figure}
+
+\begin{figure}[ht]
+\centering\fig{ch08-certificate}
+\caption{A longest increasing subsequence provides a certificate: the four highlighted positions already force the length to be at least four. Replacing other positions cannot destroy this particular subsequence. Replacing one highlighted position can destroy at most one of its entries.}
+\label{fig:v11-ch08-certificate}
+\end{figure}
+
 \section{What we proved, and what comes next}
 
 The epigraph claimed that a function of many independent variables that depends little on each of them is nearly constant, and asked how nearly.
@@ -347,8 +353,7 @@ certify a large value, Talagrand's convex distance gives tails at the scale of t
 Random projections (Theorem~\ref{thm:jl}) and increasing subsequences were the applications. Quoted, not proved: the limit $2\sqrt n$ of Logan, Shepp,
 Vershik and Kerov, and the Tracy--Widom fluctuations of Baik, Deift and Johansson.
 
-Every proof in this chapter revealed the coordinates one at a time and controlled the conditional averages $\mathbb E[F\mid X_1,\dots,X_k]$: a
-martingale, in all but name. The next chapter returns to martingales in general filtrations: when they converge in mean, how they run backwards in
+The first two inequalities in this chapter revealed coordinates one at a time and controlled the conditional averages $\mathbb E[F\mid X_1,\dots,X_k]$: a martingale. The next chapter returns to martingales in general filtrations: when they converge in mean, how they run backwards in
 time, and what they say about exchangeable data and about tests that may be checked as often as we like.
 
 \section{Exercises}
@@ -372,12 +377,28 @@ for independent standard Gaussians: $\mathbb E\max_iZ_i\ge(1-\varepsilon)\sqrt{2
 
 \begin{exercise}[$\star\star$]\label{ex:rademachersum}
 Let $v_1,\dots,v_n$ be vectors in a normed space and $\varepsilon_i$ independent fair signs. Show that $\|\sum_i\varepsilon_iv_i\|$ deviates from its mean by $t$ with probability at most
-$2e^{-t^2/2\sum\|v_i\|^2}$.
+$2e^{-t^2/(2\sum_i\|v_i\|^2)}$ when the sum in the denominator is positive (otherwise the deviation probability is zero).
 \end{exercise}
 
 \begin{exercise}[$\star\star\star$]\label{ex:convexlip}
 Let $X_1,\dots,X_n$ be independent, each taking finitely many values in $[0,1]$, and $F:[0,1]^n\to\R$ convex and $1$-Lipschitz for the Euclidean norm, with median $M$. Show that
-$P(|F(X)-M|\ge t)\le4e^{-t^2/4}$. (First show that if $A\subseteq[0,1]^n$ is convex, then the Euclidean distance from $x$ to $A$ is at most $d_T(x,A)$.)
+$P(|F(X)-M|\ge t)\le4e^{-t^2/4}$. (First show that if $K\subseteq[0,1]^n$ is convex and $A$ is its intersection with the finite product of coordinate supports, then the Euclidean distance from $x$ to $K$ is at most $d_T(x,A)$ when $A$ is nonempty.)
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:v11-ch08-coins}
+Let $X_i$ be independent Bernoulli$(p_i)$ variables and $F=\sum_iX_i$. Apply McDiarmid's theorem to obtain a two-sided bound on $|F-\mathbb EF|$. Compare it with Chebyshev's inequality using the exact variance.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:v11-ch08-max}
+Let $X_1,\dots,X_n$ be independent variables in $[0,1]$, and $F=\max_iX_i$. Show by the positive-part form of Efron--Stein that $\operatorname{Var}F\le1$. Why does choosing a single maximising index suffice even in the presence of ties?
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:v11-ch08-ou-linear}
+For $h(x)=a\cdot x+b$ on $\R^n$, compute $P_th$, its gradient, and its variance under the standard Gaussian law. Check equality in the Gaussian Poincar\'e inequality.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:v11-ch08-cube-distance}
+In $\{0,1\}^n$, let $A=\{0\}$ and let $x$ have exactly $k$ coordinates equal to $1$. Compute $d_T(x,A)$ and compare it with the Hamming-distance lower bound $k/\sqrt n$. When does equality hold?
 \end{exercise}
 
 \section{Hints}
@@ -398,8 +419,20 @@ $e^{\lambda\mathbb E\max G_i}\le\mathbb Ee^{\lambda\max G_i}\le\sum_i\mathbb Ee^
 Changing $\varepsilon_i$ moves the norm by at most $2\|v_i\|$. Use Theorem~\ref{thm:mcdiarmid}.
 \end{hint}
 \begin{hint}{ex:convexlip}
-Write the minimal $v\in V_A(x)$ as a convex combination $\sum_j\lambda_js_j$ of points of $U_A(x)$ with witnesses $y_j\in A$, and look at $y=\sum_j\lambda_jy_j$. Then apply Theorem~\ref{thm:talagrand} to
-$A=\{F\le M\}$ and to $A=\{F\le M-t\}$.
+Write the minimal $v\in V_A(x)$ as a convex combination of indicators with witnesses $y_j\in A\subseteq K$, and look at $y=\sum_j\lambda_jy_j\in K$. Apply Theorem~\ref{thm:talagrand} to the intersections of the convex sublevel sets with the finite product support.
+\end{hint}
+
+\begin{hint}{ex:v11-ch08-coins}
+Each coordinate changes the sum by at most one. Independence adds variances.
+\end{hint}
+\begin{hint}{ex:v11-ch08-max}
+Choose one index attaining the maximum. Only replacement at that index can decrease the chosen value.
+\end{hint}
+\begin{hint}{ex:v11-ch08-ou-linear}
+The Gaussian noise in the semigroup has mean zero.
+\end{hint}
+\begin{hint}{ex:v11-ch08-cube-distance}
+Use Cauchy--Schwarz on the $k$ nonzero coordinates of the mismatch vector.
 \end{hint}
 
 \section{Solutions}
@@ -432,16 +465,34 @@ $P(\max Z_i<x)=\Phi(x)^m\le\exp(-m(1-\Phi(x)))\to0$. Since $\max Z_i\ge Z_1$, $\
 
 \begin{solution}{ex:rademachersum}
 \idea A norm of a sum is a function of independent signs with bounded differences.
-\writeup Let $f(\varepsilon)=\|\sum\varepsilon_iv_i\|$. Flipping $\varepsilon_i$ changes the sum by $\pm2v_i$, so by the triangle inequality $f$ changes by at most $c_i=2\|v_i\|$. Theorem~\ref{thm:mcdiarmid}
-gives $2e^{-2t^2/\sum4\|v_i\|^2}=2e^{-t^2/2\sum\|v_i\|^2}$.
+\writeup Let $f(\varepsilon)=\|\sum\varepsilon_iv_i\|$. Flipping $\varepsilon_i$ changes the sum by $\pm2v_i$, so by the triangle inequality $f$ changes by at most $c_i=2\|v_i\|$. If all $v_i=0$, the deviation probability is zero. Otherwise Theorem~\ref{thm:mcdiarmid} gives $2e^{-2t^2/(\sum_i4\|v_i\|^2)}=2e^{-t^2/(2\sum_i\|v_i\|^2)}$.
 \end{solution}
 
 \begin{solution}{ex:convexlip}
 \idea Convexity turns the combinatorial distance into a geometric one: averaging the witnesses produces a point of $A$ that is close coordinate by coordinate.
-\writeup Let $A$ be convex and $v=\sum_j\lambda_js_j$ the point of $V_A(x)$ of minimal norm, with $s_j\in U_A(x)$ witnessed by $y_j\in A$, so $y_{j,i}=x_i$ whenever $s_{j,i}=0$. Then
-$y=\sum_j\lambda_jy_j\in A$ and, since all coordinates lie in $[0,1]$, $|x_i-y_i|\le\sum_j\lambda_j|x_i-y_{j,i}|\le\sum_j\lambda_js_{j,i}=v_i$. So $\operatorname{dist}(x,A)\le|x-y|\le|v|=d_T(x,A)$.
-Now let $A=\{F\le M\}$, convex. If $F(x)\ge M+t$, then every $y\in A$ has $|x-y|\ge F(x)-F(y)\ge t$, so $d_T(x,A)\ge t$, and Theorem~\ref{thm:talagrand} (the values form a countable
-product space) gives $P(F\ge M+t)\le\frac{e^{-t^2/4}}{P(A)}\le2e^{-t^2/4}$. With $A=\{F\le M-t\}$, every $x$ with $F(x)\ge M$ has $d_T(x,A)\ge t$, so $P(F\le M-t)\cdot\frac12\le e^{-t^2/4}$. Add the two bounds.
+\writeup Let $E$ be the finite product of coordinate supports, $K$ a convex subset of $[0,1]^n$ and $A=K\cap E\ne\emptyset$. Write the minimum-norm point of $V_A(x)$ as $v=\sum_j\lambda_js_j$, with witnesses $y_j\in A$. Then $y=\sum_j\lambda_jy_j$ belongs to $K$ by convexity; it need not belong to $E$. Since all coordinates lie in $[0,1]$, $|x_i-y_i|\le\sum_j\lambda_j|x_i-y_{j,i}|\le v_i$. Thus $\operatorname{dist}(x,K)\le|x-y|\le|v|=d_T(x,A)$.
+
+Take $K=\{z\in[0,1]^n:F(z)\le M\}$ and $A=K\cap E$. If $F(x)\ge M+t$, the Lipschitz property gives $|x-y|\ge t$ for every $y\in K$. Therefore $d_T(x,A)\ge t$. Since $P(X\in A)\ge1/2$, Talagrand gives $P(F(X)\ge M+t)\le2e^{-t^2/4}$. For the lower tail use $K=\{F\le M-t\}$ and $A=K\cap E$. If $P(X\in A)=0$ there is nothing to bound; otherwise $F(x)\ge M$ implies $d_T(x,A)\ge t$, and the median property yields $P(F(X)\le M-t)/2\le e^{-t^2/4}$. Adding proves the claim.
+\end{solution}
+
+\begin{solution}{ex:v11-ch08-coins}
+\idea The bounded-difference estimate uses no details of the success probabilities; the variance estimate does.
+\writeup A replacement changes $F$ by at most one, so $C=n$. McDiarmid gives $P(|F-\mathbb EF|\ge t)\le2e^{-2t^2/n}$ for $t>0$. On the other hand $\operatorname{Var}F=\sum_i p_i(1-p_i)\le n/4$, so Chebyshev bounds the same probability by $\sum_i p_i(1-p_i)/t^2$. Both bounds may be capped by one. For a displacement proportional to $n$, the McDiarmid bound decays exponentially while Chebyshev gives only an order-$1/n$ upper bound.
+\end{solution}
+
+\begin{solution}{ex:v11-ch08-max}
+\idea A maximising index is a certificate for the value of the maximum.
+\writeup For each input choose the smallest index $i_*$ at which the maximum occurs. If $i\ne i_*$, replacing $X_i$ leaves $X_{i_*}$ unchanged, so $F(X^{(i)})\ge F(X)$. If $i=i_*$, the decrease is at most one because all values are in $[0,1]$. Thus $\sum_i(F(X)-F(X^{(i)}))_+^2\le1$ pointwise, and the positive-part Efron--Stein inequality gives $\operatorname{Var}F\le1$. If there is a tie, the chosen maximum still certifies the lower bound after any replacement at a different index; the argument does not require uniqueness.
+\end{solution}
+
+\begin{solution}{ex:v11-ch08-ou-linear}
+\idea The averaging kills the centred noise and multiplies the linear part by $e^{-t}$.
+\writeup From the definition, $P_th(x)=e^{-t}a\cdot x+b$ and $\nabla P_th=e^{-t}a$. For standard Gaussian $Z$, the variance of $P_th(Z)$ is $e^{-2t}|a|^2$. At $t=0$, $\operatorname{Var}h(Z)=|a|^2=\mathbb E|\nabla h(Z)|^2$, so the Poincar\'e bound is an equality. In the semigroup proof the integral $2\int_0^\infty e^{-2t}|a|^2\dd t=|a|^2$ makes the equality visible.
+\end{solution}
+
+\begin{solution}{ex:v11-ch08-cube-distance}
+\idea The mismatch set is fixed because $A$ contains just one point.
+\writeup If $J=\{i:x_i=1\}$, then $d_T(x,A)=\sup_{\alpha\ge0,|\alpha|=1}\sum_{i\in J}\alpha_i$. Cauchy--Schwarz bounds this by $\sqrt k$. For $k>0$, choose $\alpha_i=1/\sqrt k$ on $J$ and zero elsewhere, attaining $\sqrt k$. For $k=0$ the distance is zero. The Hamming lower bound is $k/\sqrt n$, which is at most $\sqrt k$ because $k\le n$. Equality holds exactly at $k=0$ or $k=n$. The freedom to concentrate weights on mismatching coordinates is what improves the bound.
 \end{solution}
 
 \section*{Sources and further reading}
