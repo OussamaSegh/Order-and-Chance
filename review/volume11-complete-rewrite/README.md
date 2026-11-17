@@ -1,3 +1,5 @@
+> **Final acceptance:** See [ACCEPTANCE.md](ACCEPTANCE.md) for the accepted source, release-candidate output QA, and independent-review limitation. Older first-pass notes below are retained as history.
+
 # Volume 11 complete rewrite — working record
 
 Baseline: b005c4a0a33409f443594f3bb1efe3e955e95468. Prior master-plan rewrite: PR #221; authoritative historical blueprint: PR #157 branch `claude/project-thread-khh5pi`, `docs/plan/book-11.md`. Read `docs/handoffs/volume11-rewrite.md` and `docs/WRITING-STYLE.md`.
@@ -56,3 +58,7 @@ Reworked large-deviation motivation; distinguished global exponential-moment hyp
 - New deterministic arithmetic/enumeration checks: `node review/volume11-complete-rewrite/check_new_examples.mjs` executed successfully for all 14 chapter groups. These supplement, not replace, the original numerical review scripts or proof review.
 - Added a branch-scoped exact-head CI audit `.github/workflows/volume11-rewrite-audit.yml` running the immutable preservation check and new regressions. The normal production workflow is unchanged. Its result and the full build must be checked on the final head.
 - Open acceptance gates: full sentence-level and hostile proof/editorial review, original numerical regressions and citation verification, exact-head TeX/EPUB/print CI, rendered page/figure inspection and production acceptance. No independent reviewer has certified the rewrite. PR #247 remains draft until these gates are complete.
+
+## Final acceptance handoff
+
+See [ACCEPTANCE.md](ACCEPTANCE.md). The Volume 11 release-candidate production job and the full preservation/numerical/citation audit passed at manuscript source `4f9e15e6e3ce70a5900da9450ad5db3aaceb908c`; the generated 314-page reading PDF, 313-page print interior and EPUB were inspected. This documentation-only record does not change manuscript source. User-directed author-side acceptance permits the rewrite to merge; independent third-party mathematical certification is not represented. After merging, verify the `main` publication workflow.
