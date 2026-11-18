@@ -31,6 +31,15 @@ def audit(final):
     for name in CHAPTERS:
         path=VOL+"/chapters/"+name+".tex"
         a,b=past(path),now(path)
+        # One documented mathematical erratum: Tate's theorem must say
+        # 'possible poles', since the residues may both vanish.
+        if name=="ch09-tate":
+            BEFORE="If $\\chi$ is trivial, its only poles are simple poles at $s=1$, with residue $\\hat f(0)$, and at\n$s=0$, with residue $-f(0)$."
+            AFTER="If $\\chi$ is trivial, its only possible poles are at $s=1$ and $s=0$, each at most simple, with\nresidues $\\hat f(0)$ and $-f(0)$ respectively."
+            if a.count(BEFORE)!=1 or b.count(AFTER)!=1:
+                errors.append("Tate pole-boundary erratum not uniquely present")
+            a=a.replace(BEFORE,AFTER)
+
         af,bf=blocks(a,FORMAL),blocks(b,FORMAL)
         ae,be=blocks(a,("exercise","problem")),blocks(b,("exercise","problem"))
         av,bv=FIGURE.findall(a),FIGURE.findall(b)
