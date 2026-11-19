@@ -1,8 +1,8 @@
 # Volume 5 — Calculation
 
-**Score: not yet assigned.** Chapters 7–13, the blurb, `kdp.md`, the index beyond the lines named below, the sources, and About the Cover are still being read. The score, the severity counts, and the ledger section will be filled when that reading is finished. Chapters 1–6 were read line by line, including every exercise, hint, and solution. Chapter 4 includes `chapters/bbp-borwein.tex`.
+**Score: not yet assigned.** Chapters 8–13, the blurb, `kdp.md`, the index beyond the lines named below, the sources, and About the Cover are still being read. The score, the severity counts, and the ledger section will be filled when that reading is finished. Chapters 1–7 were read line by line, including every exercise, hint, and solution. Chapter 4 includes `chapters/bbp-borwein.tex`.
 
-**Counts so far.** 0 critical, 0 major, 6 minor. Issues `V5-001` through `V5-006`. No prerequisite issue in Chapters 1–6.
+**Counts so far.** 0 critical, 0 major, 7 minor. Issues `V5-001` through `V5-007`. No prerequisite issue in Chapters 1–7.
 
 **How this was read.** Book order in `volume5-calculation/main.tex`. Chapter 1 is `chapters/ch01-finite.tex`. The shared counter (theorem, proposition, lemma, corollary, definition, example; starred environments do not count) was counted in source order. Those numbers match the index lines for the fundamental theorem (1.2), falling powers (1.4), summation by parts (1.5), Abel summation (1.7), Dirichlet’s test (1.8), the sine sum (1.9), the Stirling recurrences (1.11), the change of basis (1.12), Bernoulli numbers (1.14), Faulhaber (1.15), and Newton (1.16).
 
@@ -18,6 +18,7 @@ Paths are relative to `volume5-calculation/`.
 | V5-004 | `chapters/ch03-series.tex:310` (`ex:rw03c`); the write-up is line 451 | exercise | minor | The exercise asks for \(0<\pi^2/6-5/4<1/2\). The solution concludes \(\le 1/2\). | For \(n\ge 3\) and \(x\in[n-1,n)\), \(x^{-2}>n^{-2}\), so each integral comparison is strict and the tail is strictly less than \(1/2\). The decimal \(0.3949\ldots\) also lies under \(1/2\), but the sentence that the exercise asked for is the strict one. |
 | V5-005 | `chapters/ch04-integrals.tex:313` (`pb:golomb`); also `chapters/ch09-complex.tex` (`pb:dedekind`) and `chapters/ch10-zeta.tex` (`pb:gausskuzmin`) | style | minor | The optional argument is `[Journey]`, which the exercise box prints in place of the stars. | The preface grades exercises \(\star\), \(\star\star\), and \(\star\star\star\). The word Journey is not one of those grades, and nothing in the preface says what it means. `pb:golomb` is the longest argument in Chapter 4. Give it \(\star\star\star\), and do the same for the other two, or say in the preface what Journey means. |
 | V5-006 | `chapters/index.tex` (no entry); the statements are `thm:bbp`, `prop:digits`, `conjectures:thm:borwein`, `conjectures:cor:borweindeficit` | reference | minor | The index lists Dirichlet’s integral as Theorem 4.11 and then jumps to Chapter 5. | Those four statements are the next four numbers, 4.12 through 4.15, on the shared counter. The bridge of Chapter 4 names the hexadecimal digits and the Borwein deficit. Add the four lines. |
+| V5-007 | `chapters/index.tex:39` (`prop:dct`) | reference | minor | “convolution theorem for the DFT, Proposition 7.12”. | Proposition 7.12 is the discrete cosine transform. The convolution theorem is Theorem 7.6, `thm:convolution`. The index already has that line. Rename 7.12 to the discrete cosine transform. |
 
 ## Verified correct
 
@@ -89,9 +90,17 @@ All thirteen exercises were read with their hints and solutions. Both Fourier pr
 
 The bridge names the discrete transform, which is the next chapter.
 
+### Chapter 7
+
+The DFT of \((1,2,3,4)\) is \(10\), \(-2+2i\), \(-2\), \(-2-2i\), and both sides of Parseval equal \(30\). Inversion, aliasing, and the error bound \(\pi^2 C/n^2\), using \(\sum(2l-1)^{-2}=\pi^2/8\). Convolution and polynomial multiplication when the length exceeds the degree sum. The butterfly and the operation counts: \(M(16)=32\) and \(S(16)=64\), and the recurrence checks at \(2,4,8,16\). The number-theoretic transform, including \(83969=41\cdot2^{11}+1\), the least prime above \(81000\) that is \(1\) modulo \(2048\), and \(998244353=119\cdot2^{23}+1\), for which \(3\) is a primitive root. The discrete cosine transform. The Gauss sum has modulus \(\sqrt p\), and it equals \(\sum\omega^{a^2}\).
+
+All sixteen exercises were read with their hints and solutions. For \(n=4\) the unitary DFT has eigenvalues \(1,1,-1,-i\). Karatsuba uses fewer coefficient multiplications through \(n=256\), and the FFT count is smaller from \(n=512\). The length-\(8\) transform modulo \(17\) recovers \(4+13X+22X^2+15X^3\) up to the coefficient \(22\equiv5\). Napoleon’s area difference, the Petr–Douglas–Neumann iteration, the Chung–Diaconis–Graham bound, Newman’s digit-sum counts, bent functions, and the Donoho–Stark uncertainty principle, with equality in the product of the supports. The index numbers 7.2 through 7.11 and 7.13 match the counter. Proposition 7.12 is V5-007.
+
+The bridge names the transform on the line, which is the next chapter.
+
 ## Not checked
 
-- Chapters 7 through 13, every later exercise, the preface’s remaining admitted external theorems, the blurb, `kdp.md`, the index beyond the lines named above, the sources list, and About the Cover.
+- Chapters 8 through 13, every later exercise, the preface’s remaining admitted external theorems, the blurb, `kdp.md`, the index beyond the lines named above, the sources list, and About the Cover.
 - The rust curve in `figures/ch01-rudin.tex`, which the Chapter 6 caption says reaches \(15.3\). The charcoal bound \(\sqrt{128}\) is the theorem. The random signs were not regenerated.
 - The ratio \(1.002\) at \(n=800\) in the note after `pb:squares`, and the constant \(1.2218\) in that note. The shape of the asymptotic was not recomputed.
 - A LaTeX build, so printed page numbers were not seen.
