@@ -1,8 +1,8 @@
 # Volume 5 — Calculation
 
-**Score: not yet assigned.** Chapters 6–13, the blurb, `kdp.md`, the index beyond the lines named below, the sources, and About the Cover are still being read. The score, the severity counts, and the ledger section will be filled when that reading is finished. Chapters 1–5 were read line by line, including every exercise, hint, and solution. Chapter 4 includes `chapters/bbp-borwein.tex`.
+**Score: not yet assigned.** Chapters 7–13, the blurb, `kdp.md`, the index beyond the lines named below, the sources, and About the Cover are still being read. The score, the severity counts, and the ledger section will be filled when that reading is finished. Chapters 1–6 were read line by line, including every exercise, hint, and solution. Chapter 4 includes `chapters/bbp-borwein.tex`.
 
-**Counts so far.** 0 critical, 0 major, 6 minor. Issues `V5-001` through `V5-006`. No prerequisite issue in Chapters 1–5.
+**Counts so far.** 0 critical, 0 major, 6 minor. Issues `V5-001` through `V5-006`. No prerequisite issue in Chapters 1–6.
 
 **How this was read.** Book order in `volume5-calculation/main.tex`. Chapter 1 is `chapters/ch01-finite.tex`. The shared counter (theorem, proposition, lemma, corollary, definition, example; starred environments do not count) was counted in source order. Those numbers match the index lines for the fundamental theorem (1.2), falling powers (1.4), summation by parts (1.5), Abel summation (1.7), Dirichlet’s test (1.8), the sine sum (1.9), the Stirling recurrences (1.11), the change of basis (1.12), Bernoulli numbers (1.14), Faulhaber (1.15), and Newton (1.16).
 
@@ -81,10 +81,18 @@ All thirty-one exercises were read with their hints and solutions. Making one eu
 
 The bridge names infinite products, which are the next chapter.
 
+### Chapter 6
+
+Orthonormality of \(e^{int}\), best approximation, Bessel, and Riemann–Lebesgue for piecewise continuous functions. The Dirichlet kernel and Dirichlet’s theorem for piecewise \(C^1\) functions, including the sawtooth \(\sum\sin(nx)/n=(\pi-x)/2\) on \((0,2\pi)\). The opening partial sums were recomputed: ten terms give \(1.1245\), a hundred give \(1.0604\), a thousand give \(1.0707\), and \((\pi-1)/2=1.0708\). Fejér’s kernel and uniform convergence of the means, then Weierstrass by Chebyshev polynomials. Parseval, including the approximation of a piecewise continuous function by a continuous one. The Gibbs limit is \((2/\pi)\operatorname{Si}(\pi)=1.17898\ldots\), about \(9\%\) of a jump of height \(2\); the sawtooth overshoot is \(\operatorname{Si}(\pi)-\pi/2\approx 0.281\), and \(\frac1\pi\operatorname{Si}(\pi)-\frac12\approx 0.0895\). Weyl’s criterion and equidistribution of \(n\alpha\). Among \(n=1,\ldots,20\), exactly ten fractional parts of \(n(\sqrt5-1)/2\) lie in \([0,1/2)\), and \(\{n^2/5\}\) lands on \(0\), \(1/5\), \(4/5\) with \(4\), \(8\), \(8\) hits. Inversion on \(\Z^d\). The return-probability integral is the one Volume 4, Chapter 8, derives and uses for Pólya’s theorem. Hurwitz’s inequality \(4\pi A\le L^2\), with equality only for a circle, taking the shoelace integral as the definition of area.
+
+All thirteen exercises were read with their hints and solutions. Both Fourier proofs of \(\zeta(2)\), and \(\zeta(4)=\pi^4/90\). Absolute convergence of the coefficients of a continuous piecewise \(C^1\) function, the heat equation, and Wirtinger, with equality for \(a\cos x+b\sin x\). Benford: about \(30.1\%\) of the powers of \(2\) start with \(1\), and about \(5.8\%\) with \(7\). Fejér’s continuous function with a divergent series at \(0\). The random-sign bound, using Hoeffding from Volume 4, Chapter 4. Rudin–Shapiro: \(|P_k|\le\sqrt{2^{k+1}}\), and \(\sqrt{128}\approx 11.31\). Siegel’s Fourier proof of Minkowski, admitting the volume of a convex set; that admission is the one the preface names, and Volume 7’s index lists Lebesgue measure as Theorem 7.11. The square-wave values \(4/\pi\), \(8/(3\pi)\), and \(52/(15\pi)\). The sawtooth energy \(\pi^2/12\), and \(5269/7200\). The geometric sum of ten powers of \(e^{2\pi i\sqrt2}\) has modulus \(0.448\), under the bound \(1.037\). The index numbers 6.2 through 6.5, 6.8 through 6.15, and 6.17 match the counter.
+
+The bridge names the discrete transform, which is the next chapter.
+
 ## Not checked
 
-- Chapters 6 through 13, every later exercise, the preface’s remaining admitted external theorems, the blurb, `kdp.md`, the index beyond the lines named above, the sources list, and About the Cover.
+- Chapters 7 through 13, every later exercise, the preface’s remaining admitted external theorems, the blurb, `kdp.md`, the index beyond the lines named above, the sources list, and About the Cover.
+- The rust curve in `figures/ch01-rudin.tex`, which the Chapter 6 caption says reaches \(15.3\). The charcoal bound \(\sqrt{128}\) is the theorem. The random signs were not regenerated.
 - The ratio \(1.002\) at \(n=800\) in the note after `pb:squares`, and the constant \(1.2218\) in that note. The shape of the asymptotic was not recomputed.
 - A LaTeX build, so printed page numbers were not seen.
 - The 1687 portrait attribution, beyond the agreement of the caption with `photos/CREDITS.md`.
-- Whether Chapter 6’s proof of the sawtooth identity is complete. The statement that Chapter 1 points to is in Example `ex:sawtooth`.
