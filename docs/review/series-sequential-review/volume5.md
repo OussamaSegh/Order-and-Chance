@@ -1,8 +1,8 @@
 # Volume 5 — Calculation
 
-**Score: not yet assigned.** Chapters 8–13, the blurb, `kdp.md`, the index beyond the lines named below, the sources, and About the Cover are still being read. The score, the severity counts, and the ledger section will be filled when that reading is finished. Chapters 1–7 were read line by line, including every exercise, hint, and solution. Chapter 4 includes `chapters/bbp-borwein.tex`.
+**Score: not yet assigned.** Chapters 9–13, the blurb, `kdp.md`, the index beyond the lines named below, the sources, and About the Cover are still being read. The score, the severity counts, and the ledger section will be filled when that reading is finished. Chapters 1–8 were read line by line, including every exercise, hint, and solution. Chapter 4 includes `chapters/bbp-borwein.tex`.
 
-**Counts so far.** 0 critical, 0 major, 7 minor. Issues `V5-001` through `V5-007`. No prerequisite issue in Chapters 1–7.
+**Counts so far.** 0 critical, 0 major, 9 minor. Issues `V5-001` through `V5-009`. No prerequisite issue in Chapters 1–8.
 
 **How this was read.** Book order in `volume5-calculation/main.tex`. Chapter 1 is `chapters/ch01-finite.tex`. The shared counter (theorem, proposition, lemma, corollary, definition, example; starred environments do not count) was counted in source order. Those numbers match the index lines for the fundamental theorem (1.2), falling powers (1.4), summation by parts (1.5), Abel summation (1.7), Dirichlet’s test (1.8), the sine sum (1.9), the Stirling recurrences (1.11), the change of basis (1.12), Bernoulli numbers (1.14), Faulhaber (1.15), and Newton (1.16).
 
@@ -19,6 +19,8 @@ Paths are relative to `volume5-calculation/`.
 | V5-005 | `chapters/ch04-integrals.tex:313` (`pb:golomb`); also `chapters/ch09-complex.tex` (`pb:dedekind`) and `chapters/ch10-zeta.tex` (`pb:gausskuzmin`) | style | minor | The optional argument is `[Journey]`, which the exercise box prints in place of the stars. | The preface grades exercises \(\star\), \(\star\star\), and \(\star\star\star\). The word Journey is not one of those grades, and nothing in the preface says what it means. `pb:golomb` is the longest argument in Chapter 4. Give it \(\star\star\star\), and do the same for the other two, or say in the preface what Journey means. |
 | V5-006 | `chapters/index.tex` (no entry); the statements are `thm:bbp`, `prop:digits`, `conjectures:thm:borwein`, `conjectures:cor:borweindeficit` | reference | minor | The index lists Dirichlet’s integral as Theorem 4.11 and then jumps to Chapter 5. | Those four statements are the next four numbers, 4.12 through 4.15, on the shared counter. The bridge of Chapter 4 names the hexadecimal digits and the Borwein deficit. Add the four lines. |
 | V5-007 | `chapters/index.tex:39` (`prop:dct`) | reference | minor | “convolution theorem for the DFT, Proposition 7.12”. | Proposition 7.12 is the discrete cosine transform. The convolution theorem is Theorem 7.6, `thm:convolution`. The index already has that line. Rename 7.12 to the discrete cosine transform. |
+| V5-008 | `chapters/ch08-transform.tex:4` | math | minor | “The sum begins \(10.000000\ldots\), and the first digit that is not zero sits \(135\) places after the decimal point.” | The excess is \(20e^{-100\pi}\approx 7.3\times 10^{-136}\), so that digit is the 136th. The close of the chapter already writes \(\approx 7\cdot 10^{-136}\). |
+| V5-009 | `chapters/index.tex:153` | reference | minor | “Theorem again, Corollary 8.12”, with no page link. | Corollary 8.12 is the second proof of Euler’s partial fractions, and its title in the source is “Theorem~\ref{thm:cot} again”. The index item dropped the reference and the `\ocindexpage`. Name it as the cotangent expansion again, and point at the corollary. |
 
 ## Verified correct
 
@@ -98,9 +100,17 @@ All sixteen exercises were read with their hints and solutions. For \(n=4\) the 
 
 The bridge names the transform on the line, which is the next chapter.
 
+### Chapter 8
+
+The unitary convention \(\hat f(\xi)=\int f(x)e^{-2\pi ix\xi}\,dx\) is the one Volume 15 later quotes as Theorem 8.6. The Gaussian \(e^{-\pi x^2}\) is its own transform, using \(\int e^{-\pi x^2}\,dx=1\). Inversion and Plancherel, with Fubini on the plane reduced to the rectangle theorem. The heat kernel has integral 1 and transform \(e^{-4\pi^2 t\xi^2}\). Poisson summation under the decay \((1+|x|)^{-2}\). The theta relation \(\vartheta(1/t)=\sqrt t\,\vartheta(t)\). At \(t=1/2\) both combs sum to about \(1.4195\). The second proof of the cotangent expansion, apart from the index line V5-009. The Fresnel evaluation and Gauss’s sign: \(G(4)=2+2i\), \(G(5)=\sqrt5\), \(G(1)=1\), \(G(2)=0\). Shannon at rate \(2W\), and the compact-disc count \(44100\) against a \(20\) kHz band. Heisenberg, with equality for the Gaussian: both sides equal \(1/(32\pi^2)\).
+
+All nine exercises were read with their hints and solutions. The Lorentzian pair, the odd Hermite function, \(\sum 1/(n^2+a^2)=(\pi/a)\coth(\pi a)\) and the limit \(\zeta(2)\), the scaled Poisson formula, and quadratic reciprocity from the Gauss sum. \(\vartheta(1/4)=2+4e^{-4\pi}+\varepsilon\) with \(0<\varepsilon<10^{-21}\), and \(2+4e^{-4\pi}=2.00001395\). The index numbers 8.2 through 8.11 and 8.13 through 8.16 match the counter. Corollary 8.12 is V5-009. The opening digit count is V5-008.
+
+The bridge names a real integral that becomes a residue, which is the next chapter.
+
 ## Not checked
 
-- Chapters 8 through 13, every later exercise, the preface’s remaining admitted external theorems, the blurb, `kdp.md`, the index beyond the lines named above, the sources list, and About the Cover.
+- Chapters 9 through 13, every later exercise, the preface’s remaining admitted external theorems, the blurb, `kdp.md`, the index beyond the lines named above, the sources list, and About the Cover.
 - The rust curve in `figures/ch01-rudin.tex`, which the Chapter 6 caption says reaches \(15.3\). The charcoal bound \(\sqrt{128}\) is the theorem. The random signs were not regenerated.
 - The ratio \(1.002\) at \(n=800\) in the note after `pb:squares`, and the constant \(1.2218\) in that note. The shape of the asymptotic was not recomputed.
 - A LaTeX build, so printed page numbers were not seen.
