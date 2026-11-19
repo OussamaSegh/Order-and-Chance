@@ -1,8 +1,8 @@
 # Volume 5 — Calculation
 
-**Score: not yet assigned.** Chapter 2 and Chapters 5–13, the blurb, `kdp.md`, the index beyond the lines named below, the sources, and About the Cover are still being read. The score, the severity counts, and the ledger section will be filled when that reading is finished. Chapters 1, 3, and 4 were read line by line, including every exercise, hint, and solution. Chapter 4 includes `chapters/bbp-borwein.tex`.
+**Score: not yet assigned.** Chapter 2 and Chapters 6–13, the blurb, `kdp.md`, the index beyond the lines named below, the sources, and About the Cover are still being read. The score, the severity counts, and the ledger section will be filled when that reading is finished. Chapters 1, 3, 4, and 5 were read line by line, including every exercise, hint, and solution. Chapter 4 includes `chapters/bbp-borwein.tex`.
 
-**Counts so far.** 0 critical, 0 major, 6 minor. Issues `V5-001` through `V5-006`. No prerequisite issue in Chapters 1, 3, or 4.
+**Counts so far.** 0 critical, 0 major, 6 minor. Issues `V5-001` through `V5-006`. No prerequisite issue in Chapters 1, 3, 4, or 5.
 
 **How this was read.** Book order in `volume5-calculation/main.tex`. Chapter 1 is `chapters/ch01-finite.tex`. The shared counter (theorem, proposition, lemma, corollary, definition, example; starred environments do not count) was counted in source order. Those numbers match the index lines for the fundamental theorem (1.2), falling powers (1.4), summation by parts (1.5), Abel summation (1.7), Dirichlet’s test (1.8), the sine sum (1.9), the Stirling recurrences (1.11), the change of basis (1.12), Bernoulli numbers (1.14), Faulhaber (1.15), and Newton (1.16).
 
@@ -65,9 +65,17 @@ All fourteen exercises were read with their hints and solutions. The bump \(n^2x
 
 The bridge names the Gamma function, which is the next chapter.
 
+### Chapter 5
+
+The integral converges for \(x>0\), \(\Gamma(1)=1\), and \(\Gamma(x+1)=x\Gamma(x)\). The poles at the non-positive integers are simple, with the residue factor \((-1)^n/n!\). Log-convexity of an integral of exponentials, by the weighted AM–GM on compact pieces. Bohr–Mollerup, including the chord comparison and Gauss’s product for every \(x>0\). Weierstrass’s product, and the check at \(x=1\). Stirling’s formula for real \(x\), using Volume 1, Theorem `thm:stirling` in the calculus chapter, numbered 8; the ratio \(\Gamma(n+t)/(\Gamma(n)n^t)\) is squeezed to 1 uniformly for \(t\in[0,1)\). The Beta recurrence and \(B(x,y)=\Gamma(x)\Gamma(y)/\Gamma(x+y)\) by uniqueness, without a double integral. \(\Gamma(1/2)=\sqrt\pi\), and the substitution \(t=u^2\) recovers the Gaussian integral. The reflection formula from Gauss’s product and the sine product. Duplication by the same three checks. The ball volumes: \(V_5=8\pi^2/15\approx 5.2638\), \(V_4=\pi^2/2\), \(V_6=\pi^3/6\), \(V_5/V_4=16/15\), \(V_6/V_5=5\pi/16<1\), and \(1-(0.9)^{20}\approx 0.878\). The minimum on the positive axis is the standard point \(x_0\approx 1.4616\), \(\Gamma(x_0)\approx 0.8856\). The six bars in `ch05-rewrite-balls.tex` are at heights \(0.62\) times the printed volumes, for dimensions \(1,2,3,5,10,20\).
+
+All fifteen exercises were read with their hints and solutions. Half-integer Gamma, including \(\Gamma(-1/2)=-2\sqrt\pi\) and \(\Gamma(-3/2)=\frac43\sqrt\pi\). \(\int_0^\infty e^{-x^p}\,dx=\Gamma(1+1/p)\). The Wallis integrals as Beta values, and \(W_n=V_n/(2V_{n-1})\). The sphere areas \(S_1=2\pi\), \(S_2=4\pi\), and the maximum \(S_6=16\pi^3/15\approx 33.07\) in dimension 7; the neighbouring areas are about \(31.01\) and \(32.47\). The lemniscate integral equals \(\Gamma(1/4)^2/(4\sqrt{2\pi})\). Gauss’s multiplication formula, with the product of sines proved again from \(X^n-1\); that product is Volume 1, Chapter 5, the example in the complex-numbers chapter. \(\Gamma'(1)=-\gamma\). Nair’s bound \(d_n\ge 2^n\) for \(n\ge 7\), checked at \(n=7,8,9\), and \(\pi(n)\ge n\log 2/\log n\). The cycle factorisation: the exterior characters are the quoted Fulton–Harris fact, labelled as quoted, and the count is \(2(n-1)!/(n+1)\) for odd \(n\) and \(0\) for even \(n\), which is \(8\) at \(n=5\) and \(180\) at \(n=7\). For even \(n\) an \(n\)-cycle is an odd permutation. Dalzell’s integral equals \(22/7-\pi\), strictly between \(1/1260\) and \(1/630\). The sophomore’s dream, both series, and the tail after ten terms. The six short checks of Beta, reflection, the volumes, and \(B(x,x)\). The index numbers 5.2 through 5.8 and 5.10 through 5.15 match the counter. The preface’s Fulton–Harris admission is this exercise, and no theorem uses it.
+
+The bridge names a sum of sines, which is the next chapter.
+
 ## Not checked
 
-- Chapter 2, and Chapters 5 through 13, every later exercise, the preface’s remaining admitted external theorems, the blurb, `kdp.md`, the index beyond the lines named above, the sources list, and About the Cover.
+- Chapter 2, and Chapters 6 through 13, every later exercise, the preface’s remaining admitted external theorems, the blurb, `kdp.md`, the index beyond the lines named above, the sources list, and About the Cover.
 - A LaTeX build, so printed page numbers were not seen.
 - The 1687 portrait attribution, beyond the agreement of the caption with `photos/CREDITS.md`.
 - Whether Chapter 6’s proof of the sawtooth identity is complete. The statement that Chapter 1 points to is in Example `ex:sawtooth`.
