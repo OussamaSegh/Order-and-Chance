@@ -648,3 +648,221 @@ The shared counter numbers definitions, examples, propositions, lemmas, theorems
 - \(\log\) in the shuffle sentence of Chapter 4, and in `pb:conjugate`, is the natural logarithm. Volumes 1 and 2 write \(\ln\).
 - Appendix B’s Fourier transform has no factor \(1/\lvert G\rvert\) in the forward sum. Chapter 11 puts that factor in the forward transform. Both conventions are stated.
 - \(K_n\) is the complete graph in Appendix B, and \(K_k(t)\) is a Krawtchouk polynomial. The second always has an argument.
+
+## Volume 4
+
+Book order: preface, then Chapters 1–14 as numbered by `main.tex`, then Appendix B (`\appendix` and `\setcounter{chapter}{1}` before the chapter, so there is no Appendix A). File paths are under `volume4-chance/`. Proofs are supposed to use Volume 1 and earlier chapters of this volume. The preface says no proof cites a theorem of Volume 2 or Volume 3. Starred environments do not take a number. The shared counter is theorem, proposition, lemma, corollary, definition, example.
+
+### Preface (`chapters/preface.tex`)
+
+- No new theorem. Finite fair-coin strings, and \(P(n\text{ tails})=2^{-n}\). The infinite string is postponed to Chapter 1.
+
+### Chapter 1 — From Games to Probability Spaces (`chapters/ch01-counting.tex`)
+
+- Uniform on \([0,1)\): an interval \([c,d)\) has probability \(d-c\) — `def:uniform`, Definition 1.1.
+- Binary digits by doubling, dyadic convention ending in zeros — prose at line 45.
+- Digits are fair and mutually independent — `prop:bits`, Proposition 1.2.
+- Finite-bit event: a finite union of those cylinders — prose at line 80.
+- Outer content \(P^*\); almost surely means the exceptional set has outer content 0 — `def:outer`, Definition 1.3.
+- Countable subadditivity of outer content — `prop:subadd`, Proposition 1.4.
+- Dyadic outer content equals length; a countable set of points has outer content 0 — unnumbered `lemmax` after line 101.
+- Infinitely many digits equal to 0 and to 1, almost surely — `prop:infdigits`, Proposition 1.6.
+- First-head time \(T\), with \(P(T=k)=2^{-k}\) and \(\mathbb E[T]=2\) — prose at line 147.
+- Ballot theorem: strict lead throughout has probability \((a-b)/(a+b)\) — `thm:ballot`, Theorem 1.7.
+- Conditional sample spaces: at least one boy (\(1/3\)); at least one boy born on Tuesday (\(13/27\)); the \(n\)-door host — prose at line 200.
+- Catalan count \(C_n=\binom{2n}{n}/(n+1)\) from the ballot theorem — solution of `ex:catalan`.
+- Secretary thresholds, \(p_r\to 1/e\) along \(r/n\to 1/e\), for this family of strategies — solution of `ex:secretary`.
+
+### Chapter 2 — Random Variables and Their Laws (`chapters/ch02-discrete.tex`)
+
+- Law on a countable space; absolute convergence permits rearranging \(\mathbb E[X]=\sum x\,P(X=x)\) — prose at line 25.
+- Variance when \(\mathbb E[X^2]<\infty\), and covariance — unnumbered `definitionx` at line 51, and prose at line 61. The factor 2 in the monotone case is V4-013.
+- Poisson limit of binomial laws, for each fixed \(k\) — `thm:poissonlimit`, Theorem 2.1.
+- If \(np_n\to 0\), the count tends to the point mass at 0 — prose at line 110.
+- Integral bounds on \(-\ln(1-x)\) — `ex:rare`, Example 2.2.
+- Fixed-point counts tend to Poisson\((1)\) — `prop:fixedpoisson`, Proposition 2.3.
+- \(\mathbb E[X_k]=1/k\) and \(\mathbb E[C_n]=H_n\) — `prop:cycles`, Proposition 2.4.
+- Coupon collector \(\mathbb E[T]=nH_n\sim n\ln n\) — `thm:coupon`, Theorem 2.5.
+- Geometric variance \((1-p)/p^2\) — `lem:geovar`, Lemma 2.6.
+- Coupon stages are independent and \(\operatorname{Var}T=n^2\sum k^{-2}-nH_n<2n^2\) — `prop:couponvar`, Proposition 2.7.
+- Empty boxes after \(m\) throws — `prop:empty`, Proposition 2.8.
+- Records have mean \(H_n\) — solution of `ex:records`. Long-cycle probability \(H_{2n}-H_n\to\ln 2\) — solution of `ex:prisoners`.
+
+### Chapter 3 — Generating Functions and Random Families (`chapters/ch03-generating.tex`)
+
+- Probability generating function \(f(s)=\mathbb E[s^X]\) on \([0,1]\), with \(0^0=1\) — prose at line 33.
+- \(p_k=f^{(k)}(0)/k!\) — `prop:pgfcoeff`, Proposition 3.1.
+- \(\lim_{s\uparrow 1}f'(s)=\mathbb E[X]\in[0,\infty]\) — `prop:pgfmean`, Proposition 3.2.
+- Variance from \(f''(1)\) when both derivatives are finite — `prop:pgfvar`, Proposition 3.3.
+- PGFs of the Bernoulli, binomial, and Poisson laws — `ex:pgfexamples`, Example 3.4.
+- PGF of an independent sum is the product — `prop:pgfsum`, Proposition 3.5.
+- Random sum, PGF \(g(f(s))\), on finite records — `prop:randomsum`, Proposition 3.6.
+- Generation means \(\mathbb E[Z_n]=m^n\) — `prop:genmean`, Proposition 3.7.
+- Extinction probability is the smallest root of \(s=f(s)\) in \([0,1]\) — `thm:extinction`, Theorem 3.8. The events \(D_j\) in that proof are first-extinction generations, not derangement counts.
+- Dyck generating function \(c(x)=(1-\sqrt{1-4x})/(2x)\) — prose at line 296. The count is Chapter 1’s `ex:catalan`.
+- \(\sum\binom{2n}{n}x^n=(1-4x)^{-1/2}\) for \(|x|<1/4\) — solution of `ex:binseries`.
+
+### Chapter 4 — Concentration and the Laws of Large Numbers (`chapters/ch04-inequalities.tex`)
+
+- Convergence in probability, as the name of the weak-law limit — line 16.
+- Hoeffding’s lemma — `lem:hoeffding`, Lemma 4.1. Hoeffding’s inequality — `thm:hoeffding`, Theorem 4.2.
+- Kolmogorov’s inequality — `thm:kolmogorov`, Theorem 4.3.
+- Borel–Cantelli, both halves, for finite unions of digit intervals — `thm:bc`, Theorem 4.4.
+- Strong law for bounded variables — `thm:sllnbound`, Theorem 4.5.
+- Bernstein polynomials, and Weierstrass on \([0,1]\) — `thm:weierstrass`, Theorem 4.6.
+
+### Chapter 5 — Continuous Chance (`chapters/ch05-continuous.tex`, with `ch05-geometric.tex`)
+
+- Distribution function \(F(x)=P(X\le x)\) — line 20. Density — `def:density`.
+- Standard normal density \(\phi\), mean 0, variance 1, and the Gaussian tail — `prop:gausstail`.
+- Expectation of a continuous function of a density — `prop:densitymean`.
+- Exponential law as \(-\ln U\) — line 129.
+- Continuous Fubini on a compact rectangle — `prop:fubini`. Plane uniform continuity is V4-014.
+- Disk integral by cutoffs, and the polar-rectangle identity — `prop:polar`. The identity is V4-002.
+- Independent uniforms from one bit string — `prop:manyuniforms`.
+- Joint density of \((\min,\max)\) of two uniforms — `prop:orderpair`.
+- Inverse of a continuous strictly increasing distribution function, and the generalised inverse — `prop:inverse` and the prose at line 295.
+- Dominated convergence for continuous integrands — `thm:dct`.
+- Box–Muller — `thm:boxmuller`, Theorem 5.10. The change of variables is V4-002.
+- Bertrand’s three chord models, probabilities \(1/3\), \(1/2\), \(1/4\) — `thm:bertrand`. The inner-disk area sentence is V4-015.
+- Buffon’s needle, probability \(2\ell/(\pi d)\) for \(\ell\le d\) — `thm:buffon`, Theorem 5.12.
+
+### Chapter 6 — Why the Bell Curve Appears (`chapters/ch06-clt.tex`)
+
+- Almost-sure convergence, convergence in probability, convergence in distribution — `def:modes`, Definition 6.1.
+- Comparisons of the three modes — `prop:modes`, Proposition 6.2. The open-set decomposition is V4-003.
+- Expectations of bounded uniformly continuous test functions, as grid sums — `prop:cdf`, Proposition 6.3. Countable jumps are V4-016.
+- Product of independent bounded monotone factors, at most four in the statement; the proof’s finite-\(r\) identity is the one used later — unnumbered `prop:indepproduct`.
+- Strong law under a fourth moment — `thm:slln4`, Theorem 6.4.
+- Glivenko–Cantelli — `thm:gc`, Theorem 6.5.
+- Characteristic function — sentence label `def:charfn`, before Theorem 6.8. Not a numbered definition.
+- Differentiation under the integral — `lem:diffint`, Lemma 6.6.
+- Characteristic functions of the coin, the normal, and a density — `prop:cfexamples`, Proposition 6.7.
+- Convergence in distribution passes to characteristic functions — unnumbered `thm:cfconv`.
+- Uniqueness and inversion — `thm:inversion`, Theorem 6.8. The indicator comparison is V4-004. The smoothing sentence is V4-017.
+- Sum of independent normals — `lem:normalsum`, Lemma 6.9.
+- Lindeberg, smooth-test form — `thm:lindeberg`, Theorem 6.10.
+- Classical central limit theorem — `cor:clt`, Corollary 6.11.
+- Local de Moivre–Laplace — `thm:local`, Theorem 6.12.
+- Cycle count as a sum of independent Bernoulli summands — `prop:cyclebern`, Proposition 6.13.
+- Gaussian vectors — `thm:gaussvec`, Theorem 6.14. The rotation step is V4-005.
+
+### Chapter 7 — Entropy, Codes and Typical Sequences (`chapters/ch07-entropy.tex`)
+
+- Surprise and Shannon entropy \(H(X)\) — opening section.
+- Gibbs: \(H(X)\le\log_2 m\) — `prop:gibbs`, Proposition 7.1.
+- Typical set — `thm:aep`, Theorem 7.2.
+- Kraft — `thm:kraft`, Theorem 7.3. Shannon’s code — `thm:shannon`, Theorem 7.4.
+- Chain rule — `prop:chain`, Proposition 7.5.
+- Relative entropy — `thm:kl`, Theorem 7.6. Mutual information — `thm:mutual`, Theorem 7.7.
+- Huffman merge — `thm:huffman`, Theorem 7.8. The tie-break slogan in the example is V4-019.
+- Block Shannon code \(H\le L_n/n<H+1/n\) — prose in “Coding long blocks”.
+
+### Chapter 8 — Random Walks (`chapters/ch07-walks.tex`)
+
+- Simple symmetric random walk on \(\Z\), from fair bits — opening.
+- Reflection — `thm:rwreflect`, Theorem 8.1.
+- Gambler’s ruin — `thm:ruin`, Theorem 8.2. Duration — `prop:duration`, Proposition 8.3.
+- Expected number of visits — `prop:visits`, Proposition 8.4.
+- Pólya: recurrent in dimensions 1 and 2, transient for \(d\ge 3\) — `thm:polya`, Theorem 8.5. The comparison sentence is V4-018.
+- Last visit and the discrete arcsine law — `thm:arcsine`, Theorem 8.6.
+- Harmonic hitting probabilities — `prop:harmonic`, Proposition 8.7.
+- Arcsine limit — `thm:arcsinelimit`, Theorem 8.8.
+- Central binomial lower bound — `lem:centralbin`, Lemma 8.9.
+- Papadimitriou: expected time at most \(n^2\) on a satisfiable 2-SAT formula — `thm:twosat`, Theorem 8.10.
+
+### Chapter 9 — Markov Chains and Mixing (`chapters/ch08-markov.tex`)
+
+- Finite transition matrix and the chain, from independent uniforms — opening.
+- One period on an irreducible chain — `lem:period`, Lemma 9.1.
+- A stationary distribution exists, and is unique if the chain is irreducible — `thm:stationary`, Theorem 9.2. Proved here. Not a citation of Volume 3.
+- Total variation, and the coupling inequality — `lem:coupling`, Lemma 9.3.
+- Convergence for irreducible aperiodic finite chains — `thm:ergodic`, Theorem 9.4.
+- Top-to-random: uniform at time \(\tau\), with \(\mathbb E[\tau]=nH_n\) and distance at most \(e^{-c}\) — `thm:top`, Theorem 9.6.
+- Total variation does not increase — `lem:tvcontract`, Lemma 9.7.
+- \(a\)-shuffle — `def:ashuffle`, Definition 9.8.
+- Bayer–Diaconis formula — `thm:bayerdiaconis`, Theorem 9.9. The bijection is V4-007.
+- An \(a\)-shuffle followed by a \(b\)-shuffle is an \(ab\)-shuffle — `prop:rifflecompose`, Proposition 9.10. The inverse model is V4-008.
+- Random-transposition lower bound — `prop:untouched`, Proposition 9.11. The matching upper bound is Volume 11, not a premise.
+
+### Chapter 10 — The Poisson Clock (`chapters/ch09-poisson.tex`)
+
+- Memorylessness — `prop:memoryless`, Proposition 10.1.
+- Joint density of partial sums of exponentials — `lem:gamma`. The passage to region probabilities is V4-009.
+- Poisson process — `def:pp`, Definition 10.3.
+- Counts are Poisson, and conditional uniformity — `thm:uniform`.
+- Independent colouring of a Poisson number of points — `lem:colouring`.
+- Independent increments — `thm:increments`. Thinning — `thm:thinning`. Superposition — `thm:superpose`.
+- Residual life, the one-sided gap, and two competing clocks — `prop:residual`, `prop:onesidedgap`, `prop:race`.
+- Le Cam’s inequality — `thm:lecam`.
+- M/M/1 stationary distribution when \(\lambda<\mu\) — `thm:mm1`.
+
+### Chapter 11 — Martingales and Fair Games (`chapters/ch10-martingales.tex`)
+
+- Conditional expectation on a finite partition — `def:condexp`.
+- Martingale — `def:mart`, Definition 11.2. Stopping time — `def:stopping`.
+- Optional stopping at a bounded time — `thm:os`, Theorem 11.4.
+- Two further sufficient conditions — `thm:os2`, Theorem 11.5.
+- Upcrossings — `thm:upcross`.
+- Orthogonal increments and the square-mean Cauchy criterion — `prop:orthinc`, `prop:l2cauchy`.
+- Doob’s \(L^2\) inequality — `thm:doob`. Azuma — `thm:azuma`.
+- Waiting time for a word — `thm:monkey`.
+- \(L^2\) convergence — `thm:L2conv`, Theorem 11.12.
+- Pólya’s urn — `thm:polyaurn`, Theorem 11.13.
+- Almost-sure convergence — `thm:asconv`.
+
+### Chapter 12 — Brownian Motion (`chapters/ch11-brownian.tex`)
+
+- Brownian motion: continuous paths, independent Gaussian increments — `def:bm`, Definition 12.1.
+- Covariance \(\min(s,t)\) when the finite-dimensional distributions are centred Gaussian — `prop:bmgauss`.
+- Dyadic increments — `lem:levylevel`, Lemma 12.3.
+- Existence on \([0,1]\) by piecewise-linear interpolation, then on \([0,\infty)\) by independent copies — `thm:levy`, Theorem 12.4. Second moments and indicator events are V4-010.
+- Scaling — `prop:scaling`. Quadratic variation — `thm:qv`.
+- Dyadic expansion, not an Itô integral — `thm:dyadicito`.
+- Nowhere differentiable — `thm:pwz`.
+- Finite-observation martingale identity — `prop:bmmart`.
+- Restart at a hitting time — `prop:restart`. The monotone-limit sentence is V4-010.
+- Reflection — `thm:reflection`, Theorem 12.12.
+- Square martingale at finitely many observation times — `prop:bmsquare`. The unbounded product is V4-010.
+
+### Chapter 13 — The Probabilistic Method (`chapters/ch12-method.tex`)
+
+- A mean below 1 forces a colouring with no monochromatic \(K_k\); \(R(k,k)>2^{k/2}\) — `thm:erdos`, Theorem 13.1. The symbol is V4-020.
+- Alteration — `thm:alter`, Theorem 13.2.
+- Symmetric local lemma — `thm:lll`, Theorem 13.3.
+- Second-moment bound — `prop:second`, Proposition 13.4.
+- Euler’s formula and \(e\le 3v-6\) — `prop:euler`, Proposition 13.5. The proof is V4-001.
+- Crossing number \(\operatorname{cr}(G)\ge m-3n\), and \(m^3/(64n^2)\) when \(m\ge 4n\) — `prop:crossing`, Proposition 13.6. The deletion half is V4-001. The sampling half is complete once that bound is granted.
+
+### Chapter 14 — Random Graphs and the Search for Structure (`chapters/ch14-graphs.tex`)
+
+- \(G(n,p)\), independent edges — opening.
+- Subcritical components are \(O(\log n)\) with high probability — `thm:subcrit`, Theorem 14.1. The exploration is the proof. The Prüfer count is V4-021. No supercritical giant-component theorem.
+- Triangles at \(p=c/n\) — `thm:triangles`, Theorem 14.2.
+- One vertex has a linear component with probability bounded below, for \(c>1\) — solution of `ex:giant`. Not a high-probability claim.
+- Handoff to Volume 5, *Calculation: From Formula to Insight* — last paragraph. No new theorem.
+
+### Appendix B — Extremal Problems and Ramsey Theory (`chapters/extremal.tex`)
+
+- Turán — `thm:turan`, Theorem B.1.
+- Ramsey numbers \(R(s,t)\), with \(R(3,3)=6\) — `thm:ramsey`, Theorem B.2. The symbol was already used in Chapter 13 (V4-020).
+- Schur — `thm:schur`, Theorem B.3.
+- Sunflower — `thm:sunflower`, Theorem B.4.
+- Erdős–Ko–Rado — `thm:ekr`, Theorem B.5.
+- Two colours, arithmetic progression of length three, on \(\{1,\ldots,9\}\) and not on \(\{1,\ldots,8\}\) — `thm:vdw3`, Theorem B.6.
+- Van der Waerden — `thm:vdw`, Theorem B.7. The stretch is V4-011. The passage to arbitrarily long progressions in a finite colouring of the positive integers is complete.
+
+### Notation clashes with Volumes 1–3, and inside Volume 4
+
+- \(\pi\) is the circle constant from Volume 1. In Chapter 2 it is also a permutation, written \(\pi(k)\). Volume 2 uses \(\pi(x)\) for the prime-counting function. From Chapter 9, \(\pi\) is a stationary distribution.
+- \(D_n\) in Chapter 2 is the derangement count, as in Volume 1. Volume 3 uses \(D_n\) for the dihedral group. Inside the extinction proof, \(D_j\) is the event that extinction occurs first at generation \(j\).
+- \(H(X)\) is Shannon entropy from Chapter 7. \(H_n\) remains the harmonic number.
+- \(\phi\) is the standard normal density from Chapter 5. In the Chernoff example it is a local exponent. In the \(d\ge 3\) half of Pólya’s theorem it is the step average \(\phi(\theta)=d^{-1}\sum_j\cos\theta_j\). Volume 1 uses \(\varphi\) for the golden ratio. Volumes 2 and 3 use \(\varphi(n)\) for Euler’s totient.
+- \(\Phi(x)=\int_{-\infty}^x\phi\) is the standard normal distribution function. Volume 1 and Volume 3 use \(\Phi_n\) for the cyclotomic polynomial.
+- \(\chi_\eta\) is a radial cutoff in `prop:polar`. Volume 2 uses \(\chi\) for a Dirichlet character.
+- \(D(p\|q)\) is relative entropy from Theorem 7.6. The same letter is a sum of squared ranges in Hoeffding’s proof, and a chord distance in Bertrand’s paradox. Volume 1’s \(D_n\) does not appear as a derangement count after Chapter 2.
+- \(\log\) in the subcritical theorem is \(A\log n\); the proof writes \(\ln\). Entropy writes \(\log_2\). Any fixed base is absorbed into \(A(c)\).
+- \(K_n\) in Goodman’s exercise is the complete graph, as in Volume 3, Appendix B. It is not a Krawtchouk polynomial.
+- \(N(t)\) is the Poisson counting process. \(N(0,h)\) is a normal law of variance \(h\).
+- In Chapter 13 the letter \(e\) is the base of the exponential in the local lemma and, two sections later, the number of edges in Euler’s formula.
+- \(f\) is the probability of ever returning, in Chapter 8; the number of faces, in Euler’s formula; and the focus of a progression, in Appendix B. They are not in the same argument.
