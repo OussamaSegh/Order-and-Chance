@@ -246,3 +246,144 @@ No earlier volume, so no clash with a previous book. Inside this volume:
 - \(\lfloor a/b\rfloor\) in Chapter 1 is the quotient from the division algorithm. The real floor is `prop:floor` in Chapter 3. They agree when both apply.
 - The exponent test for \(\operatorname{lcm}\) is printed as a finished fact at `ch01-sums.tex:651` and is not a proved lemma (V1-001). Later volumes should not cite it as proved in Volume 1 until that gap is filled.
 - The two cosine leastness sentences are used from Chapter 3 on and are not in the preface list (V1-008). Later volumes that quote `prop:sincmp` or `prop:expform` inherit that hypothesis.
+
+## Volume 2
+
+Book order in `volume2-integers/main.tex`: preface, then Chapters 1–7, then Diophantine equations, then continued fractions, then the Gaussian and Eisenstein integers, then characters. File paths are under `volume2-integers/`. A forward pointer is not an introduction. Binet’s formula is still only the solution of Volume 1’s `ex:fibmat` (V2-001).
+
+### Chapter 1 — Divisibility (`chapters/ch01-divisibility.tex`)
+
+- \(a\mid b\), units \(\pm1\), prime, remainder in \([0,b)\) — `sym:divides`, line 31. Euclidean division — `thm:div`, line 36.
+- Additive subgroup of \((\Z,+)\); every subgroup is \(d\Z\) — `prop:subgroups`, line 73. The inclusion \(d\Z\subset H\) is V2-004.
+- \(\gcd(a,b)\) as the positive generator of \(a\Z+b\Z\); \(\gcd(0,0)=0\); \(\operatorname{lcm}(a,0)=0\) — `sym:gcd`, line 81.
+- Bézout — `thm:bezout`, line 95. Euclid’s lemma — `thm:gauss`, line 106.
+- Unique factorisation — `thm:fta`, line 117.
+- \(v_p\) on \(\Z\setminus\{0\}\) and on \(\Q^\times\); \(\gcd\) and \(\operatorname{lcm}\) by min and max; \(d\mid n\) iff \(v_p(d)\le v_p(n)\) — `sym:valuation`, `sym:lcm`, lines 154–164. This is the exponent test missing from Volume 1.
+- Legendre’s formula \(v_p(n!)\) — `prop:legendre`, line 168.
+- Euclidean algorithm, extended coefficients, general solution of \(ax+by=c\) — lines 217–245.
+- Lamé’s bound — `thm:lame`, line 266. The \(O(\log b)\) sentence uses Binet (V2-001).
+- Ideal, as a name for \(a\Z+b\Z\), not a theory — line 91.
+
+### Chapter 2 — Primes (`chapters/ch02-primes.tex`)
+
+- Infinitely many primes — `thm:euclid-primes`, line 36.
+- Sieve of Eratosthenes and the stopping rule at \(\sqrt N\) — line 64.
+- \(\sum_{p\le x}1/p\ge\ln\ln x-1\) — `thm:euler`, line 96. The telescoping sum is V2-006.
+- \(\pi(x)\); \(\vartheta(x)=\sum_{p\le x}\ln p\); \(\mathrm{Li}(x)=\int_2^x dt/\ln t\) — lines 136–149.
+- Binomial bounds and the missing primes in \((2n/3,n]\) — `lem:binom`, line 157.
+- \(\prod_{p\le x}p<4^x\) and the Chebyshev bounds of order \(x/\ln x\) — `thm:cheb`, line 179.
+- Bertrand: for \(n\ge1\) a prime in \((n,2n]\) — `thm:bertrand`, line 247. The first monotonicity sentence is V2-007.
+- Prime-number theorem named, not proved; its home is Volume 6.
+
+### Chapter 3 — Congruences (`chapters/ch03-congruences.tex`)
+
+- Residue class, commutative ring with identity, unit, field — lines 29–41.
+- \(\varphi(n)\), with \(\varphi(1)=1\) — `sym:phi`, line 41.
+- \(\Z/n\Z\) — `prop:ringZn`, line 43. Units and \(\mathbb F_p\) — `prop:units`, line 74.
+- Euler and Fermat — `thm:eulerthm`, line 91. Wilson — `thm:wilson`, line 120.
+- Ring morphism, isomorphism; Chinese remainder theorem — `thm:crt`, line 155. \(\varphi(mn)=\varphi(m)\varphi(n)\) for coprime \(m,n\), and \(\varphi(p^k)=p^k-p^{k-1}\).
+- Linear congruences: \(d\) solutions modulo \(n\) iff \(d\mid b\) — `prop:lincong`, line 173. Compatibility when \(\gcd(m,n)\) divides the difference of remainders.
+- \(\sum_{d\mid n}\varphi(d)=n\) — `prop:phisum`, line 199.
+- Formal Taylor expansion of an integer polynomial; Hensel’s lemma for a simple root — `thm:hensel`, line 270.
+- Carmichael number, in `ex:korselt`. Lucas’s theorem, in `ex:lucas`.
+
+### Chapter 4 — Arithmetic functions (`chapters/ch04-arithmetic-functions.tex`)
+
+- Arithmetic function, multiplicative, completely multiplicative — line 59.
+- Squarefree; \(\mathbf1\), \(\mathrm{id}\), \(\varepsilon\), \(\tau\), \(\sigma\), \(\mu\) — `sym:mu`, line 72.
+- Dirichlet convolution — line 97. Commutative, associative, unit \(\varepsilon\), preserves multiplicativity — `prop:conv`, line 101.
+- Möbius inversion — `thm:mobius`, line 179. Then \(\varphi=\mu*\mathrm{id}\), \(\tau=\mathbf1*\mathbf1\), \(\sigma=\mathrm{id}*\mathbf1\), with the prime-power formulae.
+- Perfect number; even perfect numbers are \(2^{p-1}(2^p-1)\) with \(2^p-1\) prime — `thm:perfect`, line 284.
+- \(\sum_{n\le x}\tau(n)=x\ln x+(2\gamma-1)x+O(\sqrt x)\) — `thm:hyperbola`, line 418.
+- Probability two random integers are coprime tends to \(6/\pi^2\), in `ex:coprimeprob`, from the Basel value in Volume 1.
+
+### Chapter 5 — Primitive roots (`chapters/ch05-primitive-roots.tex`)
+
+- \(\operatorname{ord}_n(a)\); \(a^m\equiv1\) iff the order divides \(m\); \(\operatorname{ord}_n(a^j)=k/\gcd(k,j)\) — `prop:order`, line 59.
+- Primitive root: order \(\varphi(n)\).
+- \((\Z/p\Z)^\times\) is cyclic, with \(\varphi(p-1)\) generators — `thm:cyclic`, line 133.
+- Lifting a primitive root to \(p^k\) — `lem:lift`, line 226.
+- \((\Z/n\Z)^\times\) cyclic iff \(n=1,2,4,p^k,2p^k\) — `thm:cyclicn`, line 234.
+- Discrete logarithm \(\operatorname{ind}_g\) — line 287.
+- Units modulo \(2^k\) are \((-1)^a5^b\) — `thm:twopower`, line 326. A unit is a square iff it is \(1\pmod8\) — `cor:mod8squares`, line 351.
+
+### Chapter 6 — Quadratic reciprocity (`chapters/ch06-quadratic-reciprocity.tex`)
+
+- Quadratic residue; Legendre symbol — `def:legendre`, line 47.
+- Euler’s criterion, including \((-1/p)=(-1)^{(p-1)/2}\) — `thm:eulercrit`, line 55.
+- Gauss’s lemma — `thm:gausslemma`, line 171. The letter \(\mu\) here is a sign count (V2-009).
+- \((2/p)=(-1)^{(p^2-1)/8}\) — `cor:two`, line 200.
+- Quadratic reciprocity — `thm:qr`, line 233. Eisenstein’s floor sum — `lem:eisenstein`, line 254.
+- Jacobi symbol and its reciprocity, without the square-root conclusion — `prop:jacobi`, line 340.
+- Infinitely many primes \(1\pmod4\), in `ex:onemod4`. The empty-list step is V2-011.
+
+### Chapter 7 — Sums of squares (`chapters/ch07-sums-of-squares.tex`)
+
+- Brahmagupta–Fibonacci identity — line 27.
+- Thue’s lemma — `lem:thue`, line 33.
+- An odd prime is a sum of two squares iff it is \(1\pmod4\) — `thm:twosq`, line 69.
+- \(n\) is a sum of two squares iff every prime \(3\pmod4\) has even exponent — `thm:twosqn`, line 80.
+- \(r_2(n)\) named; the formula \(4\sum_{d\mid n}\chi_4(d)\) is previewed and proved in Chapter 10.
+- Every nonnegative integer is a sum of four squares — `thm:foursq`, line 160. Euler’s four-square identity is inside the proof.
+- Three squares: the obstruction \(4^a(8b+7)\) is `ex:three`. The converse is named as Volume 13, not proved.
+- \(N(R)=\#\{x^2+y^2\le R^2\}\) and \(\lvert N(R)-\pi R^2\rvert\le 2\sqrt2\,\pi R+2\pi\) — `thm:circle`, line 277.
+
+### Chapter 8 — Diophantine equations (`chapters/ch09-diophantine.tex`)
+
+- Primitive Pythagorean triples \(x=m^2-n^2\), \(y=2mn\), \(z=m^2+n^2\) — `thm:pyth`, line 113. Inradius \(r=n(m-n)\).
+- No positive solution of \(x^4+y^4=z^2\) — `thm:fermat4`, line 218.
+- Chord method for a conic with one rational point — `prop:chord`, line 321.
+- \(y^2=x^3+7\) has no integer solution — `thm:mordell7`, line 369.
+- Markov’s theorem — `thm:markov`, line 410. The equality case is V2-010. Uniqueness of the largest entry is stated as open.
+
+### Chapter 9 — Continued fractions (`chapters/ch08-continued-fractions.tex`)
+
+- Simple continued fraction, convergent \(p_k/q_k\), recurrence — `prop:cfconv`, line 36.
+- \(\lvert x-p_n/q_n\rvert<1/q_n^2\), and infinitely many such for irrational \(x\) — `thm:cfapprox`, line 145.
+- An infinite expansion determines its value — `lem:cfexistence`, line 171.
+- Best approximation — `lem:best`, line 198.
+- Legendre: \(\lvert x-p/q\rvert<1/(2q^2)\) implies a convergent — `thm:legendre`, line 206.
+- Eventually periodic iff quadratic irrational — `thm:periodic`, line 275.
+- Pell’s equation: fundamental solution \(\varepsilon\), and all solutions \(\pm\varepsilon^k\) — `thm:pell`, line 324. The search is the convergents of \(\sqrt d\).
+- Ring \(\Z[\sqrt d]\) and norm \(x^2-dy^2\), inside the Pell section. Unit means norm \(\pm1\).
+
+### Chapter 10 — Gaussian and Eisenstein integers (`chapters/ch10-gaussian-eisenstein.tex`)
+
+- \(\Z[i]\), \(\Z[\omega]\) with \(\omega=e^{2\pi i/3}\), norm, units — `prop:quadunits`, line 83.
+- Euclidean division in those rings and in \(\Z\) — `prop:eucl`, line 127.
+- Bézout, irreducible implies prime, unique factorisation up to units — `thm:ufd`, line 202. Valuation \(v_\pi\).
+- \(6=2\cdot3=(1+\sqrt{-5})(1-\sqrt{-5})\) in \(\Z[\sqrt{-5}]\), four irreducible non-associates — `thm:six`, line 228.
+- Gaussian primes — `thm:gaussprimes`, line 267.
+- \(r_2(n)=4\sum_{d\mid n}\chi_4(d)\) — `thm:r2`, line 295.
+- Eisenstein primes, and \(3=-\omega^2\lambda^2\) with \(\lambda=1-\omega\) — `thm:eisprimes`, line 340.
+- \(\theta^3\equiv\pm1\pmod{\lambda^4}\) if \(\lambda\nmid\theta\) — `lem:cube`, line 353.
+- No nonzero solution of \(x^3+y^3=z^3\) — `thm:flt3`, line 368.
+
+### Chapter 11 — Characters (`chapters/ch14-characters.tex`)
+
+- Dirichlet character modulo \(m\): homomorphism \((\Z/m\Z)^\times\to\C^\times\), extended by \(0\) off the units — `def:t1-character`, line 43.
+- Sum of a non-principal character over a period is \(0\) — `prop:t1-charsum`, line 90.
+- Structure of \((\Z/m\Z)^\times\) as a product of cyclic groups, using Chapters 3 and 5 — `prop:t1-unitproduct`, line 123.
+- Exactly \(\varphi(m)\) characters; they separate units from \(1\) — `thm:t1-charcount`, line 135.
+- Orthogonality — `thm:t1-ortho`, line 162.
+- \(\sum_{n>X}n^{-s}\le \lfloor X\rfloor^{1-s}/(s-1)\) for \(s>1\) — `lem:t1-pseries`, line 209.
+- Product of absolutely convergent Dirichlet series is the series of the convolution — `lem:t1-dseries`, line 219.
+- Euler product for a completely multiplicative \(f\) with \(\lvert f\rvert\le1\), \(s>1\), and the limit is nonzero — `thm:t1-eulerprod`, line 230. \(\zeta(s)\) and \(L(s,\chi)\) are the two cases.
+- \(\sum\mu(n)n^{-s}=1/\zeta(s)\) — `cor:t1-mu-zeta`, line 270. The series \(\sum\mu(n)/n\) is not claimed to converge.
+- \(\Phi(x,z)=\sum_{d\mid P(z)}\mu(d)\lfloor x/d\rfloor\); if \(z\ge\sqrt x\) then \(\Phi(x,z)=1+\pi(x)-\pi(\min\{x,z\})\) — `thm:t1-sieve`, line 315.
+- Dirichlet’s theorem on primes in arithmetic progressions is not proved. Volume 6 is named as its home.
+
+### Field guide (`chapters/field-guide.tex`)
+
+- No new theorem. It records the conventions already proved, including \(\gcd(0,0)=0\), and names \(\lvert x\rvert_p\), \(\Z_p\) and \(\Q_p\) as later-volume notation, not as tools of this book.
+- Odd prime factor of \(n^2+1\) is \(1\pmod4\), by `ex:onemod4`. Infinitely many primes of the form \(n^2+1\) is left open.
+
+### Notation clashes with Volume 1, and inside Volume 2
+
+- \(\gcd(0,0)\) is undefined in Volume 1 and is \(0\) here (`sym:gcd`, line 84). The field guide repeats the new convention.
+- \(\varphi\) is the golden ratio in Volume 1’s Binet exercise and again at `ch01-divisibility.tex:272` and in the continued-fraction chapter. From Chapter 3, \(\varphi(n)\) is Euler’s totient (`sym:phi`).
+- \(\mu\) is the Möbius function from Chapter 4 (`sym:mu`). Gauss’s lemma (`thm:gausslemma`) uses \(\mu\) for a sign count (V2-009).
+- \(\pi(x)\) is the prime-counting function from Chapter 2. \(\pi\) remains the circle constant.
+- \(N(\alpha)\) is the field norm from Chapter 10. The same letter is a bound in several estimates, always local.
+- \(\chi_4\) is the non-principal character modulo \(4\), introduced with Jacobi’s formula and again as a Dirichlet character. It is not the Chebyshev polynomial \(T_n\) of Volume 1.
+- The exponent form of the lcm, missing as a proof in Volume 1, is proved in Chapter 1 here. Later volumes may cite `sym:lcm` in this chapter. They should not cite the unfinished sentence in Volume 1.
