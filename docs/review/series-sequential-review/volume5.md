@@ -1,8 +1,8 @@
 # Volume 5 — Calculation
 
-**Score: not yet assigned.** Chapters 9–13, the blurb, `kdp.md`, the index beyond the lines named below, the sources, and About the Cover are still being read. The score, the severity counts, and the ledger section will be filled when that reading is finished. Chapters 1–8 were read line by line, including every exercise, hint, and solution. Chapter 4 includes `chapters/bbp-borwein.tex`.
+**Score: not yet assigned.** Chapters 10–13, the blurb, `kdp.md`, the index beyond the lines named below, the sources, and About the Cover are still being read. The score, the severity counts, and the ledger section will be filled when that reading is finished. Chapters 1–9 were read line by line, including every exercise, hint, and solution. Chapter 4 includes `chapters/bbp-borwein.tex`.
 
-**Counts so far.** 0 critical, 0 major, 9 minor. Issues `V5-001` through `V5-009`. No prerequisite issue in Chapters 1–8.
+**Counts so far.** 0 critical, 0 major, 9 minor. Issues `V5-001` through `V5-009`. No prerequisite issue in Chapters 1–9.
 
 **How this was read.** Book order in `volume5-calculation/main.tex`. Chapter 1 is `chapters/ch01-finite.tex`. The shared counter (theorem, proposition, lemma, corollary, definition, example; starred environments do not count) was counted in source order. Those numbers match the index lines for the fundamental theorem (1.2), falling powers (1.4), summation by parts (1.5), Abel summation (1.7), Dirichlet’s test (1.8), the sine sum (1.9), the Stirling recurrences (1.11), the change of basis (1.12), Bernoulli numbers (1.14), Faulhaber (1.15), and Newton (1.16).
 
@@ -108,9 +108,17 @@ All nine exercises were read with their hints and solutions. The Lorentzian pair
 
 The bridge names a real integral that becomes a residue, which is the next chapter.
 
+### Chapter 9
+
+Goursat’s subdivision, Cauchy’s theorem on a star-shaped set, and the integral formula are complete as written. The winding number of the positive boundary of a bounded convex set is computed as \(1\). The residue at a simple root of \(1+z^4\) is \(-a/4\), and \(\int_{-\infty}^{\infty}(1+x^4)^{-1}\,dx=\pi/\sqrt2\), both writings equal to \(2.22144147\) to eight decimals. The transform of \(1/(1+x^2)\) is \(\pi e^{-2\pi|\xi|}\), and at \(\xi=1/(2\pi)\) this is the opening integral \(\pi/e\). The rectangle gives \(\int_0^{\infty}x^{a-1}/(1+x)\,dx=\pi/\sin(\pi a)\), a second proof of the reflection formula. The square bound \(|\cot\pi z|\le\coth(\pi/2)<2\) holds. The sixth Basel proof and the partial fractions on \(\C\) recover the real identity of Chapter 3. Gamma on the half-plane, the poles of residue \((-1)^n/n!\), and \(|\Gamma(\tfrac12+iy)|^2=\pi/\cosh(\pi y)\). The argument principle and Rouché. The sample \(z^5+3z+1\) has one root in the unit disc and all five inside \(|z|=3/2\).
+
+All thirteen exercises were read with their hints and solutions. The sector integral equals \((\pi/n)/\sin(\pi/n)\). The Fresnel sector recovers \(\tfrac12\sqrt{\pi/2}\). The cotangent sum matches Exercise 8.3, and the alternating sum is \(\pi/(a\sinh\pi a)\). Rouché on \(z^4-6z+3\), polynomial growth, and Wielandt’s theorem. The count of rank-\(r\) matrices over \(\mathbb F_q\) is the product in the exercise, and the corank limits for \(q=2\) are \(0.2888\), \(0.5776\), \(0.1284\), \(0.0052\). Durfee’s identity follows by the identity theorem. Dedekind reciprocity was checked through the triple-pole residue at \(z=1\), and \(s(1,k)=(k-1)(k-2)/(12k)\). The four averages of \(|s(h,k)|\) are \(0.951\), \(2.037\), \(3.691\), \(5.802\), and the ratios to \(\log^2 k\) are \(0.045\), \(0.043\), \(0.044\), \(0.044\). The relative error for \(A_{10}\) is \(-5.6\times10^{-6}\), equal to \(-3^{-11}\) at the printed precision. Jensen’s bound \(N(r)\le eAr+\log C\), and \(2\lfloor r\rfloor\le e\pi r\) for the sine. The unit-circle integrals, the eight-point sum \(3.6277915\) against \(2\pi/\sqrt3=3.6275987\), the order-\(2\) residue \(\pi/2\), and the four-panel midpoint value \(1.581176i\) all match. The index numbers 9.2 through 9.12, 9.14 through 9.27, and 9.32 through 9.38 match the shared counter, with the unindexed examples and the two definitions filling the gaps. The label `[Journey]` on the Dedekind exercise is V5-005. Volume 3, Chapter 9 is the finite-field chapter the matrix count points at. The continuous parameter dependence used for Rouché is Theorem 4.1.
+
+The bridge names the complex Gamma function, which the next chapter uses.
+
 ## Not checked
 
-- Chapters 9 through 13, every later exercise, the preface’s remaining admitted external theorems, the blurb, `kdp.md`, the index beyond the lines named above, the sources list, and About the Cover.
+- Chapters 10 through 13, every later exercise, the preface’s remaining admitted external theorems, the blurb, `kdp.md`, the index beyond the lines named above, the sources list, and About the Cover.
 - The rust curve in `figures/ch01-rudin.tex`, which the Chapter 6 caption says reaches \(15.3\). The charcoal bound \(\sqrt{128}\) is the theorem. The random signs were not regenerated.
 - The ratio \(1.002\) at \(n=800\) in the note after `pb:squares`, and the constant \(1.2218\) in that note. The shape of the asymptotic was not recomputed.
 - A LaTeX build, so printed page numbers were not seen.
