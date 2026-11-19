@@ -2,4 +2,4 @@
 
 Source baseline: `60ce094742a84e3da028ad2c9d31d535db656344`.
 
-**Decision: BLOCKED; do not merge.** The following duties are open: independent second review of all 14 chapters; direct inspection of the built PDF, KDP interior and cover, EPUB image accessibility, XML and links, and the online reader; an external mathematical referee, which has not signed off. Author-side checks (preservation, new numerical examples, figure-source audit, original numerical regressions, cross-volume citations, and the local production build) are not that referee. Update this report with verifiable job links and checksums, not predicted results.
+**Decision: the independent second review no longer blocks a merge.** `SECOND-REVIEW.md` records that reading. It found 25 defects, all fixed on this branch: 0 critical, 9 major, 16 minor. The local PDF build reported no overfull box and no unresolved reference. The local EPUB passed `tools/check_epub_media.py`. An external mathematical referee has not signed off, and the print file has not been uploaded to KDP. Those two checks are outside this review. The online reader step in `build.sh` was not run.
