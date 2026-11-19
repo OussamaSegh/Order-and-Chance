@@ -1,8 +1,8 @@
 # Volume 5 — Calculation
 
-**Score: not yet assigned.** Chapter 2 and Chapters 6–13, the blurb, `kdp.md`, the index beyond the lines named below, the sources, and About the Cover are still being read. The score, the severity counts, and the ledger section will be filled when that reading is finished. Chapters 1, 3, 4, and 5 were read line by line, including every exercise, hint, and solution. Chapter 4 includes `chapters/bbp-borwein.tex`.
+**Score: not yet assigned.** Chapters 6–13, the blurb, `kdp.md`, the index beyond the lines named below, the sources, and About the Cover are still being read. The score, the severity counts, and the ledger section will be filled when that reading is finished. Chapters 1–5 were read line by line, including every exercise, hint, and solution. Chapter 4 includes `chapters/bbp-borwein.tex`.
 
-**Counts so far.** 0 critical, 0 major, 6 minor. Issues `V5-001` through `V5-006`. No prerequisite issue in Chapters 1, 3, 4, or 5.
+**Counts so far.** 0 critical, 0 major, 6 minor. Issues `V5-001` through `V5-006`. No prerequisite issue in Chapters 1–5.
 
 **How this was read.** Book order in `volume5-calculation/main.tex`. Chapter 1 is `chapters/ch01-finite.tex`. The shared counter (theorem, proposition, lemma, corollary, definition, example; starred environments do not count) was counted in source order. Those numbers match the index lines for the fundamental theorem (1.2), falling powers (1.4), summation by parts (1.5), Abel summation (1.7), Dirichlet’s test (1.8), the sine sum (1.9), the Stirling recurrences (1.11), the change of basis (1.12), Bernoulli numbers (1.14), Faulhaber (1.15), and Newton (1.16).
 
@@ -73,9 +73,18 @@ All fifteen exercises were read with their hints and solutions. Half-integer Gam
 
 The bridge names a sum of sines, which is the next chapter.
 
+### Chapter 2
+
+Formal inverses, the exponential and the logarithm, summation by packets, and uniform convergence, including term-by-term integration and differentiation. A linear recurrence is a rational generating function, and the general term is a sum of polynomial-exponential pieces; the appeal to \(\mathbb C[x]\) being a PID is Volume 3, Chapter 6, where \(K[X]\) is Euclidean. Fibonacci and Binet, mergesort \(T(n)=n\log_2 n+T(1)n\), and quicksort \(C_n=2(n+1)H_n-4n\), with the harmonic expansion from Volume 1, Chapter 3. The exponential formula, permutations, derangements nearest to \(n!/e\), Bell numbers \(1,1,2,5,15,52,203,877\), and the Stirling generating function. Euler’s product for \(p(n)\), the distinct-parts/odd-parts identity, Franklin’s proof of the pentagonal theorem, and the recurrence. The values \(p(1)\) through \(p(5)\) and MacMahon’s \(p(200)=3972999029388\) were recomputed from the recurrence. The index numbers 2.1 through 2.5 and 2.9 through 2.13 match the counter.
+
+All thirty-one exercises were read with their hints and solutions. Making one euro with the seven coins can be done in \(4563\) ways. Dobiński’s formula and the Bell recurrence. Involution numbers \(1,1,2,4,10,26,76,232\). Connected labelled graphs \(1,1,4,38,728\). Motzkin numbers \(1,1,2,4,9,21,51\). Euler’s divisor recurrence, checked at \(\sigma(5)=6\). Prouhet’s sets of eight numbers share the power sums \(8,60,620,7200\) through degree \(3\). The coefficient of \(x^7\) in \(\Phi_{105}\) is \(-2\). Commuting pairs: \(h_2(n)=n!\,p(n)\). Squares in the symmetric group, and \(s_{2m+1}=(2m+1)s_{2m}\). The probability a random monic polynomial is squarefree is \(1-1/q\). Partitions into parts at most \(3\) are the integers nearest \((n+3)^2/12\). Glaisher’s bijection on \(7+2+2+2+2+1+1+1\). The Catalan \(2\)-adic valuation. Stern’s sequence and the Calkin–Wilf enumeration. Binary partitions and the bound matching de Bruijn’s main term. \(\arcsin^2 x\), and the two Basel-type series \(\pi^2/18\) and \(\pi^2/2\). The density of \(\{1/U\}\), from \(\pi^2/6\) down to \(\pi^2/6-1\), and both probabilities \(\log 2\) and \(2-2\log 2\). Alternating permutations: \(A_{10}/10!=50521/3628800=0.0139222\), and \(2(2/\pi)^{11}=0.0139223\), about six parts in a million apart. Birthday waits for \(n=365\): \(24.6166\) rounds to \(24.62\), and \(88.7389\) rounds to \(88.74\). The die-total probability tends to \(2/7\), and the next root has modulus \(1.36939\), so \(\rho_0\approx 0.73025\). Lucas numbers through \(L_6=18\), and \(p(10)=42\). The ideal Prouhet–Tarry–Escott claim matches the current census: with \(k\) the degree, solutions are known for \(k\le 9\) and for \(k=11\), and not for \(k=10\) or for \(k\ge 12\).
+
+The bridge names infinite products, which are the next chapter.
+
 ## Not checked
 
-- Chapter 2, and Chapters 6 through 13, every later exercise, the preface’s remaining admitted external theorems, the blurb, `kdp.md`, the index beyond the lines named above, the sources list, and About the Cover.
+- Chapters 6 through 13, every later exercise, the preface’s remaining admitted external theorems, the blurb, `kdp.md`, the index beyond the lines named above, the sources list, and About the Cover.
+- The ratio \(1.002\) at \(n=800\) in the note after `pb:squares`, and the constant \(1.2218\) in that note. The shape of the asymptotic was not recomputed.
 - A LaTeX build, so printed page numbers were not seen.
 - The 1687 portrait attribution, beyond the agreement of the caption with `photos/CREDITS.md`.
 - Whether Chapter 6’s proof of the sawtooth identity is complete. The statement that Chapter 1 points to is in Example `ex:sawtooth`.
