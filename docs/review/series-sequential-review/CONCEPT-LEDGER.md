@@ -866,3 +866,196 @@ Book order: preface, then Chapters 1–14 as numbered by `main.tex`, then Append
 - \(N(t)\) is the Poisson counting process. \(N(0,h)\) is a normal law of variance \(h\).
 - In Chapter 13 the letter \(e\) is the base of the exponential in the local lemma and, two sections later, the number of edges in Euler’s formula.
 - \(f\) is the probability of ever returning, in Chapter 8; the number of faces, in Euler’s formula; and the focus of a progression, in Appendix B. They are not in the same argument.
+
+## Volume 5
+
+Book order: preface, then Chapters 1–13. File paths are under `volume5-calculation/`. `chapters/bbp-borwein.tex` is part of Chapter 4. `chapters/hardy-ramanujan.tex` is Chapter 12. `chapters/ch12-agm.tex` is Chapter 13. The shared counter restarts each chapter. Bernoulli numbers use \(B_1=-\frac12\). On the line, \(\hat f(\xi)=\int f(x)e^{-2\pi ix\xi}\,dx\). The DFT is \(\hat a_j=\sum_k a_k\omega^{-jk}\) with inversion divided by \(n\).
+
+### Preface (`chapters/preface.tex`)
+
+- The Gaussian integral equals \(\sqrt\pi\), the full-line value. Chapter 4 proves the half-line \(\sqrt\pi/2\).
+- \(\zeta(-1)=-\frac1{12}\) in the sense of the functional equation. Proved in Chapter 10.
+- Admitted, and not used by a theorem: Tonelli (Volume 7, Theorem 9.5) in two exercises; convex volume (Volume 7, Theorem 7.11) in one Chapter 6 exercise; Fulton–Harris, Proposition 3.12, in one Chapter 5 exercise; Mertens’s third theorem (Volume 6, Chapter 1) in one Chapter 13 problem; the prime-number theorem (Volume 6, Chapter 5) in one solution, for comparison. The quoted Rademacher theorem is not in this list. See V5-010.
+
+### Chapter 1 — Finite Calculus (`chapters/ch01-finite.tex`)
+
+- Difference \(\Delta F(x)=F(x+1)-F(x)\), falling power \(x^{\underline m}\), and \(\Delta x^{\underline m}=m x^{\underline{m-1}}\) — `def` and `prop:falling`, 1.4.
+- Fundamental theorem of the sum: \(\sum_{a\le k<b}\Delta F=F(b)-F(a)\) — `thm:ftfc`, 1.2.
+- Summation by parts — `prop:parts`, 1.5. Abel summation — `prop:abel`, 1.7. Dirichlet’s test — `thm:dirichlet`, 1.8.
+- \(\sum_{k=1}^n\sin kx=\sin\frac{nx}2\sin\frac{(n+1)x}2\big/\sin\frac x2\), and the series \(\sum\sin(kx)/k\) — `prop:sinsum`, 1.9. The absolute-convergence sentence is V5-001.
+- Stirling numbers of both kinds and the change of basis — `thm:stirlingrec`, 1.11, and `thm:change`, 1.12.
+- Bernoulli numbers from \(t/(e^t-1)=\sum B_n t^n/n!\), with \(B_1=-\frac12\), and \(B_n=0\) for odd \(n\ge3\) — `prop:bernoulli`, 1.14. The radius sentence is V5-002.
+- Bernoulli polynomials \(B_n(x)\), with \(B_n(0)=B_n\) and \(\Delta B_n(x)=n x^{n-1}\). Then \(B_1(1)=\frac12\).
+- Faulhaber: \(\sum_{k<n}k^p=(B_{p+1}(n)-B_{p+1})/(p+1)\) — `thm:faulhaber`, 1.15.
+- Newton’s divided-difference series — `thm:newton`, 1.16.
+- The sum of the first thousand tenth powers is \(91409924241424243424241924242500\).
+
+### Chapter 2 — Generating Functions (`chapters/ch02-generating.tex`)
+
+- Ordinary generating function \(\sum a_n x^n\) and exponential generating function \(\sum a_n x^n/n!\).
+- The ring \(\C[[x]]\), and \(\C[x]\) as a Euclidean domain, from Volume 3, Chapter 6.
+- Exponential formula for sets of labelled components — `thm:expformula`.
+- Pentagonal-number theorem: \(\prod_{k\ge1}(1-x^k)=\sum_{j\in\Z}(-1)^j x^{j(3j-1)/2}\) — `thm:pentagonal`.
+- Partition function \(p(n)\), with \(p(200)=3972999029388\).
+- Quicksort: \(C_n=2(n+1)H_n-4n\) — `ex:quicksortexact`.
+- Alternating permutations, \(A_n\), with generating function \(\sec z+\tan z\). The pole form is Chapter 9.
+- Motzkin numbers, involutions \(t_n\), connected graphs, and the coin-change count \(4563\).
+
+### Chapter 3 — Classic Series and Products (`chapters/ch03-series.tex`)
+
+- Infinite products: \(\sum\log(1+a_n)\) for \(a_n>-1\) — `prop:products`. The sine product cites it past that hypothesis. See V5-003.
+- \(\pi\cot\pi x=1/x+\sum_{n\ge1}2x/(x^2-n^2)\) on \((0,1)\), by Herglotz — `thm:cot`.
+- \(\sin\pi x=\pi x\prod_{n\ge1}(1-x^2/n^2)\) — `thm:sineproduct`.
+- Wallis’s product — `cor:wallis`. Viète’s product.
+- \(\zeta(2k)=(-1)^{k+1}B_{2k}(2\pi)^{2k}/(2(2k)!)\) — `thm:zeta2k`. Values \(\pi^2/6\), \(\pi^4/90\), \(\pi^6/945\), \(\pi^8/9450\).
+- \(\pi^2\) is irrational — Niven’s argument.
+- Six proofs of \(\zeta(2)=\pi^2/6\) are named: Volume 1, Exercise 6.7; this chapter; Ritelli in the exercises, which admits Tonelli; two Fourier proofs in Chapter 6; the residue corollary in Chapter 9.
+
+### Chapter 4 — Integration (`chapters/ch04-integrals.tex`, `chapters/bbp-borwein.tex`)
+
+- Parameter dependence on a compact set — `thm:paramcompact`, 4.1.
+- Fubini for a continuous function on a rectangle.
+- Dominated convergence for continuous functions — `cor:dct`.
+- \(\int_0^\infty e^{-x^2}\,dx=\sqrt\pi/2\).
+- Frullani, \(\int_0^\pi\log\sin\theta\,d\theta=-(\pi/2)\log 2\), and the Dirichlet integral \(\pi/2\).
+- BBP: the hexadecimal digits of \(\pi\) from a series of rational integrals — `thm:bbp`, 4.12. Not in the index. See V5-006.
+- The Borwein identity and its deficit — 4.14 and 4.15. Not in the index.
+- Fresnel integrals \(\int_0^\infty\cos(x^2)\,dx=\int_0^\infty\sin(x^2)\,dx=\frac12\sqrt{\pi/2}\).
+- Golomb–Dickman constant \(\approx0.62433\). Its exercise is graded `[Journey]`. See V5-005.
+- Two exercises admit Tonelli: Ritelli, and Sondow. Both name Volume 7, Theorem 9.5.
+
+### Chapter 5 — Gamma and Beta (`chapters/ch05-gamma.tex`)
+
+- \(\Gamma(x)=\int_0^\infty t^{x-1}e^{-t}\,dt\) for \(x>0\), with \(\Gamma(x+1)=x\Gamma(x)\) and \(\Gamma(n+1)=n!\).
+- Bohr–Mollerup: log-convexity and \(\Gamma(1)=1\) pick out \(\Gamma\) — `thm:bohrmollerup`.
+- Gauss’s product and the Weierstrass product.
+- Stirling’s formula for real \(x\), from Volume 1, Theorem `thm:stirling`, with the constant \(\sqrt{2\pi}\).
+- Beta function \(B(x,y)=\Gamma(x)\Gamma(y)/\Gamma(x+y)\) — `thm:betagamma`.
+- \(\Gamma(\frac12)=\sqrt\pi\), the reflection formula \(\Gamma(z)\Gamma(1-z)=\pi/\sin\pi z\), and the duplication formula — `thm:reflection`, `thm:duplication`.
+- Volume of the unit ball in dimension \(n\). In particular \(V_5=8\pi^2/15\).
+- Digamma exercise `ex:digamma`: \(\Gamma'(1)=-\gamma\). Used in Chapter 13.
+- One exercise quotes Fulton–Harris, Proposition 3.12, and is labelled quoted.
+
+### Chapter 6 — Fourier Series (`chapters/ch06-fourier.tex`)
+
+- Coefficients \(c_n(f)=\frac1{2\pi}\int_{-\pi}^\pi f(t)e^{-int}\,dt\), on the circle of length \(2\pi\).
+- Dirichlet kernel and the convergence theorem for a piecewise \(C^1\) function — `thm:dirichletfourier`.
+- Fejér means and Fejér’s theorem — `cor:fejer`. The kernel is `lem:fejerkernel`.
+- Parseval — `thm:parseval`.
+- Gibbs constant \((2/\pi)\operatorname{Si}(\pi)\approx1.17898\).
+- Weyl’s equidistribution criterion.
+- Inversion on \(\Z^d\).
+- Hurwitz: \(4\pi A\le L^2\), with the shoelace formula as the definition of area.
+- One exercise admits the volume of a convex body, Volume 7, Theorem 7.11, and is labelled admitted.
+
+### Chapter 7 — The DFT and the FFT (`chapters/ch07-fft.tex`)
+
+- \(\omega=e^{2\pi i/n}\), \(\hat a_j=\sum_{k=0}^{n-1}a_k\omega^{-jk}\), and inversion divides by \(n\).
+- Convolution theorem — `thm:convolution`, 7.6.
+- FFT operation counts, and the prime \(998244353=119\cdot2^{23}+1\) with primitive root \(3\).
+- Gauss sums on \(\Z/n\Z\), used again in Chapter 8.
+- Discrete cosine transform — `prop:dct`, 7.12. The index calls this line the convolution theorem. See V5-007.
+
+### Chapter 8 — The Fourier Transform (`chapters/ch08-transform.tex`)
+
+- Unitary convention \(\hat f(\xi)=\int_{\R}f(x)e^{-2\pi ix\xi}\,dx\). Volume 15 cites Theorem 8.6 in this convention.
+- \(e^{-\pi x^2}\) is its own transform, and \(\int e^{-\pi x^2}\,dx=1\) — `thm:gaussianft`, 8.3.
+- Inversion and Plancherel — `thm:ftinversion`, 8.6, and `thm:plancherel`, 8.7.
+- Heat kernel on the line — `prop:heatline`, 8.8.
+- Poisson summation — `thm:poisson`, 8.9. Jacobi’s theta \(\vartheta(t)=\sum_{n\in\Z}e^{-\pi n^2 t}\), with \(\vartheta(1/t)=\sqrt t\,\vartheta(t)\) — `cor:theta`, 8.10. The book keeps \(\vartheta\) for this series.
+- \(\sum_{n\in\Z}1/(x+n)^2=\pi^2/\sin^2(\pi x)\), and the second proof of the cotangent expansion — Corollary 8.12. The index line is V5-009.
+- Fresnel evaluation and the sign of the Gauss sum \(G(n)\) — `lem:fresnel`, 8.13, and `thm:gausssign`, 8.14. For a prime, \(G(p)=\sqrt p\) if \(p\equiv1\pmod4\) and \(i\sqrt p\) if \(p\equiv3\pmod4\).
+- Shannon sampling at rate \(2W\) — `thm:shannon`, 8.15.
+- Heisenberg, with equality for \(e^{-\pi x^2}\) — `thm:heisenberg`, 8.16.
+- The opening digit count for \(\sum e^{-\pi n^2/100}\) says 135 places. The excess is \(7.3\times10^{-136}\). See V5-008.
+
+### Chapter 9 — Complex Analysis (`chapters/ch09-complex.tex`)
+
+- Holomorphic, entire, and the Cauchy–Riemann equations — `prop:cr`, 9.2.
+- Goursat, including one exceptional point — `thm:goursat`, 9.7, and `cor:goursatpoint`, 9.8.
+- Cauchy’s theorem on a star-shaped set — `thm:cauchy`, 9.9. The homology form is named as Volume 8, Chapter 14, and is not used.
+- Cauchy’s integral formula, holomorphic implies analytic, and Cauchy’s estimates — 9.10, 9.11, 9.12.
+- Morera, Liouville, the fundamental theorem of algebra, the identity theorem, the maximum principle, and removable singularities — 9.14 through 9.20.
+- Laurent series and the residue — 9.22 and the definition 9.23.
+- Winding number of the positive boundary of a bounded convex set is \(1\) — `prop:winding`, 9.25.
+- Residue theorem on such a boundary — `thm:residue`, 9.26.
+- \(\int_{-\infty}^\infty dx/(1+x^4)=\pi/\sqrt2\). The transform of \(1/(1+x^2)\) is \(\pi e^{-2\pi|\xi|}\).
+- Reflection formula again, from a rectangle, without the sine product.
+- \(\pi\cot\pi z\) has residue \(1\) at the integers, and \(|\cot\pi z|\le\coth(\pi/2)<2\) on the squares \(C_N\) — `lem:cotbound`, 9.32.
+- Sums by residues — `thm:residuesum`, 9.33. Basel, the sixth proof — `cor:baselres`, 9.34. Partial fractions on \(\C\) — `cor:cotc`, 9.35.
+- \(\Gamma\) on \(\operatorname{Re}z>0\), with \(|\Gamma(z)|\le\Gamma(\operatorname{Re}z)\), extended with simple poles of residue \((-1)^n/n!\) at \(-n\), and no zeros — `thm:gammac`, 9.36.
+- Argument principle and Rouché — `thm:argument`, 9.37, and `thm:rouche`, 9.38.
+- Dedekind sums \(s(h,k)\) and the reciprocity law. The exercise is graded `[Journey]`. See V5-005. The same sums reappear in Rademacher’s formula.
+
+### Chapter 10 — The Zeta Function (`chapters/ch10-zeta.tex`)
+
+- Dirichlet series, convolution of coefficients, and uniqueness — `prop:dirseries`, 10.1, and `prop:dirmult`, 10.2.
+- Euler product for a multiplicative function, and \(\zeta(s)=\prod_p(1-p^{-s})^{-1}\) for \(\operatorname{Re}s>1\) — `thm:eulerproduct`, 10.3.
+- \(\sum\mu(n)n^{-s}=1/\zeta(s)\) and \(\sum\varphi(n)n^{-s}=\zeta(s-1)/\zeta(s)\) — `cor:mobius`, 10.4. So \(\zeta(s)\ne0\) for \(\operatorname{Re}s>1\).
+- \(\sum_p 1/p=\infty\) — `cor:primesdiverge`, 10.5.
+- \(\zeta(s)-1/(s-1)\) is holomorphic for \(\operatorname{Re}s>0\), with value \(\gamma\) at \(s=1\) — `prop:zetastrip`, 10.6.
+- Mellin transform of the Gaussian — `lem:mellingauss`, 10.7. Write \(\omega(t)=(\vartheta(t)-1)/2\).
+- Completed function \(\xi(s)=\frac12 s(s-1)\pi^{-s/2}\Gamma(s/2)\zeta(s)\), entire, and \(\xi(1-s)=\xi(s)\) — `thm:functional`, 10.8.
+- Continuation of \(\zeta\) to \(\C\setminus\{1\}\), simple pole of residue \(1\), \(\zeta(0)=-\frac12\), trivial zeros at \(-2,-4,\ldots\), and the asymmetric equation \(\zeta(1-s)=2(2\pi)^{-s}\cos(\pi s/2)\Gamma(s)\zeta(s)\) — `cor:zetaplane`, 10.9.
+- \(\zeta(1-2k)=-B_{2k}/(2k)\) — `thm:zetaneg`, 10.10. Thus \(-\frac1{12}\), \(\frac1{120}\), \(-\frac1{252}\), \(\frac1{240}\).
+- Smoothed sums \(\sum n^k e^{-n/N}=k!\,N^{k+1}+(-1)^k B_{k+1}/(k+1)+O(1/N)\) — `prop:smoothed`, 10.11.
+- Hardy's function \(Z(t)\) is real on the critical line. The phase is called \(\alpha\), so that \(\theta\) stays free for Chebyshev and \(\vartheta\) for Jacobi.
+- The ordinates \(14.13,21.02,25.01,30.42,32.94,37.59,40.92,43.33,48.01,49.77\) are computed values, rounded to two decimals. The Riemann hypothesis is stated as open. Gourdon’s \(10^{13}\) zeros and the Platt–Trudgian check to height \(3\cdot10^{12}\) are cited as computations.
+- Gauss–Kuzmin: the invariant density \(1/((1+t)\log 2)\) and the contraction \(2\zeta(3)-\frac32\). The exercise is graded `[Journey]`. See V5-005.
+- Lévy’s constant \(\pi^2/(12\log 2)=1.18657\ldots\).
+
+### Chapter 11 — Asymptotics (`chapters/ch11-asymptotics.tex`)
+
+- \(O\), \(o\), and \(\sim\), as in Volume 1. Asymptotic expansion \(f\approx\sum a_k\varphi_k\), unique, and \(e^{-x}\) has the zero expansion — `prop:asymunique`, 11.2.
+- Euler’s series \(\int_0^\infty e^{-t}/(1+xt)\,dt\approx\sum(-1)^k k!\,x^k\), with remainder of the sign of the first omitted term — `prop:eulerseries`, 11.3. At \(x=1\) the value is \(0.5963473623\ldots\).
+- Periodic Bernoulli functions \(\bar B_m\), with the Fourier series for \(m\ge2\) — `lem:bernoullifn`, 11.4.
+- Euler–Maclaurin formula — `thm:eulermaclaurin`, 11.5.
+- \(H_n=\ln n+\gamma+\frac1{2n}-\sum_{k<M}B_{2k}/(2k\,n^{2k})+O(n^{-2M})\), and the error is smaller than the first omitted term and has its sign — `cor:harmonic`, 11.6.
+- Continuation of \(\zeta\) by Euler–Maclaurin — `prop:zetaem`, 11.7.
+- Stirling’s series for \(\ln\Gamma(x)\), with \(0<\rho_m/T_m<1\) — `thm:stirlingseries`, 11.8.
+- Laplace’s method — `thm:laplace`, 11.9. It gives Stirling’s formula again, and \(\binom{2n}n\sim 4^n/\sqrt{\pi n}\).
+- Binomial series of \((1-z)^{-\alpha}\), with one further term — `prop:binomcoef`, 11.12.
+- Transfer theorem — `thm:transfer`, 11.13.
+- \(\ln p(n)\le\pi\sqrt{2n/3}\), from the product bound. The matching asymptotic is Chapter 12.
+
+### Chapter 12 — The Hardy–Ramanujan Formula (`chapters/hardy-ramanujan.tex`)
+
+- \(P(z)=\sum p(n)z^n=\prod_{k\ge1}(1-z^k)^{-1}\) for \(|z|<1\), and \(P(z)=e^{L(z)}\) — `lem:pdisc`, 12.1.
+- \(\log P(e^{-t})\le\pi^2/(6t)\) — `lem:plog`, 12.2.
+- Dedekind’s \(\eta(\tau)=e^{\pi i\tau/12}E(e^{2\pi i\tau})\) on the upper half-plane — definition, 12.3. Then \(\eta(\tau)=\sum_j(-1)^j e^{\pi i\tau(6j-1)^2/12}\).
+- \(\eta(-1/\tau)=\sqrt{-i\tau}\,\eta(\tau)\), with the principal square root — `thm:eta`, 12.4.
+- Transformation of \(P\), and \(P(e^{-t})=\sqrt{t/(2\pi)}\exp(\pi^2/(6t)-t/24)\,P(e^{-4\pi^2/t})\) — `lem:ptrans`, 12.5.
+- \(p(n)=e^{\pi\sqrt{2n/3}}/(4\sqrt3\,n)\,(1+O(n^{-1/4}))\) — `thm:hr`, 12.6. The table ratios are \(0.873\), \(0.956\), \(0.969\), \(0.986\).
+- Rademacher’s convergent series, numbered Theorem 12.7 and marked quoted. It is not proved, and nothing later uses it. See V5-010. The partial sums at \(n=200\) were recomputed.
+
+### Chapter 13 — The Arithmetic–Geometric Mean (`chapters/ch12-agm.tex`)
+
+- \(a_{n+1}=(a_n+b_n)/2\), \(b_{n+1}=\sqrt{a_nb_n}\), \(c_n=\sqrt{a_n^2-b_n^2}\), common limit \(M(a,b)\) — `prop:agm`, 13.1. The gap satisfies \(a_{n+1}-b_{n+1}\le(a_n-b_n)^2/(8b)\).
+- \(I(a,b)=\int_0^{\pi/2}(a^2\cos^2\theta+b^2\sin^2\theta)^{-1/2}\,d\theta=\pi/(2M(a,b))\) — `thm:gaussagm`, 13.2.
+- Complete elliptic integrals \(K(k)=I(1,k')\) and \(E(k)\), with \(k'=\sqrt{1-k^2}\).
+- Landen: \(K(k)=(1+k_1)K(k_1)\) — `cor:landen`, 13.3.
+- Lemniscate constant \(\varpi=2\int_0^1(1-r^4)^{-1/2}\,dr=2.62205755429211981\ldots\), and \(\varpi/\pi=1/M(1,\sqrt2)\) — `cor:lemniscate`, 13.4.
+- Perimeter \(L(a,b)=4J(a,b)\), with \(J=(a^2-\sum_{n\ge0}2^{n-1}c_n^2)I\) — `thm:perimeter`, 13.7. The step is `prop:jstep`, 13.6, from `lem:jderiv`, 13.5.
+- \(E'=(E-K)/k\) and \(K'=(E-k'^2 K)/(k\,k'^2)\) — `prop:kederiv`, 13.8.
+- Legendre: \(EK'+E'K-KK'=\pi/2\) — `thm:legendre`, 13.9.
+- Brent–Salamin: \(\pi=4M(1,1/\sqrt2)^2\big/(1-\sum_{n\ge1}2^{n+1}c_n^2)\) — `thm:brentsalamin`, 13.10.
+- \(\Gamma(\frac14)=(2\pi)^{3/4}/\sqrt{M(1,\sqrt2)}=3.62560990822\ldots\), from the lemniscate integral of Chapter 5.
+- Closing problems introduce, as exercises and not as theorems of the chapter: Dedekind’s reciprocity is already Chapter 9; Kummer’s carry count for \(v_p\binom{m+n}m\); Lucas’s reading of central binomial coefficients; the unitary DFT and its eigenvalue multiplicities; Dickman’s function \(\rho\), with \(\int_0^\infty\rho=e^\gamma\); the polynomial Mertens product \(E_n\sim e^{-\gamma}/n\). Mertens’s third theorem is admitted in `pb:dickmanint`. The prime-number theorem is quoted in `pb:primezeta`.
+
+### Notation clashes with Volumes 1–4, and inside Volume 5
+
+- \(\log\) in the number-theory chapters is the natural logarithm. Volume 1 writes \(\ln\). The two symbols are the same function. \(\log_2\) is named when the base is \(2\).
+- \(\pi\) remains the circle constant. It is not reused for a permutation or for the prime-counting function. Volume 2’s \(\pi(x)\) is only named, in the preview of Volume 6.
+- \(\varphi(n)\) is Euler’s totient, as in Volume 2. Volume 1 uses \(\varphi\) for the golden ratio, and Volume 4 uses \(\phi\) for the standard normal density. This volume does not use the normal density.
+- \(\chi\) is the Legendre symbol in the Hadamard and progression problems, as in Volume 2. In the solution of `pb:mappings` the same letter is a cutoff \(\chi(x)=(e^{-x^2/2}-[x\le1])/x\). Volume 3 uses \(\chi\) for a representation character. The three uses are not in one argument.
+- \(D_n\) is a derangement count in Chapter 9, as in Volume 1, and the dihedral group in `pb:rank`, as in Volume 3.
+- \(E\) is the complete elliptic integral of the second kind from Chapter 13, and an expectation in the closing problems of that chapter. \(K(k)\) is the elliptic integral of the first kind. Volume 3 and Volume 4 use \(K_n\) for the complete graph.
+- \(\omega\) is a root of unity, as before. In Chapter 10, \(\omega(t)=(\vartheta(t)-1)/2\) is the tail of Jacobi’s theta series.
+- \(\theta\) is reserved for Chebyshev’s function, which this volume does not define, and \(\vartheta\) is Jacobi’s theta series. Volume 4 uses \(\theta\) for an angle. Hardy’s phase on the critical line is \(\alpha\).
+- \(B_1=-\frac12\) is \(B_1(0)\). The value \(B_1(1)=\frac12\) is the other end of the same polynomial. Odd indices at least \(3\) vanish.
+- The Fourier transform on the line is unitary, with \(2\pi\) in the exponent. Chapter 7 puts the factor \(1/n\) on the inversion of the DFT, and says that Volume 3, Chapter 11, divided by \(n\) in the forward transform. The closing problem `pb:dftspectrum` uses the unitary matrix with \(1/\sqrt n\) on both sides.
+- \(\xi(s)\) is the completed zeta function from Chapter 10. It is not a character and not a random variable.
+- \(q\) is the size of a finite field in Chapters 9 and 13, and \(q(n)\) is the number of partitions into distinct parts in Chapter 12.
+- \(M(a,b)\) is the arithmetic–geometric mean. It is not a mean of a random variable. \(M_n\) in the ones-in-a-partition exercise is an average count.
+- \(s(h,k)\) is a Dedekind sum. The formula in Chapter 9 and the formula in Rademacher’s series agree when \(\gcd(h,k)=1\).
+- \(\gamma\) remains Euler’s constant from Volume 1. The lemniscate constant is \(\varpi\), not \(\gamma\).

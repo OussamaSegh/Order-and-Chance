@@ -1,8 +1,14 @@
 # Volume 5 — Calculation
 
-**Score: not yet assigned.** Chapter 13, the blurb, `kdp.md`, the index beyond the lines named below, the sources, and About the Cover are still being read. The score, the severity counts, and the ledger section will be filled when that reading is finished. Chapters 1–12 were read line by line, including every exercise, hint, and solution. Chapter 4 includes `chapters/bbp-borwein.tex`.
+**Score: 8/10.**
 
-**Counts so far.** 0 critical, 0 major, 10 minor. Issues `V5-001` through `V5-010`. No prerequisite issue in Chapters 1–12.
+The book does the job the preface announces. The tenth-power sum, \(\zeta(2k)\), the Gaussian integral, the functional equation with \(\zeta(-1)=-\frac1{12}\), Stirling’s series with the sign of the remainder, the Hardy–Ramanujan asymptotic, and the Brent–Salamin iteration are proved, and the constants that were recomputed match the page. The score is 8 because ten local slips remain: three of them are index lines, one is the preface’s claim that every theorem is proved while Theorem 12.7 is quoted, and the rest are a hypothesis or a strictness that the argument does not quite have. No proof uses a tool the earlier volumes have not given.
+
+**Counts.** 0 critical, 0 major, 10 minor. Ten issues, `V5-001` through `V5-010`. No prerequisite issue.
+
+**How this was read.** Book order in `volume5-calculation/main.tex`: preface, then Series and Products (Chapters 1–3), Integrals and Transforms (4–9, with `chapters/bbp-borwein.tex` input from Chapter 4), The Zeta Function (10–13; the Hardy–Ramanujan file is Chapter 12 and `ch12-agm.tex` is Chapter 13), then the index, the sources, and About the Cover. The blurb and `kdp.md` were read with the preface. Every chapter file was read, including every exercise, hint, and solution. The shared counter was counted in source order. The index numbers cited in the chapter sections match that count.
+
+**Style, once.** The house voice holds. No notebook is mentioned, and the reader-facing copy does not call the book a revision. The one repeated slip is the exercise grade `[Journey]`, which the box prints in place of the stars. It occurs three times, and it is V5-005.
 
 **How this was read.** Book order in `volume5-calculation/main.tex`. Chapter 1 is `chapters/ch01-finite.tex`. The shared counter (theorem, proposition, lemma, corollary, definition, example; starred environments do not count) was counted in source order. Those numbers match the index lines for the fundamental theorem (1.2), falling powers (1.4), summation by parts (1.5), Abel summation (1.7), Dirichlet’s test (1.8), the sine sum (1.9), the Stirling recurrences (1.11), the change of basis (1.12), Bernoulli numbers (1.14), Faulhaber (1.15), and Newton (1.16).
 
@@ -141,10 +147,21 @@ All ten exercises were read with their hints and solutions. The eta values are \
 
 The bridge names an iteration that doubles correct digits, which is the last chapter.
 
+### Chapter 13
+
+The AGM gaps from \(1\) and \(\sqrt2\) are \(0.414\), \(0.018\), \(3.3\times10^{-5}\), \(1.2\times10^{-10}\), \(1.4\times10^{-21}\), \(2\times10^{-43}\), and four steps give \(1.19814023473559\). From \(1\) and \(1/\sqrt2\) the third step is \(0.8472130848\). From \(1\) and \(0.01\) the limit is \(0.2621668872\). Gauss’s theorem, Landen, and the lemniscate identity were read. \(\varpi=2.62205755429211981\), and \(M(1,\sqrt2)=\pi/\varpi\). The perimeter identity and Legendre’s relation were checked through the algebra, and \(W(k)=\pi/2\) at three moduli. For semi-axes \(2\) and \(1\), \(L=9.68844822054767619842\). The Earth factor at eccentricity \(0.0167\) is \(0.99993027\). Ramanujan’s approximation has relative error \(2.8\times10^{-6}\) when \(a=2b\), and the degenerate limit is about \(0.42\%\). Brent–Salamin gives \(\pi_1=3.14058\), and the errors of \(\pi_2\) through \(\pi_8\) have decimal logarithms \(-8.1\), \(-18.7\), \(-40.3\), \(-83.6\), \(-170.6\), \(-345.0\), \(-694.0\), each under the printed power of ten. The first Chudnovsky term reproduces \(\pi\) to fourteen digits. The index numbers 13.1 through 13.10 match the counter.
+
+The five chapter exercises and all thirty-nine closing problems were read with their hints and solutions. \(\Gamma(\frac14)=3.62560990822\). The logarithm errors are \(6.8\times10^{-3}\), \(1.25\times10^{-4}\) and \(3.6\times10^{-12}\). A right angle lengthens the pendulum by \(18.0\%\), and \(10^\circ\) lengthens it by \(0.19\%\). The small counts for distinct cycle types match \(1\), \(\frac12\), \(\frac56\), \(\frac7{12}\), \(\frac{37}{60}\). At \(n=1000\) the involution ratios are \(0.99983\) and \(1.0091\). The map-component count is \(2.979\) against \(2.938\). Banach’s expectation with fifty matches is \(7.04\) against \(6.98\). \(P(2)=0.452247420041\), and the sum through \(10^7\) differs from it by \(5.86\times10^{-9}\). Glaisher’s constant is \(1.2824271291\), and the \(n=10\) hyperfactorial misses \(1.39\times10^{-5}\) when the \(1/(720n^2)\) term is dropped. For \(q=5\) and \(n=10\), \(ne^\gamma E_n=0.952015\). The three short AGM exercises match. Mertens’s third theorem is admitted in `pb:dickmanint`, and the prime-number theorem is quoted for comparison in `pb:primezeta`. Both are Volume 6, Chapters 1 and 5, and neither is used by a theorem. The Pascal-mod-\(3\) count in the caption is the product of one more than each base-\(3\) digit.
+
+### Preface, blurb, listings, sources, cover
+
+The preface’s chapter map is the book’s map. Its list of admitted tools is the two Tonelli exercises, the convex-volume exercise, the Fulton–Harris quotation, Mertens’s third theorem, and the prime-number comparison. The sentence that every theorem is proved, and that a quoted result is a remark, is V5-010. The blurb and `kdp.md` name Rademacher’s series as quoted and unused, and they describe \(\sqrt\pi\) and \(-\frac1{12}\) in the sense the book proves. The sources list points at the chapter bibliographies and says the series is not proved here. About the Cover is the Euler spiral of 1744 and Cornu’s drawing of 1874, the Fresnel integrals of Chapter 4.
+
 ## Not checked
 
-- Chapter 13, every exercise of that chapter, the preface’s remaining admitted external theorems, the blurb, `kdp.md`, the index beyond the lines named above, the sources list, and About the Cover.
 - The rust curve in `figures/ch01-rudin.tex`, which the Chapter 6 caption says reaches \(15.3\). The charcoal bound \(\sqrt{128}\) is the theorem. The random signs were not regenerated.
-- The ratio \(1.002\) at \(n=800\) in the note after `pb:squares`, and the constant \(1.2218\) in that note. The shape of the asymptotic was not recomputed.
-- A LaTeX build, so printed page numbers were not seen.
-- The 1687 portrait attribution, beyond the agreement of the caption with `photos/CREDITS.md`.
+- The ratio \(1.002\) at \(n=800\) in the note after `pb:squares`, and the constant \(1.2218\) in that note.
+- The discrepancy of the squares modulo \(10007\), which the Erdős–Turán solution says satisfies \(D\sqrt p/\log p\approx0.14\). The inequality itself was read.
+- The sentence that \(668\) is the smallest open Hadamard order. The construction through \(64\), and the exception list \(28,36,52,56\), were checked from the argument.
+- A LaTeX build, so printed page numbers were not seen. Index numbers were taken from the shared counter in the source.
+- Portrait attributions, beyond the agreement of the captions with `photos/CREDITS.md`. The plates were not redrawn; the captions were checked against the mathematics and the numbers in the source.
