@@ -1,8 +1,8 @@
 # Volume 5 — Calculation
 
-**Score: not yet assigned.** Chapters 12 and 13, the blurb, `kdp.md`, the index beyond the lines named below, the sources, and About the Cover are still being read. The score, the severity counts, and the ledger section will be filled when that reading is finished. Chapters 1–11 were read line by line, including every exercise, hint, and solution. Chapter 4 includes `chapters/bbp-borwein.tex`.
+**Score: not yet assigned.** Chapter 13, the blurb, `kdp.md`, the index beyond the lines named below, the sources, and About the Cover are still being read. The score, the severity counts, and the ledger section will be filled when that reading is finished. Chapters 1–12 were read line by line, including every exercise, hint, and solution. Chapter 4 includes `chapters/bbp-borwein.tex`.
 
-**Counts so far.** 0 critical, 0 major, 9 minor. Issues `V5-001` through `V5-009`. No prerequisite issue in Chapters 1–11.
+**Counts so far.** 0 critical, 0 major, 10 minor. Issues `V5-001` through `V5-010`. No prerequisite issue in Chapters 1–12.
 
 **How this was read.** Book order in `volume5-calculation/main.tex`. Chapter 1 is `chapters/ch01-finite.tex`. The shared counter (theorem, proposition, lemma, corollary, definition, example; starred environments do not count) was counted in source order. Those numbers match the index lines for the fundamental theorem (1.2), falling powers (1.4), summation by parts (1.5), Abel summation (1.7), Dirichlet’s test (1.8), the sine sum (1.9), the Stirling recurrences (1.11), the change of basis (1.12), Bernoulli numbers (1.14), Faulhaber (1.15), and Newton (1.16).
 
@@ -21,6 +21,7 @@ Paths are relative to `volume5-calculation/`.
 | V5-007 | `chapters/index.tex:39` (`prop:dct`) | reference | minor | “convolution theorem for the DFT, Proposition 7.12”. | Proposition 7.12 is the discrete cosine transform. The convolution theorem is Theorem 7.6, `thm:convolution`. The index already has that line. Rename 7.12 to the discrete cosine transform. |
 | V5-008 | `chapters/ch08-transform.tex:4` | math | minor | “The sum begins \(10.000000\ldots\), and the first digit that is not zero sits \(135\) places after the decimal point.” | The excess is \(20e^{-100\pi}\approx 7.3\times 10^{-136}\), so that digit is the 136th. The close of the chapter already writes \(\approx 7\cdot 10^{-136}\). |
 | V5-009 | `chapters/index.tex:153` | reference | minor | “Theorem again, Corollary 8.12”, with no page link. | Corollary 8.12 is the second proof of Euler’s partial fractions, and its title in the source is “Theorem~\ref{thm:cot} again”. The index item dropped the reference and the `\ocindexpage`. Name it as the cotangent expansion again, and point at the corollary. |
+| V5-010 | `chapters/preface.tex:10` and `chapters/hardy-ramanujan.tex:383` (`thm:rademacher`) | reference | minor | “Every theorem, proposition and lemma is proved. A result quoted only for its interest is a remark”. | Theorem 12.7 is a numbered theorem, marked “quoted”, and the chapter says it is not proved. The preface’s list of labelled exceptions does not mention it. Keep the formula as a remark, or add this theorem to the preface’s list of quoted results. |
 
 ## Verified correct
 
@@ -132,9 +133,17 @@ All fourteen exercises were read with their hints and solutions. Quicksort’s e
 
 The bridge names the size of \(p(n)\), which is the next chapter.
 
+### Chapter 12
+
+The table was recomputed from the pentagonal recurrence. \(p(10)=42\) against \(48.1\), ratio \(0.873\); \(p(100)=190\,569\,292\) against \(199\,280\,893\), ratio \(0.956\); \(p(200)=3\,972\,999\,029\,388\) against \(4.100\times10^{12}\), ratio \(0.969\); \(p(1000)=2.406\times10^{31}\) against \(2.440\times10^{31}\), ratio \(0.986\). The logarithms and the gaps \(0.136\), \(0.099\), \(0.063\), \(0.045\) match. At \(n=100\), \(y=0.0204\) and \(a=12.82\), and \(20/\sqrt{\pi a}=3.15\). The product \(P(e^{-0.01})\) is \(1.0947\times10^{70}\). The transformation of \(\eta\) was checked through the Gaussian transform, the cosine table, and a forty-term numerical test at \(0.3+0.7i\), which agrees to thirty decimals. The constant \(0.4433=\frac1C+\frac C{48}\) with \(C=\pi\sqrt{2/3}\). At \(r=0.99\), \(\log P(r)=160.45\), and the peak ratios are \(0.237\), \(0.097\), \(0.048\), \(0.026\). Rademacher’s series at \(n=200\) leaves errors \(36202\), \(81\), \(6.7\), \(0.14\) and \(0.024\) after one, two, three, five and eight terms. The index numbers 12.1, 12.2 and 12.4 through 12.7 match the counter. The definition of \(\eta\) is the unindexed 12.3. The preface’s sentence that every theorem is proved does not cover Theorem 12.7; that is V5-010. The formula itself is the standard convergent series, and the partial sums above were recomputed.
+
+All ten exercises were read with their hints and solutions. The eta values are \(\eta(2i)=0.592383\) and \(\eta(i/2)=0.837756=\sqrt2\,\eta(2i)\). The main term at \(n=100\) is \(198\,301\,300\), ratio \(0.961\). The odd-piece ratios at \(a=12.8228\) are \(0.315\) and \(0.078\). The minor-arc comparison is \(0.612\) against \(7.540\) at \(n=100\), with ratio \(1021\), and \(15.000\) against \(13.938\) at \(n=60000\). The average number of ones at \(n=1000\) is \(24.47\) against \(\sqrt{6000}/\pi=24.66\). The distinct-part count \(q(1000)\) is the printed 22-digit integer, and the ratio to the asymptotic formula is \(0.9946\). The saddle bound at \(n=1000\) is \(1129\) times \(p(1000)\), beside \(1000^{3/4}\approx178\).
+
+The bridge names an iteration that doubles correct digits, which is the last chapter.
+
 ## Not checked
 
-- Chapters 12 and 13, every later exercise, the preface’s remaining admitted external theorems, the blurb, `kdp.md`, the index beyond the lines named above, the sources list, and About the Cover.
+- Chapter 13, every exercise of that chapter, the preface’s remaining admitted external theorems, the blurb, `kdp.md`, the index beyond the lines named above, the sources list, and About the Cover.
 - The rust curve in `figures/ch01-rudin.tex`, which the Chapter 6 caption says reaches \(15.3\). The charcoal bound \(\sqrt{128}\) is the theorem. The random signs were not regenerated.
 - The ratio \(1.002\) at \(n=800\) in the note after `pb:squares`, and the constant \(1.2218\) in that note. The shape of the asymptotic was not recomputed.
 - A LaTeX build, so printed page numbers were not seen.
