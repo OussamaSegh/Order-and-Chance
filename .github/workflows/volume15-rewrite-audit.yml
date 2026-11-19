@@ -1,0 +1,48 @@
+name: Volume 15 complete-rewrite audit
+on:
+  pull_request:
+    paths:
+      - 'volume15-order-and-chance/**'
+      - 'review/volume15-complete-rewrite/**'
+      - '.github/workflows/volume15-rewrite-audit.yml'
+permissions:
+  contents: read
+jobs:
+  source-numerical-regressions:
+    if: github.head_ref == 'cursor/volume15-complete-rewrite'
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - name: Preserve exact original mathematical blocks and artwork
+        run: python3 review/volume15-complete-rewrite/check_preservation.py --final
+      - name: Recalculate new examples in fourteen chapters
+        run: python3 review/volume15-complete-rewrite/check_new_examples.py
+      - name: Audit 28 separately rendered TikZ source plates
+        run: python3 review/volume15-complete-rewrite/check_figures.py
+      - name: Install numerical dependencies
+        run: python3 -m pip install mpmath numpy scipy sympy networkx
+      - name: Original fourteen chapter numerical regressions
+        working-directory: review/volume15-rewrite
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(find . -maxdepth 1 -name 'check_ch*.py' | wc -l)" -eq 14
+          for s in ./check_ch*.py; do python3 "$s"; done
+      - name: Check inbound/outbound Volume 15 numbered citations
+        run: |
+          python3 - <<'PY'
+          from tools.cross_volume_citations import VOLUMES, number_volume, collect_citations, mismatches, gloss_mismatches
+          books={n:number_volume(n) for n in VOLUMES}
+          citations=[c for c in collect_citations() if c.volume==15 or c.source.startswith("volume15-order-and-chance/")]
+          errors=mismatches(books,citations)+[e for e in gloss_mismatches() if e.startswith("volume15-order-and-chance/")]
+          print("Checked",len(citations),"Volume 15 citations")
+          if errors: raise SystemExit("\n".join(errors))
+          PY
+      - name: Tools suite and catalogue
+        run: |
+          python3 -m pip install -r tools/requirements-test.txt
+          python3 -m unittest discover -s tools -p 'test_*.py'
+          python3 tools/listing.py volume15-order-and-chance /tmp/volume15-listing.md
