@@ -1051,7 +1051,8 @@ Book order: preface, then Chapters 1–13. File paths are under `volume5-calcula
 - \(D_n\) is a derangement count in Chapter 9, as in Volume 1, and the dihedral group in `pb:rank`, as in Volume 3.
 - \(E\) is the complete elliptic integral of the second kind from Chapter 13, and an expectation in the closing problems of that chapter. \(K(k)\) is the elliptic integral of the first kind. Volume 3 and Volume 4 use \(K_n\) for the complete graph.
 - \(\omega\) is a root of unity, as before. In Chapter 10, \(\omega(t)=(\vartheta(t)-1)/2\) is the tail of Jacobi’s theta series.
-- \(\theta\) is reserved for Chebyshev’s function, which this volume does not define, and \(\vartheta\) is Jacobi’s theta series. Volume 4 uses \(\theta\) for an angle. Hardy’s phase on the critical line is \(\alpha\).
+- Chapter 10 says the series keeps \(\theta\) for Chebyshev’s function. Volume 2 writes that function as \(\vartheta(x)=\sum_{p\le x}\ln p\), and this volume also uses \(\vartheta\) for Jacobi’s theta series. Hardy’s phase on the critical line is \(\alpha\). See V5-019.
+- The isoperimetric equality case is V5-011. The cotangent generating function in the Chapter 3 remark is V5-012. The lemniscate’s geometric length is V5-013. The limit for connected graphs is V5-014. The ball-volume maximum at dimension 5 is V5-015.
 - \(B_1=-\frac12\) is \(B_1(0)\). The value \(B_1(1)=\frac12\) is the other end of the same polynomial. Odd indices at least \(3\) vanish.
 - The Fourier transform on the line is unitary, with \(2\pi\) in the exponent. Chapter 7 puts the factor \(1/n\) on the inversion of the DFT, and says that Volume 3, Chapter 11, divided by \(n\) in the forward transform. The closing problem `pb:dftspectrum` uses the unitary matrix with \(1/\sqrt n\) on both sides.
 - \(\xi(s)\) is the completed zeta function from Chapter 10. It is not a character and not a random variable.
