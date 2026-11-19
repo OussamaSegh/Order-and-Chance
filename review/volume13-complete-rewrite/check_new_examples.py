@@ -112,7 +112,8 @@ class Volume13Examples(unittest.TestCase):
         return 1+sum(sum((y*y-x*x*x+x)%p==0 for y in range(p)) for x in range(p))
 
     def test_ch15_elliptic(self):
-        self.assertEqual(-16*(4*(-1)**3+27*0),64)
+        # Chapter 15 calls -(4a^3+27b^2) the discriminant of y^2=x^3+ax+b.
+        self.assertEqual(-(4*(-1)**3 + 27*0), 4)
         self.assertEqual(self.count_curve(5),8)
         self.assertEqual([x for x in range(5) if (x**3-x)%5==0],[0,1,4])
 
