@@ -1,0 +1,5 @@
+# Volume 14 complete rewrite
+
+Started from immutable `60ce094742a84e3da028ad2c9d31d535db656344`, including the prior fourteen-chapter rewrite (PR #232) and the Volume 13 teaching extensions (PR #250). The goal is a further rigorous editorial, teaching, visual and mathematical review, preserving original printed numbering and historical art. All 14 chapters must receive four newly graded exercises with full hints and solutions and two teaching TikZ figures. Numerical tests never certify proofs.
+
+Reproduce: `python3 review/volume14-complete-rewrite/check_preservation.py --final`; `python3 review/volume14-complete-rewrite/check_new_examples.py`; `python3 review/volume14-complete-rewrite/check_figures.py`; `for s in review/volume14-rewrite/check_ch*.py; do python3 "$s"; done`; `python3 -m unittest discover -s tools -p 'test_*.py'`; `python3 tools/listing.py volume14-primes /tmp/v14.md`; `./build.sh volume14-primes`. Publishing runs in the normal Build books workflow on the same PR head; evaluate actual PDF, print, EPUB and website artifacts separately.
