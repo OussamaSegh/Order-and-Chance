@@ -114,6 +114,18 @@ class Volume15Examples(unittest.TestCase):
         for p in primes:
             partial *= 1 - 1 / (p - 1) ** 2
         self.assertAlmostEqual(partial, 0.6651, places=4)
+        # tail of the twin-prime product after p=29, rounded to four decimals
+        twin = 1.0
+        p, sieve = 2, [True] * 20000
+        while p * p < len(sieve):
+            if sieve[p]:
+                for q in range(p * p, len(sieve), p):
+                    sieve[q] = False
+            p += 1
+        for q in range(3, len(sieve)):
+            if sieve[q]:
+                twin *= 1 - 1 / (q - 1) ** 2
+        self.assertAlmostEqual(twin / partial, 0.9925, places=4)
         self.assertEqual((3 - 1) / (3 - 2), 2)
         self.assertAlmostEqual((5 - 1) / (5 - 2), 4 / 3)
 
