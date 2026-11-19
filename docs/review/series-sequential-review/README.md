@@ -8,7 +8,7 @@ Reading order is each volume’s `main.tex`. Scores use the scale in the volume 
 | --- | --- |
 | 1 First Principles | 7/10. 0 critical, 13 major, 78 minor. See [volume1.md](volume1.md). |
 | 2 The Integers | 7/10. 0 critical, 4 major, 47 minor. See [volume2.md](volume2.md). |
-| 3 Symmetry | not started |
+| 3 Symmetry | 7/10. 0 critical, 4 major, 32 minor. See [volume3.md](volume3.md). |
 | 4 Chance | not started |
 | 5 Calculation | not started |
 | 6 Crossroads | not started |

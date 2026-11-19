@@ -387,3 +387,264 @@ Book order in `volume2-integers/main.tex`: preface, then Chapters 1–7, then Di
 - \(N(\alpha)\) is the field norm from Chapter 10. The same letter is a bound in several estimates, always local.
 - \(\chi_4\) is the non-principal character modulo \(4\), introduced with Jacobi’s formula and again as a Dirichlet character. It is not the Chebyshev polynomial \(T_n\) of Volume 1.
 - The exponent form of the lcm, missing as a proof in Volume 1, is proved in Chapter 1 here. Later volumes may cite `sym:lcm` in this chapter. They should not cite the unfinished sentence in Volume 1.
+
+## Volume 3
+
+Book order in `volume3-symmetry/main.tex`: preface, Chapters 1–12, then Appendix A Positive Matrices, B Symmetry Diagonalises, C The Linear Algebra Method, D Hadamard matrices, the afterword, the index. File paths are under `volume3-symmetry/`. A forward pointer is not an introduction. The primitive-element proof is V3-002. The cyclotomic degree \([\Q(\zeta_n):\Q]=\varphi(n)\) is the solution of `ex:phin`, not a numbered theorem (V3-003). Rank–nullity over a finite field is not stated (V3-001). Right cosets are used before they are defined (V3-005).
+
+The shared counter numbers definitions, examples, propositions, lemmas, theorems, and corollaries together. Starred environments (`lemmax` and its siblings) are unnumbered.
+
+### Chapter 1 — Groups as Symmetries (`chapters/ch01-groups.tex`)
+
+- Group, abelian, order \(\lvert G\rvert\); additive notation — `def:group`, line 30.
+- Unique identity and inverses, cancellation, \((ab)^{-1}=b^{-1}a^{-1}\), Latin squares — `prop:rules`, line 42.
+- Powers \(a^ma^n=a^{m+n}\) and \((a^m)^n=a^{mn}\), prose at line 93.
+- Field axioms over an arbitrary \(K\), and a vector space over \(K\) — prose at line 106. The prime fields are Volume 2.
+- Exchange over any field: finite basis, extension of an independent set, invariance of dimension, subspaces finite-dimensional — `lem:anyfield`, unnumbered, line 115.
+- Determinant facts transfer to any field, including \(\mathbb F_p\): \(n\) independent columns are a basis, \(\det(AB)=\det A\det B\), invertible iff the determinant is nonzero — prose at line 134. The Leibniz proof is Volume 1, `thm:det`.
+- \(\mathfrak S(X)\), \(\mathfrak S_n\), composition “first the right factor”, transposition \((a\,b)\), \(GL_n(K)\), \(SL_n(K)\) — `ex:examples`, line 136.
+- Dihedral group \(D_n\) (\(n\ge 3\)), order \(2n\), \(r^n=s^2=e\), \(srs=r^{-1}\) — `prop:dihedral`, line 152. Then \(sr^k=r^{-k}s\).
+- Rotations of the cube \([-1,1]^3\): 24 orientation-preserving isometries, the three axis types — `prop:cube`, line 237. The isomorphism with \(\mathfrak S_4\) is the solved `ex:cubeS4`.
+- Subgroup; the test \(ab^{-1}\); \(\langle S\rangle\) as words — `prop:subgroup`, line 318.
+- Order \(o(g)\); \(g^k=e\) iff \(n\mid k\); \(o(g^k)=n/\gcd(n,k)\) — `prop:order`, line 368.
+- \(k\)-cycle, order \(k\), prose at line 426.
+- Left coset \(gH\), index \([G:H]\) — definition at line 436. Right cosets are not defined here.
+- Lagrange — `thm:lagrange`, line 440.
+- Orders divide \(\lvert G\rvert\); Euler–Fermat again; a group of prime order is cyclic — `cor:lagrange`, line 467.
+- Homomorphism, isomorphism, cyclic group — definition at line 520.
+- Classification of cyclic groups; one subgroup per divisor; \(\varphi(n)\) generators; \(\varphi(d)\) elements of order \(d\) — `thm:cyclic`, line 532.
+- Finite subgroups of \(K^\times\) are cyclic, with the root bound written for an arbitrary field — solution of `ex:fieldcyclic`.
+- A group of exponent 2 is abelian — solution of `ex:square`. Groups of order 4 — solution of `ex:order4`.
+- \(\lvert GL_2(\mathbb F_p)\rvert=(p^2-1)(p^2-p)\) — solution of `ex:gl2`.
+
+### Chapter 2 — Morphisms and Quotients (`chapters/ch02-quotients.tex`)
+
+- Kernel, image, fibres are cosets of the kernel; kernels are normal — `prop:kerim`, line 47. Alternating group \(A_n=\ker\varepsilon\).
+- Normal subgroup: the three equivalent conditions, including \(gN=Ng\) — `prop:normal`, line 129. The symbol \(Ng\) is V3-005.
+- Quotient group — `thm:quotient`, line 178.
+- First isomorphism theorem — `thm:iso1`, line 252.
+- Correspondence, second and third isomorphism theorems — `thm:iso23`, line 286.
+- Group form of the Chinese remainder theorem — `thm:crt`, line 389.
+- Internal direct product — `prop:internal`, line 447.
+- Semidirect product — `prop:semidirect`, line 500. The reverse inverse is V3-007.
+- Centre, derived subgroup, characteristic subgroup — exercises `ex:centre`, `ex:commutator`, `ex:normalnormal`.
+- Quaternion group of order 8, as matrices — solution of `ex:quaternion`. Five groups of order 8 — solution of `ex:order8`.
+
+### Chapter 3 — Group Actions and Counting (`chapters/ch03-actions.tex`)
+
+- Action, orbit, stabiliser — definition at line 20, and `ex:actions`.
+- Cayley: \(G\) embeds in \(\mathfrak S(G)\) — `thm:cayley`, line 49.
+- Orbit–stabiliser, conjugate stabilisers — `thm:orbstab`, line 99.
+- Burnside — `thm:burnside`, line 182.
+- Pólya, cycle index — `thm:polya`, line 235. Necklace formula in `ex:necklaceformula`.
+- Class equation — `thm:classeq`, line 300. The box writes \(C(x_i)\) (V3-006).
+- A nontrivial finite \(p\)-group has nontrivial centre; the \(p^2\) abelian argument is inside the proof — `cor:pgroup`, line 350.
+- Cauchy — `thm:cauchy`, line 386.
+- Centraliser \(C_G(x)\), conjugacy class, centre restated in the class-equation proof.
+
+### Chapter 4 — The Symmetric Group (`chapters/ch04-symmetric.tex`)
+
+- Cycle, support — `def:cycle`, line 20.
+- Disjoint cycle decomposition, unique up to order — `prop:cycles`, line 26.
+- Order is the lcm of the lengths; sign is \((-1)^{n-c(\sigma)}\) — `cor:ordersign`, line 75.
+- Conjugacy classes are cycle types; the conjugation formula — `prop:conjSn`, line 136.
+- Generators: adjacent transpositions, all transpositions, \(3\)-cycles for \(A_n\) — `prop:gens`, line 238.
+- \(V_4\) is normal in \(\mathfrak S_4\) and in \(A_4\); \(A_4\) has no subgroup of order 6 — `prop:a4`, line 304.
+- Fifteen-puzzle: reachable positions are the even permutations — `thm:fifteen`, line 357.
+- A nontrivial normal subgroup of \(A_n\) (\(n\ge 5\)) contains a \(3\)-cycle — `lem:split`, line 549.
+- \(A_5\) is simple — `thm:a5`, line 611.
+- \(A_n\) is simple for \(n\ge 5\) — `thm:an`, line 689.
+
+### Chapter 5 — Sylow Theorems and Finite Groups (`chapters/ch05-sylow.tex`)
+
+- \(\binom{p^am}{p^a}\equiv m\pmod p\) — `lem:binom`, line 32. The binomial divisibility is V3-011.
+- Sylow I, existence — `thm:sylow1`, line 87.
+- Sylow II and III: conjugacy, \(n_p\equiv 1\pmod p\), \(n_p\mid m\) — `thm:sylow23`, line 121.
+- A Sylow subgroup is normal iff it is unique — `cor:sylownormal`, line 187.
+- A subgroup of every order \(p^k\) dividing \(\lvert G\rvert\) — `cor:pk`, line 213.
+- No group of order 30 is simple — `prop:thirty`, line 259.
+- Groups of order \(pq\) — `thm:pq`, line 309.
+- Solvable group: a subnormal series with abelian factors — definition at line 417.
+- Subgroups, quotients, and extensions preserve solvability; a non-abelian simple group is not solvable — `prop:solv`, line 435.
+- \(A_5\) is the smallest non-abelian simple group, and the only simple group of order 60 — unboxed subsection at line 550.
+
+### Chapter 6 — Rings and Ideals (`chapters/ch06-rings.tex`)
+
+- Commutative ring with identity; domain; the examples, including \(\Z[\sqrt{-5}]\) — definition and `ex:rings`.
+- A finite domain is a field — `prop:finitedomain`, line 47.
+- Ideal, quotient ring, kernels of ring maps — `prop:quotring`, line 119.
+- Prime and maximal ideals — `prop:primemax`, line 216.
+- Chinese remainder theorem for rings — `thm:crtring`, line 292.
+- \(6=2\cdot 3=(1+\sqrt{-5})(1-\sqrt{-5})\), four non-associate irreducibles — `prop:zm5`, line 372.
+- In a UFD, irreducible iff prime — `lem:primeufd`, line 471. The unit-absorption sentence is V3-016.
+- Euclidean implies PID implies UFD — `thm:edpidufd`, line 537. \(K[X]\) is Euclidean.
+- A PID that is not Euclidean — `prop:pid-not-euclidean`, line 620.
+- Field of fractions of a domain — prose at line 700. Distributivity is V3-015.
+- Content, Gauss’s lemma — `lem:gauss`, line 747.
+- Primitive polynomials, irreducibility over the fraction field — `prop:gaussirr`, line 771.
+- \(R[X]\) is a UFD when \(R\) is — `thm:gaussufd`, line 829.
+- Eisenstein and reduction for a general UFD, sketched after the theorem — V3-014.
+
+### Chapter 7 — Modules over a PID (`chapters/ch07-modules.tex`)
+
+- Module, submodule, quotient, homomorphism — definition at line 31, and `ex:modules`.
+- Index of a nonzero ideal in \(\Z[i]\), by the norm — `thm:normindex`, line 75.
+- Smith normal form over a PID — `thm:smith`, line 172. The pivot return is V3-018.
+- A submodule of a finite-rank free module is free of rank at most that rank — `lem:subfree`, line 247.
+- Structure theorem: invariant factors and elementary divisors — `thm:structure`, line 295. The symbol \(v_p\) is V3-019.
+- Finitely generated abelian groups — `cor:abelian`, line 451.
+- \([\Z^n:A\Z^n]=\lvert\det A\rvert\) when \(\det A\neq 0\) — `cor:index`, line 531.
+- Presentation by a matrix — `prop:presentation`, line 591.
+- Rational canonical form — `thm:frobenius`, line 702.
+- Cayley–Hamilton, second proof — `cor:cayleyhamilton`, line 778. Volume 1 already has one proof.
+- Jordan form when the characteristic polynomial splits — `thm:jordan`, line 829.
+
+### Chapter 8 — Field Extensions (`chapters/ch08-extensions.tex`)
+
+- Degree \([L:K]\), intermediate field — prose at line 21.
+- Tower law — `thm:tower`, line 29.
+- Degrees of intermediate steps divide; prime degree means no strict intermediate field — `cor:towerdiv`, line 70.
+- Algebraic, transcendental, \(K[\alpha]\), \(K(\alpha)\) — prose at line 102.
+- Minimal polynomial — `prop:minpoly`, line 119.
+- \(K[X]/(m_\alpha)\cong K(\alpha)\) — `thm:simple`, line 176.
+- Finite extensions are algebraic — `cor:finitealg`, line 242.
+- Kronecker: a root of an irreducible as the class of \(X\) — `thm:kronecker`, line 321.
+- Splitting field; existence, with degree at most \(n!\) — `prop:splitexists`, line 391.
+- Extension of an isomorphism to one root — `lem:extend1`, line 445.
+- Characteristic of a field — prose at line 503.
+- An irreducible over a field of characteristic 0 has distinct roots — `lem:sep`, line 515.
+- Uniqueness of splitting fields; the number of extensions equals the degree when the roots are distinct — `thm:splitunique`, line 577.
+- Constructible number — prose at line 679. Not in Volume 1.
+- Constructible numbers form a field closed under square roots — `prop:constrfield`, line 683. Addition is V3-020.
+- Wantzel: quadratic tower iff constructible; a power of 2 is necessary — `thm:wantzel`, line 820.
+- Classical problems: cube, trisection of \(60^\circ\), pentagon, prime-gon obstruction — `cor:classical`, line 937.
+- A real number of degree 4 that is not constructible — `prop:quartic-nonconstructible`, line 1049.
+- Primitive element for subfields of \(\C\) — `thm:primitiveelement`, line 1122. The gcd step is V3-002.
+
+### Chapter 9 — Finite Fields (`chapters/ch09-finite-fields.tex`)
+
+- A finite field has prime-power order — `prop:primefield`, line 25.
+- Freshman’s dream and the Frobenius automorphism — `lem:frob`, line 73. This is the first main-text proof of \((a+b)^p=a^p+b^p\) in an arbitrary field of characteristic \(p\).
+- The field of four elements — `ex:f4`, line 125.
+- A finite subgroup of \(K^\times\) is cyclic — `thm:cyclicmult`, line 133. The root bound’s citation is V3-021.
+- \(X^q-X=\prod_{a\in K}(X-a)\) — `lem:xqx`, line 219.
+- Existence and uniqueness of \(\mathbb F_q\) — `thm:fq`, line 258.
+- One subfield per divisor of the degree — `thm:subfields`, line 314.
+- \(\mathrm{Aut}(\mathbb F_{p^n}/\mathbb F_p)=\langle\varphi\rangle\), cyclic of order \(n\) — `thm:galfq`, line 401. Here \(\varphi\) is Frobenius.
+- \(X^{q^n}-X\) is the product of the monic irreducibles whose degree divides \(n\) — `thm:xqnx`, line 451. Two sentences are V3-022.
+- \(N_q(n)\) by Möbius inversion, and \(N_q(n)\ge 1\) — `thm:countirr`, line 497.
+- Hamming distance; Reed–Solomon distance at least \(n-k+1\) — `prop:rsdist`, line 594.
+- Berlekamp–Welch — `thm:bw`, line 633.
+- Trace, in the statement of `pb:mseq`. The square step is V3-023.
+
+### Chapter 10 — Galois Theory (`chapters/ch10-galois.tex`)
+
+- Galois group, fixed field, \(\lvert\mathrm{Gal}\rvert=[L:K]\) — `def:galois`, line 38.
+- Automorphisms permute roots and embed into \(\mathfrak S_n\) when the roots generate the top field — `lem:permroots`, line 44.
+- At most \([L:K]\) automorphisms — `prop:autbound`, line 78. Uses `thm:primitiveelement`.
+- The four Galois criteria in characteristic 0 — `thm:galoischar`.
+- Artin’s lemma — `lem:artin`, line as numbered 10.5.
+- Fundamental theorem — `thm:ftgt`, line as numbered 10.6. The inclusion \(\sigma(M)\subseteq M\) is V3-027.
+- \(K(\zeta_n)/K\) is Galois and the exponent map injects into \((\Z/n\Z)^\times\); for prime \(p\) it is an isomorphism onto a cyclic group — `prop:cyclo`.
+- Gauss–Wantzel, forward direction: if \(\varphi(n)\) is a power of 2 then the regular \(n\)-gon is constructible — `thm:gw`. The converse uses `ex:phin` (V3-003).
+- A cyclic Kummer extension is radical — `lem:kummerstep`.
+- Solvable by radicals implies solvable Galois group — `thm:radsolv`.
+- \(X^5-4X+2\) has Galois group \(\mathfrak S_5\), so it is not solvable by radicals — `thm:abelruffini`. The “every quintic” sentence is V3-028.
+- Dedekind’s independence of characters — `lem:dedekind`.
+- Kummer generator — `prop:kummer`.
+- The converse criterion, and solvability in degrees at most 4 — `thm:galoiscrit`.
+- \([\Q(\zeta_n):\Q]=\varphi(n)\) and \(\mathrm{Gal}(\Q(\zeta_n)/\Q)\cong(\Z/n\Z)^\times\) — solution of `ex:phin`, not a numbered theorem.
+
+### Chapter 11 — Representations and Characters (`chapters/ch11-characters.tex`)
+
+- Representation, degree, subrepresentation, irreducible, intertwiner — definition at line 31.
+- Trivial representation, sign representation, permutation representation, regular representation — `ex:reps`.
+- Hermitian inner product, complex Gram–Schmidt — prose at line 51. The induction step is shorter than Volume 1’s real case.
+- Maschke — `thm:maschke`, line 76. The “second proof” is V3-029.
+- Schur’s lemma — `lem:schur`.
+- An irreducible representation of an abelian group has degree 1 — `cor:abelianirr`.
+- Character, class function, inner product of class functions — definition at line 218.
+- Degree, conjugacy, inverse, and the permutation character — `prop:charbasic`.
+- Orthogonality of irreducible characters — `thm:orth`.
+- Multiplicities; same character implies isomorphic; sum of squares of degrees equals \(\lvert G\rvert\) — `cor:mult`.
+- Irreducible characters are a basis of the class functions; their number equals the number of classes — `thm:classes`.
+- Column orthogonality — `cor:columns`.
+- Character tables of \(\mathfrak S_3\) and \(\mathfrak S_4\), degrees \(1,1,2,3,3\) — `ex:s3`, `ex:s4`. The cube cycle types are V3-031.
+- Fourier inversion and Parseval on a finite abelian group — `thm:fourier`.
+- Dirichlet character modulo \(q\), redefined, and the orthogonality filter — `prop:dirichletorth`. Already in Volume 2.
+- Algebraic integer, in `ex:divides`. Frobenius–Schur indicator, in `pb:frobschur`.
+
+### Chapter 12 — Quaternions and Rotations (`chapters/ch12-quaternions.tex`)
+
+- Quaternion algebra, conjugate, norm, pure quaternions — definition and `prop:quat`. The complex matrix model.
+- Euler’s formula for a rotation, and the half-angle form — `lem:euler`.
+- Double cover \(S^3\to SO(3)\), kernel \(\{\pm 1\}\) — `thm:su2so3`. Path lifting is written from Volume 1’s sequence tools.
+- Finite subgroups of \(SO(3)\): cyclic, dihedral of order \(2n\ge 4\), or \(A_4\), \(\mathfrak S_4\), \(A_5\) — `thm:finiteso3`. The solid names are V3-004. The circle subgroup is V3-033.
+- Binary tetrahedral and binary icosahedral groups — solutions of `ex:2T` and `ex:2I`.
+- Hurwitz order and left Euclidean division — `ex:hurwitz`. The tools line is V3-032.
+- \(\pi_1(SO(3))\cong\Z/2\Z\), defined in the text from the double cover. Not a citation of Volume 7.
+
+### Appendix A — Positive Matrices (`chapters/linear-ch07-perron.tex`)
+
+- Perron: a positive matrix has a simple positive eigenvalue equal to the spectral radius, with a positive eigenvector — `linear:thm:perron`.
+- Oscillation lemma — `linear:lem:oscillation`.
+- Convergence of the power method — `linear:thm:powerconv`.
+- Irreducible, period, primitive — `linear:def:irreducible`.
+- Cyclic levels of an irreducible nonnegative matrix — `linear:prop:levels`.
+- Frobenius, 1912 — `linear:thm:frobenius`.
+- The three conditions for a primitive matrix — `linear:thm:primitive`.
+- Wielandt’s bound — `linear:thm:wielandt`.
+- Ergodic theorem for a finite Markov chain — `linear:cor:markov`.
+- PageRank — `linear:exa:pagerank`. Leslie models — `linear:exa:leslie`.
+
+### Appendix B — Symmetry Diagonalises (`chapters/linear-ch09-symmetry.tex`)
+
+- Eigenvalues of a circulant — `linear:thm:circulant`.
+- The commutant of the cycle shift — `linear:prop:commutant`.
+- Character of a finite abelian group, additive form — `linear:def:character`.
+- A commuting family of diagonalisable matrices is simultaneously diagonalisable — `linear:lem:commuting`.
+- The character group diagonalises the group algebra — `linear:thm:characters`.
+- An abelian symmetry is diagonalisable — `linear:thm:invariant`.
+- Paley graphs, strongly regular — `linear:thm:paley`.
+- Krawtchouk polynomials — `linear:def:krawtchouk`. Distances in the cube — `linear:thm:krawtchouk`.
+- Delsarte’s linear programming bound — `linear:thm:delsarte`. The corollary is `linear:cor:lp`. Plotkin — `linear:cor:plotkin`.
+- Group determinant — `linear:thm:groupdet`.
+- Plancherel for this normalisation, prose near line 1270. The double sum is V3-036.
+
+### Appendix C — The Linear Algebra Method (`chapters/combinatorial.tex`)
+
+- Oddtown — `combinatorial:thm:oddtown`. Orthogonal complement over \(\mathbb F_2\) — `combinatorial:lem:perp`.
+- Eventown — `combinatorial:thm:eventown`.
+- Fisher, non-uniform — `combinatorial:thm:fisher`.
+- Two-distance sets — `combinatorial:thm:twodist`. Planar maximum — `combinatorial:prop:planarmax`.
+- Frankl–Wilson, modular and non-uniform, and the explicit Ramsey graph — `combinatorial:thm:fwmod`, `combinatorial:thm:fw`, `combinatorial:thm:explicitramsey`.
+- Grid vanishing — `combinatorial:lem:grid`. Combinatorial nullstellensatz — `combinatorial:thm:cn`.
+- Cauchy–Davenport — `combinatorial:thm:cd`.
+- Power sums — `combinatorial:lem:powersum`. Chevalley–Warning — `combinatorial:thm:cw`.
+- Erdős–Ginzburg–Ziv — `combinatorial:thm:egz`.
+- Cap set — `combinatorial:def:cap`. Slice rank — `combinatorial:def:slicerank`.
+- A subspace has a heavy vector — `combinatorial:lem:support`. Tao’s diagonal lemma — `combinatorial:lem:diag`.
+- Ellenberg–Gijswijt — `combinatorial:thm:capset`. The bound on \(M_n\) — `combinatorial:prop:mn`.
+
+### Appendix D — Hadamard matrices (`chapters/paley.tex`)
+
+- For \(n>2\), a Hadamard matrix of order \(n\) needs \(4\mid n\) — `prop:hadamard-four`.
+- Sylvester’s doubling — `conjectures:prop:kron`.
+- Quadratic character on \(\mathbb F_q\) — `conjectures:lem:chi`. Jacobsthal matrix — `conjectures:lem:jacobsthal`.
+- Paley I and Paley II — `conjectures:thm:paley1`, `conjectures:thm:paley2`.
+
+### Afterword (`chapters/afterword.tex`)
+
+- No new theorem. The walk on \(\Z/2\Z\) gives \(\Pr(X_t=0)=(1+(1-2p)^t)/2\), from finite experiments and the transition matrix. The handoff names Volume 4, *Chance: The Logic of Uncertainty*.
+
+### Notation clashes with Volumes 1 and 2, and inside Volume 3
+
+- \(D_n\) is the number of derangements in Volume 1, and later the Dirichlet kernel. From `prop:dihedral` it is the full isometry group of a regular \(n\)-gon, order \(2n\), for \(n\ge 3\). Chapter 12 uses the same letters for a subgroup of \(SO(3)\), with half-turns in place of reflections, and defines \(D_2\) as the Klein group. The solution of `ex:2T` says so. The theorem statement does not.
+- \(\varphi\) is the golden ratio in Volume 1, in the \(A_5\) table, and in the icosahedron. It is Euler’s totient from Volume 2, Chapter 3, and again in `ex:phin` and `ex:primpoly`. In `thm:galfq` it is the Frobenius automorphism.
+- \(\chi\) is a Dirichlet character from Volume 2, Chapter 11. Chapter 11 uses it for a representation character, then redefines the Dirichlet character. Appendix B uses it for an additive character \(G\to\C^\times\). Appendix D uses it for the quadratic character on \(\mathbb F_q\). In the \(A_5\) solution, \(\chi_4\) and \(\chi_5\) are irreducible characters; in Volume 2, \(\chi_4\) is the non-principal character modulo 4. The figure writes \(\psi_3,\psi_4,\psi_5\) for the rows the solution calls \(\chi_3,\chi_4,\chi_5\).
+- \(\pi(7)\) and \(\pi(11)\) in the solution of `pb:fibmodp` are Fibonacci periods, 16 and 10. From Volume 2, Chapter 2, \(\pi(x)\) is the prime-counting function.
+- “Primitive element” is a generator of a finite extension of subfields of \(\C\) (`thm:primitiveelement`) and a generator of \(\mathbb F_q^\times\) (Chapter 9, line 186). The chapter distinguishes them. Volume 1 uses “primitive” for a root of unity, and Volume 2 uses “primitive root” for a generator of \((\Z/n\Z)^\times\).
+- \(N\) is the quaternion norm, and also the order of a finite rotation group in the classification. In Volume 2 it is the field norm.
+- \(\log\) in the shuffle sentence of Chapter 4, and in `pb:conjugate`, is the natural logarithm. Volumes 1 and 2 write \(\ln\).
+- Appendix B’s Fourier transform has no factor \(1/\lvert G\rvert\) in the forward sum. Chapter 11 puts that factor in the forward transform. Both conventions are stated.
+- \(K_n\) is the complete graph in Appendix B, and \(K_k(t)\) is a Krawtchouk polynomial. The second always has an argument.
