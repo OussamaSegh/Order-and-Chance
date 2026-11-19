@@ -1,8 +1,8 @@
 # Volume 5 — Calculation
 
-**Score: not yet assigned.** Chapters 10–13, the blurb, `kdp.md`, the index beyond the lines named below, the sources, and About the Cover are still being read. The score, the severity counts, and the ledger section will be filled when that reading is finished. Chapters 1–9 were read line by line, including every exercise, hint, and solution. Chapter 4 includes `chapters/bbp-borwein.tex`.
+**Score: not yet assigned.** Chapters 12 and 13, the blurb, `kdp.md`, the index beyond the lines named below, the sources, and About the Cover are still being read. The score, the severity counts, and the ledger section will be filled when that reading is finished. Chapters 1–11 were read line by line, including every exercise, hint, and solution. Chapter 4 includes `chapters/bbp-borwein.tex`.
 
-**Counts so far.** 0 critical, 0 major, 9 minor. Issues `V5-001` through `V5-009`. No prerequisite issue in Chapters 1–9.
+**Counts so far.** 0 critical, 0 major, 9 minor. Issues `V5-001` through `V5-009`. No prerequisite issue in Chapters 1–11.
 
 **How this was read.** Book order in `volume5-calculation/main.tex`. Chapter 1 is `chapters/ch01-finite.tex`. The shared counter (theorem, proposition, lemma, corollary, definition, example; starred environments do not count) was counted in source order. Those numbers match the index lines for the fundamental theorem (1.2), falling powers (1.4), summation by parts (1.5), Abel summation (1.7), Dirichlet’s test (1.8), the sine sum (1.9), the Stirling recurrences (1.11), the change of basis (1.12), Bernoulli numbers (1.14), Faulhaber (1.15), and Newton (1.16).
 
@@ -116,9 +116,25 @@ All thirteen exercises were read with their hints and solutions. The sector inte
 
 The bridge names the complex Gamma function, which the next chapter uses.
 
+### Chapter 10
+
+The partial Euler products match the printed decimals: through \(5\) the product is \(25/16=1.5625\), through \(7\) it is \(1.5951\), through \(11\) it is \(29645/18432=1.60834\), through \(13\) it is \(1.6179\), through \(29\) it is \(1.63307\), and through every prime below \(1000\) it is \(1.64473\), against \(\pi^2/6=1.64493\ldots\). The product, the Möbius and totient series, and the divergence of \(\sum 1/p\) are proved from Volume 2. The continuation to \(\operatorname{Re}s>0\) has residue \(1\) and value \(\gamma\) at the pole. The functional equation was checked through the substitution in the theta integral: \(\xi(s)=\frac12+\frac12 s(s-1)I(s)\), \(\xi(1-s)=\xi(s)\), residue \(1\), \(\zeta(0)=-\frac12\), and the asymmetric form. The values \(\zeta(-1)=-\frac1{12}\), \(\zeta(-3)=\frac1{120}\), \(\zeta(-5)=-\frac1{252}\), \(\zeta(-7)=\frac1{240}\) follow from the Bernoulli numbers. The smoothed sums at \(N=10\) are \(9.50833194\) and \(99.916708\), and the sum of cubes at \(N=100\) is \(6\cdot10^8+0.00833313\ldots\). The ten ordinates through \(49.77\) are the standard zeros rounded to two decimals. \(\zeta(\frac12)\approx-1.4603545\), printed as \(-1.4604\). The index numbers 10.1 through 10.11 match the counter.
+
+All twelve exercises were read with their hints and solutions. The squarefree count tends to \(6/\pi^2\), and Volume 2, Exercise 4.8 is the coprime-pair exercise. The alternating zeta is holomorphic on \(\operatorname{Re}s>0\), negative on \((0,1)\), and recovers the residue from \(\eta(1)=\log 2\). The prime sum is \(\log\frac1{\sigma-1}+O(1)\). Hurwitz’s values \(\zeta(-n,a)=-B_{n+1}(a)/(n+1)\) give a second proof of \(\zeta(2)\) and \(\zeta(4)\). The Gauss–Kuzmin contraction constant collapses to \(2\zeta(3)-\frac32=0.9041\ldots\), and Lévy’s constant is \(\pi^2/(12\log 2)=1.18657\ldots\), printed as \(1.18656\ldots\). The four short numerical exercises match. The label `[Journey]` on the Gauss–Kuzmin exercise is V5-005. The external zero computations of Gourdon and of Platt–Trudgian are cited as computations, and the text says they are not theorems.
+
+The bridge names a second continuation of \(\zeta\), by Euler–Maclaurin, which is the next chapter.
+
+### Chapter 11
+
+The four-term expansion of \(H_{10^6}\) is \(14.39272672286572363138\ldots\), and it agrees with \(H_{10^6}\) through those digits. The difference is \(8.3\times10^{-27}\), the size of the next term \(1/(120n^4)\). At \(n=10\), the expansion through \(-\frac1{252n^6}\) is smaller than \(H_{10}=\frac{7381}{2520}\) by \(4.1\times10^{-11}\), and the next term is \(4.2\times10^{-11}\). Euler’s series at \(x=1\) is \(0.5963473623\ldots\). At \(x=0.1\) the error after ten terms is \(1.77\times10^{-4}\) against the bound \(3.6\times10^{-4}\), and the error after twenty terms is \(8\times10^{-3}\). The Euler–Maclaurin identity, the sign of the harmonic remainder, and the second continuation of \(\zeta\) were read. The hand evaluation at \(s=-1\) returns \(-\frac1{12}\). Stirling’s series has the printed coefficients \(\frac1{12x}\), \(-\frac1{360x^3}\), \(\frac1{1260x^5}\), \(-\frac1{1680x^7}\), and the remainder lies strictly between \(0\) and the first omitted term. Laplace’s method gives Stirling’s formula again and \(\binom{2n}{n}\sim 4^n/\sqrt{\pi n}\). The binomial expansion adds the factor \(1-\frac1{8n}\). The count of \(2\)-regular graphs begins \(1,3,12,70,465\), and at \(n=30\) the approximation is \(2.1\%\) too large, printed as \(2\%\). The index numbers 11.2 through 11.9, 11.12 and 11.13 match the counter.
+
+All fourteen exercises were read with their hints and solutions. Quicksort’s expansion follows from the harmonic corollary. The ten-term formula for \(\zeta(3)\) equals \(1.2020569031742\), against \(1.2020569031596\), an error of \(1.5\times10^{-11}\) inside the bound \(1.1\times10^{-10}\). The partition ratios \(\ln p(n)/(\pi\sqrt{2n/3})\) are \(0.74\), \(0.89\) and \(0.92\) at \(n=100\), \(1000\) and \(2000\). The Motzkin ratio at \(n=200\) is \(0.988\). The graph-counting ratio at \(n=10\) is \(1.24\), and the two-term formula gives \(1.18\). Odd-order permutations have probability asymptotic to \(\sqrt{2/(\pi n)}\), and the count for \(n=2,3,4\) matches. The power sum at \(n=100\) is \(1.57211\) against the two-term value \(1.57202\). The triple-birthday approximation is \(82.9\) against \(88.74\), and the pair approximation is \(23.9\) against \(24.62\). The constants \(\zeta(-\frac12)=-0.2078862\ldots\) and \(\zeta(\frac12)=-1.4603545\ldots\) are right, and \(\zeta(-\frac12)=-\zeta(\frac32)/(4\pi)\). The four short exercises match, including \(f(\frac15)=0.8521108814\ldots\) inside \(\bigl(\frac{104}{125},\frac{544}{625}\bigr)\).
+
+The bridge names the size of \(p(n)\), which is the next chapter.
+
 ## Not checked
 
-- Chapters 10 through 13, every later exercise, the preface’s remaining admitted external theorems, the blurb, `kdp.md`, the index beyond the lines named above, the sources list, and About the Cover.
+- Chapters 12 and 13, every later exercise, the preface’s remaining admitted external theorems, the blurb, `kdp.md`, the index beyond the lines named above, the sources list, and About the Cover.
 - The rust curve in `figures/ch01-rudin.tex`, which the Chapter 6 caption says reaches \(15.3\). The charcoal bound \(\sqrt{128}\) is the theorem. The random signs were not regenerated.
 - The ratio \(1.002\) at \(n=800\) in the note after `pb:squares`, and the constant \(1.2218\) in that note. The shape of the asymptotic was not recomputed.
 - A LaTeX build, so printed page numbers were not seen.
