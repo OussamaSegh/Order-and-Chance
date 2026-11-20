@@ -1,0 +1,52 @@
+# Volume 10 — Abstraction
+
+**Score: pending.** Chapters 1–2 are in this file. The score and the severity totals are filled when the remaining chapters are in.
+
+**How this was read.** Book order in `volume10-abstraction/main.tex`: preface, Categories (Chapter 1), Tensors and the Cost of Multiplying Matrices (Chapter 2, file `linear-ch10-tensors.tex`), then the later chapters as they are reviewed. The blurb, `kdp.md`, and About the Cover were read with the preface. Every exercise in a reviewed chapter was read, including its hint and its solution. The shared counter numbers theorems, propositions, lemmas, corollaries, definitions, and examples inside each chapter. Exercises use a separate counter.
+
+## Issues
+
+Paths are relative to `volume10-abstraction/`.
+
+| ID | Location | Category | Severity | Evidence | Suggested fix |
+| --- | --- | --- | --- | --- | --- |
+| V10-001 | `chapters/ch01-categories.tex:13` | style | minor | “The nickname ``general abstract nonsense can obscure the practical point: this language lets us check a construction by its maps.” | Close the quotation after *nonsense*. The sentence is the practical point of the nickname, and the opening quote is never closed. |
+| V10-002 | `chapters/ch01-categories.tex:257` (`prop:abuniv`) | reference | minor | “The quotient factorisation theorem of Volume~3, Chapter~2 gives a well-defined map \(\bar f(gG')=f(g)\).” | Volume 3, Chapter 2 has the first isomorphism theorem (`thm:iso1`), which factors through the kernel, and the third isomorphism theorem, which maps \(G/N\) to \(G/M\). Neither is titled as a factorisation through an arbitrary normal subgroup of the kernel. The three-line well-definedness argument in the proof of `thm:iso1` is the step to name. |
+| V10-003 | `chapters/ch01-categories.tex:365` and the think box at line 338; solution of `ex:matrixpoly` | prerequisite | minor | “The free-group functor of Volume~9, Chapter~5 and the free commutative ring \(S\mapsto\Z[X_s:s\in S]\) obey the same rule.” The think box then says a unital map \(\Z[X]\to R\) is determined by the image of \(X\). | Volume 9, Chapter 5 does state the free-group universal property. Volume 3 introduces \(R[X]\) and evaluates polynomials, and it does not prove that unital maps out of \(\Z[X_1,\ldots,X_n]\) are exactly the choices of images of the indeterminates. Write the evaluation formula once, as the free-module formula is written just above. |
+| V10-004 | `chapters/linear-ch10-tensors.tex:403` | math | minor | “For \(t>0\), \(\log t\le t-1\)… \(-\sum_s p_s\log(rp_s)\le 0\). Therefore \(E(\psi)\le\log_2 r\).” | The comparison is the natural-logarithm inequality. It bounds \(-\sum p_s\log p_s\) by \(\log r\). The entropy \(E\) is computed with \(\log_2\), so divide by \(\log 2\). The bound and the equality case \(p_s=1/r\) are right. |
+| V10-005 | `figures/linear-ch10-omega.tex` caption, and `chapters/linear-ch10-tensors.tex:345` | figure | minor | “2.3755, then 2.3729 (2012), 2.37286 (2014), and, after three smaller steps, 2.37134 (2024).” | Coppersmith–Winograd is \(\omega<2.375477\), Le Gall’s 2014 bound is \(\omega<2.3728639\), and Alman–Duan–Vassilevska Williams–Xu–Xu–Zhou (arXiv:2404.16349) gives \(\omega<2.371339\). Those three roundings match the caption. Vassilevska Williams, STOC 2012, states \(\omega<2.3727\), not \(2.3729\). The Strassen exponent proved in the chapter is not affected. The records are marked as quotations. |
+
+## Verified correct
+
+### Preface, blurb, listing, cover
+
+The preface’s map is the eleven chapters in `main.tex` order: categories, coordinate tensors and Strassen, module tensors and the snake lemma, Hilbert, localisation and dimension, Dedekind domains, Tor and Ext, group cohomology and carries, Wedderburn, Young diagrams, and compact groups with the longest increasing subsequence. The next volume is named *Randomness: Martingales, Limits and Ergodicity*, and the teaser is the transposition shuffle. The blurb and `kdp.md` tell the same story, including the factorisation of \(6\) in \(\Z[\sqrt{-5}]\). About the Cover is the snake diagram: two rows, kernels above, cokernels below, and the diagonal connecting homomorphism. Whether Chapter 3 constructs that map is checked with that chapter.
+
+The stated prerequisites are Volume 3’s algebra and characters, Volume 7’s topology and integration, Volume 8’s Hilbert-space methods, and Volume 9’s homology, matrix groups, and Weyl integration. No notebook is mentioned, and the copy does not call the book a revision.
+
+### Chapter 1
+
+Categories, functors, natural transformations, products and coproducts, Yoneda, and uniqueness of adjoints. The evaluation square for the double dual matches Volume 8, Theorem A.8 (`linear:thm:bidual`), and the infinite-dimensional obstruction is the remark after that theorem. There is no natural isomorphism \(V\cong V^*\) on \(\mathbf{Iso}_K\) when \(|K|>3\), because a scalar \(\lambda\) would force \(\lambda^2=1\). The \(\mathbb F_2\)-plane form in `ex:f2plane` is linear, bijective, and natural on isomorphisms; the scalar test has no other nonzero scalar to use. Yoneda’s bijection and the representing direction \(u:B\to A\) for \(h^A\Rightarrow h^B\) were checked step by step. A right adjoint preserves products, and the opposite-category argument gives the coproduct claim.
+
+Volume 7, Chapter 1, states that there is no set of all sets. Volume 3, Exercise 2.4, is `ex:commutator`, the derived subgroup. Volume 9, Proposition 5.17, is the free product, and Chapter 5 defines the free group on a set by that product, with the universal property for maps into any group. Volume 3, Chapter 10, is the fundamental theorem of Galois theory; the Galois connection written here is the inclusion form and does not need the bijection. Volume 9, Chapter 6, gives \(H_1(S^1)\cong\Z\), \(H_1(D^2)=0\), and the ray retraction used for Brouwer. The citation name in `prop:abuniv` is V10-002. The free-commutative-ring sentence is V10-003.
+
+Every exercise was read. There are 10. The inclusion \(\Z\to\Q\) is monic and epic in unital rings and not epic in sets. Fields of characteristics 2 and 3 have neither a product nor a coproduct. Natural operations on groups are the words in the free group, and the one-variable operations compose by multiplication of the exponents. Natural operations on abelian groups are \(x\mapsto nx\) and \((x,y)\mapsto mx+ny\), and addition is the only one with two-sided identity \(0\). On the ordered integers, \(\lceil n/d\rceil\le k\) if and only if \(n\le dk\), including negative \(n\); the reverse adjunction fails for \(d>1\) at \((n,k)=(1,1)\). The power-set adjunctions are \(f_!\dashv f^{-1}\dashv f_*\), and an empty fibre lies in \(f_*(\varnothing)\). The same-parity pullback is \(\Z(1,1)+\Z(0,2)\), a proper subgroup of \(\Z\times\Z\).
+
+The divisor figure is the divisibility poset of the divisors of 12. The product of 4 and 6 is 2 and the coproduct is 12. The Yoneda figure is the naturality square used in the last step of the proof.
+
+### Chapter 2
+
+Kronecker products, the vec identity \(\operatorname{vec}(AXB)=(B^{\mathsf T}\otimes A)\operatorname{vec}X\), Sylvester’s equation, tensor rank, Strassen’s seven products, the exponent bound, and the Schmidt decomposition. The seven-product formulas were expanded in noncommuting letters: the four outputs are the four entries of \(AB\). The recurrence \(T(2^s)=7T(2^{s-1})+18\cdot 4^{s-1}\) solves as \(T(n)=7n^{\log_2 7}-6n^2\). Schoolbook minus this count is negative through \(n=512\) and positive from \(n=1024\): the differences at \(s=9\) and \(s=10\) are \(-12729073\) and \(175399785\), and the rounded operation counts are \(2.81\cdot 10^8\) against \(2.68\cdot 10^8\), then \(1.97\cdot 10^9\) against \(2.15\cdot 10^9\). Also \(\log_2 7\approx 2.80735<2.808\). The epigraph’s constant \(4.7\) and the base-2 logarithm match Strassen, Numerische Mathematik 13 (1969), 354–356; the ellipsis in the display is the clause “from the coefficients of \(A\) and \(B\)”.
+
+The rotation tensor has complex rank 2 and real rank 3. The \(W\) tensor has rank 3 and border rank 2; \(\|W_\varepsilon\|^2=3+3\varepsilon^2+\varepsilon^4\), and the two pure summands have norms \((1+\varepsilon^2)^{3/2}/\varepsilon\) and \(1/\varepsilon\). The complex-multiplication tensor has the same real and complex ranks, and the two-term decomposition over \(\C\) recovers \(ac-bd\) and \(ad+bc\). The grid Laplacian eigenvalues are \(4-2\cos(\pi i/(m+1))-2\cos(\pi j/(n+1))\), and the square-grid condition number is asymptotic to \(4n^2/\pi^2\). For the state with coefficient matrix \(\bigl(\begin{smallmatrix}1&2\\2&0\end{smallmatrix}\bigr)/3\), the Schmidt coefficients are \((1+\sqrt{17})/6\approx 0.854\) and \((\sqrt{17}-1)/6\approx 0.521\), and the entropy is about \(0.843\) bits. The polynomial identity \(24xyz=(x+y+z)^3-(-x+y+z)^3-(x-y+z)^3-(x+y-z)^3\) holds, and the symmetric-tensor form divides by 4 only when the characteristic is not 2. The entropy comparison is V10-004. The 2012 record in the figure caption is V10-005.
+
+Volume 8, Theorem C.2, is triangularisation; Theorem 4.1 is the singular value decomposition; Theorem 4.5 is Eckart–Young; Theorem F.5 is the Lyapunov equation \(A^*P+PA=-Q\). Exercise 3.3 is the path adjacency eigenvalue \(2\cos(k\pi/(n+1))\). Exercise 5.1 is the hypercube eigenbasis with eigenvalues \(n-2|T|\).
+
+Every exercise was read. There are 16. The column-major vec figure matches the identity. The \(W\) cube has front slice \(\bigl(\begin{smallmatrix}0&1\\1&0\end{smallmatrix}\bigr)\) and back slice \(\bigl(\begin{smallmatrix}1&0\\0&0\end{smallmatrix}\bigr)\). The recursion figure’s eighteen block additions agree with the count \(10+8\) in the solution of `linear:ex:strassen22`.
+
+## Not checked
+
+- Chapters 3–11, so the score is not yet assigned.
+- A TeX run, so unresolved references were not compiled. Numbered statements in the reviewed chapters were counted from the source environments.
+- Portrait files against `photos/CREDITS.md`. None of the reviewed chapters uses a portrait.
+- The historical fine print beyond the quotations that were compared with Strassen’s paper and with the published exponent bounds named in V10-005. Winograd’s optimality of seven multiplications, the \(3\times 3\) bounds \(19\) and \(23\), and the AlphaTensor length \(47\) over \(\mathbb F_2\) are left as the quotations the text marks.
