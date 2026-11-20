@@ -25,8 +25,11 @@ class DependencyReviewChecks(unittest.TestCase):
         # points forward to Exercise 1.3, the Lucas solution cites Exercise ex:n2n,
         # and the continued-fraction examples cite Proposition 9.1 twice.
         # Forward uses: 86 = 85 plus that Exercise 1.3 pointer.
-        self.assertEqual(result['references'], 326)
-        self.assertEqual(result['reviewed_forward_uses'], 86)
+        # The Volume 2 sequential-review fixes add the backward citations named in
+        # the proofs and one forward outlook, from the Diophantine beauty paragraph
+        # to Theorem thm:six. The counts are 343 references and 87 forward uses.
+        self.assertEqual(result['references'], 343)
+        self.assertEqual(result['reviewed_forward_uses'], 87)
         self.assertIn('no automatic', result['scope'])
 
     def test_new_removed_or_changed_forward_reference_requires_review(self):

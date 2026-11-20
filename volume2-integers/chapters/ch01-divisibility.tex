@@ -74,7 +74,7 @@ The multiples of $6$ form a subgroup of $(\Z,+)$: sums and differences of multip
 Every subgroup of $(\Z,+)$ is of the form $d\Z$ for a unique $d\in\N$.
 \end{proposition}
 \begin{proof}
-The subgroup $\{0\}$ is $0\Z$, and no $d\ge1$ generates it. Otherwise let $H\ne\{0\}$ be a subgroup. It contains a non-zero integer $h$, hence also $-h$, so it contains a positive integer. Let $d$ be its least positive element. Then $d\Z\subset H$. For $a\in H$, divide: $a=dq+r$ with $r=a-dq\in H$ and $0\le r<d$, so $r=0$. Uniqueness: $d$ is the least positive element of $d\Z$.
+The subgroup $\{0\}$ is $0\Z$, and no $d\ge1$ generates it. Otherwise let $H\ne\{0\}$ be a subgroup. It contains a non-zero integer $h$, hence also $-h$, so it contains a positive integer. Let $d$ be its least positive element. The paragraph before the proposition shows that $H$ is closed under addition and under taking negatives, so $d\in H$ and $-d\in H$. The multiple $0\cdot d=0$ lies in $H$. If $nd\in H$ for some integer $n\ge0$, then $(n+1)d=nd+d\in H$. By induction, $nd\in H$ for every $n\ge0$, and $-nd\in H$ as well. Thus $d\Z\subset H$. For $a\in H$, divide: $a=dq+r$ with $r=a-dq\in H$ and $0\le r<d$, so $r=0$. Uniqueness: $d$ is the least positive element of $d\Z$.
 \end{proof}
 
 \begin{definition}
@@ -175,7 +175,7 @@ v_p(n!)=\sum_{k\ge1}\left\lfloor\frac n{p^k}\right\rfloor.
 Additivity gives $v_p(n!)=\sum_{m=1}^n v_p(m)$. The integer $m$ contributes one to the inner count for each $k$ with $p^k\mid m$. Changing the order of summation, the term $k$ equals the number of multiples of $p^k$ up to $n$, which is $\lfloor n/p^k\rfloor$. The sum stops once $p^k>n$.
 \end{proof}
 
-For a check, $v_5(10!)=\lfloor10/5\rfloor=2$: the factors are $5$ and $10$. Exercise~\ref{ex:zeros} asks for the same count, and then for the zeros at the end of $1000!$.
+For a check, $v_5(10!)=\lfloor10/5\rfloor=2$: the factors are $5$ and $10$. Exercise~\ref{ex:zeros} asks for the zeros at the end of $1000!$.
 
 The positive divisors of a fixed $n$ are partially ordered by divisibility. For any two of them the greatest lower bound is their gcd and the least upper bound is their lcm, both of which again divide $n$. Figure~\ref{fig:divisor-lattice} draws the case $n=12$. The picture is the reason the formulas above are not two separate inventions: gcd and lcm are the meet and the join of one and the same order.
 
@@ -270,7 +270,23 @@ If the algorithm applied to $a>b\ge1$ performs $n$ divisions, then $b\ge F_{n+1}
 The divisions produce $r_0=a>r_1=b>\dots>r_{n-1}>r_n\ge1$ and $r_{n+1}=0$. We show $r_k\ge F_{n+2-k}$ by descending induction on $k$. For $k=n$: $r_n\ge1=F_2$. For $k=n-1$: $r_{n-1}>r_n\ge1$ so $r_{n-1}\ge2=F_3$. Then each $q_k\ge1$, so $r_{k-1}=q_kr_k+r_{k+1}\ge r_k+r_{k+1}\ge F_{n+2-k}+F_{n+1-k}=F_{n+3-k}$.
 \end{proof}
 
-Consecutive Fibonacci numbers attain these lower bounds. With $\varphi=(1+\sqrt5)/2$, Volume~1's formula $F_k=(\varphi^k-(-1/\varphi)^k)/\sqrt5$ shows their exponential growth. Thus the division count is $O(\log b)$: it is bounded by a constant times $\log b$ for all sufficiently large $b$. Exercise~\ref{ex:lame5} obtains an explicit decimal-digit bound using just the recurrence.
+Consecutive Fibonacci numbers attain these lower bounds. Their growth comes from the recurrence itself. Volume~1 supplies the positive square root of $5$. Set $\varphi=(1+\sqrt5)/2$. Then $2\varphi-1=\sqrt5$, so $(2\varphi-1)^2=5$. Expanding gives $4\varphi^2-4\varphi+1=5$, hence $\varphi^2=\varphi+1$. Also $\varphi>1$, and $\varphi^{-1}=\varphi-1$.
+
+We claim that $\varphi^{n-2}\le F_n\le\varphi^{n-1}$ for every integer $n\ge1$. At $n=1$ this is $\varphi^{-1}\le1\le1$. At $n=2$ it is $1\le1\le\varphi$. Suppose the claim holds for every index up through some $n\ge2$. Then
+\[
+F_{n+1}=F_n+F_{n-1}\le\varphi^{n-1}+\varphi^{n-2}=\varphi^{n-2}(\varphi+1)=\varphi^n
+\]
+and
+\[
+F_{n+1}=F_n+F_{n-1}\ge\varphi^{n-2}+\varphi^{n-3}=\varphi^{n-3}(\varphi+1)=\varphi^{n-1}.
+\]
+Both new bounds are the claim at index $n+1$. Thus it holds for every $n\ge1$.
+
+Lam\'e's theorem gives $b\ge F_{n+1}\ge\varphi^{n-1}$. For $b\ge2$ the natural logarithm from Volume~1 is defined and increasing, so
+\[
+n-1\le\frac{\ln b}{\ln\varphi}.
+\]
+The division count is therefore $O(\log b)$: for all sufficiently large $b$ it is bounded by a constant times $\log b$. Exercise~\ref{ex:lame5} turns the same comparison into an explicit decimal-digit bound.
 
 \subsection*{How fast is “fast”?}
 Why does Euclid's algorithm need so few divisions even for large inputs? Each new remainder is smaller than the previous divisor, but that alone gives only a crude estimate. The worst case occurs when the remainders shrink as slowly as possible, with quotients equal to $1$. Work backwards from the final remainders and you meet consecutive Fibonacci numbers. Lam\'e's argument turns that pattern into a bound on the number of division steps. It does not count every operation a modern computer uses to perform each division.
@@ -347,7 +363,7 @@ For $n\in\N$, compute $\gcd\left(n^2+1,(n+1)^2+1\right)$.
 \end{exercise}
 
 \begin{exercise}[$\star$]\label{ex:zeros}
-\emph{Legendre's formula.} Show that $v_p(n!)=\sum_{k\ge1}\left\lfloor\frac n{p^k}\right\rfloor$, and find the number of zeros at the end of $1000!$.
+Find the number of zeros at the end of $1000!$.
 \end{exercise}
 
 \begin{exercise}[$\star\star$]\label{ex:sqrt}
@@ -427,7 +443,7 @@ All probabilities in this problem are limits as $N\to\infty$.
 \end{exercise}
 
 \begin{exercise}[$\star\star\star$]\label{pb:orchard}
-\emph{Optional exploration: Pólya's orchard (1918).} The main route does not use this argument. Let $R\ge2$ be an integer. A tree stands at every lattice point of the disc of radius $R$ except
+\emph{Optional exploration: Pólya's orchard (1918).} The main route does not use this argument. The solution uses the area of a centred rectangle, and it finds the lattice point as a difference of two points of the concentric half-rectangle. Let $R\ge2$ be an integer. A tree stands at every lattice point of the disc of radius $R$ except
 the origin, and each trunk is a disc of radius $r$. You stand at the origin.
 \begin{enumerate}[label=(\alph*)]
 \item (Minkowski.) Show that a closed rectangle centred at $0$, of area at least $4$, contains a lattice point other than $0$.
@@ -456,7 +472,7 @@ Begin with the ordinary gcd of $91$ and $35$. Euclid's algorithm can do more tha
 The two entries look quadratic, but a gcd divides their difference too. Use that difference to remove the quadratic term, then combine once more to leave a constant. Once you have a short list of possible gcds, test which possibilities really occur.
 \end{hint}
 \begin{hint}{ex:zeros}
-Count prime factors in $n!$ in layers. Every multiple of $p$ contributes one factor, every multiple of $p^2$ contributes a second, and so on. How many multiples of $p^k$ lie between $1$ and $n$? For decimal zeros, remember that each zero needs both a $2$ and a $5$.
+Proposition~\ref{prop:legendre} counts the factors of $5$ in $1000!$. Each trailing zero also needs a factor $2$. Compare the two counts.
 \end{hint}
 \begin{hint}{ex:sqrt}
 For square roots, write a rational in lowest terms and compare prime exponents after clearing its denominator. For the polynomial question, try $x=a/b$ with $\gcd(a,b)=1$: once you multiply the monic equation by $b^d$, which term is the only one not visibly divisible by $b$?
@@ -474,7 +490,7 @@ Every integer $N$ has a unique representation $N=ax+by$ with $0\le x<b$. It is a
 For (a), reduce to $0\le x,y<1$ by subtracting integer parts. For (b), compare the $p$-adic valuations of numerator and denominator with Legendre's formula.
 \end{hint}
 \begin{hint}{ex:n2n}
-For $0<j<p$, show $p\mid\binom pj$ using $p!=\binom pj j!(p-j)!$ and coprime cancellation. Expand $(1+1)^p$ and cancel $2$ modulo an odd $p$. If $p\mid2^n-1$, then $p\mid\gcd(2^n-1,2^{p-1}-1)$. What is $\gcd(n,p-1)$ when $p$ is the smallest prime factor of $n$?
+For $0<j<p$, show $p\mid\binom pj$ using $p!=\binom pj j!(p-j)!$ and Euclid's lemma. Expand $(1+1)^p$. Then $p$ divides $2(2^{p-1}-1)$ and does not divide $2$. If $p\mid2^n-1$, then $p\mid\gcd(2^n-1,2^{p-1}-1)$. What is $\gcd(n,p-1)$ when $p$ is the smallest prime factor of $n$?
 \end{hint}
 
 \begin{hint}{ex:t1-divisibility-lattice}
@@ -549,23 +565,8 @@ We first narrowed the answer to two possibilities, then checked exactly when the
 \end{solution}
 
 \begin{solution}{ex:zeros}
-\idea Count the factors of $p$ inside $n!$ rather than trying to write out the enormous factorial. Every multiple of $p$ contributes one factor; every multiple of $p^2$ contributes an extra factor; and so on. This turns a valuation into a sum of floors. For trailing decimal zeros, pair factors $2$ and $5$. There are always enough twos, so the limiting supply is the number of fives.
-\writeup The $p$-adic valuation of a factorial is the sum of the valuations of all its factors:
-\[
-v_p(n!)=\sum_{m=1}^nv_p(m).
-\]
-Each factor divisible by $p$ contributes at least one, each factor divisible by $p^2$ contributes one more, and so on. To write the count compactly, let $\mathbf1_E$ equal $1$ if a condition $E$ is true, and $0$ otherwise. Counting in these layers gives
-\[
-\begin{aligned}
-v_p(n!)
-&=\sum_{m=1}^n\sum_{k\ge1}\mathbf1_{p^k\mid m}
-=\sum_{k\ge1}\#\{m\le n:p^k\mid m\}\\
-&=\sum_{k\ge1}\left\lfloor\frac n{p^k}\right\rfloor.
-\end{aligned}
-\]
-All sums are finite because $p^k>n$ eventually.
-
-A trailing decimal zero requires one factor $2$ and one factor $5$. Factors of $2$ are more plentiful, so the number of zeros in $1000!$ is
+\idea A trailing zero of $n!$ is one factor $2$ together with one factor $5$. Proposition~\ref{prop:legendre} counts each prime. The scarcer one decides the number of zeros.
+\writeup Proposition~\ref{prop:legendre} gives
 \[
 v_5(1000!)=\left\lfloor\frac{1000}5\right\rfloor
 +\left\lfloor\frac{1000}{25}\right\rfloor
@@ -573,6 +574,11 @@ v_5(1000!)=\left\lfloor\frac{1000}5\right\rfloor
 +\left\lfloor\frac{1000}{625}\right\rfloor
 =200+40+8+1=249.
 \]
+The same formula gives a lower bound for the twos, keeping only the first floor:
+\[
+v_2(1000!)\ge\left\lfloor\frac{1000}2\right\rfloor=500>249.
+\]
+Each trailing zero uses one factor $2$ and one factor $5$. The fives run out first, so $1000!$ ends in $249$ zeros.
 \end{solution}
 
 \begin{solution}{ex:sqrt}
@@ -684,7 +690,7 @@ We can obtain Fermat's little theorem from the binomial expansion. For $1\le j<p
 \[
 2^p=(1+1)^p\equiv2\pmod p.
 \]
-Since $p$ is odd, $2$ is invertible modulo $p$, giving $2^{p-1}\equiv1\pmod p$.
+Thus $p$ divides $2^p-2=2(2^{p-1}-1)$. The prime $p$ is odd, so it does not divide $2$. Euclid's lemma, Theorem~\ref{thm:gauss}, forces $p$ to divide $2^{p-1}-1$. Hence $2^{p-1}\equiv1\pmod p$.
 
 The prime $p$ now divides both $2^n-1$ and $2^{p-1}-1$. By Exercise~\ref{ex:mersgcd},
 \[
@@ -836,17 +842,13 @@ for any fixed list of distinct primes.
 \idea If the trunks are thick, a thin rectangle around any line of sight has area at least $4$ and so contains a tree. If they are
 thin, the ray pointing towards $(R,1)$ slips between the trees: the only lattice points exactly on that line lie beyond the orchard.
 
-\writeup (a) Let $S$ be the given closed, centrally symmetric rectangle of area at least $4$, and put $K=\frac12S$. The area of $K$ is at least $1$. First suppose it is strictly greater than $1$.
+\writeup (a) Let $S$ be the given closed rectangle centred at the origin, of area at least $4$. In orthogonal coordinates $(u,v)$ aligned with its sides, $S$ is the set of points with $|u|\le A$ and $|v|\le B$, so the area is $4AB$ and $AB\ge1$. Let $K$ be the concentric half-rectangle $|u|\le A/2$, $|v|\le B/2$. Its area is $AB$. First suppose $AB>1$.
 
-Partition $K$ into pieces according to the integer unit square $z+[0,1)^2$ containing each point. Translate the pieces back into the fundamental square $[0,1)^2$. Their total area is greater than $1$, the area of that square, so two translated pieces must overlap in positive area. Thus two distinct points $x,y\in K$ have the same fractional coordinates: $x-y$ is a nonzero lattice vector.
+Cut $K$ along the lines of the integer grid. Each piece lies in one square $m+[0,1)^2$ with $m\in\Z^2$. Translate that piece by $-m$ into the unit square $[0,1)^2$. The pieces of $K$ meet only along grid lines, which add no area, so their areas sum to the area of $K$. Translation does not change area. The translated pieces therefore have total area $AB>1$, while the unit square has area $1$. If those pieces overlapped only along boundaries of area zero, the sum of their areas would be at most $1$. Two of them must overlap in positive area, and so they share a point. That point is $x-m=y-n$ for points $x,y\in K$ and distinct lattice vectors $m,n$. Hence $x-y=m-n$ is a nonzero lattice vector.
 
-Because $2x, -2y\in S$ and $S$ is convex and centrally symmetric, their midpoint
-\[
-x-y=\tfrac12(2x)+\tfrac12(-2y)
-\]
-also belongs to $S$. We have found the required lattice point.
+The coordinates of this difference satisfy $|u(x)-u(y)|\le|u(x)|+|u(y)|\le A$, and the same bound for $v$. Therefore $x-y\in S$.
 
-If $\operatorname{area}(K)=1$, enlarge $S$ slightly to $(1+1/m)S$. The strict-area argument supplies a nonzero lattice point in every enlarged rectangle. All such points lie in a fixed bounded region, say $2S$, so at least one lattice point $z\ne0$ occurs for infinitely many $m$. The enlarged rectangles converge to the original closed $S$, hence $z\in S$. This handles the boundary case.
+If $\operatorname{area}(K)=1$, enlarge $S$ slightly to $(1+1/m)S$. The strict-area argument supplies a nonzero lattice point in every enlarged rectangle. All such points lie in a fixed bounded region, say $2S$, so at least one lattice point $z\ne0$ occurs for infinitely many $m$. For those $m$, the coordinates of $z$ satisfy $|u(z)|\le(1+1/m)A$ and $|v(z)|\le(1+1/m)B$. Letting $m$ grow forces $|u(z)|\le A$ and $|v(z)|\le B$, so $z\in S$. This handles the boundary case.
 
 The word \emph{closed} matters when the area is exactly $4$: the open square $(-1,1)^2$ has area $4$ but no nonzero integer point. Its boundary contains the missing points $(1,0)$ and $(0,1)$.
 
@@ -865,7 +867,7 @@ If $a-bR\ne0$, the numerator is a nonzero integer, so the distance is at least $
 $|(a,b)|\ge\sqrt{R^2+1}>R$; no tree in the disc stands on that line. Thus the ray remains unobstructed whenever
 $r<1/\sqrt{R^2+1}$.
 
-\tools Volume~1 (convexity and determinants as areas); Volume~2, Chapter~1.
+\tools The area of a centred rectangle, as written in this solution; Volume~2, Chapter~1.
 \leads This is the planar case of Minkowski's geometry-of-numbers argument and is related to Pólya's orchard problem. The simple sight line through $(R,1)$ attains the natural lower obstruction scale; Volume~13 develops the lattice theorem in higher dimensions.
 \end{solution}
 
