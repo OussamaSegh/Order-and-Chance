@@ -1,8 +1,8 @@
 # Volume 10 — Abstraction
 
-**Score: pending.** Chapters 1–8 are in this file. The score and the severity totals are filled when the remaining chapters are in.
+**Score: pending.** Chapters 1–9 are in this file. The score and the severity totals are filled when the remaining chapters are in.
 
-**How this was read.** Book order in `volume10-abstraction/main.tex`: preface, Categories (Chapter 1), Tensors and the Cost of Multiplying Matrices (Chapter 2, file `linear-ch10-tensors.tex`), Tensors and Exactness (Chapter 3), Noetherian Rings and Hilbert’s Theorems (Chapter 4), Localisation and Dimension (Chapter 5), Dedekind Domains (Chapter 6), Homological Algebra (Chapter 7), Group Cohomology (Chapter 8), then the later chapters as they are reviewed. The blurb, `kdp.md`, and About the Cover were read with the preface. Every exercise in a reviewed chapter was read, including its hint and its solution. The shared counter numbers theorems, propositions, lemmas, corollaries, definitions, and examples inside each chapter. Exercises use a separate counter.
+**How this was read.** Book order in `volume10-abstraction/main.tex`: preface, Categories (Chapter 1), Tensors and the Cost of Multiplying Matrices (Chapter 2, file `linear-ch10-tensors.tex`), Tensors and Exactness (Chapter 3), Noetherian Rings and Hilbert’s Theorems (Chapter 4), Localisation and Dimension (Chapter 5), Dedekind Domains (Chapter 6), Homological Algebra (Chapter 7), Group Cohomology (Chapter 8), Semisimple Algebras and Induction (Chapter 9), then the later chapters as they are reviewed. The blurb, `kdp.md`, and About the Cover were read with the preface. Every exercise in a reviewed chapter was read, including its hint and its solution. The shared counter numbers theorems, propositions, lemmas, corollaries, definitions, and examples inside each chapter. Exercises use a separate counter.
 
 ## Issues
 
@@ -95,9 +95,17 @@ Every exercise was read. There are 10. For the sign action, \(H^1(\Z/2,\Z)\cong\
 
 The circle figure uses the slope \(n/m\). The complement figure separates integer and half-integer mirrors. The base-four carry table matches \(\lfloor(x+y)/4\rfloor\).
 
+### Chapter 9
+
+Wedderburn’s theorem, the central idempotents, Frobenius reciprocity, induced characters, Mackey’s formula, Burnside’s \(p^aq^b\) theorem, and Frobenius kernels. For \(\mathfrak S_4\) the block sizes \(1+1+4+9+9\) add to \(24\). The idempotent calculation uses Volume 3, Theorem 11.8. The degree sum is Corollary 11.9, the basis of class functions is Theorem 11.10, and column orthogonality is Corollary 11.11. Maschke is Theorem 11.3 and Schur’s lemma is Lemma 11.4. Cyclotomic extensions are Galois by Volume 3, Proposition 10.9, and fixed elements lie in the base field by Theorem 10.6. Solvability of extensions and of \(p\)-groups is Proposition 5.10; a nontrivial \(p\)-group has nontrivial centre by Corollary 3.10. The Heisenberg count is \(p^2+(p-1)p^2=p^3\). The affine group of \(\mathbb F_q\) has \(q\) classes and one irreducible of degree \(q-1\). In \(A_4\) the classes have sizes \(1,3,4,4\), and \((3,-1,0,0)\) has squared norm \(1\). The real algebra \(\R[Q_8]\) splits as \(\R^4\times\mathbb H\). Frobenius’s classification of real division algebras and Thompson’s nilpotence theorem are marked as quotations.
+
+Every exercise was read. There are 10. The dihedral group of order \(2n\) has two or four linear characters according to the parity of \(n\), and the remaining irreducibles are the cosines \(2\cos(2\pi jk/n)\). Exactly five groups of order \(20\) were classified in Chapter 8; this chapter’s degree-divisibility argument shows that an irreducible degree divides \([G:Z(G)]\).
+
+The Wedderburn figure matches the five blocks of \(\mathfrak S_4\). The affine figure counts \(4+1\) kernel elements and \(15\) maps that fix one point in \(\mathbb F_5\).
+
 ## Not checked
 
-- Chapters 9–11, so the score is not yet assigned.
+- Chapters 10–11, so the score is not yet assigned.
 - A TeX run, so unresolved references were not compiled. Numbered statements in the reviewed chapters were counted from the source environments.
 - Portrait files against `photos/CREDITS.md`. None of the reviewed chapters uses a portrait.
 - The historical fine print beyond the quotations that were compared with Strassen’s paper and with the published exponent bounds named in V10-005. Winograd’s optimality of seven multiplications, the \(3\times 3\) bounds \(19\) and \(23\), and the AlphaTensor length \(47\) over \(\mathbb F_2\) are left as the quotations the text marks.
