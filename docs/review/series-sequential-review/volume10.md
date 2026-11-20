@@ -1,8 +1,8 @@
 # Volume 10 — Abstraction
 
-**Score: pending.** Chapters 1–4 are in this file. The score and the severity totals are filled when the remaining chapters are in.
+**Score: pending.** Chapters 1–5 are in this file. The score and the severity totals are filled when the remaining chapters are in.
 
-**How this was read.** Book order in `volume10-abstraction/main.tex`: preface, Categories (Chapter 1), Tensors and the Cost of Multiplying Matrices (Chapter 2, file `linear-ch10-tensors.tex`), Tensors and Exactness (Chapter 3), Noetherian Rings and Hilbert’s Theorems (Chapter 4), then the later chapters as they are reviewed. The blurb, `kdp.md`, and About the Cover were read with the preface. Every exercise in a reviewed chapter was read, including its hint and its solution. The shared counter numbers theorems, propositions, lemmas, corollaries, definitions, and examples inside each chapter. Exercises use a separate counter.
+**How this was read.** Book order in `volume10-abstraction/main.tex`: preface, Categories (Chapter 1), Tensors and the Cost of Multiplying Matrices (Chapter 2, file `linear-ch10-tensors.tex`), Tensors and Exactness (Chapter 3), Noetherian Rings and Hilbert’s Theorems (Chapter 4), Localisation and Dimension (Chapter 5), then the later chapters as they are reviewed. The blurb, `kdp.md`, and About the Cover were read with the preface. Every exercise in a reviewed chapter was read, including its hint and its solution. The shared counter numbers theorems, propositions, lemmas, corollaries, definitions, and examples inside each chapter. Exercises use a separate counter.
 
 ## Issues
 
@@ -63,9 +63,17 @@ Every exercise was read. There are 10. The subring \(K[X,XY,XY^2,\ldots]\) has a
 
 The variety figure is the nodal cubic \(y^2=x^3+x^2\) and the union of the plane \(z=0\) with the \(z\)-axis, which is \(V(xz,yz)\). The staircase marks exactly the monomials outside \(\{1,X,Y\}\). The multiplicity figure distinguishes \(K[X]/(X)\) from \(K[X]/(X^2)\). The Hilbert portrait credit matches `photos/CREDITS.md`.
 
+### Chapter 5
+
+Localisation, exactness, the prime correspondence, Nakayama, \(\operatorname{Spec}\), the primes of \(\Z[x]\), integrality and going up, Noether normalisation, \(\dim K[x_1,\ldots,x_n]=n\), and the Lasker–Noether theorem with associated primes. The equivalence relation on fractions was checked, including the witness \(t\). The base-\(r\) exponents in the change of variables are distinct, so the leading term does not cancel. The chain \((0)\subsetneq(x^2+1)\subsetneq(5,x-2)\) lies in \(\Z[x]\), and the classification allows no chain of length 3. Going down is named and not used. \((x^2,xy)=(x)\cap(x^2,y)\), with associated primes \((x)\) and \((x,y)\). The adjugate step in the integrality criterion is the identity from Volume 1, Proposition 7.11, extended to commutative rings in Volume 3, Chapter 7.
+
+Every exercise was read. There are 10. The ideals of \(\Z_{(p)}\) are \(0\) and \(p^k\Z_{(p)}\). The golden ratio satisfies \(\varphi^2-\varphi-1=0\) and is missing from \(\Z[\sqrt5]\); \(\sqrt2+\sqrt3\) satisfies \(t^4-10t^2+1=0\). The nilradical is the intersection of the primes. Closed points of \(\operatorname{Spec}\R[x]\) match the closed upper half-plane. The hyperbola \(xy=1\) is integral over \(\C[x+y]\) and not over \(\C[x]\); the fibres over \(s=\pm2\) are the single points \((1,1)\) and \((-1,-1)\). Localising \(\Z/60\) at \(2,3,5\) gives \(\Z/4,\Z/3,\Z/5\), detected by the classes \(15,20,12\). For every \(c\), \((x^2,xy)=(x)\cap(x^2,y-cx)\) is a minimal primary decomposition, and the components differ when \(c\) differs. The cusp ring \(K[u^2,u^3]\) has dimension 1 and integral closure \(K[u]\).
+
+The spectrum figure matches the splitting of \(x^2+1\): one point over \(2\), two points over primes \(1\bmod 4\), and one degree-\(2\) point over primes \(3\bmod 4\). Localisation at \((3)\) keeps \((0)\) and \((3)\). The monomial picture of \((x^2,xy)\) marks \(x\) outside the ideal.
+
 ## Not checked
 
-- Chapters 5–11, so the score is not yet assigned.
+- Chapters 6–11, so the score is not yet assigned.
 - A TeX run, so unresolved references were not compiled. Numbered statements in the reviewed chapters were counted from the source environments.
 - Portrait files against `photos/CREDITS.md`. None of the reviewed chapters uses a portrait.
 - The historical fine print beyond the quotations that were compared with Strassen’s paper and with the published exponent bounds named in V10-005. Winograd’s optimality of seven multiplications, the \(3\times 3\) bounds \(19\) and \(23\), and the AlphaTensor length \(47\) over \(\mathbb F_2\) are left as the quotations the text marks.
