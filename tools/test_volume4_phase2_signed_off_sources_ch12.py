@@ -17,7 +17,9 @@ SOURCE = Path(__file__).resolve().parents[1] / "volume4-chance" / "chapters" / "
 # Further writer repair the same day: bin-increment thresholds and reflection strips use the rectangle reduction. Labels unchanged. This pin is source identity, not an independent sign-off.
 # Later the same day: the lower bound uses the unnumbered dyadic lemma. Still not an independent sign-off.
 # Atom sentence names the dyadic strip. Source identity only, not an independent sign-off.
-BLOB = "26e4400c45d83e53a9e415cd24952eccbf0d26dc"
+# 2026-11-20: series review V4-010. Labels unchanged. Not a new sign-off.
+# Second review the same day: the cross term is the limit of the cutoff products. Not a new sign-off.
+BLOB = "81cae741d270af82a2d096eb60a1bc93be928987"
 PROOFS = """prop:bmgauss lem:levylevel thm:levy prop:scaling lem:squares
 thm:qv thm:dyadicito thm:pwz prop:bmmart prop:restart
 thm:reflection prop:bmsquare""".split()

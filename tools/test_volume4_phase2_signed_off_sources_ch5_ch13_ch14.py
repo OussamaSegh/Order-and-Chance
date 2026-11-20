@@ -20,12 +20,16 @@ SOURCES = {
         # Labels unchanged. Not an independent sign-off of the chapter.
         # 2026-11-13: V4-03. Squares on the cutoff circles are bounded by
         # their own mesh strips. Labels unchanged. Not an independent sign-off.
-        "73617646dcb3dbad985ce9df7b4a4536fae28aad",
+        # 2026-11-20: series review V4-002, V4-014, V4-022. Labels unchanged. Not a new sign-off.
+        # Second review the same day: the sector formula covers a general angle. Not a new sign-off.
+        "02ebb74806d4be8999ccf60606e93a8952f00cee",
         "prop:densitymean prop:gausstail prop:fubini prop:polar prop:manyuniforms prop:orderpair prop:inverse thm:dct thm:boxmuller",
         "ex:counter ex:densityunique ex:tail ex:cauchy ex:gamma ex:order ex:cantor ex:usquare ex:radius pb:passone pb:stick",
     ),
     "ch05-geometric.tex": (
-        "2bc6858a1cb598473be2f233ae5ed6b05ff0e93e",
+        # 2026-11-20: series review V4-015. Labels unchanged. Not a new sign-off.
+        # Second review the same day: the axes of the four quarters have area zero. Not a new sign-off.
+        "e6577273c0a0665bb9cab444e87fdd93392c42f2",
         "thm:bertrand thm:buffon",
         "",
     ),
@@ -33,12 +37,17 @@ SOURCES = {
         # Reread 2026-11-11 for the common-face sentence in Euler's formula (V4R2-13). Labels unchanged.
         # 2026-11-11: pb:hashing appended. Earlier claim labels unchanged.
         # The new statement was checked in this preparation. Not an independent sign-off.
-        "7c38329942b0f962dbdc97f059a39feaa6856189",
+        # 2026-11-20: series review V4-001 and V4-020. Labels unchanged. Not a new sign-off.
+        # Second review the same day: the plane-tree count is an induction on the given drawing,
+        # and R(k,k)>m does not assume the least integer already exists. Not a new sign-off.
+        "0886a2d07178da9796e5d3aba8b74c0633ecf6db",
         "thm:erdos thm:alter thm:lll prop:second prop:euler prop:crossing",
         "ex:carowei ex:tournament ex:sumfree ex:crossing ex:propertyb ex:localcolour pb:hashing",
     ),
     "ch14-graphs.tex": (
-        "a494b82eee49bc1ed43d43b9b74894ed821706d4",
+        # 2026-11-20: series review V4-021. Labels unchanged. Not a new sign-off.
+        # Second review the same day: decoding an arbitrary word returns a tree. Not a new sign-off.
+        "da3dbfd2e930955d94e0efef4f27d7c21d1ca122",
         "thm:subcrit thm:triangles",
         "ex:connectivity ex:giant ex:trianglecount ex:susceptibility ex:criticalisolated ex:trianglesecond",
     ),
