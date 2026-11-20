@@ -1824,3 +1824,101 @@ File names are under `volume10-abstraction/chapters/`. The shared counter number
 - \(\delta=(n-1,\ldots,0)\) is the Weyl vector in Chapter 11. Volume 9 uses \(\delta\) for the modular function of a matrix group.
 - \(K\) is a field throughout. Volume 9 uses \(K\) for Gaussian curvature.
 - \(\operatorname{Spec}\) is the prime spectrum from Chapter 5 on. Volume 8 uses spectrum for the spectrum of an operator.
+
+## Volume 11 — Randomness
+
+File names are under `volume11-randomness/chapters/`. The shared counter numbers theorems, propositions, lemmas, corollaries, definitions, and examples inside each chapter. Exercises use a separate counter and restart each chapter. There are fourteen chapters. Chapter 13 is `shuffling.tex` and inputs `riffle-cutoff.tex`. Chapter 14, the problem chapter, is `ch13-harder.tex`. \(\log\) is the natural logarithm; base-2 logarithms are written \(\log_2\).
+
+### Chapter 1 — Independence and zero–one laws (`ch01-zero-one.tex`)
+
+- \(\pi\)-systems suffice — `lem:pisuffice`, 1.1. Grouping — `prop:grouping`, 1.2. Kolmogorov’s zero–one law — `thm:kolmogorov01`, 1.3. A tail random variable is a.s. constant — `cor:tailconst`, 1.4. Algebra approximation — `lem:approx`, 1.5.
+- Hewitt–Savage — `thm:hewittsavage`, 1.6. The fate of a random walk — `thm:trichotomy`, 1.7. Oscillation of a centred finite-variance walk — `cor:oscillate`, 1.8. Ottaviani — `lem:ottaviani`, 1.9. Lévy: convergence in probability implies a.s. convergence — `thm:levyequiv`, 1.10. The distributional form is not proved.
+- Kolmogorov’s \(L^2\) series criterion — `prop:l2series`, 1.11. Paley–Zygmund — `lem:pz`, 1.12. Moments of a Rademacher sum, \(P(T^2>\sigma^2/2)\ge1/12\) — `lem:radmoments`, 1.13. Rademacher–Khintchine–Kolmogorov — `thm:rademacher`, 1.14. The random harmonic series — `prop:harmonic`, 1.15. The natural boundary of its density is quoted.
+
+### Chapter 2 — Laws of large numbers (`ch02-lln.tex`)
+
+- Weak law for triangular arrays — `thm:wlltriangular`, 2.1. St Petersburg, \(S_n/(n\log_2 n)\to1\) in probability — `thm:stpetersburg`, 2.2. Etemadi’s strong law — `thm:etemadi`, 2.3.
+- Kolmogorov’s lower inequality — `lem:kolmogorovlower`, 2.4. Three-series theorem — `thm:threeseries`, 2.5. Kronecker’s lemma — `lem:kronecker`, 2.6. Strong law of renewal, \(N(t)/t\to1/\mu\) — `thm:renewal`, 2.7.
+
+### Chapter 3 — Weak convergence and Donsker’s theorem (`ch03-donsker.tex`)
+
+- Characteristic-function uniqueness in \(\mathbb R^d\) — `lem:chfunique`, 3.1. Truncation inequality — `lem:truncineq`, 3.2. Lévy’s continuity theorem — `thm:levycont`, 3.3. Cramér–Wold — `cor:cramerwold`, 3.4. Borel \(\sigma\)-algebra of \(C[0,1]\) — `lem:cborel`, 3.5.
+- Continuous mapping — `prop:contmap`, 3.6. Converging together — `lem:together`, 3.7. Strong Markov property of Brownian motion — `thm:strongmarkov`, 3.8. Optional stopping for Brownian motion — `lem:ostbm`, 3.9. Exit from an interval — `prop:exit`, 3.10.
+- Skorokhod’s embedding — `thm:skorokhod`, 3.11. Embedding a random walk — `cor:embedwalk`, 3.12. Donsker — `thm:donsker`, 3.13. The maximum — `cor:max`, 3.14. Occupation continuity — `lem:occupcont`, 3.15. Chung–Feller — `lem:chungfeller`, 3.16.
+- Lévy’s arcsine law — `thm:arcsine`, 3.17. Law of the iterated logarithm for Brownian motion — `thm:lilbm`, 3.18. Hartman–Wintner — `thm:hartmanwintner`, 3.19. The Kolmogorov–Smirnov series and empirical Donsker are not proved.
+
+### Chapter 4 — The central limit theorem, sharpened (`ch04-clt.tex`)
+
+- Lindeberg–Feller — `thm:feller`, 4.1. Lyapunov’s condition — `cor:lyapunov`, 4.2. Inversions — `ex:inversions`, 4.3. Pólya’s density — `lem:polya`, 4.4. Esseen’s smoothing inequality — `lem:smoothing`, 4.5. Characteristic-function estimate — `lem:cfestimate`, 4.6.
+- Berry–Esseen with constant \(3.1\) — `thm:berryesseen`, 4.7. Lattice lower bound \(C_0\ge0.35\) — `prop:latticelower`, 4.8. Multivariate CLT — `thm:multiclt`, 4.9. Weldon’s dice — `ex:weldon`, 4.10.
+- Span — `lem:span`, 4.11. Gnedenko’s local limit theorem — `thm:llt`, 4.12. Fourier form of the Green function — `lem:greenfourier`, 4.13. Recurrence on \(\mathbb Z^d\) — `thm:recurrencefourier`, 4.14. Esseen’s and Shevtsova’s constants for the optimal Berry–Esseen constant are quoted.
+
+### Chapter 5 — Infinitely divisible and stable laws (`ch05-stable.tex`)
+
+- Continuous logarithm — `lem:contlog`, 5.1. Infinitely divisible roots never vanish — `prop:idroot`, 5.2. Lévy–Khintchine — `thm:lk`, 5.3. Three classical examples — `ex:lkexamples`, 5.4.
+- Convergence of infinitesimal arrays, one direction — `thm:arrays`, 5.5. The converse is quoted. Gaussian, Poisson, and Cauchy limits — `ex:threelimits`, 5.6. Symmetric stable laws — `thm:stable`, 5.7. Symmetric domain of attraction, with \(\kappa_\alpha\) — `thm:domain`, 5.8.
+- Schlömilch — `lem:schlomilch`, 5.9. Hitting times of Brownian motion — `thm:hitting`, 5.10. Waiting time of a fair gambler — `thm:gambler`, 5.11. The nonsymmetric stable characteristic function is quoted.
+
+### Chapter 6 — Stein’s method (`ch06-stein.tex`)
+
+- Stein’s lemma — `lem:stein`, 6.1. The solution and its derivatives — `lem:steinsol`, 6.2. Kolmogorov from Wasserstein — `prop:dkdw`, 6.3. CLT in Wasserstein distance, constant \(3\) — `thm:steinclt`, 6.4. Exchangeable pairs — `thm:exch`, 6.5.
+- Hypergeometric sampling — `ex:hypergeom`, 6.6. The Poisson Stein solution — `lem:chensteinsol`, 6.7. Chen–Stein, local dependence — `thm:chenstein`, 6.8. Birthdays and hash collisions — `ex:hashcs`, 6.9. Triangles in \(G(n,c/n)\) — `ex:triangles`, 6.10.
+
+### Chapter 7 — Large deviations (`ch07-ldp.tex`)
+
+- Cumulant generating function — `lem:Lambda`, 7.1. Rate function \(\Lambda^*\) — `lem:ratefn`, 7.2. Cramér’s theorem — `thm:cramerR`, 7.3. Method of types — `lem:types`, 7.4. Sanov, finite alphabet — `thm:sanov`, 7.5.
+- Gibbs’ variational principle — `prop:gibbsvar`, 7.6. Gibbs conditioning — `thm:gibbscond`, 7.7. The Brandeis dice — `ex:brandeis`, 7.8. Chernoff–Stein lemma — `thm:chernoffstein`, 7.9. Varadhan’s lemma for sample means — `thm:varadhan`, 7.10. Curie–Weiss phase transition — `thm:curieweiss`, 7.11.
+- The Bahadur–Rao prefactor and the large-deviation theory on Polish spaces are quoted. In this chapter the relative entropy is in nats.
+
+### Chapter 8 — Concentration of measure (`ch08-concentration.tex`)
+
+- Efron–Stein — `thm:efronstein`, 8.1. Increasing subsequences have small variance — `prop:lisvar`, 8.2. McDiarmid — `thm:mcdiarmid`, 8.3. Ornstein–Uhlenbeck calculus — `lem:ou`, 8.4.
+- Gaussian Poincaré and log-Sobolev inequalities — `thm:gausslsi`, 8.5. Gaussian concentration — `thm:gaussconc`, 8.6. The thin shell — `ex:thinshell`, 8.7. Maxima of Gaussian vectors — `ex:gaussmax`, 8.8.
+- Chi-square tails — `lem:chisq`, 8.9. Johnson–Lindenstrauss — `thm:jl`, 8.10. Convex distance — `lem:dtgeom`, 8.11. Talagrand — `thm:talagrand`, 8.12. Concentration of the longest increasing subsequence — `thm:lisconc`, 8.13. The limit \(2\sqrt n\) and the Tracy–Widom law are quoted.
+
+### Chapter 9 — Martingales II (`ch09-martingales.tex`)
+
+- Uniform integrability of conditional expectations — `lem:condui`, 9.1. Uniformly integrable martingales — `thm:uimart`, 9.2. Lévy’s upward theorem — `thm:levyup`, 9.3. Lévy’s zero–one law — `cor:levy01`, 9.4. Optional stopping for UI martingales — `thm:uiost`, 9.5. A gambler against the house — `ex:biasedruin`, 9.6.
+- Lévy’s downward theorem — `thm:levydown`, 9.7. Symmetrization — `lem:symm`, 9.8. Strong law by backward martingales — `thm:slllnback`, 9.9. de Finetti — `thm:definetti`, 9.10. Pólya’s urn as a Beta mixture — `ex:polyadf`, 9.11. Doob’s consistency — `thm:doobconsistency`, 9.12.
+- Kakutani’s dichotomy — `thm:kakutani`, 9.13. Shifted Gaussians and biased coins — `ex:kakutaniex`, 9.14. Ville’s inequality — `thm:ville`, 9.15. An anytime-valid test of a coin — `thm:anytime`, 9.16. The Cameron–Martin theorem is quoted.
+
+### Chapter 10 — Ergodic theory (`ch10-ergodic.tex`)
+
+- A measure-preserving system — `ex:mps`, 10.1. Poincaré recurrence — `thm:poincare`, 10.2. Almost invariant sets — `lem:almostinv`, 10.3. Kac’s lemma — `thm:kac`, 10.4. Von Neumann’s mean ergodic theorem — `thm:vonneumann`, 10.5. Maximal ergodic lemma — `lem:maxergodic`, 10.6. Birkhoff — `thm:birkhoff`, 10.7.
+- Ergodicity of the examples — `cor:ergexamples`, 10.8. Gauss measure — `prop:gaussmeasure`, 10.9. Bounded distortion — `lem:distortion`, 10.10. The Gauss map is ergodic — `thm:gaussergodic`, 10.11. Continued-fraction statistics, including Lévy’s constant \(\pi^2/(12\log2)\) — `thm:cfstats`, 10.12.
+- Roth’s theorem — `thm:roth`, 10.13. Furstenberg’s double recurrence — `thm:double`, 10.14. The compact part — `lem:compactpart`, 10.15. Almost periodicity — `lem:almostperiodic`, 10.16. The weakly mixing part — `lem:wm`, 10.17. Van der Corput — `lem:vdc`, 10.18. Averages of weakly mixing functions — `lem:wmaverage`, 10.19.
+- The Gauss–Kuzmin rate, and Szemerédi’s theorem for progressions of length greater than three, are quoted.
+
+### Chapter 11 — Mod-\(\varphi\) convergence (`ch11-modphi.tex`)
+
+- Mod-Gaussian convergence — `def:modgauss`, 11.1. It implies a CLT — `prop:modgaussclt`, 11.2. A harmonic random walk — `ex:harmonicwalk`, 11.3. Mod-Poisson convergence — `def:modpoisson`, 11.4. Sums of rare independent events — `ex:bernsums`, 11.5.
+- Mod-Poisson central limit theorem — `thm:modpoissonclt`, 11.6. Local limit theorem with residue — `thm:modpoissonlocal`, 11.7. Cycles of a random permutation — `thm:cyclesmod`, 11.8. Large and small cycle counts — `cor:cyclesdev`, 11.9.
+- The Dirichlet integers — `prop:dirichletint`, 11.10. \(\omega(N_s)\) is mod-Poisson — `thm:omegamod`, 11.11. Uniform integers, from the admitted Selberg–Delange formula — `cor:unifomega`, 11.12. That formula is proved in Volume 15.
+
+### Chapter 12 — Random permutations and the Poisson–Dirichlet law (`ch12-permutations.tex`)
+
+- Cauchy’s formula — `prop:cauchy`, 12.1. The conditioning relation — `thm:conditioning`, 12.2. The \(Q_b\) bound — `lem:qb`, 12.3. Small cycles — `thm:smallcycles`, 12.4. The cycle of \(1\) — `prop:firstcycle`, 12.5.
+- GEM stick — `lem:gem`, 12.6. Cycle lengths are a broken stick — `thm:gemcoupling`, 12.7. Sorting is Lipschitz — `lem:sortlip`, 12.8. Poisson–Dirichlet limit for cycles — `thm:pdcycles`, 12.9.
+- Dickman’s function — `thm:dickman`, 12.10. A bound for \(\rho\) — `prop:rhobound`, 12.11. The Golomb–Dickman constant — `cor:golomb`, 12.12. Cycle correlations — `prop:corrcycles`, 12.13. Poisson–Dirichlet correlations — `cor:pdcorr`, 12.14.
+- An inversion — `lem:inversion`, 12.15. Prime-factor correlations — `prop:corrprimes`, 12.16. Billingsley — `thm:billingsley`, 12.17. Dickman’s theorem on smooth numbers — `cor:smooth`, 12.18. de Bruijn’s asymptotic \(\rho(u)=u^{-u(1+o(1))}\) is quoted.
+
+### Chapter 13 — Shuffling cards (`shuffling.tex`, `riffle-cutoff.tex`)
+
+- Fourier transform on a finite group — `def:fouriergroup`, 13.1. Inversion and Plancherel — `thm:plancherelG`, 13.2. Class functions — `prop:classfourier`, 13.3. The Diaconis–Shahshahani upper bound lemma — `lem:upperbound`, 13.4.
+- Transposition eigenvalues — `prop:eigenvalues`, 13.5. Ratio bounds — `lem:ratiobounds`, 13.6. Counting shapes — `lem:countshapes`, 13.7. Diaconis–Shahshahani upper bound — `thm:ds`, 13.8. Cutoff for random transpositions — `cor:cutoff`, 13.9. The sharp \(ae^{-2c}\) bound is quoted.
+- Bayer–Diaconis — `thm:bd`, 13.10. Tanny — `lem:tanny`, 13.11. Rising sequences satisfy a CLT — `lem:risingclt`, 13.12. Linearisation of the likelihood — `lem:linearise`, 13.13. Riffle cutoff at \(\frac32\log_2 n\) — `cor:riffle`, 13.14.
+
+### Chapter 14 — Sums of random pieces (`ch13-harder.tex`)
+
+- Twenty-eight problems, with hints and solutions. No new numbered theorem. The tools are the limit theorems of this volume, together with results already in the ledger.
+
+### Notation clashes with Volumes 1–10
+
+- \(\log\) remains the natural logarithm. \(\log_2\) is written when the base is \(2\). The beauty note in Chapter 2 drops the base; see V11-007.
+- \(\varphi\) is a characteristic function from Chapter 1 on, and the reference law in mod-\(\varphi\) convergence in Chapter 11. Volumes 2, 3, 5, 6 and 9 use \(\varphi(n)\) for Euler’s totient. Volume 1 and Volume 7 use \(\varphi\) for the golden ratio. Volume 4 uses \(\phi\) for the standard normal density. Volume 9 uses \(\chi\) for the Euler characteristic; this volume uses \(\chi\) for a character of \(\mathfrak S_n\) in Chapter 13, as Volumes 3 and 10 do. Volumes 2 and 6 use \(\chi\) for a Dirichlet character.
+- \(\lambda\) is a Poisson mean, the regression constant of an exchangeable pair, and a Young diagram in Chapter 13. Volume 10 uses \(\lambda\) for a partition and for a dominant weight. Earlier volumes use \(\lambda\) for an eigenvalue.
+- \(\alpha\) is a stable index in Chapter 5. Volumes 5 and 6 use \(\alpha\) for Hardy’s phase.
+- \(\Pi\) is a Lévy measure in Chapter 5. Earlier volumes write an orthogonal projection as \(P\).
+- \(\rho\) is Dickman’s function in Chapter 12, as already in Volume 6. Chapter 7 also uses \(\rho\) for a third-moment ratio, and Chapter 9 uses it for Kakutani’s affinity. Volume 8 uses \(\rho(A)\) for the spectral radius, and Volume 9 uses \(\rho\) for an index of regular variation and for a correlation.
+- \(\omega(n)\) is the number of distinct prime factors in Chapter 11. Volume 10 uses \(\omega\) for the exponent of matrix multiplication. Volume 9 uses \(\omega\) for a differential form.
+- \(H(\nu)\) is the entropy of a type in Chapter 7, in nats. \(H_n\) is a harmonic number in Chapters 11 and 12. Volume 10 uses \(H^n(G,A)\) for group cohomology.
