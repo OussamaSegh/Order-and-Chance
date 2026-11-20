@@ -2009,3 +2009,108 @@ File names are under `volume12-random-motion/chapters/`. The shared counter numb
 - \(\Pi\) is a Lévy measure in Chapter 7, as already in Volume 11, Chapter 5.
 - \(C_k\) is a Catalan number in Chapter 9. \(C(t,s)\) is the Black–Scholes price in Chapter 6. \(C(x)\) is the cosine kernel in Chapter 11.
 - \(\varphi\) is the standard normal density in the Black–Scholes section. Volume 4 uses \(\phi\) for that density. Elsewhere in this volume \(\varphi\) is a test function or a mollifier.
+
+## Volume 13 — Arithmetic
+
+File names are under `volume13-arithmetic/chapters/`. The shared counter numbers theorems, propositions, lemmas, corollaries, definitions, and examples inside each chapter. Exercises use a separate counter and restart each chapter. There are seventeen chapters. \(\log\) is the natural logarithm. Artin reciprocity (`thm:artin`, 13.11), the existence theorem (`thm:cftexistence`, 13.12), and the Hilbert class field (`thm:hcf`, 13.13) are admitted. Mazur, Eichler–Shimura, modularity, Weil for a general curve, Sato–Tate, Chebotarev in natural density, the converse of Kummer’s criterion, and Hecke’s equation for a general \(\zeta_K\) are quoted or sketched. The false index sentence is V13-003.
+
+### Chapter 1 — Quadratic fields (`ch11-algebraic.tex`)
+
+- Integral basis of \(\Q(\sqrt d)\) — `prop:quadint`, 1.1, and `prop:OK`, 1.2. Units of an imaginary quadratic order — `prop:qunits`, 1.3. Real quadratic units — `thm:realunits`, 1.4.
+
+### Chapter 2 — Quadratic ideals (`ch12-ideals-quadratic.tex`)
+
+- Two generators — `lem:twogen`, 2.1. Ideal factors of \(6\) — `prop:six`, 2.2. Hurwitz — `lem:hurwitz`, 2.3. Ideal arithmetic — `prop:idealrules`, 2.4. Maximal ideals — `lem:maximal`, 2.5.
+- Unique factorisation, second proof — `thm:dedekind`, 2.6. Splitting — `thm:split`, 2.7. Norm is the index — `prop:t1-norm-index`, 2.8. Approximation — `lem:quadapprox`, 2.9. Finiteness of the class group — `thm:classfinite`, 2.10. Class number one implies a PID — `prop:h1`, 2.11. \(h(\Q(\sqrt{-5}))=2\) — `thm:hm5`, 2.12.
+
+### Chapter 3 — Number fields (`ch01-number-fields.tex`)
+
+- Embeddings — `prop:embeddings`, 3.2. Characteristic polynomial — `prop:charpoly`, 3.3. Integrality criterion — `prop:intcrit`, 3.5. The integers form a ring — `cor:ring`, 3.6. Transitivity — `cor:transitive`, 3.7. Minimal polynomial over \(\Z\) — `prop:minpolyZ`, 3.8. Denominators — `prop:denominators`, 3.9. Units have norm \(\pm1\) — `prop:units`, 3.11.
+- Discriminant of a basis — `prop:disc`, 3.13. An integral basis exists — `thm:intbasis`, 3.14. Sign of the discriminant — `prop:sign`, 3.16. Index formula — `prop:index`, 3.17. Stickelberger — `thm:stickelberger`, 3.18. Eisenstein index test — `prop:eisenstein`, 3.19. The pure-cubic sentence after the examples is V13-003.
+
+### Chapter 4 — Ideals (`ch02-ideals.tex`)
+
+- Noetherian — `prop:noeth`, 4.1. \(\mathcal O_K\) is Dedekind — `lem:okdedekind`, 4.3. A missing element — `lem:missing`, 4.4. Invertibility — `prop:pinv`, 4.5. Unique factorisation — `thm:ufi`, 4.6. Divisibility — `cor:divides`, 4.7. Norm of an ideal — `prop:normideal`, 4.10.
+- \(\sum e_if_i=n\) — `thm:sumef`, 4.11. Kummer–Dedekind — `thm:kd`, 4.12. Cyclotomic example — `exa:zetap`, 4.14. Ramification and the discriminant — `thm:ramdisc`, 4.15. Transitivity of ramification — `thm:transitive`, 4.16.
+- Decomposition group — `thm:decomp`, 4.18. Cyclotomic splitting — `thm:cyclosplit`, 4.19. Dedekind’s cycle theorem — `thm:dedekindcycle`, 4.20. Frobenius and embeddings — `prop:frobembed`, 4.22.
+
+### Chapter 5 — Geometry of numbers (`ch03-geometry.tex`)
+
+- Blichfeldt — `lem:blichfeldt`, 5.2. Minkowski’s convex body theorem — `thm:minkowski`, 5.3. Two squares again — `exa:twosq`, 5.4. Covolume — `prop:covol`, 5.5. Volume of the norm body — `lem:volume`, 5.6. Minkowski’s bound — `thm:minkbound`, 5.7. \(|d_K|>1\) — `thm:dkbig`, 5.10. Hermite — `thm:hermite`, 5.11. The sphere sentence is V13-008.
+
+### Chapter 6 — Units (`ch04-units.tex`)
+
+- Kernel of the log map — `prop:logkernel`, 6.2. Discrete subgroups — `lem:discrete`, 6.3. A small box — `lem:smallbox`, 6.4. One large embedding — `lem:onebig`, 6.5. A dominant unit — `lem:dominant`, 6.6. Dirichlet’s unit theorem — `thm:dirichlet`, 6.7. The regulator is well defined — `prop:regwelldef`, 6.9. Artin’s cubic bound — `prop:artin`, 6.10.
+
+### Chapter 7 — Cyclotomic fields (`ch05-cyclotomic.tex`)
+
+- Roots of unity in \(\Q(\zeta_n)\) — `prop:muKn`, 7.1. The prime \(1-\zeta\) — `prop:lambda`, 7.2. \(\Z[\zeta_n]\) — `thm:Zzeta`, 7.3. Coprime discriminants — `lem:compositum`, 7.4. Cyclotomic ramification — `cor:cycloram`, 7.5. Gauss sum — `prop:gausssum`, 7.6. Reciprocity through Frobenius — `thm:qrfrob`, 7.7.
+- Kummer’s lemma — `thm:kummerlemma`, 7.8. Regular primes — `lem:regular`, 7.10. A \(p\)-th power — `lem:pthpower`, 7.11. A zero coefficient — `lem:zerocoef`, 7.12. First case of Fermat — `thm:fltfirst`, 7.13.
+- Mason–Stothers — `thm:mason`, 7.14. Polynomial Fermat — `cor:fermatpoly`, 7.15. Cubes modulo \(9\) — `prop:mod9`, 7.16. Parametric identities — `prop:families`, 7.17. Local densities — `prop:localdens`, 7.18.
+
+### Chapter 8 — \(p\)-adic numbers (`ch12-padic.tex`)
+
+- Ultrametric inequality — `prop:ultra`, 8.1. Nested balls — `prop:balls`, 8.2. \(\Z_p\) — `prop:Zp`, 8.4. Eventually periodic expansions — `prop:periodic`, 8.6. Hensel–Newton — `thm:henselnewton`, 8.7. Squares in \(\Q_p\) — `cor:squares`, 8.8. Teichmüller representatives — `cor:teich`, 8.9. Ostrowski — `thm:ostrowski`, 8.10. A conic with no \(p\)-adic point — `prop:noconic`, 8.11.
+
+### Chapter 9 — Local fields (`ch06-local.tex`)
+
+- Ostrowski for number fields — `thm:ostrowskiK`, 9.1. Product formula — `prop:productformula`, 9.2. Equivalent norms — `thm:normequiv`, 9.3. Hensel factorisation — `thm:henselfact`, 9.4. Integral coefficients — `cor:integralcoef`, 9.5. Unique extension of the absolute value — `thm:extabs`, 9.6. Galois invariance — `cor:galoisinv`, 9.7.
+- \(ef=n\) — `thm:efn`, 9.9. Unramified extensions — `thm:unram`, 9.10. Eisenstein — `thm:eisensteinlocal`, 9.11. Towers — `prop:tower`, 9.12. Krasner — `lem:krasner`, 9.13. Continuity of roots — `prop:continuity`, 9.14. Finitely many extensions — `thm:finitelymany`, 9.15. Completions — `thm:completions`, 9.16.
+
+### Chapter 10 — Quadratic forms (`ch07-hasse.tex`)
+
+- Diagonalisation — `prop:diag`, 10.1. Hilbert symbol — `prop:hilbertbasic`, 10.2. The formulas — `thm:hilbertformula`, 10.3. Bilinearity — `cor:hilbertbilinear`, 10.4. Product formula — `thm:hilbertproduct`, 10.5. Hasse invariant — `prop:hasseinv`, 10.6.
+- Local classification — `thm:localforms`, 10.7. Approximation — `lem:approx`, 10.8. A rational with given symbols — `thm:existence`, 10.9. Hasse–Minkowski — `thm:hm`, 10.10. Representation — `cor:hmrep`, 10.11. Meyer — `cor:meyer`, 10.12. Legendre — `thm:legendre3`, 10.13. Three squares — `thm:threesq`, 10.14. Davenport–Cassels — `lem:dc`, 10.15.
+
+### Chapter 11 — Zeta functions (`ch08-zeta.tex`)
+
+- Dedekind zeta — `prop:zetaK`, 11.1. Lipschitz — `lem:lipschitz`, 11.2. A cone — `lem:cone`, 11.3. Counting in a cone — `thm:conecount`, 11.4. Ideals in a class — `thm:idealcount`, 11.5. Multiplicativity — `lem:mult`, 11.6. Ray classes — `thm:raycount`, 11.7. Partial summation — `lem:partialsum`, 11.8.
+- Class-number formula — `thm:cnf`, 11.9. Abelian zeta functions — `thm:zetaab`, 11.10. The opening example — `exa:h23`, 11.11. The real subfield — `prop:kplus`, 11.12. Relative class number — `thm:hminus`, 11.13. Teichmüller character — `lem:teich`, 11.14. Bernoulli numbers modulo \(p\) — `lem:bernp`, 11.15. Kummer’s criterion — `thm:kummercrit`, 11.16.
+- Relative Frobenius — `prop:relative`, 11.17. A prime sum — `prop:primesum`, 11.19. Kronecker’s density — `thm:kronecker`, 11.20. Cyclotomic Frobenius — `lem:cyclofrob`, 11.21. Dirichlet over a number field — `thm:dirichletF`, 11.22. Chebotarev in Dirichlet density — `thm:chebotarev`, 11.23. Deuring — `lem:deuring`, 11.24. Disjoint sets — `lem:disjoint`, 11.25. Consequences — `cor:chebcons`, 11.26.
+
+### Chapter 12 — Tate’s thesis (`ch09-tate.tex`)
+
+- Finite adèles — `lem:AfQZ`, 12.2. \(\Q\) is discrete and \(\mathbb A/\Q\) is compact — `thm:Qdiscrete`, 12.3. Haar measure on \(\Q_p\) — `prop:haarQp`, 12.4. Local zeta integrals — `prop:localzeta`, 12.6. The standard character is trivial on \(\Q\) — `prop:psiQ`, 12.9. Fourier transform on \(\mathbb A_f\) — `prop:FTAf`, 12.10.
+- Adelic Poisson summation — `thm:adelicpoisson`, 12.12. Scaled form — `cor:scaledpoisson`, 12.13. Idèles of \(\Q\) — `prop:ideleQ`, 12.15. Bounds — `lem:Fbounds`, 12.17. Tate’s theorem for \(\Q\) — `thm:tate`, 12.18. Riemann — `cor:riemannFE`, 12.19. The finite function of a character — `lem:phichi`, 12.20. Dirichlet \(L\)-functions — `cor:dirichletFE`, 12.21.
+- Adelic Minkowski — `lem:adelicmink`, 12.22. Fujisaki — `thm:fujisaki`, 12.23. Class group finite again — `cor:hfinite`, 12.24. Units again — `cor:unitsagain`, 12.25. The converse — `prop:fujisakiconverse`, 12.26.
+
+### Chapter 13 — Class field theory (`ch10-cft.tex`)
+
+- Kronecker–Weber — `thm:kw`, 13.1. An unramified root — `lem:unramroot`, 13.2. Local cyclotomic fields — `lem:localcyclo`, 13.3. Tame abelian extensions — `lem:tame`, 13.4. Kummer — `lem:kummerelem`, 13.5. The filtration of \(\Z_p^\times\) — `lem:Up`, 13.6. No primitive \(p^3\)-th root in a small extension — `prop:nop3`, 13.7. The prime \(2\) — `prop:Q2`, 13.8. Local Kronecker–Weber — `thm:localkw`, 13.9. Class field theory over \(\Q\) — `cor:cftQ`, 13.10.
+- Artin reciprocity, admitted — `thm:artin`, 13.11. Existence, admitted — `thm:cftexistence`, 13.12. Hilbert class field, admitted — `thm:hcf`, 13.13. Principal primes split completely, assuming that field — `cor:principalsplit`, 13.14. Primes \(x^2+ny^2\), assuming it — `thm:xnyy`, 13.15. The example \(n=14\) — `exa:n14`, 13.16.
+- Primary primes — `lem:primary`, 13.18. Gauss and Jacobi sums — `lem:jacobi`, 13.19. Cubic reciprocity — `thm:cubicrec`, 13.20. Gauss on \(x^2+27y^2\) — `thm:gauss27`, 13.21. The cubic field of \(2\) — `cor:cuberoot2`, 13.22.
+
+### Chapter 14 — Algebraic curves (`ch11-curves.tex`)
+
+- Projective smoothness — `lem:projsmooth`, 14.1. Three cubics — `exa:threecubics`, 14.2. Finitely many intersections — `lem:finite`, 14.3. Local decomposition — `lem:localdecomp`, 14.4. Intersection numbers — `prop:intprops`, 14.6. A smooth point is a discrete valuation — `prop:smoothdvr`, 14.7. Bézout — `thm:bezout`, 14.8. Consequences — `cor:bezoutcons`, 14.9.
+- Noether’s \(AF+BG\) theorem — `thm:noether`, 14.10. The smooth case — `cor:noethersmooth`, 14.11. Divisors — `prop:divbasic`, 14.12. Riemann–Roch spaces — `prop:ellbasic`, 14.13. Forms through a divisor — `lem:noetherrep`, 14.14. Residue theorem — `thm:residue`, 14.15. Counting forms — `prop:countforms`, 14.17. Riemann’s inequality — `prop:riemann`, 14.18.
+- Truncated intersections — `lem:truncate`, 14.19. Noether’s reduction — `lem:reduction`, 14.20. Riemann–Roch — `thm:rr`, 14.21. Genus one — `cor:genus1`, 14.22.
+
+### Chapter 15 — Elliptic curves (`ch12-elliptic.tex`)
+
+- The group law — `thm:grouplaw`, 15.2. Picard group — `cor:pic`, 15.3. The \(p\)-adic filtration — `prop:filtration`, 15.4. Nagell–Lutz — `thm:nagelllutz`, 15.5. Reduction — `prop:reduction`, 15.6. Mordell — `thm:mordell`, 15.7.
+- The maps \(\delta_i\) — `lem:deltahom`, 15.8. A finite group of square classes — `lem:Sfinite`, 15.9. Weak Mordell–Weil — `thm:weakmw`, 15.10. Heights add — `lem:heightadd`, 15.11. Doubling — `lem:heightdouble`, 15.12. Congruent numbers — `prop:congruent`, 15.13. Torsion of \(y^2=x^3-n^2x\) — `prop:entors`, 15.14. \(1\) is not congruent — `thm:onecongruent`, 15.15.
+
+### Chapter 16 — Curves over finite fields (`ch13-finite.tex`)
+
+- Frobenius on values — `lem:frobdiv`, 16.1. Linear descent — `lem:descentlin`, 16.2. A norm form — `lem:normform`, 16.3. Descent of the constant field — `prop:descent`, 16.4. Euler product — `prop:euler`, 16.6. Classes and effective divisors — `lem:classcount`, 16.7. Rationality and the functional equation — `thm:rationality`, 16.8.
+- Gauss’s cubic count — `prop:gausscubic`, 16.9. Stepanov–Bombieri — `thm:bombieri`, 16.10. A bound on power sums — `lem:boundsRH`, 16.11. Twists — `prop:twists`, 16.12. Riemann hypothesis for \(y^m=f(x)\) — `thm:rhfamily`, 16.13. Hasse — `cor:hasse`, 16.14.
+
+### Chapter 17 — Modular forms (`ch14-modular.tex`)
+
+- Fundamental domain — `thm:funddomain`, 17.1. Valence formula — `thm:valence`, 17.2. The \(j\)-invariant — `thm:jinv`, 17.3. Lattice functions — `lem:latticefn`, 17.4. Sublattices — `lem:sublattices`, 17.5. Hecke operators — `thm:heckeTn`, 17.6. Eigenforms — `cor:eigen`, 17.7. Hecke’s bound — `prop:heckebound`, 17.8. Functional equation — `thm:heckefe`, 17.9. Level one — `cor:level1fe`, 17.10. The level-\(11\) form — `prop:eta11`, 17.11.
+
+### Notation clashes with Volumes 1–12
+
+- \(\log\) remains the natural logarithm.
+- \(\varphi\) is Euler’s totient, as in Volumes 2, 3, 5, 6 and 9. In Chapter 15 it is also the binary cubic of a line section and the numerator of \(x(2P)\). Volume 1 and Volume 7 use \(\varphi\) for the golden ratio. Volume 4 uses \(\phi\) for the standard normal density.
+- \(\chi\) is a Dirichlet character, a cubic residue character, and a Legendre symbol. Volume 9 uses \(\chi\) for the Euler characteristic. Volume 11 uses \(\chi\) for a character of \(\mathfrak S_n\).
+- \(\lambda\) is the prime \(1-\zeta\) in Chapter 7 and the slope of a chord in Chapter 15. Earlier volumes use \(\lambda\) for an eigenvalue, a partition, and a Poisson mean.
+- \(\omega\) is a primitive cube root of unity from Chapter 7 on, and the Teichmüller character in Chapter 11. Volume 10 uses \(\omega\) for the exponent of matrix multiplication. Volume 5 uses \(\omega(t)\) for the tail of Jacobi’s theta series.
+- \(\Delta\) is the modular discriminant in Chapter 17. The Weierstrass quantity \(4a^3+27b^2\) is written \(D\) in Chapter 15. Field discriminants are \(d_K\).
+- \(j\) is the Minkowski embedding in Chapters 5 and 6 and the modular invariant in Chapter 17.
+- \(h\) is a class number. In Chapter 16 it is also the number of rational divisor classes of degree \(0\). \(R\) is the regulator from Chapter 6 on; it is a ring in the algebraic chapters.
+- \(g\) is a Gauss sum in Chapters 7 and 13 and the genus from Chapter 14 on. \(\tau\) is a Gauss sum, the coordinate on the upper half-plane, and Ramanujan’s coefficient of \(\Delta\). The text distinguishes the last from the divisor function.
+- \(\rho\) is the point \(e^{2\pi i/3}\) in Chapter 17 and a quadratic character in the character-sum counts of Chapter 16. Volume 11 uses \(\rho\) for Dickman’s function.
+- \(\varepsilon\) is a fundamental unit in Chapters 1 and 6 and the root number \(\varepsilon(\chi)\) in Chapter 12.
+- \(N\) is a field norm, an ideal norm, a modulus, the level of a modular form, and a point count \(N_r\). The place \(\infty\) is the archimedean place. Volume 12 uses \(N(t)\) for a Poisson process.
