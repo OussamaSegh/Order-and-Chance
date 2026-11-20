@@ -2199,3 +2199,88 @@ File names are under `volume14-primes/chapters/`. The shared counter numbers the
 - \(\rho\) is a non-trivial zero in Chapters 1, 2 and 14, Dickman’s function when Chapter 4 cites Volume 11, and the threshold in the Maynard criterion.
 - \(h\) is a gap in Chapters 1, 8 and 9. It is not the class number of Volume 13, except in Chapter 2 where \(h(-p)\) is named.
 - \(g\) is the sieve density in Chapter 3, the weight \(1/(1+At)\) in Chapter 9, and a Gauss sum in Chapter 5. Volume 13 uses \(g\) for the genus from its Chapter 14 on.
+
+## Volume 15 — Order and Chance
+
+File names are under `volume15-order-and-chance/chapters/`. The shared counter numbers theorems, propositions, lemmas, corollaries, definitions, and examples inside each chapter. Exercises use a separate counter and restart each chapter. There are fourteen chapters. \(\log\) is the natural logarithm. Quoted, and not used as a proof: Sathe–Selberg uniform in \(k\), Ingham’s fourth moment, Keating–Snaith for \(k\ge3\), Davenport–Heilbronn, Bhargava–Shankar, Goldfeld, the Poonen–Rains heuristic, van der Corput’s asymptotic, Green–Tao (`thm:greentao` of Volume 14), Littlewood’s sign changes, and the numerical densities \(0.9959\) and \(0.9990\). The Gamma index in the ledger is V15-009. The Erdős–Kac identity is V15-001.
+
+### Chapter 1 — Anatomy (`ch01-integers.tex`, `ra-anatomy.tex`)
+
+- Rankin’s trick — `prop:rankin`, 1.1. Rankin’s bound — `thm:rankin`, 1.2. Smooth lower bound — `prop:smoothlower`, 1.3. \(\Psi(x,(\log x)^A)=x^{1-1/A+o(1)}\) — `cor:psilogpower`, 1.4.
+- Dixon’s lemma — `lem:dixon`, 1.5. Dixon’s algorithm — `thm:dixon`, 1.6. The arcsine moments — `lem:gemarcsine`, 1.7. Deshouillers–Dress–Tenenbaum — `thm:ddt`, 1.8. The multiplication table — `thm:multtable`, 1.9. It postpones Corollary 3.18.
+
+### Chapter 2 — Models of the primes (`ch02-cramer.tex`, `ra-largemoduli.tex`, `ra-gaps.tex`)
+
+- Chernoff for coins — `lem:chernoffcoins`, 2.1. Cramér in short intervals — `prop:cramershort`, 2.2. A local bound for \(L\) — `lem:localL`, 2.3. Smoothed explicit formula — `prop:smoothexplicit`, 2.4. Sieve bound — `lem:sievebound`, 2.5. Sieve sums — `cor:sievesums`, 2.6.
+- Duality — `lem:duality`, 2.7. Smooth character sums — `lem:smoothchar`, 2.8. Zero detector — `lem:detector`, 2.9. Log-free zero density — `thm:logfree`, 2.10. One exceptional zero — `lem:onezero`, 2.11. Gallagher for one large modulus — `thm:gallagher`, 2.12. Linnik without an exceptional zero — `cor:linnik`, 2.13.
+- Buchstab’s function — `def:buchstab`, 2.14. Its first properties — `lem:buchstabprops`, 2.15. Buchstab’s identity — `thm:buchstab`, 2.16. The limit \(e^\gamma\omega(u)\to1\) — `cor:buchstablimit`, 2.17. Sign changes — `prop:buchstabsign`, 2.18.
+- Maier — `thm:maier`, 2.19. Good moduli — `lem:goodmoduli`, 2.20. A covering — `lem:covering`, 2.21. Sifted primes — `lem:siftedprimes`, 2.22. The factor \(2\) is V15-005. Erdős–Rankin — `thm:erdosrankin`, 2.23.
+
+### Chapter 3 — Divisors (`ch03-divisors.tex`, `ra-additive.tex`, `ra-selbergdelange.tex`, `ra-erdoskac.tex`)
+
+- Additive function — `def:additive`, 3.1. Turán–Kubilius — `thm:tkgeneral`, 3.2. Kubilius — `thm:kubilius`, 3.3. The small-\(y\) estimate is V15-006. An additive function on the model — `cor:kubiliusf`, 3.4.
+- Erdős–Wintner — `thm:erdoswintner`, 3.5. Littlewood–Offord — `lem:lo`, 3.6. Lévy’s atoms — `thm:levyatoms`, 3.7. Continuity criterion — `cor:ewcont`, 3.8. Densities of \(\varphi(n)/n\) and \(\sigma(n)/n\) — `cor:phicont`, 3.9. Jessen–Wintner, pure type — `thm:jessenwintner`, 3.10.
+- Hankel — `lem:hankel`, 3.11. Logarithmic derivative of \(K\) — `lem:logderivK`, 3.12. \(\log\zeta\) near \(1\) — `lem:logzeta`, 3.13. A power of \(\tau\) — `lem:taupower`, 3.14. Selberg–Delange — `thm:sd`, 3.15. Euler product for \(G\) — `lem:eulerprod`, 3.16.
+- Mean of \(z^{\omega(n)}\) — `cor:omegasd`, 3.17. The factor is \(1/\Gamma(z)\). Mean of \(z^{\Omega(n)}\) — `cor:bigomegasd`, 3.18. Landau’s constant — `cor:landau`, 3.19. Erdős–Kac again — `thm:erdoskac-cor`, 3.20. The identity is V15-001. Chernoff for \(\omega\) — `prop:chernoffomega`, 3.21.
+
+### Chapter 4 — Random multiplicative functions (`ch04-multiplicative.tex`, `ra-randommult.tex`, `ra-polynomials.tex`)
+
+- Random multiplicative function — `def:rmf`, 4.1. Orthogonality — `prop:orth`, 4.2. High moments — `lem:highmoments`, 4.3. Wintner — `thm:wintner`, 4.4. Fourth moment — `thm:fourth`, 4.5. Kurtosis — `cor:kurtosis`, 4.6.
+- Circle central limit theorem — `lem:circleclt`, 4.7. Conditional central limit theorem — `thm:condclt`, 4.8. Chowla and Sarnak for the model — `prop:modelchowla`, 4.9.
+- Erdős–Turán — `thm:erdosturan`, 4.10. Sato–Tate criterion — `prop:stcriterion`, 4.11. Birch — `prop:birch`, 4.12. Factor types — `thm:factortypes`, 4.13. Jordan’s count — `lem:jordan`, 4.14. A missing type — `lem:missingtype`, 4.15. Van der Waerden — `thm:vdw`, 4.16.
+
+### Chapter 5 — Short intervals (`ch05-short.tex`)
+
+- Singular series — `def:singular`, 5.1. Local factors — `lem:bp`, 5.2. The local average is \(1\) — `lem:localavg`, 5.3. Pair average to second order — `thm:pairexpansion`, 5.4. Two integrals — `lem:fracint`, 5.5.
+- Hyperbolic Riemann sum — `lem:riemannsum`, 5.6. \(\kappa\) is small — `lem:kappa`, 5.7. Montgomery–Soundararajan — `thm:pairsecond`, 5.8. Gallagher’s moment — `thm:gallagherk`, 5.9. Binomial moments — `lem:binmoments`, 5.10. Gallagher’s Poisson law, conditional — `thm:gallagherpoisson`, 5.11.
+
+### Chapter 6 — Sieves (`ch06-sieves.tex`)
+
+- Bonferroni — `thm:bonferroni`, 6.1. Brun’s pure sieve — `thm:brunpure`, 6.2. The coins are honest for small \(z\) — `cor:brunpure`, 6.3. Failure at fixed \(u\) — `prop:sievefail`, 6.4. Selberg’s weight is a projection — `thm:selbergproj`, 6.5. Selberg’s upper bound — `cor:selbergtwo`, 6.6.
+- Schnirelmann density — `def:schnirelmann`, 6.7. Schnirelmann’s inequality — `lem:schnirelmann`, 6.8. Density at least \(1/2\) — `lem:schnirelmannhalf`, 6.9. Schnirelmann’s basis — `thm:schnirelmannbasis`, 6.10. Goldbach density — `prop:goldbachdensity`, 6.11.
+
+### Chapter 7 — Class groups (`ch07-classgroups.tex`, `ra-cohenlenstra.tex`, `ra-symmoments.tex`)
+
+- Homomorphisms — `lem:homcount`, 7.1. Automorphisms — `lem:autcount`, 7.2. Sum over subgroups — `lem:subgroupsum`, 7.3. Free surjections — `prop:freesur`, 7.4. Moments of cokernels — `thm:cokmoments`, 7.5.
+- Friedman–Washington — `thm:fw`, 7.6. Cohen–Lenstra measure — `cor:clmeasure`, 7.7. Wood’s test functions — `lem:woodfunctions`, 7.8. Wood’s uniqueness — `thm:woodunique`, 7.9. Characterisation — `cor:clcharacterize`, 7.10. Moments of symmetric cokernels — `thm:symmoments`, 7.11.
+
+### Chapter 8 — Ranks (`ch08-ranks.tex`)
+
+- Birth–death chain — `lem:altchain`, 8.1. Law of the kernel — `thm:altlaw`, 8.2. Poonen–Rains moments — `cor:prmoments`, 8.3. From Selmer averages to ranks — `prop:avgrank`, 8.4.
+
+### Chapter 9 — Zeros (`ch09-gue.tex`, `moments-zeta.tex`)
+
+- Form factor of the sine kernel — `thm:formfactor`, 9.1. \(\hat K\) is the tent; the form factor of \(\delta_0-K\) is \(|\alpha|\) on \(|\alpha|\le1\) and \(1\) outside. Wigner surmise — `moments:prop:surmise`, 9.2. A short sum for \(\zeta\) — `moments:lem:zetaapprox`, 9.3. A mean value — `moments:lem:dirmeanvalue`, 9.4. Mean square to the right of the line — `moments:thm:meansquare`, 9.5.
+
+### Chapter 10 — Moments (`ch10-moments.tex`, `ra-moments.tex`)
+
+- Hardy–Littlewood and Ingham, \(\int_T^{2T}|\zeta|^2=\int(\log(t/2\pi)+2\gamma)\,dt+O(T^{0.6})\) — `thm:ingham`, 10.1. \(\sum d_k(n)^2/n\asymp(\log x)^{k^2}\) — `lem:dk2`, 10.2. Lower bounds of order \((\log T)^{k^2}\) — `thm:momentlower`, 10.3. The Euler factor \(a_k\) — `prop:eulermoment`, 10.4.
+
+### Chapter 11 — Values (`ch11-values.tex`, `ra-bohrjessen.tex`, `ra-selberg.tex`)
+
+- Random Euler product — `prop:randomeuler`, 11.1. Kronecker–Weyl for the primes — `lem:kw`, 11.2. A crude mean value — `lem:crudemvt`, 11.3. Mollified mean square — `prop:mollified`, 11.4. Bohr–Jessen — `thm:bohrjessen`, 11.5. Support of \(L(\sigma,X)\) — `lem:support`, 11.6. Bohr–Courant — `cor:dense`, 11.7. Smooth density — `thm:smoothdensity`, 11.8. The caption’s \(0.529\) is V15-011.
+- Selberg — `thm:selberg`, 11.9. Integral of a zero — `lem:logint`, 11.10. Off the line — `prop:offline`, 11.11. The probability form — `cor:offline`, 11.12. Mean value of two polynomials — `lem:mvt2`, 11.13. Damped Mertens — `lem:dampedmertens`, 11.14. The prime sum is Gaussian — `prop:primesgauss`, 11.15.
+- Truncated exponential — `lem:truncexp`, 11.16. Small prime sums — `lem:psmall`, 11.17. Mollifier coefficients — `lem:mollcoef`, 11.18. The mollifier — `prop:mollifier`, 11.19. Exact formula for \(|\zeta|^2\) — `lem:exactmod`, 11.20. Gamma ratio — `lem:gammaratio`, 11.21. Twisted second moment — `thm:twisted`, 11.22. A Rankin truncation — `lem:rankinquad`, 11.23. \(\zeta M\) is close to \(1\) — `prop:mollmeansq`, 11.24.
+
+### Chapter 12 — Pseudorandomness (`ch12-pseudorandom.tex`)
+
+- Three faces of \(\|f\|_{U^2}\) — `prop:u2corr`, 12.1. Structured plus pseudorandom — `prop:strpsr`, 12.2. The \(U^2\) count — `thm:u2count`, 12.3. The dichotomy — `cor:dichotomy`, 12.4. A random set — `prop:randomu2`, 12.5. Local factors, \(\mathfrak S_3\) — `prop:local3`, 12.6.
+
+### Chapter 13 — The prime race (`ch13-bias.tex`, `ra-bias.tex`)
+
+- Explicit formula for \(L(s,\chi_{-4})\) — `thm:explicitchi`, 13.1. Under GRH, \(\psi(x,\chi)=O(\sqrt x\log^2x)\) — `cor:grhchi`, 13.2. Mean square of the waves — `lem:zerowaves`, 13.3. The race in mean square — `prop:racel2`, 13.4.
+- Kronecker–Weyl for real frequencies — `lem:kwreal`, 13.5. Limiting distribution, under GRH — `thm:racelimit`, 13.6. The random series, under GRH and LI — `thm:rubinsteinsarnak`, 13.7. Logarithmic density \(\delta(4;3,1)\in\,]\frac12,1[\) — `cor:biasdensity`, 13.8.
+
+### Chapter 14 — The meeting (`ch14-meeting.tex`)
+
+- Short-interval Turán–Kubilius — `prop:tkshort`, 14.1. The ledger in Section `sec:ledger` is a summary, not a numbered theorem. Its factor \(1/\Gamma(z+1)\) is V15-009.
+
+### Notation clashes with Volumes 1–14
+
+- \(\omega(u)\) is Buchstab’s function from Chapter 2 (`def:buchstab`). \(\omega(n)\) remains the number of distinct prime factors. The text writes the argument.
+- \(\rho(u)\) is Dickman’s function in Chapter 1. \(\rho\) is a non-trivial zero from Chapter 2 on, as in Volume 14. In Chapter 4 it is also a density in the polynomial counts.
+- \(\Lambda\) is von Mangoldt’s function. In the Kubilius section it is also the map from an exponent vector to \(\omega_y\).
+- \(S(x)\) is a random multiplicative sum in Chapter 4. \(S\) is a singular series in Chapter 5 and a Schnirelmann set in Chapter 6. The short-interval variance \(V\) in Chapter 5 is not Maynard’s ratio or the Meissel–Mertens constant.
+- \(\kappa\) is the Dirichlet convolution in the pair-series proof. Volume 14 uses \(\kappa\) for the dimension of a sieve.
+- \(G\) is a Selberg–Delange factor in Chapter 3, a geometric variable in the Kubilius model, and Barnes’ \(G\) when Chapter 10 cites Volume 12.
+- \(K\) is the squared sinc in Chapter 9. Its transform \(\hat K\) is the tent. The form factor of \(\delta_0-K\) is the function Montgomery denotes \(F(\alpha)\).

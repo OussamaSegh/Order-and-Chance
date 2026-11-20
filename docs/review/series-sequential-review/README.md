@@ -20,17 +20,15 @@ Reading order is each volume’s `main.tex`. Scores use the scale in the volume 
 | 12 Random Motion | 9/10. 0 critical, 0 major, 4 minor. See [volume12.md](volume12.md). |
 | 13 Arithmetic | 8/10. 0 critical, 1 major, 7 minor. See [volume13.md](volume13.md). |
 | 14 The Primes | 7/10. 0 critical, 2 major, 6 minor. See [volume14.md](volume14.md). |
-| 15 Order and Chance | not started |
+| 15 Order and Chance | 8/10. 0 critical, 0 major, 11 minor. See [volume15.md](volume15.md). |
 
 The concept ledger is [CONCEPT-LEDGER.md](CONCEPT-LEDGER.md). Volume 1 is the first section. Later reviews append their own section and check new uses against earlier lines.
 
-## Handoff (paused 2026-11-20, 06:40 Paris)
+## Handoff (2026-11-20)
 
-The chain stopped after Volume 13 at 86.8% of the weekly usage limit; Volume 14 was then run at the author's request (usage 89.4% after it). Volumes 1–14 are complete: each has its log, its ledger section and its status line above. Branch head before this update: `efcd5a9c`.
+Volumes 1–15 are complete: each has its log, its ledger section and its status line above. Volume 15 is recorded in [volume15.md](volume15.md). Every exercise in that volume was read. No book source was edited.
 
 To continue:
 
-1. Review Volume 15 on this branch. Volume 14 is recorded in [volume14.md](volume14.md). Use the brief in [briefs/series-review-v15.md](briefs/series-review-v15.md). The general form is [briefs/series-sequential-review-template.md](briefs/series-sequential-review-template.md).
-2. After each volume, check that `volumeN.md` exists, that the ledger has a "Volume N" section, that every exercise was read, and that this table is updated.
-3. Spot-check Volume 9. Its review ran in 25 minutes and found only 2 minor issues, so its depth is uncertain.
-4. Then write a series summary and propose fixes: one small PR per volume, each with a distinct second reviewer and an issue log, merged by squash with `--match-head-commit` on green CI. No book source is changed before the author approves.
+1. Spot-check Volume 9. Its review ran in 25 minutes and found only 2 minor issues, so its depth is uncertain.
+2. Then write a series summary and propose fixes: one small PR per volume, each with a distinct second reviewer and an issue log, merged by squash with `--match-head-commit` on green CI. No book source is changed before the author approves.
