@@ -1567,3 +1567,176 @@ No statement in this chapter is numbered as a theorem. The problems are exercise
 - \(\rho(A)\) is the spectral radius in Chapter 8 and Appendix F. In Chapter 15, \(\rho\) is the index of regular variation. In Chapter 16, \(\rho\) is a correlation.
 - \(\log\) is the natural logarithm. A ratio of logarithms does not depend on the base. Volume 7’s \(\ln\) is the same function.
 - \(e(t)=e^{2\pi it}\) and \(\lVert t\rVert\) are named again at the start of Chapter 16. They agree with Volumes 5 and 6.
+
+## Volume 9 — Shapes
+
+File names are under `volume9-shapes/chapters/`. The shared counter numbers theorems, propositions, lemmas, corollaries, definitions, and examples inside each chapter. Exercises use a separate counter and restart each chapter. The eleven main chapters are numbered 1–11. Integral geometry is Chapter 11 (`ch10-integral.tex`). The eleven appendices are A–K. \(\log\) is the natural logarithm. Hyperbolic curvature is normalised to \(-1\).
+
+### Chapter 1 — Smooth manifolds (`ch01-manifolds.tex`)
+
+- Differentiability and \(C^k\) — definition 1.1. Chain rule — `prop:chain`, 1.2. Continuous partials imply \(C^1\) — `prop:partials`, 1.3. Mean-value inequality — `lem:mvi`, 1.4. \(\mathrm{GL}_n\) is open and inversion is smooth — `lem:glnopen`, 1.5.
+- Diffeomorphism — definition 1.6. Inverse function theorem — `thm:inverse`, 1.7. Implicit function theorem — `thm:implicit`, 1.8.
+- Submanifold of \(\R^N\) — definition 1.9. Four descriptions — `thm:fourdesc`, 1.10. Spheres — `ex:spheres`, 1.11. \(\mathrm O(n)\) has dimension \(n(n-1)/2\) — `ex:on`, 1.12. Cassini ovals — `ex:cassini`, 1.13. The gradient display is V9-001.
+- Topological manifold, chart, atlas — definition 1.14. Maximal atlas — `prop:maxatlas`, 1.15. Smooth manifold and smooth map — definition 1.16. A submanifold is a smooth manifold — `prop:subisman`, 1.17. Products and tori — example 1.18. \(\R P^n\) — `ex:rpn`, 1.19.
+- Bump functions — `lem:bump`, 1.20. Partitions of unity — `thm:partition`, 1.21.
+- Tangent space of a submanifold — `prop:tangentsub`, 1.22. Derivation — definition 1.23. Locality — `lem:derivlocal`, 1.24. Hadamard’s lemma — `lem:hadamard`, 1.25. Coordinate basis of \(T_pM\) — `thm:tangentbasis`, 1.26. Differential — definition 1.27.
+- Regular and critical points; immersion, submersion, embedding — definition 1.28. Embedded submanifold — definition 1.29. Regular-value theorem — `thm:regularvalue`, 1.30. Embeddings — `prop:embedding`, 1.31.
+- \(C^1\) images of null sets are null — `lem:nullsets`, 1.32. Sard in equal dimensions — `thm:sard`, 1.33. Critical values are null and regular values are dense — `cor:sardmfd`, 1.34. Compact Whitney embedding — `thm:whitney`, 1.35. The sharp Whitney theorems and the general Morse–Sard theorem are quoted.
+
+### Chapter 2 — Vector fields and flows (`ch02-flows.tex`)
+
+- Grönwall — `lem:gronwall`, 2.1. Picard–Lindelöf — `thm:picard`, 2.2. Escape — `prop:escape`, 2.3. Continuous dependence — `thm:flowcont`, 2.4. Smooth dependence and the variational equation — `thm:flowsmooth`, 2.5.
+- Vector field and integral curve — definition 2.6. Compact or compactly supported fields are complete — `thm:complete`, 2.7. Linear flow on the torus — `ex:torusflow`, 2.8.
+- Lie bracket and Jacobi — `prop:bracket`, 2.9. The bracket as a small loop — `thm:bracketloop`, 2.10. Lie derivative — `thm:liederiv`, 2.11. Commuting flows — `thm:commuting`, 2.12.
+- Distribution, involutive, integrable — definition 2.13. Frobenius — `thm:frobenius`, 2.14. The contact plane field — `ex:contact`, 2.15.
+- Hairy ball, Milnor’s volume argument — `thm:hairyball`, 2.16. Adams’s theorem is quoted.
+
+### Chapter 3 — Differential forms (`ch03-forms.tex`)
+
+- Alternating basis — `prop:altbasis`, 3.1. Exterior product — definition 3.2. Determinant formula and pullback — `prop:wedgedet`, 3.3.
+- Differential form and pullback — definition 3.4. Exterior derivative — `thm:extd`, 3.5. Gradient, curl, divergence — `ex:gradcurldiv`, 3.6.
+- Orientation — definition 3.7. Volume form — `prop:volumeform`, 3.8. Integral of a top form — definition 3.9. Independence of charts — `prop:intwelldef`, 3.10.
+- Manifold with boundary — definition 3.11. Boundary orientation — `prop:bdryorient`, 3.12. Stokes — `thm:stokes`, 3.13. Sphere form \(\sigma\) — `ex:sigma`, 3.14.
+- No smooth retraction of the ball — `thm:noretraction`, 3.15. Brouwer — `thm:brouwern`, 3.16. The approximation estimate is V9-002.
+- Closed and exact; de Rham cohomology — definition 3.17. Homotopy formula — `thm:homotopy`, 3.18. Poincaré lemma — `cor:poincare`, 3.19. \(H^1\) of the punctured plane — `thm:h1punctured`, 3.20. Winding number as an integral — `cor:windingintegral`, 3.21. The general de Rham theorem is quoted.
+
+### Chapter 4 — Curvature (`ch04-curvature.tex`)
+
+- Riemannian metric — definition 4.1. Hyperbolic half-plane, curvature \(-1\) — `ex:halfplane`, 4.2.
+- Connection form — `prop:structure`, 4.3. Gauss curvature \(d\omega=-K\,dA\) — definition 4.4. Orthogonal coordinates — `prop:orthocurv`, 4.5. Sphere, half-plane, polar plane — `ex:curvexamples`, 4.6.
+- Covariant derivative and geodesic curvature — definition 4.7. \(\kappa_g=\varphi'+\omega(T)\) — `prop:kappag`, 4.8. Gauss lemma is proved in the text before the exponential map is used.
+- Theorema Egregium, \(K=\det(dN)\) — `thm:egregium`, 4.9. The shape operator is \(-dN\).
+- Index of an isolated zero — `lem:index`, 4.10. Gauss–Bonnet–Chern — `thm:gaussbonnet`, 4.11. Euler characteristic — definition 4.12. \(\int K\,dA=2\pi\chi\) — `cor:gaussbonnet`, 4.13.
+- Morse index of the gradient — `lem:morseindex`, 4.14. Morse functions exist — `thm:morseexists`, 4.15. \(\chi=\#\min-\#\mathrm{saddles}+\#\max\) — `cor:chimorse`, 4.16. Sphere and torus — `ex:chiexamples`, 4.17. The genus-\(g\) count \(2-2g\) and Poincaré–Hopf in higher dimensions are quoted.
+- Laplace–Beltrami \(\Delta f=\ast d\ast df\), the sign of the Euclidean Laplacian — text before `prop:green`. Green — `prop:green`, 4.18. Spectrum of the square torus — `thm:torusspectrum`, 4.19. Weyl’s law, the sphere spectrum, and Milnor’s flat tori are quoted.
+
+### Chapter 5 — Fundamental group and coverings (`ch05-coverings.tex`)
+
+- Path, homotopy, product — definition 5.1. Convex homotopy and reparametrisation — `lem:convexhomotopy`, 5.2. Fundamental group — `prop:pi1group`, 5.3. Homotopy invariance of \(\pi_1\) — `prop:homotopyinv`, 5.4.
+- Covering — definition 5.5. Standard coverings — `ex:coverings`, 5.6. Unique lifts — `lem:uniquelift`, 5.7. Homotopy lifting — `thm:homotopylifting`, 5.8. Endpoint corollary — `cor:liftendpoints`, 5.9. \(\pi_1(S^1)=\Z\) — `thm:pi1circle`, 5.10.
+- Fibre and cosets — `prop:fibre`, 5.11. Lifting criterion — `thm:liftcrit`, 5.12.
+- Deck transformation, normal covering, universal covering — definition 5.13. Deck group \(N(H)/H\) — `thm:deck`, 5.14. Torus, projective space, cyclic covers — `ex:computations`, 5.15. Classification — `thm:galois`, 5.16.
+- Free product — `prop:freeproduct`, 5.17. Seifert–van Kampen — `thm:vankampen`, 5.18. \(S^n\) is simply connected for \(n\ge2\) — `cor:spheres`, 5.19. Attaching a disc — `prop:attachdisc`, 5.20. Surface groups — `ex:surfaces`, 5.21.
+- Trees — `lem:trees`, 5.22. Fundamental group of a finite graph, rank \(E-V+1\) — `thm:wedge`, 5.23. Nielsen–Schreier — `thm:nielsenschreier`, 5.24.
+
+### Chapter 6 — Homology (`ch06-homology.tex`)
+
+- Chain complex — definition 6.1. Zigzag — `lem:zigzag`, 6.2. Five lemma — `lem:five`, 6.3.
+- Simplicial complex — definition 6.4. Smith form of the boundary and Euler–Poincaré — `prop:smithhomology`, 6.5.
+- Singular homology and reduced homology — text before `prop:H0`. \(H_0\) is free on the path components — `prop:H0`, 6.6. Homotopy invariance — `thm:homotopyH`, 6.7.
+- Small chains — `thm:smallchains`, 6.8. Mayer–Vietoris — `thm:mv`, 6.9. Excision — `cor:excision`, 6.10.
+- Homology of spheres — `thm:spheres`, 6.11. Degree. A reflection has degree \(-1\); the antipodal map has degree \((-1)^{n+1}\) — `prop:reflection`, 6.12. No retraction, Brouwer, and invariance of dimension — `cor:brouwerH`, 6.13.
+- Simplicial and singular homology agree — `thm:simplicialsingular`, 6.14. Euler characteristic of a triangulation — `cor:euler`, 6.15. Surfaces — `ex:surfacesH`, 6.16.
+- Complement of an embedded ball or sphere — `prop:jordanbrouwer`, 6.17. Invariance of domain — `thm:invariancedomain`, 6.18. \(H_k(\R P^n;\Z/2)=0\) for \(k>n\), and then \(=\Z/2\) for \(0\le k\le n\) — `lem:rpn`, 6.19. Borsuk–Ulam — `thm:borsukulam`, 6.20. Ham sandwich — `cor:hamsandwich`, 6.21.
+
+### Chapter 7 — Matrix Lie groups (`ch07-liegroups.tex`)
+
+- Matrix Lie group and Lie algebra — definition 7.1. Logarithm near the identity — `lem:log`, 7.2. One-parameter subgroups — `prop:oneparameter`, 7.3. The bracket \([X,Y]=XY-YX\) — `prop:liealgebra`, 7.4.
+- Closed-subgroup theorem — `thm:closedsubgroup`, 7.5. Continuous homomorphisms — `thm:homlie`, 7.6. A connected group is generated by the exponential — `prop:connectedgen`, 7.7. Adjoint representation in the text.
+- Spin cover \(SU(2)\to SO(3)\), kernel \(\{\pm I\}\), \(\pi_1(SO(3))=\Z/2\) — `thm:spin`, 7.8. \(\pi_1(SO(n))\) for \(n>3\) and \(\mathrm{Spin}(n)\) are quoted.
+- Maximal torus and Weyl group of \(U(n)\) — `thm:torus`, 7.9.
+
+### Chapter 8 — Haar measure and Weyl integration (`ch08-haar.tex`)
+
+- Left Haar form on a matrix group — `thm:haarform`, 8.1. A compact group is unimodular — `cor:compactunimodular`, 8.2. Uniqueness on a compact group — `thm:haarcompact`, 8.3. Pushforward — `cor:pushhaar`, 8.4. \(SU(2)\) and \(SO(3)\) — `ex:su2haar`, 8.5.
+- Positive-diagonal QR — `lem:qr`, 8.6. Gaussian sampling of Haar measure — `thm:qrhaar`, 8.7.
+- Weyl’s formula — `thm:weyl`, 8.8. Orbit of \(\operatorname{diag}(1,\ldots,n)\) — `lem:orbit`, 8.9. Jacobian \(\lvert V(t)\rvert^2\) — `lem:jacobian`, 8.10. \(n!\) sheets — `lem:sheets`, 8.11. The general compact-group formula is quoted.
+- Andréief — `lem:andreief`, 8.12. Heine — `thm:heine`, 8.13. Gaudin — `lem:gaudin`, 8.14. Correlation functions — `thm:correlations`, 8.15. Dyson’s pair correlation — `cor:dyson`, 8.16. Montgomery’s theorem is quoted under the Riemann hypothesis, for test functions whose Fourier transforms are supported in \((-1,1)\).
+
+### Chapter 9 — The hyperbolic plane (`ch09-hyperbolic.tex`)
+
+- Length and area — definition 9.1. \(PSL_2(\R)\) and reflection are isometries — `geometry:prop:isometries`, 9.2. Unique h-line — `geometry:lem:hlines`, 9.3. Distance \(\cosh d=1+\lvert z-w\rvert^2/(2\operatorname{Im}z\operatorname{Im}w)\) — `geometry:thm:hypdist`, 9.4. Many parallels — `geometry:prop:parallels`, 9.5.
+- Triangle area \(\pi-\alpha-\beta-\gamma\) — `geometry:thm:hyparea`, 9.6. Angle sum \(<\pi\), area \(\le\pi\) — `geometry:cor:anglesum`, 9.7.
+- Disc model, length \(2\lvert dw\rvert/(1-\lvert w\rvert^2)\) — `geometry:prop:disk`, 9.8. Circles and horocycles — `lem:hypcircles`, 9.9. The isometry group is \(PSL_2(\R)\) with reflections — `thm:isometries`, 9.10. Geodesic polar coordinates — `prop:hyppolar`, 9.11.
+- Iwasawa — `thm:iwasawa`, 9.12. Geodesic flow as a matrix product — `thm:geodflow`, 9.13. Elliptic, parabolic, hyperbolic by the trace — `thm:trace`, 9.14.
+- Farey tessellation — `prop:farey`, 9.15. Series’s cutting sequence — `thm:cutting`, 9.16. Hopf ergodicity and the Gauss-map measure are quoted, with the proof deferred to Volume 11.
+
+### Chapter 10 — Riemann mapping (`riemann-mapping.tex`)
+
+- Cayley map — `lem:cayley`, 10.1. Montel — `thm:montel`, 10.2. Injective holomorphic maps are open, and a nonconstant limit of injections is injective — `lem:injective`, 10.3. Schwarz and disc automorphisms — `lem:schwarz`, 10.4.
+- Riemann mapping, under the square-root hypothesis supplied by Volume 8, Corollary 14.3, when the domain is homologically simply connected — `thm:riemannmap`, 10.5. Jordan interiors — `cor:jordanconformal`, 10.6, using Volume 8, Proposition 14.4.
+
+### Chapter 11 — Integral geometry (`ch10-integral.tex`)
+
+- Invariant line measure \(c\,dp\,d\theta\) — `thm:linesunique`, 11.1. Bertrand’s chord under that measure has probability \(1/2\) — `cor:bertrand`, 11.2.
+- Banach’s indicatrix — `lem:banach`, 11.3. Crofton, \(\int n\,d\ell=2L\) — `thm:crofton`, 11.4. Buffon’s noodle — `cor:noodle`, 11.5.
+- Convex bodies and support lines — `lem:convexline`, 11.6. Cauchy–Crofton, perimeter \(L=\int_0^\pi w(\theta)\,d\theta\) — `thm:cauchycrofton`, 11.7.
+- Poincaré’s kinematic formula — `thm:poincare`, 11.8. Cauchy’s surface formula, mean shadow area is a quarter of the surface area — `thm:cauchyspace`, 11.9.
+
+### Appendix A — Transformations (`geometry-ch02-transformations.tex`)
+
+- An isometry of the plane is affine — `geometry:thm:isometryaffine`, A.1. Three reflections — `geometry:thm:threereflections`, A.2. Classification — `geometry:thm:chasles`, A.3. Affine images of triangles — `geometry:prop:affinetriangles`, A.4.
+- Leonardo: a finite subgroup of \(\mathrm O(2)\) is cyclic or dihedral — `geometry:thm:leonardo`, A.5. Frieze — `geometry:def:frieze`, A.6. Seven friezes — `geometry:thm:friezes`, A.7. Crystallographic restriction — `geometry:thm:crystallographic`, A.8. Five lattices — `geometry:prop:fivelattices`, A.9. Fagnano — `geometry:thm:fagnano`, A.10.
+- Ceva, the Euler line, and Routh’s \(1/7\) are exercises.
+
+### Appendix B — Inversion (`geometry-ch03-inversion.tex`)
+
+- Inversion — `geometry:def:inversion`, B.1. Distance formula — `geometry:prop:invdist`, B.2. Circles and lines — `geometry:thm:invcircles`, B.3. Orthogonal circles — `geometry:prop:orthfixed`, B.4. Ptolemy — `geometry:thm:ptolemy`, B.5.
+- Inversive distance — `geometry:prop:invdistance`, B.6. Concentric position — `geometry:lem:concentric`, B.7. Steiner’s porism — `geometry:thm:steiner`, B.8. Pappus’s chain — `geometry:thm:pappus`, B.9.
+- Descartes — `geometry:thm:descartes`, B.10. Swap — `geometry:prop:swap`, B.11. Integral gaskets — `geometry:cor:integral`, B.12. The local-global conjecture is marked as false by the 2024 citation; the proof is not given here.
+- Möbius maps — `geometry:thm:mobius`, B.13. Trace tests — `geometry:prop:tests`, B.14. Chords — `geometry:lem:chord`, B.15. Incentre — `geometry:prop:incentre`, B.16. Feuerbach — `geometry:thm:feuerbach`, B.17.
+
+### Appendix C — Projective geometry (`geometry-ch04-projective.tex`)
+
+- Projective plane — `geometry:def:projplane`, C.1. Incidence — `geometry:prop:incidence`, C.2. Duality — `geometry:thm:duality`, C.3. Projectivity — definition C.4. Frames — `geometry:prop:frames`, C.5.
+- Desargues — `geometry:thm:desargues`, C.6. Pappus — `geometry:thm:pappusline`, C.7. Cross-ratio — `geometry:def:crossratio`, C.8, and `geometry:thm:crossratio`, C.9. Perspectivity — `geometry:prop:perspectivity`, C.10.
+- Harmonic set — definition C.11. Harmonic construction — `geometry:thm:harmonic`, C.12. Fundamental theorem — `geometry:thm:fundamental`, C.13. Order of a finite plane — `geometry:prop:countplane`, C.14. Bruck–Ryser is quoted.
+
+### Appendix D — Conics (`geometry-ch05-conics.tex`)
+
+- Conic — `geometry:def:conic`, D.1. A line meets a conic in a quadratic — `geometry:prop:conicline`, D.2. Five points — `geometry:thm:fivepoints`, D.3. Normal form — `geometry:thm:normalform`, D.4. Focus and directrix — `geometry:prop:focus`, D.5.
+- Chasles–Steiner — `geometry:thm:chaslesconic`, D.6. Perspectivity lemma — `geometry:lem:perspectivity`, D.7. Pascal — `geometry:thm:pascal`, D.8.
+- Pole and polar — definition D.9 and `geometry:prop:polar`, D.10. Poncelet for two circles — `geometry:thm:poncelet`, D.11, and the invariant measure — `geometry:lem:poncelet`, D.12.
+
+### Appendix E — Quadratic forms and quadrics (`geometry-ch06-quadrics.tex`)
+
+- Orthogonal basis — `geometry:prop:orthbasis`, E.1. Sylvester — `geometry:thm:sylvester`, E.2. Real conics — `geometry:cor:realconics`, E.3. Classification of quadrics — `geometry:thm:quadrics`, E.4.
+- Segre quadric — `geometry:thm:segre`, E.5. Hyperbolic space — `geometry:lem:hyperbolic`, E.6. Transitivity — `geometry:lem:transitive`, E.7. Witt cancellation — `geometry:thm:witt`, E.8. Witt index — `geometry:cor:wittindex`, E.9.
+- Chevalley–Warning in the form proved here — `geometry:prop:chevalley`, E.10. Point count on a quadric — `geometry:thm:countquadric`, E.11.
+
+### Appendix F — Plane curves (`geometry-ch07-curves.tex`)
+
+- Resultant — `geometry:prop:resultant`, F.1. Dimension of curves of degree \(d\) — `geometry:prop:dimcurves`, F.2. Homogeneous resultant — `geometry:lem:reshomog`, F.3.
+- Bézout relative to one projection point \(O\) — `geometry:thm:bezout`, F.4. Independence of \(O\) is Volume 13, Chapter 14, and is not used as a premise.
+- Singular multiplicity — `geometry:lem:singularmult`, F.5. Bound on singularities — `geometry:thm:singbound`, F.6. Five points and conics — `geometry:lem:fivepointsconics`, F.7. Eight points — `geometry:lem:eightpoints`, F.8.
+- Cayley–Bacharach for cubics — `geometry:thm:cayleybacharach`, F.9. Pascal again — `geometry:cor:pascalcb`, F.10. The general Cayley–Bacharach theorem is quoted.
+
+### Appendix G — Cubic curves (`geometry-ch08-cubics.tex`)
+
+- Tangent meets with multiplicity at least two — `geometry:lem:tangentdouble`, G.1. Chord operation \(P*Q\) — definition G.2. Inverse and the sum \(P+Q=O*(P*Q)\) — `geometry:prop:groupbasic`, G.3.
+- Associativity when the nine points are distinct — `geometry:thm:assoc`, G.4. The unrestricted group law is quoted from Volume 13, Chapter 15.
+- Weierstrass form — `geometry:prop:weierstrass`, G.5. Nine flexes — `geometry:thm:nineflexes`, G.6. Real flexes — `geometry:thm:realflexes`, G.7.
+- Point count over a finite field — `geometry:prop:countEp`, G.8. Supersingular, in the sense proved here — `geometry:prop:supersingular`, G.9. Nagell–Lutz, Mordell, and Hasse are quoted; Mazur is quoted as beyond the series.
+
+### Appendix H — Lattices (`geometry-ch09-lattices.tex`)
+
+- Lattice, covolume, basis — definition H.1. Bases and the determinant — `geometry:prop:latticebases`, H.2. Blichfeldt — `geometry:lem:blichfeldt`, H.3. Minkowski — `geometry:thm:minkowski`, H.4. Sums of two squares — `geometry:thm:twosquares`, H.5.
+- Reduced basis — definition H.6. Existence — `geometry:prop:reducedexists`, H.7. Hermite’s constant in dimension 2 — `geometry:thm:hermite2`, H.8. Hexagonal density \(\pi/\sqrt{12}\) — `geometry:cor:hexdensity`, H.9.
+- \(E_8\): covolume 1, \(240\) roots of norm \(\sqrt2\), density \(\pi^4/384\) — `geometry:thm:e8`, H.10. Viazovska, the Leech lattice, and the dimension restriction for even unimodular lattices are quoted.
+
+### Appendix I — Non-Euclidean geometry (`geometry-ch10-noneuclid.tex`)
+
+- Girard, spherical excess — `geometry:thm:girard`, I.1. Spherical cosine law — `geometry:prop:sphcos`, I.2. The hyperbolic comparisons are exercises and use Chapter 9.
+
+### Appendix J — Convex bodies (`geometry-ch11-convex.tex`)
+
+- Radon — `geometry:lem:radon`, J.1. Helly — `geometry:thm:helly`, J.2. Random interval — `geometry:lem:randominterval`, J.3.
+- Buffon for a convex body, mean width — `geometry:thm:buffon`, J.4. Cauchy’s formula \(L=\int_0^\pi w(\theta)\,d\theta\) — `geometry:thm:cauchy`, J.5. Barbier, \(L=\pi w\) — `geometry:cor:barbier`, J.6.
+- Brunn–Minkowski — `geometry:thm:bm`, J.7. Isoperimetric inequality — `geometry:cor:isoperimetric`, J.8. The Blaschke–Lebesgue theorem is quoted.
+
+### Appendix K — Curvature of curves and polyhedra (`geometry-ch12-curvature.tex`)
+
+- Curvature determines a plane curve — `geometry:thm:fundcurve`, K.1. Four-vertex theorem — `geometry:thm:fourvertex`, K.2.
+- Principal curvatures of a graph — definition K.3. Gauss map — `geometry:prop:gaussmap`, K.4. Gauss–Bonnet for a convex surface, total curvature \(4\pi\) — `geometry:thm:gbconvex`, K.5.
+- Euler, \(V-E+F=2\) for a convex polyhedron — `geometry:thm:euler`, K.6. Descartes, total defect \(4\pi\) — `geometry:thm:descartesdefect`, K.7. The smooth Gauss–Bonnet theorem is recalled from Chapter 4 and is not reproved.
+
+### Notation clashes with Volumes 1–8
+
+- \(\chi\) is the Euler characteristic from Chapter 4 on. Volumes 2 and 6 use \(\chi\) for a Dirichlet character. The two do not meet in one formula.
+- \(K\) is Gaussian curvature from Chapter 4 on. Volume 8 uses \(K\) for a reproducing kernel, a compact set, and the Landau–Ramanujan constant.
+- \(\sigma\) is the sphere form in Chapter 3 and surface measure in Chapter 11. Volume 8 uses \(\sigma\) for a singular value, a Cesàro mean, and a real part. The sphere form is named where it is introduced.
+- \(\omega\) is the connection form in Chapter 4. It is also a differential form in Chapter 3. Each chapter says which.
+- \(\Delta\) is the Laplace–Beltrami operator in Chapter 4, with the sign of \(f_{xx}+f_{yy}\). Volume 8’s modular function is \(\Delta\), and Volume 9 cites that function for the affine group in Chapter 8. The two uses are in different chapters.
+- \(H_k\) is homology from Chapter 6 on. Volume 8 uses \(H\) for a Hilbert space and \(H^s\) for a Sobolev space.
+- The shape operator is \(-dN\), and \(K=\det(dN)\). The sign is stated in Chapter 4.
+- \(\log\) is the natural logarithm, as in Volumes 6–8.
