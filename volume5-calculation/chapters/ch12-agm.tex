@@ -13,7 +13,7 @@ Take two positive numbers. Replace them by their arithmetic mean and their geome
 Gauss wrote the diary entry above on 30 May 1799, at the age of twenty-one. He had computed the common limit of $1$ and $\sqrt2$ to eleven decimals, and he had computed $\pi$ divided by the length of a half-lemniscate, and the two numbers agreed. That common limit is the \emph{arithmetic--geometric mean}. This chapter proves his theorem, by a substitution Newman published in 1985. The same iteration gives the perimeter of an ellipse and Legendre's relation between the two elliptic integrals. Brent and Salamin put the pieces together in 1976: their algorithm computes $\pi$, and the number of correct digits doubles at every step. The Gamma function, Wallis's product, Stirling's formula, the lemniscate of Chapter~\ref{ch:gamma} and the fast multiplication of Chapter~\ref{ch:fft} all meet in that algorithm.
 
 \begin{think}
-Start from $1$ and $\sqrt2$. After one step you have $1.2071$ and $1.1892$. After four steps both are $1.19814023473559\ldots$ How many steps would you expect to need for $1000$ digits? Gauss compared the limit with $2\int_0^1\frac{\mathrm dt}{\sqrt{1-t^4}}=2.62205755\ldots$, the length of a half-lemniscate (Exercise~\ref{ex:lemniscate} of Chapter~\ref{ch:gamma}). Divide $\pi$ by that length.
+Start from $1$ and $\sqrt2$. After one step you have $1.2071$ and $1.1892$. After four steps both are $1.19814023473559\ldots$ How many steps would you expect to need for $1000$ digits? Gauss compared the limit with $2\int_0^1\frac{\mathrm dt}{\sqrt{1-t^4}}=2.62205755\ldots$, the length of one loop. Corollary~\ref{cor:lemniscate} derives that length from the arc-length element. Divide $\pi$ by that length.
 \end{think}
 
 \section{The arithmetic--geometric mean}
@@ -132,17 +132,37 @@ modulus of $k_1$, because $1-\frac{4k'}{(1+k')^2}=\frac{(1-k')^2}{(1+k')^2}$. Th
 For small $k$, $k_1\approx\frac{k^2}4$. Each Landen step squares the modulus, and the modulus runs to $0$, where $K(0)=\frac\pi2$. That is the AGM again, written in the modulus instead of the two means.
 
 \begin{corollary}[the lemniscate]\label{cor:lemniscate}
-Let $\varpi=2\int_0^1\frac{\mathrm dr}{\sqrt{1-r^4}}$, so that the lemniscate $(x^2+y^2)^2=x^2-y^2$ has length $2\varpi$ (Exercise~\ref{ex:lemniscate}). Then
+Let $\varpi=2\int_0^1\frac{\mathrm dr}{\sqrt{1-r^4}}$. The lemniscate $(x^2+y^2)^2=x^2-y^2$ has length $2\varpi$, and
 \[
 \begin{gathered}\frac\varpi\pi=\frac1{M(1,\sqrt2)},\qq\varpi=2.62205755429211981\ldots\end{gathered}
 \]
 \end{corollary}
 \begin{proof}
-Substitute $r=\cos\theta$. Then $\mathrm dr=-\sin\theta\dd\theta$ and $1-\cos^4\theta=\sin^2\theta\,(1+\cos^2\theta)$, so
+\emph{The integral.}
+Substitute $r=\cos\varphi$. Then $\mathrm dr=-\sin\varphi\dd\varphi$ and $1-\cos^4\varphi=\sin^2\varphi\,(1+\cos^2\varphi)$, so
 \[
-\int_0^1\frac{\mathrm dr}{\sqrt{1-r^4}}=\int_0^{\pi/2}\frac{\mathrm d\theta}{\sqrt{1+\cos^2\theta}}=\int_0^{\pi/2}\frac{\mathrm d\theta}{\sqrt{2\cos^2\theta+\sin^2\theta}}=I(\sqrt2,1).
+\int_0^1\frac{\mathrm dr}{\sqrt{1-r^4}}=\int_0^{\pi/2}\frac{\mathrm d\varphi}{\sqrt{1+\cos^2\varphi}}=\int_0^{\pi/2}\frac{\mathrm d\varphi}{\sqrt{2\cos^2\varphi+\sin^2\varphi}}=I(\sqrt2,1).
 \]
-Theorem~\ref{thm:gaussagm} says this equals $\frac\pi{2M(1,\sqrt2)}$.
+Theorem~\ref{thm:gaussagm} says this equals $\frac\pi{2M(1,\sqrt2)}$. The integral is finite. In particular the improper integral that defines $\varpi$ converges.
+
+\emph{The arc-length element.}
+In polar coordinates, $x=r\cos\theta$ and $y=r\sin\theta$, so $x^2+y^2=r^2$. The addition formula gives $\cos2\theta=\cos^2\theta-\sin^2\theta$, and therefore $x^2-y^2=r^2\cos2\theta$. The same formula at equal angles gives $\cos0=\cos^2 t+\sin^2 t$, so $\sin^2 t+\cos^2 t=1$ and $\sin^2 2\theta=1-\cos^2 2\theta$. The curve equation becomes $r^4=r^2\cos2\theta$. The origin lies on the curve. Off the origin, $r^2=\cos2\theta$, so the curve lives where $\cos2\theta\ge0$: on $\theta\in\bigl[-\frac\pi4,\frac\pi4\bigr]$ and on $\theta\in\bigl[\frac{3\pi}4,\frac{5\pi}4\bigr]$.
+
+On the open first interval, $0<r<1$ and $2r\,\frac{\mathrm dr}{\mathrm d\theta}=-2\sin2\theta$, so
+\[
+\Bigl(\frac{\mathrm dr}{\mathrm d\theta}\Bigr)^2=\frac{1-r^4}{r^2}.
+\]
+The length of a $C^1$ arc is the integral of its speed $\sqrt{(x')^2+(y')^2}$, as in the constant-speed curves of Chapter~\ref{ch:fourier}. In the parameter $\theta$ that speed is
+\[
+\sqrt{\frac{1-r^4}{r^2}+r^2}=\sqrt{\frac{1-r^4+r^4}{r^2}}=\frac1r.
+\]
+The function $r(\theta)=\sqrt{\cos2\theta}$ is $C^1$ on every compact subinterval of $\bigl(-\frac\pi4,\frac\pi4\bigr)$. On $\bigl(-\frac\pi4,0\bigr)$ one has $\sin2\theta<0$, so $r$ increases. On a piece where $\delta\le r\le1-\delta$,
+\[
+\mathrm d\theta=\frac{r\,\mathrm dr}{\sqrt{1-r^4}},
+\]
+and the length element $\mathrm d\theta/r$ equals $\mathrm dr\big/\sqrt{1-r^4}$. On $\bigl(0,\frac\pi4\bigr)$ the radius decreases, and the same identity with $-\mathrm dr$ gives the absolute value. Let $\delta\to0$. Each half of the right-hand loop has length $\int_0^1(1-r^4)^{-1/2}\,\mathrm dr$, which we already know is finite. The right-hand loop has length $\varpi$.
+
+The map $(x,y)\mapsto(-x,-y)$ preserves the equation and multiplies both derivatives by $-1$, so it preserves speed. It carries the first angular interval onto the second. The left-hand loop has the same length. The whole curve has length $2\varpi$.
 \end{proof}
 
 \begin{figure}[ht]
@@ -1147,8 +1167,12 @@ are the pairs of fixed points, and there are $F(g)^2$ of them, so $\mathbb E[F^2
 transitive. Its complement is non-empty, since $n\ge2$. So $r\ge2$.
 
 (b) One has $r=2$ precisely when the off-diagonal pairs form a single orbit, which is $2$-transitivity. And $\operatorname{Var}F=r-1$, so
-the same condition is $\operatorname{Var}F=1$. The character $\pi$ is real-valued, so $\langle\pi,\pi\rangle=\frac1{|G|}\sum\pi(g)^2=r$ and
-$\langle\pi,1\rangle=\mathbb E[F]=1$. Set $\psi=\pi-1$. Then $\langle\psi,1\rangle=0$ and $\langle\psi,\psi\rangle=r-2\langle\psi,1\rangle-1=r-1$.
+the same condition is $\operatorname{Var}F=1$. The character $\pi$ is real-valued. The inner product of Volume~3, Chapter~11, is
+$\langle\varphi,\psi\rangle=\frac1{|G|}\sum_g\varphi(g)\overline{\psi(g)}$. For real characters it is linear in each argument and symmetric, and $\langle1,1\rangle=1$. Thus $\langle\pi,\pi\rangle=\frac1{|G|}\sum\pi(g)^2=r$ and
+$\langle\pi,1\rangle=\mathbb E[F]=1$. Set $\psi=\pi-1$. Then $\langle\psi,1\rangle=\langle\pi,1\rangle-\langle1,1\rangle=0$, and symmetry gives $\langle1,\pi\rangle=\langle\pi,1\rangle$. Expand the square:
+\[
+\langle\psi,\psi\rangle=\langle\pi,\pi\rangle-\langle\pi,1\rangle-\langle1,\pi\rangle+\langle1,1\rangle=\langle\pi,\pi\rangle-2\langle\pi,1\rangle+\langle1,1\rangle=r-2+1=r-1.
+\]
 A character $\psi=\sum m_i\chi_i$ satisfies $\langle\psi,\psi\rangle=\sum m_i^2$, so it is irreducible precisely when
 $\langle\psi,\psi\rangle=1$ (Volume~3, Chapter~11), that is, when $r=2$.
 
