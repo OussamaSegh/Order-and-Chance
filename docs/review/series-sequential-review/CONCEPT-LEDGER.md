@@ -1356,3 +1356,214 @@ No statement in this chapter is numbered as a theorem. The problems are exercise
 - \(C\) is the middle-thirds Cantor set from Chapter 2, and also a constant.
 - \(\lvert\cdot\rvert_p\) is the \(p\)-adic absolute value. The ordinary absolute value keeps its Volume 1 meaning. The letter \(p\) remains a prime, as in Volume 2.
 - \(e(t)=e^{2\pi it}\) and \(\lVert t\rVert\), the distance from \(t\) to \(\Z\), are the Volume 5 and Volume 6 conventions. They are named again at the start of Chapter 13.
+
+## Volume 8 — Analysis
+
+File names are under `volume8-analysis/chapters/`. The shared counter numbers theorems, propositions, lemmas, corollaries, definitions, and examples inside each chapter. Exercises use a separate counter and restart each chapter. The sixteen main chapters are numbered 1–16. The six appendices are A–F. \(\log\) is the natural logarithm, as in Volumes 6 and 7. In Chapter 16, \(e(t)=e^{2\pi it}\) and \(\lVert t\rVert\) is the distance to \(\Z\), the same conventions as Volumes 5 and 6.
+
+### Chapter 1 — Banach spaces (`ch01-banach.tex`)
+
+- A linear map between normed spaces is continuous exactly when it is bounded — `prop:boundedcont`, 1.1.
+- Riesz’s lemma — `lem:riesz`, 1.2. The closed unit ball of an infinite-dimensional normed space is not compact — `thm:rieszcompact`, 1.3.
+- Hahn–Banach, analytic form — `thm:hb`, 1.4. The norm-preserving extension — `cor:hbnorm`, 1.5. The geometric form — `thm:separation`, 1.6.
+- Uniform boundedness — `thm:ubp`, 1.7. A continuous function whose Fourier series diverges at a point — `thm:fourierdiverge`, 1.8.
+- Open mapping — `thm:openmapping`, 1.9. Closed graph — `thm:closedgraph`, 1.10.
+- Duality of \(L^p\) for \(1\le p<\infty\) — `thm:lpdual`, 1.11. The dual of \(c_0\) — `prop:c0dual`, 1.12. Riesz–Markov — `thm:rieszmarkov`, 1.13.
+- If \(\mu\) is \(\sigma\)-finite and \(1<p<\infty\), then \(L^p(\mu)\) is reflexive, and \(c_0\) is not — `prop:reflexive`, 1.14. A weakly convergent sequence is norm bounded, and \(\lVert x\rVert\le\liminf\lVert x_n\rVert\) — `prop:weakbounded`, 1.15.
+- Banach–Alaoglu — `thm:alaoglu`, 1.16. The diagonal citation is V8-001. The step-function citation is V8-002. Eberlein–Šmulian is quoted.
+
+### Chapter 2 — Hilbert spaces (`ch02-hilbert.tex`)
+
+- The nearest point in a closed convex set — `thm:projection`, 2.1. Orthogonal decomposition — `cor:orthdecomp`, 2.2.
+- Riesz–Fréchet — `thm:rieszrep`, 2.3. The closed unit ball is weakly compact — `cor:weakcompact`, 2.4.
+- Orthonormal bases and Parseval — `thm:onb`, 2.5. An infinite-dimensional separable Hilbert space has a Hilbert basis and is isometrically isomorphic to \(\ell^2\) — `cor:separable`, 2.6.
+- The exponentials \(e^{int}\) are a Hilbert basis of \(L^2(\mathbb T)\) for the inner product \((2\pi)^{-1}\int f\overline g\) — `thm:fourierl2`, 2.7. The Legendre polynomials are orthogonal with norm squared \(2/(2n+1)\), and the normalised family is a Hilbert basis of \(L^2[-1,1]\) — `prop:legendre`, 2.8.
+- Kronecker–Weyl — `thm:kroneckerweyl`, 2.9. Von Neumann’s mean ergodic theorem — `thm:meanergodic`, 2.10.
+- Von Neumann’s proof of Radon–Nikodym — `thm:rnvn`, 2.11. The Hahn-decomposition proof remains Volume 7, Theorem 11.4.
+- Moore–Aronszajn — `thm:aronszajn`, 2.12. The complex Cauchy–Schwarz step is V8-003. A reproducing kernel is Hermitian and positive semi-definite.
+
+### Chapter 3 — The spectral theorem (`linear-ch05-spectral.tex`)
+
+- Normal, self-adjoint, unitary — `linear:def:normal`, 3.1. The spectral theorem for a normal matrix — `linear:thm:spectral`, 3.2. A Hermitian matrix has real eigenvalues and an orthonormal eigenbasis — `linear:cor:hermitian`, 3.3.
+- Courant–Fischer — `linear:thm:courantfischer`, 3.4. Cauchy interlacing — `linear:thm:interlacing`, 3.5. Weyl’s inequalities — `linear:thm:weyl`, 3.6. Eigenvalue stability — `linear:cor:weylpert`, 3.7.
+- Birkhoff’s theorem: a doubly stochastic matrix is a convex combination of permutation matrices — `linear:lem:birkhoff`, 3.8. Schur–Horn — `linear:thm:schurmaj`, 3.9.
+- Horn’s theorem on spectra of sums, in the form proved here — `linear:thm:horn`, 3.10. Hoffman–Wielandt — `linear:thm:hoffmanwielandt`, 3.11.
+- Rado’s identification of the permutohedron is V8-004. Horn’s conjecture is quoted.
+
+### Chapter 4 — Singular values (`linear-ch06-svd.tex`)
+
+- The singular-value decomposition — `linear:thm:svd`, 4.1. Dilation to a Hermitian matrix — `linear:prop:dilation`, 4.2. The polar decomposition — `linear:thm:polar`, 4.3.
+- Ky Fan norms — `linear:prop:kyfannorm`, 4.4. Eckart–Young — `linear:thm:eckartyoung`, 4.5. Mirsky’s theorem for every unitarily invariant norm is quoted.
+- The Moore–Penrose pseudoinverse — `linear:def:pinv`, 4.6, and `linear:thm:pinv`, 4.7. Principal components — `linear:thm:pca`, 4.8.
+- The condition number — `linear:prop:condition`, 4.9. Orthogonal Procrustes — `linear:thm:procrustes`, 4.10.
+- The low-rank caption is V8-005.
+
+### Chapter 5 — Graphs (`linear-ch08-graphs.tex`)
+
+- Spectra of the path, the cycle, the complete graph, and the cube — `linear:exa:spectra`, 5.1. The friendship theorem — `linear:thm:friendship`, 5.2.
+- A strongly regular graph — `linear:def:srg`, 5.3. Its eigenvalues — `linear:thm:srg`, 5.4. The Hoffman–Singleton bound — `linear:thm:moore`, 5.5.
+- Hoffman’s ratio bound — `linear:thm:hoffman`, 5.6. Erdős–Ko–Rado for pairs — `linear:exa:ekr`, 5.7.
+- Graham–Pollak — `linear:thm:grahampollak`, 5.8. Huang’s signed adjacency theorem — `linear:thm:huang`, 5.9. Schwenk — `linear:prop:schwenk`, 5.10.
+- The matrix-tree theorem is deferred to Volume 12, Appendix A.
+
+### Chapter 6 — Cuts (`spectral-expansion.tex`)
+
+- The Rayleigh quotient of the Laplacian — `expansion:lem:rayleigh`, 6.1. Cheeger’s inequality — `spectral:thm:cheeger`, 6.2.
+- The expander mixing lemma — `spectral:lem:mixing`, 6.3. Alon–Boppana, in Nilli’s form — `spectral:thm:alonboppana`, 6.4.
+
+### Chapter 7 — Expanders (`ch09-expanders.tex`)
+
+- Mixing — `prop:mixing`, 7.1. The hitting property — `prop:hitting`, 7.2. The expander Chernoff bound — `thm:expchernoff`, 7.3.
+- Non-backtracking polynomials — `lem:nbpoly`, 7.4. Kesten’s measure — `thm:kestenmeasure`, 7.5. McKay’s theorem — `thm:mckay`, 7.6. Serre’s gap — `cor:serre`, 7.7.
+- The Ihara determinant — `prop:iharadet`, 7.8. Bass’s formula — `thm:bass`, 7.9. The Riemann hypothesis for graphs — `thm:graphRH`, 7.10. The prime-number theorem for graphs — `thm:graphpnt`, 7.11.
+- Friedman, the LPS Ramanujan graphs, and the Huang–McKenzie–Yau proportion are quoted.
+
+### Chapter 8 — Operators (`ch03-operators.tex`)
+
+- The Hilbert-space adjoint — `prop:adjoint`, 8.1. Compact operators — `prop:compactops`, 8.2. A Hilbert–Schmidt kernel gives a compact operator — `ex:hilbertschmidt`, 8.3.
+- The Fredholm alternative for a compact perturbation of the identity — `thm:fredholm`, 8.4. The Neumann series — `lem:neumann`, 8.5.
+- The spectrum is nonempty and compact, and the spectral radius is the limit of \(\lVert A^n\rVert^{1/n}\) — `thm:spectrum`, 8.6. The Volterra operator has spectrum \(\{0\}\) — `ex:volterraex`, 8.7.
+- Gelfand–Mazur — `lem:gelfandmazur`, 8.8. The Gelfand representation of a commutative Banach algebra — `thm:gelfand`, 8.9. Characters of the Wiener algebra — `prop:wcharacters`, 8.10.
+- Wiener’s lemma — `thm:wiener`, 8.11.
+
+### Chapter 9 — Compact operators (`ch04-spectral.tex`)
+
+- The norm of a compact self-adjoint operator is a maximum of \(\lvert\langle Ax,x\rangle\rvert\) — `lem:sanorm`, 9.1. The spectrum is real, and the only possible accumulation point is \(0\) — `prop:saspec`, 9.2. A nonzero spectral value is an eigenvalue — `lem:eigenvalue`, 9.3.
+- The spectral theorem — `thm:spectralcompact`, 9.4. The normal case — `cor:normal`, 9.5. Courant–Fischer again, for compact operators — `thm:minmax`, 9.6. Weyl’s perturbation bound — `cor:weylpert`, 9.7.
+- The initial-value comparison — `lem:ivp`, 9.8. Green’s function — `lem:green`, 9.9. The sine basis — `lem:sines`, 9.10. Sturm–Liouville — `thm:sturm`, 9.11. Weyl’s law on an interval — `cor:weyllaw`, 9.12.
+- Hilbert–Schmidt operators — `prop:hs`, 9.13. Mercer — `thm:mercer`, 9.14. Brownian covariance — `ex:minkernel`, 9.15.
+- The continuous functional calculus — `thm:funcalc`, 9.16. The positive square root — `cor:sqrt`, 9.17.
+- The unbounded spectral theorem, Ambartsumian, Borg, and Gordon–Webb–Wolpert are quoted.
+
+### Chapter 10 — The Fourier transform (`ch05-fourier.tex`)
+
+- The \(L^1\) transform — `prop:ftl1`, 10.1. Inversion — `thm:ftinv`, 10.2. The Schwartz class — `prop:schwartz`, 10.3. Plancherel — `thm:plancherel`, 10.4.
+- Hermite functions — `thm:hermite`, 10.5. The three-lines lemma — `lem:threelines`, 10.6. Riesz–Thorin — `thm:rieszthorin`, 10.7. Hausdorff–Young — `cor:hausdorffyoung`, 10.8.
+- A finite measure is determined by its Fourier transform — `thm:measuniq`, 10.9. The Cauchy law — `prop:cauchylaw`, 10.10. Means of Cauchy observations — `cor:cauchymean`, 10.11. The pointer to Volume 7, Exercise 10.2, is V8-011.
+- Sampling — `thm:sampling`, 10.12. A nonzero \(L^2\) function and its transform cannot both have compact support — `cor:nocompact`, 10.13.
+- Poisson summation for a lattice — `thm:poissonlattice`, 10.14. The theta function of a lattice — `cor:thetalattice`, 10.15.
+- Bochner’s converse and Beckner’s constant are quoted.
+
+### Chapter 11 — Distributions (`ch06-distributions.tex`)
+
+- A distribution on an open set — definition at line 19, unlabelled, 11.1. The examples, including \(\delta\) — `ex:distexamples`, 11.2. Locally integrable functions — `prop:lloc`, 11.3.
+- Distributional derivatives and multiplication by a smooth function — definition at line 57, unlabelled, 11.4. The examples — `ex:derivatives`, 11.5. A distribution with zero derivative is constant — `thm:zeroderiv`, 11.6. Smoothing — `prop:smoothing`, 11.7.
+- The Schwartz class is already 10.3. A tempered distribution — definition at line 126, unlabelled, 11.8. Its Fourier transform — definition at line 134, unlabelled, 11.9, and `thm:ftsprime`, 11.10.
+- Newton’s potential — `thm:newton`, 11.11. The Sobolev space \(H^s(\R)\) and \(W^{1,p}(I)\) — definition at line 202, unlabelled, 11.12. The embedding — `thm:sobolevR`, 11.13. The space \(W^{1,1}\) — `thm:w11`, 11.14. Rellich — `thm:rellich`, 11.15.
+- A weak solution — definition at line 264, unlabelled, 11.16. Lax–Milgram — `thm:laxmilgram`, 11.17. Existence for the Sturm–Liouville weak form — `thm:weaksol`, 11.18. Céa’s lemma — `prop:cea`, 11.19.
+- Malgrange–Ehrenpreis in general is quoted.
+
+### Chapter 12 — Finite abelian groups (`ch07-finite.tex`)
+
+- The dual of a product — `prop:dualprod`, 12.1. Duality: the bidual is the group, and there are \(\lvert G\rvert\) characters — `thm:finiteduality`, 12.2.
+- The annihilator \(H^\perp\) — definition at line 39, unlabelled, 12.3. Its order — `prop:annihilator`, 12.4. This \(H^\perp\) is a subgroup of the dual, not the orthogonal complement of Chapter 2.
+- Convolution — `prop:finiteconv`, 12.5. Poisson summation — `thm:poissonfinite`, 12.6. Splitting along a subgroup — `lem:split`, 12.7. The fast transform — `thm:fftgeneral`, 12.8.
+- Donoho–Stark — `thm:donohostark`, 12.9. Chebotarev’s lemma on minors of the Fourier matrix — `lem:chebotarev`, 12.10. Tao’s uncertainty principle — `thm:tao`, 12.11.
+- The Gauss sum — `lem:gaussa`, 12.12, and its multiplicativity — `lem:gaussmult`, 12.13. Quadratic reciprocity — `thm:qr`, 12.14.
+- A cap-set count — `lem:capcount`, 12.15. Meshulam — `thm:meshulam`, 12.16. Blum–Luby–Rubinfeld — `thm:blr`, 12.17.
+
+### Chapter 13 — Haar measure (`ch08-haar.tex`)
+
+- A left Haar measure — definition at line 19, unlabelled, 13.1. Haar measure on \(GL_n\) — `prop:glnhaar`, 13.2. Uniqueness — `thm:haaruniq`, 13.3.
+- Markov–Kakutani — `thm:markovkakutani`, 13.4. An abelian group is amenable — `cor:abelianamenable`, 13.5. Extensions of amenable groups — `prop:amenableext`, 13.6.
+- Banach’s finitely additive measure on \(\Z\) — `thm:banachmeasure`, 13.7. The free group on two generators is paradoxical — `prop:f2paradox`, 13.8.
+- A free rotation — `lem:freerot`, 13.9. Hausdorff’s paradox — `thm:hausdorff`, 13.10.
+- Duals of \(\R\), \(\Z\), the circle and \(\Q_p\) — `thm:duals`, 13.11. Haar measure on \(\Q_p\) — `prop:haarqp`, 13.12. A character orthogonal to a ball — `lem:psiperp`, 13.13.
+- \(\Q_p\) is self-dual — `thm:qpselfdual`, 13.14. Fourier analysis on \(\Q_p\) — `thm:qpfourier`, 13.15.
+- The general Pontryagin–van Kampen theorem is quoted. Adèles are Volume 13.
+
+### Chapter 14 — Complex analysis (`ch09-complex.tex`)
+
+- Cauchy's theorem in homology form — `thm:globalcauchy`, 14.1. The residue theorem — `cor:globalresidue`, 14.2. The argument principle — `cor:hsc`, 14.3. A criterion for the winding — `prop:hsccriterion`, 14.4.
+- Phragmén–Lindelöf — `thm:pl`, 14.5. Convexity of the growth exponent — `cor:convexity`, 14.6. Vertical sizes — `lem:verticalsizes`, 14.7. The convexity bound for \(\zeta\) — `thm:convexzeta`, 14.8.
+- Canonical products — `lem:products`, 14.9. A zero count — `lem:zerocount`, 14.10. Hadamard factorisation — `thm:hadamardgen`, 14.11.
+- Mellin inversion — `thm:mellininv`, 14.12. A theta sum — `ex:thetamellin`, 14.13. The maximum of geometric levels — `thm:maxgeom`, 14.14.
+- Riemann mapping is Volume 9. Bourgain’s \(13/84\) is quoted.
+
+### Chapter 15 — Tauberian theorems (`ch10-tauberian.tex`)
+
+- Regular weights — `lem:regular`, 15.1. Abel’s theorem — `thm:abel`, 15.2. Cesàro implies Abel — `cor:cesaroabel`, 15.3. The series \(\sum(-1)^n\) — `ex:gregoryseries`, 15.4.
+- Tauber’s theorem — `thm:tauber`, 15.5. Slowly varying — definition at line 100, unlabelled, 15.6. Hardy–Littlewood–Karamata — `thm:karamata`, 15.7. The power-series form — `cor:karamataseries`, 15.8. A converse to Abel for nonnegative coefficients — `cor:abelconverse`, 15.9.
+- A local inverse in \(L^1(\R)\) — `lem:localinv`, 15.10. Translates of an \(L^1\) function with nowhere-zero transform are dense — `thm:wienerl1`, 15.11. Wiener’s Tauberian theorem — `thm:wienertaub`, 15.12.
+- Wiener–Ikehara — `thm:ikehara`, 15.13. The prime number theorem — `cor:pntikehara`, 15.14. Progressions — `cor:pntapikehara`, 15.15. The holomorphy citation is V8-010.
+- The Euler product for the indicator of sums of two squares — `prop:twosqeuler`, 15.16. The weighted count — `thm:twosqlog`, 15.17. The constant is \(K=2^{-1/2}\prod_{q\equiv 3\pmod 4}(1-q^{-2})^{-1/2}\).
+- Littlewood’s \(O(1/n)\) converse, Landau’s unweighted theorem, and Delange’s extension are quoted.
+
+### Chapter 16 — The values of zeta (`ch11-harder.tex`)
+
+No statement in this chapter is numbered as a theorem. The problems are exercises of Chapter 16. Here \(B(x)=\{x\}-1/2\), and \(M(f)\) is the mean of an arithmetic function when the limit exists. The two `[Journey]` grades are V8-008. The two Problem Book pointers are V8-007.
+
+- Selberg’s inequality — `pb:selberg`. Welch’s bound — `pb:welch`. Gerzon’s bound \(R\le n(n+1)/2\) — `pb:gerzon`.
+- Halász’s inequality and a large-value bound for character sums — `pb:halasz`. Ingham’s separated-frequency bounds — `pb:ingham`. A mean-value bound without a logarithm — `pb:mvt`.
+- The Christoffel kernel for Legendre polynomials — `pb:christoffel`. The Bergman space and \(\operatorname{area}f(\mathbb D)\ge\pi\) — `pb:bergman`. The Fock space — `pb:fock`. The Sobolev kernel on an interval — `pb:sobolev`. Square-summable Dirichlet series — `pb:dirichlet`.
+- Franel’s formula — `pb:franel`. Ramanujan’s expansion of \(\sigma(n)/n\), with mean \(\tfrac52\zeta(3)\) — `pb:ramanujan`. The weighted zeta mean \(\log(2\pi)-\gamma\) — `pb:zetamellin`. One direction of Nyman–Beurling — `pb:nyman`.
+- Bohr’s closed value set — `pb:bohrvalues`. Relatively dense returns — `pb:almostperiodic`. Van de Lune’s threshold — `pb:vandelune`. The long decimal is marked as a reported approximation.
+- Khinchin recurrence — `pb:khinchinrec`. Arbitrarily slow ergodic averages — `pb:norate`. Atoms and Fourier energy — `pb:wiener`. Gebelein’s inequality — `pb:gebelein`.
+- Four planar lines — `ex:v8c16a`. A constrained Fock minimiser — `ex:v8c16b`. An atom mixed with Cantor measure — `ex:v8c16c`. The Gaussian conditional operator — `ex:v8c16d`.
+
+### Appendix A — Duality (`linear-ch01-duality.tex`)
+
+- Steinitz exchange — `linear:lem:steinitz`, A.1. Dimension — `linear:thm:dim`, A.2. Grassmann’s formula is proved in the text after the theorem.
+- The quotient — `linear:def:quotient`, A.3. The quotient theorems and rank–nullity — `linear:thm:quotient`, A.4. Three examples — `linear:ex:quotients`, A.5.
+- The dual space — `linear:def:dual`, A.6. The dual basis — `linear:prop:dualbasis`, A.7. The double dual — `linear:thm:bidual`, A.8. Lagrange interpolation — `linear:ex:lagrange`, A.9. The trace pairing — `linear:prop:trace`, A.10.
+- The annihilator \(S^\circ\) and the transpose — definition at line 149, unlabelled, A.11. Annihilators — `linear:thm:annihilator`, A.12. The transpose — `linear:thm:transpose`, A.13. The Fredholm alternative — `linear:cor:fredholm`, A.14.
+- Lights Out — `linear:ex:lightsout`, A.15. Oddtown — `linear:thm:oddtown`, A.16. The triangular criterion — `linear:prop:triangular`, A.17.
+- A hyperplane in \(M_n\), \(n\ge 2\), contains an invertible matrix — `linear:thm:hyperplane`, A.18. Unisolvent points — `linear:prop:unisolvent`, A.19.
+
+### Appendix B — Determinants (`linear-ch02-volume.tex`)
+
+- The shoelace formula — `linear:ex:shoelace`, B.1. Exterior powers — `linear:thm:exterior`, B.2. The compound matrix — `linear:def:compound`, B.3, and `linear:prop:compound`, B.4.
+- Cauchy–Binet — `linear:thm:cauchybinet`, B.5. The sum of squared minors — `linear:cor:pythagoras`, B.6.
+- Jacobi’s complementary minors — `linear:thm:jacobi`, B.7. The adjugate identity — `linear:cor:adjugate`, B.8. Desnanot–Jacobi — `linear:thm:desnanot`, B.9. Dodgson condensation — `linear:cor:dodgson`, B.10.
+- Lindström–Gessel–Viennot — `linear:thm:lgv`, B.11. The planar non-intersection lemma — `linear:lem:planar`, B.12. A binomial determinant equal to \(1\) — `linear:ex:binomialdet`, B.13.
+- Lozenge tilings of a hexagon — `linear:thm:lozenge`, B.14. MacMahon’s product is quoted. The alternating-sign enumeration is quoted.
+
+### Appendix C — Eigenvalues (`linear-ch03-eigen.tex`)
+
+- Eigenvectors for distinct eigenvalues are independent — `linear:prop:indep`, C.1. Triangularisation, and Schur’s orthonormal form — `linear:thm:schur`, C.2.
+- Cayley–Hamilton over a commutative ring — `linear:thm:cayleyhamilton`, C.3. The minimal polynomial is defined in the text after the theorem.
+- The kernel lemma — `linear:lem:kernels`, C.4. Generalised eigenspaces — `linear:thm:geneigen`, C.5. Diagonalisability — `linear:cor:diag`, C.6. The Dunford decomposition — `linear:thm:dunford`, C.7.
+- Kernel increments of a nilpotent — `linear:lem:decreasing`, C.8. The Jordan form of a nilpotent — `linear:thm:jordannil`, C.9. The Jordan normal form — `linear:cor:jordan`, C.10. A matrix and its transpose are similar over \(\C\) — `linear:cor:transpose`, C.11.
+- Commuting families — `linear:thm:commuting`, C.12. The matrix exponential — `linear:prop:exp`, C.13. The square-root solution is V8-009.
+- Rational canonical form is Volume 3, Chapter 7.
+
+### Appendix D — Inner products (`linear-ch04-inner.tex`)
+
+- An inner product, linear in the first argument — `linear:def:inner`, D.1. Cauchy–Schwarz — `linear:thm:cs`, D.2. The triangle inequality — `linear:cor:triangle`, D.3.
+- Orthonormal families — `linear:prop:orthfamily`, D.4. Gram–Schmidt — `linear:thm:gramschmidt`, D.5. The \(QR\) factorisation — `linear:cor:qr`, D.6.
+- Orthogonal projection onto a finite-dimensional subspace — `linear:thm:projection`, D.7. Least squares — `linear:thm:lsq`, D.8. The line through three points — `linear:exa:line`, D.9. Gauss–Markov — `linear:thm:gaussmarkov`, D.10.
+- Gram determinants — `linear:thm:gram`, D.11. Cauchy’s determinant — `linear:thm:cauchydet`, D.12. The Hilbert determinant and the distance from \(t^n\) — `linear:cor:hilbert`, D.13.
+- Legendre polynomials by Rodrigues’s formula — `linear:exa:legendre`, D.14. The three-term recurrence — `linear:thm:recurrence`, D.15. The zeros — `linear:thm:zeros`, D.16. The Jacobi matrix — `linear:prop:jacobi`, D.17. Gauss quadrature — `linear:thm:gaussquad`, D.18.
+- Finite-dimensional Riesz representation — `linear:thm:riesz`, D.19. The adjoint — `linear:prop:adjoint`, D.20. Unitary operators — `linear:thm:unitary`, D.21. A distance-preserving map of \(\R^n\) that fixes the origin is linear — `linear:thm:isometry`, D.22. Cholesky — `linear:cor:cholesky`, D.23.
+- This finite-dimensional adjoint is the same construction as Chapter 8 once the dual has been identified with the space. Jordan–von Neumann’s criterion over \(\R\) is Exercise `linear:ex:jvn`. Müntz’s theorem in one direction is Exercise `linear:ex:muntz`. The converse is quoted.
+
+### Appendix E — Matrix inequalities (`linear-ch11-inequalities.tex`)
+
+- The Loewner order — `linear:prop:loewner`, E.1. Löwner–Heinz for the square root — `linear:thm:sqrtmonotone`, E.2. Loewner’s characterisation of operator-monotone functions is quoted.
+- Schur complements — `linear:prop:schurcomplement`, E.3. Sylvester’s determinant identity — `linear:prop:detIAB`, E.4.
+- Hadamard’s inequality — `linear:thm:hadamard`, E.5. The volume form — `linear:cor:hadamardvol`, E.6. Fischer — `linear:thm:fischer`, E.7. Minkowski’s determinant inequality — `linear:thm:minkowskidet`, E.8. Concavity of \(\log\det\) — `linear:thm:logdet`, E.9.
+- The Hadamard product — `linear:def:hadamardproduct`, E.10. Schur’s product theorem — `linear:thm:schurproduct`, E.11. Entrywise exponentials and the Gaussian kernel — `linear:cor:entrywiseexp`, E.12.
+- Gershgorin — `linear:thm:gershgorin`, E.13. Strict diagonal dominance — `linear:cor:diagdom`, E.14. The separated-union form of Gershgorin is quoted.
+- Hilbert’s inequality, with constant \(\pi\) — `linear:thm:hilbertineq`, E.15. De Bruijn–Wilf’s asymptotic is quoted. The 2026 Hadamard-matrix report is a citation, not a proof.
+
+### Appendix F — Linear dynamics (`linear-ch12-dynamics.tex`)
+
+- A norm adapted to the spectral radius — `linear:lem:adaptednorm`, F.1. Powers tend to zero exactly when \(\rho(A)<1\) — `linear:thm:powers`, F.2. Gelfand’s formula — `linear:thm:gelfand`, F.3.
+- Exponential stability — `linear:thm:stability`, F.4. Here stable means Hurwitz: every eigenvalue has negative real part. Lyapunov’s equation — `linear:thm:lyapunov`, F.5.
+- Chebyshev acceleration — `linear:thm:chebyshevaccel`, F.6. The heavy ball on quadratics — `linear:thm:heavyball`, F.7. Nesterov’s theorem beyond quadratics is quoted.
+- Kalman’s rank condition — `linear:thm:kalman`, F.8. The double integrator — `linear:exa:doubleintegrator`, F.9. Maxwell’s cubic — `linear:thm:maxwell`, F.10. The general Routh–Hurwitz criterion is quoted.
+
+### Notation clashes with Volumes 1–7
+
+- \(\lambda\) is an eigenvalue throughout the spectral chapters and the appendices. In Volume 7, \(\lambda\) and \(\lambda_d\) are Lebesgue measure. The two meet in Chapters 11 and 13, where Lebesgue measure keeps the Volume 7 name and eigenvalues keep \(\lambda\).
+- \(\sigma\) is a singular value in Chapter 4, a Cesàro mean in Chapter 15, and the real part of a complex variable in Chapters 14–16. Volume 6 uses \(\sigma_k(n)\) for a sum of powers of divisors and \(\sigma\) for the real part of \(s\). The real-part use agrees with Volume 6.
+- \(H\) is a Hilbert space in Chapters 1–2 and 16. \(H_n\) is the Hilbert matrix in Appendices D and E. \(H^s\) is a Sobolev space in Chapter 11. Volume 7 uses \(H\) for a distribution function only in passing.
+- \(P\) is an orthogonal projection in Chapter 2 and Appendix D, a Legendre polynomial in Chapters 2 and 16 and Appendix D, and a Chebyshev polynomial in Appendix F. The Legendre \(P_n\) agrees with Appendix D’s example and with Chapter 2’s proposition.
+- \(\chi\) is a Dirichlet character in Chapters 12, 15 and 16, and \(\chi_A\) is a characteristic polynomial in Appendix C. Volume 6 uses \(\chi\) for characters.
+- \(\varphi\) remains Euler’s totient in Chapters 12 and 15. Elsewhere it is a test function or a linear form. Volume 7, Problem `pb:etwo`, uses \(\varphi\) for the golden ratio. That problem is not cited here.
+- The annihilator of a subgroup is \(H^\perp\) in Chapter 12. The orthogonal complement is \(W^\perp\) in Chapter 2 and Appendix D. The annihilator of a subspace of a dual pair is \(S^\circ\) in Appendix A. The three are different objects, and each chapter says which.
+- \(B(x)=\{x\}-1/2\) in Chapter 16. The same letter is a matrix in the appendices. The sawtooth is named at the start of Chapter 16.
+- \(K\) is a reproducing kernel in Chapter 2, a compact set, and the Landau–Ramanujan constant in Chapter 15. The constant is \(K=0.76422365\ldots\), written out where it is used.
+- \(\rho(A)\) is the spectral radius in Chapter 8 and Appendix F. In Chapter 15, \(\rho\) is the index of regular variation. In Chapter 16, \(\rho\) is a correlation.
+- \(\log\) is the natural logarithm. A ratio of logarithms does not depend on the base. Volume 7’s \(\ln\) is the same function.
+- \(e(t)=e^{2\pi it}\) and \(\lVert t\rVert\) are named again at the start of Chapter 16. They agree with Volumes 5 and 6.
