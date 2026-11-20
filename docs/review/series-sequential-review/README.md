@@ -26,7 +26,7 @@ The concept ledger is [CONCEPT-LEDGER.md](CONCEPT-LEDGER.md). Volume 1 is the fi
 
 ## Handoff (paused 2026-11-20, 06:40 Paris)
 
-The chain stopped after Volume 13 because the weekly usage limit of the account running it reached 86.8%. Volumes 1–13 are complete: each has its log, its ledger section and its status line above. Branch head before this note: `1d9f461d`.
+The chain stopped after Volume 13 at 86.8% of the weekly usage limit; Volume 14 was then run at the author's request (usage 89.4% after it). Volumes 1–14 are complete: each has its log, its ledger section and its status line above. Branch head before this update: `efcd5a9c`.
 
 To continue:
 
