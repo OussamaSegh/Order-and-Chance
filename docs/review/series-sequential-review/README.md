@@ -11,7 +11,7 @@ Reading order is each volume’s `main.tex`. Scores use the scale in the volume 
 | 3 Symmetry | 7/10. 0 critical, 4 major, 32 minor. See [volume3.md](volume3.md). |
 | 4 Chance | 6/10. 1 critical, 10 major, 13 minor. See [volume4.md](volume4.md). |
 | 5 Calculation | 7/10. 0 critical, 5 major, 18 minor. See [volume5.md](volume5.md). |
-| 6 Crossroads | not started |
+| 6 Crossroads | 8/10. 0 critical, 0 major, 10 minor. See [volume6.md](volume6.md). |
 | 7 Spaces | not started |
 | 8 Analysis | not started |
 | 9 Shapes | not started |

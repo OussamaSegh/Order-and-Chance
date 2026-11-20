@@ -1060,3 +1060,143 @@ Book order: preface, then Chapters 1–13. File paths are under `volume5-calcula
 - \(M(a,b)\) is the arithmetic–geometric mean. It is not a mean of a random variable. \(M_n\) in the ones-in-a-partition exercise is an average count.
 - \(s(h,k)\) is a Dedekind sum. The formula in Chapter 9 and the formula in Rademacher’s series agree when \(\gcd(h,k)=1\).
 - \(\gamma\) remains Euler’s constant from Volume 1. The lemniscate constant is \(\varpi\), not \(\gamma\).
+
+## Volume 6
+
+Book order: preface, then Chapters 1–12. File paths are under `volume6-crossroads/`. \(\log\) is the natural logarithm. \(\mathrm{Li}(x)=\int_2^x dt/\log t\). The shared counter restarts each chapter.
+
+### Preface (`chapters/preface.tex`)
+
+- Admitted, and not used by a theorem: the functional equation of a primitive Dirichlet \(L\)-function (Volume 13, Chapter 12), in one remark of Chapter 7; Tonelli’s theorem for improper integrals (Volume 7), in the solution of `pb:beukersthree`.
+
+### Chapter 1 — Mertens (`chapters/ch01-mertens.tex`)
+
+- \(\Lambda(n)=\log p\) if \(n=p^k\), and \(\Lambda*\mathbf 1=\log\).
+- \(\theta(x)=\sum_{p\le x}\log p\) and \(\psi(x)=\sum_{n\le x}\Lambda(n)\). Volume 2 writes the first sum as \(\vartheta\). See V6-002.
+- Abel summation — `lem:abelint`, 1.1.
+- Chebyshev’s bounds, including \(\theta(x)<x\log 4\) — `prop:chebyshev`, 1.2.
+- \(\prod_{p\le x}(1-1/p)\sim e^{-\gamma}/\log x\) — `thm:mertens1`, 1.3. The ratio of \(\theta\) — `cor:chebratio`, 1.4.
+- \(\sum_{p\le x}1/p=\log\log x+M+O(1/\log x)\), with the Meissel–Mertens constant \(M\) — `thm:mertens2`, 1.5.
+- \(\sum_{p\le x}\log p/(p-1)=\log x-\gamma+o(1)\), and \(M+H=\gamma\) — `thm:mertens3`, 1.6.
+
+### Chapter 2 — Averages (`chapters/ch02-averages.tex`)
+
+- Wintner’s mean value: if \(f=\mathbf 1*h\) and \(\sum |h(d)|/d<\infty\), then the mean is \(\sum h(d)/d\) — `thm:wintner`, 2.2.
+- Hyperbola method — `lem:hyperbola`, 2.8. \(\sum_{n\le x}\tau(n)=x\log x+(2\gamma-1)x+O(\sqrt x)\).
+- \(\sum_{n\le x}\varphi(n)=(3/\pi^2)x^2+O(x\log x)\), and the squarefree count \((6/\pi^2)x+O(\sqrt x)\) — `thm:errorterms`, 2.6.
+- The constant term of \(P_3\) is quoted as \(3\gamma^2-3\gamma-3\gamma_1+1\), with Stieltjes \(\gamma_1=-0.0728\). The gloss “the coefficient after \(\gamma\)” is V6-004. The display is not a theorem.
+- \(\sum_{n\le x}2^{\omega(n)}=(6/\pi^2)x\log x+O(x)\). The secondary constant \(0.7869\) is named inside that error. See V6-006.
+
+### Chapter 3 — Characters (`chapters/ch03-characters.tex`)
+
+- Dirichlet characters modulo \(q\), and orthogonality — `prop:orth`, 3.1. The same facts are Volume 2, Theorem 11.5, and Volume 3, Proposition 11.15.
+- Conductor and primitive characters — `prop:conductor`.
+- \(|\tau(\chi)|=\sqrt q\) for primitive \(\chi\) — `thm:gauss`.
+- \(L(s,\chi)=\sum\chi(n)n^{-s}\) for \(\operatorname{Re}s>0\) when \(\chi\ne\chi_0\), and the Euler product for \(\operatorname{Re}s>1\).
+- \(L(1,\chi)\ne 0\) — `thm:lnonzero`, 3.8. Section `sec:siegel` is 3.5 in the index.
+- Dirichlet’s formula for \(L(1,\chi)\) — `thm:l1formula`, 3.10. In particular \(L(1,\chi_{-4})=\pi/4\) and \(L(1,\chi_{-3})=\pi/(3\sqrt 3)\).
+- The class-number formula \(L(1,\chi)=\pi h(-p)/\sqrt p\) is quoted, and proved in Volume 13, Chapter 11.
+- The caption limit \(L(\sigma,\chi_5)\to 0\) as \(\sigma\to 0\) is V6-007.
+
+### Chapter 4 — Dirichlet’s theorem (`chapters/ch04-dirichlet.tex`)
+
+- Infinitely many primes \(p\equiv a\pmod q\) when \(\gcd(a,q)=1\) — `thm:dirichlet`, 4.1. The proof uses \(L(1,\chi)\ne 0\).
+- \(\sum_{p\le x,\,p\equiv a\pmod q}1/p=(1/\varphi(q))\log\log x+C(q,a)+O(1/\log x)\) — the progression form of Mertens.
+
+### Chapter 5 — The prime number theorem (`chapters/ch05-pnt.tex`)
+
+- The weight \(3+4\cos\theta+\cos 2\theta=2(1+\cos\theta)^2\), and \(L(1+it,\chi)\ne 0\) — `thm:line`, 5.2.
+- Newman’s theorem — `thm:newman`, 5.3. The monotone lemma — `lem:monotone`, 5.4.
+- \(\psi(x)\sim x\), and \(\pi(x)\sim\mathrm{Li}(x)\sim x/\log x\) — `thm:pnt`, 5.5. The comparison of \(\mathrm{Li}\) is Exercise `ex:li`, 5.1.
+- \(\sum_{n\le x}\mu(n)=o(x)\) — `thm:mobiussum`, 5.7.
+- The prime number theorem in arithmetic progressions — `thm:pntap`, 5.8.
+- \(p_n\sim n\log n\) — Exercise `ex:nthprime`.
+- The Vinogradov–Korobov shape is quoted, not proved.
+
+### Chapter 6 — Zeros (`chapters/ch06-zeros.tex`)
+
+- Complex Stirling — `thm:stirlingc`, 6.1. Hardy’s phase is \(\alpha(T)\), and the series keeps \(\theta\) for Chebyshev.
+- Jensen’s formula — `thm:jensen`, 6.3. Borel–Carathéodory — `lem:borel`, 6.5.
+- Hadamard’s product for \(\xi\) — `thm:hadamard`, 6.7.
+- \(N(T)=\alpha(T)/\pi+1+S(T)\) — `thm:rvm`, 6.9.
+- The completed \(\xi\) of Volume 5, with \(\xi(s)=\xi(1-s)\) — `prop:xi`.
+- Zero-free region \(\sigma\ge 1-1/(c\log(|t|+2))\) — `thm:zerofree`, 6.12. The explicit factor in the proof is \(1/(14A'\log|t|)\) for \(|t|\ge 2\).
+- Proportions of zeros on the critical line (Levinson, Conrey, Pratt–Robles–Zaharescu–Zeindler) are quotations.
+
+### Chapter 7 — The explicit formula (`chapters/ch07-explicit.tex`)
+
+- Perron — `lem:perron`, 7.1. Truncated Perron — `prop:truncperron`, 7.2. Good heights — `lem:goodT`, 7.3.
+- The explicit formula for \(\psi_0\) — `thm:explicit`, 7.5. The exact formula — `cor:exactexplicit`, 7.6.
+- \(\psi(x)=x+O\bigl(x\exp(-c\sqrt{\log x})\bigr)\) — `thm:pnterror`, 7.8, and the same shape for \(\pi(x)-\mathrm{Li}(x)\) — `cor:pnterrorpi`, 7.9.
+- The Riemann hypothesis is equivalent to \(\psi(x)=x+O(\sqrt x\log^2 x)\) — `thm:rhequiv`, 7.10.
+- \(\zeta'/\zeta(0)=\log(2\pi)\). The value of \(B\) is taken from a later exercise. See V6-008.
+- The bias identity for \(\theta(x;4,3)-\theta(x;4,1)\). The functional equation of \(L(s,\chi_{-4})\) is admitted in the remark and is not used by a theorem.
+
+### Chapter 8 — Sieves (`chapters/ch08-sieves.tex`)
+
+- Legendre’s sieve — `prop:legendre`, 8.1.
+- Selberg’s sieve — `thm:selberg`, 8.2, with \(|\lambda_d|\le 1\).
+- Brun–Titchmarsh — `thm:bt`, 8.4. The short-interval form is Exercise `ex:btap`.
+- Brun’s theorem on twin primes — `thm:twins`, 8.5, and the convergent sum — `cor:brun`, 8.6.
+- The large sieve — `thm:largesieve`, 8.8. The arithmetic large sieve — `thm:arithls`, 8.10.
+- The twin-prime constant \(C_2=\prod_{p>2}(1-1/(p-1)^2)=0.66016\ldots\).
+- Buchstab’s function for \(u>3\), and Maier’s theorem, are quoted and proved in Volume 15.
+
+### Chapter 9 — Erdős–Kac (`chapters/ch09-erdoskac.tex`)
+
+- Turán–Kubilius — `thm:tk`, 9.1.
+- The normal order of \(\omega(n)\) and of \(\Omega(n)\) — `thm:hr`, 9.2.
+- Erdős–Kac: \((\omega(n)-\log\log n)/\sqrt{\log\log n}\) tends in law to \(\mathcal N(0,1)\) — `thm:erdoskac`, 9.7.
+- The Gaussian characteristic function and the inversion formula are Volume 4, Proposition 6.7 and Theorem 6.8(b).
+
+### Chapter 10 — Random primes (`chapters/ch10-random.tex`)
+
+- Cramér’s model: independent Bernoulli variables of mean \(1/\log n\) for \(n\ge 3\) — `def:cramer`, 10.1.
+- The model satisfies \(\pi_{\mathcal C}(x)\sim\mathrm{Li}(x)\) almost surely — `thm:cramerpnt`, 10.2.
+- \(\limsup(q_{i+1}-q_i)/\log^2 q_i=1\) almost surely — `thm:cramergaps`, 10.4.
+- The singular series \(\mathfrak S(H)\). It is positive exactly for admissible \(H\) — `prop:ssconv`, 10.5.
+- A model that knows the small primes — `prop:smallprimes`, 10.6.
+- Gallagher: \(\sum_{d\le h}\mathfrak S(\{0,d\})=h+O(\sqrt h)\) — `thm:gallagher`, 10.7.
+- Maier’s theorem is quoted and proved in Volume 15, Chapter 2. Hoeffding is Volume 4, Theorem 4.2. Both halves of Borel–Cantelli are Theorem 4.4.
+
+### Chapter 11 — Exponential sums (`chapters/ch11-sums.tex`)
+
+- \(\bigl|\sum_{n=M+1}^{M+N}e(\beta n)\bigr|\le\min\bigl(N,1/(2\|\beta\|)\bigr)\) — `lem:geom`, 11.1. Here \(e(x)=e^{2\pi ix}\) and \(\|x\|\) is the distance to \(\Z\).
+- Van der Corput’s inequality — `lem:vdc`, 11.2. The difference theorem — `thm:vdcdiff`, 11.3.
+- Weyl: a polynomial with one irrational coefficient besides the constant term is equidistributed modulo \(1\) — `thm:weylpoly`, 11.4. Squares — `cor:nsquared`, 11.5.
+- Weyl’s inequality for squares — `thm:weylineq`, 11.7, from `lem:summin`, 11.6.
+- Kusmin–Landau — `lem:kl`, 11.8. The second-derivative test — `thm:secondderiv`, 11.9.
+- \(n^c\) is equidistributed modulo \(1\) for non-integral \(c\in(0,2)\) — `thm:nc`, 11.10. The case \(c>2\) is Exercise `ex:nc23`.
+- Pólya–Vinogradov: a primitive character sum is at most \(\sqrt q\,(1+\log q)\) — `thm:pv`, 11.11.
+- The least quadratic non-residue is \(O(p^{1/(2\sqrt e)+\varepsilon})\) — `thm:vinogradov`, 11.12.
+- Weyl’s criterion is Volume 5, Theorem 6.13. The bound \(|\alpha-p/q|<1/q^2\) for convergents is Volume 2, Theorem 9.2.
+
+### Chapter 12 — Modular forms (`chapters/ch12-modular.tex`)
+
+- \(\mathrm{SL}_2(\Z)\) acts on the upper half-plane by Möbius transformations. \(T\tau=\tau+1\) and \(S\tau=-1/\tau\), and they generate the group — `prop:generators`, 12.1.
+- The fundamental domain \(F=\{|\operatorname{Re}\tau|\le 1/2,\,|\tau|\ge 1\}\) meets every orbit, and meets an orbit once in the interior — `thm:fundamental`, 12.2.
+- A modular form of weight \(k\), the spaces \(M_k\) and \(S_k\), and the nome \(q=e^{2\pi i\tau}\) — `def:modform`, 12.3. Then \(M_k=0\) for odd \(k\).
+- The Eisenstein series \(G_k\) for even \(k\ge 4\) — `lem:latticesum`, 12.4, and `prop:eisenstein`, 12.5.
+- \(G_k=2\zeta(k)+\frac{2(2\pi i)^k}{(k-1)!}\sum\sigma_{k-1}(n)q^n\), and \(E_k=G_k/(2\zeta(k))=1-\frac{2k}{B_k}\sum\sigma_{k-1}(n)q^n\) — `thm:eisensteinq`, 12.6. In particular \(E_4=1+240\sum\sigma_3(n)q^n\) and \(E_6=1-504\sum\sigma_5(n)q^n\).
+- \(\eta(-1/\tau)=\sqrt{-i\tau}\,\eta(\tau)\), and \(\Delta=\eta^{24}=q\prod(1-q^n)^{24}=\sum\tau(n)q^n\) is a cusp form of weight \(12\) — `thm:eta`, 12.7. Volume 5, Theorem 12.4, is the first proof. The contour limit is V6-009.
+- \(\dim M_k=\lfloor k/12\rfloor\) or one more, and \(M_2=0\) — `thm:dimension`, 12.9. Thus \(E_4^2=E_8\).
+- \(\sigma_7(n)=\sigma_3(n)+120\sum_{m<n}\sigma_3(m)\sigma_3(n-m)\) — `cor:sigma7`, 12.10.
+- \(1728\Delta=E_4^3-E_6^2\), and \(\tau(n)\equiv\sigma_{11}(n)\pmod{691}\) — `cor:delta`, 12.11.
+- Hecke operators \(T_p\), and \(T_p\) preserves \(M_k\) and \(S_k\) — `lem:hermite`, 12.12, and `thm:hecke`, 12.13.
+- \(\tau(p)\tau(n)=\tau(pn)+p^{11}\tau(n/p)\), so \(\tau\) is multiplicative — `thm:mordell`, 12.14. The values through \(n=12\) match the product.
+- Deligne’s bound \(|\tau(p)|\le 2p^{11/2}\), the Sato–Tate measure \((2/\pi)\sin^2\theta\), and modularity for elliptic curves are quoted, as a preview of Volume 13.
+- Closing problems, proved there and not numbered as theorems of the chapter: Singer’s difference sets; the squarefree-neighbour densities \(\prod(1-2/p^2)\) and \(\prod(1-3/p^2)\); Beukers’s proofs that \(\zeta(2)\) and \(\zeta(3)\) are irrational; \(\int_0^1\{1/x\}\,dx=1-\gamma\); Menon’s identity \(\sum_{\gcd(a,n)=1}\gcd(a-1,n)=\varphi(n)\tau(n)\); Rényi’s law of \(\Omega-\omega\), with \(2^kd_k\to 1/(4C_2)\); the Landau–Ramanujan constant \(K=C/\sqrt\pi=0.7642\ldots\); Ramanujan’s equations for \(D=\frac1{2\pi i}\frac{d}{d\tau}\); Landau’s formula and the Guinand–Weil explicit formula, the second under the shape stated in `pb:hearzeros`; Schur’s evaluation \(G=\sqrt p\) or \(i\sqrt p\); Hecke’s equidistribution of the angles of the Gaussian primes; Romanoff’s theorem. The ordinate assertion in Landau’s formula is V6-010. The exercises graded `[Journey]` are V6-001.
+
+### Notation clashes with Volumes 1–5
+
+- \(\log\) is the natural logarithm, the same function as Volume 1’s \(\ln\) and Volume 2’s \(\ln\).
+- Chebyshev’s function is \(\theta(x)\) from Chapter 1. Volume 2 writes \(\vartheta(x)\). Volume 5 uses \(\vartheta\) for Jacobi’s theta series and \(\alpha\) for Hardy’s phase. Chapter 6 of this volume repeats that choice of \(\alpha\). See V6-002 and V5-019.
+- \(\tau(n)\) in Chapter 12 is Ramanujan’s coefficient. Chapters 1–11 use \(\tau(n)\) for the number of divisors, as in Volume 2. The opening of Chapter 12 says the three uses of the letter are distinct. The same letter is the variable in the upper half-plane.
+- \(q=e^{2\pi i\tau}\) is the nome from Chapter 12. Earlier chapters use \(q\) for a modulus.
+- \(\omega(n)\) is the number of distinct prime factors, as in Volume 2. Buchstab’s function in Chapter 8 is also written \(\omega(u)\). Volume 5 writes \(\omega(t)=(\vartheta(t)-1)/2\) for the tail of Jacobi’s series. The three are not in one argument.
+- \(\sigma_k(n)=\sum_{d\mid n}d^k\). The same letter \(\sigma\) is the real part of \(s=\sigma+it\), as in Volume 5.
+- \(E_k\) is the normalised Eisenstein series. \(E\) is also an expectation in the probabilistic chapters, as in Volume 4. \(M_k\) is the space of modular forms of weight \(k\). \(M\) is the Meissel–Mertens constant from Chapter 1.
+- \(\chi\) is a Dirichlet character, as in Volume 2, Chapter 11, and Volume 3, Proposition 11.15. Volume 3 also uses \(\chi\) for a representation character. The orthogonality cited from Volume 3 is the Dirichlet one.
+- \(\Lambda\) is von Mangoldt’s function. Volume 5’s completed function is \(\xi\), and this volume keeps that letter.
+- \(\varphi(n)\) remains Euler’s totient. In Chapter 12, \(\varphi_p=\arctan(b/a)\) is the angle of a Gaussian prime.
+- The exercise grade `[Journey]` is V6-001. It is the same grade Volume 5 prints in three exercises. See V5-005.
