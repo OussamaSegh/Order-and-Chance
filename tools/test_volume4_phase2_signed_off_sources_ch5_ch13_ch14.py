@@ -21,13 +21,15 @@ SOURCES = {
         # 2026-11-13: V4-03. Squares on the cutoff circles are bounded by
         # their own mesh strips. Labels unchanged. Not an independent sign-off.
         # 2026-11-20: series review V4-002, V4-014, V4-022. Labels unchanged. Not a new sign-off.
-        "72bfd5369d2ba78c0027cacacf425ca67369ff9d",
+        # Second review the same day: the sector formula covers a general angle. Not a new sign-off.
+        "02ebb74806d4be8999ccf60606e93a8952f00cee",
         "prop:densitymean prop:gausstail prop:fubini prop:polar prop:manyuniforms prop:orderpair prop:inverse thm:dct thm:boxmuller",
         "ex:counter ex:densityunique ex:tail ex:cauchy ex:gamma ex:order ex:cantor ex:usquare ex:radius pb:passone pb:stick",
     ),
     "ch05-geometric.tex": (
         # 2026-11-20: series review V4-015. Labels unchanged. Not a new sign-off.
-        "23c0c54da602b13f0e596fb8cc2ff7f43117cd6d",
+        # Second review the same day: the axes of the four quarters have area zero. Not a new sign-off.
+        "e6577273c0a0665bb9cab444e87fdd93392c42f2",
         "thm:bertrand thm:buffon",
         "",
     ),
@@ -36,13 +38,16 @@ SOURCES = {
         # 2026-11-11: pb:hashing appended. Earlier claim labels unchanged.
         # The new statement was checked in this preparation. Not an independent sign-off.
         # 2026-11-20: series review V4-001 and V4-020. Labels unchanged. Not a new sign-off.
-        "354ffd750592730c80b006fa8a55fa62bb0e96b6",
+        # Second review the same day: the plane-tree count is an induction on the given drawing,
+        # and R(k,k)>m does not assume the least integer already exists. Not a new sign-off.
+        "0886a2d07178da9796e5d3aba8b74c0633ecf6db",
         "thm:erdos thm:alter thm:lll prop:second prop:euler prop:crossing",
         "ex:carowei ex:tournament ex:sumfree ex:crossing ex:propertyb ex:localcolour pb:hashing",
     ),
     "ch14-graphs.tex": (
         # 2026-11-20: series review V4-021. Labels unchanged. Not a new sign-off.
-        "3a4cd4c59faf40020f81e1095c6c526a9b788ee0",
+        # Second review the same day: decoding an arbitrary word returns a tree. Not a new sign-off.
+        "da3dbfd2e930955d94e0efef4f27d7c21d1ca122",
         "thm:subcrit thm:triangles",
         "ex:connectivity ex:giant ex:trianglecount ex:susceptibility ex:criticalisolated ex:trianglesecond",
     ),

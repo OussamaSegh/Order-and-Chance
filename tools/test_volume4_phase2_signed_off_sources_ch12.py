@@ -18,7 +18,8 @@ SOURCE = Path(__file__).resolve().parents[1] / "volume4-chance" / "chapters" / "
 # Later the same day: the lower bound uses the unnumbered dyadic lemma. Still not an independent sign-off.
 # Atom sentence names the dyadic strip. Source identity only, not an independent sign-off.
 # 2026-11-20: series review V4-010. Labels unchanged. Not a new sign-off.
-BLOB = "4ca13ca6a82d90ec50caae57e8d72576a4697ae3"
+# Second review the same day: the cross term is the limit of the cutoff products. Not a new sign-off.
+BLOB = "81cae741d270af82a2d096eb60a1bc93be928987"
 PROOFS = """prop:bmgauss lem:levylevel thm:levy prop:scaling lem:squares
 thm:qv thm:dyadicito thm:pwz prop:bmmart prop:restart
 thm:reflection prop:bmsquare""".split()

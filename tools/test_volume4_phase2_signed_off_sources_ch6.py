@@ -19,7 +19,10 @@ SOURCE=Path(__file__).resolve().parents[1]/"volume4-chance"/"chapters"/"ch06-clt
 # Numbered labels unchanged. This pin is identity, not a proof.
 # 2026-11-20: series review V4-003, V4-004, V4-005, V4-006, V4-016, V4-017, V4-024.
 # Numbered labels unchanged. Not a new sign-off.
-SHA="60323eabe1aaee7b4de17e7be70e3834f10b70bd"
+# Second review the same day: continuity points are constructed, the open pieces do not
+# contain 0, and the sample-variance limit does not send n to infinity before M.
+# Not a new sign-off.
+SHA="28486a84b3efe3ea907a2b99411881730743a7f7"
 PROOFS="prop:modes prop:cdf thm:slln4 thm:gc lem:diffint prop:cfexamples thm:cfconv thm:inversion lem:normalsum thm:lindeberg cor:clt thm:local prop:cyclebern thm:gaussvec".split()
 EX="ex:slutsky ex:confidence ex:delta ex:cauchyclt ex:poissonhalf ex:returns ex:thirdmoment ex:cyclesclt".split()
 

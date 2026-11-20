@@ -30,7 +30,8 @@ SPECS = {
    # are unchanged from 6de4e7e1fd5c6369d553e45190e54807c553a743.
    # Reread 2026-11-11 for G(0) in {0,1} and the rational powers (V4-08).
    # 2026-11-20: series review V4-009. Labels unchanged. Not a new sign-off.
-   "sha": "cc4e0f4b5bea36d2e935d1d75b932ab9c31d8517",
+   # Second review the same day: the simplex integral is iterated one coordinate at a time. Not a new sign-off.
+   "sha": "498b6586716ff5d39576a0dcc61d095b0c0c0157",
    "proofs": "prop:memoryless lem:gamma thm:uniform lem:colouring thm:increments thm:thinning thm:superpose prop:residual prop:onesidedgap prop:race thm:lecam thm:mm1 prop:emptiness".split(),
    "ex": "ex:twoexp ex:minexp ex:bus ex:lecamnum ex:mm1mean ex:emptycheck ex:superpose ex:firstarrival".split(),
  },
