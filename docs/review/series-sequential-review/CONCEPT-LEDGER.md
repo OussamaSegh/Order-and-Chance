@@ -1200,3 +1200,159 @@ Book order: preface, then Chapters 1–12. File paths are under `volume6-crossro
 - \(\Lambda\) is von Mangoldt’s function. Volume 5’s completed function is \(\xi\), and this volume keeps that letter.
 - \(\varphi(n)\) remains Euler’s totient. In Chapter 12, \(\varphi_p=\arctan(b/a)\) is the angle of a Gaussian prime.
 - The exercise grade `[Journey]` is V6-001. It is the same grade Volume 5 prints in three exercises. See V5-005.
+
+## Volume 7 — Spaces
+
+File names are under `volume7-spaces/chapters/`. The shared counter numbers theorems, propositions, lemmas, corollaries, definitions, and examples inside each chapter. Exercises use a separate counter and restart each chapter. \(\N\) includes \(0\). The logarithm constructed in Chapter 2 is \(\ln\). In later chapters \(\log\) is that same natural logarithm, except in a ratio of logarithms, where the base cancels.
+
+### Chapter 1 — Sets (`ch01-sets.tex`)
+
+- \(\N\) is the smallest inductive set, and it contains \(0\) — definition 1.1.
+- Peano’s axioms — `thm:peano`, 1.2. Recursion — `thm:recursion`, 1.3.
+- \(\N\) is a semiring — `prop:semiring`, 1.4. Well-order — `prop:wellorder`, 1.5.
+- \(\Z\) from pairs of natural numbers — `prop:integers`, 1.6. \(\Q\) is the field of fractions, by the same pattern as Volume 3, Chapter 6.
+- Ordered field, Archimedean, least upper bound — definition 1.7.
+- \(\R\) is the ring of rational Cauchy sequences modulo null sequences — definition 1.8. The three Cauchy facts — `lem:cauchybasic`, 1.9. Part (c) is an order statement. Its use for \(\Q_p\) is V7-001.
+- \(\R\) is a complete Archimedean ordered field with the least upper bound property — `thm:reals`, 1.10. Any two such fields are isomorphic — `thm:uniqueR`, 1.11. This clears the least-upper-bound debt from Volume 1.
+- Equipotence — definition 1.12. Countable unions of countable sets need countable choice — `prop:countable`, 1.13. The phrase is V7-007.
+- Cantor — `thm:cantor`, 1.14. Schröder–Bernstein — `thm:sb`, 1.15. \(\lvert\R\rvert=\lvert\mathcal P(\N)\rvert\) — `thm:continuum`, 1.16. The continuum hypothesis is independent of ZFC, quoted.
+- The axiom of choice — definition 1.17. Partial order, chain, maximal element, well-order — definition 1.18.
+- Zorn’s lemma — `thm:zorn`, 1.19. Well-ordering — `thm:wellordering`, 1.20. Every vector space has a basis — `thm:basis`, 1.21. A Hamel basis of \(\R\) over \(\Q\).
+- Algebraic closure of a field is asserted and not proved. See V7-003. Krull’s theorem is Exercise `ex:krull`.
+- The Calkin–Wilf tree and Newman’s successor are Exercise `ex:calkinwilf`. A positive square root in a complete ordered field is Exercise `ex:v7c01c`. Nested intervals are Exercise `ex:v7c01d`.
+
+### Chapter 2 — Metric spaces (`ch02-metric.tex`)
+
+- Metric and norm — definition 2.1. Open, closed, closure, dense — definition 2.3. Uniform continuity, Lipschitz, contraction, isometry — definition 2.5. The square-root example is V7-005.
+- Closure and continuity — `prop:closure`, 2.4. Cauchy sequence, complete, Banach space — definition 2.6. Complete subspaces and \(C_b(X)\) — `prop:complete`, 2.7.
+- An isometry of a dense subset into a complete space extends — `lem:extension`, 2.8. Completion, unique up to isometry — `thm:completion`, 2.9.
+- \(\Q_p\) is the completion of \(\Q\) for \(\lvert x\rvert_p=p^{-v_p(x)}\), and \(\Z_p=\{x:\lvert x\rvert_p\le 1\}\) — `thm:Qp`, 2.10. The field step is V7-001. \(v_p\) is Volume 2, Chapter 1. Ostrowski’s theorem is quoted and unused.
+- \(\Z_p\) is sequentially compact, and \(\Q_p\) is locally compact — `cor:Zpcompact`, 2.11. The names compact and locally compact are given in Chapter 4. The word connected, used of \([-1,1]\), is V7-006. Volume 8, Chapter 8, uses this corollary for Haar measure.
+- Banach’s fixed point theorem — `thm:banach`, 2.12. The cosine example, with \(\sin 1<0.85\), is Example 2.13. That bound is V7-004.
+- Cauchy product of absolutely convergent series — `lem:cauchyproduct`, 2.14.
+- \(\exp\), \(\cos\), \(\sin\), \(e\), and \(\pi\) as twice the first positive zero of \(\cos\) — definition 2.15 and `thm:exp`, 2.16. This clears the debt from Volume 1. \(\ln\) is the inverse of \(\exp\) on \(\R\). A monotone intermediate-value lemma — `lem:monoivt`, 2.17.
+- Hausdorff distance on the nonempty closed bounded sets — definition 2.18. That space is complete when \(X\) is — `thm:hausdorffcomplete`, 2.19. Hutchinson’s attractor — `thm:hutchinson`, 2.20.
+- The middle-thirds Cantor set \(C\) is the attractor of \(x\mapsto x/3\) and \(x\mapsto(x+2)/3\). The devil’s staircase is the fixed point in Exercise `ex:devil`. Exercise `ex:Z2cantor` identifies \(\Z_2\) with \(C\).
+
+### Chapter 3 — Topology (`ch03-topology.tex`)
+
+- Topology, closed, neighbourhood, interior, closure, continuous, homeomorphism — definition 3.1. A basis generates a topology — `prop:basis`, 3.3.
+- Product topology — definition 3.4 and `prop:product`, 3.5. Quotient topology — definition 3.6. Universal property — `prop:quotient`, 3.7. \(\R/\Z\) is homeomorphic to the circle.
+- Connected — definition 3.9. The connected subsets of \(\R\) are the intervals — `thm:intervals`, 3.10. Images, closures, and products — `prop:connected`, 3.11. Intermediate value theorem — `cor:ivt`, 3.12.
+- Path-connected — definition 3.13. An open connected subset of a normed space is path-connected; the topologist’s sine curve is connected and not path-connected — `prop:openconnected`, 3.14. The sphere sentence is V7-002. The Cantor-set sentence is V7-009.
+- Hausdorff and normal — definition 3.15. Urysohn’s function in a metric space — `prop:urysohn`, 3.16. Urysohn’s lemma for a general normal space is quoted from Munkres and unused.
+- First countable, second countable, separable — definition 3.17. In a metric space the three agree with sequential continuity — `prop:sequences`, 3.18. Tietze for metric spaces — `prop:tietze`, 3.19.
+- The Furstenberg topology on \(\Z\) is Exercise `ex:furstenberg`, the same topology as Volume 2, Exercise 2.8.
+
+### Chapter 4 — Compactness (`ch04-compact.tex`)
+
+- Compact — definition 4.1. Closed subsets, continuous images, and the finite intersection property — `prop:compactbasic`, 4.2. A finite product of compact spaces is compact — `prop:finiteproduct`, 4.3.
+- Heine–Borel — `thm:heineborel`, 4.4. Extreme values — `cor:extreme`, 4.5. Norms on a finite-dimensional space are equivalent — `cor:norms`, 4.6.
+- Sequentially compact and totally bounded — definition 4.7. In a metric space the three compactness notions agree — `thm:compactmetric`, 4.8. Heine — `thm:heine`, 4.9.
+- Fermat, Rolle, the mean value theorem, and the Lipschitz form — `thm:mvt`, 4.10. This is the mean value theorem of Volume 1, proved again.
+- Tychonoff — `thm:tychonoff`, 4.11. Kelley’s converse, that Tychonoff implies the axiom of choice, is quoted.
+- Cantor space \(\{0,1\}^\N\) with \(\N=\{1,2,\ldots\}\) in this definition only, and the Cantor set — definition 4.12. The homeomorphism and the stage sets \(C_n\) — `prop:cantor`, 4.13.
+- Equicontinuous and pointwise bounded — definition 4.14. Arzelà–Ascoli — `thm:ascoli`, 4.15. A closed bounded equi-Lipschitz set is compact — `cor:lipcompact`, 4.16.
+- A subalgebra that separates points — definition 4.17. The absolute-value approximation — `lem:abs`, 4.18. Stone–Weierstrass — `thm:sw`, 4.19. Polynomials are dense in \(C([a,b])\) — `cor:weierstrass`, 4.20.
+
+### Chapter 5 — Baire (`ch05-baire.tex`)
+
+- Nowhere dense, meagre, comeagre, \(G_\delta\), \(F_\sigma\) — definition 5.1. Baire’s theorem — `thm:baire`, 5.2. A dense \(G_\delta\) is comeagre, and \(\Q\) is not a \(G_\delta\) — `cor:bairecor`, 5.3.
+- Generic and typical — definition 5.4. The slope squeeze — `lem:squeeze`, 5.5. The Takagi function is continuous and nowhere differentiable — `thm:takagi`, 5.6. A comeagre set of continuous functions is nowhere differentiable — `thm:banachmaz`, 5.7.
+- Oscillation, and the continuity points of a function are a \(G_\delta\) — `prop:continuitypoints`, 5.8. A Baire class one function has a comeagre set of continuity points — `thm:baireclassone`, 5.9. A derivative is Baire class one — `cor:derivative`, 5.10.
+- Null, before measure exists — definition 5.11. Liouville number — definition 5.12. The Liouville numbers are a comeagre null set — `thm:liouville`, 5.13. Khinchin’s scale is quoted here and proved in Chapter 13. It is not a premise.
+- The set of binary sequences with limsup of the proportion of ones equal to \(1\) is comeagre — `prop:nonnormal`, 5.14. The greedy expansion is `prop:cantor`. Borel normality is a preview of Chapter 7.
+- The Weierstrass series and Hardy’s condition \(ab\ge 1\) are quoted and unused.
+
+### Chapter 6 — Jordan (`jordan.tex`, `jordan-polygon.tex`)
+
+- A polygonal Jordan curve separates the plane into two components — `thm:jordanpoly`, 6.1. Parity of crossings — `lem:parity`, 6.2. The two chains of sectors — `lem:sides`, 6.3.
+- A continuous argument along a path that misses a point — `lem:lift`, 6.4. Winding number \(n(\gamma,a)\) — definition 6.5. It is an integer, constant on components, and \(1\) for the circle — `prop:windingprops`, 6.6.
+- The disc does not retract to the circle, and Brouwer’s fixed point theorem — `thm:brouwer`, 6.7. Crossing paths — `lem:crossing`, 6.8. An arc does not separate the plane — `lem:arc`, 6.9. The Jordan curve theorem — `thm:jordan`, 6.10. This clears the debt from Volume 5, Chapter 9.
+- Osgood’s curve of positive area, the Lakes of Wada, Schoenflies, and Carathéodory’s boundary theorem are quoted and unused.
+
+### Chapter 7 — Measures (`ch06-measures.tex`)
+
+- \(\sigma\)-algebra, measure, and the Borel \(\sigma\)-algebra — definition 7.1. Continuity of measure and the Borel–Cantelli lemma — `prop:measureprops`, 7.2.
+- \(\pi\)-system and \(\lambda\)-system — definition 7.3. Dynkin — `thm:dynkin6`, 7.4. Uniqueness of finite measures that agree on a \(\pi\)-system — `thm:uniq6`, 7.5.
+- Outer measure and Carathéodory’s measurable sets — definition 7.6. The measurable sets form a \(\sigma\)-algebra and the outer measure is a measure there — `thm:caratheodory`, 7.7.
+- Semiring and premeasure — definition 7.8. A semiring generates the product sets — `lem:semiring`, 7.9. Extension — `thm:extension`, 7.10. Lebesgue measure on \(\R^d\) — `thm:lebesgue`, 7.11. This clears the debt from Volume 5. Inner and outer regularity — `prop:regularity`, 7.12.
+- Lebesgue–Stieltjes measure of a non-decreasing right-continuous function — `thm:stieltjes`, 7.13. Quantile — `prop:quantile`, 7.14.
+- Vitali’s non-measurable set — `thm:vitali6`, 7.15. Solovay’s model and the Banach–Tarski paradox are quoted and unused.
+- Binary digits of a uniform random variable — `lem:digits6`, 7.16. An independent sequence with prescribed laws on \(\R\) — `thm:independent`, 7.17. The fourth-moment bound — `lem:fourth`, 7.18. Almost every number is absolutely normal — `thm:borelnormal`, 7.19.
+
+### Chapter 8 — The integral (`ch07-integral.tex`)
+
+- Measurable function and simple function — definition 8.1. Sums, products, and limits of measurable functions — `prop:measurablefns`, 8.2.
+- The integral of a nonnegative measurable function — definition 8.3. Monotone convergence — `thm:mct6`, 8.4. Linearity — `cor:linearity6`, 8.5. Markov’s inequality — `prop:markov`, 8.6. Fatou — `thm:fatou6`, 8.7.
+- Integrable, and \(\mathcal L^1(\mu)\) — definition 8.8. Dominated convergence — `thm:dct6`, 8.9.
+- The Riemann integral of a continuous function on \([a,b]\) equals the Lebesgue integral — `thm:riemanncont`, 8.10. This clears the debt from Volume 1. Lebesgue’s criterion — `thm:lebesguecriterion`, 8.11.
+- Convergence in measure and in \(L^1\) — definition 8.12. The modes of convergence — `prop:modes`, 8.13. Uniform integrability — definition 8.14. Absolute continuity of the integral — `lem:abscont`, 8.15. Vitali’s convergence theorem — `thm:vitali7`, 8.16. Differentiation under the integral sign — `thm:parameter`, 8.17.
+- The layer-cake representation is Exercise `ex:layercake`. The Dirichlet integral equals \(\pi/2\) as an improper integral, not a Lebesgue integral, in Exercise `ex:dirichlet`.
+
+### Chapter 9 — Products (`ch08-products.tex`)
+
+- The product of Borel \(\sigma\)-algebras — `prop:borelproduct`, 9.1. Sections — `lem:sections`, 9.2. A section of a measurable set is measurable — `lem:slicemeasurable`, 9.3.
+- Product measure — `thm:product`, 9.4. Tonelli — `thm:tonelli`, 9.5. Fubini — `thm:fubini`, 9.6. These clear the debts from Volumes 4, 5, and 6.
+- A linear map multiplies volume by \(\lvert\det\rvert\) — `thm:lineardet`, 9.7. Change of variables for a \(C^1\) diffeomorphism — `thm:cov`, 9.8. The cube estimate — `lem:cube`, 9.9.
+- Polar coordinates — `thm:polar`, 9.10. Surface measure on the sphere is written \(\sigma\). The volume of the ball — `thm:ball`, 9.11. The Gaussian density — `thm:gaussdensity`, 9.12.
+- \(\Gamma(a)\Gamma(b)=B(a,b)\Gamma(a+b)\) and the simplex volume \(1/n!\) are exercises.
+
+### Chapter 10 — \(L^p\) (`ch09-lp.tex`)
+
+- Young’s inequality — `lem:young`, 10.1. Hölder — `thm:holder`, 10.2. Minkowski — `thm:minkowski`, 10.3.
+- \(L^p\) for \(1\le p<\infty\), and \(L^\infty\) with the essential supremum. Riesz–Fischer: \(L^p\) is a Banach space — `thm:rieszfischer`, 10.4.
+- Jensen’s inequality — `thm:jensen`, 10.5. Simple functions are dense — `prop:simpledense`, 10.6. \(C_c\) is dense in \(L^p(\R^d)\) for \(p<\infty\) — `thm:ccdense`, 10.7.
+- Translation is continuous on \(L^p\) — `prop:translation`, 10.8. Convolution — `prop:convolution`, 10.9. Approximate identities — `thm:approxid`, 10.10. \(C_c^\infty\) is dense — `thm:smoothdense`, 10.11.
+- Young’s inequality for convolutions is Exercise `ex:youngconv`. Hardy’s inequality, with sharp constant \(p/(p-1)\), is Exercise `ex:hardy`.
+
+### Chapter 11 — Differentiation and conditional expectation (`ch10-radon.tex`)
+
+- The positive and negative parts of a signed measure — `lem:positivepart`, 11.1. Hahn decomposition — `thm:hahn`, 11.2. Jordan decomposition — `cor:jordan`, 11.3.
+- Absolute continuity and singularity. Radon–Nikodym — `thm:rn`, 11.4. Lebesgue decomposition — `thm:lebdecomp`, 11.5. The three parts of a finite signed measure — `cor:threeparts`, 11.6.
+- Vitali’s covering lemma, with the enlarged balls of radius \(3\) times — `lem:vitalicover`, 11.7. The Hardy–Littlewood maximal function and the weak inequality with constant \(3^d\) — `thm:maximal`, 11.8. Lebesgue points — `thm:lebdiff`, 11.9.
+- Outer regularity of a finite Borel measure on a metric space — `lem:outerreg`, 11.10. Differentiation of measures — `thm:diffmeasures`, 11.11. A monotone function is differentiable almost everywhere — `thm:monotone`, 11.12.
+- Absolute continuity of a function — definition 11.13. The fundamental theorem — `thm:ftc`, 11.14.
+- Conditional expectation — `thm:condexp`, 11.16. The tower property — `thm:tower`, 11.17. Example 11.15 is a fair die.
+
+### Chapter 12 — Measures on metric spaces (`ch11-metricmeasures.tex`)
+
+- On a Polish space every finite Borel measure is tight — `thm:ulam`, 12.1. Partitions of unity — `lem:pou`, 12.2.
+- A positive linear functional on \(C(K)\), for \(K\) compact metric, is integration against a unique finite Borel measure — `thm:riesz`, 12.3.
+- Portmanteau — `thm:portmanteau`, 12.4. Weak convergence from convergence of distribution functions at continuity points — `cor:cdfweak`, 12.5.
+- A compact metric space is separable — `lem:separable`, 12.6. Prokhorov: a tight sequence of probabilities on \(\R^d\), or on a compact metric space, has a weakly convergent subsequence — `thm:prokhorov`, 12.7. The equivalence on a general Polish space is quoted and unused.
+- Kolmogorov’s extension for a consistent family of laws on \(\R^n\) — `thm:kolmogorov`, 12.8. The metric on \(\R^\N\) is \(\sum 2^{-n}\min(1,\lvert x_n-y_n\rvert)\).
+- Hausdorff content \(\mathcal H^s_\delta\) and Hausdorff measure \(\mathcal H^s\). The dimension jumps from \(\infty\) to \(0\) — `prop:jump`, 12.9. The mass distribution principle — `lem:massdist`, 12.10.
+- \(\dim_H C=\log 2/\log 3\), and \(\tfrac12\le\mathcal H^s(C)\le 1\) — `thm:cantordim`, 12.11. The equality \(\mathcal H^s(C)=1\) is quoted and unused. Remark `rem:hausdorffquoted`: Falconer’s two facts, that \(\mathcal H^s\) is a Borel measure and that \(\mathcal H^d\) is a multiple of Lebesgue measure, are quoted and unused. Moran–Hutchinson is quoted and unused.
+- The carpet has dimension \(\log 8/\log 3\), and the Sierpiński triangle has dimension \(\log 3/\log 2\), in Exercise `ex:carpet`.
+
+### Chapter 13 — Almost every number (`ch12-harder.tex`)
+
+No statement in this chapter is numbered as a theorem. The problems are exercises of Chapter 13. Continued fractions are Volume 2, Chapter 9: the error is Theorem 9.2, the best-approximation lemma is Lemma 9.4, Legendre’s theorem is Theorem 9.5, and periodicity is Theorem 9.6. Weyl’s criterion is Volume 5, Theorem 6.13. The prime number theorem is Volume 6, Theorem 5.5. Here \(\lVert t\rVert\) is the distance to \(\Z\), and \(e(t)=e^{2\pi it}\), as in Volumes 5 and 6. The Gauss map is \(G(x)=\{1/x\}\).
+
+- If \(\sum q\psi(q)<\infty\), almost every \(x\) has only finitely many solutions of \(\lvert x-p/q\rvert<\psi(q)\) — `pb:khinconv`. The Liouville numbers are null. Almost every \(x\) satisfies \(\lvert x-p/q\rvert\ge c(x)/(q^2\log^2 q)\).
+- Badly approximable numbers are those with bounded continued-fraction digits. The set is meagre, null, dense, and uncountable — `pb:badnull`. Jarník’s theorem \(\dim_H\mathrm{Bad}=1\) is quoted.
+- Borel–Bernstein: conditional on a cylinder, the next digit is large with probability comparable to \(1/k\) — `pb:borelbernstein`.
+- Khinchin’s theorem, under the hypothesis that \(q^2\psi(q)\) decreases — `pb:khinchin`. The constant \(c<4.4\) is V7-010. Almost every \(x\) meets \(1/(q^2\log q)\) infinitely often, and meets \(1/(q^2(\log q)^{1+\varepsilon})\) only finitely often. Lévy’s constant \(\pi^2/(12\log 2)\) and the Duffin–Schaeffer theorem are quoted. Volume 11 proves Lévy’s constant from the ergodic theorem.
+- Euler’s expansion of \(e\) is quoted. The number \(e\) loses to a random number — `pb:econt`.
+- \(\dim_H W(\tau)\le 2/\tau\), so the Liouville numbers have dimension \(0\) — `pb:wtau`. The matching lower bound is `pb:jarnik`.
+- Numbers whose digits tend to infinity have dimension at most \(1/2\) — `pb:good`. Good’s equality is quoted.
+- The set of numbers with digits in \(\{1,2\}\) — `pb:etwo`. The golden ratio is \(\varphi=(1+\sqrt 5)/2\) in this problem. The value \(0.53128\ldots\) is quoted from Jenkinson and Pollicott.
+- Besicovitch–Eggleston: \(\dim_H B_p=H(p)/\log 2\) with \(H(p)=-p\log p-(1-p)\log(1-p)\) — `pb:eggleston`.
+- The Cantor set contains uncountably many Liouville numbers, and the intersection has dimension \(0\) — `pb:cantorL`.
+- For any distinct integers \(a_n\), \((a_n x)\) is equidistributed for almost every \(x\) — `pb:weylae`. The sequence \(n!\,x\) — `pb:factorial`. The Davenport–Erdős–LeVeque criterion — `pb:del`. Koksma: \((x^n)\) is equidistributed for almost every \(x>1\) — `pb:koksma`.
+- The Fourier transform of the Cantor measure does not tend to \(0\) — `pb:cantorfourier`. The law of \((3^n x)\) under that measure is a preview of Volume 11 and is not used.
+- Every real is a sum of two Liouville numbers — `pb:erdosL`. No measurable set cuts every interval in a fixed ratio — `pb:halves`. A set of positive measure contains an affine copy of every finite set — `pb:similar`.
+- The geometric means of the digits oscillate on a comeagre null set — `pb:typicalcf`. Khinchin’s constant \(2.685\ldots\) is quoted. A Bernstein set is neither measurable nor meagre — `pb:bernsteinset`. The one-sentence gap is V7-011.
+
+### Notation clashes with Volumes 1–6
+
+- \(\N\) includes \(0\), as in Chapter 1. The Cantor-space definition in Chapter 4 sets \(\N=\{1,2,\ldots\}\) for the index of the tosses. The sentence says so.
+- \(\log\) is the natural logarithm, the same function as Volume 6’s \(\log\) and as this volume’s \(\ln\). A ratio of logarithms, as in a Hausdorff dimension, does not depend on the base.
+- \(\theta\) is an argument or an angle. Volume 6 uses \(\theta\) for Chebyshev’s function.
+- \(\lambda\), and \(\lambda_d\), are Lebesgue measure. Volume 6 uses \(\Lambda\) for von Mangoldt’s function.
+- \(\sigma\) is surface measure on the sphere in Chapter 9, and a singular measure in Chapter 11. Volume 6 uses \(\sigma_k(n)\) for the sum of \(k\)th powers of the divisors, and \(\sigma\) for the real part of \(s\).
+- \(\varphi\) is Euler’s totient in the opening of Chapter 13, the golden ratio in `pb:etwo`, and a map or an angle elsewhere. Volumes 2 through 6 use \(\varphi(n)\) for the totient.
+- \(C\) is the middle-thirds Cantor set from Chapter 2, and also a constant.
+- \(\lvert\cdot\rvert_p\) is the \(p\)-adic absolute value. The ordinary absolute value keeps its Volume 1 meaning. The letter \(p\) remains a prime, as in Volume 2.
+- \(e(t)=e^{2\pi it}\) and \(\lVert t\rVert\), the distance from \(t\) to \(\Z\), are the Volume 5 and Volume 6 conventions. They are named again at the start of Chapter 13.
