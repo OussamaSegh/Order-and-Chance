@@ -1,8 +1,8 @@
 # Volume 10 — Abstraction
 
-**Score: pending.** Chapters 1–6 are in this file. The score and the severity totals are filled when the remaining chapters are in.
+**Score: pending.** Chapters 1–7 are in this file. The score and the severity totals are filled when the remaining chapters are in.
 
-**How this was read.** Book order in `volume10-abstraction/main.tex`: preface, Categories (Chapter 1), Tensors and the Cost of Multiplying Matrices (Chapter 2, file `linear-ch10-tensors.tex`), Tensors and Exactness (Chapter 3), Noetherian Rings and Hilbert’s Theorems (Chapter 4), Localisation and Dimension (Chapter 5), Dedekind Domains (Chapter 6), then the later chapters as they are reviewed. The blurb, `kdp.md`, and About the Cover were read with the preface. Every exercise in a reviewed chapter was read, including its hint and its solution. The shared counter numbers theorems, propositions, lemmas, corollaries, definitions, and examples inside each chapter. Exercises use a separate counter.
+**How this was read.** Book order in `volume10-abstraction/main.tex`: preface, Categories (Chapter 1), Tensors and the Cost of Multiplying Matrices (Chapter 2, file `linear-ch10-tensors.tex`), Tensors and Exactness (Chapter 3), Noetherian Rings and Hilbert’s Theorems (Chapter 4), Localisation and Dimension (Chapter 5), Dedekind Domains (Chapter 6), Homological Algebra (Chapter 7), then the later chapters as they are reviewed. The blurb, `kdp.md`, and About the Cover were read with the preface. Every exercise in a reviewed chapter was read, including its hint and its solution. The shared counter numbers theorems, propositions, lemmas, corollaries, definitions, and examples inside each chapter. Exercises use a separate counter.
 
 ## Issues
 
@@ -79,9 +79,17 @@ Every exercise was read. There are 10. In \(\Z[i]\), \(2S=(1+i)^2\) with \((e,f)
 
 The valuation figure uses those coordinates. The splitting figure matches the three patterns in \(\Z[i]\). The cubic figure’s ideal factorisations agree with the points.
 
+### Chapter 7
+
+Projective resolutions, the comparison and horseshoe lemmas, Tor and Ext, dimension shifting, the classification of extensions by \(\operatorname{Ext}^1\), and the universal coefficient theorems for finitely generated free complexes over a PID. The two-variable Koszul complex was checked term by term. \(\operatorname{Tor}_1(\Z/n,N)=N[n]\) and \(\operatorname{Ext}^1(\Z/n,N)=N/nN\); both groups for \(\Z/m\) and \(\Z/n\) are \(\Z/\gcd\). The extension of \(\Z/p\) by \(\Z/p\) with quotient \(a\) has class \(a^{-1}\). Baer sum adds the classes. \(\operatorname{Ext}^1(\Q,\Z)\) is the uncountable group \(\operatorname{Hom}(\Q,\Q/\Z)/\Q\). The dual-number module \(k\) has \(\operatorname{Tor}_n=\operatorname{Ext}^n=k\) in every degree. The projective-plane complex has boundaries \(2\) and \(0\); with \(\Z/2\) coefficients the new top class is \(\operatorname{Tor}_1(\Z/2,\Z/2)\). The chain automorphism \((x,y)\mapsto(x,y+x)\) shows that the universal-coefficient splitting is not natural. Hilbert’s syzygy bound, the symmetry of Tor in general, Yoneda’s higher extensions, freeness of arbitrary submodules of free modules, and the Whitehead problem are marked as quotations. Volume 9, Lemma 6.2, is the zigzag lemma.
+
+Every exercise was read. There are 10. The Klein bottle has \(H_1=\Z\oplus\Z/2\) and \(H^2=\Z/2\). For \(0\to\Z/r\to\Z/(rs)\to\Z/s\to0\), the connecting class is \(1\) in \((\Z/r)/s(\Z/r)\), and the sequence splits exactly when \(\gcd(r,s)=1\).
+
+The surface figure’s three boundary words are \(0\), \(2b\) and \(2a\). The coefficient figure is multiplication by \(2\) becoming \(0\).
+
 ## Not checked
 
-- Chapters 7–11, so the score is not yet assigned.
+- Chapters 8–11, so the score is not yet assigned.
 - A TeX run, so unresolved references were not compiled. Numbered statements in the reviewed chapters were counted from the source environments.
 - Portrait files against `photos/CREDITS.md`. None of the reviewed chapters uses a portrait.
 - The historical fine print beyond the quotations that were compared with Strassen’s paper and with the published exponent bounds named in V10-005. Winograd’s optimality of seven multiplications, the \(3\times 3\) bounds \(19\) and \(23\), and the AlphaTensor length \(47\) over \(\mathbb F_2\) are left as the quotations the text marks.
