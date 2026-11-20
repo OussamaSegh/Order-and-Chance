@@ -1,0 +1,44 @@
+# Volume 1 fix, second review — 20 November 2026
+
+Independent reading of PR #254 at `8db54fb2705aea4f8c025e8d4cdceb1b17ad1c90`. The fixes were written by another agent. Corrections below are later commits on `cursor/fix-volume1-review`.
+
+## Verdicts
+
+**Correctness.** The original head needed changes. Six defects are listed below. After those corrections, each of V1-001 through V1-091 is fixed in the place the issue named, and the fix does the job the issue asked for. Nothing extra was rewritten.
+
+**Dropped or weakened proofs.** No numbered proof was shortened into a weaker argument. The alternating formula removed from the solution of `ex:intpoly` was unproved and unused, which is what V1-039 asked. The quarter-circle value \(\pi/4\) is no longer taken as known in the opening example; Proposition `prop:wallis` still proves \(W_2=\pi/4\).
+
+**Declines.** V1-041 and V1-056 are justified. The source was checked directly. See the findings.
+
+**New proofs and the ledger.** The lcm exponent test, as first committed, uses only unique factorisation and the empty product, both already in Chapter 1. Katona's count of the \(2k-1\) arcs that meet a fixed arc is right; the worked case \(n=6\), \(k=2\) was not. The cosine argument, as first committed, applied the mean-value monotonicity clause on \([0,\infty)\) and placed a zero in an open interval the estimates do not force. Carleman's partial-sum step used limsup and liminf, which this volume never defines, and it took an \(n\)th root of an equivalence without the logarithm. After the corrections, those arguments use only the mean value theorem on a closed segment, the intermediate value theorem, the power limits and the logarithm bound from the sequences chapter, Stirling's theorem, and the exponential addition formula from the calculus chapter. The Hilbert form uses the fundamental theorem, the root bound, the integral-zero lemma proved earlier in the sequences chapter, and the spectral theorem. Nothing in these proofs is used before it is introduced.
+
+**Labels.** Compared with `origin/main`, the 144 TeX files under `volume1-first-principles/` have the same `\label` names and the same counts of numbered `theorem`, `proposition`, `lemma`, `corollary`, `definition`, `example` and `exercise` environments. The new cosine statement is an unnumbered `propositionx`.
+
+**Caption and diagram typography.** Caption prose changed where an issue asked for a correction. Fonts, weights and colours inside the plates did not. `ch05-secant.tex` and `ch03-landscape.tex` are untouched. `ch02-bombelli.tex` changes the words of one `\scriptsize` node. `ch03-threepoints.tex` moves the third node from \(1.55\) to \(1.33\), which is the value of the drawn polynomial. `ch05-cobweb.tex` prefixes the four rust labels with the word `sum` and keeps `\tiny` and the same coordinates. The secant caption's rust, coral and ochre names match the palette in `docs/design/interior.md` (BrickRed, Goldenrod, ForestGreen).
+
+**Recomputed numbers.** A Python session on this review recomputed the changed numbers. The cosine upper bound at \(8/5\) is \(-13/1875\). \((8/5)^2=64/25>2\). The Oresme block sums are \(1/2\), \(7/12\), \(533/840\approx 0.6345\) and \(95549/144144\approx 0.6629\), which are the printed approximations \(0.50\), \(0.58\), \(0.63\) and \(0.66\). Both Basel bounds at \(m=10,100,1000\) approach \(\pi^2/6\). At the landscape corner, \(1.6^2+1.6^2=5.12\).
+
+**Voice.** The new sentences are short and concrete. The banned fillers do not appear in the diff. The cosine proof and the Carleman step are dense, and they name the object and the estimate. They were not rewritten for tone.
+
+**Downstream impacts.** The section in the pull request is accurate, and it is complete for what later volumes feel. The cited lines were opened: Volume 2, `ch04-arithmetic-functions.tex:531`, `ch05-primitive-roots.tex:507` and `:969`, `ch06-quadratic-reciprocity.tex:1285`; Volume 5, `ch03-series.tex:12`; Volume 9, `geometry-ch06-quadrics.tex:135` and `:676`; Volume 12, `spectral.tex:41`. Exercise 6.7 is `ex:basel`, the seventh exercise of the polynomials chapter. Volume 7, `sec:choice`, states the axiom of choice and proves Zorn's lemma, and it does not define dependent choice. No numbered statement changed its number. `tools/cross_volume_citations.py` matched 5446 numbered statements, and the 16 citation tests passed. `python3 review/volume3-internal/registers.py` reported `{"accepted-internal": 1177, "pending": 19}`. The tools unit-test suite reported 641 tests, 7 skipped, exit 0. `review/volume2-independent/check_dependencies.py` still reports 326 references and 86 reviewed forward uses. The second-review corrections add no numbered result and do not change those citations. The calculus reminder now points at the proved cosine zero instead of listing it as an assumption. That is inside Volume 1. The downstream section does not need a new bullet.
+
+## Findings
+
+| ID | Location | Problem | Fix |
+| --- | --- | --- | --- |
+| SR-001 | `volume1-first-principles/chapters/orders.tex`, Erdős–Ko–Rado proof | For \(n=6\) and \(k=2\) the text said the only arc disjoint from \(\{1,2\}\) is \(\{4,5\}\). The starts \(3,4,5\) give three arcs, \(\{3,4\}\), \(\{4,5\}\) and \(\{5,6\}\). The count \(n-2k+1=3\) in the same sentence was right, and the general pairing was right. | The example now lists those three arcs. |
+| SR-002 | `ch05-sequences-series.tex`, unnumbered proposition before `prop:sincmp` | Theorem `thm:mvt`(c) gives monotonicity on a closed segment \([a,b]\). The proof applied it on \([0,\infty)\). It also said the intermediate value theorem supplies a zero in \((\sqrt2,8/5)\). The lower bound only gives \(\cos\sqrt2\ge 0\), so a zero at \(\sqrt2\) was not ruled out, and the comparison \(\sqrt2<8/5\) was not written. | Monotonicity is applied on every segment \([0,T]\). The sign change is on \([0,8/5]\), and \((8/5)^2=64/25>2\) places \(\sqrt2\) strictly before \(8/5\). |
+| SR-003 | `ch04-inequalities.tex`, `sec:carleman` | Limsup and liminf are not defined in this volume. The passage from \(n!\sim\sqrt{2\pi n}\,(n/e)^n\) to the \(n\)th-root equivalence skipped \(r_n^{1/n}\to 1\), and \(\ln(2\pi n)=\ln(2\pi)+\ln n\) was used without the exponential addition formula. | The root is \(\exp((\ln r_n)/n)\). The logarithm bound is divided by \(n\) in a displayed inequality. The partial-sum ratio is pinned inside \((1-\eta,1+\eta)\) by an explicit \(\varepsilon\). |
+| SR-004 | `ch07-linear-algebra.tex`, Hilbert form in the Gram section | "The contrapositive says the integral is positive" skips the sign. The contrapositive of the integral-zero lemma says the integral is not zero. | The order rule supplies the sign, and the integral is then positive. |
+| SR-005 | `ch03-polynomials.tex`, `thm:gausslucas`; `ch07-linear-algebra.tex`, double-root recurrence; `ch06-integrals-taylor.tex`, solution of `ex:xnex` and the elementary-function reminder | The logarithmic-derivative induction was named and not written. Substitution checked \(u_n=\alpha+\beta n\) and did not say why every solution has that form. The limit \(\varepsilon^{m+1}(\ln\varepsilon)^n\to 0\) used \((\ln t)/t\to 0\) and \(\exp(y)\to 0\) as \(y\to-\infty\) without the comparisons, and the tolerance reused the letter \(\varepsilon\) of the integral. The calculus reminder still listed the first positive zero of cosine among the standing assumptions. | The induction step is one sentence. Initial values \(\alpha=u_0\), \(\beta=u_1-u_0\) and the recurrence give every solution. The logarithm comparison and a tolerance \(\delta\) are written. The reminder points at the proof before `prop:sincmp`. |
+| SR-006 | `ch02-counting.tex:410` and `ch05-sequences-series.tex:270` | V1-041 and V1-056 were declined. Both declines are right. The Fibonacci display is the binomial sum equal to 13, inside `\[` and `\]`, with no opening bar. The Cauchy display has one absolute-value bar on each side of `u_p-\ell`. The bars in the review notes are the markdown cell and the line-number gutter. | Left unchanged. |
+
+Python `repr` of those two source lines, not a line-number gutter: the counting line is `\binom60+\binom51+\binom42+\binom33=1+5+6+1=13`, and the Cauchy line is `|u_p-\ell|\le|u_p-u_{n_k}|+|u_{n_k}-\ell|\le\varepsilon`.
+
+## What this review did not check
+
+- The local `./build.sh --pdf-only volume1-first-principles` exited 0. The layout check reported 422 whole boxes, maximum height 477.1 pt, no overflow and no unresolved reference. The extra box is the unnumbered cosine proposition. The print interior is 469 pages. Five pages were flattened at 600 ppi. This was not a page-by-page visual reading.
+- EPUB rendering and Kindle alt text.
+- Portrait files and the historical memoirs named in the sequential review's "Not checked" list.
+- Proofs that the diff does not touch, beyond the citation pins and the label comparison.
+- Acceptance of the print file by KDP.
