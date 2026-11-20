@@ -17,7 +17,9 @@ SOURCE=Path(__file__).resolve().parents[1]/"volume4-chance"/"chapters"/"ch06-clt
 # 2026-11-13: V4-02. The clip of the other blocks is charged to the tails
 # E[Q_j^2 1_{|Q_j|>K}], and the square is factored so that bound tends to 0.
 # Numbered labels unchanged. This pin is identity, not a proof.
-SHA="41197f55044d2d813d364c0a2cfcae7750763ab6"
+# 2026-11-20: series review V4-003, V4-004, V4-005, V4-006, V4-016, V4-017, V4-024.
+# Numbered labels unchanged. Not a new sign-off.
+SHA="60323eabe1aaee7b4de17e7be70e3834f10b70bd"
 PROOFS="prop:modes prop:cdf thm:slln4 thm:gc lem:diffint prop:cfexamples thm:cfconv thm:inversion lem:normalsum thm:lindeberg cor:clt thm:local prop:cyclebern thm:gaussvec".split()
 EX="ex:slutsky ex:confidence ex:delta ex:cauchyclt ex:poissonhalf ex:returns ex:thirdmoment ex:cyclesclt".split()
 

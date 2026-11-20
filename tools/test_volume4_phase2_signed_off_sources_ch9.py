@@ -14,7 +14,8 @@ import unittest
 
 SOURCE=Path(__file__).resolve().parents[1]/"volume4-chance"/"chapters"/"ch08-markov.tex"
 # Reread 2026-11-11 for the derivative check of ln(1-x)+x+x^2 (V4-13).
-SHA="a4d988c1ceebb6828b76d3f8ac7fef3d65c4339d"
+# 2026-11-20: series review V4-007 and V4-008. Labels unchanged. Not a new sign-off.
+SHA="1fc18bc236e7cf1e0a1674cf630953f37ad242ae"
 PROOFS="lem:period thm:stationary lem:coupling thm:ergodic prop:hit3 thm:top lem:tvcontract thm:bayerdiaconis prop:rifflecompose prop:untouched".split()
 EX="ex:lazy ex:twostate ex:ehrenfest ex:pagerank ex:metropolis ex:toptorandom ex:hitbefore ex:risingmean ex:period".split()
 
