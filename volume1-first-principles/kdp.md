@@ -10,7 +10,7 @@ Starting with secondary-school algebra and elementary geometry—not prior cours
 
 The chapters combine worked examples and proof-finding workshops with exercises graded from one to three stars. Every numbered exercise has a hint and a complete solution. Each solution separates how to find the idea from the final write-up. Optional advanced bridges are clearly signposted, so the main reading route remains accessible with a high-school foundation.
 
-For curious readers, independent learners and anyone who wants to know not just that a formula works, but why.
+The cube identity, the hat check, and the intermediate value theorem are here so you can see why a formula holds.
 
 # Keywords
 
