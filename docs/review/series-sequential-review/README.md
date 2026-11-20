@@ -23,3 +23,14 @@ Reading order is each volume’s `main.tex`. Scores use the scale in the volume 
 | 15 Order and Chance | not started |
 
 The concept ledger is [CONCEPT-LEDGER.md](CONCEPT-LEDGER.md). Volume 1 is the first section. Later reviews append their own section and check new uses against earlier lines.
+
+## Handoff (paused 2026-11-20, 06:40 Paris)
+
+The chain stopped after Volume 13 because the weekly usage limit of the account running it reached 86.8%. Volumes 1–13 are complete: each has its log, its ledger section and its status line above. Branch head before this note: `1d9f461d`.
+
+To continue:
+
+1. Review Volume 14, then Volume 15, strictly in order, on this branch. Use one cloud agent per volume, starting from `cursor/series-sequential-review`, with the brief in [briefs/series-review-v14.md](briefs/series-review-v14.md) and then [briefs/series-review-v15.md](briefs/series-review-v15.md). The general form is [briefs/series-sequential-review-template.md](briefs/series-sequential-review-template.md).
+2. After each volume, check that `volumeN.md` exists, that the ledger has a "Volume N" section, that every exercise was read, and that this table is updated.
+3. Spot-check Volume 9. Its review ran in 25 minutes and found only 2 minor issues, so its depth is uncertain.
+4. Then write a series summary and propose fixes: one small PR per volume, each with a distinct second reviewer and an issue log, merged by squash with `--match-head-commit` on green CI. No book source is changed before the author approves.
