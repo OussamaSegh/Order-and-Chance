@@ -27,8 +27,11 @@ class DependencyReviewChecks(unittest.TestCase):
         # Forward uses: 86 = 85 plus that Exercise 1.3 pointer.
         # The Volume 2 sequential-review fixes add the backward citations named in
         # the proofs and one forward outlook, from the Diophantine beauty paragraph
-        # to Theorem thm:six. The counts are 343 references and 87 forward uses.
-        self.assertEqual(result['references'], 343)
+        # to Theorem thm:six. The second review derives the continued-fraction
+        # two-step identity from Proposition 9.1 instead of citing the lemma the
+        # exercise is proving, which removes one reference. The counts are 342
+        # references and 87 forward uses.
+        self.assertEqual(result['references'], 342)
         self.assertEqual(result['reviewed_forward_uses'], 87)
         self.assertIn('no automatic', result['scope'])
 
