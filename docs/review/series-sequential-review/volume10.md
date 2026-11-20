@@ -1,8 +1,8 @@
 # Volume 10 — Abstraction
 
-**Score: pending.** Chapters 1–5 are in this file. The score and the severity totals are filled when the remaining chapters are in.
+**Score: pending.** Chapters 1–6 are in this file. The score and the severity totals are filled when the remaining chapters are in.
 
-**How this was read.** Book order in `volume10-abstraction/main.tex`: preface, Categories (Chapter 1), Tensors and the Cost of Multiplying Matrices (Chapter 2, file `linear-ch10-tensors.tex`), Tensors and Exactness (Chapter 3), Noetherian Rings and Hilbert’s Theorems (Chapter 4), Localisation and Dimension (Chapter 5), then the later chapters as they are reviewed. The blurb, `kdp.md`, and About the Cover were read with the preface. Every exercise in a reviewed chapter was read, including its hint and its solution. The shared counter numbers theorems, propositions, lemmas, corollaries, definitions, and examples inside each chapter. Exercises use a separate counter.
+**How this was read.** Book order in `volume10-abstraction/main.tex`: preface, Categories (Chapter 1), Tensors and the Cost of Multiplying Matrices (Chapter 2, file `linear-ch10-tensors.tex`), Tensors and Exactness (Chapter 3), Noetherian Rings and Hilbert’s Theorems (Chapter 4), Localisation and Dimension (Chapter 5), Dedekind Domains (Chapter 6), then the later chapters as they are reviewed. The blurb, `kdp.md`, and About the Cover were read with the preface. Every exercise in a reviewed chapter was read, including its hint and its solution. The shared counter numbers theorems, propositions, lemmas, corollaries, definitions, and examples inside each chapter. Exercises use a separate counter.
 
 ## Issues
 
@@ -71,9 +71,17 @@ Every exercise was read. There are 10. The ideals of \(\Z_{(p)}\) are \(0\) and 
 
 The spectrum figure matches the splitting of \(x^2+1\): one point over \(2\), two points over primes \(1\bmod 4\), and one degree-\(2\) point over primes \(3\bmod 4\). Localisation at \((3)\) keeps \((0)\) and \((3)\). The monomial picture of \((x^2,xy)\) marks \(x\) outside the ideal.
 
+### Chapter 6
+
+Fractional ideals, DVRs, the four Dedekind conditions, the class group, integral closure in a finite separable extension, and \(\sum e_if_i=n\). The ideal arithmetic in \(\Z[\sqrt{-5}]\) was recomputed: \(\mathfrak p^2=2R\), \(3R=\mathfrak q\bar{\mathfrak q}\), and \((1\pm\sqrt{-5})R=\mathfrak p\mathfrak q,\mathfrak p\bar{\mathfrak q}\). The norm \(a^2+5b^2\) rules out norms \(2\) and \(3\). The normality argument modulo \(4\) forces both \(2a\) and \(2b\) even. The trace determinant is the square of a Vandermonde product, Volume 1, Proposition 7.4, and is nonzero because the extension is separable. Volume 3, Theorem 6.14, is Euclidean implies PID implies UFD. Volume 3, Theorem 8.2, is the tower law. Volume 3, Theorem 8.20, is the primitive-element theorem for subfields of \(\C\); the chapter proves the separable case over an infinite field and does not quote the complex statement as a substitute. Claborn’s theorem and Krull–Akizuki are marked as quotations. The class group of \(\Z[\sqrt{-5}]\) is shown to contain an element of order \(2\), and the claim that the group has order \(2\) is deferred to Volume 13.
+
+Every exercise was read. There are 10. In \(\Z[i]\), \(2S=(1+i)^2\) with \((e,f)=(2,1)\), \(3S\) stays prime with \((1,2)\), and \(5S=(2+i)(2-i)\) with two factors of type \((1,1)\). For the cubic \(y^2=x^3-x\), \(\mathfrak m=(x,y)\) satisfies \(\mathfrak m^2=(x)\) and is not principal. The line \(y=1-2x\) meets \(y^2=x^3-x+1\) at \((0,1)\), \((1,-1)\) and \((3,-5)\). On the real circle, \(\mathfrak m=(x-1,y)\) satisfies \(\mathfrak m^2=(x-1)\) and is not principal, while the complexification is \(\C[u,u^{-1}]\). For \(I=\mathfrak p^2\mathfrak q\) and \(J=\mathfrak p\mathfrak q^3\), the sum is \(\mathfrak p\mathfrak q\), the intersection is \(\mathfrak p^2\mathfrak q^3\), and the colon is \(\mathfrak p\mathfrak q^{-2}\); the numerical case is \((12)\) and \((54)\).
+
+The valuation figure uses those coordinates. The splitting figure matches the three patterns in \(\Z[i]\). The cubic figure’s ideal factorisations agree with the points.
+
 ## Not checked
 
-- Chapters 6–11, so the score is not yet assigned.
+- Chapters 7–11, so the score is not yet assigned.
 - A TeX run, so unresolved references were not compiled. Numbered statements in the reviewed chapters were counted from the source environments.
 - Portrait files against `photos/CREDITS.md`. None of the reviewed chapters uses a portrait.
 - The historical fine print beyond the quotations that were compared with Strassen’s paper and with the published exponent bounds named in V10-005. Winograd’s optimality of seven multiplications, the \(3\times 3\) bounds \(19\) and \(23\), and the AlphaTensor length \(47\) over \(\mathbb F_2\) are left as the quotations the text marks.
