@@ -1,8 +1,8 @@
 # Volume 10 — Abstraction
 
-**Score: pending.** Chapters 1–7 are in this file. The score and the severity totals are filled when the remaining chapters are in.
+**Score: pending.** Chapters 1–8 are in this file. The score and the severity totals are filled when the remaining chapters are in.
 
-**How this was read.** Book order in `volume10-abstraction/main.tex`: preface, Categories (Chapter 1), Tensors and the Cost of Multiplying Matrices (Chapter 2, file `linear-ch10-tensors.tex`), Tensors and Exactness (Chapter 3), Noetherian Rings and Hilbert’s Theorems (Chapter 4), Localisation and Dimension (Chapter 5), Dedekind Domains (Chapter 6), Homological Algebra (Chapter 7), then the later chapters as they are reviewed. The blurb, `kdp.md`, and About the Cover were read with the preface. Every exercise in a reviewed chapter was read, including its hint and its solution. The shared counter numbers theorems, propositions, lemmas, corollaries, definitions, and examples inside each chapter. Exercises use a separate counter.
+**How this was read.** Book order in `volume10-abstraction/main.tex`: preface, Categories (Chapter 1), Tensors and the Cost of Multiplying Matrices (Chapter 2, file `linear-ch10-tensors.tex`), Tensors and Exactness (Chapter 3), Noetherian Rings and Hilbert’s Theorems (Chapter 4), Localisation and Dimension (Chapter 5), Dedekind Domains (Chapter 6), Homological Algebra (Chapter 7), Group Cohomology (Chapter 8), then the later chapters as they are reviewed. The blurb, `kdp.md`, and About the Cover were read with the preface. Every exercise in a reviewed chapter was read, including its hint and its solution. The shared counter numbers theorems, propositions, lemmas, corollaries, definitions, and examples inside each chapter. Exercises use a separate counter.
 
 ## Issues
 
@@ -87,9 +87,17 @@ Every exercise was read. There are 10. The Klein bottle has \(H_1=\Z\oplus\Z/2\)
 
 The surface figure’s three boundary words are \(0\), \(2b\) and \(2a\). The coefficient figure is multiplication by \(2\) becoming \(0\).
 
+### Chapter 8
+
+Crossed homomorphisms, Hilbert’s Theorem 90, Schreier’s classification by \(H^2\), the cyclic formula \(H^2(G,A)\cong A^G/NA\), the carry cocycle, and Schur–Zassenhaus for an abelian kernel of coprime order. The multiplicative and additive proofs of Theorem 90 were checked, including the trace argument that does not divide by \(|G|\). For base \(b\), the carry extension is \(\Z/b^2\) when the carry is a unit. For base \(10\), the ten classes have middle groups \(\Z/100\) four times, \(\Z/50\times\Z/2\) four times, \(\Z/20\times\Z/5\) once, and \((\Z/10)^2\) once. The quaternion cocycle table was recomputed from \(ij=k\) and \(ji=-k\). There are five groups of order \(20\). The matrix \(T=\bigl(\begin{smallmatrix}0&-1\\1&-1\end{smallmatrix}\bigr)\) satisfies \(T^2+T+I=0\), and \(v\mapsto Tv+(1,0)\) has rational fixed point \((2/3,1/3)\) and no integer fixed point. Volume 3, Lemma 10.15, is Dedekind’s independence lemma. Volume 2, Theorem 8.1, is the Pythagorean parametrisation recovered by \(\beta/\bar\beta\). The nonabelian Schur–Zassenhaus theorem, Feit–Thompson, Galois descent, and the relative Brauer group are marked as quotations. The notation \(H^n(G,A)\) is distinguished from Volume 9’s homology.
+
+Every exercise was read. There are 10. For the sign action, \(H^1(\Z/2,\Z)\cong\Z/2\) and \(H^2=0\); for the trivial action the values are reversed. Inversion on \(\Z/4\) gives the dihedral group of order \(8\) and \(Q_8\). A quadratic norm-one element is \(b/\sigma(b)\) with \(b=1+x\) when \(x\ne-1\).
+
+The circle figure uses the slope \(n/m\). The complement figure separates integer and half-integer mirrors. The base-four carry table matches \(\lfloor(x+y)/4\rfloor\).
+
 ## Not checked
 
-- Chapters 8–11, so the score is not yet assigned.
+- Chapters 9–11, so the score is not yet assigned.
 - A TeX run, so unresolved references were not compiled. Numbered statements in the reviewed chapters were counted from the source environments.
 - Portrait files against `photos/CREDITS.md`. None of the reviewed chapters uses a portrait.
 - The historical fine print beyond the quotations that were compared with Strassen’s paper and with the published exponent bounds named in V10-005. Winograd’s optimality of seven multiplications, the \(3\times 3\) bounds \(19\) and \(23\), and the AlphaTensor length \(47\) over \(\mathbb F_2\) are left as the quotations the text marks.
