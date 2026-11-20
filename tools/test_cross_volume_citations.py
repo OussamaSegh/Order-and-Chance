@@ -225,11 +225,11 @@ class CrossVolumeCitations(unittest.TestCase):
         # of these. The gloss check catches a named subject; this pins the rest.
         root = citations.ROOT / "volume5-calculation" / "chapters"
         expected = {
-            "ch01-finite.tex": ("6", "2"),
+            "ch01-finite.tex": ("3", "6", "3", "2"),
             "ch02-generating.tex": ("2", "3", "3", "6", "8", "3", "8"),
             "ch04-integrals.tex": ("3", "8", "5", "3", "3", "3", "3"),
             "ch05-gamma.tex": ("9", "3", "8", "8", "5", "1", "7", "6"),
-            "ch06-fourier.tex": ("9", "8", "5", "5"),
+            "ch06-fourier.tex": ("9", "8", "9", "5", "5"),
             "ch07-fft.tex": ("5", "5", "5", "5", "5", "7", "5", "5", "7", "5", "7", "7"),
             "ch09-complex.tex": ("3", "5", "6"),
             "ch10-zeta.tex": ("3", "3"),
