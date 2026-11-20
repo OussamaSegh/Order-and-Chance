@@ -1922,3 +1922,90 @@ File names are under `volume11-randomness/chapters/`. The shared counter numbers
 - \(\rho\) is Dickman’s function in Chapter 12, as already in Volume 6. Chapter 7 also uses \(\rho\) for a third-moment ratio, and Chapter 9 uses it for Kakutani’s affinity. Volume 8 uses \(\rho(A)\) for the spectral radius, and Volume 9 uses \(\rho\) for an index of regular variation and for a correlation.
 - \(\omega(n)\) is the number of distinct prime factors in Chapter 11. Volume 10 uses \(\omega\) for the exponent of matrix multiplication. Volume 9 uses \(\omega\) for a differential form.
 - \(H(\nu)\) is the entropy of a type in Chapter 7, in nats. \(H_n\) is a harmonic number in Chapters 11 and 12. Volume 10 uses \(H^n(G,A)\) for group cohomology.
+
+## Volume 12 — Random Motion
+
+File names are under `volume12-random-motion/chapters/`. The shared counter numbers theorems, propositions, lemmas, corollaries, definitions, and examples inside each chapter. Exercises use a separate counter and restart each chapter. There are eleven chapters and one appendix. Chapter 11 inputs `brw-halfmoment.tex` before its exercises. \(\log\) is the natural logarithm. The one admitted theorem is `thm:cuemax`. Novikov’s condition, Tracy–Widom, Füredi–Komlós, Bai–Yin, Mehta’s spacing density, Knight’s theorem, the reverse Burkholder–Davis–Gundy inequality, and non-integer squared Bessel processes are quoted.
+
+### Chapter 1 — Gaussian processes (`ch01-gaussian.tex`)
+
+- Kolmogorov’s extension, any index — `thm:kolmext`, 1.1. Gaussian processes exist — `cor:gaussexist`, 1.2. Four kernels — `ex:kernels`, 1.3. Modification — `def:modification`, 1.4.
+- Kolmogorov–Chentsov — `thm:kolmcont`, 1.5. Brownian motion, Hölder below \(1/2\) — `cor:bmholder`, 1.6. Two orthonormal bases — `lem:twobases`, 1.7. Lévy’s maximal inequality — `lem:levymax`, 1.8. Maxima of Gaussians — `lem:gaussmax`, 1.9.
+- Paley–Wiener–Zygmund and Karhunen–Loève series — `thm:wienerseries`, 1.10. Wiener integral — `thm:wienerint`, 1.11. Fractional Brownian motion — `thm:fbm`, 1.12. Itô–Nisio for every orthonormal basis is quoted.
+
+### Chapter 2 — Fine structure (`ch02-paths.tex`)
+
+- Blumenthal’s zero–one law — `thm:blumenthal`, 2.1. Oscillation at \(0\) — `cor:oscillate`, 2.2. The path is unbounded — `cor:infinity`, 2.3. Lévy’s modulus — `thm:levymodulus`, 2.4.
+- Joint reflection — `thm:jointreflection`, 2.5. Lévy’s identity at a fixed time — `cor:levyfixed`, 2.6. The zero set — `thm:zeroset`, 2.7. Hitting probabilities — `lem:hitprob`, 2.8. Dimension of the record set, and the upper bound for the zeros — `thm:dimension`, 2.9. The gauge function and points of increase are quoted.
+
+### Chapter 3 — Continuous martingales (`ch03-martingales.tex`)
+
+- Usual conditions — `def:usual`, 3.1. Brownian filtration — `prop:brownfilt`, 3.2. Stopping time — `def:stoptime`, 3.3. Calculus of stopping times — `lem:stopping`, 3.4.
+- Doob in continuous time — `thm:doobcont`, 3.5. Optional stopping — `thm:ostcont`, 3.6. Stopped martingale — `cor:stopped`, 3.7. \(L^2\) convergence — `thm:L2cont`, 3.8.
+- Local martingale — `def:localmart`, 3.9. Reducing sequences — `prop:localmart`, 3.10. Variation of a continuous path — `lem:variation`, 3.11. Finite-variation local martingales vanish — `thm:fvconstant`, 3.12. Fourth-moment bound — `lem:fourth`, 3.13.
+- Quadratic variation — `thm:qvexist`, 3.14. Sums of squares — `prop:qvsums`, 3.15. \(L^2\) and the bracket — `cor:L2bracket`, 3.16. Bracket of two martingales — `prop:bracket`, 3.17. \(d\)-dimensional Brownian motion — `ex:ddimbm`, 3.18.
+- Exponential martingale — `prop:expmart`, 3.19. Laplace transform of hitting times — `cor:hitlaplace`, 3.20. Maximum of a drifted path — `cor:driftmax`, 3.21. Wald — `prop:wald`, 3.22.
+
+### Chapter 4 — The Itô integral (`ch04-ito.tex`)
+
+- Bracket and stopping — `lem:bracketstop`, 4.1. Kunita–Watanabe — `lem:kw`, 4.2. The space \(\mathbb H^2\) — `def:H2`, 4.3. Completeness — `lem:H2complete`, 4.4. Elementary integral — `lem:elementary`, 4.5. Itô integral — `thm:itoH2`, 4.6. Its properties — `prop:itoprops`, 4.7. Local integrands — `thm:itoloc`, 4.8. Continuous semimartingale — `def:semimart`, 4.9. Riemann sums — `prop:riemann`, 4.10.
+- Itô’s formula — `thm:itoformula`, 4.11. Lévy’s characterisation — `thm:levychar`, 4.12. Exponential martingales — `prop:expmartgen`, 4.13. Optional stopping in \(L^1\) — `lem:ostL2`, 4.14. Constancy on flat stretches of the clock — `lem:constancy`, 4.15. Dambis–Dubins–Schwarz — `thm:dds`, 4.16. Doob’s \(L^p\) inequality — `lem:doobp`, 4.17. Burkholder — `thm:bdg`, 4.18.
+- Tanaka — `thm:tanaka`, 4.19. Skorokhod’s reflection lemma — `lem:skorokhod`, 4.20. Lévy’s theorem for \((M-B,M)\) and \((|B|,L)\) — `thm:levyMB`, 4.21. Dimension of the zero set — `cor:zerodim`, 4.22. The reverse BDG inequality and Knight’s theorem are quoted.
+
+### Chapter 5 — Brownian motion and analysis (`ch05-analysis.tex`)
+
+- Heat equation — `thm:heat`, 5.1. Feynman–Kac — `thm:feynmankac`, 5.2. Cameron–Martin’s \((\cosh\lambda t)^{-1/2}\) — `ex:cmcosh`, 5.3. Bayes for a positive martingale — `lem:bayes`, 5.4. Girsanov, bounded drift — `thm:girsanov`, 5.5. Cameron–Martin formula — `cor:cameronmartin`, 5.6. Novikov’s condition is quoted.
+- Uniform law on the sphere — `lem:uniformsphere`, 5.7. Strong Markov property in \(\mathbb R^d\) — `prop:strongmarkovd`, 5.8. Mean-value property — `lem:meanvalue`, 5.9. Kakutani — `thm:kakutani`, 5.10. Poincaré’s cone condition — `thm:cone`, 5.11.
+- Exit from an annulus — `thm:annulus`, 5.12. Recurrence and transience — `cor:recurrence`, 5.13. A common clock — `lem:commonclock`, 5.14. Lévy’s conformal invariance — `thm:conformal`, 5.15. Winding — `cor:winding`, 5.16.
+
+### Chapter 6 — Stochastic differential equations (`ch06-sde.tex`)
+
+- Strong solution — `def:strongsol`, 6.1. Gronwall — `lem:gronwall`, 6.2. Existence and uniqueness, Lipschitz — `thm:sdeexist`, 6.3. Continuous dependence — `prop:sdeflow`, 6.4. Markov property — `thm:sdemarkov`, 6.5. Yamada–Watanabe — `thm:yamada`, 6.6.
+- Ornstein–Uhlenbeck — `prop:ou`, 6.7. Geometric Brownian motion — `prop:gbm`, 6.8. Black–Scholes–Merton — `thm:blackscholes`, 6.9. Squared Bessel from Brownian motion — `prop:besqd`, 6.10. Definition for real dimension — `def:besq`, 6.11. Hitting zero — `thm:besqzero`, 6.12. Existence for non-integer dimension is quoted.
+- Eigenvalue perturbation — `lem:perturb`, 6.13. Dyson Brownian motion from a simple spectrum — `thm:dyson`, 6.14. The entrance from a multiple eigenvalue, and the GUE density at time \(1\), are not proved. Euler–Maruyama, strong order \(1/2\) — `thm:eulermaruyama`, 6.15.
+
+### Chapter 7 — Lévy processes (`ch07-levy.tex`)
+
+- Feller semigroup — `def:feller`, 7.1. Generator — `prop:generator`, 7.2. Dynkin’s martingale — `thm:dynkin`, 7.3. Resolvent — `prop:resolvent`, 7.4. Generator of Brownian motion — `thm:bmgenerator`, 7.5. Martingale problem for \(\frac12\Delta\) — `thm:martprob`, 7.6.
+- Poisson random measure — `def:prm`, 7.7. Existence — `thm:prmexist`, 7.8. Exponential formula — `prop:campbell`, 7.9. Lévy process — `def:levyproc`, 7.10. Characteristic exponent — `prop:levyexp`, 7.11. Generator — `prop:levygen`, 7.12. Lévy–Itô — `thm:levyito`, 7.13.
+- Subordinators — `cor:subordinator`, 7.14. The \(\frac12\)-stable subordinator — `thm:halfstable`, 7.15. Inverse local time — `cor:invlocal`, 7.16. Itô’s excursion theory and the general martingale problem are described, not proved.
+
+### Chapter 8 — Networks (`ch08-networks.tex`)
+
+- Maximum principle — `lem:maxprinciple`, 8.1. Escape probability — `prop:escape`, 8.2. Thomson — `thm:thomson`, 8.3. Rayleigh — `cor:rayleigh`, 8.4. Commute time — `thm:commute`, 8.5. Recurrence by resistance — `thm:recurrentR`, 8.6. Lyons — `thm:lyons`, 8.7. Nash–Williams — `thm:nashwilliams`, 8.8.
+- Every subgraph of \(\mathbb Z^2\) is recurrent — `cor:z2rec`, 8.9. Graphs containing \(\mathbb Z^d\), \(d\ge3\), are transient — `thm:zdtransient`, 8.10. The regular tree — `prop:treetransient`, 8.11. Schur’s test — `lem:schur`, 8.12. Kesten, \(\rho=\sqrt{2k-1}/k\) — `thm:kesten`, 8.13. Amenability is described, not proved.
+
+### Chapter 9 — The semicircle (`ch09-semicircle.tex`)
+
+- Catalan moments — `moments:lem:scmoments`, 9.1. Walks and moments — `moments:lem:walks`, 9.2. Wigner in probability — `moments:thm:wigner`, 9.3. A sharper variance — `prop:varsharp`, 9.4. Wigner almost surely — `thm:wigneras`, 9.5.
+- Stieltjes inversion — `prop:inversion`, 9.6. Identification — `lem:identify`, 9.7. The semicircle equation — `prop:scstieltjes`, 9.8. Marchenko–Pastur moments — `lem:mpmoments`, 9.9. Their generating function — `lem:mpgf`, 9.10. Marchenko–Pastur — `thm:mp`, 9.11.
+- Sudakov–Fernique — `lem:sudakov`, 9.12. The GOE edge — `thm:lambdamax`, 9.13. Spiked Wigner outlier — `thm:spiked`, 9.14. Tracy–Widom, Füredi–Komlós, and Bai–Yin are quoted.
+
+### Chapter 10 — The unitary group (`ch10-cue.tex`)
+
+- Eigenvalue counts as Bernoulli sums — `prop:bernoulli`, 10.1. Number variance — `thm:numbervariance`, 10.2. Costin–Lebowitz–Soshnikov — `cor:countclt`, 10.3. Sine kernel — `thm:sinekernel`, 10.4. Gap probability — `thm:gap`, 10.5. Mehta’s spacing density is quoted.
+- Second moment of \(|\det(I-U)|\) — `prop:secondmoment`, 10.6. Uniform vectors — `lem:uniformvector`, 10.7. A reflection — `lem:reflection`, 10.8. The factorisation — `thm:bhny`, 10.9. Keating–Snaith moments — `thm:ksmoments`, 10.10. CLT for \(\log|\det|\) — `thm:logclt`, 10.11.
+- Traces of powers — `prop:formfactor`, 10.12. Montgomery’s formula, proved in Volume 14 and not used as a premise — `thm:montgomery`, 10.13.
+
+### Chapter 11 — Log-correlated fields (`ch11-logcorrelated.tex`, `brw-halfmoment.tex`)
+
+- Speed of the branching random walk — `thm:brwspeed`, 11.1. Cosine sums — `lem:cosine`, 11.2. \(\log|Z_n|\) is log-correlated — `prop:cuelogcorr`, 11.3. Gaussian multiplicative chaos, \(L^2\) phase — `thm:gmc`, 11.4. The phase \(\gamma\ge\sqrt2\), and Webb’s convergence, are quoted.
+- Bernstein’s inequality — `lem:bernstein`, 11.5. Upper bound for the maximum — `thm:maxupper`, 11.6. Second-order maximum, admitted — `thm:cuemax`, 11.7.
+- Critical branching random walk — `def:brw`, 11.8. Many-to-one — `lem:manytoone`, 11.9. Ballot bound — `lem:ballotbound`, 11.10. No high individuals — `lem:nohigh`, 11.11. Half-moment \(\mathbb EW_n^{1/2}\le Cn^{-1/4}\) — `thm:halfmoment`, 11.12. The matching lower bound is described, not written. The Fyodorov–Hiary–Keating formula for \(\zeta\) is a conjecture here.
+
+### Appendix A — Spectral graph theory (`spectral.tex`)
+
+- Rayleigh — `spectral:lem:rayleigh`, A.1. Components — `spectral:prop:components`, A.2. Laplacian spectra of the basic graphs — `spectral:ex:lapspectra`, A.3. Directed matrix-tree theorem — `spectral:thm:dirmatrixtree`, A.4. Kirchhoff — `spectral:cor:kirchhoff`, A.5. Cayley and the hypercube — `spectral:cor:treecounts`, A.6. BEST — `spectral:thm:best`, A.7. de Bruijn sequences — `spectral:cor:debruijncount`, A.8.
+
+### Notation clashes with Volumes 1–11
+
+- \(\log\) remains the natural logarithm.
+- \(L_t\) is local time in Chapters 4 and 7. In the appendix \(L\) is the Laplacian, as in Volume 8.
+- \(\lambda_i\) is an eigenvalue from Chapter 6 on, and also the drift of geometric Brownian motion and the rate of a Poisson process. Volume 11 uses \(\lambda\) for a Poisson mean and for a Young diagram.
+- \(\rho\) is Kesten’s spectral radius in Chapter 8. Volume 11 uses \(\rho\) for Dickman’s function. Volume 8 uses \(\rho(A)\) for a spectral radius.
+- \(\theta\) is a Girsanov drift in Chapter 5 and an eigenangle in Chapter 10.
+- \(\beta\) is a Brownian motion constructed by a time change, and Dyson’s index in the remark after `thm:dyson`.
+- \(\gamma\) is the Marchenko–Pastur ratio in Chapter 9 and the chaos parameter in Chapter 11. Volume 11 uses \(\gamma\) for the Euler constant in one numerical line.
+- \(\Pi\) is a Lévy measure in Chapter 7, as already in Volume 11, Chapter 5.
+- \(C_k\) is a Catalan number in Chapter 9. \(C(t,s)\) is the Black–Scholes price in Chapter 6. \(C(x)\) is the cosine kernel in Chapter 11.
+- \(\varphi\) is the standard normal density in the Black–Scholes section. Volume 4 uses \(\phi\) for that density. Elsewhere in this volume \(\varphi\) is a test function or a mollifier.

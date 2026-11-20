@@ -17,7 +17,7 @@ Reading order is each volume’s `main.tex`. Scores use the scale in the volume 
 | 9 Shapes | 9/10. 0 critical, 0 major, 2 minor. See [volume9.md](volume9.md). |
 | 10 Abstraction | 9/10. 0 critical, 0 major, 6 minor. See [volume10.md](volume10.md). |
 | 11 Randomness | 8/10. 0 critical, 2 major, 7 minor. See [volume11.md](volume11.md). |
-| 12 Random Motion | not started |
+| 12 Random Motion | 9/10. 0 critical, 0 major, 4 minor. See [volume12.md](volume12.md). |
 | 13 Arithmetic | not started |
 | 14 The Primes | not started |
 | 15 Order and Chance | not started |
