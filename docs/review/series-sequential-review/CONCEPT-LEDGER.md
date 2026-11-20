@@ -1740,3 +1740,87 @@ File names are under `volume9-shapes/chapters/`. The shared counter numbers theo
 - \(H_k\) is homology from Chapter 6 on. Volume 8 uses \(H\) for a Hilbert space and \(H^s\) for a Sobolev space.
 - The shape operator is \(-dN\), and \(K=\det(dN)\). The sign is stated in Chapter 4.
 - \(\log\) is the natural logarithm, as in Volumes 6–8.
+
+## Volume 10 — Abstraction
+
+File names are under `volume10-abstraction/chapters/`. The shared counter numbers theorems, propositions, lemmas, corollaries, definitions, and examples inside each chapter. Exercises use a separate counter and restart each chapter. There are eleven chapters and no appendices. Chapter 2 is `linear-ch10-tensors.tex`. Chapter 10, the symmetric group, is `ch09-symmetric.tex`. Chapter 11, compact groups, is `ch11-compact.tex`. Products of permutations are composed right to left. \(\log\) is the natural logarithm; base-2 logarithms are written \(\log_2\).
+
+### Chapter 1 — Categories (`ch01-categories.tex`)
+
+- Category, with identities and associative composition — `def:category`, 1.1. Running examples — `ex:categories`, 1.2.
+- Functor — `def:functor`, 1.3. Examples — `ex:functors`, 1.4. A functor isomorphism is an isomorphism — `prop:functoriso`, 1.5. Brouwer, read functorially — `ex:brouwer`, 1.6.
+- Natural transformation — `def:nat`, 1.7. Examples — `ex:nattrans`, 1.8. The double dual is natural — `thm:bidualnat`, 1.9. \(V\) is not naturally its dual on \(\mathbf{Iso}_K\) when \(|K|>3\) — `thm:notnatural`, 1.10.
+- Initial and terminal objects — `def:initial`, 1.11. Uniqueness up to unique isomorphism — `prop:initialunique`, 1.12. Product and coproduct — `def:product`, 1.13. Examples, including the divisor poset — `ex:products`, 1.14. Universal property of abelianisation — `prop:abuniv`, 1.15.
+- Yoneda — `thm:yoneda`, 1.16. An object is determined by its maps — `cor:yonedaemb`, 1.17. Cayley — `ex:cayley`, 1.18. Natural operations on groups — `ex:natops`, 1.19.
+- Adjunction — `def:adjunction`, 1.20. Examples — `ex:adjunctions`, 1.21. Uniqueness of adjoints — `thm:adjunique`, 1.22. Right adjoints preserve products — `thm:rapl`, 1.23.
+
+### Chapter 2 — Tensors and the cost of multiplying matrices (`linear-ch10-tensors.tex`)
+
+- Kronecker product — `linear:def:kronecker`, 2.1. Rules — `linear:prop:kronecker`, 2.2. Grids and cubes — `linear:exa:grid`, 2.3. The vec identity \(\operatorname{vec}(AXB)=(B^{\mathsf T}\otimes A)\operatorname{vec}X\) — `linear:prop:vec`, 2.4. Sylvester’s equation — `linear:thm:sylvester`, 2.5.
+- Tensor rank — `linear:def:tensorrank`, 2.6. The slice test — `linear:lem:slices`, 2.7. Rank depends on the field — `linear:exa:rotation`, 2.8. Rank is not semicontinuous; the \(W\) tensor — `linear:exa:wtensor`, 2.9.
+- The matrix-multiplication tensor — `linear:def:mmtensor`, 2.10. Bilinear algorithms — `linear:thm:bilinear`, 2.11. Strassen’s seven products — `linear:thm:strassen`, 2.12. The exponent \(\omega\) — `linear:thm:omega`, 2.13. Schmidt decomposition — `linear:thm:schmidt`, 2.14.
+
+### Chapter 3 — Tensors and exactness (`ch02-tensors.tex`)
+
+- Exact sequence — `def:exact`, 3.1. Short exact examples — `ex:ses`, 3.2. Splitting lemma — `prop:split`, 3.3. Snake lemma — `thm:snake`, 3.4. Short five lemma — `cor:fivelemma`, 3.5. Hom is left exact — `prop:homleft`, 3.6. A test for exactness — `lem:testexact`, 3.7.
+- Tensor product of modules — `def:tensor`, 3.8. Existence — `thm:tensorexists`, 3.9. Rules — `prop:tensorrules`, 3.10. \(\Z/m\otimes\Z/n\cong\Z/\gcd(m,n)\) — `ex:zmzn`, 3.11. Tensor–Hom adjunction — `thm:tensorhom`, 3.12. Tensor is right exact — `cor:rightexact`, 3.13.
+- Projective module — `def:projective`, 3.14. Summands of free modules — `prop:projective`, 3.15. Baer’s criterion — `thm:baer`, 3.16. Divisible modules — `cor:divisible`, 3.17. Over a PID, finitely generated free, projective, flat, and torsion-free agree — `thm:pidflat`, 3.18.
+
+### Chapter 4 — Noetherian rings and Hilbert’s theorems (`ch03-noetherian.tex`)
+
+- Three Noetherian conditions — `prop:noetherian`, 4.1. Submodules and quotients — `prop:noethmodules`, 4.2. Hilbert’s basis theorem — `thm:hilbertbasis`, 4.3. A finite subsystem has the same zero set — `cor:finitesystem`, 4.4.
+- Zariski topology — `prop:zariski`, 4.5. Irreducible sets — `def:irreducible`, 4.6. Components — `prop:components`, 4.7. Artin–Tate — `lem:artintate`, 4.8. Zariski’s lemma — `thm:zariskilemma`, 4.9. Weak Nullstellensatz — `thm:weaknull`, 4.10. Nullstellensatz — `thm:nullstellensatz`, 4.11. The ideal–variety dictionary — `cor:dictionary`, 4.12.
+- Monomial order — `def:monomialorder`, 4.13. Dickson — `lem:dickson`, 4.14. Division — `prop:division`, 4.15. Gröbner basis — `def:groebner`, 4.16. Properties — `prop:groebnerprops`, 4.17. Cancellation of leading terms — `lem:cancel`, 4.18. Buchberger’s criterion — `thm:buchberger`, 4.19. Buchberger’s algorithm — `cor:buchalg`, 4.20. A scheme is named in one sentence and not used.
+
+### Chapter 5 — Localisation and dimension (`ch04-localisation.tex`)
+
+- Localisation — `def:localisation`, 5.1. Universal property — `prop:locuniv`, 5.2. Exactness — `prop:locexact`, 5.3. Primes of a ring of fractions — `thm:locprimes`, 5.4. A local ring — `cor:localring`, 5.5. Nakayama — `thm:nakayama`, 5.6. Minimal generators — `cor:mingens`, 5.7. A local criterion for zero — `prop:localzero`, 5.8.
+- Spectrum — `def:spec`, 5.9. Primes of \(\Z[x]\) — `thm:speczx`, 5.10. Integral elements — `def:integral`, 5.11. The criterion — `prop:integralcrit`, 5.12. Integral closure — `cor:integralclosure`, 5.13. Integrality in a field extension — `lem:intfield`, 5.14. Going up — `thm:goingup`, 5.15. Going down is named and not used.
+- Krull dimension — `def:krulldim`, 5.16. Dimension under integral extensions — `cor:dimintegral`, 5.17. Noether’s change of variables — `lem:noethervar`, 5.18. Noether normalisation — `thm:noethernorm`, 5.19. \(\dim K[x_1,\ldots,x_n]=n\) — `thm:dimpoly`, 5.20.
+- Primary ideal — `def:primary`, 5.21. Its radical is prime — `lem:primaryradical`, 5.22. An irreducible ideal in a Noetherian ring is primary — `lem:irredprimary`, 5.23. Lasker–Noether — `thm:laskernoether`, 5.24. Associated primes — `thm:assprimes`, 5.25.
+
+### Chapter 6 — Dedekind domains (`ch05-dedekind.tex`)
+
+- Fractional ideal — `def:fractional`, 6.1. Invertible ideals — `lem:invertible`, 6.2. Discrete valuation ring — `def:dvr`, 6.3. The four DVR conditions — `thm:dvr`, 6.4. Dedekind domain — `def:dedekind`, 6.5. Noether’s equivalence — `thm:dedekind`, 6.6. To contain is to divide — `cor:contain`, 6.7. The factorisation of \(6\) in \(\Z[\sqrt{-5}]\) — `ex:sixtwice`, 6.8.
+- Class group — `def:classgroup`, 6.9. The class sequence — `prop:classseq`, 6.10. One and a half generators — `prop:twogen`, 6.11. The trace pairing — `lem:trace`, 6.12. Integral closure in a finite separable extension — `thm:intclosure`, 6.13. \(\sum e_if_i=n\) — `thm:fundid`, 6.14. Claborn’s theorem and Krull–Akizuki are quoted. The order of the class group of \(\Z[\sqrt{-5}]\) is deferred to Volume 13; this chapter shows that the class of \(\mathfrak p=(2,1+\sqrt{-5})\) has order \(2\).
+
+### Chapter 7 — Homological algebra (`ch06-homological.tex`)
+
+- Projective resolution — `def:resolution`, 7.1. Comparison — `thm:comparison`, 7.2. Horseshoe — `lem:horseshoe`, 7.3. Tor and Ext — `def:torext`, 7.4. Basic properties — `prop:torextbasic`, 7.5. Long exact sequences — `thm:les`, 7.6. Tor detects flatness — `cor:torflat`, 7.7.
+- \(\operatorname{Tor}_1(\Z/n,N)=N[n]\) and \(\operatorname{Ext}^1(\Z/n,N)=N/nN\) — `ex:torextz`, 7.8. Vanishing over a PID — `prop:pidvanish`, 7.9. Extensions classified by \(\operatorname{Ext}^1\) — `thm:extclass`, 7.10. The class of an extension of \(\Z/p\) by \(\Z/p\) — `ex:extzp`, 7.11. Universal coefficient theorems for finitely generated free complexes over a PID — `thm:uct`, 7.12. The projective plane — `ex:rp2uct`, 7.13. Hilbert’s syzygy bound, general Tor symmetry, Yoneda’s \(\operatorname{Ext}^n\), freeness of arbitrary submodules, and the Whitehead problem are quoted.
+
+### Chapter 8 — Group cohomology (`ch07-groupcoh.tex`)
+
+- Cochains, cocycles, coboundaries; \(H^n(G,A)\) — `def:cochains`, 8.1. Normalised cochains — `lem:normalised`, 8.2. Complements and crossed homomorphisms — `prop:complements`, 8.3. Hilbert’s Theorem 90 — `thm:hilbert90`, 8.4. The cyclic norm form — `cor:hilbert90`, 8.5. Pythagorean points — `ex:pythagoras`, 8.6.
+- Schreier: \(H^2\) classifies extensions — `thm:h2ext`, 8.7. Cyclic formula \(H^2(G,A)\cong A^G/NA\) — `thm:h2cyclic`, 8.8. The carry cocycle — `ex:carry`, 8.9. Averaging kills cohomology when the order is invertible — `prop:killed`, 8.10. Schur–Zassenhaus for an abelian kernel — `thm:sz`, 8.11. The nonabelian Schur–Zassenhaus theorem, Feit–Thompson, Galois descent, and the relative Brauer group are quoted.
+
+### Chapter 9 — Semisimple algebras and induction (`ch08-semisimple.tex`)
+
+- Semisimple module and algebra — `def:semisimple`, 9.1. Endomorphism rings — `lem:endA`, 9.2. Wedderburn — `thm:wedderburn`, 9.3. \(\C[G]\) — `cor:wedderburnCG`, 9.4. Small examples — `ex:wedderburnsmall`, 9.5.
+- Induced representation — `def:induced`, 9.6. Frobenius reciprocity — `thm:frobrecip`, 9.7. The induced character — `prop:indchar`, 9.8. Dihedral characters — `ex:dihedral`, 9.9. Mackey’s formula — `thm:mackey`, 9.10. Mackey’s irreducibility criterion — `cor:mackeyirr`, 9.11.
+- The central element \(\omega\) — `lem:omega`, 9.12. Burnside’s vanishing lemma — `lem:burnsidevanish`, 9.13. A prime-power class — `prop:primepowerclass`, 9.14. Burnside’s \(p^aq^b\) theorem — `thm:burnsidepq`, 9.15. Frobenius kernels — `thm:frobeniuskernel`, 9.16. Frobenius’s classification of real division algebras and Thompson’s nilpotence theorem are quoted.
+
+### Chapter 10 — The symmetric group (`ch09-symmetric.tex`)
+
+- Partition, Young diagram, conjugate — `def:partition`, 10.1. Tabloid, column antisymmetriser \(\kappa_T\), polytabloid, Specht module \(S^\lambda\) — `def:tabloid`, 10.2. Dominance — `def:dominance`, 10.3. Dominance lemma — `lem:dominance`, 10.4. Action of \(\kappa_T\) on tabloids — `lem:kappa`, 10.5.
+- James’ submodule theorem — `thm:james`, 10.6. Young–Frobenius–Specht: the \(S^\lambda\) are the irreducibles — `thm:specht`, 10.7. Standard tableau — `def:standard`, 10.8. The standard polytabloids are a basis — `thm:standardbasis`, 10.9.
+- Insertion — `lem:insertion`, 10.10. Robinson–Schensted — `thm:rs`, 10.11. Schensted: the first row has the length of a longest increasing subsequence — `thm:schensted`, 10.12. The decreasing half is quoted.
+- Hook length — `def:hook`, 10.13. Hook-length formula — `thm:hook`, 10.14. Transposition character, equal to \(f^\lambda\) times the content sum over \(\binom n2\) — `thm:transposition`, 10.15. Conjugation negates that ratio and preserves the dimension — `cor:conjugate`, 10.16. The isomorphism \(S^{\lambda'}\cong S^\lambda\otimes\operatorname{sgn}\), Young’s rule, and modular Specht theory are quoted. The limit shape \(\Omega(u)\) is quoted.
+
+### Chapter 11 — Compact groups (`ch11-compact.tex`)
+
+- Unitary trick and complete reducibility — `prop:unitarytrick`, 11.1. Schur orthogonality for a compact matrix group — `thm:schurorth`, 11.2. Peter–Weyl for a compact matrix group — `thm:peterweyl`, 11.3. The general compact-group extension is quoted.
+- Schur function \(s_\lambda=a_{\lambda+\delta}/a_\delta\), with \(\delta=(n-1,\ldots,0)\) — `def:schurpoly`, 11.4. Alternants — `lem:alternants`, 11.5. Weyl’s character and dimension formulas for \(U(n)\) — `thm:weylchar`, 11.6. The hook-content identity and full Schur–Weyl duality are quoted; the character consequence used later is proved from Pieri.
+- Power traces: \(\mathbb E\operatorname{tr}U^j=0\) and \(\mathbb E|\operatorname{tr}U^j|^2=\min(j,n)\) — `prop:powertraces`, 11.7. Pieri’s rule for one box — `lem:pieri`, 11.8. Trace moments and longest increasing subsequences — `thm:traces`, 11.9. \(\sqrt2\operatorname{Re}\operatorname{tr}U\to N(0,1)\) — `cor:gaussiantrace`, 11.10. The joint power-trace limit, and the zeta-moment predictions with factors \(42\) and \(24024\), are quoted or marked as conjectures.
+
+### Notation clashes with Volumes 1–9
+
+- \(\log\) remains the natural logarithm. Chapter 2 also writes \(\log_2\) for entropy and for the matrix-multiplication exponent. The inequality \(\log t\le t-1\) is the natural-logarithm comparison; see V10-004.
+- \(\chi\) is an irreducible character from Chapter 9 on, as in Volume 3. Volume 9 uses \(\chi\) for the Euler characteristic. Volumes 2 and 6 use \(\chi\) for a Dirichlet character.
+- \(H^n(G,A)\) is group cohomology from Chapter 8 on. Volume 9 uses \(H_k\) for singular homology. Chapter 8 says the two are different.
+- \(\lambda\) is a partition from Chapter 10 on, and a dominant weight in Chapter 11. Earlier volumes use \(\lambda\) for an eigenvalue.
+- The content of a cell is \(j-i\). Volume 4 uses content for outer content, and Volume 8 for Hausdorff content.
+- \(\omega\) is the exponent of matrix multiplication in Chapter 2. Volume 9 uses \(\omega\) for a connection form and for a differential form. Volume 8 uses \(\Delta\) for the modular function; this volume does not reuse that symbol for it.
+- \(\delta=(n-1,\ldots,0)\) is the Weyl vector in Chapter 11. Volume 9 uses \(\delta\) for the modular function of a matrix group.
+- \(K\) is a field throughout. Volume 9 uses \(K\) for Gaussian curvature.
+- \(\operatorname{Spec}\) is the prime spectrum from Chapter 5 on. Volume 8 uses spectrum for the spectrum of an operator.
