@@ -1,8 +1,8 @@
 # Volume 10 — Abstraction
 
-**Score: pending.** Chapters 1–2 are in this file. The score and the severity totals are filled when the remaining chapters are in.
+**Score: pending.** Chapters 1–3 are in this file. The score and the severity totals are filled when the remaining chapters are in.
 
-**How this was read.** Book order in `volume10-abstraction/main.tex`: preface, Categories (Chapter 1), Tensors and the Cost of Multiplying Matrices (Chapter 2, file `linear-ch10-tensors.tex`), then the later chapters as they are reviewed. The blurb, `kdp.md`, and About the Cover were read with the preface. Every exercise in a reviewed chapter was read, including its hint and its solution. The shared counter numbers theorems, propositions, lemmas, corollaries, definitions, and examples inside each chapter. Exercises use a separate counter.
+**How this was read.** Book order in `volume10-abstraction/main.tex`: preface, Categories (Chapter 1), Tensors and the Cost of Multiplying Matrices (Chapter 2, file `linear-ch10-tensors.tex`), Tensors and Exactness (Chapter 3), then the later chapters as they are reviewed. The blurb, `kdp.md`, and About the Cover were read with the preface. Every exercise in a reviewed chapter was read, including its hint and its solution. The shared counter numbers theorems, propositions, lemmas, corollaries, definitions, and examples inside each chapter. Exercises use a separate counter.
 
 ## Issues
 
@@ -44,9 +44,17 @@ Volume 8, Theorem C.2, is triangularisation; Theorem 4.1 is the singular value d
 
 Every exercise was read. There are 16. The column-major vec figure matches the identity. The \(W\) cube has front slice \(\bigl(\begin{smallmatrix}0&1\\1&0\end{smallmatrix}\bigr)\) and back slice \(\bigl(\begin{smallmatrix}1&0\\0&0\end{smallmatrix}\bigr)\). The recursion figure’s eighteen block additions agree with the count \(10+8\) in the solution of `linear:ex:strassen22`.
 
+### Chapter 3
+
+Exact sequences, the splitting lemma, the snake lemma, left exactness of Hom, existence of the tensor product, the tensor–Hom adjunction, right exactness, projectives as direct summands of free modules, Baer’s criterion, divisible modules over a PID, and the equivalence of free, projective, flat, and torsion-free for finitely generated modules over a PID. The snake was followed element by element: the class of the pullback is independent of the lift, and each of the four exactness checks closes. The short five lemma is the case in which the outer kernels and cokernels vanish. About the Cover matches this construction: the diagonal runs from the last kernel to the first cokernel, and the quotient removes the dependence on the lift.
+
+\(\Z/m\otimes\Z/n\cong\Z/\gcd(m,n)\), so \(\Z/4\otimes\Z/6\cong\Z/2\) and \(\Z/2\otimes\Z/3=0\). Tensoring \(0\to\Z\xrightarrow{2}\Z\to\Z/2\to0\) with \(\Z/2\) kills the first map and preserves the quotient; the collapse figure shows that. \(\Q\) is torsion-free, not projective, and flat: \(A\otimes\Q\) is the group of fractions \(a/s\), and an injection stays injective after that localisation, which is built here rather than quoted from Chapter 5. Volume 3, Theorem 7.6, is the structure theorem (`thm:structure`). Volume 3, Theorem 6.9, is the Chinese remainder theorem for coprime ideals (`thm:crtring`). Volume 3, Chapter 7, records that the first isomorphism theorem holds for modules. Volume 7, Theorem 1.19, is Zorn’s lemma.
+
+Every exercise was read. There are 10. \(\operatorname{Hom}(\Z/m,\Z/n)\cong\Z/\gcd(m,n)\), and a divisible group tensored with a torsion group is zero. Of the four sequences, the first and the last split and the middle two do not. The kernel–cokernel sequence of a composite is exact, including by the snake diagram in the hint. The five lemma holds under the stated one-sided hypotheses. \((\Z/12)\otimes(\Z/18)\cong\Z/6\), and \((K[\varepsilon]/(\varepsilon))\otimes(K[\varepsilon]/(\varepsilon))\cong K\). For multiplication by \(n=4\) on the sequence for \(m=6\), the snake sends \(\bar 3\) in \(\Z/6\) to \(\bar 2\) in \(\Z/4\). Over \(\Z/6\), the idempotent \(\bar 3\) splits the ring as \(\Z/2\oplus\Z/3\). The map \(V^*\otimes W\to\operatorname{Hom}(V,W)\) is injective with image the finite-rank maps. The exercise on algebras grants the ring structure on \(A\otimes_RB\); the isomorphisms \(\C\otimes_\R\C\cong\C\times\C\) and \(\Q(\sqrt2)\otimes_\Q\Q(\sqrt3)\cong\Q(\sqrt2,\sqrt3)\) were checked from that point, including the impossibility of \((a+b\sqrt2)^2=3\) in rationals \(a,b\).
+
 ## Not checked
 
-- Chapters 3–11, so the score is not yet assigned.
+- Chapters 4–11, so the score is not yet assigned.
 - A TeX run, so unresolved references were not compiled. Numbered statements in the reviewed chapters were counted from the source environments.
 - Portrait files against `photos/CREDITS.md`. None of the reviewed chapters uses a portrait.
 - The historical fine print beyond the quotations that were compared with Strassen’s paper and with the published exponent bounds named in V10-005. Winograd’s optimality of seven multiplications, the \(3\times 3\) bounds \(19\) and \(23\), and the AlphaTensor length \(47\) over \(\mathbb F_2\) are left as the quotations the text marks.
