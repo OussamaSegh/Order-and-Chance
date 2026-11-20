@@ -24,11 +24,13 @@ Reading order is each volume’s `main.tex`. Scores use the scale in the volume 
 
 The concept ledger is [CONCEPT-LEDGER.md](CONCEPT-LEDGER.md). Volume 1 is the first section. Later reviews append their own section and check new uses against earlier lines.
 
-## Handoff (2026-11-20)
+## Status after Volume 15 (2026-11-20)
 
-Volumes 1–15 are complete: each has its log, its ledger section and its status line above. Volume 15 is recorded in [volume15.md](volume15.md). Every exercise in that volume was read. No book source was edited.
+All fifteen volumes are reviewed. Each has its log, its ledger section and its status line above. No book source was changed.
 
-To continue:
+Next steps:
 
 1. Spot-check Volume 9. Its review ran in 25 minutes and found only 2 minor issues, so its depth is uncertain.
-2. Then write a series summary and propose fixes: one small PR per volume, each with a distinct second reviewer and an issue log, merged by squash with `--match-head-commit` on green CI. No book source is changed before the author approves.
+2. Propose fixes after the author approves: one small PR per volume, each with a distinct second reviewer and an issue log, merged by squash with `--match-head-commit` on green CI.
+
+The per-volume briefs are in [briefs/](briefs/).
