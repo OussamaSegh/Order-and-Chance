@@ -17,7 +17,7 @@ PINS = {
         # The new statements were checked in this preparation. Not an independent sign-off.
         # 2026-11-11: Goodman part (b) denominator corrected from 6 to 8. Not an independent sign-off.
         # 2026-11-20: series review V4-012 and V4-013. Labels unchanged. Not a new sign-off.
-        "sha": "e31bf28e4d78f81e21c266daeda1042a14078898",
+        "sha": "6e7d24f5d6232a4a7540c0f5d1137d2acc5a805b",
         "claims": "thm:poissonlimit prop:fixedpoisson prop:cycles thm:coupon lem:geovar prop:couponvar prop:empty".split(),
         "exercises": "ex:records ex:fixedvar ex:quicksort ex:factorial ex:reservoir ex:prisoners ex:birthdaywait ex:twopoisson pb:goodman pb:samecycle".split(),
     },
