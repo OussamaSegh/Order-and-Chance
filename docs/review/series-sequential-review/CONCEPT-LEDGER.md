@@ -2114,3 +2114,88 @@ File names are under `volume13-arithmetic/chapters/`. The shared counter numbers
 - \(\rho\) is the point \(e^{2\pi i/3}\) in Chapter 17 and a quadratic character in the character-sum counts of Chapter 16. Volume 11 uses \(\rho\) for Dickman’s function.
 - \(\varepsilon\) is a fundamental unit in Chapters 1 and 6 and the root number \(\varepsilon(\chi)\) in Chapter 12.
 - \(N\) is a field norm, an ideal norm, a modulus, the level of a modular form, and a point count \(N_r\). The place \(\infty\) is the archimedean place. Volume 12 uses \(N(t)\) for a Poisson process.
+
+## Volume 14 — The Primes
+
+File names are under `volume14-primes/chapters/`. The shared counter numbers theorems, propositions, lemmas, corollaries, definitions, and examples inside each chapter. Exercises use a separate counter and restart each chapter. There are fourteen chapters. \(\log\) is the natural logarithm. Quoted, and not used except where the text says so: the Vinogradov–Korobov region (`thm:vk`, 1.1), Chen (`thm:chen`, 3.13), the Vinogradov mean value theorem (`thm:vmvt`, 5.7), Weil (`thm:weil`, 5.11), the effective Chebotarev theorem under the Riemann hypothesis (`thm:effcheb`, 3.17), Zhang (`thm:zhang`, 8.11), Matomäki–Radziwiłł (`thm:mr`, 10.12), Freiman (`thm:freiman`, 11.2), the polynomial Freiman–Ruzsa theorem (`thm:pfr`, 11.9), Kelley–Meka (`thm:km`, 12.6), Szemerédi (`thm:szemeredi`, 12.7), the higher Gowers inverse theorem (`thm:inverse`, 13.7), Green–Tao (`thm:greentao`, 13.8), the relative Szemerédi theorem (`thm:relsz`, 13.10), a positive proportion of zeros on the critical line (`thm:proportion`, 14.4), the approximate functional equation (`thm:afe`, 14.10), and the Riemann–Siegel formula (`thm:riemannsiegel`, 14.11). The Hooley error term is V14-001.
+
+### Chapter 1 — Zeros and short intervals (`ch01-zeros.tex`)
+
+- Vinogradov–Korobov region, quoted — `thm:vk`, 1.1. Ingham’s machine — `thm:ingham`, 1.2. Mean value of a Dirichlet polynomial — `lem:mvt`, 1.3. \(\sum d(n)^2/n\le(1+\log y)^4\) — `lem:dsq`, 1.4.
+- \(\zeta\) as a short sum — `lem:em`, 1.5. Mollified mean square — `prop:meansq`, 1.6. Carlson — `thm:carlson`, 1.7. Bohr–Landau — `cor:bohrlandau`, 1.8. Primes in intervals of length \(x^\theta\), \(\theta>3/4\) — `cor:hoheisel`, 1.9.
+
+### Chapter 2 — Siegel (`ch02-siegel.tex`)
+
+- Size of \(L\) — `lem:lsize`, 2.1. \(L'/L\) near \(\sigma=1\) — `lem:lnear`, 2.2. Zero-free region, one real exception — `thm:lzerofree`, 2.3. Landau–Page — `thm:page`, 2.4. At most one exceptional character — `cor:page`, 2.5.
+- Non-negative coefficients of \(F\) — `lem:Fpos`, 2.6. Lower bound for \(F\) — `lem:Fbound`, 2.7. Siegel — `thm:siegel`, 2.8. Exceptional zero \(1-\beta\ge c'(\varepsilon)q^{-\varepsilon}\) — `cor:siegelzero`, 2.9.
+- Truncated Perron for characters — `lem:perronchi`, 2.10. Prime number theorem for \(\psi(x,\chi)\) — `thm:pntchar`, 2.11. Siegel–Walfisz — `cor:sw`, 2.12. \(\log h(-p)\sim\frac12\log p\) — `thm:classnumber`, 2.13.
+
+### Chapter 3 — Sieves (`ch03-sieves.tex`)
+
+- Bonferroni — `lem:bonf`, 3.1. Weighted form — `lem:bonfavg`, 3.2. Product inequality — `lem:prodineq`, 3.3. Fundamental lemma — `thm:fl`, 3.4. Rough numbers — `cor:rough`, 3.5. Almost-prime twins — `cor:brunalmost`, 3.6. Brun–Titchmarsh in progressions — `cor:btap`, 3.7.
+- A bound for \(\zeta\) near \(\sigma=1\) — `lem:zetaline`, 3.8. A wide zero-free region for \(1/\zeta\) — `lem:invzeta`, 3.9. \(M(y)\) and \(L(y)\) — `prop:liouville`, 3.10. Selberg’s parity example — `thm:parity`, 3.11. What a sieve cannot do — `cor:parity`, 3.12. Chen, quoted — `thm:chen`, 3.13.
+- Primitive root criterion — `lem:primroot`, 3.14. \([K_k:\Q]=k\varphi(k)\) — `lem:kummerdeg`, 3.15. Splitting in \(K_k\) — `lem:kummersplit`, 3.16. Effective Chebotarev under RH, quoted — `thm:effcheb`, 3.17. Hooley, conditional — `thm:hooley`, 3.18. The error step is V14-001.
+
+### Chapter 4 — The large sieve (`ch04-largesieve.tex`)
+
+- Multiplicative large sieve — `thm:lschar`, 4.1. Sums of \(r/\varphi(r)\) and \(\tau(m)^2\) — `lem:phisum`, 4.2. Vaughan’s identity — `lem:vaughan`, 4.3. Bilinear forms — `prop:bilinear`, 4.4. Main estimate — `thm:mainest`, 4.5.
+- Small moduli — `lem:smallq`, 4.6. Bombieri–Vinogradov — `thm:bv`, 4.7. The form for \(\pi\) — `cor:bvpi`, 4.8. Barban–Davenport–Halberstam — `thm:bdh`, 4.9. Linnik on non-residues — `thm:linnik`, 4.10.
+
+### Chapter 5 — Exponential sums (`ch05-expsums.tex`)
+
+- Dirichlet’s approximation — `lem:dirichlet`, 5.1. Sums of minima — `lem:summin2`, 5.2. Vinogradov — `thm:vinogradov3`, 5.3. Major arcs — `lem:majorarc`, 5.4. Equidistribution of \(p\alpha\) — `cor:palpha`, 5.5.
+- Bounds for \(J_{s,k}(N)\) — `prop:vmvtbounds`, 5.6. The main conjecture, quoted — `thm:vmvt`, 5.7. Kloosterman calculus — `prop:klbasic`, 5.8. Moments — `lem:klmoments`, 5.9. Kloosterman’s \(p^{3/4}\) — `thm:kloosterman`, 5.10. Weil, quoted — `thm:weil`, 5.11. Salié — `thm:salie`, 5.12.
+
+### Chapter 6 — Waring (`waring.tex`)
+
+- Weyl differencing — `lem:weyldiff`, 6.1. Weyl’s inequality — `thm:weylk`, 6.2. Hua — `thm:hua`, 6.3. Approximation on major arcs — `lem:waringmajor`, 6.4. The singular integral — `lem:singint`, 6.5.
+- The asymptotic for \(s\ge2^k+1\) — `thm:waring`, 6.6. Multiplicativity of \(A(q,n)\) — `lem:amult`, 6.7. Local count — `lem:localcount`, 6.8. Lifting \(k\)-th powers — `lem:henselk`, 6.9. Sums of \(4k-1\) local powers — `lem:localsol`, 6.10.
+- Singular series bounded below for \(s\ge\max(4k,2^k+1)\) — `thm:singpos`, 6.11. \(G(k)\le\max(4k,2^k+1)\) — `cor:gk`, 6.12.
+
+### Chapter 7 — Three primes (`three-primes.tex`)
+
+- Ramanujan sums — `lem:ramsum`, 7.1. \(\varphi(q)\gg q^{3/4}\) — `lem:phi34`, 7.2. Singular series, \(1\le\mathfrak S(N)\le4\) for odd \(N\) — `prop:sing3`, 7.3. Vinogradov — `thm:threeprimes`, 7.4. Every large odd number is three primes — `cor:threeprimes`, 7.5.
+
+### Chapter 8 — GPY weights (`ch08-gpy.tex`)
+
+- Admissible tuple — `def:admissible`, 8.1. The comparison \(S_2-\rho S_1\) — `lem:gpyprinciple`, 8.2. Maynard’s weights — `def:yweights`, 8.3. Change of variables — `lem:inversion`, 8.4. A sum of \(\mu^2/\varphi\) — `lem:musum`, 8.5. Level of distribution — `def:level`, 8.6.
+- The two asymptotics — `thm:maynardsums`, 8.7. The criterion — `cor:mkcriterion`, 8.8. One-variable ratio, always below \(4\) — `prop:gpyratio`, 8.9. GPY, conditional on a level past \(\frac12\) — `thm:gpy`, 8.10. Zhang, quoted — `thm:zhang`, 8.11.
+
+### Chapter 9 — Maynard (`ch09-maynard.tex`)
+
+- \(L^2\) functions do not raise \(M_k\) — `lem:ltwo`, 9.1. Dirichlet’s integral on the simplex — `lem:dirichletint`, 9.2. \(M_k>\log k-2\log\log k-2\) — `prop:mklower`, 9.3. The product test — `lem:productF`, 9.4.
+- \(m+1\) primes in a bounded translate — `thm:maynard`, 9.5. \(p_{n+m}-p_n\le Cm^3e^{4m}\) — `cor:mprimes`, 9.6. \(M_{582}>4\) — `prop:mk582`, 9.7. The gap \(4580\) — `thm:explicitgap`, 9.8. Symmetric integrals — `lem:symint`, 9.9. \(M_5\ge1417255/708216\), and the gap \(12\) under Elliott–Halberstam — `thm:mfive`, 9.10.
+
+### Chapter 10 — Halász (`ch10-halasz.tex`)
+
+- Pretentious distance — `def:pretend`, 10.1. A bound near \(\sigma=1\) — `lem:zetanear`, 10.2. Four evaluations of the distance — `lem:dist`, 10.3. A Plancherel form — `lem:plancherel`, 10.4. The convolution inequality — `lem:halineq`, 10.5.
+- Halász’s inequality — `thm:halaszineq`, 10.6. Halász — `thm:halasz`, 10.7. Delange — `thm:delange`, 10.8. A real pretentious lemma — `lem:realpretend`, 10.9. Wirsing — `thm:wirsing`, 10.10. \(\sum_{n\le x}\mu(n)=o(x)\) — `cor:mobius`, 10.11. Matomäki–Radziwiłł, quoted — `thm:mr`, 10.12.
+
+### Chapter 11 — Sums and products (`ch11-additive.tex`)
+
+- A chain of sums — `lem:chain`, 11.1. Freiman, quoted — `thm:freiman`, 11.2. Additive energy — `lem:energy`, 11.3. Ruzsa’s triangle inequality — `lem:ruzsatri`, 11.4. Covering — `lem:covering`, 11.5. Petridis — `lem:petridis`, 11.6.
+- Plünnecke–Ruzsa — `thm:plunnecke`, 11.7. Small doubling in \(\mathbb F_2^n\) — `thm:ruzsaf2`, 11.8. Polynomial Freiman–Ruzsa, quoted — `thm:pfr`, 11.9. Dependent random choice — `lem:drc`, 11.10. Paths — `lem:paths`, 11.11. Balog–Szemerédi–Gowers — `thm:bsg`, 11.12. Szemerédi–Trotter — `thm:st`, 11.13. Elekes — `thm:elekes`, 11.14.
+
+### Chapter 12 — Roth (`ch12-roth.tex`)
+
+- Counting lemma — `lem:count3`, 12.1. A large coefficient — `lem:largecoef`, 12.2. Density increment — `lem:increment`, 12.3. Roth — `thm:roth`, 12.4. Behrend — `thm:behrend`, 12.5. Kelley–Meka, quoted — `thm:km`, 12.6. Szemerédi, quoted — `thm:szemeredi`, 12.7.
+
+### Chapter 13 — Gowers norms (`ch13-gowers.tex`)
+
+- Gowers norm — `def:gowers`, 13.1. Monotonicity — `lem:monotone`, 13.2. The \(U^2\) inverse theorem — `lem:u2`, 13.3. Generalised von Neumann — `thm:gvn`, 13.4. Counting — `cor:countk`, 13.5. A quadratic phase — `exa:quadphase`, 13.6.
+- Inverse theorem, quoted — `thm:inverse`, 13.7. Green–Tao, quoted — `thm:greentao`, 13.8. The \(W\)-trick — `lem:wtrick`, 13.9. Relative Szemerédi, quoted — `thm:relsz`, 13.10.
+
+### Chapter 14 — The critical line (`ch14-critical.tex`)
+
+- Cosine transform of \(\Xi\) — `lem:xicos`, 14.1. Theta near \(i\) — `lem:thetai`, 14.2. Hardy — `thm:hardy`, 14.3. A positive proportion, quoted — `thm:proportion`, 14.4. Derivative test — `lem:firstderiv`, 14.5. \(\zeta\) as a sum of length \(t\) — `lem:zetalengtht`, 14.6.
+- Hilbert’s inequality — `thm:hilbert`, 14.7. Mean square of a Dirichlet polynomial — `prop:meansqpoly`, 14.8. Hardy–Littlewood, \(\int_0^T|\zeta(\frac12+it)|^2\sim T\log T\) — `thm:hardylittlewood`, 14.9. Approximate functional equation, quoted — `thm:afe`, 14.10. Riemann–Siegel, quoted — `thm:riemannsiegel`, 14.11.
+- Cauchy kernels — `lem:cauchykernels`, 14.12. Montgomery’s explicit formula — `lem:montexplicit`, 14.13. A square of \(\Lambda\) — `lem:lambdasq`, 14.14. Pair correlation under the Riemann hypothesis — `thm:montgomerypc`, 14.15. At least two thirds of the zeros are simple — `cor:simplezeros`, 14.16.
+
+### Notation clashes with Volumes 1–13
+
+- \(\theta\) is the level of distribution in Chapters 8 and 9 (`def:level`). Volume 6 uses \(\theta\) for Chebyshev’s function. Chapter 14 uses \(\theta\) for Jacobi’s theta series, as Volume 5 does, and the text writes \(\Lambda_\zeta\) so that \(\Lambda\) stays von Mangoldt’s function.
+- \(S(\alpha)\) is the exponential sum over \(\Lambda\) in Chapters 5 and 7. \(S(m,n;p)\) is a Salié sum in Chapter 5. The singular series is \(\mathfrak S\).
+- \(M_k\) is Maynard’s ratio from Chapter 8 on. Volume 6 uses \(M\) for the Meissel–Mertens constant.
+- \(\rho\) is a non-trivial zero in Chapters 1, 2 and 14, Dickman’s function when Chapter 4 cites Volume 11, and the threshold in the Maynard criterion.
+- \(h\) is a gap in Chapters 1, 8 and 9. It is not the class number of Volume 13, except in Chapter 2 where \(h(-p)\) is named.
+- \(g\) is the sieve density in Chapter 3, the weight \(1/(1+At)\) in Chapter 9, and a Gauss sum in Chapter 5. Volume 13 uses \(g\) for the genus from its Chapter 14 on.
