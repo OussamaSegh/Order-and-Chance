@@ -14,7 +14,7 @@ Reading order is each volume’s `main.tex`. Scores use the scale in the volume 
 | 6 Crossroads | 8/10. 0 critical, 0 major, 10 minor. See [volume6.md](volume6.md). |
 | 7 Spaces | 7/10. 0 critical, 1 major, 10 minor. See [volume7.md](volume7.md). |
 | 8 Analysis | 8/10. 0 critical, 0 major, 11 minor. See [volume8.md](volume8.md). |
-| 9 Shapes | 9/10. 0 critical, 0 major, 2 minor. See [volume9.md](volume9.md). |
+| 9 Shapes | 9/10. 0 critical, 0 major, 4 minor. See [volume9.md](volume9.md). |
 | 10 Abstraction | 9/10. 0 critical, 0 major, 6 minor. See [volume10.md](volume10.md). |
 | 11 Randomness | 8/10. 0 critical, 2 major, 7 minor. See [volume11.md](volume11.md). |
 | 12 Random Motion | 9/10. 0 critical, 0 major, 4 minor. See [volume12.md](volume12.md). |
@@ -30,7 +30,7 @@ All fifteen volumes are reviewed. Each has its log, its ledger section and its s
 
 Next steps:
 
-1. Spot-check Volume 9. Its review ran in 25 minutes and found only 2 minor issues, so its depth is uncertain.
+1. Volume 9 was spot-checked on 22 November 2026 (Chapters 1, 6 and 8, on current `main`). The original pass had found 2 minor issues; the spot-check added 2 minor issues and no false positive. See [volume9.md](volume9.md).
 2. Propose fixes after the author approves: one small PR per volume, each with a distinct second reviewer and an issue log, merged by squash with `--match-head-commit` on green CI.
 
 The per-volume briefs are in [briefs/](briefs/).
