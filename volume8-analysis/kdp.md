@@ -10,7 +10,7 @@ Fourier analysis is treated in each setting the series needs. On the line: inver
 
 Complex analysis closes the main path. Cauchy's theorem in Dixon's form. The Phragmén-Lindelöf principle, and Hadamard's factorisation of an entire function of finite order. The Mellin transform. Tauberian theorems, from Tauber's own theorem to Wiener's and to Wiener-Ikehara, which recover a sequence from its transform and prove the prime number theorem with no contour integral in the argument. A last chapter of problems turns these tools on the values of the zeta function. Six appendices hold the linear algebra the book uses: duality, determinants as volume, eigenvalues, inner products, inequalities between matrices, and linear dynamics.
 
-Every theorem is proved. Every chapter ends with exercises, each with a hint and a solution that shows how the argument is found.
+The theorems on the main path are proved, and the quotations are marked. Every chapter ends with exercises, each with a hint and a solution that shows how the argument is found.
 
 Written for the reader who wants to see why the statement is true.
 
