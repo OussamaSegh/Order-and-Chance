@@ -30,7 +30,18 @@ class TestVolume4DownstreamBrownianDependencies(unittest.TestCase):
         self.assertNotIn(r"\begin{enumerate}", section)
         self.assertNotIn("Exercise~12.3(a)", downstream)
         self.assertNotIn("Exercise~12.3(c)", downstream)
-        self.assertIn("Exercise~12.3, where this consequence is proved", downstream)
+        # Exercise 12.3 proves outer length zero and injects binary sequences
+        # into this zero set. It does not state the abstract perfect-set theorem.
+        self.assertNotIn("Exercise~12.3, where this consequence is proved", downstream)
+        self.assertIn(
+            "outer length zero by the covering argument of Volume~4, Exercise~12.3",
+            downstream,
+        )
+        self.assertIn(
+            r"Volume~4, Exercise~12.3 injects the infinite binary sequences into the zero set on $[0,1]$",
+            downstream,
+        )
+        self.assertIn("Tonelli's theorem (Volume~7, Theorem~9.5)", downstream)
         self.assertIn("First establish the joint measurability", downstream)
         self.assertIn(r"B^{(m)}(t,\omega)=B_{2^{-m}\lfloor 2^m t\rfloor}", downstream)
         self.assertIn("the pointwise limit is jointly measurable", downstream)
