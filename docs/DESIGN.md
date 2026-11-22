@@ -1,3 +1,18 @@
+# Volume 1 close reading — 22 November 2026
+
+The [editorial review](../review/series-close-reading-2026-11-22.md) records the
+proof corrections, chapter edits, and source checks. The volume retains all 160
+numbered exercises with their hints and solutions. The index now takes statement
+numbers from the same labels it uses for page references.
+
+The rebuilt reading PDF contains the approved front cover and 471 interior
+pages. The 471-page paperback export passed the 7.125 × 10.25-inch bleed check.
+Its matching wrap uses 472 even-rounded pages and a 1.1078-inch spine. The local
+test suite ran 642 tests with seven skips. The visual pass sampled 19 revised
+interior pages.
+
+---
+
 # Volume 10 complete rewrite production — 15 November 2026
 
 The manuscript rewrite preserves design 5e, original figure blocks and all cover
