@@ -1,6 +1,6 @@
 # Description
 
-In the ring of numbers a + b√−5, the number 6 factors in two different ways: 2 · 3, and (1 + √−5)(1 − √−5). Unique factorisation, the foundation of ordinary arithmetic, is lost. In the 1840s Kummer, chasing Fermat's Last Theorem, found the same failure in the cyclotomic integers and repaired it with "ideal numbers". Dedekind turned them into ideals, and a whole world opened. This book is a journey through that world, from number fields to the p-adic numbers to curves, ending with the modular forms that tie them together.
+In the ring of numbers a + b√−5, the number 6 factors in two different ways: 2 · 3, and (1 + √−5)(1 − √−5). Unique factorisation, the foundation of ordinary arithmetic, is lost. In the 1840s Kummer, chasing Fermat's Last Theorem, found the same failure in the cyclotomic integers and repaired it with "ideal numbers". Dedekind turned them into ideals, and a whole world opened. What follows is number fields, the p-adic numbers, and curves, up to the modular forms that tie them together.
 
 Volume 12 of the series set the zeros of the Riemann zeta function beside random matrices. This volume shows that zeta is not alone: it belongs to a family of zeta and L-functions, built here from the arithmetic they count.
 
