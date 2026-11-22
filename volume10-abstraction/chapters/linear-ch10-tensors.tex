@@ -343,7 +343,7 @@ For arbitrary positive $n$, pad the inputs by zero rows and columns to the least
 \fig{linear-ch10-omega}
 \caption{Upper bounds for the exponent $\omega$ of matrix multiplication, from Strassen's $\log_27\approx2.807$ (1969) to $2.3713$
 (2024). Since Coppersmith and Winograd (1990), all progress has come from the same ``laser method'', refined: $2.3755$, then
-$2.3729$ (2012), $2.37286$ (2014), and, after three smaller steps, $2.37134$ (2024). These bounds are quoted, not proved here. The lower bound is still $\omega\ge2$.}
+$2.3729$ (full version of the 2012 bound; the conference abstract stated $2.3727$), $2.37286$ (2014), and, after three smaller steps, $2.37134$ (2024). These bounds are quoted, not proved here. The lower bound is still $\omega\ge2$.}
 \label{linear:fig:omega}
 \end{figure}
 
@@ -366,7 +366,7 @@ Two pictures help keep the implementation separate from the algebra. Figure~\ref
 \begin{remark}[records, quoted]
 Winograd proved in 1971 that seven is optimal for $2\times2$ matrix multiplication; Hopcroft and Kerr proved the corresponding noncommutative result that year. For $3\times3$ multiplication, the bounds quoted here are $19\le R_K(\langle3,3,3\rangle)\le23$ in the settings of the cited small-format results: Laderman's 1976 algorithm supplies $23$, and Bl\"aser's 2003 lower-bound work supplies $19$. These are separate results, not consequences of our flattening bound.
 
-The 2022 AlphaTensor work found a length-$47$ decomposition of $\langle4,4,4\rangle$ over $\mathbb F_2$, compared with the $49$ products obtained by applying Strassen twice. Its field is part of the claim. The asymptotic bounds in Figure~\ref{linear:fig:omega} use further constructions involving border rank and the laser method. Those bounds are dated quotations. Their algorithms can have very large constants, so an asymptotic improvement need not help at practical matrix sizes. Our proof establishes Strassen's exponent without depending on any of these records.
+The 2022 AlphaTensor work found a length-$47$ decomposition of $\langle4,4,4\rangle$ over $\mathbb F_2$, compared with the $49$ products obtained by applying Strassen twice. Its field is part of the claim. The asymptotic bounds in Figure~\ref{linear:fig:omega} use further constructions involving border rank and the laser method. Those bounds are dated quotations. The 2012 conference abstract stated $\omega<2.3727$. The full version, dated 1 July 2014, says that this fourth decimal was incorrect and replaces it by $\omega<2.3729$; the abstract of that version gives the sharper quotation $\omega<2.372873$. Le Gall's 2014 paper records the same correction. The 2012 step in the figure is drawn at this corrected value. The algorithms behind these records can have very large constants, so an asymptotic improvement need not help at practical matrix sizes. Our proof establishes Strassen's exponent without depending on any of these records.
 \end{remark}
 
 \section{Two indices: the Schmidt decomposition}
@@ -400,11 +400,17 @@ E(\psi)=-\sum_{s=1}^r p_s\log_2p_s.
 \]
 Because $0<p_s\le1$, this is nonnegative. It is zero exactly when a single $p_s$ equals one, which means a product state.
 
-For completeness, its upper bound and equality case follow from an elementary logarithm inequality. For $t>0$, $\log t\le t-1$, with equality only at $t=1$. Apply it to $t=1/(rp_s)$, multiply by $p_s$, and sum. Since $\sum_sp_s=1$, the result is
+For completeness, its upper bound and equality case follow from the natural logarithm. Volume~1, Chapter~8 records $\ln(1+u)\le u$ for $u\ge0$ and $\ln(1-u)\le -u$ for $0\le u<1$. For $t\ge1$ put $u=t-1$; for $0<t<1$ put $u=1-t$. Both cases give $\ln t\le t-1$. Equality holds only at $t=1$. The derivative of $\ln(1+u)-u$ is $1/(1+u)-1=-u/(1+u)$, negative for $u>0$. The derivative of $\ln(1-u)+u$ is $1-1/(1-u)=-u/(1-u)$, negative for $0<u<1$. Both functions vanish at $u=0$, so both are strictly negative for every positive admissible $u$.
+
+Apply $\ln t\le t-1$ to $t=1/(rp_s)$, multiply by the positive number $p_s$, and sum. Since $\sum_sp_s=1$,
 \[
--\sum_sp_s\log(rp_s)\le\sum_s(1/r-p_s)=0.
+-\sum_sp_s\ln(rp_s)\le\sum_s(1/r-p_s)=0.
 \]
-Therefore $E(\psi)\le\log_2r\le\log_2\min(m,n)$. Equality in the final bound requires both $r=\min(m,n)$ and $p_s=1/r$ for every $s$. Equal nonzero coefficients alone do not give the maximum if fewer than $\min(m,n)$ are present. The Bell state has two coefficients $1/\sqrt2$, so its entropy is one bit, the maximum for two qubits. With three factors there need not be such a decomposition: the W tensor has rank three although each factor has dimension two.
+Expanding the logarithm gives $-\sum_sp_s\ln p_s\le\ln r$. The entropy uses base $2$, and $\log_2 u=(\ln u)/(\ln 2)$, so
+\[
+E(\psi)=\frac{-\sum_sp_s\ln p_s}{\ln 2}\le\frac{\ln r}{\ln 2}=\log_2 r\le\log_2\min(m,n).
+\]
+Each summand satisfies $-p_s\ln(rp_s)\le 1/r-p_s$, so the difference $1/r-p_s+p_s\ln(rp_s)$ is nonnegative. A sum of nonnegative terms vanishes only when every term does. Equality therefore holds only when $p_s=1/r$ for every $s$. Equality in the final bound also requires $r=\min(m,n)$. Equal nonzero coefficients alone do not give the maximum if fewer than $\min(m,n)$ are present. The Bell state has two coefficients $1/\sqrt2$, so its entropy is one bit, the maximum for two qubits. With three factors there need not be such a decomposition: the W tensor has rank three although each factor has dimension two.
 
 \section{A gem: three multiplications for complex numbers}
 
@@ -765,7 +771,7 @@ minimizing the number of multiplications necessary for matrix multiplication}, S
 AMS 82 (1976), 126--128; M.~Bl\"aser, \emph{On the complexity of the multiplication of matrices of small formats}, Journal of
 Complexity 19 (2003), 43--60.
 \item D.~Coppersmith and S.~Winograd, \emph{Matrix multiplication via arithmetic progressions}, Journal of Symbolic Computation 9
-(1990), 251--280; J.~Alman, R.~Duan, V.~Vassilevska Williams, Y.~Xu, Z.~Xu and R.~Zhou, \emph{More asymmetry yields faster matrix
+(1990), 251--280; V.~Vassilevska Williams, \emph{Multiplying matrices faster than Coppersmith--Winograd}, Proceedings of the 44th Annual ACM Symposium on Theory of Computing (2012), 887--898, and the full version \emph{Multiplying matrices in $O(n^{2.373})$ time}, 1 July 2014; F.~Le Gall, \emph{Powers of tensors and fast matrix multiplication}, 2014 (preprint, arXiv:1401.7714); J.~Alman, R.~Duan, V.~Vassilevska Williams, Y.~Xu, Z.~Xu and R.~Zhou, \emph{More asymmetry yields faster matrix
 multiplication}, 2024 (preprint, arXiv:2404.16349).
 \item A.~Fawzi et al., \emph{Discovering faster matrix multiplication algorithms with reinforcement learning}, Nature 610 (2022),
 47--53 (AlphaTensor).
