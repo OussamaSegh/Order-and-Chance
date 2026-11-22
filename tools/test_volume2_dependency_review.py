@@ -31,7 +31,8 @@ class DependencyReviewChecks(unittest.TestCase):
         # two-step identity from Proposition 9.1 instead of citing the lemma the
         # exercise is proving, which removes one reference. The counts are 342
         # references and 87 forward uses.
-        self.assertEqual(result['references'], 342)
+        # The new arithmetic handoff adds one backward citation to congruences.
+        self.assertEqual(result['references'], 343)
         self.assertEqual(result['reviewed_forward_uses'], 87)
         self.assertIn('no automatic', result['scope'])
 

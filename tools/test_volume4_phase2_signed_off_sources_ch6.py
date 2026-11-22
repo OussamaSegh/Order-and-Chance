@@ -7,7 +7,7 @@ import hashlib
 import re
 import unittest
 from fractions import Fraction as F
-from math import comb, factorial, sqrt
+from math import comb, erfc, exp, factorial, sqrt
 from pathlib import Path
 
 SOURCE=Path(__file__).resolve().parents[1]/"volume4-chance"/"chapters"/"ch06-clt.tex"
@@ -22,7 +22,8 @@ SOURCE=Path(__file__).resolve().parents[1]/"volume4-chance"/"chapters"/"ch06-clt
 # Second review the same day: continuity points are constructed, the open pieces do not
 # contain 0, and the sample-variance limit does not send n to infinity before M.
 # Not a new sign-off.
-SHA="28486a84b3efe3ea907a2b99411881730743a7f7"
+# 2026-11-22: Independent reread of the new exact dice count. Existing proof and exercise labels match.
+SHA="687ff9660572296affd1d6299d97209a432e09d3"
 PROOFS="prop:modes prop:cdf thm:slln4 thm:gc lem:diffint prop:cfexamples thm:cfconv thm:inversion lem:normalsum thm:lindeberg cor:clt thm:local prop:cyclebern thm:gaussvec".split()
 EX="ex:slutsky ex:confidence ex:delta ex:cauchyclt ex:poissonhalf ex:returns ex:thirdmoment ex:cyclesclt".split()
 
@@ -71,6 +72,22 @@ class TestChapter6VerifiedSourceAndNumerics(unittest.TestCase):
             v=nth_derivative_at(x,0)
             self.assertGreaterEqual(v,0)
             self.assertLessEqual(v,1)
+
+    def test_dice_tail_count_and_printed_comparisons(self):
+        counts = [1]
+        for _ in range(100):
+            counts = [sum(counts[max(0, total - 6):total]) for total in range(len(counts) + 6)]
+        tail = F(sum(counts[400:]), 6**100)
+        # Reflect the rolls, subtract one from each, and count total <= 200.
+        by_inclusion_exclusion = sum(
+            (-1)**j * comb(100, j) * comb(300 - 6*j, 100) for j in range(34)
+        )
+        self.assertEqual(sum(counts), 6**100)
+        self.assertEqual(tail, F(by_inclusion_exclusion, 6**100))
+        self.assertEqual(f"{float(tail):.8f}", "0.00182302")
+        self.assertEqual(f"{erfc(sqrt(30/7)) / 2:.8f}", "0.00170740")
+        self.assertEqual(f"{exp(-2):.8f}", "0.13533528")
+
 
 if __name__=="__main__":
     unittest.main()
