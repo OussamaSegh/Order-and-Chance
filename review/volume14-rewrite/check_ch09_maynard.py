@@ -36,6 +36,31 @@ check("(k-1)sigma^2/delta^2", b["r"], 0.1144809, 1e-7)
 check("1-ratio", 1 - b["r"], 0.8855190, 1e-7)
 check("bound k=582", b["bound"], 4.000347, 1e-6)
 check_true("M_582 > 4 with margin > 3e-4", b["bound"] - 4 > mpf("3e-4"))
+
+def log_series_bounds(ratio, terms):
+    lower = sum(2 * ratio**(2*j+1) / (2*j+1) for j in range(terms))
+    tail = 2 * ratio**(2*terms+1) / ((2*terms+1) * (1-ratio**2))
+    return lower, lower + tail
+
+log2_lo, log2_hi = log_series_bounds(Fr(1, 3), 12)
+log_ratio_lo, log_ratio_hi = log_series_bounds(Fr(9, 265), 4)
+lo, hi = Fr("5.61312810"), Fr("5.61312811")
+check_true("rational enclosure of log 274",
+           lo < 8*log2_lo + log_ratio_lo < 8*log2_hi + log_ratio_hi < hi)
+
+def certificate_terms(ell):
+    mean = Fr(274, 39*49) * (ell - 1 + Fr(1, 274))
+    second_moment = Fr(274, 39*343) * (274 - 2*ell - Fr(1, 274))
+    return Fr(274, 39*49)*ell**2, second_moment - mean**2, 543 - 581*mean
+
+a_lo, var_hi, delta_hi = certificate_terms(lo)
+a_hi, var_lo, delta_lo = certificate_terms(hi)
+check_true("certificate denominators and variance are positive", delta_lo > 158 and var_lo > 0)
+lower = a_lo * (1 - 581*var_hi/delta_lo**2)
+upper = a_hi * (1 - 581*var_lo/delta_hi**2)
+check_true("rational enclosure of the variational lower bound",
+           Fr("4.00034") < lower < upper < Fr("4.00036"))
+
 b581 = product_bound(581, 7, 39); b600 = product_bound(600, 7, 39)
 check("delta k=581", b581["d"], 158.0657, 1e-4)
 check("ratio k=581", b581["r"], 0.11477, 1e-5)
@@ -53,6 +78,9 @@ while len(ps) < 582:
 check("H_582 first", ps[0], 587, 0); check("H_582 last", ps[-1], 5167, 0)
 check("diameter", ps[-1] - ps[0], 4580, 0)
 check_true("H_582 admissible", all(len({h % q for h in ps}) < q for q in sympy.primerange(2, 600)))
+interval_counts = [sum(left <= p <= right for p in ps) for left, right in
+                   ((583, 1000), (1001, 2000), (2001, 3000), (3001, 4000), (4001, 5000), (5001, 5167))]
+check_true("counts in consecutive subintervals", interval_counts == [62, 135, 127, 120, 119, 19])
 
 # --- Proposition mklower: where log k - 2 log log k - 2 passes 4
 f = lambda k: math.log(k) - 2 * math.log(math.log(k)) - 2
