@@ -19,7 +19,7 @@ NASA photograph, below. No endorsement is implied.
 | Local file | Original credit and source | SHA256 of downloaded original |
 |---|---|---|
 | astronaut.jpg | NASA, Eileen Collins; https://flic.kr/p/r9qvLn | PNG: 88431cd9653ccd539741b555fb0a46b61558b301d4110412b5bc28b5e3ea6cb5 |
-| hubble-deep-field.jpg | NASA, Hubble eXtreme Deep Field; http://hubblesite.org/newscenter/archive/releases/2012/37/image/a/ | 3a19c5dd8a927a9334bb1229a6d63711b1c0c767fb27e2286e7c84a3e2c2f5f4 |
+| hubble-deep-field.jpg | NASA, Hubble eXtreme Deep Field; https://esahubble.org/news/heic1214/ (Hubble release) | 3a19c5dd8a927a9334bb1229a6d63711b1c0c767fb27e2286e7c84a3e2c2f5f4 |
 | apollo11.jpg | NASA photograph 6900556, Apollo 11 Saturn V launch, 16 July 1969. https://images.nasa.gov/details-6900556 and the file `https://images-assets.nasa.gov/image/6900556/6900556~orig.jpg`. NASA's media guidelines (https://www.nasa.gov/nasa-brand-center/images-and-media/, read 31 October 2026) say NASA images are generally not subject to copyright in the United States, and that textbook authors may use them without separate permission when NASA is acknowledged and the use does not imply endorsement. The same page says NASA insignia and identifiers are not in the public domain; this credit therefore does not call the photograph public domain. The image metadata names Marshall Space Flight Center and gives no separate copyright holder. | 9046233c2c5b0dc88a8f69e016df4c03171d241d95e42de0b8238b58df0b8754 |
 
 Download URLs for the first two are `https://raw.githubusercontent.com/scikit-image/scikit-image/v0.22.0/skimage/data/`
@@ -41,13 +41,11 @@ Existing historical images retain their original chapter captions. Most captions
 identify public-domain reproductions. Two require separate attribution:
 
 - d'Alembert: Maurice Quentin de La Tour portrait, photograph by Didier Descouens,
-  CC BY-SA 4.0, via Wikimedia Commons; https://creativecommons.org/licenses/by-sa/4.0/.
-- Paul Erdős, Budapest 1992: Topsy Kretts, CC BY 3.0, via Wikimedia Commons;
-  https://creativecommons.org/licenses/by/3.0/.
+  CC BY-SA 4.0, via [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Maurice_Quentin_de_La_Tour_-_Portrait_de_Jean_Le_Rond_d%27Alembert.jpg).
+- Paul Erdős, Budapest 1992: Topsy Kretts, CC BY 3.0, via
+  [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Erdos_head_budapest_fall_1992.jpg).
 
-These existing images have not been independently re-sourced in this revision;
-the final publisher should retain their original provenance records. Their licences
-apply to the images, not automatically to the surrounding book. The image captions
+The captions and the linked file records give the original attribution and licence for each image. These licences apply to the credited photographs. The image captions
 and back-matter credits identify exceptions to the book's copyright notice.
 
 Print height is capped per source at pixel height / 300 inches (and at 1.65 inches),

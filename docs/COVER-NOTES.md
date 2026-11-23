@@ -7,7 +7,7 @@ The same sentences are the copyright-page credit, the colophon and the library g
 
 Cover illustration: the Collatz tree from 2 up to 8,000; see About the Cover.
 
-The cover draws the Collatz tree. Take each integer from 2 up to 8,000. An even number steps to its half. An odd number steps to one more than its triple. Follow the steps and the paths meet at 1. If a path climbs past 8,000, that value is drawn too. A pale curve marks the orbit of 27. It takes 111 steps and rises to 9,232 before it returns. The tree is named for Lothar Collatz. In the 1930s, as a student, he studied the paths of simple arithmetic maps and thought of them as graphs. Does every positive integer reach 1? Neither a proof nor a counterexample is known. That is why the picture belongs with the opening chapter, The Language of Mathematics. The question is easy to state, and it is not yet a theorem. The drawing was computed by the book's own TikZ cover generator.
+The cover draws the Collatz tree. Take each integer from 2 up to 8,000. An even number steps to its half. An odd number steps to one more than its triple. Follow the steps and the paths meet at 1. If a path climbs past 8,000, that value is drawn too. A pale curve marks the orbit of 27. It reaches 1 in 111 steps and peaks at 9,232. The tree is named for Lothar Collatz. In the 1930s, as a student, he studied the paths of simple arithmetic maps and thought of them as graphs. Does every positive integer reach 1? Neither a proof nor a counterexample is known. That is why the picture belongs with the opening chapter, The Language of Mathematics. The question is easy to state, and it is not yet a theorem. The drawing was computed by the book's own TikZ cover generator.
 
 ## Volume 2 — The Integers
 
