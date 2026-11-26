@@ -32,7 +32,10 @@ class DependencyReviewChecks(unittest.TestCase):
         # exercise is proving, which removes one reference. The counts are 342
         # references and 87 forward uses.
         # The new arithmetic handoff adds one backward citation to congruences.
-        self.assertEqual(result['references'], 343)
+        # Round 2 cites lem:cfexistence, prop:t1-charbound and thm:circle,
+        # and drops the repeated citations in the old continued-fraction
+        # solution. The net change is six references. Forward uses stay 87.
+        self.assertEqual(result['references'], 349)
         self.assertEqual(result['reviewed_forward_uses'], 87)
         self.assertIn('no automatic', result['scope'])
 
