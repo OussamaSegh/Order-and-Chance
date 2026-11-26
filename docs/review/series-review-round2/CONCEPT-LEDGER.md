@@ -190,3 +190,330 @@ Every `theorem`, `proposition`, `lemma`, `corollary`, `definition`, and `remark`
 ### Clashes
 
 None inside Volume 1. The letter `\mu` is not yet the Möbius function. The word “convex” means the chord property of a real function, not a convex set.
+
+## Volume 2
+
+Book order is `volume2-integers/main.tex`. Paths are under `volume2-integers/`. The only prerequisite is Volume 1.
+
+### Notation and standing facts
+
+- `v_p` on the positive integers, and `d\mid n` iff `v_p(d)\le v_p(n)`, are proved again in Chapter 1; Volume 1 already has the test.
+- Subgroups of `(\Z,+)` are `d\Z` — Chapter 1.
+- `\pi(x)`, Chebyshev’s bounds, Bertrand — Chapter 2.
+- `\Z/n\Z`, units, `\varphi`, Euler, Fermat, Wilson, the Chinese remainder theorem, Hensel — Chapter 3.
+- Dirichlet convolution, `\mu`, `\sigma`, `\tau`, the hyperbola — Chapter 4. Here `\mu` becomes the Möbius function. Volume 1 did not use that letter for a named function.
+- The order of a unit, primitive roots, the structure of `(\Z/2^k\Z)^\times` — Chapter 5.
+- The Legendre symbol `\bigl(\frac{a}{p}\bigr)`, Gauss’s lemma (the count is `\rho`, not `\mu`), the Jacobi symbol, quadratic reciprocity — Chapter 6.
+- Sums of two and four squares, the circle count `N(R)`, and the disk area `\pi\rho^2` scaled from the quarter-disk — Chapter 7.
+- Pythagorean triples, descent, Pell’s equation as a norm — Chapter 8 (`ch09-diophantine.tex`, input before continued fractions).
+- Continued fractions and convergents — Chapter 9 (`ch08-continued-fractions.tex`).
+- `\Z[i]`, `\Z[\omega]`, `\Z[\sqrt{-2}]`, and the failure in `\Z[\sqrt{-5}]` — Chapter 10.
+- Dirichlet characters `\chi`, `L(s,\chi)`, the Euler product — Chapter 11 (`ch14-characters.tex`).
+
+### Named results
+
+- `thm:div` theorem [Euclidean division] — `chapters/ch01-divisibility.tex:36`
+- `prop:subgroups` proposition — `chapters/ch01-divisibility.tex:73`
+- `sym:gcd` definition — `chapters/ch01-divisibility.tex:80`
+- `thm:bezout` theorem [B\'ezout] — `chapters/ch01-divisibility.tex:95`
+- `thm:gauss` theorem [Euclid's lemma] — `chapters/ch01-divisibility.tex:106`
+- `thm:fta` theorem [fundamental theorem of arithmetic] — `chapters/ch01-divisibility.tex:117`
+- `prop:legendre` proposition [Legendre's formula] — `chapters/ch01-divisibility.tex:168`
+- `thm:lame` theorem [Lam\'e] — `chapters/ch01-divisibility.tex:266`
+- `thm:euclid-primes` theorem [Euclid] — `chapters/ch02-primes.tex:36`
+- `thm:euler` theorem [Euler] — `chapters/ch02-primes.tex:96`
+- `lem:binom` lemma — `chapters/ch02-primes.tex:161`
+- `thm:cheb` theorem [Chebyshev-type bounds] — `chapters/ch02-primes.tex:187`
+- `thm:bertrand` theorem [Bertrand's postulate; Erd\H{o}s's elementary proof (1932)] — `chapters/ch02-primes.tex:255`
+- `prop:ringZn` proposition — `chapters/ch03-congruences.tex:43`
+- `prop:units` proposition — `chapters/ch03-congruences.tex:74`
+- `thm:eulerthm` theorem [Euler, Fermat] — `chapters/ch03-congruences.tex:91`
+- `thm:wilson` theorem [Wilson] — `chapters/ch03-congruences.tex:120`
+- `thm:crt` theorem [Chinese remainder theorem] — `chapters/ch03-congruences.tex:155`
+- `prop:lincong` proposition [linear congruences] — `chapters/ch03-congruences.tex:183`
+- `prop:phisum` proposition [Gauss] — `chapters/ch03-congruences.tex:209`
+- `thm:hensel` theorem [Hensel's lemma] — `chapters/ch03-congruences.tex:280`
+- `—` definition — `chapters/ch04-arithmetic-functions.tex:97`
+- `prop:conv` proposition — `chapters/ch04-arithmetic-functions.tex:101`
+- `thm:mobius` theorem [M\"obius inversion] — `chapters/ch04-arithmetic-functions.tex:179`
+- `thm:perfect` theorem [Euclid--Euler] — `chapters/ch04-arithmetic-functions.tex:284`
+- `thm:hyperbola` theorem [Dirichlet] — `chapters/ch04-arithmetic-functions.tex:418`
+- `—` definition — `chapters/ch05-primitive-roots.tex:55`
+- `prop:order` proposition — `chapters/ch05-primitive-roots.tex:59`
+- `thm:cyclic` theorem [Gauss] — `chapters/ch05-primitive-roots.tex:133`
+- `lem:lift` lemma — `chapters/ch05-primitive-roots.tex:226`
+- `thm:cyclicn` theorem — `chapters/ch05-primitive-roots.tex:234`
+- `thm:twopower` theorem — `chapters/ch05-primitive-roots.tex:326`
+- `cor:mod8squares` corollary — `chapters/ch05-primitive-roots.tex:351`
+- `def:legendre` definition — `chapters/ch06-quadratic-reciprocity.tex:47`
+- `thm:eulercrit` theorem [Euler's criterion] — `chapters/ch06-quadratic-reciprocity.tex:55`
+- `thm:gausslemma` theorem [Gauss' lemma] — `chapters/ch06-quadratic-reciprocity.tex:171`
+- `cor:two` corollary — `chapters/ch06-quadratic-reciprocity.tex:200`
+- `thm:qr` theorem [quadratic reciprocity; Gauss, 1796] — `chapters/ch06-quadratic-reciprocity.tex:233`
+- `lem:eisenstein` lemma [Eisenstein] — `chapters/ch06-quadratic-reciprocity.tex:254`
+- `prop:jacobi` proposition — `chapters/ch06-quadratic-reciprocity.tex:340`
+- `lem:thue` lemma [Thue] — `chapters/ch07-sums-of-squares.tex:33`
+- `thm:twosq` theorem [Fermat, 1640; Euler, 1749] — `chapters/ch07-sums-of-squares.tex:69`
+- `thm:twosqn` theorem — `chapters/ch07-sums-of-squares.tex:80`
+- `thm:foursq` theorem [Lagrange, 1770] — `chapters/ch07-sums-of-squares.tex:160`
+- `thm:circle` theorem [Gauss] — `chapters/ch07-sums-of-squares.tex:277`
+- `thm:pyth` theorem — `chapters/ch09-diophantine.tex:113`
+- `thm:fermat4` theorem [Fermat] — `chapters/ch09-diophantine.tex:215`
+- `prop:chord` proposition — `chapters/ch09-diophantine.tex:318`
+- `thm:mordell7` theorem [a Mordell equation] — `chapters/ch09-diophantine.tex:366`
+- `thm:markov` theorem [Markov, 1879] — `chapters/ch09-diophantine.tex:407`
+- `prop:cfconv` proposition — `chapters/ch08-continued-fractions.tex:36`
+- `thm:cfapprox` theorem — `chapters/ch08-continued-fractions.tex:145`
+- `lem:cfexistence` lemma [An infinite expansion determines its number] — `chapters/ch08-continued-fractions.tex:171`
+- `lem:best` lemma [best approximation] — `chapters/ch08-continued-fractions.tex:198`
+- `thm:legendre` theorem [Legendre] — `chapters/ch08-continued-fractions.tex:206`
+- `thm:periodic` theorem [Euler, Lagrange] — `chapters/ch08-continued-fractions.tex:275`
+- `thm:pell` theorem [Lagrange, 1768] — `chapters/ch08-continued-fractions.tex:324`
+- `prop:quadunits` proposition — `chapters/ch10-gaussian-eisenstein.tex:83`
+- `prop:eucl` proposition [Euclidean division] — `chapters/ch10-gaussian-eisenstein.tex:127`
+- `thm:ufd` theorem — `chapters/ch10-gaussian-eisenstein.tex:202`
+- `thm:six` theorem — `chapters/ch10-gaussian-eisenstein.tex:228`
+- `thm:gaussprimes` theorem — `chapters/ch10-gaussian-eisenstein.tex:267`
+- `thm:r2` theorem [Jacobi] — `chapters/ch10-gaussian-eisenstein.tex:295`
+- `thm:eisprimes` theorem — `chapters/ch10-gaussian-eisenstein.tex:340`
+- `lem:cube` lemma — `chapters/ch10-gaussian-eisenstein.tex:353`
+- `thm:flt3` theorem [Euler; Gauss] — `chapters/ch10-gaussian-eisenstein.tex:368`
+- `def:t1-character` definition — `chapters/ch14-characters.tex:43`
+- `prop:t1-charsum` proposition — `chapters/ch14-characters.tex:90`
+- `prop:t1-unitproduct` proposition — `chapters/ch14-characters.tex:123`
+- `thm:t1-charcount` theorem — `chapters/ch14-characters.tex:135`
+- `thm:t1-ortho` theorem [orthogonality] — `chapters/ch14-characters.tex:162`
+- `lem:t1-pseries` lemma — `chapters/ch14-characters.tex:209`
+- `lem:t1-dseries` lemma — `chapters/ch14-characters.tex:219`
+- `thm:t1-eulerprod` theorem [Euler product] — `chapters/ch14-characters.tex:230`
+- `cor:t1-mu-zeta` corollary — `chapters/ch14-characters.tex:271`
+- `thm:t1-sieve` theorem [Legendre] — `chapters/ch14-characters.tex:316`
+- `prop:t1-chi4series` proposition — `chapters/ch14-characters.tex:399`
+- `prop:t1-charbound` proposition — `chapters/ch14-characters.tex:420`
+
+### Clashes
+
+- `\mu` is the Möbius function from Chapter 4 on. Gauss’s lemma no longer uses it for a sign count.
+- “Primitive” means a generator of the unit group in Chapter 5, and a primitive word in the arithmetic-functions exercise that says so. A primitive polynomial is Volume 1’s and Volume 3’s word.
+- Lagrange in this volume is the four-square theorem or a continued-fraction test, not Volume 1’s interpolation theorem, unless the citation says so.
+
+## Volume 3
+
+Book order is `volume3-symmetry/main.tex`. Paths are under `volume3-symmetry/`. Prerequisites are Volumes 1 and 2.
+
+### Notation and standing facts
+
+- Group, subgroup, order of an element, Lagrange, cyclic groups, `D_n`, `GL_n`, `SL_n` — Chapter 1. Rank–nullity over an arbitrary field is not in this chapter; it is the reminder in Chapter 3 before `pb:nilpotent`.
+- Normal subgroup, quotient, the isomorphism theorems, semidirect product — Chapter 2. Right cosets are defined there.
+- Action, orbit–stabiliser, Burnside, the class equation, Cauchy — Chapter 3.
+- Cycle type, `A_n`, simplicity of `A_n` for `n\ge 5` — Chapter 4.
+- Sylow subgroups — Chapter 5.
+- Ring, ideal, PID, UFD, content, Gauss’s lemma for `R[X]` — Chapter 6.
+- Modules, Smith form, invariant factors, rational canonical form, Jordan form — Chapter 7.
+- Field extension, degree, minimal polynomial, constructible numbers, the primitive element — Chapter 8.
+- `\mathbb F_q`, Frobenius — Chapter 9.
+- Galois group, the correspondence, `\varphi(n)=[\Q(\zeta_n):\Q]` — Chapter 10. The general degree is `prop:cyclodegree`, an unnumbered `propositionx`.
+- Character, inner product of characters, the degree-sum formula — Chapter 11.
+- Quaternions, `SO(3)`, the finite-subgroup list, `prop:solids` (unnumbered) — Chapter 12.
+
+### Named results
+
+- `def:group` definition — `chapters/ch01-groups.tex:30`
+- `prop:rules` proposition [first rules] — `chapters/ch01-groups.tex:42`
+- `lem:anyfield` lemma [exchange over any field] — `chapters/ch01-groups.tex:115`
+- `prop:dihedral` proposition [the dihedral group] — `chapters/ch01-groups.tex:152`
+- `prop:cube` proposition [rotations of the cube] — `chapters/ch01-groups.tex:237`
+- `—` definition — `chapters/ch01-groups.tex:314`
+- `prop:subgroup` proposition — `chapters/ch01-groups.tex:318`
+- `prop:order` proposition [order of an element] — `chapters/ch01-groups.tex:368`
+- `—` definition — `chapters/ch01-groups.tex:436`
+- `thm:lagrange` theorem [Lagrange] — `chapters/ch01-groups.tex:440`
+- `cor:lagrange` corollary — `chapters/ch01-groups.tex:467`
+- `—` definition — `chapters/ch01-groups.tex:520`
+- `thm:cyclic` theorem [cyclic groups] — `chapters/ch01-groups.tex:532`
+- `—` definition — `chapters/ch02-quotients.tex:23`
+- `prop:kerim` proposition — `chapters/ch02-quotients.tex:47`
+- `—` definition — `chapters/ch02-quotients.tex:125`
+- `prop:normal` proposition — `chapters/ch02-quotients.tex:131`
+- `thm:quotient` theorem [quotient group] — `chapters/ch02-quotients.tex:180`
+- `thm:iso1` theorem [first isomorphism theorem] — `chapters/ch02-quotients.tex:254`
+- `thm:iso23` theorem [second and third isomorphism theorems, correspondence] — `chapters/ch02-quotients.tex:288`
+- `—` definition — `chapters/ch02-quotients.tex:385`
+- `thm:crt` theorem [Chinese remainder theorem, group version] — `chapters/ch02-quotients.tex:391`
+- `prop:internal` proposition [internal direct product] — `chapters/ch02-quotients.tex:449`
+- `—` definition — `chapters/ch02-quotients.tex:495`
+- `prop:semidirect` proposition — `chapters/ch02-quotients.tex:502`
+- `—` definition — `chapters/ch03-actions.tex:20`
+- `thm:cayley` theorem [Cayley] — `chapters/ch03-actions.tex:49`
+- `—` definition — `chapters/ch03-actions.tex:95`
+- `thm:orbstab` theorem [orbit--stabiliser] — `chapters/ch03-actions.tex:99`
+- `thm:burnside` theorem [Burnside's lemma] — `chapters/ch03-actions.tex:182`
+- `thm:polya` theorem [P\'olya's counting theorem] — `chapters/ch03-actions.tex:235`
+- `thm:classeq` theorem [class equation] — `chapters/ch03-actions.tex:300`
+- `cor:pgroup` corollary — `chapters/ch03-actions.tex:350`
+- `thm:cauchy` theorem [Cauchy] — `chapters/ch03-actions.tex:378`
+- `def:cycle` definition — `chapters/ch04-symmetric.tex:20`
+- `prop:cycles` proposition [cycle decomposition] — `chapters/ch04-symmetric.tex:26`
+- `cor:ordersign` corollary — `chapters/ch04-symmetric.tex:75`
+- `prop:conjSn` proposition — `chapters/ch04-symmetric.tex:136`
+- `prop:gens` proposition — `chapters/ch04-symmetric.tex:238`
+- `prop:a4` proposition — `chapters/ch04-symmetric.tex:304`
+- `thm:fifteen` theorem — `chapters/ch04-symmetric.tex:357`
+- `lem:split` lemma — `chapters/ch04-symmetric.tex:549`
+- `thm:a5` theorem — `chapters/ch04-symmetric.tex:611`
+- `thm:an` theorem — `chapters/ch04-symmetric.tex:689`
+- `—` definition — `chapters/ch05-sylow.tex:26`
+- `lem:binom` lemma — `chapters/ch05-sylow.tex:32`
+- `thm:sylow1` theorem [Sylow I] — `chapters/ch05-sylow.tex:86`
+- `thm:sylow23` theorem [Sylow II and III] — `chapters/ch05-sylow.tex:120`
+- `cor:sylownormal` corollary — `chapters/ch05-sylow.tex:186`
+- `cor:pk` corollary — `chapters/ch05-sylow.tex:212`
+- `prop:thirty` proposition — `chapters/ch05-sylow.tex:258`
+- `thm:pq` theorem [groups of order $pq$] — `chapters/ch05-sylow.tex:308`
+- `—` definition — `chapters/ch05-sylow.tex:416`
+- `prop:solv` proposition — `chapters/ch05-sylow.tex:434`
+- `—` definition — `chapters/ch06-rings.tex:28`
+- `prop:finitedomain` proposition — `chapters/ch06-rings.tex:47`
+- `—` definition — `chapters/ch06-rings.tex:105`
+- `prop:quotring` proposition [quotient rings] — `chapters/ch06-rings.tex:119`
+- `—` definition — `chapters/ch06-rings.tex:212`
+- `prop:primemax` proposition — `chapters/ch06-rings.tex:216`
+- `thm:crtring` theorem [Chinese remainder theorem for rings] — `chapters/ch06-rings.tex:292`
+- `—` definition — `chapters/ch06-rings.tex:366`
+- `prop:zm5` proposition — `chapters/ch06-rings.tex:372`
+- `lem:primeufd` lemma — `chapters/ch06-rings.tex:471`
+- `—` definition — `chapters/ch06-rings.tex:532`
+- `thm:edpidufd` theorem — `chapters/ch06-rings.tex:538`
+- `prop:pid-not-euclidean` proposition — `chapters/ch06-rings.tex:621`
+- `lem:gauss` lemma [Gauss] — `chapters/ch06-rings.tex:753`
+- `prop:gaussirr` proposition — `chapters/ch06-rings.tex:777`
+- `thm:gaussufd` theorem [Gauss] — `chapters/ch06-rings.tex:835`
+- `—` definition — `chapters/ch07-modules.tex:35`
+- `thm:normindex` theorem — `chapters/ch07-modules.tex:75`
+- `thm:smith` theorem [Smith normal form] — `chapters/ch07-modules.tex:172`
+- `lem:subfree` lemma — `chapters/ch07-modules.tex:247`
+- `thm:structure` theorem [structure of finitely generated modules over a PID] — `chapters/ch07-modules.tex:295`
+- `cor:abelian` corollary [finitely generated abelian groups] — `chapters/ch07-modules.tex:450`
+- `cor:index` corollary — `chapters/ch07-modules.tex:530`
+- `prop:presentation` proposition — `chapters/ch07-modules.tex:590`
+- `thm:frobenius` theorem [rational canonical form; Frobenius] — `chapters/ch07-modules.tex:701`
+- `cor:cayleyhamilton` corollary [Cayley--Hamilton] — `chapters/ch07-modules.tex:777`
+- `thm:jordan` theorem [Jordan normal form] — `chapters/ch07-modules.tex:828`
+- `—` definition — `chapters/ch08-extensions.tex:21`
+- `thm:tower` theorem [tower law] — `chapters/ch08-extensions.tex:29`
+- `cor:towerdiv` corollary — `chapters/ch08-extensions.tex:70`
+- `—` definition — `chapters/ch08-extensions.tex:112`
+- `prop:minpoly` proposition [minimal polynomial] — `chapters/ch08-extensions.tex:119`
+- `thm:simple` theorem [simple extensions] — `chapters/ch08-extensions.tex:176`
+- `cor:finitealg` corollary — `chapters/ch08-extensions.tex:242`
+- `thm:kronecker` theorem [Kronecker] — `chapters/ch08-extensions.tex:321`
+- `—` definition — `chapters/ch08-extensions.tex:387`
+- `prop:splitexists` proposition — `chapters/ch08-extensions.tex:391`
+- `lem:extend1` lemma — `chapters/ch08-extensions.tex:445`
+- `lem:sep` lemma — `chapters/ch08-extensions.tex:515`
+- `thm:splitunique` theorem [uniqueness of splitting fields] — `chapters/ch08-extensions.tex:577`
+- `prop:constrfield` proposition — `chapters/ch08-extensions.tex:683`
+- `thm:wantzel` theorem [Wantzel] — `chapters/ch08-extensions.tex:818`
+- `cor:classical` corollary [the classical problems] — `chapters/ch08-extensions.tex:935`
+- `prop:quartic-nonconstructible` proposition — `chapters/ch08-extensions.tex:1047`
+- `thm:primitiveelement` theorem [primitive element] — `chapters/ch08-extensions.tex:1120`
+- `prop:primefield` proposition — `chapters/ch09-finite-fields.tex:25`
+- `lem:frob` lemma [Frobenius] — `chapters/ch09-finite-fields.tex:73`
+- `thm:cyclicmult` theorem — `chapters/ch09-finite-fields.tex:133`
+- `lem:xqx` lemma — `chapters/ch09-finite-fields.tex:219`
+- `thm:fq` theorem [Galois, Moore] — `chapters/ch09-finite-fields.tex:258`
+- `thm:subfields` theorem — `chapters/ch09-finite-fields.tex:314`
+- `thm:galfq` theorem — `chapters/ch09-finite-fields.tex:400`
+- `thm:xqnx` theorem — `chapters/ch09-finite-fields.tex:450`
+- `thm:countirr` theorem [Gauss] — `chapters/ch09-finite-fields.tex:494`
+- `prop:rsdist` proposition — `chapters/ch09-finite-fields.tex:591`
+- `thm:bw` theorem [Berlekamp--Welch decoding] — `chapters/ch09-finite-fields.tex:630`
+- `def:galois` definition — `chapters/ch10-galois.tex:38`
+- `lem:permroots` lemma — `chapters/ch10-galois.tex:44`
+- `prop:autbound` proposition — `chapters/ch10-galois.tex:78`
+- `thm:galoischar` theorem — `chapters/ch10-galois.tex:131`
+- `lem:artin` lemma [Artin] — `chapters/ch10-galois.tex:208`
+- `thm:ftgt` theorem [fundamental theorem of Galois theory] — `chapters/ch10-galois.tex:260`
+- `prop:cyclo` proposition — `chapters/ch10-galois.tex:360`
+- `prop:cyclodegree` proposition [cyclotomic degree] — `chapters/ch10-galois.tex:416`
+- `thm:gw` theorem [Gauss, Wantzel] — `chapters/ch10-galois.tex:546`
+- `—` definition — `chapters/ch10-galois.tex:639`
+- `lem:kummerstep` lemma — `chapters/ch10-galois.tex:649`
+- `thm:radsolv` theorem [Galois] — `chapters/ch10-galois.tex:697`
+- `thm:abelruffini` theorem [Abel, Ruffini] — `chapters/ch10-galois.tex:830`
+- `lem:dedekind` lemma [Dedekind] — `chapters/ch10-galois.tex:902`
+- `prop:kummer` proposition [Kummer] — `chapters/ch10-galois.tex:953`
+- `thm:galoiscrit` theorem [Galois' criterion] — `chapters/ch10-galois.tex:1012`
+- `—` definition — `chapters/ch11-characters.tex:31`
+- `thm:maschke` theorem [Maschke] — `chapters/ch11-characters.tex:76`
+- `lem:schur` lemma [Schur] — `chapters/ch11-characters.tex:137`
+- `cor:abelianirr` corollary — `chapters/ch11-characters.tex:190`
+- `—` definition — `chapters/ch11-characters.tex:227`
+- `prop:charbasic` proposition — `chapters/ch11-characters.tex:234`
+- `thm:orth` theorem [orthogonality of characters] — `chapters/ch11-characters.tex:304`
+- `cor:mult` corollary — `chapters/ch11-characters.tex:384`
+- `thm:classes` theorem — `chapters/ch11-characters.tex:459`
+- `cor:columns` corollary [column orthogonality] — `chapters/ch11-characters.tex:524`
+- `thm:fourier` theorem [Fourier analysis on a finite abelian group] — `chapters/ch11-characters.tex:631`
+- `prop:dirichletorth` proposition — `chapters/ch11-characters.tex:699`
+- `—` definition — `chapters/ch12-quaternions.tex:33`
+- `prop:quat` proposition — `chapters/ch12-quaternions.tex:69`
+- `lem:euler` lemma [Euler] — `chapters/ch12-quaternions.tex:210`
+- `thm:su2so3` theorem — `chapters/ch12-quaternions.tex:267`
+- `thm:finiteso3` theorem — `chapters/ch12-quaternions.tex:613`
+- `prop:solids` proposition [the Platonic rotation groups] — `chapters/ch12-quaternions.tex:895`
+- `linear:thm:perron` theorem [Perron, 1907] — `chapters/linear-ch07-perron.tex:42`
+- `linear:lem:oscillation` lemma — `chapters/linear-ch07-perron.tex:210`
+- `linear:thm:powerconv` theorem [convergence of the power method] — `chapters/linear-ch07-perron.tex:261`
+- `linear:def:irreducible` definition — `chapters/linear-ch07-perron.tex:353`
+- `linear:prop:levels` proposition — `chapters/linear-ch07-perron.tex:375`
+- `linear:thm:frobenius` theorem [Frobenius, 1912] — `chapters/linear-ch07-perron.tex:410`
+- `linear:thm:primitive` theorem — `chapters/linear-ch07-perron.tex:548`
+- `linear:thm:wielandt` theorem [Wielandt] — `chapters/linear-ch07-perron.tex:661`
+- `linear:cor:markov` corollary [ergodic theorem for Markov chains] — `chapters/linear-ch07-perron.tex:744`
+- `linear:thm:circulant` theorem [eigenvalues of circulants] — `chapters/linear-ch09-symmetry.tex:35`
+- `linear:prop:commutant` proposition — `chapters/linear-ch09-symmetry.tex:140`
+- `linear:def:character` definition — `chapters/linear-ch09-symmetry.tex:181`
+- `linear:lem:commuting` lemma — `chapters/linear-ch09-symmetry.tex:194`
+- `linear:thm:characters` theorem [characters of a finite abelian group] — `chapters/linear-ch09-symmetry.tex:232`
+- `linear:thm:invariant` theorem [symmetry diagonalises] — `chapters/linear-ch09-symmetry.tex:317`
+- `linear:thm:paley` theorem [Paley graphs] — `chapters/linear-ch09-symmetry.tex:418`
+- `linear:def:krawtchouk` definition — `chapters/linear-ch09-symmetry.tex:572`
+- `linear:thm:krawtchouk` theorem [distances in the cube] — `chapters/linear-ch09-symmetry.tex:597`
+- `linear:thm:delsarte` theorem [Delsarte, 1973] — `chapters/linear-ch09-symmetry.tex:707`
+- `linear:cor:lp` corollary [the linear programming bound] — `chapters/linear-ch09-symmetry.tex:753`
+- `linear:cor:plotkin` corollary [Plotkin bound] — `chapters/linear-ch09-symmetry.tex:802`
+- `linear:thm:groupdet` theorem [Dedekind] — `chapters/linear-ch09-symmetry.tex:860`
+- `combinatorial:thm:oddtown` theorem [Oddtown, Berlekamp, 1969] — `chapters/combinatorial.tex:28`
+- `combinatorial:lem:perp` lemma — `chapters/combinatorial.tex:71`
+- `combinatorial:thm:eventown` theorem [Eventown, Berlekamp, 1969; Graver, 1975] — `chapters/combinatorial.tex:96`
+- `combinatorial:thm:fisher` theorem [Fisher's inequality, non-uniform form; Majumdar, 1953] — `chapters/combinatorial.tex:164`
+- `combinatorial:thm:twodist` theorem [Larman, Rogers and Seidel, 1977] — `chapters/combinatorial.tex:243`
+- `combinatorial:prop:planarmax` proposition [the planar maximum] — `chapters/combinatorial.tex:309`
+- `combinatorial:thm:fwmod` theorem [Frankl and Wilson, 1981, modular form] — `chapters/combinatorial.tex:388`
+- `combinatorial:thm:fw` theorem [Frankl and Wilson, 1981, non-uniform form] — `chapters/combinatorial.tex:436`
+- `combinatorial:thm:explicitramsey` theorem [Frankl and Wilson, 1981] — `chapters/combinatorial.tex:490`
+- `combinatorial:lem:grid` lemma — `chapters/combinatorial.tex:560`
+- `combinatorial:thm:cn` theorem [Combinatorial Nullstellensatz, Alon, 1999] — `chapters/combinatorial.tex:600`
+- `combinatorial:thm:cd` theorem [Cauchy, 1813; Davenport, 1935] — `chapters/combinatorial.tex:656`
+- `combinatorial:lem:powersum` lemma — `chapters/combinatorial.tex:706`
+- `combinatorial:thm:cw` theorem [Chevalley and Warning, 1935] — `chapters/combinatorial.tex:730`
+- `combinatorial:thm:egz` theorem [Erd\H os, Ginzburg and Ziv, 1961] — `chapters/combinatorial.tex:799`
+- `combinatorial:def:cap` definition — `chapters/combinatorial.tex:867`
+- `combinatorial:def:slicerank` definition — `chapters/combinatorial.tex:897`
+- `combinatorial:lem:support` lemma — `chapters/combinatorial.tex:912`
+- `combinatorial:lem:diag` lemma [Tao, 2016] — `chapters/combinatorial.tex:933`
+- `combinatorial:thm:capset` theorem [Ellenberg and Gijswijt, 2016] — `chapters/combinatorial.tex:993`
+- `combinatorial:prop:mn` proposition — `chapters/combinatorial.tex:1059`
+- `prop:hadamard-four` proposition [a necessary divisibility condition] — `chapters/paley.tex:29`
+- `conjectures:prop:kron` proposition [Sylvester, 1867] — `chapters/paley.tex:100`
+- `conjectures:lem:chi` lemma — `chapters/paley.tex:176`
+- `conjectures:lem:jacobsthal` lemma — `chapters/paley.tex:255`
+- `conjectures:thm:paley1` theorem [Paley I, 1933] — `chapters/paley.tex:318`
+- `conjectures:thm:paley2` theorem [Paley II, 1933] — `chapters/paley.tex:406`
+
+### Clashes
+
+- `propositionx` does not step a counter. A `\label` inside it records the previous numbered statement. `prop:cyclodegree` and `prop:solids` are the two cases this review hit.
+- “Primitive” in Chapter 5 of Volume 2 is a unit of maximal order. Here it is also a primitive polynomial and a primitive element of a field extension.
+- The cube’s rotation group is identified with `\mathfrak S_4` in `ex:cubeS4`. The proof that every cube rotation fixes the origin is `V3-R2-001`.
