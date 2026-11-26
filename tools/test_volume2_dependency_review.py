@@ -35,7 +35,10 @@ class DependencyReviewChecks(unittest.TestCase):
         # Round 2 cites lem:cfexistence, prop:t1-charbound and thm:circle,
         # and drops the repeated citations in the old continued-fraction
         # solution. The net change is six references. Forward uses stay 87.
-        self.assertEqual(result['references'], 349)
+        # Round 3 cites thm:six four times from ex:zsqrt5, its hint and its
+        # solution. Those point backward at the theorem already proved.
+        # Forward uses stay 87.
+        self.assertEqual(result['references'], 353)
         self.assertEqual(result['reviewed_forward_uses'], 87)
         self.assertIn('no automatic', result['scope'])
 
