@@ -22,7 +22,8 @@ SOURCES = {
         # their own mesh strips. Labels unchanged. Not an independent sign-off.
         # 2026-11-20: series review V4-002, V4-014, V4-022. Labels unchanged. Not a new sign-off.
         # Second review the same day: the sector formula covers a general angle. Not a new sign-off.
-        "02ebb74806d4be8999ccf60606e93a8952f00cee",
+        # 2026-11-27: Gaussian boundary, opening-run ties, simplex integral, and the stick. Labels unchanged. Not a new sign-off.
+        "e5fe2850aa4b0f39a957b09140d11722b436d64b",
         "prop:densitymean prop:gausstail prop:fubini prop:polar prop:manyuniforms prop:orderpair prop:inverse thm:dct thm:boxmuller",
         "ex:counter ex:densityunique ex:tail ex:cauchy ex:gamma ex:order ex:cantor ex:usquare ex:radius pb:passone pb:stick",
     ),
@@ -40,7 +41,8 @@ SOURCES = {
         # 2026-11-20: series review V4-001 and V4-020. Labels unchanged. Not a new sign-off.
         # Second review the same day: the plane-tree count is an induction on the given drawing,
         # and R(k,k)>m does not assume the least integer already exists. Not a new sign-off.
-        "0886a2d07178da9796e5d3aba8b74c0633ecf6db",
+        # 2026-11-27: a face of degree 0 occurs only when there is no edge. Labels unchanged. Not a new sign-off.
+        "101df679bc4a423dbb86d30b768fbfd9e3460318",
         "thm:erdos thm:alter thm:lll prop:second prop:euler prop:crossing",
         "ex:carowei ex:tournament ex:sumfree ex:crossing ex:propertyb ex:localcolour pb:hashing",
     ),
