@@ -16,7 +16,8 @@ SCOPE = {
         # argument (V4-14), and for the named host sentence (V4-15).
         # 2026-11-11: unnumbered dyadic outer-content lemma from main, then ex:twotests and ex:secretary appended.
         # Numbered claim labels unchanged. Not an independent sign-off.
-        "sha": "7ca981366fe12e6d6212d30d161e7823cfd4801d",
+        # 2026-11-27: the maximiser is located by r/n. Labels unchanged. Not a new sign-off.
+        "sha": "f782c1411ad4ae796b8ac23ae9c0f7a74c41590d",
         "claims": "prop:bits prop:subadd prop:infdigits thm:ballot".split(),
         "exercises": "ex:mybirthday ex:twochildren ex:penney ex:montyn ex:pairwise ex:aces ex:catalan ex:smallballot ex:twotests ex:secretary".split(),
     },

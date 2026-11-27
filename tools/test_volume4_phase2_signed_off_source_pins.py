@@ -17,7 +17,8 @@ PINS = {
         # The new statements were checked in this preparation. Not an independent sign-off.
         # 2026-11-11: Goodman part (b) denominator corrected from 6 to 8. Not an independent sign-off.
         # 2026-11-20: series review V4-012 and V4-013. Labels unchanged. Not a new sign-off.
-        "sha": "6e7d24f5d6232a4a7540c0f5d1137d2acc5a805b",
+        # 2026-11-27: the geometric second moment is divided by 1-r. Labels unchanged. Not a new sign-off.
+        "sha": "9641cd9a1ad5156b7f276c310ab1ae89667d50e4",
         "claims": "thm:poissonlimit prop:fixedpoisson prop:cycles thm:coupon lem:geovar prop:couponvar prop:empty".split(),
         "exercises": "ex:records ex:fixedvar ex:quicksort ex:factorial ex:reservoir ex:prisoners ex:birthdaywait ex:twopoisson pb:goodman pb:samecycle".split(),
     },
@@ -35,7 +36,8 @@ PINS = {
         # 2026-11-11: ex:wlower appended. Earlier claim labels unchanged.
         # The new statement was checked in this preparation. Not an independent sign-off.
         # 2026-11-20: series review V4-011. Labels unchanged. Not a new sign-off.
-        "sha": "a5e86c574dce7ab40c3d38eed607a0f8581aaa49",
+        # 2026-11-27: W(k,2) is an integer, so it jumps past floor(x). Labels unchanged. Not a new sign-off.
+        "sha": "445f3d88d4685bf064f0bd2d05d81cf406ee99ed",
         "claims": "thm:turan thm:ramsey thm:schur thm:sunflower thm:ekr thm:vdw3 thm:vdw".split(),
         "exercises": "ex:r33 ex:turanedges ex:ekrsharp ex:schurtwo ex:ekrcomplement ex:wlower".split(),
     },

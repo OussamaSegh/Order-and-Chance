@@ -21,7 +21,8 @@ SPECS = {
    # 2026-11-11: thm:twosat appended after the existing claims. Exercise labels unchanged.
    # The new proof was checked in this preparation. Not an independent sign-off.
    # 2026-11-20: series review V4-018. Labels unchanged. Not a new sign-off.
-   "sha": "984cc058795d4a4481202c4f5c4cccb90231c8d6",
+   # 2026-11-27: the 2-SAT mean is n^2, and the currents cancel. Labels unchanged. Not a new sign-off.
+   "sha": "1e1ee0cac73cc3d137788950e45f0cf2ceb50d26",
    "proofs": "thm:rwreflect thm:ruin prop:duration prop:visits thm:polya thm:arcsine prop:harmonic thm:arcsinelimit lem:centralbin thm:twosat".split(),
    "ex": "ex:ballotwalk ex:maxlaw ex:timepositive ex:unfair ex:meet ex:escape ex:exittime ex:electric".split(),
  },
@@ -31,7 +32,8 @@ SPECS = {
    # Reread 2026-11-11 for G(0) in {0,1} and the rational powers (V4-08).
    # 2026-11-20: series review V4-009. Labels unchanged. Not a new sign-off.
    # Second review the same day: the simplex integral is iterated one coordinate at a time. Not a new sign-off.
-   "sha": "498b6586716ff5d39576a0dcc61d095b0c0c0157",
+   # 2026-11-27: the emptiness time is a tail sum. Labels unchanged. Not a new sign-off.
+   "sha": "424eb4549599a294dfd69bbcc9d9a8d0a1ed8ea5",
    "proofs": "prop:memoryless lem:gamma thm:uniform lem:colouring thm:increments thm:thinning thm:superpose prop:residual prop:onesidedgap prop:race thm:lecam thm:mm1 prop:emptiness".split(),
    "ex": "ex:twoexp ex:minexp ex:bus ex:lecamnum ex:mm1mean ex:emptycheck ex:superpose ex:firstarrival".split(),
  },
