@@ -22,7 +22,8 @@ SPECS = {
    # The new proof was checked in this preparation. Not an independent sign-off.
    # 2026-11-20: series review V4-018. Labels unchanged. Not a new sign-off.
    # 2026-11-27: the 2-SAT mean is n^2, and the currents cancel. Labels unchanged. Not a new sign-off.
-   "sha": "1e1ee0cac73cc3d137788950e45f0cf2ceb50d26",
+   # 2026-11-27 round 2: the current at a is positive along a shortest path. Not a new sign-off.
+   "sha": "df4a7f5dc2f6282fe2eb3bdf90dabb04701a76a3",
    "proofs": "thm:rwreflect thm:ruin prop:duration prop:visits thm:polya thm:arcsine prop:harmonic thm:arcsinelimit lem:centralbin thm:twosat".split(),
    "ex": "ex:ballotwalk ex:maxlaw ex:timepositive ex:unfair ex:meet ex:escape ex:exittime ex:electric".split(),
  },
@@ -33,7 +34,8 @@ SPECS = {
    # 2026-11-20: series review V4-009. Labels unchanged. Not a new sign-off.
    # Second review the same day: the simplex integral is iterated one coordinate at a time. Not a new sign-off.
    # 2026-11-27: the emptiness time is a tail sum. Labels unchanged. Not a new sign-off.
-   "sha": "424eb4549599a294dfd69bbcc9d9a8d0a1ed8ea5",
+   # 2026-11-27 round 2: the hitting time is at most geometric, and the position passes by L P(tau_L>n). Not a new sign-off.
+   "sha": "9e5fda4b50820ff68261ab840cc00eee5346ad3f",
    "proofs": "prop:memoryless lem:gamma thm:uniform lem:colouring thm:increments thm:thinning thm:superpose prop:residual prop:onesidedgap prop:race thm:lecam thm:mm1 prop:emptiness".split(),
    "ex": "ex:twoexp ex:minexp ex:bus ex:lecamnum ex:mm1mean ex:emptycheck ex:superpose ex:firstarrival".split(),
  },

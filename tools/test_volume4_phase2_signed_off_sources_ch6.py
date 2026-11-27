@@ -25,7 +25,9 @@ SOURCE=Path(__file__).resolve().parents[1]/"volume4-chance"/"chapters"/"ch06-clt
 # 2026-11-22: Independent reread of the new exact dice count. Existing proof and exercise labels match.
 # 2026-11-27: the strong-law cover is the finite-bit gap, and the square is a sum of clips.
 # Labels unchanged. Not a new sign-off.
-SHA="a5c1358168fa12a888b5ea93d85cc77c7fb227a9"
+# 2026-11-27 round 2: the single-index moment groups as E[Y], and the CLT cutoffs name their directions.
+# Not a new sign-off.
+SHA="5d24d6355e9fad1f44b8ffd522bbbcac1523019a"
 PROOFS="prop:modes prop:cdf thm:slln4 thm:gc lem:diffint prop:cfexamples thm:cfconv thm:inversion lem:normalsum thm:lindeberg cor:clt thm:local prop:cyclebern thm:gaussvec".split()
 EX="ex:slutsky ex:confidence ex:delta ex:cauchyclt ex:poissonhalf ex:returns ex:thirdmoment ex:cyclesclt".split()
 
