@@ -23,7 +23,9 @@ SOURCE=Path(__file__).resolve().parents[1]/"volume4-chance"/"chapters"/"ch06-clt
 # contain 0, and the sample-variance limit does not send n to infinity before M.
 # Not a new sign-off.
 # 2026-11-22: Independent reread of the new exact dice count. Existing proof and exercise labels match.
-SHA="687ff9660572296affd1d6299d97209a432e09d3"
+# 2026-11-27: the strong-law cover is the finite-bit gap, and the square is a sum of clips.
+# Labels unchanged. Not a new sign-off.
+SHA="a5c1358168fa12a888b5ea93d85cc77c7fb227a9"
 PROOFS="prop:modes prop:cdf thm:slln4 thm:gc lem:diffint prop:cfexamples thm:cfconv thm:inversion lem:normalsum thm:lindeberg cor:clt thm:local prop:cyclebern thm:gaussvec".split()
 EX="ex:slutsky ex:confidence ex:delta ex:cauchyclt ex:poissonhalf ex:returns ex:thirdmoment ex:cyclesclt".split()
 
