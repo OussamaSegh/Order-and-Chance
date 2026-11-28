@@ -1,0 +1,635 @@
+# Concept ledger
+
+One line per named result, in the order the series introduces it. Later reviews check a use against the earliest line that actually states it. A forward pointer is not an introduction. Line numbers are the source on `main` at `68261d60`.
+
+An environment marked `x` does not step the shared counter. `propositionx` was the reason two Volume 3 labels printed the previous number. On this main, `prop:cyclodegree` and `prop:solids` are numbered propositions.
+
+## What changed for this round
+
+- Volume 1 still introduces the well-ordering principle as an axiom equivalent to induction. Descent in Volume 2 quotes the axiom.
+- Volume 1’s extreme-value theorem, mean-value theorem, and \(\ln t\le t-1\) are available before Volume 2 uses them. The hyperbola proof at `volume2-integers/chapters/ch04-arithmetic-functions.tex:440` uses the logarithm inequality without naming it.
+- In Volume 2, \(\ln\) and \(\log\) both denote the natural logarithm. No sentence says so.
+- The sieve colours the reader sees are the book palette: `ocTeal` is dark grey `#6E6A66` and `ocOlive` is ochre `#B08D57`. The legend matches that plate.
+- Volume 3, Chapter 10, after the new proposition: Proposition 10.9 `prop:cyclo`, Proposition 10.10 `prop:cyclodegree`, Theorem 10.11 `thm:gw`, Theorem 10.15 `thm:abelruffini`, Lemma 10.16 `lem:dedekind`. Theorem 10.6 did not move. Proposition 12.6 is `prop:solids`, and it is the last numbered statement in that chapter.
+- The cube’s vertices are the points that are not midpoints of a nontrivial segment. Their average is the origin. That argument is `volume3-symmetry/chapters/ch01-groups.tex:254`.
+
+## Clashes
+
+- \(\mu\) is not a named function in Volume 1. From Volume 2, Chapter 4, it is the Möbius function. Gauss’s lemma counts with \(\rho\).
+- “Primitive” is a generator of the unit group in Volume 2, Chapter 5, a primitive word when that exercise says so, and in Volume 3 a primitive polynomial or a primitive element.
+- Lagrange in Volume 1 is interpolation. In Volume 2 it is the four-square theorem or a continued-fraction test, unless the citation says otherwise. In Volume 3 it is the order of a subgroup.
+- The golden ratio is \(\varphi=(1+\sqrt5)/2\). The pentagon eigenvalues \((-1\pm\sqrt5)/2\) are \(1/\varphi\) and \(-\varphi\), not \(\varphi\) itself.
+
+
+## Volume 1 named results
+
+Book order. A star on the environment means it does not step the counter. Line numbers are main at `68261d60`.
+
+- `sym:parity` definitionx [even and odd integers] — `chapters/ch00-language.tex:37`
+- `—` examplex [unpacking a definition] — `chapters/ch00-language.tex:55`
+- `prop:lang-negation` proposition [negating a quantified statement] — `chapters/ch00-language.tex:170`
+- `—` examplex [a negation that looks plausible and is wrong] — `chapters/ch00-language.tex:205`
+- `ex:parity-square` examplex [the parity of a square] — `chapters/ch00-language.tex:246`
+- `prop:lang-sets` proposition [set operations and logic] — `chapters/ch00-language.tex:348`
+- `—` definitionx [function] — `chapters/ch00-language.tex:403`
+- `—` definitionx [interval notation] — `chapters/ch00-language.tex:417`
+- `prop:lang-preimages` proposition [inverse images preserve set operations] — `chapters/ch00-language.tex:435`
+- `—` definitionx [injective, surjective, bijective] — `chapters/ch00-language.tex:466`
+- `thm:lang-inverse` theorem [the inverse criterion] — `chapters/ch00-language.tex:509`
+- `—` definitionx [equivalence relation] — `chapters/ch00-language.tex:551`
+- `thm:lang-partition` theorem [equivalence relations are partitions] — `chapters/ch00-language.tex:579`
+- `—` definitionx [sigma notation] — `chapters/ch01-sums.tex:26`
+- `—` propositionx [finite progressions] — `chapters/ch01-sums.tex:49`
+- `—` examplex — `chapters/ch01-sums.tex:109`
+- `prop:telescope` proposition [telescoping sums] — `chapters/ch01-sums.tex:144`
+- `—` example — `chapters/ch01-sums.tex:163`
+- `—` examplex — `chapters/ch01-sums.tex:171`
+- `—` definitionx [well ordering] — `chapters/ch01-sums.tex:199`
+- `prop:induction` proposition [induction principles] — `chapters/ch01-sums.tex:207`
+- `—` example — `chapters/ch01-sums.tex:230`
+- `—` examplex [Golomb's trominoes] — `chapters/ch01-sums.tex:249`
+- `prop:bernoulli` proposition [Bernoulli's inequality] — `chapters/ch01-sums.tex:270`
+- `prop:binom` proposition — `chapters/ch01-sums.tex:299`
+- `prop:vandermonde` proposition [Vandermonde] — `chapters/ch01-sums.tex:367`
+- `prop:deltabinom` proposition — `chapters/ch01-sums.tex:404`
+- `thm:newton` theorem [Newton's forward difference formula] — `chapters/ch01-sums.tex:419`
+- `cor:sumpoly` corollary [sums of polynomials] — `chapters/ch01-sums.tex:451`
+- `—` examplex — `chapters/ch01-sums.tex:468`
+- `—` propositionx [sum of the first cubes] — `chapters/ch01-sums.tex:486`
+- `—` propositionx [division with remainder] — `chapters/ch01-sums.tex:597`
+- `—` propositionx [B\'ezout's identity] — `chapters/ch01-sums.tex:619`
+- `—` propositionx [Euclid's lemma and unique factorisation] — `chapters/ch01-sums.tex:636`
+- `ex:five-agreements` examplex [five agreements, then a disagreement] — `chapters/ch01-sums.tex:667`
+- `—` definitionx [the three rules of counting] — `chapters/ch02-counting.tex:35`
+- `prop:counts` proposition [basic counts] — `chapters/ch02-counting.tex:60`
+- `thm:incexc` theorem [inclusion--exclusion] — `chapters/ch02-counting.tex:132`
+- `prop:derang` proposition [derangements] — `chapters/ch02-counting.tex:180`
+- `prop:paths` proposition [counting paths] — `chapters/ch02-counting.tex:258`
+- `—` examplex [a recurrence becomes an equation] — `chapters/ch02-counting.tex:320`
+- `prop:real-triangle` proposition [real triangle inequalities] — `chapters/ch05-sequences-series.tex:40`
+- `—` definitionx [limit of a sequence] — `chapters/ch05-sequences-series.tex:54`
+- `—` definitionx [completeness of $\R$] — `chapters/ch05-sequences-series.tex:85`
+- `prop:floor` proposition [the floor] — `chapters/ch05-sequences-series.tex:93`
+- `prop:sqrt2` proposition [$\sqrt2$ is not rational] — `chapters/ch05-sequences-series.tex:120`
+- `—` propositionx [first properties of limits] — `chapters/ch05-sequences-series.tex:141`
+- `sym:asymptotic` definitionx [the notations $o$, $O$ and $\sim$] — `chapters/ch05-sequences-series.tex:179`
+- `—` examplex [the geometric series] — `chapters/ch05-sequences-series.tex:196`
+- `prop:seqcrit` proposition [convergence criteria] — `chapters/ch05-sequences-series.tex:253`
+- `—` examplex [Newton's sequence for $\sqrt2$] — `chapters/ch05-sequences-series.tex:288`
+- `thm:cesaro` theorem [Ces\`aro] — `chapters/ch05-sequences-series.tex:323`
+- `—` examplex [two derivatives from the definition] — `chapters/ch05-sequences-series.tex:359`
+- `—` definitionx [continuity and the derivative] — `chapters/ch05-sequences-series.tex:375`
+- `prop:early-differentiation` proposition [elementary differentiation rules] — `chapters/ch05-sequences-series.tex:395`
+- `thm:ivt` theorem [intermediate values] — `chapters/ch05-sequences-series.tex:451`
+- `—` examplex [three consequences] — `chapters/ch05-sequences-series.tex:479`
+- `thm:evt` theorem [extreme values] — `chapters/ch05-sequences-series.tex:493`
+- `thm:heine` theorem [Heine: uniform continuity] — `chapters/ch05-sequences-series.tex:512`
+- `thm:mvt` theorem [Rolle, and the mean value theorem] — `chapters/ch05-sequences-series.tex:538`
+- `prop:e-limit` proposition [the sequence for $e$] — `chapters/ch05-sequences-series.tex:570`
+- `—` propositionx [the first positive zeros of cosine] — `chapters/ch05-sequences-series.tex:593`
+- `prop:sincmp` proposition [sine and tangent compared with the identity] — `chapters/ch05-sequences-series.tex:633`
+- `prop:early-ftc` proposition [a first fundamental theorem] — `chapters/ch05-sequences-series.tex:674`
+- `prop:posseries` proposition [series of non-negative terms] — `chapters/ch05-sequences-series.tex:707`
+- `—` examplex [three series, three tests] — `chapters/ch05-sequences-series.tex:750`
+- `prop:signedseries` proposition [signed series] — `chapters/ch05-sequences-series.tex:768`
+- `prop:safe-sums` proposition [when changing the order is safe] — `chapters/ch05-sequences-series.tex:825`
+- `prop:gamma` proposition [Euler's constant] — `chapters/ch05-sequences-series.tex:842`
+- `prop:stirlingshape` proposition [The shape of Stirling's formula] — `chapters/ch05-sequences-series.tex:874`
+- `prop:abelsum` proposition [Abel's summation by parts] — `chapters/ch05-sequences-series.tex:931`
+- `thm:dirichlettest` theorem [Dirichlet's test] — `chapters/ch05-sequences-series.tex:947`
+- `—` examplex [the series $\sum\frac{\sin(k\theta)}k$] — `chapters/ch05-sequences-series.tex:969`
+- `—` examplex [a remainder for $\ln2$] — `chapters/ch05-sequences-series.tex:993`
+- `orders:def:poset` definition — `chapters/orders.tex:34`
+- `orders:prop:topsort` proposition [topological sorting] — `chapters/orders.tex:75`
+- `orders:thm:mirsky` theorem [Mirsky, 1971] — `chapters/orders.tex:98`
+- `orders:thm:dilworth` theorem [Dilworth, 1950] — `chapters/orders.tex:120`
+- `orders:thm:es` theorem [Erd\H os and Szekeres, 1935] — `chapters/orders.tex:152`
+- `orders:thm:lym` theorem [LYM inequality] — `chapters/orders.tex:201`
+- `orders:thm:scd` theorem [de Bruijn, van Ebbenhorst Tengbergen and Kruyswijk, 1951] — `chapters/orders.tex:240`
+- `orders:thm:ekr` theorem [Erd\H os, Ko and Rado] — `chapters/orders.tex:275`
+- `orders:def:wf` definition — `chapters/orders.tex:318`
+- `orders:thm:wfind` theorem [well-founded induction] — `chapters/orders.tex:326`
+- `orders:prop:lex` proposition — `chapters/orders.tex:346`
+- `—` definitionx — `chapters/ch02-complex-roots.tex:38`
+- `—` definitionx — `chapters/ch02-complex-roots.tex:71`
+- `—` propositionx [Brahmagupta's identity] — `chapters/ch02-complex-roots.tex:89`
+- `—` propositionx [triangle inequality] — `chapters/ch02-complex-roots.tex:110`
+- `—` examplex [square roots by algebra] — `chapters/ch02-complex-roots.tex:135`
+- `—` examplex [Bombelli's computation, checked] — `chapters/ch02-complex-roots.tex:159`
+- `prop:expform` proposition [exponential form] — `chapters/ch02-complex-roots.tex:219`
+- `—` example — `chapters/ch02-complex-roots.tex:301`
+- `—` examplex [the addition formulas, as a check] — `chapters/ch02-complex-roots.tex:309`
+- `—` examplex [a robot that does not come home] — `chapters/ch02-complex-roots.tex:322`
+- `—` examplex [three cube roots, and an argument that jumps] — `chapters/ch02-complex-roots.tex:343`
+- `def:elementary-group` definition — `chapters/ch02-complex-roots.tex:367`
+- `prop:roots` definitionx [polynomials, in five words] — `chapters/ch02-complex-roots.tex:393`
+- `prop:roots` proposition [roots of unity] — `chapters/ch02-complex-roots.tex:397`
+- `prop:orth` proposition [orthogonality] — `chapters/ch02-complex-roots.tex:445`
+- `—` examplex [the cosine of $2\pi/5$] — `chapters/ch02-complex-roots.tex:467`
+- `—` examplex [the product of sines] — `chapters/ch02-complex-roots.tex:501`
+- `thm:filter` theorem [roots-of-unity filter] — `chapters/ch02-complex-roots.tex:525`
+- `—` example — `chapters/ch02-complex-roots.tex:546`
+- `prop:equilateral` proposition [equilateral triangles] — `chapters/ch02-complex-roots.tex:562`
+- `def:cyclotomic` definition — `chapters/ch02-complex-roots.tex:598`
+- `prop:cyclotomic` proposition — `chapters/ch02-complex-roots.tex:606`
+- `—` examplex [a division, and a false guess] — `chapters/ch02-complex-roots.tex:631`
+- `—` definitionx — `chapters/ch03-polynomials.tex:39`
+- `—` examplex [Horner's scheme] — `chapters/ch03-polynomials.tex:54`
+- `—` definitionx [formal derivative] — `chapters/ch03-polynomials.tex:71`
+- `prop:polydiv` proposition [Euclidean division] — `chapters/ch03-polynomials.tex:84`
+- `prop:rootsfactor` examplex [long division] — `chapters/ch03-polynomials.tex:93`
+- `prop:rootsfactor` proposition [roots] — `chapters/ch03-polynomials.tex:99`
+- `prop:polynomial-bezout` proposition [polynomial gcd and B\'ezout] — `chapters/ch03-polynomials.tex:127`
+- `—` examplex [multiple roots] — `chapters/ch03-polynomials.tex:136`
+- `thm:dalembert` theorem [d'Alembert--Gauss] — `chapters/ch03-polynomials.tex:155`
+- `prop:viete` proposition [Vi\`ete's relations] — `chapters/ch03-polynomials.tex:198`
+- `—` examplex — `chapters/ch03-polynomials.tex:208`
+- `thm:lagrange` theorem [Lagrange] — `chapters/ch03-polynomials.tex:222`
+- `—` examplex — `chapters/ch03-polynomials.tex:239`
+- `—` examplex [sharing a secret] — `chapters/ch03-polynomials.tex:253`
+- `prop:cheb` proposition — `chapters/ch03-polynomials.tex:267`
+- `—` propositionx [closed form] — `chapters/ch03-polynomials.tex:289`
+- `prop:ratroot` proposition [rational roots] — `chapters/ch03-polynomials.tex:313`
+- `prop:gausspoly` examplex — `chapters/ch03-polynomials.tex:320`
+- `prop:gausspoly` proposition [Gauss's lemma] — `chapters/ch03-polynomials.tex:326`
+- `thm:eisenstein` theorem [Eisenstein's criterion] — `chapters/ch03-polynomials.tex:339`
+- `prop:reduction` propositionx [reduction modulo $p$] — `chapters/ch03-polynomials.tex:352`
+- `—` examplex — `chapters/ch03-polynomials.tex:359`
+- `prop:newtonid` proposition [Newton's identities] — `chapters/ch03-polynomials.tex:371`
+- `thm:symmetric` theorem [fundamental theorem of symmetric polynomials] — `chapters/ch03-polynomials.tex:398`
+- `—` examplex — `chapters/ch03-polynomials.tex:407`
+- `thm:descartes` theorem [Descartes' rule of signs] — `chapters/ch03-polynomials.tex:426`
+- `thm:gausslucas` examplex — `chapters/ch03-polynomials.tex:441`
+- `thm:gausslucas` theorem [Gauss--Lucas] — `chapters/ch03-polynomials.tex:447`
+- `—` examplex [a root that splits under a whisper] — `chapters/ch03-polynomials.tex:479`
+- `—` definitionx [vector space] — `chapters/ch07-linear-algebra.tex:31`
+- `—` theoremx [exchange lemma, and dimension] — `chapters/ch07-linear-algebra.tex:56`
+- `prop:ranknullity` proposition [rank--nullity] — `chapters/ch07-linear-algebra.tex:97`
+- `—` examplex [the $2\times2$ case, worked] — `chapters/ch07-linear-algebra.tex:136`
+- `lem:sign` lemma [sign of a permutation] — `chapters/ch07-linear-algebra.tex:183`
+- `thm:det` theorem [determinant] — `chapters/ch07-linear-algebra.tex:196`
+- `—` examplex [Cassini, from a determinant] — `chapters/ch07-linear-algebra.tex:224`
+- `—` propositionx [Laplace expansion] — `chapters/ch07-linear-algebra.tex:238`
+- `—` examplex — `chapters/ch07-linear-algebra.tex:248`
+- `prop:vdm` proposition [Vandermonde] — `chapters/ch07-linear-algebra.tex:265`
+- `prop:charpoly` definitionx [eigenvalues, eigenvectors, similarity] — `chapters/ch07-linear-algebra.tex:289`
+- `prop:charpoly` proposition [characteristic polynomial] — `chapters/ch07-linear-algebra.tex:293`
+- `—` examplex [a $2\times2$ matrix, diagonalised by hand] — `chapters/ch07-linear-algebra.tex:303`
+- `thm:diag` theorem [diagonalisability] — `chapters/ch07-linear-algebra.tex:317`
+- `—` example [linear recurrences] — `chapters/ch07-linear-algebra.tex:336`
+- `thm:gramschmidt` theorem [Gram--Schmidt and orthogonal projection] — `chapters/ch07-linear-algebra.tex:354`
+- `thm:spectral` theorem [spectral theorem] — `chapters/ch07-linear-algebra.tex:399`
+- `—` definitionx [quadratic forms and positivity] — `chapters/ch07-linear-algebra.tex:437`
+- `—` definitionx [volume] — `chapters/ch07-linear-algebra.tex:447`
+- `thm:gram` theorem [Gram determinant] — `chapters/ch07-linear-algebra.tex:458`
+- `prop:adjugate` proposition [adjugate, Cramer's rule] — `chapters/ch07-linear-algebra.tex:490`
+- `thm:cayleyhamilton` theorem [Cayley--Hamilton] — `chapters/ch07-linear-algebra.tex:507`
+- `—` examplex [Cayley--Hamilton at work] — `chapters/ch07-linear-algebra.tex:539`
+- `—` examplex [three points and an honest line] — `chapters/ch07-linear-algebra.tex:559`
+- `—` propositionx [rules of differentiation] — `chapters/ch06-integrals-taylor.tex:26`
+- `—` examplex [substitution, parts, partial fractions] — `chapters/ch06-integrals-taylor.tex:67`
+- `—` definitionx [improper integrals] — `chapters/ch06-integrals-taylor.tex:105`
+- `prop:inttools` proposition [integration toolkit] — `chapters/ch06-integrals-taylor.tex:125`
+- `thm:taylor` theorem [Taylor formulas] — `chapters/ch06-integrals-taylor.tex:171`
+- `—` examplex [$\sin(0.1)$, as promised] — `chapters/ch06-integrals-taylor.tex:224`
+- `thm:lhopital` theorem [l'H\^opital's rule] — `chapters/ch06-integrals-taylor.tex:261`
+- `—` examplex [four quotients, and one warning] — `chapters/ch06-integrals-taylor.tex:286`
+- `prop:wallis` proposition — `chapters/ch06-integrals-taylor.tex:308`
+- `prop:gaussianintegral` proposition [The Gaussian integral from Wallis] — `chapters/ch06-integrals-taylor.tex:350`
+- `thm:stirlingC` theorem [Stirling's formula] — `chapters/ch06-integrals-taylor.tex:391`
+- `prop:gammafn` proposition [the Gamma function] — `chapters/ch06-integrals-taylor.tex:424`
+- `prop:quadrature` proposition [midpoint and trapezoid rules] — `chapters/ch06-integrals-taylor.tex:470`
+- `prop:stirlingnext` proposition [Stirling, one term further] — `chapters/ch06-integrals-taylor.tex:514`
+- `—` examplex [how many digits of $e$?] — `chapters/ch06-integrals-taylor.tex:564`
+- `—` examplex — `chapters/ch04-inequalities.tex:83`
+- `prop:convex` proposition [convexity tests] — `chapters/ch04-inequalities.tex:115`
+- `—` examplex — `chapters/ch04-inequalities.tex:158`
+- `thm:jensen` theorem [Jensen] — `chapters/ch04-inequalities.tex:179`
+- `thm:amgm` theorem [AM--GM] — `chapters/ch04-inequalities.tex:209`
+- `—` examplex [the largest box] — `chapters/ch04-inequalities.tex:251`
+- `thm:cs` theorem [Cauchy--Schwarz] — `chapters/ch04-inequalities.tex:278`
+- `—` examplex — `chapters/ch04-inequalities.tex:313`
+- `thm:young` theorem [Young] — `chapters/ch04-inequalities.tex:332`
+- `thm:holder` theorem [H\"older] — `chapters/ch04-inequalities.tex:353`
+- `prop:rearr` proposition [rearrangement] — `chapters/ch04-inequalities.tex:392`
+- `—` examplex — `chapters/ch04-inequalities.tex:421`
+- `thm:powermeans` theorem [power means] — `chapters/ch04-inequalities.tex:437`
+- `prop:chebsum` proposition [Chebyshev's sum inequality] — `chapters/ch04-inequalities.tex:499`
+- `thm:minkowski` theorem [Minkowski] — `chapters/ch04-inequalities.tex:526`
+- `prop:gamma-convexity` proposition [log-convexity of Gamma] — `chapters/ch04-inequalities.tex:641`
+- `—` examplex [the bill for an unequal rectangle] — `chapters/ch04-inequalities.tex:675`
+- `—` examplex [Heron's formula] — `chapters/ch04-inequalities.tex:792`
+- `—` examplex [Monty Hall] — `chapters/ch09-probability.tex:117`
+- `—` examplex [a test in a population of ten thousand] — `chapters/ch09-probability.tex:140`
+- `prop:proba` proposition [first rules] — `chapters/ch09-probability.tex:177`
+- `—` example — `chapters/ch09-probability.tex:206`
+- `—` definitionx [independent random variables, covariance] — `chapters/ch09-probability.tex:244`
+- `prop:varsum` proposition [products and sums] — `chapters/ch09-probability.tex:261`
+- `prop:laws` proposition [the classical laws] — `chapters/ch09-probability.tex:311`
+- `thm:chebyshev` theorem [Markov and Chebyshev] — `chapters/ch09-probability.tex:369`
+- `thm:wlln` theorem [weak law of large numbers] — `chapters/ch09-probability.tex:388`
+- `—` examplex [geometric waiting] — `chapters/ch09-probability.tex:437`
+- `—` examplex [the Poisson law] — `chapters/ch09-probability.tex:454`
+- `—` examplex [the term after the forty] — `chapters/field-guide.tex:27`
+- `—` theoremx [prime values of a polynomial] — `chapters/field-guide.tex:61`
+- `—` propositionx [legal words, by the first letter] — `chapters/field-guide.tex:136`
+- `—` propositionx [legal words, by closed walks] — `chapters/field-guide.tex:167`
+
+## Volume 2 named results
+
+Book order. A star on the environment means it does not step the counter. Line numbers are main at `68261d60`.
+
+- `thm:div` theorem [Euclidean division] — `chapters/ch01-divisibility.tex:36`
+- `prop:subgroups` proposition — `chapters/ch01-divisibility.tex:73`
+- `sym:gcd` definition — `chapters/ch01-divisibility.tex:80`
+- `thm:bezout` theorem [B\'ezout] — `chapters/ch01-divisibility.tex:95`
+- `thm:gauss` theorem [Euclid's lemma] — `chapters/ch01-divisibility.tex:106`
+- `thm:fta` theorem [fundamental theorem of arithmetic] — `chapters/ch01-divisibility.tex:117`
+- `prop:legendre` propositionx [Legendre's formula] — `chapters/ch01-divisibility.tex:168`
+- `—` examplex [division with a negative dividend] — `chapters/ch01-divisibility.tex:208`
+- `—` example — `chapters/ch01-divisibility.tex:225`
+- `thm:lame` theorem [Lam\'e] — `chapters/ch01-divisibility.tex:266`
+- `—` examplex [a complete run for $899$ and $372$] — `chapters/ch01-divisibility.tex:301`
+- `—` examplex [all solutions, once one is known] — `chapters/ch01-divisibility.tex:311`
+- `thm:euclid-primes` theorem [Euclid] — `chapters/ch02-primes.tex:36`
+- `thm:euler` theorem [Euler] — `chapters/ch02-primes.tex:96`
+- `—` examplex [A different number, the same idea] — `chapters/ch02-primes.tex:117`
+- `—` examplex [a partial sum of reciprocals] — `chapters/ch02-primes.tex:121`
+- `lem:binom` lemma — `chapters/ch02-primes.tex:161`
+- `thm:cheb` theorem [Chebyshev-type bounds] — `chapters/ch02-primes.tex:187`
+- `—` examplex [the product of the small primes] — `chapters/ch02-primes.tex:245`
+- `—` examplex [a lower bound one can see] — `chapters/ch02-primes.tex:249`
+- `thm:bertrand` theorem [Bertrand's postulate; Erd\H{o}s's elementary proof (1932)] — `chapters/ch02-primes.tex:262`
+- `—` examplex [the postulate up to $20$] — `chapters/ch02-primes.tex:314`
+- `—` examplex [where the primes in the middle cancel] — `chapters/ch02-primes.tex:318`
+- `prop:ringZn` proposition — `chapters/ch03-congruences.tex:43`
+- `prop:units` proposition — `chapters/ch03-congruences.tex:74`
+- `thm:eulerthm` theorem [Euler, Fermat] — `chapters/ch03-congruences.tex:91`
+- `thm:wilson` theorem [Wilson] — `chapters/ch03-congruences.tex:120`
+- `—` examplex [arithmetic modulo $12$] — `chapters/ch03-congruences.tex:132`
+- `—` examplex [the last two digits of $7^4$] — `chapters/ch03-congruences.tex:136`
+- `thm:crt` theorem [Chinese remainder theorem] — `chapters/ch03-congruences.tex:155`
+- `prop:lincong` proposition [linear congruences] — `chapters/ch03-congruences.tex:183`
+- `prop:phisum` proposition [Gauss] — `chapters/ch03-congruences.tex:209`
+- `—` examplex [Sunzi's problem] — `chapters/ch03-congruences.tex:217`
+- `—` examplex [when the moduli are not coprime] — `chapters/ch03-congruences.tex:221`
+- `thm:hensel` theorem [Hensel's lemma] — `chapters/ch03-congruences.tex:280`
+- `—` examplex [lifting the root of $X^2+1$ modulo $5$] — `chapters/ch03-congruences.tex:309`
+- `—` examplex [a singular root that dies] — `chapters/ch03-congruences.tex:313`
+- `sym:mu` example — `chapters/ch04-arithmetic-functions.tex:71`
+- `—` examplex [reading $\tau$ and $\sigma$ off the primes] — `chapters/ch04-arithmetic-functions.tex:80`
+- `—` examplex [the M\"obius function on $12$ and on $30$] — `chapters/ch04-arithmetic-functions.tex:86`
+- `prop:conv` definition — `chapters/ch04-arithmetic-functions.tex:97`
+- `prop:conv` proposition — `chapters/ch04-arithmetic-functions.tex:101`
+- `thm:mobius` theorem [M\"obius inversion] — `chapters/ch04-arithmetic-functions.tex:179`
+- `—` examplex [convolution at $n=12$] — `chapters/ch04-arithmetic-functions.tex:255`
+- `—` examplex [what inversion returns for $\tau$] — `chapters/ch04-arithmetic-functions.tex:264`
+- `thm:perfect` theorem [Euclid--Euler] — `chapters/ch04-arithmetic-functions.tex:284`
+- `—` examplex [the perfect number $28$] — `chapters/ch04-arithmetic-functions.tex:334`
+- `—` examplex [why $90$ is not perfect] — `chapters/ch04-arithmetic-functions.tex:340`
+- `thm:hyperbola` theorem [Dirichlet] — `chapters/ch04-arithmetic-functions.tex:418`
+- `—` examplex [the divisor sum at $x=10$] — `chapters/ch04-arithmetic-functions.tex:482`
+- `—` examplex [a short average] — `chapters/ch04-arithmetic-functions.tex:488`
+- `prop:order` definition — `chapters/ch05-primitive-roots.tex:55`
+- `prop:order` proposition — `chapters/ch05-primitive-roots.tex:59`
+- `—` examplex [the order of $2$ modulo $7$] — `chapters/ch05-primitive-roots.tex:116`
+- `—` examplex [orders divide] — `chapters/ch05-primitive-roots.tex:120`
+- `thm:cyclic` theorem [Gauss] — `chapters/ch05-primitive-roots.tex:133`
+- `—` examplex [a generator modulo $7$] — `chapters/ch05-primitive-roots.tex:202`
+- `—` examplex [how many generators] — `chapters/ch05-primitive-roots.tex:213`
+- `lem:lift` lemma — `chapters/ch05-primitive-roots.tex:226`
+- `thm:cyclicn` theorem — `chapters/ch05-primitive-roots.tex:234`
+- `—` examplex [four square roots of $1$ modulo $8$] — `chapters/ch05-primitive-roots.tex:270`
+- `—` examplex [a primitive root modulo $9$] — `chapters/ch05-primitive-roots.tex:274`
+- `—` examplex [a logarithm modulo $13$] — `chapters/ch05-primitive-roots.tex:311`
+- `—` examplex [a power equation] — `chapters/ch05-primitive-roots.tex:315`
+- `thm:twopower` theorem — `chapters/ch05-primitive-roots.tex:326`
+- `cor:mod8squares` corollary — `chapters/ch05-primitive-roots.tex:351`
+- `—` examplex [the units modulo $16$] — `chapters/ch05-primitive-roots.tex:372`
+- `—` examplex [the order of $5$ modulo $32$] — `chapters/ch05-primitive-roots.tex:383`
+- `def:legendre` definition — `chapters/ch06-quadratic-reciprocity.tex:47`
+- `thm:eulercrit` theorem [Euler's criterion] — `chapters/ch06-quadratic-reciprocity.tex:55`
+- `—` examplex [residues modulo $11$] — `chapters/ch06-quadratic-reciprocity.tex:149`
+- `—` examplex [Euler's criterion for $p=13$] — `chapters/ch06-quadratic-reciprocity.tex:162`
+- `thm:gausslemma` theorem [Gauss' lemma] — `chapters/ch06-quadratic-reciprocity.tex:171`
+- `cor:two` corollary — `chapters/ch06-quadratic-reciprocity.tex:200`
+- `—` examplex [Gauss's count for $a=3$, $p=13$] — `chapters/ch06-quadratic-reciprocity.tex:213`
+- `—` examplex [the supplementary law at $p=17$ and $p=13$] — `chapters/ch06-quadratic-reciprocity.tex:219`
+- `thm:qr` theorem [quadratic reciprocity; Gauss, 1796] — `chapters/ch06-quadratic-reciprocity.tex:233`
+- `lem:eisenstein` lemma [Eisenstein] — `chapters/ch06-quadratic-reciprocity.tex:254`
+- `—` example — `chapters/ch06-quadratic-reciprocity.tex:295`
+- `—` examplex [the sign really flips] — `chapters/ch06-quadratic-reciprocity.tex:327`
+- `prop:jacobi` proposition — `chapters/ch06-quadratic-reciprocity.tex:340`
+- `—` examplex [a composite denominator] — `chapters/ch06-quadratic-reciprocity.tex:392`
+- `—` examplex [one Euclidean swap] — `chapters/ch06-quadratic-reciprocity.tex:397`
+- `lem:thue` lemma [Thue] — `chapters/ch07-sums-of-squares.tex:33`
+- `thm:twosq` theorem [Fermat, 1640; Euler, 1749] — `chapters/ch07-sums-of-squares.tex:69`
+- `thm:twosqn` theorem — `chapters/ch07-sums-of-squares.tex:80`
+- `—` examplex [the integers up to $20$] — `chapters/ch07-sums-of-squares.tex:125`
+- `—` examplex [building $85$ from the identity] — `chapters/ch07-sums-of-squares.tex:140`
+- `thm:foursq` theorem [Lagrange, 1770] — `chapters/ch07-sums-of-squares.tex:160`
+- `—` examplex [$7$ needs four squares] — `chapters/ch07-sums-of-squares.tex:232`
+- `—` examplex [a composite through its prime factors] — `chapters/ch07-sums-of-squares.tex:236`
+- `thm:circle` theorem [Gauss] — `chapters/ch07-sums-of-squares.tex:277`
+- `—` examplex [the disc of radius $2$] — `chapters/ch07-sums-of-squares.tex:311`
+- `—` examplex [why the squares stick out] — `chapters/ch07-sums-of-squares.tex:315`
+- `—` examplex [a modulus excludes half the inputs] — `chapters/ch09-diophantine.tex:94`
+- `—` examplex [a modulus that finishes the job] — `chapters/ch09-diophantine.tex:98`
+- `thm:pyth` theorem — `chapters/ch09-diophantine.tex:113`
+- `—` examplex [two triples from the formulas] — `chapters/ch09-diophantine.tex:208`
+- `—` examplex [a pair the formulas reject] — `chapters/ch09-diophantine.tex:214`
+- `thm:fermat4` theorem [Fermat] — `chapters/ch09-diophantine.tex:223`
+- `—` examplex [the first step on a hypothetical solution] — `chapters/ch09-diophantine.tex:254`
+- `—` examplex [a complete descent from a small modulus] — `chapters/ch09-diophantine.tex:265`
+- `prop:chord` proposition — `chapters/ch09-diophantine.tex:326`
+- `—` example — `chapters/ch09-diophantine.tex:344`
+- `—` examplex [the circle through $(1,0)$] — `chapters/ch09-diophantine.tex:353`
+- `—` examplex [a conic with no rational point] — `chapters/ch09-diophantine.tex:361`
+- `thm:mordell7` theorem [a Mordell equation] — `chapters/ch09-diophantine.tex:374`
+- `—` examplex [why $y^2=x^3+7$ fails for small $x$] — `chapters/ch09-diophantine.tex:392`
+- `—` examplex [the shift] — `chapters/ch09-diophantine.tex:396`
+- `thm:markov` theorem [Markov, 1879] — `chapters/ch09-diophantine.tex:415`
+- `—` examplex [the smallest Markov solution] — `chapters/ch09-diophantine.tex:450`
+- `—` examplex [one more jump] — `chapters/ch09-diophantine.tex:455`
+- `—` examplex [the Pythagorean step in numbers that are not a counter-ex...] — `chapters/ch09-diophantine.tex:503`
+- `—` examplex [what a smaller solution would have to satisfy] — `chapters/ch09-diophantine.tex:507`
+- `prop:cfconv` proposition — `chapters/ch08-continued-fractions.tex:36`
+- `—` examplex [the fraction $415/93$] — `chapters/ch08-continued-fractions.tex:126`
+- `—` examplex [two convergents of a short fraction] — `chapters/ch08-continued-fractions.tex:130`
+- `thm:cfapprox` theorem — `chapters/ch08-continued-fractions.tex:145`
+- `lem:cfexistence` lemma [An infinite expansion determines its number] — `chapters/ch08-continued-fractions.tex:171`
+- `—` examplex [the first convergents of $\sqrt 2$] — `chapters/ch08-continued-fractions.tex:181`
+- `—` examplex [a rational stops] — `chapters/ch08-continued-fractions.tex:185`
+- `lem:best` lemma [best approximation] — `chapters/ch08-continued-fractions.tex:198`
+- `thm:legendre` theorem [Legendre] — `chapters/ch08-continued-fractions.tex:206`
+- `—` examplex [denominators near $7$ for $\pi$] — `chapters/ch08-continued-fractions.tex:260`
+- `—` examplex [Legendre's test on $22/7$] — `chapters/ch08-continued-fractions.tex:264`
+- `thm:periodic` theorem [Euler, Lagrange] — `chapters/ch08-continued-fractions.tex:275`
+- `—` example — `chapters/ch08-continued-fractions.tex:292`
+- `—` examplex [the period of $\sqrt 3$] — `chapters/ch08-continued-fractions.tex:297`
+- `—` examplex [a purely periodic example] — `chapters/ch08-continued-fractions.tex:301`
+- `thm:pell` theorem [Lagrange, 1768] — `chapters/ch08-continued-fractions.tex:324`
+- `—` example — `chapters/ch08-continued-fractions.tex:346`
+- `—` examplex [the solution for $d=2$] — `chapters/ch08-continued-fractions.tex:377`
+- `—` examplex [norm $-1$ is not a Pell solution] — `chapters/ch08-continued-fractions.tex:388`
+- `prop:quadunits` proposition — `chapters/ch10-gaussian-eisenstein.tex:83`
+- `prop:eucl` proposition [Euclidean division] — `chapters/ch10-gaussian-eisenstein.tex:127`
+- `—` examplex [norms in the Gaussian integers] — `chapters/ch10-gaussian-eisenstein.tex:186`
+- `—` examplex [a division step] — `chapters/ch10-gaussian-eisenstein.tex:190`
+- `thm:ufd` theorem — `chapters/ch10-gaussian-eisenstein.tex:202`
+- `thm:six` theorem — `chapters/ch10-gaussian-eisenstein.tex:228`
+- `—` examplex [unique factorisation of $5$] — `chapters/ch10-gaussian-eisenstein.tex:242`
+- `—` examplex [coprime without a B\'ezout identity] — `chapters/ch10-gaussian-eisenstein.tex:246`
+- `thm:gaussprimes` theorem — `chapters/ch10-gaussian-eisenstein.tex:267`
+- `thm:r2` theorem [Jacobi] — `chapters/ch10-gaussian-eisenstein.tex:295`
+- `—` examplex [factoring $13$] — `chapters/ch10-gaussian-eisenstein.tex:325`
+- `—` examplex [a rational prime that stays prime] — `chapters/ch10-gaussian-eisenstein.tex:329`
+- `thm:eisprimes` theorem — `chapters/ch10-gaussian-eisenstein.tex:340`
+- `lem:cube` lemma — `chapters/ch10-gaussian-eisenstein.tex:353`
+- `thm:flt3` theorem [Euler; Gauss] — `chapters/ch10-gaussian-eisenstein.tex:368`
+- `—` examplex [the norm of $1-\omega$] — `chapters/ch10-gaussian-eisenstein.tex:433`
+- `—` examplex [a split prime modulo $3$] — `chapters/ch10-gaussian-eisenstein.tex:444`
+- `def:t1-character` definition — `chapters/ch14-characters.tex:43`
+- `—` examplex [three characters one already knows] — `chapters/ch14-characters.tex:63`
+- `prop:t1-charsum` proposition — `chapters/ch14-characters.tex:90`
+- `prop:t1-unitproduct` proposition — `chapters/ch14-characters.tex:123`
+- `thm:t1-charcount` theorem — `chapters/ch14-characters.tex:135`
+- `—` examplex [the character table modulo $5$] — `chapters/ch14-characters.tex:148`
+- `thm:t1-ortho` theorem [orthogonality] — `chapters/ch14-characters.tex:162`
+- `—` examplex [the non-principal character modulo $4$] — `chapters/ch14-characters.tex:185`
+- `—` examplex [two sign characters modulo $8$] — `chapters/ch14-characters.tex:189`
+- `lem:t1-pseries` lemma — `chapters/ch14-characters.tex:209`
+- `lem:t1-dseries` lemma — `chapters/ch14-characters.tex:219`
+- `thm:t1-eulerprod` theorem [Euler product] — `chapters/ch14-characters.tex:230`
+- `cor:t1-mu-zeta` corollary — `chapters/ch14-characters.tex:271`
+- `—` examplex [a product one can compare with $\pi^2/6$] — `chapters/ch14-characters.tex:278`
+- `—` examplex [removing two Euler factors] — `chapters/ch14-characters.tex:289`
+- `—` examplex [the series for $\mu$ at $s=2$] — `chapters/ch14-characters.tex:303`
+- `thm:t1-sieve` theorem [Legendre] — `chapters/ch14-characters.tex:316`
+- `—` examplex [from thirty, and then to one hundred] — `chapters/ch14-characters.tex:349`
+- `—` examplex [the first composite to survive] — `chapters/ch14-characters.tex:362`
+- `—` examplex [the floor identity at $x=10$] — `chapters/ch14-characters.tex:366`
+- `prop:t1-chi4series` proposition — `chapters/ch14-characters.tex:399`
+- `prop:t1-charbound` proposition — `chapters/ch14-characters.tex:420`
+- `—` examplex [three grouped terms] — `chapters/ch14-characters.tex:467`
+- `—` examplex [a partial character sum] — `chapters/ch14-characters.tex:476`
+
+## Volume 3 named results
+
+Book order. A star on the environment means it does not step the counter. Line numbers are main at `68261d60`.
+
+- `def:group` definition — `chapters/ch01-groups.tex:30`
+- `prop:rules` proposition [first rules] — `chapters/ch01-groups.tex:42`
+- `lem:anyfield` lemmax [exchange over any field] — `chapters/ch01-groups.tex:115`
+- `ex:examples` example [the examples of this volume] — `chapters/ch01-groups.tex:136`
+- `prop:dihedral` proposition [the dihedral group] — `chapters/ch01-groups.tex:152`
+- `prop:cube` proposition [rotations of the cube] — `chapters/ch01-groups.tex:237`
+- `prop:subgroup` definition — `chapters/ch01-groups.tex:326`
+- `prop:subgroup` proposition — `chapters/ch01-groups.tex:330`
+- `prop:order` proposition [order of an element] — `chapters/ch01-groups.tex:380`
+- `thm:lagrange` definition — `chapters/ch01-groups.tex:448`
+- `thm:lagrange` theorem [Lagrange] — `chapters/ch01-groups.tex:452`
+- `cor:lagrange` corollary — `chapters/ch01-groups.tex:479`
+- `—` definition — `chapters/ch01-groups.tex:532`
+- `thm:cyclic` theorem [cyclic groups] — `chapters/ch01-groups.tex:544`
+- `ex:homs` definition — `chapters/ch02-quotients.tex:23`
+- `ex:homs` example — `chapters/ch02-quotients.tex:29`
+- `prop:kerim` proposition — `chapters/ch02-quotients.tex:47`
+- `prop:normal` definition — `chapters/ch02-quotients.tex:125`
+- `prop:normal` proposition — `chapters/ch02-quotients.tex:131`
+- `thm:quotient` theorem [quotient group] — `chapters/ch02-quotients.tex:180`
+- `thm:iso1` theorem [first isomorphism theorem] — `chapters/ch02-quotients.tex:254`
+- `ex:iso1` example — `chapters/ch02-quotients.tex:279`
+- `thm:iso23` theorem [second and third isomorphism theorems, correspondence] — `chapters/ch02-quotients.tex:288`
+- `thm:crt` definition — `chapters/ch02-quotients.tex:385`
+- `thm:crt` theorem [Chinese remainder theorem, group version] — `chapters/ch02-quotients.tex:391`
+- `prop:internal` proposition [internal direct product] — `chapters/ch02-quotients.tex:449`
+- `prop:semidirect` definition — `chapters/ch02-quotients.tex:495`
+- `prop:semidirect` proposition — `chapters/ch02-quotients.tex:502`
+- `ex:actions` definition — `chapters/ch03-actions.tex:20`
+- `ex:actions` example — `chapters/ch03-actions.tex:26`
+- `thm:cayley` theorem [Cayley] — `chapters/ch03-actions.tex:49`
+- `thm:orbstab` definition — `chapters/ch03-actions.tex:95`
+- `thm:orbstab` theorem [orbit--stabiliser] — `chapters/ch03-actions.tex:99`
+- `thm:burnside` theorem [Burnside's lemma] — `chapters/ch03-actions.tex:182`
+- `thm:polya` theorem [P\'olya's counting theorem] — `chapters/ch03-actions.tex:235`
+- `ex:necklaceformula` example — `chapters/ch03-actions.tex:286`
+- `thm:classeq` theorem [class equation] — `chapters/ch03-actions.tex:300`
+- `cor:pgroup` corollary — `chapters/ch03-actions.tex:350`
+- `thm:cauchy` theorem [Cauchy] — `chapters/ch03-actions.tex:378`
+- `def:cycle` definition — `chapters/ch04-symmetric.tex:20`
+- `prop:cycles` proposition [cycle decomposition] — `chapters/ch04-symmetric.tex:26`
+- `cor:ordersign` corollary — `chapters/ch04-symmetric.tex:75`
+- `prop:conjSn` proposition — `chapters/ch04-symmetric.tex:136`
+- `prop:gens` proposition — `chapters/ch04-symmetric.tex:238`
+- `prop:a4` proposition — `chapters/ch04-symmetric.tex:304`
+- `thm:fifteen` theorem — `chapters/ch04-symmetric.tex:357`
+- `lem:split` lemma — `chapters/ch04-symmetric.tex:549`
+- `thm:a5` theorem — `chapters/ch04-symmetric.tex:611`
+- `thm:an` theorem — `chapters/ch04-symmetric.tex:689`
+- `lem:binom` definition — `chapters/ch05-sylow.tex:26`
+- `lem:binom` lemma — `chapters/ch05-sylow.tex:32`
+- `thm:sylow1` theorem [Sylow I] — `chapters/ch05-sylow.tex:86`
+- `thm:sylow23` theorem [Sylow II and III] — `chapters/ch05-sylow.tex:120`
+- `cor:sylownormal` corollary — `chapters/ch05-sylow.tex:186`
+- `cor:pk` corollary — `chapters/ch05-sylow.tex:212`
+- `prop:thirty` proposition — `chapters/ch05-sylow.tex:258`
+- `thm:pq` theorem [groups of order $pq$] — `chapters/ch05-sylow.tex:308`
+- `—` definition — `chapters/ch05-sylow.tex:416`
+- `prop:solv` proposition — `chapters/ch05-sylow.tex:434`
+- `—` definition — `chapters/ch06-rings.tex:28`
+- `ex:rings` example — `chapters/ch06-rings.tex:43`
+- `prop:finitedomain` proposition — `chapters/ch06-rings.tex:47`
+- `—` definition — `chapters/ch06-rings.tex:105`
+- `prop:quotring` proposition [quotient rings] — `chapters/ch06-rings.tex:119`
+- `ex:quotients` example — `chapters/ch06-rings.tex:198`
+- `prop:primemax` definition — `chapters/ch06-rings.tex:212`
+- `prop:primemax` proposition — `chapters/ch06-rings.tex:216`
+- `thm:crtring` theorem [Chinese remainder theorem for rings] — `chapters/ch06-rings.tex:292`
+- `prop:zm5` definition — `chapters/ch06-rings.tex:366`
+- `prop:zm5` proposition — `chapters/ch06-rings.tex:372`
+- `lem:primeufd` lemma — `chapters/ch06-rings.tex:471`
+- `thm:edpidufd` definition — `chapters/ch06-rings.tex:532`
+- `thm:edpidufd` theorem — `chapters/ch06-rings.tex:538`
+- `prop:pid-not-euclidean` proposition — `chapters/ch06-rings.tex:621`
+- `lem:gauss` lemma [Gauss] — `chapters/ch06-rings.tex:753`
+- `prop:gaussirr` proposition — `chapters/ch06-rings.tex:777`
+- `thm:gaussufd` theorem [Gauss] — `chapters/ch06-rings.tex:835`
+- `—` definition — `chapters/ch07-modules.tex:35`
+- `ex:modules` example — `chapters/ch07-modules.tex:45`
+- `thm:normindex` theorem — `chapters/ch07-modules.tex:75`
+- `thm:smith` theorem [Smith normal form] — `chapters/ch07-modules.tex:172`
+- `lem:subfree` lemma — `chapters/ch07-modules.tex:247`
+- `thm:structure` theorem [structure of finitely generated modules over a PID] — `chapters/ch07-modules.tex:295`
+- `cor:abelian` corollary [finitely generated abelian groups] — `chapters/ch07-modules.tex:450`
+- `cor:index` corollary — `chapters/ch07-modules.tex:530`
+- `prop:presentation` proposition — `chapters/ch07-modules.tex:590`
+- `thm:frobenius` theorem [rational canonical form; Frobenius] — `chapters/ch07-modules.tex:701`
+- `cor:cayleyhamilton` corollary [Cayley--Hamilton] — `chapters/ch07-modules.tex:777`
+- `thm:jordan` theorem [Jordan normal form] — `chapters/ch07-modules.tex:828`
+- `—` definition — `chapters/ch08-extensions.tex:21`
+- `thm:tower` theorem [tower law] — `chapters/ch08-extensions.tex:29`
+- `cor:towerdiv` corollary — `chapters/ch08-extensions.tex:70`
+- `prop:minpoly` definition — `chapters/ch08-extensions.tex:112`
+- `prop:minpoly` proposition [minimal polynomial] — `chapters/ch08-extensions.tex:119`
+- `thm:simple` theorem [simple extensions] — `chapters/ch08-extensions.tex:176`
+- `cor:finitealg` corollary — `chapters/ch08-extensions.tex:242`
+- `ex:sqrt2sqrt3` example — `chapters/ch08-extensions.tex:300`
+- `thm:kronecker` theorem [Kronecker] — `chapters/ch08-extensions.tex:321`
+- `prop:splitexists` definition — `chapters/ch08-extensions.tex:387`
+- `prop:splitexists` proposition — `chapters/ch08-extensions.tex:391`
+- `lem:extend1` lemma — `chapters/ch08-extensions.tex:445`
+- `lem:sep` lemma — `chapters/ch08-extensions.tex:515`
+- `thm:splitunique` theorem [uniqueness of splitting fields] — `chapters/ch08-extensions.tex:577`
+- `ex:cuberoot` example — `chapters/ch08-extensions.tex:671`
+- `prop:constrfield` proposition — `chapters/ch08-extensions.tex:683`
+- `thm:wantzel` theorem [Wantzel] — `chapters/ch08-extensions.tex:818`
+- `cor:classical` corollary [the classical problems] — `chapters/ch08-extensions.tex:935`
+- `prop:quartic-nonconstructible` proposition — `chapters/ch08-extensions.tex:1047`
+- `thm:primitiveelement` theorem [primitive element] — `chapters/ch08-extensions.tex:1120`
+- `prop:primefield` proposition — `chapters/ch09-finite-fields.tex:25`
+- `lem:frob` lemma [Frobenius] — `chapters/ch09-finite-fields.tex:73`
+- `ex:f4` example — `chapters/ch09-finite-fields.tex:125`
+- `thm:cyclicmult` theorem — `chapters/ch09-finite-fields.tex:133`
+- `lem:xqx` lemma — `chapters/ch09-finite-fields.tex:219`
+- `thm:fq` theorem [Galois, Moore] — `chapters/ch09-finite-fields.tex:258`
+- `thm:subfields` theorem — `chapters/ch09-finite-fields.tex:314`
+- `thm:galfq` theorem — `chapters/ch09-finite-fields.tex:400`
+- `thm:xqnx` theorem — `chapters/ch09-finite-fields.tex:450`
+- `thm:countirr` theorem [Gauss] — `chapters/ch09-finite-fields.tex:494`
+- `prop:rsdist` proposition — `chapters/ch09-finite-fields.tex:591`
+- `thm:bw` theorem [Berlekamp--Welch decoding] — `chapters/ch09-finite-fields.tex:630`
+- `def:galois` definition — `chapters/ch10-galois.tex:38`
+- `lem:permroots` lemma — `chapters/ch10-galois.tex:44`
+- `prop:autbound` proposition — `chapters/ch10-galois.tex:78`
+- `thm:galoischar` theorem — `chapters/ch10-galois.tex:131`
+- `lem:artin` lemma [Artin] — `chapters/ch10-galois.tex:208`
+- `thm:ftgt` theorem [fundamental theorem of Galois theory] — `chapters/ch10-galois.tex:260`
+- `ex:galv4` example — `chapters/ch10-galois.tex:339`
+- `ex:galx42` example — `chapters/ch10-galois.tex:343`
+- `prop:cyclo` proposition — `chapters/ch10-galois.tex:360`
+- `prop:cyclodegree` proposition [cyclotomic degree] — `chapters/ch10-galois.tex:416`
+- `thm:gw` theorem [Gauss, Wantzel] — `chapters/ch10-galois.tex:546`
+- `—` definition — `chapters/ch10-galois.tex:639`
+- `lem:kummerstep` lemma — `chapters/ch10-galois.tex:649`
+- `thm:radsolv` theorem [Galois] — `chapters/ch10-galois.tex:697`
+- `thm:abelruffini` theorem [Abel, Ruffini] — `chapters/ch10-galois.tex:830`
+- `lem:dedekind` lemma [Dedekind] — `chapters/ch10-galois.tex:902`
+- `prop:kummer` proposition [Kummer] — `chapters/ch10-galois.tex:953`
+- `thm:galoiscrit` theorem [Galois' criterion] — `chapters/ch10-galois.tex:1012`
+- `ex:reps` definition — `chapters/ch11-characters.tex:31`
+- `ex:reps` example — `chapters/ch11-characters.tex:35`
+- `thm:maschke` theorem [Maschke] — `chapters/ch11-characters.tex:76`
+- `lem:schur` lemma [Schur] — `chapters/ch11-characters.tex:137`
+- `cor:abelianirr` corollary — `chapters/ch11-characters.tex:190`
+- `prop:charbasic` definition — `chapters/ch11-characters.tex:227`
+- `prop:charbasic` proposition — `chapters/ch11-characters.tex:234`
+- `thm:orth` theorem [orthogonality of characters] — `chapters/ch11-characters.tex:304`
+- `cor:mult` corollary — `chapters/ch11-characters.tex:384`
+- `thm:classes` theorem — `chapters/ch11-characters.tex:459`
+- `cor:columns` corollary [column orthogonality] — `chapters/ch11-characters.tex:524`
+- `ex:s3` example [$\mathfrak S_3$] — `chapters/ch11-characters.tex:594`
+- `ex:s4` example [$\mathfrak S_4$] — `chapters/ch11-characters.tex:598`
+- `thm:fourier` theorem [Fourier analysis on a finite abelian group] — `chapters/ch11-characters.tex:631`
+- `prop:dirichletorth` proposition — `chapters/ch11-characters.tex:699`
+- `ex:dir5` example — `chapters/ch11-characters.tex:758`
+- `—` definition — `chapters/ch12-quaternions.tex:33`
+- `prop:quat` proposition — `chapters/ch12-quaternions.tex:69`
+- `lem:euler` lemma [Euler] — `chapters/ch12-quaternions.tex:210`
+- `thm:su2so3` theorem — `chapters/ch12-quaternions.tex:267`
+- `thm:finiteso3` theorem — `chapters/ch12-quaternions.tex:613`
+- `prop:solids` proposition [the Platonic rotation groups] — `chapters/ch12-quaternions.tex:895`
+- `linear:thm:perron` theorem [Perron, 1907] — `chapters/linear-ch07-perron.tex:42`
+- `linear:lem:oscillation` lemma — `chapters/linear-ch07-perron.tex:210`
+- `linear:thm:powerconv` theorem [convergence of the power method] — `chapters/linear-ch07-perron.tex:261`
+- `linear:def:irreducible` definition — `chapters/linear-ch07-perron.tex:353`
+- `linear:prop:levels` proposition — `chapters/linear-ch07-perron.tex:375`
+- `linear:thm:frobenius` theorem [Frobenius, 1912] — `chapters/linear-ch07-perron.tex:410`
+- `linear:thm:primitive` theorem — `chapters/linear-ch07-perron.tex:548`
+- `linear:thm:wielandt` theorem [Wielandt] — `chapters/linear-ch07-perron.tex:661`
+- `linear:cor:markov` corollary [ergodic theorem for Markov chains] — `chapters/linear-ch07-perron.tex:744`
+- `linear:exa:pagerank` example [PageRank] — `chapters/linear-ch07-perron.tex:790`
+- `linear:exa:leslie` example [Leslie models] — `chapters/linear-ch07-perron.tex:830`
+- `linear:thm:circulant` theorem [eigenvalues of circulants] — `chapters/linear-ch09-symmetry.tex:35`
+- `linear:exa:circ3` example [the $3\times3$ circulant] — `chapters/linear-ch09-symmetry.tex:115`
+- `linear:exa:cycle` example [cycles and their relatives] — `chapters/linear-ch09-symmetry.tex:128`
+- `linear:prop:commutant` proposition — `chapters/linear-ch09-symmetry.tex:140`
+- `linear:def:character` definition — `chapters/linear-ch09-symmetry.tex:181`
+- `linear:lem:commuting` lemma — `chapters/linear-ch09-symmetry.tex:194`
+- `linear:thm:characters` theorem [characters of a finite abelian group] — `chapters/linear-ch09-symmetry.tex:232`
+- `linear:thm:invariant` theorem [symmetry diagonalises] — `chapters/linear-ch09-symmetry.tex:317`
+- `linear:thm:paley` theorem [Paley graphs] — `chapters/linear-ch09-symmetry.tex:418`
+- `linear:def:krawtchouk` definition — `chapters/linear-ch09-symmetry.tex:572`
+- `linear:thm:krawtchouk` theorem [distances in the cube] — `chapters/linear-ch09-symmetry.tex:597`
+- `linear:thm:delsarte` theorem [Delsarte, 1973] — `chapters/linear-ch09-symmetry.tex:707`
+- `linear:cor:lp` corollary [the linear programming bound] — `chapters/linear-ch09-symmetry.tex:753`
+- `linear:cor:plotkin` corollary [Plotkin bound] — `chapters/linear-ch09-symmetry.tex:802`
+- `linear:exa:simplex` example [a perfect fit] — `chapters/linear-ch09-symmetry.tex:837`
+- `linear:thm:groupdet` theorem [Dedekind] — `chapters/linear-ch09-symmetry.tex:860`
+- `combinatorial:thm:oddtown` theorem [Oddtown, Berlekamp, 1969] — `chapters/combinatorial.tex:28`
+- `combinatorial:lem:perp` lemma — `chapters/combinatorial.tex:71`
+- `combinatorial:thm:eventown` theorem [Eventown, Berlekamp, 1969; Graver, 1975] — `chapters/combinatorial.tex:96`
+- `combinatorial:thm:fisher` theorem [Fisher's inequality, non-uniform form; Majumdar, 1953] — `chapters/combinatorial.tex:164`
+- `combinatorial:thm:twodist` theorem [Larman, Rogers and Seidel, 1977] — `chapters/combinatorial.tex:243`
+- `combinatorial:prop:planarmax` proposition [the planar maximum] — `chapters/combinatorial.tex:309`
+- `combinatorial:thm:fwmod` theorem [Frankl and Wilson, 1981, modular form] — `chapters/combinatorial.tex:388`
+- `combinatorial:thm:fw` theorem [Frankl and Wilson, 1981, non-uniform form] — `chapters/combinatorial.tex:436`
+- `combinatorial:thm:explicitramsey` theorem [Frankl and Wilson, 1981] — `chapters/combinatorial.tex:490`
+- `combinatorial:lem:grid` lemma — `chapters/combinatorial.tex:560`
+- `combinatorial:thm:cn` theorem [Combinatorial Nullstellensatz, Alon, 1999] — `chapters/combinatorial.tex:600`
+- `combinatorial:thm:cd` theorem [Cauchy, 1813; Davenport, 1935] — `chapters/combinatorial.tex:656`
+- `combinatorial:lem:powersum` lemma — `chapters/combinatorial.tex:706`
+- `combinatorial:thm:cw` theorem [Chevalley and Warning, 1935] — `chapters/combinatorial.tex:730`
+- `combinatorial:thm:egz` theorem [Erd\H os, Ginzburg and Ziv, 1961] — `chapters/combinatorial.tex:799`
+- `combinatorial:def:cap` definition — `chapters/combinatorial.tex:867`
+- `combinatorial:def:slicerank` definition — `chapters/combinatorial.tex:897`
+- `combinatorial:lem:support` lemma — `chapters/combinatorial.tex:912`
+- `combinatorial:lem:diag` lemma [Tao, 2016] — `chapters/combinatorial.tex:933`
+- `combinatorial:thm:capset` theorem [Ellenberg and Gijswijt, 2016] — `chapters/combinatorial.tex:993`
+- `combinatorial:prop:mn` proposition — `chapters/combinatorial.tex:1059`
+- `prop:hadamard-four` proposition [a necessary divisibility condition] — `chapters/paley.tex:29`
+- `conjectures:prop:kron` proposition [Sylvester, 1867] — `chapters/paley.tex:100`
+- `conjectures:lem:chi` lemma — `chapters/paley.tex:176`
+- `conjectures:lem:jacobsthal` lemma — `chapters/paley.tex:255`
+- `conjectures:thm:paley1` theorem [Paley I, 1933] — `chapters/paley.tex:318`
+- `conjectures:thm:paley2` theorem [Paley II, 1933] — `chapters/paley.tex:406`
