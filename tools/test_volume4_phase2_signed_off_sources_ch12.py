@@ -23,7 +23,9 @@ SOURCE = Path(__file__).resolve().parents[1] / "volume4-chance" / "chapters" / "
 # Labels unchanged. Not a new sign-off.
 # 2026-11-28 round 5: the hitting shell is covered by cubes, not by subtracting outer contents.
 # Labels unchanged. Not a new sign-off.
-BLOB = "6b9b7825672ca1e8c510b58b73663e435f4d471e"
+# 2026-11-28 round 6: subadditivity bounds the union of the covering cubes by the sum of their masses.
+# Labels unchanged. Not a new sign-off.
+BLOB = "469320b99e879ff6d915844a1a9620f09313bca7"
 PROOFS = """prop:bmgauss lem:levylevel thm:levy prop:scaling lem:squares
 thm:qv thm:dyadicito thm:pwz prop:bmmart prop:restart
 thm:reflection prop:bmsquare""".split()
