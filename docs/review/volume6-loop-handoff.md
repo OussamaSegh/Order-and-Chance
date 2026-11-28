@@ -2,7 +2,10 @@
 
 Fresh agents continue from this file alone. The book sources live in `volume6-crossroads/`. The intent note is `docs/plan/book-06.md`. Do not edit book source on the tracker branch.
 
-Reviewed base: `1ccf4e181833cf50bb569e31f0e986124ed579b0` (`origin/main` on 28 November 2026). Volume 6 at that SHA is the text scored below. Round-1 write-up: branch `review/v6-round1`, file `docs/review/volume6-round1-review.md`.
+Reviewed base: `1ccf4e181833cf50bb569e31f0e986124ed579b0` (`origin/main` on 28 November 2026). Volume 6 at that SHA is the text scored below.
+
+- Tracker PR: https://github.com/OussamaSegh/Order-and-Chance/pull/314 (draft), head `0e9178df9c4b19fe102f526f30fdad59ba5c64d7`, branch `review/v6-loop-tracker`.
+- Round-1 review PR: https://github.com/OussamaSegh/Order-and-Chance/pull/315 (draft), head `430f6426c9edef495fadc707bf34a2e66413e14b`, branch `review/v6-round1`, file `docs/review/volume6-round1-review.md`.
 
 ## Goal
 
@@ -22,7 +25,7 @@ Bring Volume 6 to 10/10. The loop is: review, then small fix PRs, then a distinc
 
 | Round | Base SHA | Score | Review | Status |
 | --- | --- | --- | --- | --- |
-| 1 | `1ccf4e181833cf50bb569e31f0e986124ed579b0` | 8/10 | `review/v6-round1` (`docs/review/volume6-round1-review.md`) | open; no fix PRs yet |
+| 1 | `1ccf4e181833cf50bb569e31f0e986124ed579b0` | 8/10 | https://github.com/OussamaSegh/Order-and-Chance/pull/315 head `430f6426c9edef495fadc707bf34a2e66413e14b` | open; no fix PRs yet |
 
 Score reason, short: the numbered theorems that were checked (Mertens, Dirichlet, Newman and the prime number theorem, the zero-free constant, the explicit formula, Selberg, Brun, Erdős–Kac, the modular identities) held. Five major defects are false cross-references or a false factor in a solution. Six minors are local. No broken main theorem was found. Details and the list of unchecked work are in the round-1 review.
 
