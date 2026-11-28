@@ -21,7 +21,9 @@ SOURCE = Path(__file__).resolve().parents[1] / "volume4-chance" / "chapters" / "
 # Second review the same day: the cross term is the limit of the cutoff products. Not a new sign-off.
 # 2026-11-27 round 4: the hitting event is compared with the grid by a walk reflection, not by one strip.
 # Labels unchanged. Not a new sign-off.
-BLOB = "428107cc45e52010b94a03ee598ba9b236fee2e6"
+# 2026-11-28 round 5: the hitting shell is covered by cubes, not by subtracting outer contents.
+# Labels unchanged. Not a new sign-off.
+BLOB = "6b9b7825672ca1e8c510b58b73663e435f4d471e"
 PROOFS = """prop:bmgauss lem:levylevel thm:levy prop:scaling lem:squares
 thm:qv thm:dyadicito thm:pwz prop:bmmart prop:restart
 thm:reflection prop:bmsquare""".split()

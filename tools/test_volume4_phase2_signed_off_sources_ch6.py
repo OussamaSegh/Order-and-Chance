@@ -29,7 +29,9 @@ SOURCE=Path(__file__).resolve().parents[1]/"volume4-chance"/"chapters"/"ch06-clt
 # Not a new sign-off.
 # 2026-11-27 round 4: each either-or product estimates both tails.
 # Not a new sign-off.
-SHA="88ee6236390ab049d17660b15afa3aecef459173"
+# 2026-11-28 round 5: the clip of Q^2 is the sum of two monotone clips.
+# Not a new sign-off.
+SHA="35086ab9e488ca5ab29a9275d677c7cb2e55005a"
 PROOFS="prop:modes prop:cdf thm:slln4 thm:gc lem:diffint prop:cfexamples thm:cfconv thm:inversion lem:normalsum thm:lindeberg cor:clt thm:local prop:cyclebern thm:gaussvec".split()
 EX="ex:slutsky ex:confidence ex:delta ex:cauchyclt ex:poissonhalf ex:returns ex:thirdmoment ex:cyclesclt".split()
 
