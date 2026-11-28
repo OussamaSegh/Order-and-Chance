@@ -15,7 +15,7 @@ Chapter~\ref{ch:fourier} decomposed a function on the circle into infinitely man
 To multiply two polynomials of degree $n-1$ the schoolbook method computes $n^2$ products of coefficients. A polynomial of degree $2n-2$ is determined by its values at $2n-1$ points, and values multiply pointwise. What is the catch, and which points would you choose?
 \end{think}
 
-The catch is the cost of evaluating and of interpolating. The right points are the $n$th roots of unity, because the fast transform evaluates a polynomial at all of them at once.
+The catch is the cost of evaluating and of interpolating. Two polynomials of degree $n-1$ have a product of degree at most $2n-2$, so the values have to be taken at $2n-1$ points. The right points are roots of unity of that order, or of any larger order. The fast transform evaluates a polynomial at all the roots of one order at once.
 
 \section{The discrete Fourier transform}
 
@@ -120,7 +120,7 @@ Let $A$, $B$ have degrees $d$ and $e$, and $n>d+e$. Pad their coefficient vector
 are $F_n^{-1}(F_na\cdot F_nb)$.
 \end{corollary}
 \begin{proof}
-The entry $(a*b)_k=\sum_l a_l b_{k-l}$. With the zero padding, every index that appears stays in $[0,n[$ without wrapping: if $l\le d$ and $k-l\le e$, then $k\le d+e<n$. So $(a*b)_k$ is the coefficient of $X^k$ in $AB$. Apply Theorem~\ref{thm:convolution}.
+The entry $(a*b)_k=\sum_l a_l b_{k-l}$, and the second index is read in $\{0,\dots,n-1\}$. A padded coefficient $a_l$ vanishes for $l>d$, and $b_m$ vanishes for $m>e$. A nonzero term therefore has $0\le l\le d$. If $k-l\ge0$, the bound $b_{k-l}\ne0$ forces $k-l\le e$, hence $k\le d+e<n$, and the index has not wrapped. If $k-l<0$, the stored index is $k-l+n\ge n-d>e$, so the padded coefficient is zero. Thus $(a*b)_k$ is the coefficient of $X^k$ in $AB$. Apply Theorem~\ref{thm:convolution}.
 \end{proof}
 
 This is the strategy of the think box. Evaluate at the $n$th roots of unity, multiply the values, and interpolate back. The catch was the cost of the two transforms, $n^2$ each by the definition. The FFT removes that cost.
