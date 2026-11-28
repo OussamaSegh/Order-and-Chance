@@ -1,10 +1,18 @@
 # Volume 6, round 1 (review only)
 
-Score: **8/10**.
+Score: **9/10** after the correction below. The first posting of this note said 8/10.
+
+## Correction (same day)
+
+V6-R1-001 through V6-R1-004 are withdrawn. `volume1-first-principles/main.tex` sets `\setcounter{chapter}{-1}` before the language chapter, so that chapter is Chapter 0. The round-1 count treated it as Chapter 1 and shifted every Volume 1 number up by one. With the counter as printed, Theorem 9.4 is Cauchy–Schwarz, Theorem 9.3 is AM–GM, Theorem 3.8 is the extreme-value theorem, and Proposition 7.4 is the Vandermonde determinant. Those four citations in Chapter 12 were already right. No book line was changed for them.
+
+Volumes 2, 4, 5, and 13 do not start at Chapter 0. The matches recorded below for those volumes stand. Volume 4’s `\setcounter{chapter}{1}` is in the appendix only.
+
+What remains is one major (V6-R1-005) and six minors (V6-R1-006 through V6-R1-011). That is a 9. Fix PRs for those seven are open and are not part of this review.
 
 Base: `1ccf4e181833cf50bb569e31f0e986124ed579b0` on `main`. Sources: `volume6-crossroads/` (twelve chapters, preface, exercises with hints and solutions). Intent: `docs/plan/book-06.md`. No book source was edited.
 
-The numbered theorems of the volume hold up. The score stops at 8 because five statements a reader would trust are false: four Volume 1 citations in the closing solutions point at a different theorem, and one solution names the wrong factor of \(\xi\) at the trivial zeros. Six further slips are local. Nothing found breaks a main theorem.
+The numbered theorems of the volume hold up. After the correction above, one solution names the wrong factor of \(\xi\) at the trivial zeros, and six further slips are local. Nothing found breaks a main theorem.
 
 ## What was checked
 
@@ -28,13 +36,13 @@ Not every line of every solution was recalculated. The closing problems (Singer 
 
 ## Issues
 
-V6-R1-001 | major | volume6-crossroads/chapters/ch12-modular.tex:1499 | The tools line cites Volume 1, Theorem 9.4 as Cauchy–Schwarz. In the current Volume 1 that item is the Wallis product, and it is a proposition. Cauchy–Schwarz is Theorem 10.4. | Cite Volume 1, Theorem 10.4. Do not renumber Volume 1.
+V6-R1-001 | withdrawn | volume6-crossroads/chapters/ch12-modular.tex:1499 | The tools line cites Volume 1, Theorem 9.4 as Cauchy–Schwarz. That citation is right once Chapter 0 is counted. The first posting of this note had shifted the chapter numbers. | Leave the citation.
 
-V6-R1-002 | major | volume6-crossroads/chapters/ch12-modular.tex:1691 | The tools line cites Volume 1, Theorem 9.3 as AM–GM. Theorem 9.3 is l'Hôpital's rule. AM–GM is Theorem 10.3. | Cite Volume 1, Theorem 10.3.
+V6-R1-002 | withdrawn | volume6-crossroads/chapters/ch12-modular.tex:1691 | The tools line cites Volume 1, Theorem 9.3 as AM–GM. That citation is right. | Leave the citation.
 
-V6-R1-003 | major | volume6-crossroads/chapters/ch12-modular.tex:2233 | The write-up says a continuous function on a closed interval attains its maximum by Volume 1, Theorem 3.8. Chapter 3 of Volume 1 has four numbered results (counts, inclusion–exclusion, derangements, paths). The extreme-value theorem is Theorem 4.8. The tools line at 2246 repeats 3.8. | Cite Volume 1, Theorem 4.8 in both places.
+V6-R1-003 | withdrawn | volume6-crossroads/chapters/ch12-modular.tex:2233 | The write-up cites Volume 1, Theorem 3.8 for the extreme-value theorem, and the tools line at 2246 repeats it. That citation is right. | Leave both citations.
 
-V6-R1-004 | major | volume6-crossroads/chapters/ch12-modular.tex:2410 | The tools line cites Volume 1, Proposition 7.4 for Vandermonde determinants. Item 7.4 is the d'Alembert–Gauss theorem. The Vandermonde determinant is Proposition 8.4. | Cite Volume 1, Proposition 8.4.
+V6-R1-004 | withdrawn | volume6-crossroads/chapters/ch12-modular.tex:2410 | The tools line cites Volume 1, Proposition 7.4 for Vandermonde determinants. That citation is right. | Leave the citation.
 
 V6-R1-005 | major | volume6-crossroads/chapters/ch06-zeros.tex:759 | The solution of `ex:xi2` says that at the trivial zeros the pole of \(\Gamma(s/2)\) cancels a zero of the polynomial factor. That factor is \(\frac12 s(s-1)\), which is zero only at \(0\) and \(1\). The pole cancels a zero of \(\zeta\), and \(\xi\) stays non-zero because the polynomial factor does not vanish. The value \(\xi(2)=\pi/6\) in the same solution is right. | Name \(\zeta\), not the polynomial factor, as the function whose zero is cancelled.
 
@@ -52,4 +60,4 @@ V6-R1-011 | minor | volume6-crossroads/chapters/ch10-random.tex:599 | For a gap 
 
 ## Counts
 
-0 critical, 5 major, 6 minor.
+After the correction: 0 critical, 1 major, 6 minor. Withdrawn: V6-R1-001, V6-R1-002, V6-R1-003, V6-R1-004. The first posting of this note said 0 critical, 5 major, 6 minor.
