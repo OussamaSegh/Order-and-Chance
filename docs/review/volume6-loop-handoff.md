@@ -5,7 +5,7 @@ Fresh agents continue from this file alone. The book sources live in `volume6-cr
 Reviewed base: `1ccf4e181833cf50bb569e31f0e986124ed579b0` (`origin/main` on 28 November 2026). Volume 6 at that SHA is the text scored below.
 
 - Tracker PR: https://github.com/OussamaSegh/Order-and-Chance/pull/314 (draft), branch `review/v6-loop-tracker`. The head is the tip of that branch.
-- Round-1 review PR: https://github.com/OussamaSegh/Order-and-Chance/pull/315 (draft), head `430f6426c9edef495fadc707bf34a2e66413e14b`, branch `review/v6-round1`, file `docs/review/volume6-round1-review.md`.
+- Round-1 review PR: https://github.com/OussamaSegh/Order-and-Chance/pull/315 (draft), head `797e63664cc972e362af575ec143f3464475e752`, branch `review/v6-round1`, file `docs/review/volume6-round1-review.md`.
 
 ## Goal
 
@@ -25,7 +25,7 @@ Bring Volume 6 to 10/10. The loop is: review, then small fix PRs, then a distinc
 
 | Round | Base SHA | Score | Review | Status |
 | --- | --- | --- | --- | --- |
-| 1 | `1ccf4e181833cf50bb569e31f0e986124ed579b0` | 9/10 | https://github.com/OussamaSegh/Order-and-Chance/pull/315 head `430f6426c9edef495fadc707bf34a2e66413e14b` | fix PRs open for 005–011; 001–004 withdrawn |
+| 1 | `1ccf4e181833cf50bb569e31f0e986124ed579b0` | 9/10 | https://github.com/OussamaSegh/Order-and-Chance/pull/315 head `797e63664cc972e362af575ec143f3464475e752` | fix PRs open for 005–011; 001–004 withdrawn |
 
 Score reason, short: the numbered theorems that were checked (Mertens, Dirichlet, Newman and the prime number theorem, the zero-free constant, the explicit formula, Selberg, Brun, Erdős–Kac, the modular identities) held. The round-1 note first said 8/10, with five majors. Four of those majors were a chapter-count error: Volume 1 starts at Chapter 0, and those citations are already right. They are withdrawn. One major remains, the wrong factor of \(\xi\) in a solution, and six minors remain. No broken main theorem was found.
 
