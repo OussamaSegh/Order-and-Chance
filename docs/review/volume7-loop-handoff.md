@@ -4,7 +4,7 @@ Fresh agents continue from this file alone. The book sources live in `volume7-sp
 
 Round 1 reviewed `af3f9afbaee7b76237f8b9ad085420fda82d328f`. That SHA is `origin/main` at the time of the review. Volume 7 at that SHA is the text scored in round 1.
 
-- Tracker PR: this file's PR, branch `review/v7-loop-tracker`. The head is the tip of that branch.
+- Tracker PR: https://github.com/OussamaSegh/Order-and-Chance/pull/331 (draft), branch `review/v7-loop-tracker`. The head is the tip of that branch.
 - Round-1 review PR: https://github.com/OussamaSegh/Order-and-Chance/pull/330 (draft), head `7d021f907c2d2948f0a9ec5fe80974645dc2204a`, branch `review/v7-round1`, file `docs/review/volume7-round1-review.md`.
 
 ## Goal
