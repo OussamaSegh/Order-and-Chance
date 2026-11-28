@@ -19,9 +19,9 @@ SOURCE = Path(__file__).resolve().parents[1] / "volume4-chance" / "chapters" / "
 # Atom sentence names the dyadic strip. Source identity only, not an independent sign-off.
 # 2026-11-20: series review V4-010. Labels unchanged. Not a new sign-off.
 # Second review the same day: the cross term is the limit of the cutoff products. Not a new sign-off.
-# 2026-11-27: the stopped position is bounded by a fixed-level sample, and the tail is two-sided.
+# 2026-11-27 round 4: the hitting event is compared with the grid by a walk reflection, not by one strip.
 # Labels unchanged. Not a new sign-off.
-BLOB = "2b63190e0afb3d98fb79749e18937d0599e12f60"
+BLOB = "428107cc45e52010b94a03ee598ba9b236fee2e6"
 PROOFS = """prop:bmgauss lem:levylevel thm:levy prop:scaling lem:squares
 thm:qv thm:dyadicito thm:pwz prop:bmmart prop:restart
 thm:reflection prop:bmsquare""".split()
