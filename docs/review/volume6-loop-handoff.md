@@ -2,7 +2,9 @@
 
 Fresh agents continue from this file alone. The book sources live in `volume6-crossroads/`. The intent note is `docs/plan/book-06.md`. Do not edit book source on the tracker branch.
 
-Round 1 reviewed `1ccf4e181833cf50bb569e31f0e986124ed579b0`. Round 2 reviewed `614400b0061f715658cee0266f0b5b07640a7c77`, which is `origin/main` after the seven fix merges. Volume 6 at that SHA is the text scored in round 2.
+Round 1 reviewed `1ccf4e181833cf50bb569e31f0e986124ed579b0`. Round 2 reviewed `614400b0061f715658cee0266f0b5b07640a7c77`, the book text after the seven round-1 fix merges. Volume 6 at that SHA is the text scored in round 2. The round-1 review then merged as `24ef1a84c134be92500e6704775cdc074298ae3f` and did not change `volume6-crossroads/`. The round-2 fix branches start from that main.
+
+R1 8/10 (#315, merged as `24ef1a84`). R2 9/10 (#323), with six minor issues and 0 regressions. Two of the six are closing-problem slips. Four further local slips are in the same note.
 
 - Tracker PR: https://github.com/OussamaSegh/Order-and-Chance/pull/314 (draft), branch `review/v6-loop-tracker`. The head is the tip of that branch.
 - Round-1 review PR: https://github.com/OussamaSegh/Order-and-Chance/pull/315 (draft), head `797e63664cc972e362af575ec143f3464475e752`, branch `review/v6-round1`, file `docs/review/volume6-round1-review.md`.
@@ -26,10 +28,10 @@ Bring Volume 6 to 10/10. The loop is: review, then small fix PRs, then a distinc
 
 | Round | Base SHA | Score | Review | Status |
 | --- | --- | --- | --- | --- |
-| 1 | `1ccf4e181833cf50bb569e31f0e986124ed579b0` | 8/10 | https://github.com/OussamaSegh/Order-and-Chance/pull/315 head `797e63664cc972e362af575ec143f3464475e752` | first posting; the same note then corrected the score to 9/10 |
-| 2 | `614400b0061f715658cee0266f0b5b07640a7c77` | 9/10 | https://github.com/OussamaSegh/Order-and-Chance/pull/323 head `6f6d501532670cd3c6e2ee1ac185fd5084678dd7` | six minors open; the first posting said 10/10 |
+| 1 | `1ccf4e181833cf50bb569e31f0e986124ed579b0` | 8/10 | https://github.com/OussamaSegh/Order-and-Chance/pull/315 head `797e63664cc972e362af575ec143f3464475e752`, merged as `24ef1a84c134be92500e6704775cdc074298ae3f` | first posting 8/10; the merged note corrects the score to 9/10 |
+| 2 | `614400b0061f715658cee0266f0b5b07640a7c77` | 9/10 | https://github.com/OussamaSegh/Order-and-Chance/pull/323 head `6f6d501532670cd3c6e2ee1ac185fd5084678dd7` | six minors, fix PRs open; 0 regressions; the first posting said 10/10 |
 
-Score reason, short. Round 1 first said 8/10, with five majors and six minors. Four majors were a chapter-count error: Volume 1 starts at Chapter 0, and those citations were already right. They were withdrawn. The corrected note on #315 scores the volume 9/10: one major, the wrong factor of \(\xi\) in a solution, and six minors. No broken main theorem was found. Those seven fixes are merged. Round 2 first said 10/10, with no regression in the seven fixes. Later checks found six minor slips, so the corrected score is 9/10. No numbered theorem is among them. Round 2 did not run `./build.sh`.
+Score reason, short. R1 8/10 (#315, merged as `24ef1a84`). That posting named five majors and six minors. Four majors were a chapter-count error: Volume 1 starts at Chapter 0, and those citations were already right. They were withdrawn. The corrected note on #315 scores the volume 9/10: one major, the wrong factor of \(\xi\) in a solution, and six minors. No broken main theorem was found. Those seven fixes are merged. R2 9/10 (#323), with six minor issues and 0 regressions. The first posting said 10/10. A correction then recorded two closing-problem slips, and four further local slips are in the same list. No numbered theorem is among them. Round 2 did not run `./build.sh`.
 
 ## Fix PRs
 
@@ -47,7 +49,20 @@ Score reason, short. Round 1 first said 8/10, with five majors and six minors. F
 | V6-R1-010 | https://github.com/OussamaSegh/Order-and-Chance/pull/321 | `b401cc6c9bc899633cdd8ccc7976ba957005c19e` | merged `8dd2da41f42f20dfdbe5d47c14911b7eb378effb` |
 | V6-R1-011 | https://github.com/OussamaSegh/Order-and-Chance/pull/322 | `1f71bb5029783fe35b6d560284e0de3d9cccd876` | merged `614400b0061f715658cee0266f0b5b07640a7c77` |
 
-Each row’s head SHA is the head GitHub reports for that merged PR, and it matches the second-review head. Each merge SHA is that PR’s merge commit. `origin/main` is `614400b0061f715658cee0266f0b5b07640a7c77`, the #322 squash. This update did not re-read the Actions logs. The merger’s tracker comments name a successful `build (volume6-crossroads)` on each reviewed head and a skipped `publish`.
+Each row’s head SHA is the head GitHub reports for that merged PR, and it matches the second-review head. Each merge SHA is that PR’s merge commit. `origin/main` is `24ef1a84c134be92500e6704775cdc074298ae3f`, the #315 squash. That commit does not change `volume6-crossroads/`. The book text scored in round 2 remains `614400b0061f715658cee0266f0b5b07640a7c77`, the #322 squash. This update did not re-read the Actions logs. The merger’s tracker comments name a successful `build (volume6-crossroads)` on each reviewed head and a skipped `publish`.
+
+Round-2 fixes, each branched from `24ef1a84c134be92500e6704775cdc074298ae3f`. None is merged.
+
+| Issue | PR | Head SHA | Status |
+| --- | --- | --- | --- |
+| V6-R2-001 | https://github.com/OussamaSegh/Order-and-Chance/pull/324 | `455d954932b4fb3d0b595dda932332e63a9960d2` | awaiting second review |
+| V6-R2-002 | https://github.com/OussamaSegh/Order-and-Chance/pull/325 | `de58b17b36086ee11eae8bc329b3757bc059c60d` | awaiting second review |
+| V6-R2-003 | https://github.com/OussamaSegh/Order-and-Chance/pull/326 | `4f477bf833ca9f1804dfd4cbdc0aa1dec87397ad` | awaiting second review |
+| V6-R2-004 | https://github.com/OussamaSegh/Order-and-Chance/pull/327 | `7165866949265c4b04ed9eb59a2ef044a6293cf6` | awaiting second review |
+| V6-R2-005 | https://github.com/OussamaSegh/Order-and-Chance/pull/328 | `35fa34c8427c937d5fcead297c924e594602011f` | awaiting second review |
+| V6-R2-006 | https://github.com/OussamaSegh/Order-and-Chance/pull/329 | `54ccdb8c91e6cd3a2567f653a872f46d8185afac` | awaiting second review |
+
+Each head SHA above is the head GitHub reports for that open PR. This update did not read a CI log for any of them.
 
 V6-R1-001 through V6-R1-004 were checked against Volume 1 and not edited. The second reviewer counted the same shared counter in `main.tex` order and confirms those four identifications. Volume 1 was not edited. `volume1-first-principles/main.tex` sets the chapter counter to \(-1\) before the language chapter, so that chapter is Chapter 0. Theorem, proposition, lemma, corollary, definition, and example share one counter. In `main.tex` order: the extreme-value theorem is item 3.8 of the sequences chapter (a continuous function on a segment attains its supremum and its infimum); AM–GM is Theorem 9.3 and Cauchy–Schwarz is Theorem 9.4 of the inequalities chapter; the Vandermonde determinant is Proposition 7.4 of the linear-algebra chapter. The same numbers are already cited elsewhere: Volume 7 cites Theorem 9.4 for the case \(p=2\) and Theorem 9.6 for Hölder; Volume 11 cites Theorem 3.10 for Rolle; Volumes 9 and 10 cite Proposition 7.4 for Vandermonde; Volume 3 cites Theorem 6.4 for d'Alembert–Gauss. The round-1 numbers are that count with every chapter shifted up by one.
 
@@ -57,16 +72,16 @@ Round 1, the fixer, the second reviewer, and the round-2 reviewer did not run `.
 
 ## Open issues
 
-Six, all minor, in `volume6-crossroads/` at `614400b0061f715658cee0266f0b5b07640a7c77`.
+Six, all minor, in `volume6-crossroads/` at `614400b0061f715658cee0266f0b5b07640a7c77`. Each has one fix PR. None is merged.
 
 | Id | Severity | Location | Problem | Status |
 | --- | --- | --- | --- | --- |
-| V6-R2-001 | minor | `volume6-crossroads/chapters/ch12-modular.tex:2139` | The idea for `pb:twosquares` says \(F^2=\zeta(s)L(s,\chi_4)\). The identity in the problem multiplies by \((1-2^{-s})^{-1}\prod_{p\equiv3\pmod4}(1-p^{-2s})^{-1}\), about \(2.336\) at \(s=1\). | open |
-| V6-R2-002 | minor | `volume6-crossroads/chapters/ch12-modular.tex:2318` | The solution gives \((\psi(x)-x)/\log x\) the \(66\,112\) sign changes below \(10^8\). That count is the one the problem states for \(\Pi(x)-\operatorname{li}(x)\). The count for \(\psi(x)-x\) is \(65\,162\). | open |
-| V6-R2-003 | minor | `volume6-crossroads/chapters/ch02-averages.tex:283` | Cramér’s constant is written \(0.6543\ldots\). It is \(0.65428397\ldots\). | open |
-| V6-R2-004 | minor | `volume6-crossroads/chapters/ch01-mertens.tex:681` | The ratio at \(1000\) is written \(0.996133\ldots\). It is \(0.99613283\ldots\). The four-decimal value \(0.9961\) is right. | open |
-| V6-R2-005 | minor | `volume6-crossroads/figures/ch01-tenfactorial.tex:19` | The upper block on the prime \(3\) uses the dark ink of multiples of \(p^3\). That block is \(\lfloor 10/9\rfloor=1\), the multiples of \(p^2\). | open |
-| V6-R2-006 | minor | `volume6-crossroads/chapters/ch03-characters.tex:241` | The beauty note says \(r(n)\) counts ideals for a general real character. For the character modulo \(12\) induced by \(\chi_{-4}\), \(r(3)=1\), and no ideal of \(\mathbb Q(i)\) has norm \(3\). | open |
+| V6-R2-001 | minor | `volume6-crossroads/chapters/ch12-modular.tex:2139` | The idea for `pb:twosquares` says \(F^2=\zeta(s)L(s,\chi_4)\). The identity in the problem multiplies by \((1-2^{-s})^{-1}\prod_{p\equiv3\pmod4}(1-p^{-2s})^{-1}\), about \(2.336\) at \(s=1\). | awaiting second review (#324) |
+| V6-R2-002 | minor | `volume6-crossroads/chapters/ch12-modular.tex:2318` | The solution gives \((\psi(x)-x)/\log x\) the \(66\,112\) sign changes below \(10^8\). That count is the one the problem states for \(\Pi(x)-\operatorname{li}(x)\). The count for \(\psi(x)-x\) is \(65\,162\). | awaiting second review (#325) |
+| V6-R2-003 | minor | `volume6-crossroads/chapters/ch02-averages.tex:283` | Cramér’s constant is written \(0.6543\ldots\). It is \(0.65428397\ldots\). | awaiting second review (#326) |
+| V6-R2-004 | minor | `volume6-crossroads/chapters/ch01-mertens.tex:681` | The ratio at \(1000\) is written \(0.996133\ldots\). It is \(0.99613283\ldots\). The four-decimal value \(0.9961\) is right. | awaiting second review (#327) |
+| V6-R2-005 | minor | `volume6-crossroads/figures/ch01-tenfactorial.tex:19` | The upper block on the prime \(3\) uses the dark ink of multiples of \(p^3\). That block is \(\lfloor 10/9\rfloor=1\), the multiples of \(p^2\). | awaiting second review (#328) |
+| V6-R2-006 | minor | `volume6-crossroads/chapters/ch03-characters.tex:241` | The beauty note says \(r(n)\) counts ideals for a general real character. For the character modulo \(12\) induced by \(\chi_{-4}\), \(r(3)=1\), and no ideal of \(\mathbb Q(i)\) has norm \(3\). | awaiting second review (#329) |
 
 The round-1 rows below are closed. V6-R1-001 through V6-R1-004 were false positives. V6-R1-005 through V6-R1-011 are merged. The note on each fix is `docs/review/volume6-r1-NNN-review.md`. For V6-R1-009 the figure node text changed from “fixed area” to “grows like \(x^2\)”, without a change of font, size, or position. Line numbers below are the pre-fix lines.
 
@@ -84,8 +99,10 @@ The round-1 rows below are closed. V6-R1-001 through V6-R1-004 were false positi
 | V6-R1-010 | minor | `volume6-crossroads/chapters/ch08-sieves.tex:655` | Says \(\omega(u)/e^{-\gamma}\) tends to infinity as \(u\to 1\). It tends to \(e^{\gamma}\). | merged |
 | V6-R1-011 | minor | `volume6-crossroads/chapters/ch10-random.tex:599` | Calls the factor \(1/3\) the cost of independence. Independence costs \(4/9\). The factor \(1/3\) is the distinct-class cost, and that is the comparison that doubles the weight. | merged |
 
-Round 1 first counted 0 critical, 5 major, 6 minor, and the note then withdrew 001–004. The remaining one major and six minors are merged. Round 2 first counted 0 critical, 0 major, 0 minor, and 0 regressions in #316–#322. The corrected count is 0 critical, 0 major, 6 minor.
+Round 1 first counted 0 critical, 5 major, 6 minor, and the note then withdrew 001–004. The remaining one major and six minors are merged. Round 2 first counted 0 critical, 0 major, 0 minor, and 0 regressions in #316–#322. The corrected count is 0 critical, 0 major, 6 minor. Fix PRs #324–#329 are open. This update did not read their CI logs.
+
+A merge to `main` runs the Build books workflow. Its publish job recreates the `books` release when the library snapshot changes, which a change under `volume6-crossroads/` does. The six fix merges are on hold pending Seg's decision.
 
 ## Exact next step
 
-Open small fix PRs for V6-R2-001 through V6-R2-006, against `614400b0061f715658cee0266f0b5b07640a7c77`. Do not reopen V6-R1-001–004. Do not edit book source on this tracker branch. For V6-R2-005, change only the fill of that one rectangle.
+A distinct second reviewer checks each of #324, #325, #326, #327, #328, and #329 against the head SHA in the round-2 table, and writes a note and an issue log under `docs/review/`. Do not merge any of them to `main` until Seg decides. Do not reopen V6-R1-001–004. Do not edit book source on this tracker branch.
