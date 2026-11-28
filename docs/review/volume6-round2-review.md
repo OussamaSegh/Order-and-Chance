@@ -1,10 +1,10 @@
 # Volume 6, round 2 (review only)
 
-Score: **10/10**.
+Score: **9/10**. The first posting of this note said 10/10. Two minor slips in closing-problem solutions were verified afterwards. They are listed below.
 
 Base: `614400b0061f715658cee0266f0b5b07640a7c77` on `main`. Sources: `volume6-crossroads/` (twelve chapters, preface, exercises with hints and solutions). No book source was edited. Round 1 issues V6-R1-001 through V6-R1-004 were not reopened. Volume 1 starts at Chapter 0, and theorem, proposition, lemma, corollary, definition, and example share one counter. That count was used for every citation that was opened.
 
-No critical, major, or minor defect was verified. The seven passages changed in #316–#322 are correct, and none of them introduced a new error. Regression count: **0**.
+The numbered theorems that were checked hold. The seven passages changed in #316–#322 are correct, and none of them introduced a new error. Regression count: **0**. Two local slips remain, both in solutions of closing problems.
 
 ## Regression check
 
@@ -34,12 +34,14 @@ The preface is right that this volume is the last of Part II, and that the two a
 
 `./build.sh` was not run. Volume 6 was not compiled, and no GitHub Actions log was read. The seven run ids named in the loop handoff were not re-opened. A static parse of `\label` and `\ref` does not see a counter hidden inside a conditional, and it does not see an overfull box.
 
-TikZ pictures were not redrawn. The monotone-lemma figure was read as coordinates; the shaded quadrilateral is a schematic and does not pinch exactly at \(\lambda x\). The caption states the ideal area, not a measurement of those coordinates. Historical page numbers, and the quoted irrationality measures \(13.41\), \(5.51\), and \(3.57\), were not checked against the papers. Not every sentence of every closing-problem solution was re-derived. The solutions whose arithmetic is named above were.
+TikZ pictures were not redrawn. The monotone-lemma figure was read as coordinates; the shaded quadrilateral is a schematic and does not pinch exactly at \(\lambda x\). The caption states the ideal area, not a measurement of those coordinates. Historical page numbers, and the quoted irrationality measures \(13.41\), \(5.51\), and \(3.57\), were not checked against the papers. The sign-change count \(66\,112\) for \(\Pi(x)-\operatorname{li}(x)\) in the statement of `pb:cramersign` was not recomputed to the accuracy that count needs. The count for \(\psi(x)-x\) was.
 
 ## Issues
 
-None.
+V6-R2-001 | minor | volume6-crossroads/chapters/ch12-modular.tex:2139 | The idea for `pb:twosquares` says that the square of \(F\) is \(\zeta(s)L(s,\chi_4)\). The problem’s own identity, which the write-up then uses, is \(F(s)^2=\zeta(s)L(s,\chi_4)\,(1-2^{-s})^{-1}\prod_{p\equiv3\pmod4}(1-p^{-2s})^{-1}\). At \(s=1\) the extra factor is \(2\prod(1-p^{-2})^{-1}\approx2.336\), not \(1\). The half-pole is still right, and the constant \(C^2=\frac\pi2\prod(1-p^{-2})^{-1}\) in the write-up is the one in the problem. | Say that \(F^2\) equals \(\zeta L\) times a factor holomorphic and non-zero at \(s=1\).
+
+V6-R2-002 | minor | volume6-crossroads/chapters/ch12-modular.tex:2318 | The solution of `pb:cramersign` says that \((\psi(x)-x)/\log x\) has \(66\,112\) sign changes below \(10^8\). Dividing by \(\log x>0\) does not change signs, and \(\psi(x)-x\) changes sign \(65\,162\) times for \(2\le x\le10^8\). The figure \(66\,112\) is the count the problem states for \(\Pi(x)-\operatorname{li}(x)\), two sentences earlier in the solution’s source problem. The sign argument in (d) does not use the integer. | Attribute \(66\,112\) to \(\Pi-\operatorname{li}\), or replace it by \(65\,162\) for \(\psi-x\).
 
 ## Counts
 
-0 critical, 0 major, 0 minor. Regressions in #316–#322: 0.
+0 critical, 0 major, 2 minor. Regressions in #316–#322: 0. The first posting of this note said 0 critical, 0 major, 0 minor.
