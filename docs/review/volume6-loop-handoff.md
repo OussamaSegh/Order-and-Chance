@@ -4,7 +4,7 @@ Fresh agents continue from this file alone. The book sources live in `volume6-cr
 
 Reviewed base: `1ccf4e181833cf50bb569e31f0e986124ed579b0` (`origin/main` on 28 November 2026). Volume 6 at that SHA is the text scored below.
 
-- Tracker PR: https://github.com/OussamaSegh/Order-and-Chance/pull/314 (draft), head `0e9178df9c4b19fe102f526f30fdad59ba5c64d7`, branch `review/v6-loop-tracker`.
+- Tracker PR: https://github.com/OussamaSegh/Order-and-Chance/pull/314 (draft), branch `review/v6-loop-tracker`. The head is the tip of that branch.
 - Round-1 review PR: https://github.com/OussamaSegh/Order-and-Chance/pull/315 (draft), head `430f6426c9edef495fadc707bf34a2e66413e14b`, branch `review/v6-round1`, file `docs/review/volume6-round1-review.md`.
 
 ## Goal
