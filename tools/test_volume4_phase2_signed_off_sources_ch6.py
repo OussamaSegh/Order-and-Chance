@@ -27,9 +27,9 @@ SOURCE=Path(__file__).resolve().parents[1]/"volume4-chance"/"chapters"/"ch06-clt
 # Labels unchanged. Not a new sign-off.
 # 2026-11-27 round 2: the single-index moment groups as E[Y], and the CLT cutoffs name their directions.
 # Not a new sign-off.
-# 2026-11-27 round 3: Gaussian covariance and the two squares are clipped before the product, and the sample second moment uses four allowances of ε/4.
+# 2026-11-27 round 4: each either-or product estimates both tails.
 # Not a new sign-off.
-SHA="0c95109cfba2e5c795b880e239141c14065568ee"
+SHA="88ee6236390ab049d17660b15afa3aecef459173"
 PROOFS="prop:modes prop:cdf thm:slln4 thm:gc lem:diffint prop:cfexamples thm:cfconv thm:inversion lem:normalsum thm:lindeberg cor:clt thm:local prop:cyclebern thm:gaussvec".split()
 EX="ex:slutsky ex:confidence ex:delta ex:cauchyclt ex:poissonhalf ex:returns ex:thirdmoment ex:cyclesclt".split()
 
