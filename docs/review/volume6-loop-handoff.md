@@ -4,13 +4,13 @@ Fresh agents continue from this file alone. The book sources live in `volume6-cr
 
 Round 1 reviewed `1ccf4e181833cf50bb569e31f0e986124ed579b0`. Round 2 reviewed `614400b0061f715658cee0266f0b5b07640a7c77`, the book text after the seven round-1 fix merges. Volume 6 at that SHA is the text scored in round 2. The round-1 review then merged as `24ef1a84c134be92500e6704775cdc074298ae3f` and did not change `volume6-crossroads/`. The round-2 fix branches start from that main.
 
-R1 8/10 (#315, merged as `24ef1a84`). R2 9/10 (#323), with six minor issues and 0 regressions. Two of the six are closing-problem slips. Four further local slips are in the same note. R3 9/10 (#332), with one minor issue and 0 regressions. The fix PR is https://github.com/OussamaSegh/Order-and-Chance/pull/342, head `bd18b60f884db8ada101d072a30f730685c6fbca`.
+R1 8/10 (#315, merged as `24ef1a84`). R2 9/10 (#323), with six minor issues and 0 regressions. Two of the six are closing-problem slips. Four further local slips are in the same note. R3 9/10 (#332), with one minor issue and 0 regressions. The fix PR is https://github.com/OussamaSegh/Order-and-Chance/pull/342. Second review approves head `a802f8cb3bec11b445a82e92deca2c2f6033ac62`. Not merged.
 
 - Tracker PR: https://github.com/OussamaSegh/Order-and-Chance/pull/314 (draft), branch `review/v6-loop-tracker`. The head is the tip of that branch.
 - Round-1 review PR: https://github.com/OussamaSegh/Order-and-Chance/pull/315 (draft), head `797e63664cc972e362af575ec143f3464475e752`, branch `review/v6-round1`, file `docs/review/volume6-round1-review.md`.
 - Round-2 review PR: https://github.com/OussamaSegh/Order-and-Chance/pull/323 (draft), head `6f6d501532670cd3c6e2ee1ac185fd5084678dd7`, branch `review/v6-round2`, file `docs/review/volume6-round2-review.md`. The first posting, head `0219f8a105140fa118d5d6b0066ae7bd06509c58`, said 10/10. The second, head `6909a9f82090c034858fb469fd7d56f73ad8cdb3`, said 9/10 with two minors.
 - Round-3 review PR: https://github.com/OussamaSegh/Order-and-Chance/pull/332 (draft), head `f3bc865bd29984234da38fff751669a67300e817`, branch `review/v6-round3`, file `docs/review/volume6-round3-review.md`. Score 9/10. Regression count 0.
-- Round-3 fix PR: https://github.com/OussamaSegh/Order-and-Chance/pull/342, head `bd18b60f884db8ada101d072a30f730685c6fbca`, branch `fix/v6-r3-001`. Not merged.
+- Round-3 fix PR: https://github.com/OussamaSegh/Order-and-Chance/pull/342, head `a802f8cb3bec11b445a82e92deca2c2f6033ac62`, branch `fix/v6-r3-001`. Second review approves; not merged.
 
 ## Goal
 
@@ -32,9 +32,9 @@ Bring Volume 6 to 10/10. The loop is: review, then small fix PRs, then a distinc
 | --- | --- | --- | --- | --- |
 | 1 | `1ccf4e181833cf50bb569e31f0e986124ed579b0` | 8/10 | https://github.com/OussamaSegh/Order-and-Chance/pull/315 head `797e63664cc972e362af575ec143f3464475e752`, merged as `24ef1a84c134be92500e6704775cdc074298ae3f` | first posting 8/10; the merged note corrects the score to 9/10 |
 | 2 | `614400b0061f715658cee0266f0b5b07640a7c77` | 9/10 | https://github.com/OussamaSegh/Order-and-Chance/pull/323 head `6f6d501532670cd3c6e2ee1ac185fd5084678dd7` | six minors merged in #324–#329; 0 regressions; the first posting said 10/10 |
-| 3 | `ddf23cd89103582fc5879cd3351dfb5b22053df0` | 9/10 | https://github.com/OussamaSegh/Order-and-Chance/pull/332 head `f3bc865bd29984234da38fff751669a67300e817` | one minor; fix PR #342 head `bd18b60f884db8ada101d072a30f730685c6fbca`; 0 regressions in #316–#322 and #324–#329 |
+| 3 | `ddf23cd89103582fc5879cd3351dfb5b22053df0` | 9/10 | https://github.com/OussamaSegh/Order-and-Chance/pull/332 head `f3bc865bd29984234da38fff751669a67300e817` | one minor; #342 second review approves `a802f8cb3bec11b445a82e92deca2c2f6033ac62`, not merged; 0 regressions in #316–#322 and #324–#329 |
 
-Score reason, short. R1 8/10 (#315, merged as `24ef1a84`). That posting named five majors and six minors. Four majors were a chapter-count error: Volume 1 starts at Chapter 0, and those citations were already right. They were withdrawn. The corrected note on #315 scores the volume 9/10: one major, the wrong factor of \(\xi\) in a solution, and six minors. No broken main theorem was found. Those seven fixes are merged. R2 9/10 (#323), with six minor issues and 0 regressions. The first posting said 10/10. A correction then recorded two closing-problem slips, and four further local slips are in the same list. No numbered theorem is among them. Round 2 did not run `./build.sh`. R3 9/10 (#332), on the book text after those six merges. One minor remains, in a remark: with the book’s \(\operatorname{Li}\), the sign of \(\operatorname{Li}(x)-\pi(x)\) changes at \(7\). Regression count 0. Round 3 did not run `./build.sh`. The fix PR is #342, head `bd18b60f884db8ada101d072a30f730685c6fbca`. It is not merged.
+Score reason, short. R1 8/10 (#315, merged as `24ef1a84`). That posting named five majors and six minors. Four majors were a chapter-count error: Volume 1 starts at Chapter 0, and those citations were already right. They were withdrawn. The corrected note on #315 scores the volume 9/10: one major, the wrong factor of \(\xi\) in a solution, and six minors. No broken main theorem was found. Those seven fixes are merged. R2 9/10 (#323), with six minor issues and 0 regressions. The first posting said 10/10. A correction then recorded two closing-problem slips, and four further local slips are in the same list. No numbered theorem is among them. Round 2 did not run `./build.sh`. R3 9/10 (#332), on the book text after those six merges. One minor remains, in a remark: with the book’s \(\operatorname{Li}\), the sign of \(\operatorname{Li}(x)-\pi(x)\) changes at \(7\). Regression count 0. Round 3 did not run `./build.sh`. The second review approves #342 at `a802f8cb3bec11b445a82e92deca2c2f6033ac62` and does not change the book line. It is not merged. This update did not read its CI log.
 
 ## Fix PRs
 
@@ -67,11 +67,11 @@ Round-2 fixes, each branched from `24ef1a84c134be92500e6704775cdc074298ae3f`. Al
 
 Each head SHA is the second-review commit GitHub reports for that merged PR. On #328 the changed fill is `MidnightBlue!28`, the ink the same figure already uses for multiples of \(p^2\). This update confirmed the merged states and SHAs through GitHub and did not re-read the Actions logs. The merger’s tracker comments name a successful `build (volume6-crossroads)` on each reviewed head and a skipped `publish`.
 
-Round-3 fix, branched from `ddf23cd89103582fc5879cd3351dfb5b22053df0`. Not merged. This update did not read its CI log.
+Round-3 fix, branched from `ddf23cd89103582fc5879cd3351dfb5b22053df0`. The head below is the second-review commit. Its parent is `bd18b60f884db8ada101d072a30f730685c6fbca`, the one-sentence book fix. The second reviewer did not change the book line. Not merged. This update did not read its CI log.
 
 | Issue | PR | Head SHA | Status |
 | --- | --- | --- | --- |
-| V6-R3-001 | https://github.com/OussamaSegh/Order-and-Chance/pull/342 | `bd18b60f884db8ada101d072a30f730685c6fbca` | open |
+| V6-R3-001 | https://github.com/OussamaSegh/Order-and-Chance/pull/342 | `a802f8cb3bec11b445a82e92deca2c2f6033ac62` | approve |
 
 V6-R1-001 through V6-R1-004 were checked against Volume 1 and not edited. The second reviewer counted the same shared counter in `main.tex` order and confirms those four identifications. Volume 1 was not edited. `volume1-first-principles/main.tex` sets the chapter counter to \(-1\) before the language chapter, so that chapter is Chapter 0. Theorem, proposition, lemma, corollary, definition, and example share one counter. In `main.tex` order: the extreme-value theorem is item 3.8 of the sequences chapter (a continuous function on a segment attains its supremum and its infimum); AM–GM is Theorem 9.3 and Cauchy–Schwarz is Theorem 9.4 of the inequalities chapter; the Vandermonde determinant is Proposition 7.4 of the linear-algebra chapter. The same numbers are already cited elsewhere: Volume 7 cites Theorem 9.4 for the case \(p=2\) and Theorem 9.6 for Hölder; Volume 11 cites Theorem 3.10 for Rolle; Volumes 9 and 10 cite Proposition 7.4 for Vandermonde; Volume 3 cites Theorem 6.4 for d'Alembert–Gauss. The round-1 numbers are that count with every chapter shifted up by one.
 
@@ -87,7 +87,7 @@ One, minor, in `volume6-crossroads/` at `ddf23cd89103582fc5879cd3351dfb5b22053df
 
 | Id | Severity | Location | Problem | Status |
 | --- | --- | --- | --- | --- |
-| V6-R3-001 | minor | `volume6-crossroads/chapters/ch05-pnt.tex:276` | The remark says no integer is known at which \(\operatorname{Li}(x)-\pi(x)\) changes sign. With \(\operatorname{Li}(x)=\int_2^x\mathrm dt/\log t\), the difference is positive at \(6\) and negative at \(7\). It is positive from \(8\) through \(10^8\). | fix PR #342, head `bd18b60f884db8ada101d072a30f730685c6fbca` |
+| V6-R3-001 | minor | `volume6-crossroads/chapters/ch05-pnt.tex:276` | The remark says no integer is known at which \(\operatorname{Li}(x)-\pi(x)\) changes sign. With \(\operatorname{Li}(x)=\int_2^x\mathrm dt/\log t\), the difference is positive at \(6\) and negative at \(7\). It is positive from \(8\) through \(10^8\). | approve, not merged (#342) |
 
 The six round-2 rows below are closed. Each fix is merged on `main` at `ddf23cd89103582fc5879cd3351dfb5b22053df0`. The lines are the pre-fix lines at `614400b0061f715658cee0266f0b5b07640a7c77`.
 
@@ -120,4 +120,4 @@ Round 1 first counted 0 critical, 5 major, 6 minor, and the note then withdrew 0
 
 ## Exact next step
 
-A distinct second reviewer reviews the fix PR https://github.com/OussamaSegh/Order-and-Chance/pull/342 (head `bd18b60f884db8ada101d072a30f730685c6fbca`) and adds `docs/review/volume6-r3-001-review.md`. That reviewer does not edit the book line. Squash-merge on green CI of that reviewed head. Then round 4 re-reviews. Do not reopen V6-R1-001–004. Do not merge #323, #314, or #332. Do not edit book source on this tracker branch.
+Coordinator polls CI on the final head `a802f8cb3bec11b445a82e92deca2c2f6033ac62` and squash-merges with SHA guard, then round 4 re-reviews. Do not reopen V6-R1-001–004. Do not merge #323, #314, or #332. Do not edit book source on this tracker branch.
