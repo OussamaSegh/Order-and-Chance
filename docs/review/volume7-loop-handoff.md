@@ -34,19 +34,37 @@ Score reason, short. One numbered statement is false as written: part (d) of the
 
 ## Fix PRs
 
-| Issue | PR | Head SHA | Merge SHA |
-| --- | --- | --- | --- |
-| — | — | — | — |
+Each branch was cut from current `main` at `ddf23cd89103582fc5879cd3351dfb5b22053df0`. Between the review SHA and that commit, `volume7-spaces/` did not change. None of these pull requests is merged. The fixer did not run `./build.sh` and did not open an Actions log.
 
-No fix PR is open. None is merged.
+| Issue | PR | Head | Status |
+| --- | --- | --- | --- |
+| V7-R1-001 | https://github.com/OussamaSegh/Order-and-Chance/pull/333 | `0e59353677fd1e13297ec7bf9f8cebd59fa59468` | awaiting second review |
+| V7-R1-002 | https://github.com/OussamaSegh/Order-and-Chance/pull/334 | `dd95fb34a09aa797f158621c37f7bbdcf2e1cb9e` | awaiting second review |
+| V7-R1-003 | https://github.com/OussamaSegh/Order-and-Chance/pull/335 | `7ef6228b02e45ff1ad86001aad7a06b610f50238` | awaiting second review |
+| V7-R1-004 | https://github.com/OussamaSegh/Order-and-Chance/pull/336 | `590a12562b12d24ceeac4951daf9e0febe66d5e4` | awaiting second review |
+| V7-R1-005 | https://github.com/OussamaSegh/Order-and-Chance/pull/337 | `faa907594ed4ad48e1a0debe8023f2cb639971ef` | awaiting second review |
+| V7-R1-006 | https://github.com/OussamaSegh/Order-and-Chance/pull/338 | `ee5f9171d08a71eca4acb8840be180bfdb1ae34c` | awaiting second review |
+| V7-R1-007 | https://github.com/OussamaSegh/Order-and-Chance/pull/339 | `6277012d107bca4844d58bcffa854286e1a9b8c5` | awaiting second review |
+| V7-R1-008 | https://github.com/OussamaSegh/Order-and-Chance/pull/340 | `5c51d0995ea165da267f5a0484edbf44ec074a3a` | awaiting second review |
+| V7-R1-009 | https://github.com/OussamaSegh/Order-and-Chance/pull/341 | `bdd7723bb6df60d0181dd986510ac2b966791fee` | awaiting second review |
+| V7-R1-010 | https://github.com/OussamaSegh/Order-and-Chance/pull/343 | `d5a77e1593a5f34c699e1c23873f3a6186081f0a` | awaiting second review |
+| V7-R1-011 | https://github.com/OussamaSegh/Order-and-Chance/pull/344 | `44851861cc89e3e81ca65b214181072cb4f924dc` | awaiting second review |
+| V7-R1-012 | https://github.com/OussamaSegh/Order-and-Chance/pull/345 | `bb9036c432c9743476321889b3e84f36804b705c` | awaiting second review |
+| V7-R1-013 | https://github.com/OussamaSegh/Order-and-Chance/pull/346 | `7c58ea3eca897d8f032d655709c3db3526faa433` | awaiting second review |
+| V7-R1-014 | https://github.com/OussamaSegh/Order-and-Chance/pull/347 | `368ac06253ce45d58255e02131e6934228f65111` | awaiting second review |
+| V7-R1-015 | https://github.com/OussamaSegh/Order-and-Chance/pull/348 | `4fb7f248e59eb69309331f62538e7b4a37ab96b6` | awaiting second review |
+| V7-R1-016 | https://github.com/OussamaSegh/Order-and-Chance/pull/349 | `f8c2c660c917e41b96e843502002045ba9eb7973` | awaiting second review |
+| V7-R1-017 | https://github.com/OussamaSegh/Order-and-Chance/pull/350 | `5c37d4a16156a5f2dd2362dd6596654705527764` | awaiting second review |
+| V7-R1-018 | https://github.com/OussamaSegh/Order-and-Chance/pull/351 | `b7de0f1adfad1d95ef59de9db9bb020f0821e0bb` | awaiting second review |
+| V7-R1-019 | https://github.com/OussamaSegh/Order-and-Chance/pull/352 | `64636e7dea072c84fe5e87248647fb34c5457860` | awaiting second review |
 
 ## CI runs
 
-None for this loop. Round 1 did not run `./build.sh` and did not open an Actions log. Do not treat an unread log as a pass.
+None read for this loop. Round 1 did not run `./build.sh` and did not open an Actions log. The fixer did not run `./build.sh` and did not open an Actions log on any fix pull request. Do not treat an unread log as a pass.
 
 ## Open issues
 
-Nineteen, in `volume7-spaces/` at `af3f9afbaee7b76237f8b9ad085420fda82d328f`, except the index row. Each is open. None has a fix PR.
+Nineteen, all still open. Each has a fix pull request awaiting second review. None is merged. The text that was scored is `volume7-spaces/` at `af3f9afbaee7b76237f8b9ad085420fda82d328f`. That tree matches `volume7-spaces/` on the fix base `ddf23cd89103582fc5879cd3351dfb5b22053df0`.
 
 | Id | Severity | Location | Problem |
 | --- | --- | --- | --- |
@@ -74,4 +92,4 @@ Counts: 0 critical, 1 major, 18 minor.
 
 ## Exact next step
 
-From `af3f9afbaee7b76237f8b9ad085420fda82d328f`, open one PR that fixes only V7-R1-001, by adding continuity of \(f\) on the interval \(I\) to part (d) of the mean value theorem in `volume7-spaces/chapters/ch04-compact.tex`. A different reviewer then writes `docs/review/volume7-r1-001-review.md` on that fix branch. Do not merge until CI is green on the reviewed head, and do not touch the Volume 6 branches.
+Distinct second reviewer reviews each fix PR and adds docs/review/volume7-r1-NNN-review.md.
