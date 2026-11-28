@@ -16,8 +16,9 @@ SCOPE = {
         # argument (V4-14), and for the named host sentence (V4-15).
         # 2026-11-11: unnumbered dyadic outer-content lemma from main, then ex:twotests and ex:secretary appended.
         # Numbered claim labels unchanged. Not an independent sign-off.
-        # 2026-11-27: the maximiser is located by r/n. Labels unchanged. Not a new sign-off.
-        "sha": "f782c1411ad4ae796b8ac23ae9c0f7a74c41590d",
+        # 2026-11-27 round 4: both tails of an either-or product are estimated, and the secretary maximum is read off the sign of g'.
+# Not a new sign-off.
+        "sha": "9f128d7ad23c8d7146b59c5e72380b23ddf1e181",
         "claims": "prop:bits prop:subadd prop:infdigits thm:ballot".split(),
         "exercises": "ex:mybirthday ex:twochildren ex:penney ex:montyn ex:pairwise ex:aces ex:catalan ex:smallballot ex:twotests ex:secretary".split(),
     },
