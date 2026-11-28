@@ -34,37 +34,37 @@ Score reason, short. One numbered statement is false as written: part (d) of the
 
 ## Fix PRs
 
-Each branch was cut from current `main` at `ddf23cd89103582fc5879cd3351dfb5b22053df0`. Between the review SHA and that commit, `volume7-spaces/` did not change. None of these pull requests is merged. The fixer did not run `./build.sh` and did not open an Actions log.
+Each branch was cut from current `main` at `ddf23cd89103582fc5879cd3351dfb5b22053df0`. Between the review SHA and that commit, `volume7-spaces/` did not change. None of these pull requests is merged. The fixer did not run `./build.sh` and did not open an Actions log. Second review is recorded on each branch in `docs/review/volume7-r1-NNN-review.md`. Every verdict is approve, and no fix was changed. A sequential merge of the nineteen branches onto `main` had no textual conflict. The second reviewer did not run `./build.sh` and did not open an Actions log.
 
 | Issue | PR | Head | Status |
 | --- | --- | --- | --- |
-| V7-R1-001 | https://github.com/OussamaSegh/Order-and-Chance/pull/333 | `0e59353677fd1e13297ec7bf9f8cebd59fa59468` | awaiting second review |
-| V7-R1-002 | https://github.com/OussamaSegh/Order-and-Chance/pull/334 | `dd95fb34a09aa797f158621c37f7bbdcf2e1cb9e` | awaiting second review |
-| V7-R1-003 | https://github.com/OussamaSegh/Order-and-Chance/pull/335 | `7ef6228b02e45ff1ad86001aad7a06b610f50238` | awaiting second review |
-| V7-R1-004 | https://github.com/OussamaSegh/Order-and-Chance/pull/336 | `590a12562b12d24ceeac4951daf9e0febe66d5e4` | awaiting second review |
-| V7-R1-005 | https://github.com/OussamaSegh/Order-and-Chance/pull/337 | `faa907594ed4ad48e1a0debe8023f2cb639971ef` | awaiting second review |
-| V7-R1-006 | https://github.com/OussamaSegh/Order-and-Chance/pull/338 | `ee5f9171d08a71eca4acb8840be180bfdb1ae34c` | awaiting second review |
-| V7-R1-007 | https://github.com/OussamaSegh/Order-and-Chance/pull/339 | `6277012d107bca4844d58bcffa854286e1a9b8c5` | awaiting second review |
-| V7-R1-008 | https://github.com/OussamaSegh/Order-and-Chance/pull/340 | `5c51d0995ea165da267f5a0484edbf44ec074a3a` | awaiting second review |
-| V7-R1-009 | https://github.com/OussamaSegh/Order-and-Chance/pull/341 | `bdd7723bb6df60d0181dd986510ac2b966791fee` | awaiting second review |
-| V7-R1-010 | https://github.com/OussamaSegh/Order-and-Chance/pull/343 | `d5a77e1593a5f34c699e1c23873f3a6186081f0a` | awaiting second review |
-| V7-R1-011 | https://github.com/OussamaSegh/Order-and-Chance/pull/344 | `44851861cc89e3e81ca65b214181072cb4f924dc` | awaiting second review |
-| V7-R1-012 | https://github.com/OussamaSegh/Order-and-Chance/pull/345 | `bb9036c432c9743476321889b3e84f36804b705c` | awaiting second review |
-| V7-R1-013 | https://github.com/OussamaSegh/Order-and-Chance/pull/346 | `7c58ea3eca897d8f032d655709c3db3526faa433` | awaiting second review |
-| V7-R1-014 | https://github.com/OussamaSegh/Order-and-Chance/pull/347 | `368ac06253ce45d58255e02131e6934228f65111` | awaiting second review |
-| V7-R1-015 | https://github.com/OussamaSegh/Order-and-Chance/pull/348 | `4fb7f248e59eb69309331f62538e7b4a37ab96b6` | awaiting second review |
-| V7-R1-016 | https://github.com/OussamaSegh/Order-and-Chance/pull/349 | `f8c2c660c917e41b96e843502002045ba9eb7973` | awaiting second review |
-| V7-R1-017 | https://github.com/OussamaSegh/Order-and-Chance/pull/350 | `5c37d4a16156a5f2dd2362dd6596654705527764` | awaiting second review |
-| V7-R1-018 | https://github.com/OussamaSegh/Order-and-Chance/pull/351 | `b7de0f1adfad1d95ef59de9db9bb020f0821e0bb` | awaiting second review |
-| V7-R1-019 | https://github.com/OussamaSegh/Order-and-Chance/pull/352 | `64636e7dea072c84fe5e87248647fb34c5457860` | awaiting second review |
+| V7-R1-001 | https://github.com/OussamaSegh/Order-and-Chance/pull/333 | `0ec88ad46020af6577cc20e3cb7f2fe33a5cc72d` | approve; fix unchanged |
+| V7-R1-002 | https://github.com/OussamaSegh/Order-and-Chance/pull/334 | `25b77fc30bb2b7a6b9e9c916e4fc5a2a13ffb84a` | approve; fix unchanged |
+| V7-R1-003 | https://github.com/OussamaSegh/Order-and-Chance/pull/335 | `3ebe465f069a4d1d0a09faa7850818d92d8f558a` | approve; fix unchanged |
+| V7-R1-004 | https://github.com/OussamaSegh/Order-and-Chance/pull/336 | `60409477c25a39cd512152a52b0eb78d83807515` | approve; fix unchanged |
+| V7-R1-005 | https://github.com/OussamaSegh/Order-and-Chance/pull/337 | `85e906f5fc22d1af7636c1dd1d82b40ac7c92e08` | approve; fix unchanged |
+| V7-R1-006 | https://github.com/OussamaSegh/Order-and-Chance/pull/338 | `ecb8161d715317ac1bf823e2d377f6a7d4b3ed7d` | approve; fix unchanged |
+| V7-R1-007 | https://github.com/OussamaSegh/Order-and-Chance/pull/339 | `ce42db37c3090ad92036cea19c31ac671e21901b` | approve; fix unchanged |
+| V7-R1-008 | https://github.com/OussamaSegh/Order-and-Chance/pull/340 | `e06c06927342f969a96c867a499f1ef93ce065f5` | approve; fix unchanged |
+| V7-R1-009 | https://github.com/OussamaSegh/Order-and-Chance/pull/341 | `80619bb924af5435f861953be26c3b54f4be019c` | approve; fix unchanged |
+| V7-R1-010 | https://github.com/OussamaSegh/Order-and-Chance/pull/343 | `3b94c5803a2c3d422a001a95d76d76ce3276378f` | approve; fix unchanged |
+| V7-R1-011 | https://github.com/OussamaSegh/Order-and-Chance/pull/344 | `43861b9403e3b3906f2c6e718b185ccfd61b5615` | approve; fix unchanged |
+| V7-R1-012 | https://github.com/OussamaSegh/Order-and-Chance/pull/345 | `d7c7cee143a26f1e9d33af4b931a8ca60439696a` | approve; fix unchanged |
+| V7-R1-013 | https://github.com/OussamaSegh/Order-and-Chance/pull/346 | `fc26906e4859c2d5120a03b83551b91572060f52` | approve; fix unchanged |
+| V7-R1-014 | https://github.com/OussamaSegh/Order-and-Chance/pull/347 | `bf7a61d77fa4b51f043917c4e8d5da0fdd0a778d` | approve; fix unchanged |
+| V7-R1-015 | https://github.com/OussamaSegh/Order-and-Chance/pull/348 | `efcf11bd964b9bdf0e0749ecaaed4b9f5b1cbfd2` | approve; fix unchanged |
+| V7-R1-016 | https://github.com/OussamaSegh/Order-and-Chance/pull/349 | `99b02388fecb612e37d7b8f330d200ed40181625` | approve; fix unchanged |
+| V7-R1-017 | https://github.com/OussamaSegh/Order-and-Chance/pull/350 | `13d1f01116c31377208d9b363f85a5d1a3064af5` | approve; fix unchanged |
+| V7-R1-018 | https://github.com/OussamaSegh/Order-and-Chance/pull/351 | `45ea677f558887da1d6e221c1116330e665dca2d` | approve; fix unchanged |
+| V7-R1-019 | https://github.com/OussamaSegh/Order-and-Chance/pull/352 | `8056df8d74f49c47972c3c2a0121a8909d264bf9` | approve; fix unchanged |
 
 ## CI runs
 
-None read for this loop. Round 1 did not run `./build.sh` and did not open an Actions log. The fixer did not run `./build.sh` and did not open an Actions log on any fix pull request. Do not treat an unread log as a pass.
+None read for this loop. Round 1 did not run `./build.sh` and did not open an Actions log. The fixer did not run `./build.sh` and did not open an Actions log on any fix pull request. The second reviewer did not run `./build.sh` and did not open an Actions log. Do not treat an unread log as a pass.
 
 ## Open issues
 
-Nineteen, all still open. Each has a fix pull request awaiting second review. None is merged. The text that was scored is `volume7-spaces/` at `af3f9afbaee7b76237f8b9ad085420fda82d328f`. That tree matches `volume7-spaces/` on the fix base `ddf23cd89103582fc5879cd3351dfb5b22053df0`.
+Nineteen, all still open. Each fix has a second review of approve, and the fix text was not changed. None is merged. The text that was scored is `volume7-spaces/` at `af3f9afbaee7b76237f8b9ad085420fda82d328f`. That tree matches `volume7-spaces/` on the fix base `ddf23cd89103582fc5879cd3351dfb5b22053df0`.
 
 | Id | Severity | Location | Problem |
 | --- | --- | --- | --- |
@@ -92,4 +92,4 @@ Counts: 0 critical, 1 major, 18 minor.
 
 ## Exact next step
 
-Distinct second reviewer reviews each fix PR and adds docs/review/volume7-r1-NNN-review.md.
+Next: coordinator polls CI on each final head and squash-merges with SHA guard, then round 2 re-review.
