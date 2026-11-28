@@ -31,7 +31,7 @@ Those three fixes were re-read in round 2. All ten repaired passages hold. Regre
 
 ## Round 2
 
-**Score: 8/10.** 0 critical, 0 major, 4 minor. Review pull request to be recorded in the tracker comments.
+**Score: 8/10.** 0 critical, 0 major, 4 minor. Draft review: #311.
 
 | ID | Location | What is wrong | Fix |
 | --- | --- | --- | --- |
@@ -42,7 +42,11 @@ Those three fixes were re-read in round 2. All ten repaired passages hold. Regre
 
 ## Next step
 
-Open one fix pull request for V5-R2-001 through V5-R2-004. Second-read it. Squash-merge only on green CI for that exact head. Then run round 3 on the new main. Stop at 10/10 or after round 6.
+Fix pull request #312 is open. Head `4c8762e01c5d1fc57cb1262821c306b6f5cdadf9`. Second reading: `docs/review/volume5-round2-fix-second-review-2026-11-28.md` on that branch.
+
+Squash-merge #312 only when CI is green on that head. Then run round 3 on the new main. Stop at 10/10 or after round 6.
+
+Tracker pull request: #310.
 
 ## Do not
 
