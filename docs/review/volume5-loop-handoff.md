@@ -37,7 +37,7 @@ The four gaps were fixed in #312, squash-merged as `1ccf4e181833cf50bb569e31f0e9
 
 ## Round 3
 
-**Score: 10/10.** 0 critical, 0 major, 0 minor. Regressions: 0. The loop stops here. Draft review to be linked from the tracker comment.
+**Score: 10/10.** 0 critical, 0 major, 0 minor. Regressions: 0. Draft review: #313. The loop stops here.
 
 ## Next step
 
