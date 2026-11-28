@@ -1,10 +1,10 @@
 # Volume 6, round 2 (review only)
 
-Score: **9/10**. The first posting of this note said 10/10. Two minor slips in closing-problem solutions were verified afterwards. They are listed below.
+Score: **9/10**. The first posting of this note said 10/10, then two closing-problem slips. Four further local slips, checked since, are in the same list. None of them is a numbered theorem.
 
 Base: `614400b0061f715658cee0266f0b5b07640a7c77` on `main`. Sources: `volume6-crossroads/` (twelve chapters, preface, exercises with hints and solutions). No book source was edited. Round 1 issues V6-R1-001 through V6-R1-004 were not reopened. Volume 1 starts at Chapter 0, and theorem, proposition, lemma, corollary, definition, and example share one counter. That count was used for every citation that was opened.
 
-The numbered theorems that were checked hold. The seven passages changed in #316–#322 are correct, and none of them introduced a new error. Regression count: **0**. Two local slips remain, both in solutions of closing problems.
+The numbered theorems that were checked hold. The seven passages changed in #316–#322 are correct, and none of them introduced a new error. Regression count: **0**. Six local slips remain.
 
 ## Regression check
 
@@ -42,6 +42,14 @@ V6-R2-001 | minor | volume6-crossroads/chapters/ch12-modular.tex:2139 | The idea
 
 V6-R2-002 | minor | volume6-crossroads/chapters/ch12-modular.tex:2318 | The solution of `pb:cramersign` says that \((\psi(x)-x)/\log x\) has \(66\,112\) sign changes below \(10^8\). Dividing by \(\log x>0\) does not change signs, and \(\psi(x)-x\) changes sign \(65\,162\) times for \(2\le x\le10^8\). The figure \(66\,112\) is the count the problem states for \(\Pi(x)-\operatorname{li}(x)\), two sentences earlier in the solution’s source problem. The sign argument in (d) does not use the integer. | Attribute \(66\,112\) to \(\Pi-\operatorname{li}\), or replace it by \(65\,162\) for \(\psi-x\).
 
+V6-R2-003 | minor | volume6-crossroads/chapters/ch02-averages.tex:283 | Cramér’s constant is written \(0.6543\ldots\). The series is \(\zeta(3/2)^4/\zeta(3)\), and \(\frac1{6\pi^2}\) times that series is \(0.65428397\ldots\). The same chapter’s other ellipses keep a truncated prefix. | Write \(0.6542\ldots\).
+
+V6-R2-004 | minor | volume6-crossroads/chapters/ch01-mertens.tex:681 | The ratio \(P(1000)\) against \(e^{-\gamma}/\log 1000\) is written \(0.996133\ldots\). With \(P(1000)=0.0809652635\ldots\) and \(e^{-\gamma}=0.5614594835\ldots\), the ratio is \(0.99613283\ldots\). The four-decimal value \(0.9961\) in the same sentence is the correct rounding. | Write \(0.996132\ldots\).
+
+V6-R2-005 | minor | volume6-crossroads/figures/ch01-tenfactorial.tex:19 | The upper block on the prime \(3\) is filled with the dark ink the legend and the caption give to multiples of \(p^3\). That block is \(\lfloor 10/9\rfloor=1\), the multiples of \(p^2\). There is no multiple of \(27\) up to \(10\). The stack for \(2\) follows the legend. The printed counts \(3\), \(1\), and \(4\) are right. | Fill that rectangle with the lighter ink used for multiples of \(p^2\).
+
+V6-R2-006 | minor | volume6-crossroads/chapters/ch03-characters.tex:241 | The beauty note says that for a real character, \(\zeta(s)L(s,\chi)\) is the zeta function of the quadratic field attached to \(\chi\), and that its coefficient \(r(n)\) counts ideals of norm \(n\). That holds for a primitive character. The character modulo \(12\) induced by \(\chi_{-4}\) is real and non-principal, and \(r(3)=1\), while \(3\) is inert in \(\mathbb Q(i)\) and no ideal there has norm \(3\). The non-vanishing proof uses only \(r(n)\ge 0\). | Restrict the sentence to a primitive real character.
+
 ## Counts
 
-0 critical, 0 major, 2 minor. Regressions in #316–#322: 0. The first posting of this note said 0 critical, 0 major, 0 minor.
+0 critical, 0 major, 6 minor. Regressions in #316–#322: 0. The first posting of this note said 0 critical, 0 major, 0 minor; the second posting said 2 minor.
