@@ -4,11 +4,12 @@ Fresh agents continue from this file alone. The book sources live in `volume6-cr
 
 Round 1 reviewed `1ccf4e181833cf50bb569e31f0e986124ed579b0`. Round 2 reviewed `614400b0061f715658cee0266f0b5b07640a7c77`, the book text after the seven round-1 fix merges. Volume 6 at that SHA is the text scored in round 2. The round-1 review then merged as `24ef1a84c134be92500e6704775cdc074298ae3f` and did not change `volume6-crossroads/`. The round-2 fix branches start from that main.
 
-R1 8/10 (#315, merged as `24ef1a84`). R2 9/10 (#323), with six minor issues and 0 regressions. Two of the six are closing-problem slips. Four further local slips are in the same note.
+R1 8/10 (#315, merged as `24ef1a84`). R2 9/10 (#323), with six minor issues and 0 regressions. Two of the six are closing-problem slips. Four further local slips are in the same note. R3 9/10 (#332), with one minor issue and 0 regressions.
 
 - Tracker PR: https://github.com/OussamaSegh/Order-and-Chance/pull/314 (draft), branch `review/v6-loop-tracker`. The head is the tip of that branch.
 - Round-1 review PR: https://github.com/OussamaSegh/Order-and-Chance/pull/315 (draft), head `797e63664cc972e362af575ec143f3464475e752`, branch `review/v6-round1`, file `docs/review/volume6-round1-review.md`.
 - Round-2 review PR: https://github.com/OussamaSegh/Order-and-Chance/pull/323 (draft), head `6f6d501532670cd3c6e2ee1ac185fd5084678dd7`, branch `review/v6-round2`, file `docs/review/volume6-round2-review.md`. The first posting, head `0219f8a105140fa118d5d6b0066ae7bd06509c58`, said 10/10. The second, head `6909a9f82090c034858fb469fd7d56f73ad8cdb3`, said 9/10 with two minors.
+- Round-3 review PR: https://github.com/OussamaSegh/Order-and-Chance/pull/332 (draft), head `f3bc865bd29984234da38fff751669a67300e817`, branch `review/v6-round3`, file `docs/review/volume6-round3-review.md`. Score 9/10. Regression count 0.
 
 ## Goal
 
@@ -29,9 +30,10 @@ Bring Volume 6 to 10/10. The loop is: review, then small fix PRs, then a distinc
 | Round | Base SHA | Score | Review | Status |
 | --- | --- | --- | --- | --- |
 | 1 | `1ccf4e181833cf50bb569e31f0e986124ed579b0` | 8/10 | https://github.com/OussamaSegh/Order-and-Chance/pull/315 head `797e63664cc972e362af575ec143f3464475e752`, merged as `24ef1a84c134be92500e6704775cdc074298ae3f` | first posting 8/10; the merged note corrects the score to 9/10 |
-| 2 | `614400b0061f715658cee0266f0b5b07640a7c77` | 9/10 | https://github.com/OussamaSegh/Order-and-Chance/pull/323 head `6f6d501532670cd3c6e2ee1ac185fd5084678dd7` | six minors merged in #324–#329; 0 regressions; the first posting said 10/10; round 3 not started |
+| 2 | `614400b0061f715658cee0266f0b5b07640a7c77` | 9/10 | https://github.com/OussamaSegh/Order-and-Chance/pull/323 head `6f6d501532670cd3c6e2ee1ac185fd5084678dd7` | six minors merged in #324–#329; 0 regressions; the first posting said 10/10 |
+| 3 | `ddf23cd89103582fc5879cd3351dfb5b22053df0` | 9/10 | https://github.com/OussamaSegh/Order-and-Chance/pull/332 head `f3bc865bd29984234da38fff751669a67300e817` | one minor; 0 regressions in #316–#322 and #324–#329 |
 
-Score reason, short. R1 8/10 (#315, merged as `24ef1a84`). That posting named five majors and six minors. Four majors were a chapter-count error: Volume 1 starts at Chapter 0, and those citations were already right. They were withdrawn. The corrected note on #315 scores the volume 9/10: one major, the wrong factor of \(\xi\) in a solution, and six minors. No broken main theorem was found. Those seven fixes are merged. R2 9/10 (#323), with six minor issues and 0 regressions. The first posting said 10/10. A correction then recorded two closing-problem slips, and four further local slips are in the same list. No numbered theorem is among them. Round 2 did not run `./build.sh`.
+Score reason, short. R1 8/10 (#315, merged as `24ef1a84`). That posting named five majors and six minors. Four majors were a chapter-count error: Volume 1 starts at Chapter 0, and those citations were already right. They were withdrawn. The corrected note on #315 scores the volume 9/10: one major, the wrong factor of \(\xi\) in a solution, and six minors. No broken main theorem was found. Those seven fixes are merged. R2 9/10 (#323), with six minor issues and 0 regressions. The first posting said 10/10. A correction then recorded two closing-problem slips, and four further local slips are in the same list. No numbered theorem is among them. Round 2 did not run `./build.sh`. R3 9/10 (#332), on the book text after those six merges. One minor remains, in a remark: with the book’s \(\operatorname{Li}\), the sign of \(\operatorname{Li}(x)-\pi(x)\) changes at \(7\). Regression count 0. Round 3 did not run `./build.sh`.
 
 ## Fix PRs
 
@@ -49,7 +51,7 @@ Score reason, short. R1 8/10 (#315, merged as `24ef1a84`). That posting named fi
 | V6-R1-010 | https://github.com/OussamaSegh/Order-and-Chance/pull/321 | `b401cc6c9bc899633cdd8ccc7976ba957005c19e` | merged `8dd2da41f42f20dfdbe5d47c14911b7eb378effb` |
 | V6-R1-011 | https://github.com/OussamaSegh/Order-and-Chance/pull/322 | `1f71bb5029783fe35b6d560284e0de3d9cccd876` | merged `614400b0061f715658cee0266f0b5b07640a7c77` |
 
-Each row’s head SHA is the head GitHub reports for that merged PR, and it matches the second-review head. Each merge SHA is that PR’s merge commit. `origin/main` is `24ef1a84c134be92500e6704775cdc074298ae3f`, the #315 squash. That commit does not change `volume6-crossroads/`. The book text scored in round 2 remains `614400b0061f715658cee0266f0b5b07640a7c77`, the #322 squash. This update did not re-read the Actions logs. The merger’s tracker comments name a successful `build (volume6-crossroads)` on each reviewed head and a skipped `publish`.
+Each row’s head SHA is the head GitHub reports for that merged PR, and it matches the second-review head. Each merge SHA is that PR’s merge commit. When round 2 was scored, `origin/main` was `24ef1a84c134be92500e6704775cdc074298ae3f`, the #315 squash. That commit does not change `volume6-crossroads/`. The book text scored in round 2 remains `614400b0061f715658cee0266f0b5b07640a7c77`, the #322 squash. This update did not re-read the Actions logs. The merger’s tracker comments name a successful `build (volume6-crossroads)` on each reviewed head and a skipped `publish`.
 
 Round-2 fixes, each branched from `24ef1a84c134be92500e6704775cdc074298ae3f`. All six are merged. `origin/main` is `ddf23cd89103582fc5879cd3351dfb5b22053df0`, the #329 squash. #323 and #314 were not merged.
 
@@ -68,11 +70,19 @@ V6-R1-001 through V6-R1-004 were checked against Volume 1 and not edited. The se
 
 ## CI runs
 
-Round 1, the fixer, the second reviewer, and the round-2 reviewer did not run `./build.sh`. The seven fix PRs’ runs, as named for this update, are `46157051597`, `46157052642`, `46157053523`, `46157052117`, `46157051401`, `46157052179`, and `46157053076`. Each is reported green, with `publish` skipped. This handoff update did not open those logs. Do not treat an unread log as a pass.
+Round 1, the fixer, the second reviewer, and the round-2 reviewer did not run `./build.sh`. The seven round-1 fix PRs’ runs, as named for the earlier update, are `46157051597`, `46157052642`, `46157053523`, `46157052117`, `46157051401`, `46157052179`, and `46157053076`. Each is reported green, with `publish` skipped. This handoff update did not open those logs. Do not treat an unread log as a pass.
+
+The six round-2 fix PRs’ runs, as named for this update, are `46168413975`, `46168415675`, `46168418471`, `46168420732`, `46168420250`, and `46168424691`, one for each of #324 through #329. Each is reported green. This handoff update did not open those logs. Seg accepted the publish-on-push release rebuild, and that acceptance is what let #324–#329 land on `main`. This update did not inspect the release.
 
 ## Open issues
 
-Six, all minor. Each fix is merged on `main` at `ddf23cd89103582fc5879cd3351dfb5b22053df0`. Round 3 checks those passages, and the passages from #316–#322, in that tree. The lines below are the pre-fix lines at `614400b0061f715658cee0266f0b5b07640a7c77`.
+One, minor, in `volume6-crossroads/` at `ddf23cd89103582fc5879cd3351dfb5b22053df0`. Round 3 found no regression in #316–#322 or #324–#329.
+
+| Id | Severity | Location | Problem | Status |
+| --- | --- | --- | --- | --- |
+| V6-R3-001 | minor | `volume6-crossroads/chapters/ch05-pnt.tex:276` | The remark says no integer is known at which \(\operatorname{Li}(x)-\pi(x)\) changes sign. With \(\operatorname{Li}(x)=\int_2^x\mathrm dt/\log t\), the difference is positive at \(6\) and negative at \(7\). It is positive from \(8\) through \(10^8\). | open |
+
+The six round-2 rows below are closed. Each fix is merged on `main` at `ddf23cd89103582fc5879cd3351dfb5b22053df0`. The lines are the pre-fix lines at `614400b0061f715658cee0266f0b5b07640a7c77`.
 
 | Id | Severity | Location | Problem | Status |
 | --- | --- | --- | --- | --- |
@@ -99,8 +109,8 @@ The round-1 rows below are closed. V6-R1-001 through V6-R1-004 were false positi
 | V6-R1-010 | minor | `volume6-crossroads/chapters/ch08-sieves.tex:655` | Says \(\omega(u)/e^{-\gamma}\) tends to infinity as \(u\to 1\). It tends to \(e^{\gamma}\). | merged |
 | V6-R1-011 | minor | `volume6-crossroads/chapters/ch10-random.tex:599` | Calls the factor \(1/3\) the cost of independence. Independence costs \(4/9\). The factor \(1/3\) is the distinct-class cost, and that is the comparison that doubles the weight. | merged |
 
-Round 1 first counted 0 critical, 5 major, 6 minor, and the note then withdrew 001–004. The remaining one major and six minors are merged. Round 2’s corrected count is 0 critical, 0 major, 6 minor, and 0 regressions in #316–#322. Those six fixes are merged. Round 3 has not scored the result. This update did not re-read the Actions logs.
+Round 1 first counted 0 critical, 5 major, 6 minor, and the note then withdrew 001–004. The remaining one major and six minors are merged. Round 2’s corrected count is 0 critical, 0 major, 6 minor, and 0 regressions in #316–#322. Those six fixes are merged. Round 3’s count is 0 critical, 0 major, 1 minor, and 0 regressions in #316–#322 and #324–#329. Round 3 did not run `./build.sh` and did not open the Actions logs.
 
 ## Exact next step
 
-A fresh reviewer, not the round-1 or round-2 reviewer, reviews Volume 6 at `ddf23cd89103582fc5879cd3351dfb5b22053df0` and writes `docs/review/volume6-round3-review.md`. Include a regression check of the passages changed in #316–#322 and #324–#329. Do not reopen V6-R1-001–004. Do not merge #323 or #314. Do not edit book source on this tracker branch.
+Open one fix PR for V6-R3-001 from current main. A distinct second reviewer writes the note and does not edit the book line. Squash-merge on green CI of that reviewed head. Then round 4 re-reviews. Do not reopen V6-R1-001–004. Do not merge #323, #314, or #332. Do not edit book source on this tracker branch.
