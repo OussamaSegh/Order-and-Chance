@@ -6,7 +6,7 @@ Round 1 reviewed `1ccf4e181833cf50bb569e31f0e986124ed579b0`. Round 2 reviewed `6
 
 - Tracker PR: https://github.com/OussamaSegh/Order-and-Chance/pull/314 (draft), branch `review/v6-loop-tracker`. The head is the tip of that branch.
 - Round-1 review PR: https://github.com/OussamaSegh/Order-and-Chance/pull/315 (draft), head `797e63664cc972e362af575ec143f3464475e752`, branch `review/v6-round1`, file `docs/review/volume6-round1-review.md`.
-- Round-2 review PR: https://github.com/OussamaSegh/Order-and-Chance/pull/323 (draft), head `0219f8a105140fa118d5d6b0066ae7bd06509c58`, branch `review/v6-round2`, file `docs/review/volume6-round2-review.md`.
+- Round-2 review PR: https://github.com/OussamaSegh/Order-and-Chance/pull/323 (draft), head `6909a9f82090c034858fb469fd7d56f73ad8cdb3`, branch `review/v6-round2`, file `docs/review/volume6-round2-review.md`. The first posting of that note, head `0219f8a105140fa118d5d6b0066ae7bd06509c58`, said 10/10.
 
 ## Goal
 
@@ -27,9 +27,9 @@ Bring Volume 6 to 10/10. The loop is: review, then small fix PRs, then a distinc
 | Round | Base SHA | Score | Review | Status |
 | --- | --- | --- | --- | --- |
 | 1 | `1ccf4e181833cf50bb569e31f0e986124ed579b0` | 8/10 | https://github.com/OussamaSegh/Order-and-Chance/pull/315 head `797e63664cc972e362af575ec143f3464475e752` | first posting; the same note then corrected the score to 9/10 |
-| 2 | `614400b0061f715658cee0266f0b5b07640a7c77` | 10/10 | https://github.com/OussamaSegh/Order-and-Chance/pull/323 head `0219f8a105140fa118d5d6b0066ae7bd06509c58` | no open issues |
+| 2 | `614400b0061f715658cee0266f0b5b07640a7c77` | 9/10 | https://github.com/OussamaSegh/Order-and-Chance/pull/323 head `6909a9f82090c034858fb469fd7d56f73ad8cdb3` | two minors open; the first posting said 10/10 |
 
-Score reason, short. Round 1 first said 8/10, with five majors and six minors. Four majors were a chapter-count error: Volume 1 starts at Chapter 0, and those citations were already right. They were withdrawn. The corrected note on #315 scores the volume 9/10: one major, the wrong factor of \(\xi\) in a solution, and six minors. No broken main theorem was found. Those seven fixes are merged. Round 2, a different reviewer, scores the merged text 10/10. The seven edited passages were rechecked and none regressed. No new critical, major, or minor issue was verified. Round 2 did not run `./build.sh`.
+Score reason, short. Round 1 first said 8/10, with five majors and six minors. Four majors were a chapter-count error: Volume 1 starts at Chapter 0, and those citations were already right. They were withdrawn. The corrected note on #315 scores the volume 9/10: one major, the wrong factor of \(\xi\) in a solution, and six minors. No broken main theorem was found. Those seven fixes are merged. Round 2 first said 10/10, with no regression in the seven fixes. A later check of two closing-problem solutions found two minor slips, so the corrected score is 9/10. Round 2 did not run `./build.sh`.
 
 ## Fix PRs
 
@@ -57,7 +57,12 @@ Round 1, the fixer, the second reviewer, and the round-2 reviewer did not run `.
 
 ## Open issues
 
-None. Round 2 found no verified defect in `volume6-crossroads/` at `614400b0061f715658cee0266f0b5b07640a7c77`.
+Two, both minor, both in `volume6-crossroads/chapters/ch12-modular.tex` at `614400b0061f715658cee0266f0b5b07640a7c77`.
+
+| Id | Severity | Location | Problem | Status |
+| --- | --- | --- | --- | --- |
+| V6-R2-001 | minor | `volume6-crossroads/chapters/ch12-modular.tex:2139` | The idea for `pb:twosquares` says \(F^2=\zeta(s)L(s,\chi_4)\). The identity in the problem multiplies by \((1-2^{-s})^{-1}\prod_{p\equiv3\pmod4}(1-p^{-2s})^{-1}\), about \(2.336\) at \(s=1\). | open |
+| V6-R2-002 | minor | `volume6-crossroads/chapters/ch12-modular.tex:2318` | The solution gives \((\psi(x)-x)/\log x\) the \(66\,112\) sign changes below \(10^8\). That count is the one the problem states for \(\Pi(x)-\operatorname{li}(x)\). The count for \(\psi(x)-x\) is \(65\,162\). | open |
 
 The round-1 rows below are closed. V6-R1-001 through V6-R1-004 were false positives. V6-R1-005 through V6-R1-011 are merged. The note on each fix is `docs/review/volume6-r1-NNN-review.md`. For V6-R1-009 the figure node text changed from “fixed area” to “grows like \(x^2\)”, without a change of font, size, or position. Line numbers below are the pre-fix lines.
 
@@ -75,8 +80,8 @@ The round-1 rows below are closed. V6-R1-001 through V6-R1-004 were false positi
 | V6-R1-010 | minor | `volume6-crossroads/chapters/ch08-sieves.tex:655` | Says \(\omega(u)/e^{-\gamma}\) tends to infinity as \(u\to 1\). It tends to \(e^{\gamma}\). | merged |
 | V6-R1-011 | minor | `volume6-crossroads/chapters/ch10-random.tex:599` | Calls the factor \(1/3\) the cost of independence. Independence costs \(4/9\). The factor \(1/3\) is the distinct-class cost, and that is the comparison that doubles the weight. | merged |
 
-Round 1 first counted 0 critical, 5 major, 6 minor, and the note then withdrew 001–004. The remaining one major and six minors are merged. Round 2 counts 0 critical, 0 major, 0 minor, and 0 regressions in #316–#322.
+Round 1 first counted 0 critical, 5 major, 6 minor, and the note then withdrew 001–004. The remaining one major and six minors are merged. Round 2 first counted 0 critical, 0 major, 0 minor, and 0 regressions in #316–#322. The corrected count is 0 critical, 0 major, 2 minor.
 
 ## Exact next step
 
-No fix PR. Round 2 scores Volume 6 at 10/10, so the loop has reached its goal. Do not open a round 3 unless a later reader finds a defect in `docs/review/volume6-round2-review.md` that this review missed. Do not reopen V6-R1-001–004.
+Open small fix PRs for V6-R2-001 and V6-R2-002, against `614400b0061f715658cee0266f0b5b07640a7c77`. Do not reopen V6-R1-001–004. Do not edit book source on this tracker branch.
