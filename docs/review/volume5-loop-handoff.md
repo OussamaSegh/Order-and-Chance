@@ -33,18 +33,15 @@ Those three fixes were re-read in round 2. All ten repaired passages hold. Regre
 
 **Score: 8/10.** 0 critical, 0 major, 4 minor. Draft review: #311.
 
-| ID | Location | What is wrong | Fix |
-| --- | --- | --- | --- |
-| V5-R2-001 | `volume5-calculation/chapters/ch06-fourier.tex:270` | The inner sum with the factor \(\pi/N\) is the Riemann sum, and it tends to \(\operatorname{Si}(\pi)\). The factor \(2/\pi\) stands outside it. The sentence gives the partial-sum limit to the Riemann sum. | Name the inner sum as the Riemann sum, send it to \(\operatorname{Si}(\pi)\), and then multiply by \(2/\pi\). |
-| V5-R2-002 | `volume5-calculation/chapters/ch10-zeta.tex:546` | “The integral is (b).” The integral in the error display is \(\int_0^1(-\log t)\,\mathrm dt=1\). Part (b) is \(\int_0^1(-\log t)/(1+t)\,\mathrm dt=\pi^2/12\). The main term divides that value by \(\log 2\). | Say which integral is which. |
-| V5-R2-003 | `volume5-calculation/chapters/ch02-generating.tex:1519` | “Then \(u_{2n}\to 2/\mu\) instead.” The limit is right for span 2. The factor 2 is not derived. | Both simple roots \(\pm 1\) contribute \(1/\mu\), and they add on even indices. |
-| V5-R2-004 | `volume5-calculation/chapters/ch02-generating.tex:988` | The third identity of `prop:explog` is \(\exp(\log(1+F))=1+F\). Recovering \(\hat C\) from \(\exp(\hat C)\) uses the second identity, \(\log(\exp(\hat C))=\hat C\). | Cite the second identity. |
+The four gaps were fixed in #312, squash-merged as `1ccf4e181833cf50bb569e31f0e986124ed579b0` from head `4c8762e01c5d1fc57cb1262821c306b6f5cdadf9`. Second reading: `docs/review/volume5-round2-fix-second-review-2026-11-28.md`.
+
+## Round 3
+
+**Score: 10/10.** 0 critical, 0 major, 0 minor. Regressions: 0. The loop stops here. Draft review to be linked from the tracker comment.
 
 ## Next step
 
-Fix pull request #312 is open. Head `4c8762e01c5d1fc57cb1262821c306b6f5cdadf9`. Second reading: `docs/review/volume5-round2-fix-second-review-2026-11-28.md` on that branch.
-
-Squash-merge #312 only when CI is green on that head. Then run round 3 on the new main. Stop at 10/10 or after round 6.
+None. Volume 5 is 10/10 on main at `1ccf4e181833cf50bb569e31f0e986124ed579b0`. Do not open another fix. Do not edit Volume 4.
 
 Tracker pull request: #310.
 
