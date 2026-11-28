@@ -1,0 +1,45 @@
+# Volume 6, round 2 (review only)
+
+Score: **10/10**.
+
+Base: `614400b0061f715658cee0266f0b5b07640a7c77` on `main`. Sources: `volume6-crossroads/` (twelve chapters, preface, exercises with hints and solutions). No book source was edited. Round 1 issues V6-R1-001 through V6-R1-004 were not reopened. Volume 1 starts at Chapter 0, and theorem, proposition, lemma, corollary, definition, and example share one counter. That count was used for every citation that was opened.
+
+No critical, major, or minor defect was verified. The seven passages changed in #316–#322 are correct, and none of them introduced a new error. Regression count: **0**.
+
+## Regression check
+
+Each row is the printed text on `main` at the base SHA above.
+
+| PR | Merge | Passage | Result |
+| --- | --- | --- | --- |
+| #316 | `07ee61e6c6bb6054eb6abe9e9f595a1d83dd0df1` | `ch06-zeros.tex` solution of `ex:xi2` | Holds. \(\xi(2)=\pi/6\), and \(\xi(-1)=\xi(2)\). At the negative even integers the pole of \(\Gamma(s/2)\) cancels a zero of \(\zeta\). The factor \(\frac12 s(s-1)\) does not vanish there, so \(\xi\) stays non-zero. \(\Gamma(-1/2)\) is finite. |
+| #317 | `6f48c1a6d2d821e8bf737552af9c21e682ba9767` | Jensen proof, same file | Holds. After the zeros are removed, \(g\) has none on the closed disc. Isolation gives a slightly larger open disc \(D'\) with \(\{|z|\le R\}\subset D'\subset D\). The Blaschke modulus, the logarithm, and the mean-value step still match the formula. |
+| #318 | `e89e3e81a1504cf15738158c0502d4e8b16c1cc0` | Argument principle, same file | Holds. \(N(T)\) is real, so \(\int\xi'/\xi=2\pi i\,N(T)\) is purely imaginary and its imaginary part is \(2\pi N(T)\). The symmetry \(s\mapsto 1-\overline s\) still splits that into two equal halves, and \(\pi N(T)=\operatorname{Im}\int_L\xi'/\xi\). The four-factor computation that follows still produces \(N(T)=\alpha(T)/\pi+1+S(T)\) and the main term with \(\frac78\). |
+| #319 | `807bc0b5bceb26936c1841e0bdc8b6ea514296b6` | `ch05-pnt.tex` solution of `ex:li` | Holds. From \(\pi(x)=\operatorname{Li}(x)+o(x/\log^2 x)\) the quotient is \(1+1/\log x+o(1/\log x)\). The expansion of \(\operatorname{Li}\) and the asides agree with the caption: \(1/\log(10^8)=0.054\), the caption's ratio is \(1.0613\), and the next term is \(2/\log^2 x\). |
+| #320 | `d7a6b91136588cee99c00d177bd82a14154a4393` | caption of `fig:monobump`, and the node in `figures/ch05-new-bump.tex` | Holds. The region between the horizontal line \(\lambda cx\) and the line \(ct\) on \([x,\lambda x]\) has area \(\frac12 c(\lambda-1)^2 x^2\). The integral of \((\lambda cx-ct)/t^2\) over that interval is \(c(\lambda-1-\log\lambda)\), independent of \(x\). The node says the area grows like \(x^2\). A source comment above the picture still says “a fixed block of area”; that comment is not printed. |
+| #321 | `8dd2da41f42f20dfdbe5d47c14911b7eb378effb` | Buchstab solution, `ch08-sieves.tex` | Holds. As \(u\to 1^+\), \(\omega(u)=1/u\to 1\), so \(\omega(u)/e^{-\gamma}\to e^{\gamma}\). The same solution’s values \(\omega(2)=\frac12\), \(\omega(3)=(1+\log 2)/3=0.56438\), the minimum \(\frac12\) on \(]1,3]\), the factor \(2e^{-\gamma}=1.1229\), and the crossing at \(u=2.483\) all recompute. |
+| #322 | `614400b0061f715658cee0266f0b5b07640a7c77` | mod-3 sentence, `ch10-random.tex` | Holds. If \(3\mid h\), the two primes lie in one class and the proportion avoiding \(0\bmod 3\) is \(\frac23\). If \(3\nmid h\), exactly one class works, so the proportion is \(\frac13\). The ratio is \(2\), which is the factor \((p-1)/(p-2)\) at \(p=3\). |
+
+## What was checked
+
+Read against the source: the preface; Abel summation and the three Chebyshev bounds; Mertens’s three theorems and the numerical checks around \(10!\), \(\theta(30)\), \(\psi(30)\), \(R(10^3)\), \(R(10^5)\), \(R(10^7)\), and the products at \(100\), \(1000\), and \(50000\); the mean-value and hyperbola arguments, including \(\sum\varphi(n)=\frac3{\pi^2}x^2+O(x\log x)\), \(\sum\sigma(n)=\frac{\pi^2}{12}x^2+O(x\log x)\), and the \(\tau_3\) secondary term; orthogonality, the Gauss-sum formula, both cases of Dirichlet’s formula for \(L(1,\chi)\), the value \(L(1,\chi_{-4})=\pi/4\), and both halves of the non-vanishing argument; Dirichlet’s theorem and the solutions that list primes and weighted sums modulo \(4\) and \(8\); the zero-free line, Newman’s theorem and the identification \(g(0)=-1-\gamma\), and the passages to \(\psi\), \(\theta\), and \(\pi\); Jensen, Borel–Carathéodory as used, the Hadamard product’s logarithmic derivative, \(N(T)\), the \(3\)-\(4\)-\(1\) arithmetic that produces \(1/(14A'\log|t|)\), and the explicit formula including the residues at \(s=1\), at the zeros, at \(s=0\), and at the trivial zeros; the de la Vallée Poussin error and von Koch’s equivalence; Selberg’s weights at level \(y=10\) (all seven fractions, including \(\lambda_2=-21/22\)); Brun–Titchmarsh and Brun’s passage from \(16x/\log^2 y\) to \(O(x/\log^2 x)\); the large-sieve \(L^2\) bound; the moment comparison and the cut-off \(z=x^{1/\beta}\) in Erdős–Kac; Cramér’s two theorems as stated, Gallagher’s average of the singular series, and the singular-series values at even \(d\le 6\) and at \(d=30\); van der Corput’s inequality, Weyl’s polynomial theorem, and the square-sum estimate; the dimension count for \(M_k\), \(E_4^2=E_8\), \(1728\Delta=E_4^3-E_6^2\), and the congruence modulo \(691\), including \(65520\equiv -125\) and \(432000\equiv 125\); Siegel’s contour for \(\eta\) through the residue identity \((\ast)\); and the arithmetic in the Beukers, central-binomial, factorial-divisor, primitive-set, and superprime solutions.
+
+Recomputed, and in agreement with the text: the products and \(R(x)\) values above; \(\operatorname{Li}(10^8)-\pi(10^8)=753\) with \(\pi(10^8)=5761455\); \(\theta(3000)/3000=0.977\) and \(\psi(3000)/3000=1.0004\); the eight partial sums of \(S(x,\chi_{-4})\) in the Chapter 4 caption; the first lead of the race at \(26861\) and \(3406\) strict leads of the class \(1\bmod 4\) up to \(10^7\); \(\pi_2(10^7)=58980\) and the Hardy–Littlewood integral \(58754\); \(N(100)\)’s main term \(29.002\); \(B=\frac12\log(4\pi)-1-\gamma/2=-0.0230957\ldots\); Buchstab’s crossing \(u=2.483\); the proportion \(0.32\) of \(n\le 10^7\) with \(\omega(n)\le\log\log(10^7)\); \(\sigma_7(2)=129\); the Apéry numbers and the two recurrences at \(n=2\); \(M_1^2=0.3696\) and \(M_2=0.4282\); \(n_{1/3}=2520\) and \(n_{1/4}=21621600\); \(\omega\bigl(\binom{10^7}{5\cdot 10^6}\bigr)=453587\); and \(\pi(\pi(10^8))=397557\).
+
+A counter, in `main.tex` order, matched every numbered Volume citation that was parsed: the cited kind and the number \(a.b\) exist. Exercise citations were matched against the exercise text, not against the theorem counter. The ones opened, including Volume 1 Theorems 3.8, 9.3, and 9.4 and Proposition 7.4, Volume 2 Theorems 2.4, 2.5, 4.4, 4.6, 7.5, and 10.5 and Corollary 6.4, Volume 4 Theorems 2.1, 4.2, 4.4, 4.6, and 6.8, Proposition 6.7, and Definition 11.1, Volume 5 Theorems 5.8, 5.14, 8.14, 9.9, 9.15, 9.18, 9.19, 9.26, 9.36, 9.37, 10.3, 10.8, and 12.4, Exercises 5.7, 6.5, 10.2, and 10.3, Volume 13 Chapter 11 (the class-number formula) and Chapter 12 (the functional equation of \(L(s,\chi)\)), and Volume 15 Chapter 2 (Maier), support the sentences that cite them. Internal `\ref` targets: none missing, no duplicate labels. Exercises: 188, each with one hint and one solution.
+
+The preface is right that this volume is the last of Part II, and that the two admitted facts are the functional equation of \(L(s,\chi)\) and Tonelli’s theorem. Both uses are labelled.
+
+## What was not checked
+
+`./build.sh` was not run. Volume 6 was not compiled, and no GitHub Actions log was read. The seven run ids named in the loop handoff were not re-opened. A static parse of `\label` and `\ref` does not see a counter hidden inside a conditional, and it does not see an overfull box.
+
+TikZ pictures were not redrawn. The monotone-lemma figure was read as coordinates; the shaded quadrilateral is a schematic and does not pinch exactly at \(\lambda x\). The caption states the ideal area, not a measurement of those coordinates. Historical page numbers, and the quoted irrationality measures \(13.41\), \(5.51\), and \(3.57\), were not checked against the papers. Not every sentence of every closing-problem solution was re-derived. The solutions whose arithmetic is named above were.
+
+## Issues
+
+None.
+
+## Counts
+
+0 critical, 0 major, 0 minor. Regressions in #316–#322: 0.
